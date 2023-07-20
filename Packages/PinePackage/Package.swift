@@ -11,6 +11,7 @@ let package = Package(
   products: [
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "EditProfileFeature", targets: ["EditProfileFeature"]),
+    .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
@@ -25,6 +26,9 @@ let package = Package(
     .target(name: "EditProfileFeature", dependencies: [
       .product(name: "ButtonStyles", package: "DesignSystemPackage"),
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "ShareScreenshotFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
   ]
