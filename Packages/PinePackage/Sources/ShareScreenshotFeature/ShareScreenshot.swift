@@ -3,26 +3,26 @@ import SwiftUI
 
 public struct ShareScreenshotReducer: ReducerProtocol {
   public init() {}
-  
+
   public struct State: Equatable {
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case lineButtonTapped
     case instagramButtonTapped
     case messagesButtonTapped
   }
-  
+
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
       case .lineButtonTapped:
         return .none
-        
+
       case .instagramButtonTapped:
         return .none
-        
+
       case .messagesButtonTapped:
         return .none
       }
@@ -32,11 +32,11 @@ public struct ShareScreenshotReducer: ReducerProtocol {
 
 public struct ShareScreenshotView: View {
   let store: StoreOf<ShareScreenshotReducer>
-  
+
   public init(store: StoreOf<ShareScreenshotReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack(alignment: .top, spacing: 20) {
@@ -49,7 +49,7 @@ public struct ShareScreenshotView: View {
           Text("Share Screenshot")
             .font(.title3)
             .bold()
-          
+
           HStack(spacing: 8) {
             Button {
               viewStore.send(.instagramButtonTapped)
@@ -72,7 +72,7 @@ public struct ShareScreenshotView: View {
                 Text("LINE")
               }
             }
-            
+
             Button {
               viewStore.send(.messagesButtonTapped)
             } label: {
@@ -85,7 +85,7 @@ public struct ShareScreenshotView: View {
             }
           }
           .foregroundColor(.primary)
-          
+
           Spacer()
         }
       }
