@@ -21,16 +21,16 @@ public struct AboutReducer: ReducerProtocol {
       switch action {
       case .howItWorksButtonTapped:
         return .none
-        
+
       case .faqButtonTapped:
         return .none
-        
+
       case .shareFeedbackButtonTapped:
         return .none
-        
+
       case .getHelpButtonTapped:
         return .none
-        
+
       case .safetyCenterButtonTapped:
         return .none
       }
