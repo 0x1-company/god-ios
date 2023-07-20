@@ -22,10 +22,6 @@ public struct LabeledButton: View {
         .frame(height: 50)
         .frame(maxWidth: .infinity)
     }
-    .overlay(
-      RoundedRectangle(cornerRadius: 16)
-        .stroke(Color(uiColor: .separator), lineWidth: 1)
-    )
   }
 }
 

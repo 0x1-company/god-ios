@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import LabeledButton
+import ButtonStyles
 
 public struct EditProfileReducer: ReducerProtocol {
   public init() {}
@@ -67,6 +68,7 @@ public struct EditProfileView: View {
               .foregroundColor(.secondary)
               .font(.caption2)
           }
+          .buttonStyle(CornerRadiusBorderButtonStyle())
         }
         .padding(.all, 24)
       }

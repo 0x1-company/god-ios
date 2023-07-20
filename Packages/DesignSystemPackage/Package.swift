@@ -9,11 +9,13 @@ let package = Package(
     .iOS(.v16),
   ],
   products: [
+    .library(name: "ButtonStyles", targets: ["ButtonStyles"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
   ],
   dependencies: [
   ],
   targets: [
+    .target(name: "ButtonStyles"),
     .target(name: "LabeledButton"),
   ]
 )
