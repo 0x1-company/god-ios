@@ -6,10 +6,11 @@ public struct WelcomeReducer: ReducerProtocol {
 
   public struct State: Equatable {
     let ages: [String] = {
-      var numbers = Array(0...100).map(String.init)
+      var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
       return numbers
     }()
+
     @BindingState var selection = "- -"
     public init() {}
   }
@@ -47,11 +48,11 @@ public struct WelcomeView: View {
             .foregroundColor(.secondary)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 32)
-          
+
           Text("Enter your age")
             .foregroundColor(.orange)
             .bold()
-          
+
           Picker("", selection: viewStore.binding(\.$selection)) {
             ForEach(viewStore.ages, id: \.self) { value in
               Text(value).tag(value)
