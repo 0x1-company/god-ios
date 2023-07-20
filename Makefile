@@ -4,7 +4,7 @@ help:
 
 .PHONY: open
 open: # Open project in Xcode
-	open ios-app.xcworkspace
+	open pine.xcworkspace
 
 .PHONY: clean
 clean: # Clean all build folders

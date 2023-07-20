@@ -11,13 +11,11 @@ concurrency:
 jobs:
   build:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        package:
-          - CupertinoPackage
-          - FirebasePackage
-          - PinePackage
     steps:
       - uses: actions/checkout@v3
-      - run: xcodebuild -resolvePackageDependencies -scheme "${{ matrix.package }}-Package"
-      - run: xcodebuild build -scheme "${{ matrix.package }}-Package" -sdk iphonesimulator
+      - uses: actions/cache@v3
+        with:
+          path: SourcePackages
+          key: ${{ runner.os }}-pine-xcworkspace-${{ hashFiles('pine.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+      - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
+      - run: xcodebuild build -workspace pine.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages

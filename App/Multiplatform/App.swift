@@ -2,19 +2,7 @@ import AppFeature
 import ComposableArchitecture
 import SwiftUI
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  func windowScene(
-    _ windowScene: UIWindowScene,
-    performActionFor shortcutItem: UIApplicationShortcutItem,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    AppDelegate.shared.viewStore.send(.sceneDelegate(.shortcutItem(shortcutItem)))
-    completionHandler(true)
-  }
-}
-
 final class AppDelegate: NSObject, UIApplicationDelegate {
-  static let shared = AppDelegate()
   let store = Store(
     initialState: AppReducer.State(),
     reducer: AppReducer()._printChanges()
@@ -45,20 +33,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     didFailToRegisterForRemoteNotificationsWithError error: Error
   ) {
     viewStore.send(.appDelegate(.didRegisterForRemoteNotifications(.failure(error))))
-  }
-
-  func application(
-    _ application: UIApplication,
-    configurationForConnecting connectingSceneSession: UISceneSession,
-    options: UIScene.ConnectionOptions
-  ) -> UISceneConfiguration {
-    viewStore.send(.appDelegate(.configurationForConnecting(options.shortcutItem)))
-    let config = UISceneConfiguration(
-      name: connectingSceneSession.configuration.name,
-      sessionRole: connectingSceneSession.role
-    )
-    config.delegateClass = SceneDelegate.self
-    return config
   }
 }
 
