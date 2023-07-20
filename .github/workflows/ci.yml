@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        package:
+          - CupertinoPackage
+          - FirebasePackage
+          - PinePackage
+    steps:
+      - uses: actions/checkout@v3
+      - run: xcodebuild -resolvePackageDependencies -scheme "${{ matrix.package }}-Package"
+      - run: xcodebuild build -scheme "${{ matrix.package }}-Package" -sdk iphonesimulator

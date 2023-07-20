@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:PreviewApp/PreviewApp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App/Production.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App/Staging.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Packages/CupertinoPackage">
+   </FileRef>
+   <FileRef
+      location = "group:Packages/FirebasePackage">
+   </FileRef>
+   <FileRef
+      location = "group:Packages/PinePackage">
+   </FileRef>
+</Workspace>
