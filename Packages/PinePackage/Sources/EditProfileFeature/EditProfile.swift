@@ -1,7 +1,7 @@
-import ComposableArchitecture
-import SwiftUI
-import LabeledButton
 import ButtonStyles
+import ComposableArchitecture
+import LabeledButton
+import SwiftUI
 
 public struct EditProfileReducer: ReducerProtocol {
   public init() {}
@@ -22,15 +22,15 @@ public struct EditProfileReducer: ReducerProtocol {
       switch action {
       case .restorePurchasesButtonTapped:
         return .none
-        
+
       case .manageAccountButtonTapped:
         return .none
-        
+
       case .logoutButtonTapped:
         return .none
 
       case .closeButtonTapped:
-          return .none
+        return .none
       }
     }
   }
@@ -55,15 +55,15 @@ public struct EditProfileView: View {
             LabeledButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
               viewStore.send(.restorePurchasesButtonTapped)
             }
-            
+
             LabeledButton("Manage Account", systemImage: "gearshape.fill") {
               viewStore.send(.manageAccountButtonTapped)
             }
-            
+
             LabeledButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               viewStore.send(.logoutButtonTapped)
             }
-            
+
             Text("You are signed in as 19175926188")
               .foregroundColor(.secondary)
               .font(.caption2)

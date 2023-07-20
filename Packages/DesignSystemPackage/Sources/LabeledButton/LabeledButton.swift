@@ -4,7 +4,7 @@ public struct LabeledButton: View {
   let action: () -> Void
   let titleKey: LocalizedStringKey
   let systemImage: String
-  
+
   public init(
     _ titleKey: LocalizedStringKey,
     systemImage: String,
@@ -14,7 +14,7 @@ public struct LabeledButton: View {
     self.systemImage = systemImage
     self.action = action
   }
-  
+
   public var body: some View {
     Button(action: action) {
       Label(titleKey, systemImage: systemImage)
