@@ -10,12 +10,14 @@ let package = Package(
   ],
   products: [
     .library(name: "ButtonStyles", targets: ["ButtonStyles"]),
+    .library(name: "Colors", targets: ["Colors"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
   ],
   dependencies: [
   ],
   targets: [
     .target(name: "ButtonStyles"),
+    .target(name: "Colors"),
     .target(name: "LabeledButton"),
   ]
 )
