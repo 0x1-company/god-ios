@@ -2,11 +2,11 @@ import SwiftUI
 
 public struct CornerRadiusBorderButtonStyle: ButtonStyle {
   let cornerRadius: CGFloat
-  
+
   public init(cornerRadius: CGFloat = 16) {
     self.cornerRadius = cornerRadius
   }
-  
+
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .overlay(
