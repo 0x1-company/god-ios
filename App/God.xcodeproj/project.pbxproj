@@ -7,52 +7,61 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B783E0FA2A11FFD0002E782F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0F92A11FFD0002E782F /* Assets.xcassets */; };
-		B783E0FD2A11FFD0002E782F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0FC2A11FFD0002E782F /* Preview Assets.xcassets */; };
-		B783E1022A120003002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1012A120003002E782F /* App.swift */; };
-		B78862D32A68FCFF0023B1FB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B78862D22A68FCFF0023B1FB /* AppFeature */; };
+		B720CC4F2A6BF1560047E3FD /* GodApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B720CC4E2A6BF1560047E3FD /* GodApp.swift */; };
+		B720CC532A6BF1570047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC522A6BF1570047E3FD /* Assets.xcassets */; };
+		B720CC562A6BF1570047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC552A6BF1570047E3FD /* Preview Assets.xcassets */; };
+		B720CC5B2A6BF17B0047E3FD /* AboutFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5A2A6BF17B0047E3FD /* AboutFeature */; };
+		B720CC5D2A6BF17B0047E3FD /* GodFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5C2A6BF17B0047E3FD /* GodFeature */; };
+		B720CC5F2A6BF17B0047E3FD /* InboxFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5E2A6BF17B0047E3FD /* InboxFeature */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		B783E14C2A1200A2002E782F /* Embed Foundation Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-			);
-			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		B783E0F32A11FFD0002E782F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B783E0F92A11FFD0002E782F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B783E0FC2A11FFD0002E782F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B783E1012A120003002E782F /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		B720CC4C2A6BF1560047E3FD /* God.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = God.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B720CC4E2A6BF1560047E3FD /* GodApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GodApp.swift; sourceTree = "<group>"; };
+		B720CC522A6BF1570047E3FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B720CC552A6BF1570047E3FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B720CC602A6BF1900047E3FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B783E13E2A1200A1002E782F /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B783E1402A1200A1002E782F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		B783E16E2A121FC6002E782F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B783E1752A137F3E002E782F /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = App.entitlements; path = Staging/App.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B783E0F02A11FFD0002E782F /* Frameworks */ = {
+		B720CC492A6BF1560047E3FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B78862D32A68FCFF0023B1FB /* AppFeature in Frameworks */,
+				B720CC5F2A6BF17B0047E3FD /* InboxFeature in Frameworks */,
+				B720CC5D2A6BF17B0047E3FD /* GodFeature in Frameworks */,
+				B720CC5B2A6BF17B0047E3FD /* AboutFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B720CC4D2A6BF1560047E3FD /* God */ = {
+			isa = PBXGroup;
+			children = (
+				B720CC602A6BF1900047E3FD /* Info.plist */,
+				B720CC4E2A6BF1560047E3FD /* GodApp.swift */,
+				B720CC522A6BF1570047E3FD /* Assets.xcassets */,
+				B720CC542A6BF1570047E3FD /* Preview Content */,
+			);
+			path = God;
+			sourceTree = "<group>";
+		};
+		B720CC542A6BF1570047E3FD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B720CC552A6BF1570047E3FD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		B783E0A92A11FF7D002E782F = {
 			isa = PBXGroup;
 			children = (
-				B783E0F42A11FFD0002E782F /* Multiplatform */,
+				B720CC4D2A6BF1560047E3FD /* God */,
 				B783E13D2A1200A1002E782F /* Frameworks */,
 				B783E0B32A11FF7D002E782F /* Products */,
 			);
@@ -61,29 +70,9 @@
 		B783E0B32A11FF7D002E782F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B783E0F32A11FFD0002E782F /* App.app */,
+				B720CC4C2A6BF1560047E3FD /* God.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B783E0F42A11FFD0002E782F /* Multiplatform */ = {
-			isa = PBXGroup;
-			children = (
-				B783E1012A120003002E782F /* App.swift */,
-				B783E1752A137F3E002E782F /* App.entitlements */,
-				B783E0F92A11FFD0002E782F /* Assets.xcassets */,
-				B783E16E2A121FC6002E782F /* Info.plist */,
-				B783E0FB2A11FFD0002E782F /* Preview Content */,
-			);
-			path = Multiplatform;
-			sourceTree = "<group>";
-		};
-		B783E0FB2A11FFD0002E782F /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				B783E0FC2A11FFD0002E782F /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		B783E13D2A1200A1002E782F /* Frameworks */ = {
@@ -98,25 +87,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B783E0F22A11FFD0002E782F /* App */ = {
+		B720CC4B2A6BF1560047E3FD /* God */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B783E1002A11FFD0002E782F /* Build configuration list for PBXNativeTarget "App" */;
+			buildConfigurationList = B720CC572A6BF1570047E3FD /* Build configuration list for PBXNativeTarget "God" */;
 			buildPhases = (
-				B783E0EF2A11FFD0002E782F /* Sources */,
-				B783E0F02A11FFD0002E782F /* Frameworks */,
-				B783E0F12A11FFD0002E782F /* Resources */,
-				B783E14C2A1200A2002E782F /* Embed Foundation Extensions */,
+				B720CC482A6BF1560047E3FD /* Sources */,
+				B720CC492A6BF1560047E3FD /* Frameworks */,
+				B720CC4A2A6BF1560047E3FD /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = App;
+			name = God;
 			packageProductDependencies = (
-				B78862D22A68FCFF0023B1FB /* AppFeature */,
+				B720CC5A2A6BF17B0047E3FD /* AboutFeature */,
+				B720CC5C2A6BF17B0047E3FD /* GodFeature */,
+				B720CC5E2A6BF17B0047E3FD /* InboxFeature */,
 			);
-			productName = iOS;
-			productReference = B783E0F32A11FFD0002E782F /* App.app */;
+			productName = God;
+			productReference = B720CC4C2A6BF1560047E3FD /* God.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -129,9 +119,8 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					B783E0F22A11FFD0002E782F = {
-						CreatedOnToolsVersion = 14.3;
-						LastSwiftMigration = 1430;
+					B720CC4B2A6BF1560047E3FD = {
+						CreatedOnToolsVersion = 14.3.1;
 					};
 				};
 			};
@@ -148,35 +137,99 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B783E0F22A11FFD0002E782F /* App */,
+				B720CC4B2A6BF1560047E3FD /* God */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B783E0F12A11FFD0002E782F /* Resources */ = {
+		B720CC4A2A6BF1560047E3FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B783E0FD2A11FFD0002E782F /* Preview Assets.xcassets in Resources */,
-				B783E0FA2A11FFD0002E782F /* Assets.xcassets in Resources */,
+				B720CC562A6BF1570047E3FD /* Preview Assets.xcassets in Resources */,
+				B720CC532A6BF1570047E3FD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B783E0EF2A11FFD0002E782F /* Sources */ = {
+		B720CC482A6BF1560047E3FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B783E1022A120003002E782F /* App.swift in Sources */,
+				B720CC4F2A6BF1560047E3FD /* GodApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		B720CC582A6BF1570047E3FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"God/Preview Content\"";
+				DEVELOPMENT_TEAM = AV9FQ3YF56;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = God/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = God;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.god;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B720CC592A6BF1570047E3FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"God/Preview Content\"";
+				DEVELOPMENT_TEAM = AV9FQ3YF56;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = God/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = God;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.god;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B783E0BE2A11FF7D002E782F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -291,78 +344,18 @@
 			};
 			name = Release;
 		};
-		B783E0FE2A11FFD0002E782F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Multiplatform/Staging/App.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Multiplatform/Preview Content\"";
-				DEVELOPMENT_TEAM = AV9FQ3YF56;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Multiplatform/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = God;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.god;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		B783E0FF2A11FFD0002E782F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Multiplatform/Staging/App.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Multiplatform/Preview Content\"";
-				DEVELOPMENT_TEAM = AV9FQ3YF56;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Multiplatform/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = God;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.god;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B720CC572A6BF1570047E3FD /* Build configuration list for PBXNativeTarget "God" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B720CC582A6BF1570047E3FD /* Debug */,
+				B720CC592A6BF1570047E3FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B783E0AD2A11FF7D002E782F /* Build configuration list for PBXProject "God" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -372,21 +365,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B783E1002A11FFD0002E782F /* Build configuration list for PBXNativeTarget "App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B783E0FE2A11FFD0002E782F /* Debug */,
-				B783E0FF2A11FFD0002E782F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B78862D22A68FCFF0023B1FB /* AppFeature */ = {
+		B720CC5A2A6BF17B0047E3FD /* AboutFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AppFeature;
+			productName = AboutFeature;
+		};
+		B720CC5C2A6BF17B0047E3FD /* GodFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GodFeature;
+		};
+		B720CC5E2A6BF17B0047E3FD /* InboxFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InboxFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
