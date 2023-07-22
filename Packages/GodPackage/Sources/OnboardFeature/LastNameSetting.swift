@@ -74,6 +74,7 @@ public struct LastNameSettingView: View {
           .font(.title)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
+          .textContentType(.familyName)
         Spacer()
         Button {
         } label: {

@@ -42,6 +42,7 @@ public struct FirstNameSettingView: View {
           .font(.title)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
+          .textContentType(.givenName)
         Spacer()
         Button {
         } label: {
