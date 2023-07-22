@@ -1,11 +1,11 @@
-@testable import PinePackage
+@testable import GodPackage
 import XCTest
 
-final class PinePackageTests: XCTestCase {
+final class GodPackageTests: XCTestCase {
   func testExample() throws {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct
     // results.
-    XCTAssertEqual(PinePackage().text, "Hello, World!")
+    XCTAssertEqual(GodPackage().text, "Hello, World!")
   }
 }

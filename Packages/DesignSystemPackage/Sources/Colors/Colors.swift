@@ -1,7 +1,7 @@
 import SwiftUI
 
 public extension Color {
-  static let pine = Colors()
+  static let god = Colors()
 }
 
 public struct Colors {
