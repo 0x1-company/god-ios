@@ -6,27 +6,98 @@
 	objectVersion = 56;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B720CC0C2A6BC9290047E3FD /* OnboardPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */; };
+		B720CC102A6BC92A0047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */; };
+		B720CC132A6BC92A0047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */; };
+		B720CC192A6BC9320047E3FD /* OnboardFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC182A6BC9320047E3FD /* OnboardFeature */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		B76014932A6BC638001B3675 /* OnboardPreviewApp.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OnboardPreviewApp.swiftpm; sourceTree = "<group>"; };
+		B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnboardPreviewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardPreviewApp.swift; sourceTree = "<group>"; };
+		B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		B720CC062A6BC9290047E3FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B720CC192A6BC9320047E3FD /* OnboardFeature in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		B720CC0A2A6BC9290047E3FD /* OnboardPreviewApp */ = {
+			isa = PBXGroup;
+			children = (
+				B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */,
+				B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */,
+				B720CC112A6BC92A0047E3FD /* Preview Content */,
+			);
+			path = OnboardPreviewApp;
+			sourceTree = "<group>";
+		};
+		B720CC112A6BC92A0047E3FD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B720CC172A6BC9320047E3FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B7BFE5702A27C78100D1CE6F = {
 			isa = PBXGroup;
 			children = (
-				B76014932A6BC638001B3675 /* OnboardPreviewApp.swiftpm */,
+				B720CC0A2A6BC9290047E3FD /* OnboardPreviewApp */,
 				B7BFE57A2A27C78100D1CE6F /* Products */,
+				B720CC172A6BC9320047E3FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		B7BFE57A2A27C78100D1CE6F /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B720CC082A6BC9290047E3FD /* OnboardPreviewApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B720CC162A6BC92A0047E3FD /* Build configuration list for PBXNativeTarget "OnboardPreviewApp" */;
+			buildPhases = (
+				B720CC052A6BC9290047E3FD /* Sources */,
+				B720CC062A6BC9290047E3FD /* Frameworks */,
+				B720CC072A6BC9290047E3FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OnboardPreviewApp;
+			packageProductDependencies = (
+				B720CC182A6BC9320047E3FD /* OnboardFeature */,
+			);
+			productName = OnboardPreviewApp;
+			productReference = B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		B7BFE5712A27C78100D1CE6F /* Project object */ = {
@@ -35,6 +106,11 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					B720CC082A6BC9290047E3FD = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
 			};
 			buildConfigurationList = B7BFE5742A27C78100D1CE6F /* Build configuration list for PBXProject "PreviewApp" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -49,11 +125,91 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				B720CC082A6BC9290047E3FD /* OnboardPreviewApp */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		B720CC072A6BC9290047E3FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B720CC132A6BC92A0047E3FD /* Preview Assets.xcassets in Resources */,
+				B720CC102A6BC92A0047E3FD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B720CC052A6BC9290047E3FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B720CC0C2A6BC9290047E3FD /* OnboardPreviewApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
 /* Begin XCBuildConfiguration section */
+		B720CC142A6BC92A0047E3FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OnboardPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.godapp.app.ios.OnboardPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B720CC152A6BC92A0047E3FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OnboardPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.godapp.app.ios.OnboardPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B7BFE5852A27C78200D1CE6F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -171,6 +327,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B720CC162A6BC92A0047E3FD /* Build configuration list for PBXNativeTarget "OnboardPreviewApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B720CC142A6BC92A0047E3FD /* Debug */,
+				B720CC152A6BC92A0047E3FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B7BFE5742A27C78100D1CE6F /* Build configuration list for PBXProject "PreviewApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -181,6 +346,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B720CC182A6BC9320047E3FD /* OnboardFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OnboardFeature;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B7BFE5712A27C78100D1CE6F /* Project object */;
 }

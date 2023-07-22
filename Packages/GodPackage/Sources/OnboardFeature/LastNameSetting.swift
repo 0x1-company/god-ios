@@ -21,8 +21,6 @@ public struct LastNameSettingReducer: ReducerProtocol {
     }
   }
   
-  @Dependency(\.dismiss) var dismiss
-  
   public var body: some ReducerProtocol<State, Action> {
     BindingReducer()
     Reduce { state, action in
@@ -43,14 +41,10 @@ public struct LastNameSettingReducer: ReducerProtocol {
         return .none
 
       case .alert(.presented(.confirmContinueAnyway)):
-        return .run { _ in
-          await self.dismiss()
-        }
+        return .none
 
       case .alert(.presented(.confirmOkay)):
-        return .run { _ in
-          await self.dismiss()
-        }
+        return .none
 
       case .alert:
         return .none
