@@ -27,25 +27,6 @@
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<true/>
 	</dict>
-	<key>UIApplicationShortcutItems</key>
-	<array>
-		<dict>
-			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>If you want to talk about product discuss</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>👋Talk to Founder!</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>talk-to-founder</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>If you want to talk about development discuss</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>👨🏻‍💻Talk to LeadDev!</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>talk-to-lead-dev</string>
-		</dict>
-	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchScreen</key>
