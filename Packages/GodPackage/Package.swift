@@ -14,6 +14,7 @@ let package = Package(
     .library(name: "EditProfileFeature", targets: ["EditProfileFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
+    .library(name: "InboxFeature", targets: ["InboxFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
@@ -43,6 +44,11 @@ let package = Package(
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "InboxFeature", dependencies: [
+      .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "LabeledButton", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "OnboardFeature", dependencies: [

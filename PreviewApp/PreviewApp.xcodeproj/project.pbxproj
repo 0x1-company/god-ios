@@ -11,6 +11,10 @@
 		B720CC102A6BC92A0047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */; };
 		B720CC132A6BC92A0047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */; };
 		B720CC192A6BC9320047E3FD /* OnboardFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC182A6BC9320047E3FD /* OnboardFeature */; };
+		B720CC212A6BEE590047E3FD /* InboxPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B720CC202A6BEE590047E3FD /* InboxPreviewApp.swift */; };
+		B720CC252A6BEE5A0047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC242A6BEE5A0047E3FD /* Assets.xcassets */; };
+		B720CC282A6BEE5A0047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC272A6BEE5A0047E3FD /* Preview Assets.xcassets */; };
+		B720CC2D2A6BEE610047E3FD /* InboxFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC2C2A6BEE610047E3FD /* InboxFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +22,10 @@
 		B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardPreviewApp.swift; sourceTree = "<group>"; };
 		B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B720CC1E2A6BEE590047E3FD /* InboxPreviewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InboxPreviewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B720CC202A6BEE590047E3FD /* InboxPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxPreviewApp.swift; sourceTree = "<group>"; };
+		B720CC242A6BEE5A0047E3FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B720CC272A6BEE5A0047E3FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +34,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B720CC192A6BC9320047E3FD /* OnboardFeature in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B720CC1B2A6BEE590047E3FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B720CC2D2A6BEE610047E3FD /* InboxFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,10 +73,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B720CC1F2A6BEE590047E3FD /* InboxPreviewApp */ = {
+			isa = PBXGroup;
+			children = (
+				B720CC202A6BEE590047E3FD /* InboxPreviewApp.swift */,
+				B720CC242A6BEE5A0047E3FD /* Assets.xcassets */,
+				B720CC262A6BEE5A0047E3FD /* Preview Content */,
+			);
+			path = InboxPreviewApp;
+			sourceTree = "<group>";
+		};
+		B720CC262A6BEE5A0047E3FD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B720CC272A6BEE5A0047E3FD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		B7BFE5702A27C78100D1CE6F = {
 			isa = PBXGroup;
 			children = (
 				B720CC0A2A6BC9290047E3FD /* OnboardPreviewApp */,
+				B720CC1F2A6BEE590047E3FD /* InboxPreviewApp */,
 				B7BFE57A2A27C78100D1CE6F /* Products */,
 				B720CC172A6BC9320047E3FD /* Frameworks */,
 			);
@@ -70,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */,
+				B720CC1E2A6BEE590047E3FD /* InboxPreviewApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,6 +133,26 @@
 			productReference = B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B720CC1D2A6BEE590047E3FD /* InboxPreviewApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B720CC2B2A6BEE5A0047E3FD /* Build configuration list for PBXNativeTarget "InboxPreviewApp" */;
+			buildPhases = (
+				B720CC1A2A6BEE590047E3FD /* Sources */,
+				B720CC1B2A6BEE590047E3FD /* Frameworks */,
+				B720CC1C2A6BEE590047E3FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = InboxPreviewApp;
+			packageProductDependencies = (
+				B720CC2C2A6BEE610047E3FD /* InboxFeature */,
+			);
+			productName = InboxPreviewApp;
+			productReference = B720CC1E2A6BEE590047E3FD /* InboxPreviewApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -108,6 +164,9 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					B720CC082A6BC9290047E3FD = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					B720CC1D2A6BEE590047E3FD = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
 				};
@@ -126,6 +185,7 @@
 			projectRoot = "";
 			targets = (
 				B720CC082A6BC9290047E3FD /* OnboardPreviewApp */,
+				B720CC1D2A6BEE590047E3FD /* InboxPreviewApp */,
 			);
 		};
 /* End PBXProject section */
@@ -140,6 +200,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B720CC1C2A6BEE590047E3FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B720CC282A6BEE5A0047E3FD /* Preview Assets.xcassets in Resources */,
+				B720CC252A6BEE5A0047E3FD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -148,6 +217,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B720CC0C2A6BC9290047E3FD /* OnboardPreviewApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B720CC1A2A6BEE590047E3FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B720CC212A6BEE590047E3FD /* InboxPreviewApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +280,62 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.godapp.app.ios.OnboardPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B720CC292A6BEE5A0047E3FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"InboxPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.godapp.app.ios.InboxPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B720CC2A2A6BEE5A0047E3FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"InboxPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.godapp.app.ios.InboxPreviewApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -336,6 +469,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		B720CC2B2A6BEE5A0047E3FD /* Build configuration list for PBXNativeTarget "InboxPreviewApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B720CC292A6BEE5A0047E3FD /* Debug */,
+				B720CC2A2A6BEE5A0047E3FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B7BFE5742A27C78100D1CE6F /* Build configuration list for PBXProject "PreviewApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -351,6 +493,10 @@
 		B720CC182A6BC9320047E3FD /* OnboardFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OnboardFeature;
+		};
+		B720CC2C2A6BEE610047E3FD /* InboxFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InboxFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
