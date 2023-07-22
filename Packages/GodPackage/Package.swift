@@ -12,6 +12,7 @@ let package = Package(
     .library(name: "AboutFeature", targets: ["AboutFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "EditProfileFeature", targets: ["EditProfileFeature"]),
+    .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
@@ -32,6 +33,9 @@ let package = Package(
     .target(name: "EditProfileFeature", dependencies: [
       .product(name: "ButtonStyles", package: "DesignSystemPackage"),
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "HowItWorksFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "OnboardFeature", dependencies: [
