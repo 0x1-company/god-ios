@@ -62,7 +62,7 @@ public struct ProfileView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
-        LazyVStack(spacing: 0) {
+        LazyVStack(alignment: .leading, spacing: 0) {
           VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 16) {
               Color.green
@@ -116,6 +116,10 @@ public struct ProfileView: View {
             }
             .foregroundColor(.secondary)
           }
+          .padding(.horizontal, 16)
+          
+          Divider()
+            .padding(.top, 16)
 
           HStack(spacing: 16) {
             Button(action: {}) {
@@ -146,6 +150,9 @@ public struct ProfileView: View {
             )
           }
           .frame(height: 84)
+          .padding(.horizontal, 16)
+          
+          Divider()
         }
       }
       .listStyle(.plain)
