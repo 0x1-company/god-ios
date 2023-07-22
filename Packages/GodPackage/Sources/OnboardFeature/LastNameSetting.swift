@@ -5,50 +5,26 @@ public struct LastNameSettingReducer: ReducerProtocol {
   public init() {}
   
   public struct State: Equatable {
+    var doubleCheckName = DoubleCheckNameReducer.State()
     @BindingState var lastName = ""
-    @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
   
   public enum Action: Equatable, BindableAction {
-    case infoButtonTapped
-    case alert(PresentationAction<Alert>)
+    case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
-    
-    public enum Alert: Equatable {
-      case confirmContinueAnyway
-      case confirmOkay
-    }
   }
   
   public var body: some ReducerProtocol<State, Action> {
     BindingReducer()
+    Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
+      DoubleCheckNameReducer()
+    }
     Reduce { state, action in
       switch action {
-      case .infoButtonTapped:
-        state.alert = AlertState {
-          TextState("Double check your name")
-        } actions: {
-          ButtonState(action: .confirmContinueAnyway) {
-            TextState("Continue Anyway")
-          }
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState("Your friends may see you as the name in their contacts")
-        }
+      case .doubleCheckName:
         return .none
 
-      case .alert(.presented(.confirmContinueAnyway)):
-        return .none
-
-      case .alert(.presented(.confirmOkay)):
-        return .none
-
-      case .alert:
-        return .none
-        
       case .binding:
         return .none
       }
@@ -90,19 +66,13 @@ public struct LastNameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color(0xFFED6C43))
-      .alert(
-        store: store.scope(
-          state: \.$alert,
-          action: { .alert($0) }
-        )
-      )
       .toolbar {
-        Button {
-          viewStore.send(.infoButtonTapped)
-        } label: {
-          Image(systemName: "info.circle.fill")
-            .foregroundColor(.white)
-        }
+        DoubleCheckNameView(
+          store: store.scope(
+            state: \.doubleCheckName,
+            action: LastNameSettingReducer.Action.doubleCheckName
+          )
+        )
       }
     }
   }

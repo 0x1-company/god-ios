@@ -5,18 +5,26 @@ public struct FirstNameSettingReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
+    var doubleCheckName = DoubleCheckNameReducer.State()
     @BindingState var firstName = ""
     public init() {}
   }
 
   public enum Action: Equatable, BindableAction {
+    case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
   }
 
   public var body: some ReducerProtocol<State, Action> {
     BindingReducer()
+    Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
+      DoubleCheckNameReducer()
+    }
     Reduce { _, action in
       switch action {
+      case .doubleCheckName:
+        return .none
+
       case .binding:
           return .none
       }
@@ -59,12 +67,12 @@ public struct FirstNameSettingView: View {
       .padding(.bottom, 16)
       .background(Color(0xFFED6C43))
       .toolbar {
-        Button {
-          
-        } label: {
-          Image(systemName: "info.circle.fill")
-            .foregroundColor(.white)
-        }
+        DoubleCheckNameView(
+          store: store.scope(
+            state: \.doubleCheckName,
+            action: FirstNameSettingReducer.Action.doubleCheckName
+          )
+        )
       }
     }
   }
