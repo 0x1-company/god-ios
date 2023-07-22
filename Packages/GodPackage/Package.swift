@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
+    .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),

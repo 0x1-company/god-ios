@@ -9,14 +9,18 @@ public struct ManageAccountReducer: ReducerProtocol {
   }
 
   public enum Action: Equatable {
-    case onTask
+    case closeButtonTapped
   }
+  
+  @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
-        case .onTask:
-          return .none
+      case .closeButtonTapped:
+        return .run { _ in
+          await self.dismiss()
+        }
       }
     }
   }
@@ -32,11 +36,48 @@ public struct ManageAccountView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
-        Text("ManageAccount")
+        Section("Settings") {
+          LabeledContent {
+            Toggle("Reduce Notifications", isOn: .constant(true))
+          } label: {
+            Image(systemName: "eye.slash.fill")
+          }
+          
+          LabeledContent {
+            Toggle("Hide Top Flames", isOn: .constant(true))
+          } label: {
+            Image(systemName: "eye.slash.fill")
+          }
+          
+          LabeledContent {
+            Toggle("Take a Break from Gas", isOn: .constant(true))
+          } label: {
+            Image(systemName: "eye.slash.fill")
+          }
+        }
+        
+        Section("add friends") {
+          Label("Reset Block List", systemImage: "eye.slash.fill")
+          Label("Reset Hide List", systemImage: "eye.slash.fill")
+        }
+        
+        Section {
+          Button(action: {}) {
+            Label("Delete Account", systemImage: "trash")
+          }
+          .foregroundColor(.red)
+        }
       }
-      .navigationTitle("ManageAccount")
+      .navigationTitle("Manage Account")
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .toolbar {
+        ToolbarItem(placement: .navigationBarLeading) {
+          Button("Close") {
+            viewStore.send(.closeButtonTapped)
+          }
+          .foregroundColor(.primary)
+        }
+      }
     }
   }
 }
