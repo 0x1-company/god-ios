@@ -6,10 +6,17 @@ import OnboardFeature
 struct MyApp: App {
   var body: some Scene {
     WindowGroup {
-      WelcomeView(
+//      WelcomeView(
+//        store: .init(
+//          initialState: WelcomeReducer.State(),
+//          reducer: WelcomeReducer()._printChanges()
+//        )
+//      )
+      LastNameSettingView(
         store: .init(
-          initialState: WelcomeReducer.State(),
-          reducer: WelcomeReducer()._printChanges()
+          initialState: LastNameSettingReducer.State(),
+          reducer: LastNameSettingReducer()
+            ._printChanges()
         )
       )
     }
