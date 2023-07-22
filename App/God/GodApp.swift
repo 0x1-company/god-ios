@@ -2,8 +2,8 @@ import AboutFeature
 import ComposableArchitecture
 import GodFeature
 import InboxFeature
-import SwiftUI
 import ProfileFeature
+import SwiftUI
 
 @main
 struct GodApp: App {
@@ -29,7 +29,7 @@ struct GodApp: App {
         .tabItem {
           Text("God")
         }
-        
+
         ProfileView(
           store: .init(
             initialState: ProfileReducer.State(),

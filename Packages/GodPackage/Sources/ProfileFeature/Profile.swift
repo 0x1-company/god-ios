@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import SwiftUI
 import EditProfileFeature
+import SwiftUI
 
 public struct ProfileReducer: ReducerProtocol {
   public init() {}
@@ -19,9 +19,9 @@ public struct ProfileReducer: ReducerProtocol {
   public var body: some ReducerProtocol<State, Action> {
     Reduce { state, action in
       switch action {
-        case .onTask:
-          return .none
-        
+      case .onTask:
+        return .none
+
       case .editProfileButtonTapped:
         state.destination = .editProfile()
         return .none
@@ -34,14 +34,16 @@ public struct ProfileReducer: ReducerProtocol {
       Destination()
     }
   }
-  
+
   public struct Destination: ReducerProtocol {
     public enum State: Equatable {
       case editProfile(EditProfileReducer.State = .init())
     }
+
     public enum Action: Equatable {
       case editProfile(EditProfileReducer.Action)
     }
+
     public var body: some ReducerProtocol<State, Action> {
       Scope(state: /State.editProfile, action: /Action.editProfile) {
         EditProfileReducer()
@@ -65,24 +67,24 @@ public struct ProfileView: View {
             Color.green
               .frame(width: 90, height: 90)
               .clipShape(Circle())
-            
+
             VStack(alignment: .leading, spacing: 16) {
               HStack(spacing: 16) {
                 Text("2 ")
                   .bold()
                   .foregroundColor(.primary)
-                +
-                Text("friends")
+                  +
+                  Text("friends")
                   .foregroundColor(.secondary)
 
                 Text("7 ")
                   .bold()
                   .foregroundColor(.primary)
-                +
-                Text("flames")
+                  +
+                  Text("flames")
                   .foregroundColor(.secondary)
               }
-              
+
               Button("Edit Profile") {
                 viewStore.send(.editProfileButtonTapped)
               }
@@ -98,7 +100,7 @@ public struct ProfileView: View {
           VStack(alignment: .leading, spacing: 4) {
             Text("Tomoki Tsukiyama")
               .bold()
-            
+
             Text("@tomokisun")
           }
           HStack(spacing: 16) {
@@ -129,7 +131,7 @@ public struct ProfileView: View {
             RoundedRectangle(cornerRadius: 52 / 2)
               .stroke(Color.secondary, lineWidth: 1)
           )
-          
+
           Button(action: {}) {
             Text("Edit Profile")
               .bold()

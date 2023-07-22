@@ -11,7 +11,7 @@ public struct ManageAccountReducer: ReducerProtocol {
   public enum Action: Equatable {
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
@@ -42,25 +42,25 @@ public struct ManageAccountView: View {
           } label: {
             Image(systemName: "eye.slash.fill")
           }
-          
+
           LabeledContent {
             Toggle("Hide Top Flames", isOn: .constant(true))
           } label: {
             Image(systemName: "eye.slash.fill")
           }
-          
+
           LabeledContent {
             Toggle("Take a Break from Gas", isOn: .constant(true))
           } label: {
             Image(systemName: "eye.slash.fill")
           }
         }
-        
+
         Section("add friends") {
           Label("Reset Block List", systemImage: "eye.slash.fill")
           Label("Reset Hide List", systemImage: "eye.slash.fill")
         }
-        
+
         Section {
           Button(action: {}) {
             Label("Delete Account", systemImage: "trash")

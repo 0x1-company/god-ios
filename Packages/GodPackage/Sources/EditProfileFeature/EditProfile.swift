@@ -1,8 +1,8 @@
 import ButtonStyles
 import ComposableArchitecture
 import LabeledButton
-import SwiftUI
 import ManageAccountFeature
+import SwiftUI
 
 public struct EditProfileReducer: ReducerProtocol {
   public init() {}
@@ -19,7 +19,7 @@ public struct EditProfileReducer: ReducerProtocol {
     case closeButtonTapped
     case manageAccount(PresentationAction<ManageAccountReducer.Action>)
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
@@ -39,7 +39,7 @@ public struct EditProfileReducer: ReducerProtocol {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .manageAccount:
         return .none
       }
