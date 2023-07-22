@@ -12,10 +12,10 @@ struct MyApp: App {
 //        )
 //      )
       NavigationStack {
-        LastNameSettingView(
+        UsernameSettingView(
           store: .init(
-            initialState: LastNameSettingReducer.State(),
-            reducer: LastNameSettingReducer()._printChanges()
+            initialState: UsernameSettingReducer.State(),
+            reducer: UsernameSettingReducer()._printChanges()
           )
         )
       }
