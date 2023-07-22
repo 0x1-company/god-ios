@@ -1,3 +1,4 @@
+import ColorHex
 import ComposableArchitecture
 import SwiftUI
 
@@ -9,13 +10,13 @@ public struct HowItWorksReducer: ReducerProtocol {
   }
 
   public enum Action: Equatable {
-    case onTask
+    case startButtonTapped
   }
 
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
-        case .onTask:
+        case .startButtonTapped:
           return .none
       }
     }
@@ -31,12 +32,20 @@ public struct HowItWorksView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("HowItWorks")
+      VStack {
+        Button {
+          viewStore.send(.startButtonTapped)
+        } label: {
+          Text("Start")
+            .bold()
+            .frame(height: 54)
+            .frame(maxWidth: .infinity)
+            .foregroundColor(Color.white)
+            .background(Color(0xFFED6C43))
+            .clipShape(Capsule())
+        }
+        .padding(.horizontal, 16)
       }
-      .navigationTitle("HowItWorks")
-      .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
