@@ -20,6 +20,6 @@
       location = "group:Packages/FirebasePackage">
    </FileRef>
    <FileRef
-      location = "group:Packages/PinePackage">
+      location = "group:Packages/GodPackage">
    </FileRef>
 </Workspace>

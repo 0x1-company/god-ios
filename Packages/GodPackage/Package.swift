@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "PinePackage",
+  name: "GodPackage",
   platforms: [
     .iOS(.v16),
   ],

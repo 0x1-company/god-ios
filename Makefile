@@ -4,7 +4,7 @@ help:
 
 .PHONY: open
 open: # Open project in Xcode
-	open pine.xcworkspace
+	open god.xcworkspace
 
 .PHONY: clean
 clean: # Clean all build folders
@@ -15,7 +15,7 @@ dgraph: # Generate dependencies graph
 	@swift build -c release --package-path ./BuildTools/DependenciesGraph --product dgraph
 	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/CupertinoPackage
 	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/FirebasePackage
-	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/PinePackage
+	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/GodPackage
 
 .PHONY: format
 format: # Format swift files

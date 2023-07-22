@@ -1,6 +1,6 @@
 ```mermaid
 graph TD;
-    PinePackage-->CupertinoPackage;
-    PinePackage-->DesignSystemPackage;
-    PinePackage-->FirebasePackage;
+    GodPackage-->CupertinoPackage;
+    GodPackage-->DesignSystemPackage;
+    GodPackage-->FirebasePackage;
 ```

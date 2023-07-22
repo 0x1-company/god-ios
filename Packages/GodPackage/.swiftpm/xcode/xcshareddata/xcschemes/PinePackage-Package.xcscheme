@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "PinePackage"
-               BuildableName = "PinePackage"
-               BlueprintName = "PinePackage"
+               BlueprintIdentifier = "GodPackage"
+               BuildableName = "GodPackage"
+               BlueprintName = "GodPackage"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "PinePackage"
-            BuildableName = "PinePackage"
-            BlueprintName = "PinePackage"
+            BlueprintIdentifier = "GodPackage"
+            BuildableName = "GodPackage"
+            BlueprintName = "GodPackage"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
