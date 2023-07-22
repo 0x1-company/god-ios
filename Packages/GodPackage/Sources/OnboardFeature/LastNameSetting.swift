@@ -6,17 +6,55 @@ public struct LastNameSettingReducer: ReducerProtocol {
   
   public struct State: Equatable {
     @BindingState var lastName = ""
+    @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
   
   public enum Action: Equatable, BindableAction {
+    case infoButtonTapped
+    case alert(PresentationAction<Alert>)
     case binding(BindingAction<State>)
+    
+    public enum Alert: Equatable {
+      case confirmContinueAnyway
+      case confirmOkay
+    }
   }
+  
+  @Dependency(\.dismiss) var dismiss
   
   public var body: some ReducerProtocol<State, Action> {
     BindingReducer()
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
+      case .infoButtonTapped:
+        state.alert = AlertState {
+          TextState("Double check your name")
+        } actions: {
+          ButtonState(action: .confirmContinueAnyway) {
+            TextState("Continue Anyway")
+          }
+          ButtonState(action: .confirmOkay) {
+            TextState("OK")
+          }
+        } message: {
+          TextState("Your friends may see you as the name in their contacts")
+        }
+        return .none
+
+      case .alert(.presented(.confirmContinueAnyway)):
+        return .run { _ in
+          await self.dismiss()
+        }
+
+      case .alert(.presented(.confirmOkay)):
+        return .run { _ in
+          await self.dismiss()
+        }
+
+      case .alert:
+        return .none
+        
       case .binding:
         return .none
       }
@@ -57,9 +95,15 @@ public struct LastNameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color(0xFFED6C43))
+      .alert(
+        store: store.scope(
+          state: \.$alert,
+          action: { .alert($0) }
+        )
+      )
       .toolbar {
         Button {
-          
+          viewStore.send(.infoButtonTapped)
         } label: {
           Image(systemName: "info.circle.fill")
             .foregroundColor(.white)
