@@ -1,8 +1,8 @@
-import SwiftUI
-import ComposableArchitecture
-import InboxFeature
 import AboutFeature
+import ComposableArchitecture
 import GodFeature
+import InboxFeature
+import SwiftUI
 
 @main
 struct GodApp: App {
@@ -18,7 +18,7 @@ struct GodApp: App {
         .tabItem {
           Text("Inbox")
         }
-        
+
         GodView(
           store: .init(
             initialState: GodReducer.State(),
@@ -28,7 +28,7 @@ struct GodApp: App {
         .tabItem {
           Text("God")
         }
-        
+
         AboutView(
           store: .init(
             initialState: AboutReducer.State(),
