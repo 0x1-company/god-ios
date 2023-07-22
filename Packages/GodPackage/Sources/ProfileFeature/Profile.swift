@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import EditProfileFeature
+import ProfileEditFeature
 import SwiftUI
 
 public struct ProfileReducer: ReducerProtocol {
@@ -23,7 +23,7 @@ public struct ProfileReducer: ReducerProtocol {
         return .none
 
       case .editProfileButtonTapped:
-        state.destination = .editProfile()
+        state.destination = .profileEdit()
         return .none
 
       case .destination:
@@ -37,16 +37,16 @@ public struct ProfileReducer: ReducerProtocol {
 
   public struct Destination: ReducerProtocol {
     public enum State: Equatable {
-      case editProfile(EditProfileReducer.State = .init())
+      case profileEdit(ProfileEditReducer.State = .init())
     }
 
     public enum Action: Equatable {
-      case editProfile(EditProfileReducer.Action)
+      case profileEdit(ProfileEditReducer.Action)
     }
 
     public var body: some ReducerProtocol<State, Action> {
-      Scope(state: /State.editProfile, action: /Action.editProfile) {
-        EditProfileReducer()
+      Scope(state: /State.profileEdit, action: /Action.profileEdit) {
+        ProfileEditReducer()
       }
     }
   }
@@ -161,11 +161,11 @@ public struct ProfileView: View {
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ProfileReducer.Destination.State.editProfile,
-        action: ProfileReducer.Destination.Action.editProfile
+        state: /ProfileReducer.Destination.State.profileEdit,
+        action: ProfileReducer.Destination.Action.profileEdit
       ) { store in
         NavigationStack {
-          EditProfileView(store: store)
+          ProfileEditView(store: store)
         }
       }
     }

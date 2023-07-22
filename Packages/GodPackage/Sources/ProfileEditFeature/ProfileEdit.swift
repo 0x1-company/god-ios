@@ -4,7 +4,7 @@ import LabeledButton
 import ManageAccountFeature
 import SwiftUI
 
-public struct EditProfileReducer: ReducerProtocol {
+public struct ProfileEditReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
@@ -50,10 +50,10 @@ public struct EditProfileReducer: ReducerProtocol {
   }
 }
 
-public struct EditProfileView: View {
-  let store: StoreOf<EditProfileReducer>
+public struct ProfileEditView: View {
+  let store: StoreOf<ProfileEditReducer>
 
-  public init(store: StoreOf<EditProfileReducer>) {
+  public init(store: StoreOf<ProfileEditReducer>) {
     self.store = store
   }
 
@@ -86,7 +86,7 @@ public struct EditProfileView: View {
         }
         .padding(.all, 24)
       }
-      .navigationTitle("EditProfile")
+      .navigationTitle("Edit Profile")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -99,7 +99,7 @@ public struct EditProfileView: View {
       .sheet(
         store: store.scope(
           state: \.$manageAccount,
-          action: EditProfileReducer.Action.manageAccount
+          action: ProfileEditReducer.Action.manageAccount
         ),
         content: { store in
           NavigationStack {
@@ -111,13 +111,13 @@ public struct EditProfileView: View {
   }
 }
 
-struct EditProfileViewPreviews: PreviewProvider {
+struct ProfileEditViewPreviews: PreviewProvider {
   static var previews: some View {
     NavigationStack {
-      EditProfileView(
+      ProfileEditView(
         store: .init(
-          initialState: EditProfileReducer.State(),
-          reducer: EditProfileReducer()
+          initialState: ProfileEditReducer.State(),
+          reducer: ProfileEditReducer()
         )
       )
     }
