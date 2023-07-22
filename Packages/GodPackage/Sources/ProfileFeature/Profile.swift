@@ -61,90 +61,92 @@ public struct ProfileView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        VStack(alignment: .leading, spacing: 16) {
-          HStack(spacing: 16) {
-            Color.green
-              .frame(width: 90, height: 90)
-              .clipShape(Circle())
+      ScrollView {
+        LazyVStack(spacing: 0) {
+          VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 16) {
+              Color.green
+                .frame(width: 90, height: 90)
+                .clipShape(Circle())
 
-            VStack(alignment: .leading, spacing: 16) {
-              HStack(spacing: 16) {
-                Text("2 ")
-                  .bold()
-                  .foregroundColor(.primary)
-                  +
-                  Text("friends")
-                  .foregroundColor(.secondary)
+              VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 16) {
+                  Text("2 ")
+                    .bold()
+                    .foregroundColor(.primary)
+                    +
+                    Text("friends")
+                    .foregroundColor(.secondary)
 
-                Text("7 ")
-                  .bold()
-                  .foregroundColor(.primary)
-                  +
-                  Text("flames")
-                  .foregroundColor(.secondary)
-              }
+                  Text("7 ")
+                    .bold()
+                    .foregroundColor(.primary)
+                    +
+                    Text("flames")
+                    .foregroundColor(.secondary)
+                }
 
-              Button("Edit Profile") {
-                viewStore.send(.editProfileButtonTapped)
-              }
-              .bold()
-              .foregroundColor(.secondary)
-              .frame(width: 120, height: 32)
-              .overlay(
-                RoundedRectangle(cornerRadius: 32 / 2)
-                  .stroke(Color.secondary, lineWidth: 1)
-              )
-            }
-          }
-          VStack(alignment: .leading, spacing: 4) {
-            Text("Tomoki Tsukiyama")
-              .bold()
-
-            Text("@tomokisun")
-          }
-          HStack(spacing: 16) {
-            HStack(spacing: 4) {
-              Image(systemName: "house.fill")
-              Text("LVAA")
-            }
-            HStack(spacing: 4) {
-              Image(systemName: "graduationcap.fill")
-              Text("9th Grade")
-            }
-          }
-          .foregroundColor(.secondary)
-        }
-
-        HStack(spacing: 16) {
-          Button(action: {}) {
-            HStack(spacing: 8) {
-              Text("Share Profile")
+                Button("Edit Profile") {
+                  viewStore.send(.editProfileButtonTapped)
+                }
                 .bold()
-              Image(systemName: "square.and.arrow.up")
+                .foregroundColor(.secondary)
+                .frame(width: 120, height: 32)
+                .overlay(
+                  RoundedRectangle(cornerRadius: 32 / 2)
+                    .stroke(Color.secondary, lineWidth: 1)
+                )
+              }
+            }
+            VStack(alignment: .leading, spacing: 4) {
+              Text("Tomoki Tsukiyama")
+                .bold()
+
+              Text("@tomokisun")
+            }
+            HStack(spacing: 16) {
+              HStack(spacing: 4) {
+                Image(systemName: "house.fill")
+                Text("LVAA")
+              }
+              HStack(spacing: 4) {
+                Image(systemName: "graduationcap.fill")
+                Text("9th Grade")
+              }
             }
             .foregroundColor(.secondary)
-            .frame(height: 52)
-            .frame(maxWidth: .infinity)
           }
-          .overlay(
-            RoundedRectangle(cornerRadius: 52 / 2)
-              .stroke(Color.secondary, lineWidth: 1)
-          )
 
-          Button(action: {}) {
-            Text("Edit Profile")
-              .bold()
+          HStack(spacing: 16) {
+            Button(action: {}) {
+              HStack(spacing: 8) {
+                Text("Share Profile")
+                  .bold()
+                Image(systemName: "square.and.arrow.up")
+              }
               .foregroundColor(.secondary)
               .frame(height: 52)
               .frame(maxWidth: .infinity)
+            }
+            .overlay(
+              RoundedRectangle(cornerRadius: 52 / 2)
+                .stroke(Color.secondary, lineWidth: 1)
+            )
+
+            Button(action: {}) {
+              Text("Edit Profile")
+                .bold()
+                .foregroundColor(.secondary)
+                .frame(height: 52)
+                .frame(maxWidth: .infinity)
+            }
+            .overlay(
+              RoundedRectangle(cornerRadius: 52 / 2)
+                .stroke(Color.secondary, lineWidth: 1)
+            )
           }
-          .overlay(
-            RoundedRectangle(cornerRadius: 52 / 2)
-              .stroke(Color.secondary, lineWidth: 1)
-          )
+          .frame(height: 84)
         }
-        .frame(height: 84)
       }
       .listStyle(.plain)
       .navigationTitle("Profile")
