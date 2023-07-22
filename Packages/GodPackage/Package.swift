@@ -11,12 +11,12 @@ let package = Package(
   products: [
     .library(name: "AboutFeature", targets: ["AboutFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
-    .library(name: "EditProfileFeature", targets: ["EditProfileFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
+    .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
@@ -33,9 +33,6 @@ let package = Package(
     ]),
     .target(name: "AppFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
-    .target(name: "EditProfileFeature", dependencies: [
-      "ManageAccountFeature",
     ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
@@ -61,8 +58,11 @@ let package = Package(
       .product(name: "ColorHex", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "ProfileEditFeature", dependencies: [
+      "ManageAccountFeature",
+    ]),
     .target(name: "ProfileFeature", dependencies: [
-      "EditProfileFeature",
+      "ProfileEditFeature",
     ]),
     .target(name: "SchoolSettingFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
