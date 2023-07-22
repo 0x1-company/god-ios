@@ -18,7 +18,6 @@ public struct LabeledButton: View {
   public var body: some View {
     Button(action: action) {
       Label(titleKey, systemImage: systemImage)
-        .foregroundColor(.primary)
         .frame(height: 50)
         .frame(maxWidth: .infinity)
     }

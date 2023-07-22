@@ -38,6 +38,7 @@ let package = Package(
     ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "LabeledButton", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
