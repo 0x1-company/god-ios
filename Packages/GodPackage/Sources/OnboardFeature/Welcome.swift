@@ -49,16 +49,16 @@ public struct WelcomeView: View {
         Text("God")
           .font(.largeTitle)
           .bold()
-          .foregroundColor(Color(0xFF8F8F8F))
+          .foregroundColor(Color(0xFF8F_8F8F))
         Spacer()
         VStack(spacing: 24) {
           ZStack {
             Text("By entering your age you agree to our Terms and Privacy Policy")
               .frame(height: 54)
-              .foregroundColor(Color(0xFF8F8F8F))
+              .foregroundColor(Color(0xFF8F_8F8F))
               .multilineTextAlignment(.center)
               .padding(.horizontal, 32)
-            
+
             if viewStore.selection != "- -" {
               Button {
                 viewStore.send(.getStartedButtonTapped)
@@ -68,7 +68,7 @@ public struct WelcomeView: View {
                   .frame(height: 54)
                   .frame(maxWidth: .infinity)
                   .foregroundColor(Color.white)
-                  .background(Color(0xFFED6C43))
+                  .background(Color(0xFFED_6C43))
                   .clipShape(Capsule())
               }
               .padding(.horizontal, 16)
@@ -76,7 +76,7 @@ public struct WelcomeView: View {
           }
 
           Text("Enter your age")
-            .foregroundColor(Color(0xFFED6C43))
+            .foregroundColor(Color(0xFFED_6C43))
             .bold()
 
           Picker(
@@ -92,7 +92,7 @@ public struct WelcomeView: View {
           .environment(\.colorScheme, .dark)
         }
       }
-      .background(Color(0xFF1E1E1E))
+      .background(Color(0xFF1E_1E1E))
       .toolbar {
         Button("Log In") {}
           .foregroundColor(Color.white)

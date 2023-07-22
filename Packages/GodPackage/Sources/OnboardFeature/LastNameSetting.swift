@@ -3,24 +3,24 @@ import SwiftUI
 
 public struct LastNameSettingReducer: ReducerProtocol {
   public init() {}
-  
+
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameReducer.State()
     @BindingState var lastName = ""
     public init() {}
   }
-  
+
   public enum Action: Equatable, BindableAction {
     case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
   }
-  
+
   public var body: some ReducerProtocol<State, Action> {
     BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
     }
-    Reduce { state, action in
+    Reduce { _, action in
       switch action {
       case .doubleCheckName:
         return .none
@@ -34,11 +34,11 @@ public struct LastNameSettingReducer: ReducerProtocol {
 
 public struct LastNameSettingView: View {
   let store: StoreOf<LastNameSettingReducer>
-  
+
   public init(store: StoreOf<LastNameSettingReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
@@ -52,8 +52,7 @@ public struct LastNameSettingView: View {
           .multilineTextAlignment(.center)
           .textContentType(.familyName)
         Spacer()
-        Button {
-        } label: {
+        Button {} label: {
           Text("Next")
             .bold()
             .frame(height: 54)
@@ -65,7 +64,7 @@ public struct LastNameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED6C43))
+      .background(Color(0xFFED_6C43))
       .toolbar {
         DoubleCheckNameView(
           store: store.scope(

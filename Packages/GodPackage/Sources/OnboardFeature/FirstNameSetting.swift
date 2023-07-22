@@ -26,7 +26,7 @@ public struct FirstNameSettingReducer: ReducerProtocol {
         return .none
 
       case .binding:
-          return .none
+        return .none
       }
     }
   }
@@ -52,8 +52,7 @@ public struct FirstNameSettingView: View {
           .multilineTextAlignment(.center)
           .textContentType(.givenName)
         Spacer()
-        Button {
-        } label: {
+        Button {} label: {
           Text("Next")
             .bold()
             .frame(height: 54)
@@ -65,7 +64,7 @@ public struct FirstNameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED6C43))
+      .background(Color(0xFFED_6C43))
       .toolbar {
         DoubleCheckNameView(
           store: store.scope(

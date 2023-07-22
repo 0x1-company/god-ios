@@ -16,8 +16,8 @@ public struct HowItWorksReducer: ReducerProtocol {
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
-        case .startButtonTapped:
-          return .none
+      case .startButtonTapped:
+        return .none
       }
     }
   }
@@ -41,7 +41,7 @@ public struct HowItWorksView: View {
             .frame(height: 54)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color.white)
-            .background(Color(0xFFED6C43))
+            .background(Color(0xFFED_6C43))
             .clipShape(Capsule())
         }
         .padding(.horizontal, 16)

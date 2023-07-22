@@ -30,14 +30,14 @@ public struct UsernameSettingReducer: ReducerProtocol {
 
 public struct UsernameSettingView: View {
   let store: StoreOf<UsernameSettingReducer>
-  
+
   struct ViewState: Equatable {
     var username: String
     var isNextButtonDisabled: Bool
-    
+
     init(state: UsernameSettingReducer.State) {
-      self.username = state.username
-      self.isNextButtonDisabled = state.username.isEmpty
+      username = state.username
+      isNextButtonDisabled = state.username.isEmpty
     }
   }
 
@@ -83,7 +83,7 @@ public struct UsernameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED6C43))
+      .background(Color(0xFFED_6C43))
     }
   }
 }

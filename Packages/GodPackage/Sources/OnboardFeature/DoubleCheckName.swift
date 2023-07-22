@@ -12,7 +12,7 @@ public struct DoubleCheckNameReducer: ReducerProtocol {
   public enum Action: Equatable {
     case infoButtonTapped
     case alert(PresentationAction<Alert>)
-    
+
     public enum Alert: Equatable {
       case confirmContinueAnyway
       case confirmOkay
@@ -36,7 +36,7 @@ public struct DoubleCheckNameReducer: ReducerProtocol {
           TextState("Your friends may see you as the name in their contacts")
         }
         return .none
-        
+
       case .alert:
         return .none
       }
