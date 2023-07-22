@@ -1,5 +1,5 @@
-import SwiftUI
 import InboxFeature
+import SwiftUI
 
 @main
 struct InboxPreviewAppApp: App {

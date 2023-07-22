@@ -1,7 +1,7 @@
-import ComposableArchitecture
-import SwiftUI
-import LabeledButton
 import ColorHex
+import ComposableArchitecture
+import LabeledButton
+import SwiftUI
 
 public struct InboxReducer: ReducerProtocol {
   public init() {}
@@ -17,8 +17,8 @@ public struct InboxReducer: ReducerProtocol {
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
-        case .onTask:
-          return .none
+      case .onTask:
+        return .none
       }
     }
   }
@@ -35,7 +35,7 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(0..<100) { _ in
+          ForEach(0 ..< 100) { _ in
             HStack(spacing: 0) {
               LabeledContent {
                 Text("16h")
@@ -60,11 +60,11 @@ public struct InboxView: View {
           }
         }
         .listStyle(.plain)
-        .background(Color(0xFFFAFAFA))
-        
+        .background(Color(0xFFFA_FAFA))
+
         ZStack(alignment: .top) {
           Color.white.blur(radius: 1.0)
-          
+
           LabeledButton("See who likes you", systemImage: "lock.fill", action: {})
             .bold()
             .foregroundColor(.white)
