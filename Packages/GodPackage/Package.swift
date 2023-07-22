@@ -57,7 +57,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "EditProfileFeature",
     ]),
     .target(name: "SchoolSettingFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

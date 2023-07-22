@@ -16,6 +16,8 @@ public struct EditProfileReducer: ReducerProtocol {
     case logoutButtonTapped
     case closeButtonTapped
   }
+  
+  @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
@@ -30,7 +32,9 @@ public struct EditProfileReducer: ReducerProtocol {
         return .none
 
       case .closeButtonTapped:
-        return .none
+        return .run { _ in
+          await dismiss()
+        }
       }
     }
   }
