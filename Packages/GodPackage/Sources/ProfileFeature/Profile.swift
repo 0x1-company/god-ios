@@ -117,7 +117,7 @@ public struct ProfileView: View {
             .foregroundColor(.secondary)
           }
           .padding(.horizontal, 16)
-          
+
           Divider()
             .padding(.top, 16)
 
@@ -151,7 +151,7 @@ public struct ProfileView: View {
           }
           .frame(height: 84)
           .padding(.horizontal, 16)
-          
+
           Divider()
         }
       }
