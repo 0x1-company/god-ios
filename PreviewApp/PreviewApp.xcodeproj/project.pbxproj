@@ -6,10 +6,15 @@
 	objectVersion = 56;
 	objects = {
 
+/* Begin PBXFileReference section */
+		B76014932A6BC638001B3675 /* OnboardPreviewApp.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OnboardPreviewApp.swiftpm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		B7BFE5702A27C78100D1CE6F = {
 			isa = PBXGroup;
 			children = (
+				B76014932A6BC638001B3675 /* OnboardPreviewApp.swiftpm */,
 				B7BFE57A2A27C78100D1CE6F /* Products */,
 			);
 			sourceTree = "<group>";
