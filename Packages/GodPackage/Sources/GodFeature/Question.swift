@@ -1,6 +1,6 @@
 import ColorHex
-import LabeledButton
 import ComposableArchitecture
+import LabeledButton
 import SwiftUI
 
 public struct QuestionReducer: ReducerProtocol {
@@ -17,8 +17,8 @@ public struct QuestionReducer: ReducerProtocol {
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
-        case .onTask:
-          return .none
+      case .onTask:
+        return .none
       }
     }
   }
@@ -32,11 +32,11 @@ public struct QuestionView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack {
-        Color(0xFF58C150)
+        Color(0xFF58_C150)
           .ignoresSafeArea()
-        
+
         VStack {
           Spacer()
           Text("Your ideal study buddy")
@@ -53,7 +53,7 @@ public struct QuestionView: View {
               AnswerButton("Ava Griego", progress: 0.9, action: {})
             }
           )
-          
+
           ZStack {
             HStack(spacing: 0) {
               LabeledButton("Shuffle", systemImage: "shuffle", action: {})

@@ -15,8 +15,8 @@ public struct GodReducer: ReducerProtocol {
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
-        case .onTask:
-          return .none
+      case .onTask:
+        return .none
       }
     }
   }

@@ -5,7 +5,7 @@ public struct AnswerButton: View {
   let title: String
   let progress: Double
   let action: () -> Void
-  
+
   public init(
     _ title: String,
     progress: Double,
@@ -26,7 +26,7 @@ public struct AnswerButton: View {
         .background(
           GeometryReader { proxy in
             HStack(spacing: 0) {
-              Color(0xFF94DE98)
+              Color(0xFF94_DE98)
                 .frame(width: proxy.size.width * progress)
               Color.white
             }
@@ -51,7 +51,7 @@ struct AnswerButtonPreviews: PreviewProvider {
       }
     )
     .padding()
-    .background(Color(0xFF58C150))
+    .background(Color(0xFF58_C150))
     .previewLayout(.sizeThatFits)
   }
 }
