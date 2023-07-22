@@ -5,17 +5,19 @@ public struct FirstNameSettingReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
+    @BindingState var firstName = ""
     public init() {}
   }
 
-  public enum Action: Equatable {
-    case onTask
+  public enum Action: Equatable, BindableAction {
+    case binding(BindingAction<State>)
   }
 
   public var body: some ReducerProtocol<State, Action> {
+    BindingReducer()
     Reduce { _, action in
       switch action {
-        case .onTask:
+      case .binding:
           return .none
       }
     }
@@ -31,23 +33,51 @@ public struct FirstNameSettingView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("FirstNameSetting")
+      VStack {
+        Spacer()
+        Text("What's your first name?")
+          .bold()
+          .foregroundColor(.white)
+        TextField("First Name", text: viewStore.binding(\.$firstName))
+          .font(.title)
+          .foregroundColor(.white)
+          .multilineTextAlignment(.center)
+        Spacer()
+        Button {
+        } label: {
+          Text("Next")
+            .bold()
+            .frame(height: 54)
+            .frame(maxWidth: .infinity)
+            .foregroundColor(Color.black)
+            .background(Color.white)
+            .clipShape(Capsule())
+        }
       }
-      .navigationTitle("FirstNameSetting")
-      .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .padding(.horizontal, 24)
+      .padding(.bottom, 16)
+      .background(Color(0xFFED6C43))
+      .toolbar {
+        Button {
+          
+        } label: {
+          Image(systemName: "info.circle.fill")
+            .foregroundColor(.white)
+        }
+      }
     }
   }
 }
 
 struct FirstNameSettingViewPreviews: PreviewProvider {
   static var previews: some View {
-    FirstNameSettingView(
-      store: .init(
-        initialState: FirstNameSettingReducer.State(),
-        reducer: FirstNameSettingReducer()
+    NavigationStack {
+      FirstNameSettingView(
+        store: .init(
+          initialState: FirstNameSettingReducer.State(),
+          reducer: FirstNameSettingReducer()
+        )
       )
-    )
+    }
   }
 }
