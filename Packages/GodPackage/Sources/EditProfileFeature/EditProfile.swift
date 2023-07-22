@@ -2,11 +2,13 @@ import ButtonStyles
 import ComposableArchitecture
 import LabeledButton
 import SwiftUI
+import ManageAccountFeature
 
 public struct EditProfileReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var manageAccount: ManageAccountReducer.State?
     public init() {}
   }
 
@@ -15,23 +17,35 @@ public struct EditProfileReducer: ReducerProtocol {
     case manageAccountButtonTapped
     case logoutButtonTapped
     case closeButtonTapped
+    case manageAccount(PresentationAction<ManageAccountReducer.Action>)
   }
+  
+  @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .restorePurchasesButtonTapped:
         return .none
 
       case .manageAccountButtonTapped:
+        state.manageAccount = .init()
         return .none
 
       case .logoutButtonTapped:
         return .none
 
       case .closeButtonTapped:
+        return .run { _ in
+          await dismiss()
+        }
+        
+      case .manageAccount:
         return .none
       }
+    }
+    .ifLet(\.$manageAccount, action: /Action.manageAccount) {
+      ManageAccountReducer()
     }
   }
 }
@@ -82,6 +96,17 @@ public struct EditProfileView: View {
           .foregroundColor(.primary)
         }
       }
+      .sheet(
+        store: store.scope(
+          state: \.$manageAccount,
+          action: EditProfileReducer.Action.manageAccount
+        ),
+        content: { store in
+          NavigationStack {
+            ManageAccountView(store: store)
+          }
+        }
+      )
     }
   }
 }

@@ -13,6 +13,7 @@
 		B720CC5B2A6BF17B0047E3FD /* AboutFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5A2A6BF17B0047E3FD /* AboutFeature */; };
 		B720CC5D2A6BF17B0047E3FD /* GodFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5C2A6BF17B0047E3FD /* GodFeature */; };
 		B720CC5F2A6BF17B0047E3FD /* InboxFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5E2A6BF17B0047E3FD /* InboxFeature */; };
+		B759B0872A6C0D0E0047C38C /* ProfileFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B759B0862A6C0D0E0047C38C /* ProfileFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 				B720CC5F2A6BF17B0047E3FD /* InboxFeature in Frameworks */,
 				B720CC5D2A6BF17B0047E3FD /* GodFeature in Frameworks */,
 				B720CC5B2A6BF17B0047E3FD /* AboutFeature in Frameworks */,
+				B759B0872A6C0D0E0047C38C /* ProfileFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +106,7 @@
 				B720CC5A2A6BF17B0047E3FD /* AboutFeature */,
 				B720CC5C2A6BF17B0047E3FD /* GodFeature */,
 				B720CC5E2A6BF17B0047E3FD /* InboxFeature */,
+				B759B0862A6C0D0E0047C38C /* ProfileFeature */,
 			);
 			productName = God;
 			productReference = B720CC4C2A6BF1560047E3FD /* God.app */;
@@ -379,6 +382,10 @@
 		B720CC5E2A6BF17B0047E3FD /* InboxFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = InboxFeature;
+		};
+		B759B0862A6C0D0E0047C38C /* ProfileFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProfileFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

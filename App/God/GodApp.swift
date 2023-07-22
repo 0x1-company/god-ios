@@ -3,6 +3,7 @@ import ComposableArchitecture
 import GodFeature
 import InboxFeature
 import SwiftUI
+import ProfileFeature
 
 @main
 struct GodApp: App {
@@ -27,6 +28,16 @@ struct GodApp: App {
         )
         .tabItem {
           Text("God")
+        }
+        
+        ProfileView(
+          store: .init(
+            initialState: ProfileReducer.State(),
+            reducer: ProfileReducer()._printChanges()
+          )
+        )
+        .tabItem {
+          Text("Profile")
         }
 
         AboutView(

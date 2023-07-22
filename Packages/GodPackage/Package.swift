@@ -15,7 +15,9 @@ let package = Package(
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
+    .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
+    .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
   ],
@@ -33,9 +35,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "EditProfileFeature", dependencies: [
-      .product(name: "ButtonStyles", package: "DesignSystemPackage"),
-      .product(name: "LabeledButton", package: "DesignSystemPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "ManageAccountFeature",
     ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
@@ -51,9 +51,18 @@ let package = Package(
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "ManageAccountFeature", dependencies: [
+      .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "ButtonStyles", package: "DesignSystemPackage"),
+      .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "OnboardFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "ProfileFeature", dependencies: [
+      "EditProfileFeature",
     ]),
     .target(name: "SchoolSettingFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
