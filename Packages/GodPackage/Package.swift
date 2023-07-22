@@ -12,6 +12,7 @@ let package = Package(
     .library(name: "AboutFeature", targets: ["AboutFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "EditProfileFeature", targets: ["EditProfileFeature"]),
+    .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
@@ -33,6 +34,10 @@ let package = Package(
     .target(name: "EditProfileFeature", dependencies: [
       .product(name: "ButtonStyles", package: "DesignSystemPackage"),
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "GodFeature", dependencies: [
+      .product(name: "ColorHex", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
