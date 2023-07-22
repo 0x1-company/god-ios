@@ -34,9 +34,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "EditProfileFeature", dependencies: [
-      .product(name: "ButtonStyles", package: "DesignSystemPackage"),
-      .product(name: "LabeledButton", package: "DesignSystemPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "ManageAccountFeature",
     ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
@@ -49,6 +47,12 @@ let package = Package(
     ]),
     .target(name: "InboxFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "ManageAccountFeature", dependencies: [
+      .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "ButtonStyles", package: "DesignSystemPackage"),
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
