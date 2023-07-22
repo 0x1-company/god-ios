@@ -15,6 +15,9 @@ struct GodApp: App {
             reducer: InboxReducer()._printChanges()
           )
         )
+        .tabItem {
+          Text("Inbox")
+        }
         
         GodView(
           store: .init(
@@ -22,6 +25,9 @@ struct GodApp: App {
             reducer: GodReducer()._printChanges()
           )
         )
+        .tabItem {
+          Text("God")
+        }
         
         AboutView(
           store: .init(
@@ -29,6 +35,9 @@ struct GodApp: App {
             reducer: AboutReducer()._printChanges()
           )
         )
+        .tabItem {
+          Text("About")
+        }
       }
     }
   }
