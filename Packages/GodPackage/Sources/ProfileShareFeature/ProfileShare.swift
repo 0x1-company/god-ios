@@ -9,7 +9,7 @@ public struct ProfileShareReducer: ReducerProtocol {
       "Snapshot",
       "Instagram",
       "Messages",
-      "Copy Link"
+      "Copy Link",
     ]
     public init() {}
   }
@@ -18,7 +18,7 @@ public struct ProfileShareReducer: ReducerProtocol {
     case onTask
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
@@ -26,7 +26,7 @@ public struct ProfileShareReducer: ReducerProtocol {
       switch action {
       case .onTask:
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await self.dismiss()
@@ -48,21 +48,21 @@ public struct ProfileShareView: View {
       VStack(alignment: .center, spacing: 24) {
         Text("Share Profile")
           .bold()
-        
+
         HStack(spacing: 12) {
           ForEach(viewStore.shareContents, id: \.self) { content in
             Button(action: {}) {
               VStack(spacing: 12) {
                 Color.red
                   .clipShape(Circle())
-                
+
                 Text(content)
                   .foregroundColor(.black)
               }
             }
           }
         }
-        
+
         Button {
           viewStore.send(.closeButtonTapped)
         } label: {
