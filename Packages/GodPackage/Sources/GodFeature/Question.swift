@@ -3,12 +3,25 @@ import ComposableArchitecture
 import LabeledButton
 import SwiftUI
 
+let mock = [
+  "Ariana Duclos",
+  "Allie Yarbrough",
+  "Abby Arambula",
+  "Ava Griego",
+  "Aron Jassinowsky",
+  "Christopher Taylor",
+  "Ellyse Pelletier",
+  "Tomoki Tsukiyama",
+  "Satoya Hatanaka",
+]
+
 public struct QuestionReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
-    var answered = false
+    var isAnswered = false
+    var choices = ["Ariana Duclos", "Allie Yarbrough", "Abby Arambula", "Ava Griego"]
     public init() {}
   }
 
@@ -32,16 +45,21 @@ public struct QuestionReducer: ReducerProtocol {
         return .none
 
       case .answerButtonTapped:
-        state.answered.toggle()
+        state.isAnswered.toggle()
         return .none
 
       case .shuffleButtonTapped:
+        state.choices = mock.shuffled().prefix(4).map { $0 }
         return .none
 
       case .skipButtonTapped:
         return .none
 
       case .continueButtonTapped:
+        state.isAnswered.toggle()
+        return .none
+
+      case .alert:
         state.alert = AlertState {
           TextState("Woah, slow down!🐎")
         } actions: {
@@ -51,8 +69,6 @@ public struct QuestionReducer: ReducerProtocol {
         } message: {
           TextState("You're voting too fast")
         }
-        return .none
-      case .alert:
         return .none
       }
     }
@@ -80,36 +96,36 @@ public struct QuestionView: View {
           Spacer()
           LazyVGrid(
             columns: Array(repeating: GridItem(spacing: 16), count: 2),
-            spacing: 16,
-            content: {
-              AnswerButton("Ariana Duclos", progress: viewStore.answered ? 0.1 : 0.0) {
+            spacing: 16
+          ) {
+            ForEach(viewStore.choices, id: \.self) { choice in
+              AnswerButton(
+                choice,
+                progress: viewStore.isAnswered ? Double.random(in: 0.1..<0.9) : 0.0
+              ) {
                 viewStore.send(.answerButtonTapped)
               }
-              AnswerButton("Allie Yarbrough", progress: viewStore.answered ? 0.3 : 0.0) {
-                viewStore.send(.answerButtonTapped)
-              }
-              AnswerButton("Abby Arambula", progress: viewStore.answered ? 0.5 : 0.0) {
-                viewStore.send(.answerButtonTapped)
-              }
-              AnswerButton("Ava Griego", progress: viewStore.answered ? 0.9 : 0.0) {
-                viewStore.send(.answerButtonTapped)
-              }
-            }
-          )
-
-          ZStack {
-            HStack(spacing: 0) {
-              LabeledButton("Shuffle", systemImage: "shuffle") {
-                viewStore.send(.shuffleButtonTapped)
-              }
-              LabeledButton("Skip", systemImage: "forward.fill") {
-                viewStore.send(.skipButtonTapped)
-              }
-            }
-            Button("Tap to continue") {
-              viewStore.send(.continueButtonTapped)
             }
           }
+
+          ZStack {
+            if viewStore.isAnswered {
+              Button("Tap to continue") {
+                viewStore.send(.continueButtonTapped)
+              }
+            } else {
+              HStack(spacing: 0) {
+                LabeledButton("Shuffle", systemImage: "shuffle") {
+                  viewStore.send(.shuffleButtonTapped)
+                }
+                LabeledButton("Skip", systemImage: "forward.fill") {
+                  viewStore.send(.skipButtonTapped)
+                }
+              }
+            }
+          }
+          .frame(height: 50)
+          .animation(.default, value: viewStore.isAnswered)
           .foregroundColor(.white)
           .padding(.vertical, 64)
         }
