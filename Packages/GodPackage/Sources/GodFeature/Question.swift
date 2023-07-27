@@ -12,12 +12,21 @@ public struct QuestionReducer: ReducerProtocol {
 
   public enum Action: Equatable {
     case onTask
+    case shuffleButtonTapped
+    case skipButtonTapped
+    case continueButtonTapped
   }
 
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
       case .onTask:
+        return .none
+      case .shuffleButtonTapped:
+        return .none
+      case .skipButtonTapped:
+        return .none
+      case .continueButtonTapped:
         return .none
       }
     }
@@ -32,7 +41,7 @@ public struct QuestionView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { _ in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
         Color(0xFF58_C150)
           .ignoresSafeArea()
@@ -56,10 +65,16 @@ public struct QuestionView: View {
 
           ZStack {
             HStack(spacing: 0) {
-              LabeledButton("Shuffle", systemImage: "shuffle", action: {})
-              LabeledButton("Skip", systemImage: "forward.fill", action: {})
+              LabeledButton("Shuffle", systemImage: "shuffle") {
+                viewStore.send(.shuffleButtonTapped)
+              }
+              LabeledButton("Skip", systemImage: "forward.fill") {
+                viewStore.send(.skipButtonTapped)
+              }
             }
-            Button("Tap to continue", action: {})
+            Button("Tap to continue") {
+              viewStore.send(.continueButtonTapped)
+            }
           }
           .foregroundColor(.white)
           .padding(.vertical, 64)
