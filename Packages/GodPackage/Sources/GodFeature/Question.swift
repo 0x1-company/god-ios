@@ -13,6 +13,7 @@ public struct QuestionReducer: ReducerProtocol {
 
   public enum Action: Equatable {
     case onTask
+    case answerButtonTapped
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
@@ -27,6 +28,9 @@ public struct QuestionReducer: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case .answerButtonTapped:
         return .none
 
       case .shuffleButtonTapped:
@@ -76,10 +80,18 @@ public struct QuestionView: View {
             columns: Array(repeating: GridItem(spacing: 16), count: 2),
             spacing: 16,
             content: {
-              AnswerButton("Ariana Duclos", progress: 0.1, action: {})
-              AnswerButton("Allie Yarbrough", progress: 0.3, action: {})
-              AnswerButton("Abby Arambula", progress: 0.5, action: {})
-              AnswerButton("Ava Griego", progress: 0.9, action: {})
+              AnswerButton("Ariana Duclos", progress: 0.1) {
+                viewStore.send(.answerButtonTapped)
+              }
+              AnswerButton("Allie Yarbrough", progress: 0.3) {
+                viewStore.send(.answerButtonTapped)
+              }
+              AnswerButton("Abby Arambula", progress: 0.5) {
+                viewStore.send(.answerButtonTapped)
+              }
+              AnswerButton("Ava Griego", progress: 0.9) {
+                viewStore.send(.answerButtonTapped)
+              }
             }
           )
 
