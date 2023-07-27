@@ -20,7 +20,7 @@ public struct QuestionReducer: ReducerProtocol {
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
-    var answered = false
+    var isAnswered = true
     var choices = ["Ariana Duclos", "Allie Yarbrough", "Abby Arambula", "Ava Griego"]
     public init() {}
   }
@@ -45,7 +45,7 @@ public struct QuestionReducer: ReducerProtocol {
         return .none
 
       case .answerButtonTapped:
-        state.answered.toggle()
+        state.isAnswered.toggle()
         return .none
 
       case .shuffleButtonTapped:
@@ -99,7 +99,7 @@ public struct QuestionView: View {
             ForEach(viewStore.choices, id: \.self) { choice in
               AnswerButton(
                 choice,
-                progress: viewStore.answered ? Double.random(in: 0.1..<0.9) : 0.0
+                progress: viewStore.isAnswered ? Double.random(in: 0.1..<0.9) : 0.0
               ) {
                 viewStore.send(.answerButtonTapped)
               }
