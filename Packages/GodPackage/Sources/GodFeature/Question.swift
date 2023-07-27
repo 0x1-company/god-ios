@@ -3,20 +3,24 @@ import SwiftUI
 
 public struct QuestionReducer: ReducerProtocol {
   public init() {}
-
+  
   public struct State: Equatable {
+    var vote = VoteReducer.State()
     public init() {}
   }
-
+  
   public enum Action: Equatable {
-    case onTask
+    case vote(VoteReducer.Action)
   }
-
+  
   public var body: some ReducerProtocol<State, Action> {
+    Scope(state: \.vote, action: /Action.vote) {
+      VoteReducer()
+    }
     Reduce { _, action in
       switch action {
-        case .onTask:
-          return .none
+      case .vote:
+        return .none
       }
     }
   }
@@ -24,19 +28,23 @@ public struct QuestionReducer: ReducerProtocol {
 
 public struct QuestionView: View {
   let store: StoreOf<QuestionReducer>
-
+  
   public init(store: StoreOf<QuestionReducer>) {
     self.store = store
   }
-
+  
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("Question")
+      ZStack(alignment: .top) {
+        VoteView(
+          store: store.scope(
+            state: \.vote,
+            action: QuestionReducer.Action.vote
+          )
+        )
+        Text("2 of 12")
+          .foregroundColor(Color.white)
       }
-      .navigationTitle("Question")
-      .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
