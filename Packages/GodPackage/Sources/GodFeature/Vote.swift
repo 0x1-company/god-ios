@@ -105,6 +105,7 @@ public struct VoteView: View {
               ) {
                 viewStore.send(.answerButtonTapped)
               }
+              .disabled(viewStore.isAnswered)
             }
           }
 
