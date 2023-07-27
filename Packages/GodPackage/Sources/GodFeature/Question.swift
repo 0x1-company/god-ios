@@ -8,6 +8,7 @@ public struct QuestionReducer: ReducerProtocol {
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
+    var answered = false
     public init() {}
   }
 
@@ -31,6 +32,7 @@ public struct QuestionReducer: ReducerProtocol {
         return .none
         
       case .answerButtonTapped:
+        state.answered.toggle()
         return .none
 
       case .shuffleButtonTapped:
@@ -80,16 +82,16 @@ public struct QuestionView: View {
             columns: Array(repeating: GridItem(spacing: 16), count: 2),
             spacing: 16,
             content: {
-              AnswerButton("Ariana Duclos", progress: 0.1) {
+              AnswerButton("Ariana Duclos", progress: viewStore.answered ? 0.1 : 0.0) {
                 viewStore.send(.answerButtonTapped)
               }
-              AnswerButton("Allie Yarbrough", progress: 0.3) {
+              AnswerButton("Allie Yarbrough", progress: viewStore.answered ? 0.3 : 0.0) {
                 viewStore.send(.answerButtonTapped)
               }
-              AnswerButton("Abby Arambula", progress: 0.5) {
+              AnswerButton("Abby Arambula", progress: viewStore.answered ? 0.5 : 0.0) {
                 viewStore.send(.answerButtonTapped)
               }
-              AnswerButton("Ava Griego", progress: 0.9) {
+              AnswerButton("Ava Griego", progress: viewStore.answered ? 0.9 : 0.0) {
                 viewStore.send(.answerButtonTapped)
               }
             }

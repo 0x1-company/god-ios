@@ -37,6 +37,7 @@ public struct AnswerButton: View {
                 .frame(width: proxy.size.width * progress)
               Color.white
             }
+            .animation(.easeIn(duration: 0.3), value: progress)
           }
         )
         .cornerRadius(8)
