@@ -16,6 +16,7 @@ public struct QuestionReducer: ReducerProtocol {
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
+    case alert(PresentationAction<Alert>)
     
     public enum Alert: Equatable {
       case confirmOkay
@@ -26,6 +27,15 @@ public struct QuestionReducer: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case .onTask:
+        return .none
+
+      case .shuffleButtonTapped:
+        return .none
+
+      case .skipButtonTapped:
+        return .none
+
+      case .continueButtonTapped:
         state.alert = AlertState {
           TextState("Woah, slow down!🐎")
         } actions: {
@@ -36,14 +46,7 @@ public struct QuestionReducer: ReducerProtocol {
           TextState("You're voting too fast")
         }
         return .none
-
-      case .shuffleButtonTapped:
-        return .none
-
-      case .skipButtonTapped:
-        return .none
-
-      case .continueButtonTapped:
+      case .alert:
         return .none
       }
     }
@@ -98,6 +101,12 @@ public struct QuestionView: View {
         }
         .padding(.horizontal, 36)
       }
+      .alert(
+        store: store.scope(
+          state: \.$alert,
+          action: { .alert($0) }
+        )
+      )
     }
   }
 }

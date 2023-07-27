@@ -15,6 +15,10 @@
 		B720CC252A6BEE5A0047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC242A6BEE5A0047E3FD /* Assets.xcassets */; };
 		B720CC282A6BEE5A0047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC272A6BEE5A0047E3FD /* Preview Assets.xcassets */; };
 		B720CC2D2A6BEE610047E3FD /* InboxFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC2C2A6BEE610047E3FD /* InboxFeature */; };
+		B74AA56E2A729C070001B612 /* GodPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74AA56D2A729C070001B612 /* GodPreviewApp.swift */; };
+		B74AA5722A729C080001B612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B74AA5712A729C080001B612 /* Assets.xcassets */; };
+		B74AA5752A729C080001B612 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B74AA5742A729C080001B612 /* Preview Assets.xcassets */; };
+		B74AA57A2A729C200001B612 /* GodFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B74AA5792A729C200001B612 /* GodFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,10 @@
 		B720CC202A6BEE590047E3FD /* InboxPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxPreviewApp.swift; sourceTree = "<group>"; };
 		B720CC242A6BEE5A0047E3FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B720CC272A6BEE5A0047E3FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B74AA56B2A729C070001B612 /* GodPreviewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GodPreviewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B74AA56D2A729C070001B612 /* GodPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GodPreviewApp.swift; sourceTree = "<group>"; };
+		B74AA5712A729C080001B612 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B74AA5742A729C080001B612 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +50,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B720CC2D2A6BEE610047E3FD /* InboxFeature in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B74AA5682A729C070001B612 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B74AA57A2A729C200001B612 /* GodFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,11 +107,30 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B74AA56C2A729C070001B612 /* GodPreviewApp */ = {
+			isa = PBXGroup;
+			children = (
+				B74AA56D2A729C070001B612 /* GodPreviewApp.swift */,
+				B74AA5712A729C080001B612 /* Assets.xcassets */,
+				B74AA5732A729C080001B612 /* Preview Content */,
+			);
+			path = GodPreviewApp;
+			sourceTree = "<group>";
+		};
+		B74AA5732A729C080001B612 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B74AA5742A729C080001B612 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		B7BFE5702A27C78100D1CE6F = {
 			isa = PBXGroup;
 			children = (
 				B720CC0A2A6BC9290047E3FD /* OnboardPreviewApp */,
 				B720CC1F2A6BEE590047E3FD /* InboxPreviewApp */,
+				B74AA56C2A729C070001B612 /* GodPreviewApp */,
 				B7BFE57A2A27C78100D1CE6F /* Products */,
 				B720CC172A6BC9320047E3FD /* Frameworks */,
 			);
@@ -106,6 +141,7 @@
 			children = (
 				B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */,
 				B720CC1E2A6BEE590047E3FD /* InboxPreviewApp.app */,
+				B74AA56B2A729C070001B612 /* GodPreviewApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,6 +189,26 @@
 			productReference = B720CC1E2A6BEE590047E3FD /* InboxPreviewApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B74AA56A2A729C070001B612 /* GodPreviewApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B74AA5782A729C080001B612 /* Build configuration list for PBXNativeTarget "GodPreviewApp" */;
+			buildPhases = (
+				B74AA5672A729C070001B612 /* Sources */,
+				B74AA5682A729C070001B612 /* Frameworks */,
+				B74AA5692A729C070001B612 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GodPreviewApp;
+			packageProductDependencies = (
+				B74AA5792A729C200001B612 /* GodFeature */,
+			);
+			productName = GodPreviewApp;
+			productReference = B74AA56B2A729C070001B612 /* GodPreviewApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -167,6 +223,9 @@
 						CreatedOnToolsVersion = 14.3.1;
 					};
 					B720CC1D2A6BEE590047E3FD = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					B74AA56A2A729C070001B612 = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
 				};
@@ -186,6 +245,7 @@
 			targets = (
 				B720CC082A6BC9290047E3FD /* OnboardPreviewApp */,
 				B720CC1D2A6BEE590047E3FD /* InboxPreviewApp */,
+				B74AA56A2A729C070001B612 /* GodPreviewApp */,
 			);
 		};
 /* End PBXProject section */
@@ -209,6 +269,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B74AA5692A729C070001B612 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B74AA5752A729C080001B612 /* Preview Assets.xcassets in Resources */,
+				B74AA5722A729C080001B612 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -225,6 +294,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B720CC212A6BEE590047E3FD /* InboxPreviewApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B74AA5672A729C070001B612 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B74AA56E2A729C070001B612 /* GodPreviewApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +413,62 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.godapp.app.ios.InboxPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B74AA5762A729C080001B612 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"GodPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.GodPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B74AA5772A729C080001B612 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"GodPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.GodPreviewApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -478,6 +611,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		B74AA5782A729C080001B612 /* Build configuration list for PBXNativeTarget "GodPreviewApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74AA5762A729C080001B612 /* Debug */,
+				B74AA5772A729C080001B612 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B7BFE5742A27C78100D1CE6F /* Build configuration list for PBXProject "PreviewApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -497,6 +639,10 @@
 		B720CC2C2A6BEE610047E3FD /* InboxFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = InboxFeature;
+		};
+		B74AA5792A729C200001B612 /* GodFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GodFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
