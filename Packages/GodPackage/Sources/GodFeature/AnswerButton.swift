@@ -23,17 +23,17 @@ public struct AnswerButton: View {
         .frame(height: 64)
         .frame(maxWidth: .infinity)
         .foregroundColor(.black)
-        .background(
-          GeometryReader { proxy in
-            HStack(spacing: 0) {
-              Color(0xFF94DE98)
-                .frame(width: proxy.size.width * progress)
-              Color.white
-            }
-          }
-        )
-        .cornerRadius(8)
     }
+    .background(
+      GeometryReader { proxy in
+        HStack(spacing: 0) {
+          Color(0xFF94DE98)
+            .frame(width: proxy.size.width * progress)
+          Color.white
+        }
+      }
+    )
+    .cornerRadius(8)
     .shadow(radius: 2)
   }
 }
