@@ -7,6 +7,7 @@ public struct QuestionReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
 
@@ -15,17 +16,33 @@ public struct QuestionReducer: ReducerProtocol {
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
 
   public var body: some ReducerProtocol<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
+        state.alert = AlertState {
+          TextState("Woah, slow down!🐎")
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK")
+          }
+        } message: {
+          TextState("You're voting too fast")
+        }
         return .none
+
       case .shuffleButtonTapped:
         return .none
+
       case .skipButtonTapped:
         return .none
+
       case .continueButtonTapped:
         return .none
       }
@@ -43,7 +60,7 @@ public struct QuestionView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
-        Color(0xFF58_C150)
+        Color(0xFF58C150)
           .ignoresSafeArea()
 
         VStack {
