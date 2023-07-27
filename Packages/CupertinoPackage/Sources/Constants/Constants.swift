@@ -1,5 +1,5 @@
-import Foundation
 import Dependencies
+import Foundation
 
 public struct Constants {
   public var appStoreURL: @Sendable () -> URL
@@ -20,8 +20,8 @@ extension Constants: DependencyKey {
   }()
 }
 
-extension DependencyValues {
-  public var constants: Constants {
+public extension DependencyValues {
+  var constants: Constants {
     get { self[Constants.self] }
     set { self[Constants.self] = newValue }
   }
