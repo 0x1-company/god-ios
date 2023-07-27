@@ -28,6 +28,7 @@ public struct AnswerButton: View {
       Text(verbatim: title)
         .bold()
         .lineLimit(2)
+        .multilineTextAlignment(.leading)
         .frame(height: 64)
         .frame(maxWidth: .infinity)
         .foregroundColor(.black)
