@@ -101,7 +101,7 @@ public struct QuestionView: View {
             ForEach(viewStore.choices, id: \.self) { choice in
               AnswerButton(
                 choice,
-                progress: viewStore.isAnswered ? Double.random(in: 0.1..<0.9) : 0.0
+                progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
               ) {
                 viewStore.send(.answerButtonTapped)
               }
