@@ -1,6 +1,13 @@
 import ColorHex
 import SwiftUI
 
+private struct AnswerButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+  }
+}
+
 public struct AnswerButton: View {
   let title: String
   let progress: Double
@@ -23,18 +30,19 @@ public struct AnswerButton: View {
         .frame(height: 64)
         .frame(maxWidth: .infinity)
         .foregroundColor(.black)
+        .background(
+          GeometryReader { proxy in
+            HStack(spacing: 0) {
+              Color(0xFF94DE98)
+                .frame(width: proxy.size.width * progress)
+              Color.white
+            }
+          }
+        )
+        .cornerRadius(8)
     }
-    .background(
-      GeometryReader { proxy in
-        HStack(spacing: 0) {
-          Color(0xFF94DE98)
-            .frame(width: proxy.size.width * progress)
-          Color.white
-        }
-      }
-    )
-    .cornerRadius(8)
-    .shadow(radius: 2)
+    .buttonStyle(AnswerButtonStyle())
+    .shadow(color: .black.opacity(0.2), radius: 25)
   }
 }
 
