@@ -19,7 +19,7 @@ public struct QuestionReducer: ReducerProtocol {
     case skipButtonTapped
     case continueButtonTapped
     case alert(PresentationAction<Alert>)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -30,7 +30,7 @@ public struct QuestionReducer: ReducerProtocol {
       switch action {
       case .onTask:
         return .none
-        
+
       case .answerButtonTapped:
         state.answered.toggle()
         return .none
@@ -69,7 +69,7 @@ public struct QuestionView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
-        Color(0xFF58C150)
+        Color(0xFF58_C150)
           .ignoresSafeArea()
 
         VStack {

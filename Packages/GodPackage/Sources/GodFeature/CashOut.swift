@@ -16,7 +16,7 @@ public struct CashOutReducer: ReducerProtocol {
     Reduce { _, action in
       switch action {
       case .cashOutButtonTapped:
-          return .none
+        return .none
       }
     }
   }
@@ -39,7 +39,7 @@ public struct CashOutView: View {
           Text("You earned 9 coins")
             .bold()
         }
-        
+
         Button {
           viewStore.send(.cashOutButtonTapped)
         } label: {

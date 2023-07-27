@@ -33,7 +33,7 @@ public struct AnswerButton: View {
         .background(
           GeometryReader { proxy in
             HStack(spacing: 0) {
-              Color(0xFF94DE98)
+              Color(0xFF94_DE98)
                 .frame(width: proxy.size.width * progress)
               Color.white
             }
