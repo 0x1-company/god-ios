@@ -20,10 +20,10 @@ struct GodApp: App {
           Text("Inbox")
         }
 
-        VoteView(
+        QuestionView(
           store: .init(
-            initialState: VoteReducer.State(),
-            reducer: VoteReducer()._printChanges()
+            initialState: QuestionReducer.State(),
+            reducer: QuestionReducer()._printChanges()
           )
         )
         .tabItem {
