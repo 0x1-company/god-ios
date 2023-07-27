@@ -45,7 +45,7 @@ public struct VoteReducer: ReducerProtocol {
         return .none
 
       case .answerButtonTapped:
-        state.isAnswered.toggle()
+        state.isAnswered = true
         return .none
 
       case .shuffleButtonTapped:
@@ -56,7 +56,7 @@ public struct VoteReducer: ReducerProtocol {
         return .none
 
       case .continueButtonTapped:
-        state.isAnswered.toggle()
+        state.isAnswered = false
         return .none
 
       case .alert:
@@ -105,6 +105,7 @@ public struct VoteView: View {
               ) {
                 viewStore.send(.answerButtonTapped)
               }
+              .disabled(viewStore.isAnswered)
             }
           }
 
