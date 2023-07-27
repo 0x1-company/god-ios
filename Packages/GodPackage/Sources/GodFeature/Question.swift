@@ -3,12 +3,25 @@ import ComposableArchitecture
 import LabeledButton
 import SwiftUI
 
+let mock = [
+  "Ariana Duclos",
+  "Allie Yarbrough",
+  "Abby Arambula",
+  "Ava Griego",
+  "Aron Jassinowsky",
+  "Christopher Taylor",
+  "Ellyse Pelletier",
+  "Tomoki Tsukiyama",
+  "Satoya Hatanaka",
+]
+
 public struct QuestionReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
     var answered = false
+    var choices = ["Ariana Duclos", "Allie Yarbrough", "Abby Arambula", "Ava Griego"]
     public init() {}
   }
 
@@ -36,6 +49,7 @@ public struct QuestionReducer: ReducerProtocol {
         return .none
 
       case .shuffleButtonTapped:
+        state.choices = mock.shuffled().prefix(4).map { $0 }
         return .none
 
       case .skipButtonTapped:
@@ -80,22 +94,17 @@ public struct QuestionView: View {
           Spacer()
           LazyVGrid(
             columns: Array(repeating: GridItem(spacing: 16), count: 2),
-            spacing: 16,
-            content: {
-              AnswerButton("Ariana Duclos", progress: viewStore.answered ? 0.1 : 0.0) {
-                viewStore.send(.answerButtonTapped)
-              }
-              AnswerButton("Allie Yarbrough", progress: viewStore.answered ? 0.3 : 0.0) {
-                viewStore.send(.answerButtonTapped)
-              }
-              AnswerButton("Abby Arambula", progress: viewStore.answered ? 0.5 : 0.0) {
-                viewStore.send(.answerButtonTapped)
-              }
-              AnswerButton("Ava Griego", progress: viewStore.answered ? 0.9 : 0.0) {
+            spacing: 16
+          ) {
+            ForEach(viewStore.choices, id: \.self) { choice in
+              AnswerButton(
+                choice,
+                progress: viewStore.answered ? Double.random(in: 0.1..<0.9) : 0.0
+              ) {
                 viewStore.send(.answerButtonTapped)
               }
             }
-          )
+          }
 
           ZStack {
             HStack(spacing: 0) {
