@@ -48,5 +48,24 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>もし、アプリについて話したいならこちら</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>talk-to-founder</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>👋社長と話す！</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>もし、開発について話したいならこちら</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>talk-to-developer</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>👨🏻‍💻エンジニアと話す！</string>
+		</dict>
+	</array>
 </dict>
 </plist>
