@@ -3,16 +3,16 @@ import SwiftUI
 
 public struct QuestionReducer: ReducerProtocol {
   public init() {}
-  
+
   public struct State: Equatable {
     var vote = VoteReducer.State()
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case vote(VoteReducer.Action)
   }
-  
+
   public var body: some ReducerProtocol<State, Action> {
     Scope(state: \.vote, action: /Action.vote) {
       VoteReducer()
@@ -28,13 +28,13 @@ public struct QuestionReducer: ReducerProtocol {
 
 public struct QuestionView: View {
   let store: StoreOf<QuestionReducer>
-  
+
   public init(store: StoreOf<QuestionReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack(alignment: .top) {
         VoteView(
           store: store.scope(
