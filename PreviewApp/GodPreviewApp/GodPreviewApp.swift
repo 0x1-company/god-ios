@@ -6,10 +6,10 @@ import SwiftUI
 struct GodPreviewAppApp: App {
   var body: some Scene {
     WindowGroup {
-      QuestionView(
+      VoteView(
         store: .init(
-          initialState: QuestionReducer.State(),
-          reducer: QuestionReducer()._printChanges()
+          initialState: VoteReducer.State(),
+          reducer: VoteReducer()._printChanges()
         )
       )
     }
