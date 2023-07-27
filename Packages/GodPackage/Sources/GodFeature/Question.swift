@@ -20,7 +20,7 @@ public struct QuestionReducer: ReducerProtocol {
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
-    var isAnswered = true
+    var isAnswered = false
     var choices = ["Ariana Duclos", "Allie Yarbrough", "Abby Arambula", "Ava Griego"]
     public init() {}
   }
@@ -56,6 +56,10 @@ public struct QuestionReducer: ReducerProtocol {
         return .none
 
       case .continueButtonTapped:
+        state.isAnswered.toggle()
+        return .none
+
+      case .alert:
         state.alert = AlertState {
           TextState("Woah, slow down!🐎")
         } actions: {
@@ -65,8 +69,6 @@ public struct QuestionReducer: ReducerProtocol {
         } message: {
           TextState("You're voting too fast")
         }
-        return .none
-      case .alert:
         return .none
       }
     }
@@ -107,18 +109,23 @@ public struct QuestionView: View {
           }
 
           ZStack {
-            HStack(spacing: 0) {
-              LabeledButton("Shuffle", systemImage: "shuffle") {
-                viewStore.send(.shuffleButtonTapped)
+            if viewStore.isAnswered {
+              Button("Tap to continue") {
+                viewStore.send(.continueButtonTapped)
               }
-              LabeledButton("Skip", systemImage: "forward.fill") {
-                viewStore.send(.skipButtonTapped)
+            } else {
+              HStack(spacing: 0) {
+                LabeledButton("Shuffle", systemImage: "shuffle") {
+                  viewStore.send(.shuffleButtonTapped)
+                }
+                LabeledButton("Skip", systemImage: "forward.fill") {
+                  viewStore.send(.skipButtonTapped)
+                }
               }
-            }
-            Button("Tap to continue") {
-              viewStore.send(.continueButtonTapped)
             }
           }
+          .frame(height: 50)
+          .animation(.default, value: viewStore.isAnswered)
           .foregroundColor(.white)
           .padding(.vertical, 64)
         }
