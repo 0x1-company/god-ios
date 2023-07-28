@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B720CC4B2A6BF1560047E3FD"
-               BuildableName = "God.app"
-               BlueprintName = "God"
-               ReferencedContainer = "container:God.xcodeproj">
+               BlueprintIdentifier = "B783E0F22A11FFD0002E782F"
+               BuildableName = "App.app"
+               BlueprintName = "App"
+               ReferencedContainer = "container:Staging.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -43,12 +43,22 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B720CC4B2A6BF1560047E3FD"
-            BuildableName = "God.app"
-            BlueprintName = "God"
-            ReferencedContainer = "container:God.xcodeproj">
+            BlueprintIdentifier = "B783E0F22A11FFD0002E782F"
+            BuildableName = "App.app"
+            BlueprintName = "App"
+            ReferencedContainer = "container:Staging.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-FIRDebugEnabled"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-FIRAnalyticsDebugEnabled"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -60,10 +70,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B720CC4B2A6BF1560047E3FD"
-            BuildableName = "God.app"
-            BlueprintName = "God"
-            ReferencedContainer = "container:God.xcodeproj">
+            BlueprintIdentifier = "B783E0F22A11FFD0002E782F"
+            BuildableName = "App.app"
+            BlueprintName = "App"
+            ReferencedContainer = "container:Staging.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

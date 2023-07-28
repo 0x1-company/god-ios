@@ -5,13 +5,13 @@
       location = "group:PreviewApp/PreviewApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:App/God.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:App/Production.xcodeproj">
+      location = "group:App/Development.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:App/Staging.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App/Production.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Packages/CupertinoPackage">
