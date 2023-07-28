@@ -12,7 +12,7 @@ public struct ShopReducer: ReducerProtocol {
     case onTask
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerProtocol<State, Action> {
@@ -45,12 +45,12 @@ public struct ShopView: View {
           Text("68")
         }
         .foregroundColor(Color.yellow)
-        
+
         Text("Boost Your Name in Polls")
           .foregroundColor(Color.white)
         Text("Use coins to get featured in polls")
           .foregroundColor(Color.gray)
-        
+
         VStack {
           ShopItemView(
             name: "Get Your Name on 3 Random Polls",
@@ -65,9 +65,9 @@ public struct ShopView: View {
           )
         }
         .padding(.horizontal, 16)
-        
+
         Spacer()
-        
+
         Text("How do I get more coins?")
           .foregroundColor(Color.white)
         Text("Answer polls about your friends to win coins.")

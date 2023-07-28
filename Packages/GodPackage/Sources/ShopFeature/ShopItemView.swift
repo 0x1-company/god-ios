@@ -22,7 +22,7 @@ struct ShopItemView: View {
             .foregroundColor(Color.gray)
         }
       }
-      
+
       Button(action: {}) {
         Text(amount.description)
           .frame(width: 76, height: 36)
