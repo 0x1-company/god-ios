@@ -10,10 +10,7 @@
 		B720CC4F2A6BF1560047E3FD /* GodApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B720CC4E2A6BF1560047E3FD /* GodApp.swift */; };
 		B720CC532A6BF1570047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC522A6BF1570047E3FD /* Assets.xcassets */; };
 		B720CC562A6BF1570047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC552A6BF1570047E3FD /* Preview Assets.xcassets */; };
-		B720CC5B2A6BF17B0047E3FD /* AboutFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5A2A6BF17B0047E3FD /* AboutFeature */; };
-		B720CC5D2A6BF17B0047E3FD /* GodFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5C2A6BF17B0047E3FD /* GodFeature */; };
-		B720CC5F2A6BF17B0047E3FD /* InboxFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B720CC5E2A6BF17B0047E3FD /* InboxFeature */; };
-		B759B0872A6C0D0E0047C38C /* ProfileFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B759B0862A6C0D0E0047C38C /* ProfileFeature */; };
+		B74AA57C2A73DF460001B612 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B74AA57B2A73DF460001B612 /* AppFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,10 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B720CC5F2A6BF17B0047E3FD /* InboxFeature in Frameworks */,
-				B720CC5D2A6BF17B0047E3FD /* GodFeature in Frameworks */,
-				B720CC5B2A6BF17B0047E3FD /* AboutFeature in Frameworks */,
-				B759B0872A6C0D0E0047C38C /* ProfileFeature in Frameworks */,
+				B74AA57C2A73DF460001B612 /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,10 +97,7 @@
 			);
 			name = God;
 			packageProductDependencies = (
-				B720CC5A2A6BF17B0047E3FD /* AboutFeature */,
-				B720CC5C2A6BF17B0047E3FD /* GodFeature */,
-				B720CC5E2A6BF17B0047E3FD /* InboxFeature */,
-				B759B0862A6C0D0E0047C38C /* ProfileFeature */,
+				B74AA57B2A73DF460001B612 /* AppFeature */,
 			);
 			productName = God;
 			productReference = B720CC4C2A6BF1560047E3FD /* God.app */;
@@ -371,21 +362,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B720CC5A2A6BF17B0047E3FD /* AboutFeature */ = {
+		B74AA57B2A73DF460001B612 /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AboutFeature;
-		};
-		B720CC5C2A6BF17B0047E3FD /* GodFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GodFeature;
-		};
-		B720CC5E2A6BF17B0047E3FD /* InboxFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = InboxFeature;
-		};
-		B759B0862A6C0D0E0047C38C /* ProfileFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ProfileFeature;
+			productName = AppFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
