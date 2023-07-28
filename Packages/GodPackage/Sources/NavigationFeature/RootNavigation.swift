@@ -1,13 +1,13 @@
-import ComposableArchitecture
-import SwiftUI
-import InboxFeature
-import GodFeature
-import ProfileFeature
 import AboutFeature
+import ComposableArchitecture
+import GodFeature
+import InboxFeature
+import ProfileFeature
+import SwiftUI
 
 public struct RootNavigationReducer: ReducerProtocol {
   public init() {}
-  
+
   public struct State: Equatable {
     var inbox = InboxReducer.State()
     var question = QuestionReducer.State()
@@ -15,14 +15,14 @@ public struct RootNavigationReducer: ReducerProtocol {
     var about = AboutReducer.State()
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case inbox(InboxReducer.Action)
     case question(QuestionReducer.Action)
     case profile(ProfileReducer.Action)
     case about(AboutReducer.Action)
   }
-  
+
   public var body: some ReducerProtocol<State, Action> {
     Scope(state: \.inbox, action: /Action.inbox) {
       InboxReducer()
@@ -41,13 +41,13 @@ public struct RootNavigationReducer: ReducerProtocol {
 
 public struct RootNavigationView: View {
   let store: StoreOf<RootNavigationReducer>
-  
+
   public init(store: StoreOf<RootNavigationReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       TabView {
         InboxView(
           store: store.scope(

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import Constants
-import SwiftUI
 import NavigationFeature
+import SwiftUI
 
 public struct AppReducer: ReducerProtocol {
   public init() {}
@@ -54,7 +54,7 @@ public struct AppReducer: ReducerProtocol {
 
       case .sceneDelegate:
         return .none
-        
+
       case .navigation:
         return .none
 
