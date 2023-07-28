@@ -17,7 +17,7 @@
                BlueprintIdentifier = "B783E0F22A11FFD0002E782F"
                BuildableName = "App.app"
                BlueprintName = "App"
-               ReferencedContainer = "container:Staging.xcodeproj">
+               ReferencedContainer = "container:Development.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,7 +46,7 @@
             BlueprintIdentifier = "B783E0F22A11FFD0002E782F"
             BuildableName = "App.app"
             BlueprintName = "App"
-            ReferencedContainer = "container:Staging.xcodeproj">
+            ReferencedContainer = "container:Development.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -73,7 +73,7 @@
             BlueprintIdentifier = "B783E0F22A11FFD0002E782F"
             BuildableName = "App.app"
             BlueprintName = "App"
-            ReferencedContainer = "container:Staging.xcodeproj">
+            ReferencedContainer = "container:Development.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
