@@ -8,6 +8,7 @@ graph TD;
     AppFeature-->NavigationFeature;
     NavigationFeature-->AboutFeature;
     NavigationFeature-->ActivityFeature;
+    NavigationFeature-->AddFeature;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     NavigationFeature-->ProfileFeature;
