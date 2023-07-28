@@ -10,6 +10,7 @@ let package = Package(
   ],
   products: [
     .library(name: "AboutFeature", targets: ["AboutFeature"]),
+    .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
@@ -33,6 +34,9 @@ let package = Package(
   ],
   targets: [
     .target(name: "AboutFeature", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "ActivityFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
