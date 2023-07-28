@@ -97,6 +97,16 @@ public struct AddView: View {
           FriendsOfFriendsView(store: store)
         }
       }
+      .sheet(
+        store: store.scope(
+          state: \.$fromSchool,
+          action: AddReducer.Action.fromSchool
+        )
+      ) { store in
+        NavigationStack {
+          FromSchoolView(store: store)
+        }
+        }
     }
   }
 }
