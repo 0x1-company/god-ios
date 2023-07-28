@@ -1,10 +1,10 @@
 import AboutFeature
+import ActivityFeature
 import ComposableArchitecture
 import GodFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
-import ActivityFeature
 
 public struct RootNavigationReducer: ReducerProtocol {
   public init() {}
