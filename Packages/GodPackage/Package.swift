@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
+    .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
@@ -33,8 +34,8 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
+      "NavigationFeature",
       .product(name: "Constants", package: "CupertinoPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
@@ -55,6 +56,12 @@ let package = Package(
       .product(name: "ButtonStyles", package: "DesignSystemPackage"),
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "NavigationFeature", dependencies: [
+      "AboutFeature",
+      "GodFeature",
+      "InboxFeature",
+      "ProfileFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
