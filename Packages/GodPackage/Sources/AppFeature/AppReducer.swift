@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Constants
 import SwiftUI
+import NavigationFeature
 
 public struct AppReducer: ReducerProtocol {
   public init() {}
@@ -10,11 +11,13 @@ public struct AppReducer: ReducerProtocol {
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
+    var navigation = RootNavigationReducer.State()
   }
 
   public enum Action: Equatable {
     case appDelegate(AppDelegateReducer.Action)
     case sceneDelegate(SceneDelegateReducer.Action)
+    case navigation(RootNavigationReducer.Action)
 
     case quickAction(String)
   }
@@ -28,6 +31,9 @@ public struct AppReducer: ReducerProtocol {
     }
     Scope(state: \.sceneDelegate, action: /Action.sceneDelegate) {
       SceneDelegateReducer()
+    }
+    Scope(state: \.navigation, action: /Action.navigation) {
+      RootNavigationReducer()
     }
     Reduce { _, action in
       switch action {
@@ -47,6 +53,9 @@ public struct AppReducer: ReducerProtocol {
         }
 
       case .sceneDelegate:
+        return .none
+        
+      case .navigation:
         return .none
 
       case let .quickAction(key):
@@ -75,6 +84,11 @@ public struct AppView: View {
   }
 
   public var body: some View {
-    Text("AppView")
+    RootNavigationView(
+      store: store.scope(
+        state: \.navigation,
+        action: AppReducer.Action.navigation
+      )
+    )
   }
 }
