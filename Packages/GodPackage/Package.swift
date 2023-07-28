@@ -23,6 +23,7 @@ let package = Package(
     .library(name: "ProfileShareFeature", targets: ["ProfileShareFeature"]),
     .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
+    .library(name: "ShopFeature", targets: ["ShopFeature"]),
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
@@ -84,6 +85,9 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "ShopFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
   ]
