@@ -4,11 +4,13 @@ import GodFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
+import ActivityFeature
 
 public struct RootNavigationReducer: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable {
+    var activity = ActivityReducer.State()
     var inbox = InboxReducer.State()
     var question = QuestionReducer.State()
     var profile = ProfileReducer.State()
@@ -17,6 +19,7 @@ public struct RootNavigationReducer: ReducerProtocol {
   }
 
   public enum Action: Equatable {
+    case activity(ActivityReducer.Action)
     case inbox(InboxReducer.Action)
     case question(QuestionReducer.Action)
     case profile(ProfileReducer.Action)
@@ -24,6 +27,9 @@ public struct RootNavigationReducer: ReducerProtocol {
   }
 
   public var body: some ReducerProtocol<State, Action> {
+    Scope(state: \.activity, action: /Action.activity) {
+      ActivityReducer()
+    }
     Scope(state: \.inbox, action: /Action.inbox) {
       InboxReducer()
     }
@@ -49,6 +55,16 @@ public struct RootNavigationView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { _ in
       TabView {
+        ActivityView(
+          store: store.scope(
+            state: \.activity,
+            action: RootNavigationReducer.Action.activity
+          )
+        )
+        .tabItem {
+          Text("Activity")
+        }
+
         InboxView(
           store: store.scope(
             state: \.inbox,

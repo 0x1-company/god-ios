@@ -68,6 +68,7 @@ let package = Package(
     ]),
     .target(name: "NavigationFeature", dependencies: [
       "AboutFeature",
+      "ActivityFeature",
       "GodFeature",
       "InboxFeature",
       "ProfileFeature",
