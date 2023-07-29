@@ -11,7 +11,6 @@ let package = Package(
   ],
   products: [
     .library(name: "Build", targets: ["Build"]),
-    .library(name: "Constants", targets: ["Constants"]),
     .library(name: "UIApplicationClient", targets: ["UIApplicationClient"]),
     .library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
     .library(name: "WidgetClient", targets: ["WidgetClient"]),
@@ -21,9 +20,6 @@ let package = Package(
   ],
   targets: [
     .target(name: "Build", dependencies: [
-      .product(name: "Dependencies", package: "swift-dependencies"),
-    ]),
-    .target(name: "Constants", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "UIApplicationClient", dependencies: [

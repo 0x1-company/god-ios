@@ -13,6 +13,7 @@ let package = Package(
     .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
+    .library(name: "Constants", targets: ["Constants"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
@@ -44,8 +45,11 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
+      "Constants",
       "NavigationFeature",
-      .product(name: "Constants", package: "CupertinoPackage"),
+    ]),
+    .target(name: "Constants", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
