@@ -3,21 +3,19 @@ import SwiftUI
 
 public struct AddReducer: ReducerProtocol {
   public init() {}
-
+  
   public struct State: Equatable {
-    @PresentationState var friendsOfFriends: FriendsOfFriendsReducer.State?
-    @PresentationState var fromSchool: FromSchoolReducer.State?
+    @PresentationState var destination: Destination.State?
     public init() {}
   }
-
+  
   public enum Action: Equatable {
     case onTask
     case seeMoreFriendsOfFriendsButtonTapped
     case seeMoreFromSchoolButtonTapped
-    case friendsOfFriends(PresentationAction<FriendsOfFriendsReducer.Action>)
-    case fromSchool(PresentationAction<FromSchoolReducer.Action>)
+    case destination(PresentationAction<Destination.Action>)
   }
-
+  
   public var body: some ReducerProtocol<State, Action> {
     Reduce { state, action in
       switch action {
@@ -25,42 +23,55 @@ public struct AddReducer: ReducerProtocol {
         return .none
         
       case .seeMoreFriendsOfFriendsButtonTapped:
-        state.friendsOfFriends = .init()
+        state.destination = .friendsOfFriends()
         return .none
         
       case .seeMoreFromSchoolButtonTapped:
-        state.fromSchool = .init()
+        state.destination = .fromSchool()
         return .none
         
-      case .friendsOfFriends:
-        return .none
-        
-      case .fromSchool:
+      case .destination:
         return .none
       }
     }
-    .ifLet(\.$friendsOfFriends, action: /Action.friendsOfFriends) {
-      FriendsOfFriendsReducer()
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
     }
-    .ifLet(\.$fromSchool, action: /Action.fromSchool) {
-      FromSchoolReducer()
+  }
+  
+  public struct Destination: ReducerProtocol {
+    public enum State: Equatable {
+      case friendsOfFriends(FriendsOfFriendsReducer.State = .init())
+      case fromSchool(FromSchoolReducer.State = .init())
+    }
+    public enum Action: Equatable {
+      case friendsOfFriends(FriendsOfFriendsReducer.Action)
+      case fromSchool(FromSchoolReducer.Action)
+    }
+    public var body: some ReducerProtocol<State, Action> {
+      Scope(state: /State.friendsOfFriends, action: /Action.friendsOfFriends) {
+        FriendsOfFriendsReducer()
+      }
+      Scope(state: /State.fromSchool, action: /Action.fromSchool) {
+        FromSchoolReducer()
+      }
     }
   }
 }
 
 public struct AddView: View {
   let store: StoreOf<AddReducer>
-
+  
   public init(store: StoreOf<AddReducer>) {
     self.store = store
   }
-
+  
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
         TextField("Search...", text: .constant(""))
           .listRowSeparator(.hidden)
-
+        
         Section("FRIENDS OF FRIENDS") {
           ForEach(0..<3, id: \.self) { _ in
             FriendAddCard()
@@ -76,7 +87,7 @@ public struct AddView: View {
           ForEach(0..<3, id: \.self) { _ in
             FriendAddCard()
           }
-
+          
           Button("See 471 more") {
             viewStore.send(.seeMoreFromSchoolButtonTapped)
           }
@@ -88,25 +99,31 @@ public struct AddView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
-        store: store.scope(
-          state: \.$friendsOfFriends,
-          action: AddReducer.Action.friendsOfFriends
-        )
+        store: store.scope(state: \.$destination, action: { .destination($0) })
       ) { store in
-        NavigationStack {
-          FriendsOfFriendsView(store: store)
+        SwitchStore(store) {
+          switch $0 {
+          case .friendsOfFriends:
+            CaseLet(
+              state: /AddReducer.Destination.State.friendsOfFriends,
+              action: AddReducer.Destination.Action.friendsOfFriends
+            ) { store in
+              NavigationStack {
+                FriendsOfFriendsView(store: store)
+              }
+            }
+          case .fromSchool:
+            CaseLet(
+              state: /AddReducer.Destination.State.fromSchool,
+              action: AddReducer.Destination.Action.fromSchool
+            ) { store in
+              NavigationStack {
+                FromSchoolView(store: store)
+              }
+            }
+          }
         }
       }
-      .sheet(
-        store: store.scope(
-          state: \.$fromSchool,
-          action: AddReducer.Action.fromSchool
-        )
-      ) { store in
-        NavigationStack {
-          FromSchoolView(store: store)
-        }
-        }
     }
   }
 }
