@@ -48,21 +48,25 @@ public struct AboutView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView(.vertical) {
-        Button("How It Works") {
-          viewStore.send(.howItWorksButtonTapped)
+        VStack(alignment: .center, spacing: 24) {
+          IconButton("How It Works", name: "") {
+            viewStore.send(.howItWorksButtonTapped)
+          }
+          IconButton("FAQ", name: "clipboard") {
+            viewStore.send(.faqButtonTapped)
+          }
+          IconButton("Share Feedback", name: "megaphone") {
+            viewStore.send(.shareFeedbackButtonTapped)
+          }
+          IconButton("Get Help", name: "rescue-workers-helmet") {
+            viewStore.send(.getHelpButtonTapped)
+          }
+          IconButton("Safety Center", name: "shield") {
+            viewStore.send(.safetyCenterButtonTapped)
+          }
         }
-        Button("FAQ") {
-          viewStore.send(.faqButtonTapped)
-        }
-        Button("Share Feedback") {
-          viewStore.send(.shareFeedbackButtonTapped)
-        }
-        Button("Get Help") {
-          viewStore.send(.getHelpButtonTapped)
-        }
-        Button("Safety Center") {
-          viewStore.send(.safetyCenterButtonTapped)
-        }
+        .padding(.top, 24)
+        .padding(.horizontal, 32)
       }
     }
   }
