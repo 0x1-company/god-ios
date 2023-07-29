@@ -16,6 +16,6 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: SourcePackages
-          key: ${{ runner.os }}-xcworkspace-${{ hashFiles('god.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
-      - run: xcodebuild build -workspace god.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
+      - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
