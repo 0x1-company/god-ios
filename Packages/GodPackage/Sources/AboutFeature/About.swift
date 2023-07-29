@@ -64,9 +64,9 @@ public struct AboutView: View {
         }
         .padding(.top, 24)
         .padding(.horizontal, 32)
-        
+
         Spacer()
-        
+
         HStack(spacing: 16) {
           Link(destination: Constants.twitterURL) {
             Image("twitter", bundle: .module)
@@ -85,7 +85,7 @@ public struct AboutView: View {
           }
         }
         .aspectRatio(contentMode: .fit)
-        
+
         VStack(spacing: 0) {
           Text("God")
           Text("Terms / Privacy")
