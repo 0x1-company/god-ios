@@ -5,6 +5,7 @@ A description of this package.
 ## Package Dependencies
 ```mermaid
 graph TD;
+    AppFeature-->Constants;
     AppFeature-->NavigationFeature;
     NavigationFeature-->AboutFeature;
     NavigationFeature-->ActivityFeature;
