@@ -36,6 +36,7 @@ let package = Package(
   ],
   targets: [
     .target(name: "AboutFeature", dependencies: [
+      "Constants",
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
@@ -48,9 +49,7 @@ let package = Package(
       "Constants",
       "NavigationFeature",
     ]),
-    .target(name: "Constants", dependencies: [
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
+    .target(name: "Constants"),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "DesignSystemPackage"),
       .product(name: "LabeledButton", package: "DesignSystemPackage"),
