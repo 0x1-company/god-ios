@@ -35,7 +35,7 @@ public struct PlayAgainView: View {
         Text("Play Again")
           .bold()
           .font(.largeTitle)
-        
+
         Image("locked", bundle: .module)
           .rotationEffect(Angle(degrees: -10.0))
 
