@@ -99,11 +99,9 @@ public struct AddView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
-        store: store.scope(
-          state: \.$destination,
-          action: AddReducer.Action.destination
-        ),
-        content: {
+        store: store.scope(state: \.$destination, action: { .destination($0) })
+      ) { store in
+        SwitchStore(store) {
           switch $0 {
           case .friendsOfFriends:
             CaseLet(
@@ -125,7 +123,7 @@ public struct AddView: View {
             }
           }
         }
-      )
+      }
     }
   }
 }
