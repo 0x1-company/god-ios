@@ -4,7 +4,7 @@ help:
 
 .PHONY: open
 open: # Open project in Xcode
-	open god.xcworkspace
+	open God.xcworkspace
 
 .PHONY: clean
 clean: # Clean all build folders
