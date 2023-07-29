@@ -6,19 +6,19 @@ struct FriendAddCard: View {
       Color.red
         .frame(width: 40, height: 40)
         .clipShape(Circle())
-      
+
       VStack(alignment: .leading) {
         Text("Kevin Ding")
-        
+
         Text("1 mutual friend")
           .foregroundColor(.secondary)
       }
-      
+
       HStack(spacing: 0) {
         Button("HIDE", action: {})
           .frame(width: 80, height: 34)
           .foregroundColor(.secondary)
-        
+
         Button("ADD", action: {})
           .frame(width: 80, height: 34)
           .foregroundColor(Color.white)

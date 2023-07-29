@@ -3,32 +3,32 @@ import SwiftUI
 
 public struct FriendsOfFriendsReducer: ReducerProtocol {
   public init() {}
-  
+
   public struct State: Equatable {
     @BindingState var searchable = ""
     public init() {}
   }
-  
+
   public enum Action: Equatable, BindableAction {
     case onTask
     case closeButtonTapped
     case binding(BindingAction<State>)
   }
-  
+
   @Dependency(\.dismiss) var dismiss
-  
+
   public var body: some ReducerProtocol<State, Action> {
     BindingReducer()
     Reduce { _, action in
       switch action {
       case .onTask:
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await self.dismiss()
         }
-        
+
       case .binding:
         return .none
       }
@@ -38,14 +38,14 @@ public struct FriendsOfFriendsReducer: ReducerProtocol {
 
 public struct FriendsOfFriendsView: View {
   let store: StoreOf<FriendsOfFriendsReducer>
-  
+
   public init(store: StoreOf<FriendsOfFriendsReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List(0..<100) { _ in
+      List(0 ..< 100) { _ in
         FriendAddCard()
       }
       .listStyle(.plain)

@@ -3,33 +3,33 @@ import SwiftUI
 
 public struct AddReducer: ReducerProtocol {
   public init() {}
-  
+
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case onTask
     case seeMoreFriendsOfFriendsButtonTapped
     case seeMoreFromSchoolButtonTapped
     case destination(PresentationAction<Destination.Action>)
   }
-  
+
   public var body: some ReducerProtocol<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
         return .none
-        
+
       case .seeMoreFriendsOfFriendsButtonTapped:
         state.destination = .friendsOfFriends()
         return .none
-        
+
       case .seeMoreFromSchoolButtonTapped:
         state.destination = .fromSchool()
         return .none
-        
+
       case .destination:
         return .none
       }
@@ -38,16 +38,18 @@ public struct AddReducer: ReducerProtocol {
       Destination()
     }
   }
-  
+
   public struct Destination: ReducerProtocol {
     public enum State: Equatable {
       case friendsOfFriends(FriendsOfFriendsReducer.State = .init())
       case fromSchool(FromSchoolReducer.State = .init())
     }
+
     public enum Action: Equatable {
       case friendsOfFriends(FriendsOfFriendsReducer.Action)
       case fromSchool(FromSchoolReducer.Action)
     }
+
     public var body: some ReducerProtocol<State, Action> {
       Scope(state: /State.friendsOfFriends, action: /Action.friendsOfFriends) {
         FriendsOfFriendsReducer()
@@ -61,33 +63,33 @@ public struct AddReducer: ReducerProtocol {
 
 public struct AddView: View {
   let store: StoreOf<AddReducer>
-  
+
   public init(store: StoreOf<AddReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
         TextField("Search...", text: .constant(""))
           .listRowSeparator(.hidden)
-        
+
         Section("FRIENDS OF FRIENDS") {
-          ForEach(0..<3, id: \.self) { _ in
+          ForEach(0 ..< 3, id: \.self) { _ in
             FriendAddCard()
           }
-          
+
           Button("See 19 more") {
             viewStore.send(.seeMoreFriendsOfFriendsButtonTapped)
           }
           .buttonStyle(SeeMoreButtonStyle())
         }
-        
+
         Section("FROM SCHOOL") {
-          ForEach(0..<3, id: \.self) { _ in
+          ForEach(0 ..< 3, id: \.self) { _ in
             FriendAddCard()
           }
-          
+
           Button("See 471 more") {
             viewStore.send(.seeMoreFromSchoolButtonTapped)
           }
