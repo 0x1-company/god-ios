@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Constants
 import SwiftUI
 
 public struct AboutReducer: ReducerProtocol {
@@ -14,13 +15,7 @@ public struct AboutReducer: ReducerProtocol {
     case shareFeedbackButtonTapped
     case getHelpButtonTapped
     case safetyCenterButtonTapped
-    case twitterButtonTapped
-    case instagramButtonTapped
-    case tiktokButtonTapped
-    case lineButtonTapped
   }
-  
-  @Dependency(\.openURL) var openURL
 
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
@@ -34,15 +29,6 @@ public struct AboutReducer: ReducerProtocol {
       case .getHelpButtonTapped:
         return .none
       case .safetyCenterButtonTapped:
-        return .none
-      case .twitterButtonTapped:
-        return .run { _ in
-        }
-      case .instagramButtonTapped:
-        return .none
-      case .tiktokButtonTapped:
-        return .none
-      case .lineButtonTapped:
         return .none
       }
     }
@@ -82,19 +68,23 @@ public struct AboutView: View {
         Spacer()
         
         HStack(spacing: 16) {
-          SocialButton(image: "line") {
-            viewStore.send(.lineButtonTapped)
+          Link(destination: Constants.twitterURL) {
+            Image("twitter", bundle: .module)
+              .resizable()
+              .frame(width: 62, height: 62)
           }
-          SocialButton(image: "twitter") {
-            viewStore.send(.twitterButtonTapped)
+          Link(destination: Constants.instagramURL) {
+            Image("instagram", bundle: .module)
+              .resizable()
+              .frame(width: 62, height: 62)
           }
-          SocialButton(image: "instagram") {
-            viewStore.send(.instagramButtonTapped)
-          }
-          SocialButton(image: "tiktok") {
-            viewStore.send(.tiktokButtonTapped)
+          Link(destination: Constants.tiktokURL) {
+            Image("tiktok", bundle: .module)
+              .resizable()
+              .frame(width: 62, height: 62)
           }
         }
+        .aspectRatio(contentMode: .fit)
         
         VStack(spacing: 0) {
           Text("God")
