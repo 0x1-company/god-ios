@@ -23,7 +23,6 @@ public struct AppReducer: ReducerProtocol {
   }
 
   @Dependency(\.openURL) var openURL
-  @Dependency(\.constants) var constants
 
   public var body: some ReducerProtocol<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
@@ -60,8 +59,8 @@ public struct AppReducer: ReducerProtocol {
 
       case let .quickAction(key):
         let urls: [String: URL] = [
-          "talk-to-founder": constants.founderURL(),
-          "talk-to-developer": constants.developerURL(),
+          "talk-to-founder": Constants.founderURL,
+          "talk-to-developer": Constants.developerURL,
         ]
 
         guard let url = urls[key] else {
