@@ -4,7 +4,7 @@ struct IconButton: View {
   let title: LocalizedStringKey
   let name: String
   let action: () -> Void
-  
+
   init(
     _ title: LocalizedStringKey,
     name: String,
