@@ -14,24 +14,35 @@ public struct AboutReducer: ReducerProtocol {
     case shareFeedbackButtonTapped
     case getHelpButtonTapped
     case safetyCenterButtonTapped
+    case twitterButtonTapped
+    case instagramButtonTapped
+    case tiktokButtonTapped
+    case lineButtonTapped
   }
+  
+  @Dependency(\.openURL) var openURL
 
   public var body: some ReducerProtocol<State, Action> {
     Reduce { _, action in
       switch action {
       case .howItWorksButtonTapped:
         return .none
-
       case .faqButtonTapped:
         return .none
-
       case .shareFeedbackButtonTapped:
         return .none
-
       case .getHelpButtonTapped:
         return .none
-
       case .safetyCenterButtonTapped:
+        return .none
+      case .twitterButtonTapped:
+        return .run { _ in
+        }
+      case .instagramButtonTapped:
+        return .none
+      case .tiktokButtonTapped:
+        return .none
+      case .lineButtonTapped:
         return .none
       }
     }
@@ -47,7 +58,7 @@ public struct AboutView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollView(.vertical) {
+      VStack(spacing: 32) {
         VStack(alignment: .center, spacing: 24) {
           IconButton("How It Works", name: "") {
             viewStore.send(.howItWorksButtonTapped)
@@ -67,6 +78,29 @@ public struct AboutView: View {
         }
         .padding(.top, 24)
         .padding(.horizontal, 32)
+        
+        Spacer()
+        
+        HStack(spacing: 16) {
+          SocialButton(image: "line") {
+            viewStore.send(.lineButtonTapped)
+          }
+          SocialButton(image: "twitter") {
+            viewStore.send(.twitterButtonTapped)
+          }
+          SocialButton(image: "instagram") {
+            viewStore.send(.instagramButtonTapped)
+          }
+          SocialButton(image: "tiktok") {
+            viewStore.send(.tiktokButtonTapped)
+          }
+        }
+        
+        VStack(spacing: 0) {
+          Text("God")
+          Text("Terms / Privacy")
+        }
+        .foregroundColor(.secondary)
       }
     }
   }
