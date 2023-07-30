@@ -14,6 +14,7 @@ extension Build: DependencyKey {
     },
     bundleShortVersion: {
       Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
+    },
+    infoDictionary: { Bundle.main.infoDictionary?[$0] }
   )
 }

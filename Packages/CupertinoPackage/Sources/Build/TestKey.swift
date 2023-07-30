@@ -16,6 +16,7 @@ extension Build: TestDependencyKey {
     bundlePath: unimplemented("\(Self.self).bundlePath"),
     bundleName: unimplemented("\(Self.self).bundleName"),
     bundleVersion: unimplemented("\(Self.self).bundleVersion"),
-    bundleShortVersion: unimplemented("\(Self.self).bundleShortVersion")
+    bundleShortVersion: unimplemented("\(Self.self).bundleShortVersion"),
+    infoDictionary: unimplemented("\(Self.self).infoDictionary")
   )
 }
