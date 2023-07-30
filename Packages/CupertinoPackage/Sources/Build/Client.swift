@@ -7,4 +7,5 @@ public struct Build {
   public var bundleName: () -> String
   public var bundleVersion: () -> Int
   public var bundleShortVersion: () -> String
+  public var infoDictionary: (String) -> Any?
 }
