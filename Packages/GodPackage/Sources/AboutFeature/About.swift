@@ -17,7 +17,7 @@ public struct AboutReducer: ReducerProtocol {
     case getHelpButtonTapped
     case safetyCenterButtonTapped
     case confirmationDialog(PresentationAction<ConfirmationDialog>)
-    
+
     public enum ConfirmationDialog: Equatable {
       case addMySchoolToMyProfile
       case changeMyGrade
@@ -48,7 +48,7 @@ public struct AboutReducer: ReducerProtocol {
 
       case .safetyCenterButtonTapped:
         return .none
-        
+
       case let .confirmationDialog(.presented(action)):
         switch action {
         case .addMySchoolToMyProfile:
@@ -177,7 +177,6 @@ extension ConfirmationDialogState where Action == AboutReducer.Action.Confirmati
     TextState("Get Help")
   }
 }
-
 
 struct AboutViewPreviews: PreviewProvider {
   static var previews: some View {
