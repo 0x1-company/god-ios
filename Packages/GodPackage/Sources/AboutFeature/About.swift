@@ -49,6 +49,25 @@ public struct AboutReducer: ReducerProtocol {
       case .safetyCenterButtonTapped:
         return .none
         
+      case let .confirmationDialog(.presented(action)):
+        switch action {
+        case .addMySchoolToMyProfile:
+          return .none
+        case .changeMyGrade:
+          return .none
+        case .changeMyGender:
+          return .none
+        case .changeMyName:
+          return .none
+        case .deleteMyAccount:
+          return .none
+        case .purchasesAndGodMode:
+          return .none
+        case .reportBug:
+          return .none
+        case .somethingElse:
+          return .none
+        }
       case .confirmationDialog:
         return .none
       }
