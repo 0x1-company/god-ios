@@ -1,8 +1,15 @@
-//
-//  File.swift
-//  
-//
-//  Created by tomokisun on 2023/08/03.
-//
+import Dependencies
+import XCTestDynamicOverlay
 
-import Foundation
+public extension DependencyValues {
+  var firestore: FirestoreClient {
+    get { self[FirestoreClient.self] }
+    set { self[FirestoreClient.self] = newValue }
+  }
+}
+
+extension FirestoreClient: TestDependencyKey {
+  public static let testValue = Self(
+    config: unimplemented("\(Self.self).config")
+  )
+}
