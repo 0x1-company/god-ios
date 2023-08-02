@@ -16,8 +16,3 @@ dgraph: # Generate dependencies graph
 	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/CupertinoPackage
 	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/FirebasePackage
 	./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/GodPackage
-
-.PHONY: format
-format: # Format swift files
-	@swift build -c release --package-path ./BuildTools/SwiftFormatTool --product swiftformat
-	./BuildTools/SwiftFormatTool/.build/release/swiftformat ./

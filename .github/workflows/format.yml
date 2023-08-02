@@ -18,7 +18,8 @@ jobs:
         with:
           path: BuildTools/SwiftFormatTool/.build
           key: ${{ runner.os }}-SwiftFormatTool-${{ hashFiles('BuildTools/SwiftFormatTool/Package.resolved') }}
-      - run: make format
+      - run: swift build -c release --package-path ./BuildTools/SwiftFormatTool --product swiftformat
+      - run: ./BuildTools/SwiftFormatTool/.build/release/swiftformat ./
       - continue-on-error: true
         uses: peter-evans/create-pull-request@v5
         id: create-pr
