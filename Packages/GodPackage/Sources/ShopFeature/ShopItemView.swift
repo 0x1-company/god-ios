@@ -15,7 +15,7 @@ struct ShopItemView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .foregroundColor(Color.white)
 
-        if let description = description {
+        if let description {
           Text(description)
             .font(.caption)
             .frame(maxWidth: .infinity, alignment: .leading)

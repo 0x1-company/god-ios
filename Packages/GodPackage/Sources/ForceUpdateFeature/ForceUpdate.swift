@@ -21,7 +21,7 @@ public struct ForceUpdateReducer: Reducer {
       switch action {
       case .updateButtonTapped:
         return .run { _ in
-          await self.openURL(Constants.appStoreURL)
+          await openURL(Constants.appStoreURL)
         }
       }
     }

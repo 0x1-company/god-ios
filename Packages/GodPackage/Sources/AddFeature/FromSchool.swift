@@ -26,7 +26,7 @@ public struct FromSchoolReducer: Reducer {
 
       case .closeButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
 
       case .binding:

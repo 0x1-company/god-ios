@@ -22,7 +22,7 @@ public struct ShopReducer: Reducer {
         return .none
       case .closeButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       }
     }

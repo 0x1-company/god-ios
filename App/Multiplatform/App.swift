@@ -21,7 +21,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
   )
 
   var viewStore: ViewStore<AppReducer.State, AppReducer.Action> {
-    return ViewStore(store, observe: { $0 })
+    ViewStore(store, observe: { $0 })
   }
 
   func application(
