@@ -22,7 +22,7 @@ public struct WelcomeReducer: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    BindingReducer() }
+    BindingReducer()
     Reduce { _, action in
       switch action {
       case .getStartedButtonTapped:
