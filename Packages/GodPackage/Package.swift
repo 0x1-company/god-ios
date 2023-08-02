@@ -14,6 +14,7 @@ let package = Package(
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "Constants", targets: ["Constants"]),
+    .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
@@ -50,6 +51,11 @@ let package = Package(
       "NavigationFeature",
     ]),
     .target(name: "Constants"),
+    .target(name: "ForceUpdateFeature", dependencies: [
+      "Constants",
+      .product(name: "FullScreenActionView", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "GodFeature", dependencies: [
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
