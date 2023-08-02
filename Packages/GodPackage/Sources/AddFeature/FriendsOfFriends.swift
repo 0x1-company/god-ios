@@ -52,7 +52,7 @@ public struct FriendsOfFriendsView: View {
       .navigationTitle("Friends of Friends")
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
-      .searchable(text: viewStore.binding(send: \.$searchable))
+      .searchable(text: viewStore.$searchable)
       .toolbar {
         Button {
           viewStore.send(.closeButtonTapped)

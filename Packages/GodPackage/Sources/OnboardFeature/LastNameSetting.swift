@@ -46,7 +46,7 @@ public struct LastNameSettingView: View {
         Text("What's your last name?")
           .bold()
           .foregroundColor(.white)
-        TextField("Last Name", text: viewStore.binding(send: \.$lastName))
+        TextField("Last Name", text: viewStore.$lastName)
           .font(.title)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)

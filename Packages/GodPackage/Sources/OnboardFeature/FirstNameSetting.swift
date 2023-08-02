@@ -46,7 +46,7 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?")
           .bold()
           .foregroundColor(.white)
-        TextField("First Name", text: viewStore.binding(send: \.$firstName))
+        TextField("First Name", text: viewStore.$firstName)
           .font(.title)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
