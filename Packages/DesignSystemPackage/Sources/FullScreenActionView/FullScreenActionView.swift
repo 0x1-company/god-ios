@@ -1,17 +1,29 @@
 import SwiftUI
 
 public struct FullScreenActionView: View {
+  let title: LocalizedStringKey
+  let actionTitle: LocalizedStringKey
   let action: () -> Void
+  
+  public init(
+    _ title: LocalizedStringKey,
+    actionTitle: LocalizedStringKey,
+    action: @escaping () -> Void
+  ) {
+    self.title = title
+    self.actionTitle = actionTitle
+    self.action = action
+  }
 
   public var body: some View {
     VStack(spacing: 24) {
-      Text("Get more\n friends to play")
+      Text(title)
         .font(.title2)
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
       
       Button(action: action) {
-        Text("Share the app")
+        Text(actionTitle)
           .bold()
           .frame(height: 56)
           .padding(.horizontal, 32)
@@ -27,6 +39,10 @@ public struct FullScreenActionView: View {
 
 struct FullScreenActionViewPreviews: PreviewProvider {
   static var previews: some View {
-    FullScreenActionView(action: {})
+    FullScreenActionView(
+      "Get more\n friends to play",
+      actionTitle: "Share the app",
+      action: {}
+    )
   }
 }
