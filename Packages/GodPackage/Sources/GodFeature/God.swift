@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct GodReducer: ReducerProtocol {
+public struct GodReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -12,7 +12,7 @@ public struct GodReducer: ReducerProtocol {
     case onTask
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .onTask:
@@ -46,7 +46,7 @@ struct GodViewPreviews: PreviewProvider {
     GodView(
       store: .init(
         initialState: GodReducer.State(),
-        reducer: GodReducer()
+        reducer: { GodReducer() }
       )
     )
   }

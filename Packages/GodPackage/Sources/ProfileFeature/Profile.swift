@@ -2,7 +2,7 @@ import ComposableArchitecture
 import ProfileEditFeature
 import SwiftUI
 
-public struct ProfileReducer: ReducerProtocol {
+public struct ProfileReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -16,7 +16,7 @@ public struct ProfileReducer: ReducerProtocol {
     case destination(PresentationAction<Destination.Action>)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
@@ -35,7 +35,7 @@ public struct ProfileReducer: ReducerProtocol {
     }
   }
 
-  public struct Destination: ReducerProtocol {
+  public struct Destination: Reducer {
     public enum State: Equatable {
       case profileEdit(ProfileEditReducer.State = .init())
     }
@@ -44,7 +44,7 @@ public struct ProfileReducer: ReducerProtocol {
       case profileEdit(ProfileEditReducer.Action)
     }
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
       Scope(state: /State.profileEdit, action: /Action.profileEdit) {
         ProfileEditReducer()
       }
@@ -177,7 +177,7 @@ struct ProfileViewPreviews: PreviewProvider {
     ProfileView(
       store: .init(
         initialState: ProfileReducer.State(),
-        reducer: ProfileReducer()
+        reducer: { ProfileReducer() }
       )
     )
   }

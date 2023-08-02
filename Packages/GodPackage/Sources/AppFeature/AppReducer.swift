@@ -3,7 +3,7 @@ import Constants
 import NavigationFeature
 import SwiftUI
 
-public struct AppReducer: ReducerProtocol {
+public struct AppReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -24,7 +24,7 @@ public struct AppReducer: ReducerProtocol {
 
   @Dependency(\.openURL) var openURL
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
       AppDelegateReducer()
     }

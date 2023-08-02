@@ -3,7 +3,7 @@ import ComposableArchitecture
 import LabeledButton
 import SwiftUI
 
-public struct InboxReducer: ReducerProtocol {
+public struct InboxReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +14,7 @@ public struct InboxReducer: ReducerProtocol {
     case onTask
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .onTask:
@@ -86,7 +86,7 @@ struct InboxViewPreviews: PreviewProvider {
     InboxView(
       store: .init(
         initialState: InboxReducer.State(),
-        reducer: InboxReducer()
+        reducer: { InboxReducer() }
       )
     )
   }

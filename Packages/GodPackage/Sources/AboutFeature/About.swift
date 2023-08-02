@@ -2,7 +2,7 @@ import ComposableArchitecture
 import Constants
 import SwiftUI
 
-public struct AboutReducer: ReducerProtocol {
+public struct AboutReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -30,7 +30,7 @@ public struct AboutReducer: ReducerProtocol {
     }
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .howItWorksButtonTapped:
@@ -183,7 +183,7 @@ struct AboutViewPreviews: PreviewProvider {
     AboutView(
       store: .init(
         initialState: AboutReducer.State(),
-        reducer: AboutReducer()
+        reducer: { AboutReducer() }
       )
     )
   }

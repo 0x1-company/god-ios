@@ -15,7 +15,7 @@ let mock = [
   "Satoya Hatanaka",
 ]
 
-public struct VoteReducer: ReducerProtocol {
+public struct VoteReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -38,7 +38,7 @@ public struct VoteReducer: ReducerProtocol {
     }
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
@@ -147,7 +147,7 @@ struct VoteViewPreviews: PreviewProvider {
     VoteView(
       store: .init(
         initialState: VoteReducer.State(),
-        reducer: VoteReducer()
+        reducer: { VoteReducer() }
       )
     )
   }

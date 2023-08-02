@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import UIKit
 
-public struct AppDelegateReducer: ReducerProtocol {
+public struct AppDelegateReducer: Reducer {
   public struct State: Equatable {}
   public enum Action: Equatable {
     case didFinishLaunching
@@ -9,7 +9,7 @@ public struct AppDelegateReducer: ReducerProtocol {
     case configurationForConnecting(UIApplicationShortcutItem?)
   }
 
-  public func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .didFinishLaunching:
       print("didFinishLaunching")

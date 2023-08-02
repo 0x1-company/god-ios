@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct AddReducer: ReducerProtocol {
+public struct AddReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -16,7 +16,7 @@ public struct AddReducer: ReducerProtocol {
     case destination(PresentationAction<Destination.Action>)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
@@ -39,7 +39,7 @@ public struct AddReducer: ReducerProtocol {
     }
   }
 
-  public struct Destination: ReducerProtocol {
+  public struct Destination: Reducer {
     public enum State: Equatable {
       case friendsOfFriends(FriendsOfFriendsReducer.State = .init())
       case fromSchool(FromSchoolReducer.State = .init())
@@ -50,7 +50,7 @@ public struct AddReducer: ReducerProtocol {
       case fromSchool(FromSchoolReducer.Action)
     }
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
       Scope(state: /State.friendsOfFriends, action: /Action.friendsOfFriends) {
         FriendsOfFriendsReducer()
       }
@@ -107,7 +107,7 @@ public struct AddView: View {
           switch $0 {
           case .friendsOfFriends:
             CaseLet(
-              state: /AddReducer.Destination.State.friendsOfFriends,
+              /AddReducer.Destination.State.friendsOfFriends,
               action: AddReducer.Destination.Action.friendsOfFriends
             ) { store in
               NavigationStack {
@@ -116,7 +116,7 @@ public struct AddView: View {
             }
           case .fromSchool:
             CaseLet(
-              state: /AddReducer.Destination.State.fromSchool,
+              /AddReducer.Destination.State.fromSchool,
               action: AddReducer.Destination.Action.fromSchool
             ) { store in
               NavigationStack {
@@ -135,7 +135,7 @@ struct AddViewPreviews: PreviewProvider {
     AddView(
       store: .init(
         initialState: AddReducer.State(),
-        reducer: AddReducer()
+        reducer: { AddReducer() }
       )
     )
   }

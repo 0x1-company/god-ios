@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FriendsOfFriendsReducer: ReducerProtocol {
+public struct FriendsOfFriendsReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -17,7 +17,7 @@ public struct FriendsOfFriendsReducer: ReducerProtocol {
 
   @Dependency(\.dismiss) var dismiss
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce { _, action in
       switch action {
@@ -52,7 +52,7 @@ public struct FriendsOfFriendsView: View {
       .navigationTitle("Friends of Friends")
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
-      .searchable(text: viewStore.binding(\.$searchable))
+      .searchable(text: viewStore.$searchable)
       .toolbar {
         Button {
           viewStore.send(.closeButtonTapped)
@@ -71,7 +71,7 @@ struct FriendsOfFriendsViewPreviews: PreviewProvider {
       FriendsOfFriendsView(
         store: .init(
           initialState: FriendsOfFriendsReducer.State(),
-          reducer: FriendsOfFriendsReducer()
+          reducer: { FriendsOfFriendsReducer() }
         )
       )
     }

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct SchoolSettingReducer: ReducerProtocol {
+public struct SchoolSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -12,7 +12,7 @@ public struct SchoolSettingReducer: ReducerProtocol {
     case onTask
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .onTask:
@@ -46,7 +46,7 @@ struct SchoolSettingViewPreviews: PreviewProvider {
     SchoolSettingView(
       store: .init(
         initialState: SchoolSettingReducer.State(),
-        reducer: SchoolSettingReducer()
+        reducer: { SchoolSettingReducer() }
       )
     )
   }

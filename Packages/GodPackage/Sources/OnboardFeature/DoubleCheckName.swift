@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct DoubleCheckNameReducer: ReducerProtocol {
+public struct DoubleCheckNameReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -19,7 +19,7 @@ public struct DoubleCheckNameReducer: ReducerProtocol {
     }
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .infoButtonTapped:
@@ -74,7 +74,7 @@ struct DoubleCheckNameViewPreviews: PreviewProvider {
     DoubleCheckNameView(
       store: .init(
         initialState: DoubleCheckNameReducer.State(),
-        reducer: DoubleCheckNameReducer()
+        reducer: { DoubleCheckNameReducer() }
       )
     )
   }

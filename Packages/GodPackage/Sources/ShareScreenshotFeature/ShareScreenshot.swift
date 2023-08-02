@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ShareScreenshotReducer: ReducerProtocol {
+public struct ShareScreenshotReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +14,7 @@ public struct ShareScreenshotReducer: ReducerProtocol {
     case messagesButtonTapped
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .lineButtonTapped:
@@ -101,7 +101,7 @@ struct ShareScreenshotViewPreviews: PreviewProvider {
         ShareScreenshotView(
           store: .init(
             initialState: ShareScreenshotReducer.State(),
-            reducer: ShareScreenshotReducer()
+            reducer: { ShareScreenshotReducer() }
           )
         )
         .presentationDetents([.fraction(0.3)])

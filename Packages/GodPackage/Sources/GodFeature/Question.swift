@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct QuestionReducer: ReducerProtocol {
+public struct QuestionReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -13,7 +13,7 @@ public struct QuestionReducer: ReducerProtocol {
     case vote(VoteReducer.Action)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Scope(state: \.vote, action: /Action.vote) {
       VoteReducer()
     }
@@ -54,7 +54,7 @@ struct QuestionViewPreviews: PreviewProvider {
     QuestionView(
       store: .init(
         initialState: QuestionReducer.State(),
-        reducer: QuestionReducer()
+        reducer: { QuestionReducer() }
       )
     )
   }

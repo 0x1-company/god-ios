@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct CashOutReducer: ReducerProtocol {
+public struct CashOutReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -12,7 +12,7 @@ public struct CashOutReducer: ReducerProtocol {
     case cashOutButtonTapped
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .cashOutButtonTapped:
@@ -72,7 +72,7 @@ struct CashOutViewPreviews: PreviewProvider {
     CashOutView(
       store: .init(
         initialState: CashOutReducer.State(),
-        reducer: CashOutReducer()
+        reducer: { CashOutReducer() }
       )
     )
   }

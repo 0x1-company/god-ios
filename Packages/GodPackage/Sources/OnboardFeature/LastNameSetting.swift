@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct LastNameSettingReducer: ReducerProtocol {
+public struct LastNameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -15,7 +15,7 @@ public struct LastNameSettingReducer: ReducerProtocol {
     case binding(BindingAction<State>)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
@@ -46,7 +46,7 @@ public struct LastNameSettingView: View {
         Text("What's your last name?")
           .bold()
           .foregroundColor(.white)
-        TextField("Last Name", text: viewStore.binding(\.$lastName))
+        TextField("Last Name", text: viewStore.$lastName)
           .font(.title)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
@@ -83,7 +83,7 @@ struct LastNameSettingViewPreviews: PreviewProvider {
       LastNameSettingView(
         store: .init(
           initialState: LastNameSettingReducer.State(),
-          reducer: LastNameSettingReducer()
+          reducer: { LastNameSettingReducer() }
         )
       )
     }

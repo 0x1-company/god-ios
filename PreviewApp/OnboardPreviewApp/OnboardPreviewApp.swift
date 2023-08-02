@@ -8,14 +8,14 @@ struct MyApp: App {
 //      WelcomeView(
 //        store: .init(
 //          initialState: WelcomeReducer.State(),
-//          reducer: WelcomeReducer().
+//          reducer: { WelcomeReducer() }.
 //        )
 //      )
       NavigationStack {
         FirstNameSettingView(
           store: .init(
             initialState: FirstNameSettingReducer.State(),
-            reducer: FirstNameSettingReducer()._printChanges()
+            reducer: { FirstNameSettingReducer() }._printChanges()
           )
         )
       }

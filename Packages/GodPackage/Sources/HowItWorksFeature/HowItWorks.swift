@@ -2,7 +2,7 @@ import ColorHex
 import ComposableArchitecture
 import SwiftUI
 
-public struct HowItWorksReducer: ReducerProtocol {
+public struct HowItWorksReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -13,7 +13,7 @@ public struct HowItWorksReducer: ReducerProtocol {
     case startButtonTapped
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .startButtonTapped:
@@ -55,7 +55,7 @@ struct HowItWorksViewPreviews: PreviewProvider {
     HowItWorksView(
       store: .init(
         initialState: HowItWorksReducer.State(),
-        reducer: HowItWorksReducer()
+        reducer: { HowItWorksReducer() }
       )
     )
   }

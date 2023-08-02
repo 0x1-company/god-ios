@@ -1,13 +1,13 @@
 import ComposableArchitecture
 import UIKit
 
-public struct SceneDelegateReducer: ReducerProtocol {
+public struct SceneDelegateReducer: Reducer {
   public struct State: Equatable {}
   public enum Action: Equatable {
     case shortcutItem(UIApplicationShortcutItem)
   }
 
-  public func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     return .none
   }
 }

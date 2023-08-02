@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct UsernameSettingReducer: ReducerProtocol {
+public struct UsernameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +14,7 @@ public struct UsernameSettingReducer: ReducerProtocol {
     case nextButtonTapped
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case let .usernameChanged(username):
@@ -94,7 +94,7 @@ struct UsernameSettingViewPreviews: PreviewProvider {
       UsernameSettingView(
         store: .init(
           initialState: UsernameSettingReducer.State(),
-          reducer: UsernameSettingReducer()
+          reducer: { UsernameSettingReducer() }
         )
       )
     }
