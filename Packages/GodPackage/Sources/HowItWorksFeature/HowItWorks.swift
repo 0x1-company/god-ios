@@ -55,7 +55,7 @@ struct HowItWorksViewPreviews: PreviewProvider {
     HowItWorksView(
       store: .init(
         initialState: HowItWorksReducer.State(),
-        reducer: HowItWorksReducer()
+        reducer: { HowItWorksReducer() }
       )
     )
   }

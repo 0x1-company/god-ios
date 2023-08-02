@@ -46,7 +46,7 @@ struct GodViewPreviews: PreviewProvider {
     GodView(
       store: .init(
         initialState: GodReducer.State(),
-        reducer: GodReducer()
+        reducer: { GodReducer() }
       )
     )
   }

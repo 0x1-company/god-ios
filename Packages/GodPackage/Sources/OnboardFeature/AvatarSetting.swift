@@ -46,7 +46,7 @@ struct AvatarSettingViewPreviews: PreviewProvider {
     AvatarSettingView(
       store: .init(
         initialState: AvatarSettingReducer.State(),
-        reducer: AvatarSettingReducer()
+        reducer: { AvatarSettingReducer() }
       )
     )
   }

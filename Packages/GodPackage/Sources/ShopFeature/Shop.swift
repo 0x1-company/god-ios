@@ -99,7 +99,7 @@ struct ShopViewPreviews: PreviewProvider {
           ShopView(
             store: .init(
               initialState: ShopReducer.State(),
-              reducer: ShopReducer()
+              reducer: { ShopReducer() }
             )
           )
         }

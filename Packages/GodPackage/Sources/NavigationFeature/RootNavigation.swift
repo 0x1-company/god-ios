@@ -31,22 +31,22 @@ public struct RootNavigationReducer: Reducer {
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.add, action: /Action.add) {
-      AddReducer()
+      AddReducer() }
     }
     Scope(state: \.activity, action: /Action.activity) {
-      ActivityReducer()
+      ActivityReducer() }
     }
     Scope(state: \.inbox, action: /Action.inbox) {
-      InboxReducer()
+      InboxReducer() }
     }
     Scope(state: \.question, action: /Action.question) {
-      QuestionReducer()
+      QuestionReducer() }
     }
     Scope(state: \.profile, action: /Action.profile) {
-      ProfileReducer()
+      ProfileReducer() }
     }
     Scope(state: \.about, action: /Action.about) {
-      AboutReducer()
+      AboutReducer() }
     }
   }
 }
@@ -130,7 +130,7 @@ struct RootNavigationViewPreviews: PreviewProvider {
     RootNavigationView(
       store: .init(
         initialState: RootNavigationReducer.State(),
-        reducer: RootNavigationReducer()
+        reducer: { RootNavigationReducer() }
       )
     )
   }

@@ -81,7 +81,7 @@ struct GodModeViewPreviews: PreviewProvider {
     GodModeView(
       store: .init(
         initialState: GodModeReducer.State(),
-        reducer: GodModeReducer()
+        reducer: { GodModeReducer() }
       )
     )
   }

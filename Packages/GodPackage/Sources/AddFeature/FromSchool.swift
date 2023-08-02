@@ -18,7 +18,7 @@ public struct FromSchoolReducer: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
+    BindingReducer() }
     Reduce { _, action in
       switch action {
       case .onTask:
@@ -71,7 +71,7 @@ struct FromSchoolViewPreviews: PreviewProvider {
       FromSchoolView(
         store: .init(
           initialState: FromSchoolReducer.State(),
-          reducer: FromSchoolReducer()
+          reducer: { FromSchoolReducer() }
         )
       )
     }

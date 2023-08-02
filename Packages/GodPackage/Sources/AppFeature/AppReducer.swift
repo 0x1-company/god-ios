@@ -26,13 +26,13 @@ public struct AppReducer: Reducer {
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
-      AppDelegateReducer()
+      AppDelegateReducer() }
     }
     Scope(state: \.sceneDelegate, action: /Action.sceneDelegate) {
-      SceneDelegateReducer()
+      SceneDelegateReducer() }
     }
     Scope(state: \.navigation, action: /Action.navigation) {
-      RootNavigationReducer()
+      RootNavigationReducer() }
     }
     Reduce { _, action in
       switch action {

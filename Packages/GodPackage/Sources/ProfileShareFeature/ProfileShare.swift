@@ -93,7 +93,7 @@ struct ProfileShareViewPreviews: PreviewProvider {
         ProfileShareView(
           store: .init(
             initialState: ProfileShareReducer.State(),
-            reducer: ProfileShareReducer()
+            reducer: { ProfileShareReducer() }
           )
         )
         .presentationDetents([.fraction(0.3)])

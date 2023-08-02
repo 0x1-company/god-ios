@@ -18,7 +18,7 @@ public struct FriendsOfFriendsReducer: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
+    BindingReducer() }
     Reduce { _, action in
       switch action {
       case .onTask:
@@ -71,7 +71,7 @@ struct FriendsOfFriendsViewPreviews: PreviewProvider {
       FriendsOfFriendsView(
         store: .init(
           initialState: FriendsOfFriendsReducer.State(),
-          reducer: FriendsOfFriendsReducer()
+          reducer: { FriendsOfFriendsReducer() }
         )
       )
     }

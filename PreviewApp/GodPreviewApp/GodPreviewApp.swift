@@ -9,7 +9,7 @@ struct GodPreviewAppApp: App {
       VoteView(
         store: .init(
           initialState: VoteReducer.State(),
-          reducer: VoteReducer()._printChanges()
+          reducer: { VoteReducer() }._printChanges()
         )
       )
     }

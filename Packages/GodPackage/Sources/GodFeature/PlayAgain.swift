@@ -72,7 +72,7 @@ struct PlayAgainViewPreviews: PreviewProvider {
     PlayAgainView(
       store: .init(
         initialState: PlayAgainReducer.State(),
-        reducer: PlayAgainReducer()
+        reducer: { PlayAgainReducer() }
       )
     )
   }

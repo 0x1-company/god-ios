@@ -183,7 +183,7 @@ struct AboutViewPreviews: PreviewProvider {
     AboutView(
       store: .init(
         initialState: AboutReducer.State(),
-        reducer: AboutReducer()
+        reducer: { AboutReducer() }
       )
     )
   }

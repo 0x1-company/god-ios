@@ -147,7 +147,7 @@ struct VoteViewPreviews: PreviewProvider {
     VoteView(
       store: .init(
         initialState: VoteReducer.State(),
-        reducer: VoteReducer()
+        reducer: { VoteReducer() }
       )
     )
   }

@@ -101,7 +101,7 @@ struct ShareScreenshotViewPreviews: PreviewProvider {
         ShareScreenshotView(
           store: .init(
             initialState: ShareScreenshotReducer.State(),
-            reducer: ShareScreenshotReducer()
+            reducer: { ShareScreenshotReducer() }
           )
         )
         .presentationDetents([.fraction(0.3)])

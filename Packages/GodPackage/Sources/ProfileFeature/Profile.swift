@@ -46,7 +46,7 @@ public struct ProfileReducer: Reducer {
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profileEdit, action: /Action.profileEdit) {
-        ProfileEditReducer()
+        ProfileEditReducer() }
       }
     }
   }
@@ -177,7 +177,7 @@ struct ProfileViewPreviews: PreviewProvider {
     ProfileView(
       store: .init(
         initialState: ProfileReducer.State(),
-        reducer: ProfileReducer()
+        reducer: { ProfileReducer() }
       )
     )
   }

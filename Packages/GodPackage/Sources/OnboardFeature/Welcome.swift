@@ -22,7 +22,7 @@ public struct WelcomeReducer: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
+    BindingReducer() }
     Reduce { _, action in
       switch action {
       case .getStartedButtonTapped:
@@ -107,7 +107,7 @@ struct WelcomeViewPreviews: PreviewProvider {
       WelcomeView(
         store: .init(
           initialState: WelcomeReducer.State(),
-          reducer: WelcomeReducer()
+          reducer: { WelcomeReducer() }
         )
       )
     }

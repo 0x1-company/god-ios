@@ -51,7 +51,7 @@ struct ForceUpdateViewPreviews: PreviewProvider {
     ForceUpdateView(
       store: .init(
         initialState: ForceUpdateReducer.State(),
-        reducer: ForceUpdateReducer()
+        reducer: { ForceUpdateReducer() }
       )
     )
   }

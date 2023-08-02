@@ -52,10 +52,10 @@ public struct AddReducer: Reducer {
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.friendsOfFriends, action: /Action.friendsOfFriends) {
-        FriendsOfFriendsReducer()
+        FriendsOfFriendsReducer() }
       }
       Scope(state: /State.fromSchool, action: /Action.fromSchool) {
-        FromSchoolReducer()
+        FromSchoolReducer() }
       }
     }
   }
@@ -135,7 +135,7 @@ struct AddViewPreviews: PreviewProvider {
     AddView(
       store: .init(
         initialState: AddReducer.State(),
-        reducer: AddReducer()
+        reducer: { AddReducer() }
       )
     )
   }

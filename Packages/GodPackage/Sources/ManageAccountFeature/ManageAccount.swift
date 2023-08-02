@@ -87,7 +87,7 @@ struct ManageAccountViewPreviews: PreviewProvider {
     ManageAccountView(
       store: .init(
         initialState: ManageAccountReducer.State(),
-        reducer: ManageAccountReducer()
+        reducer: { ManageAccountReducer() }
       )
     )
   }

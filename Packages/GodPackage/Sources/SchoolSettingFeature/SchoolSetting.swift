@@ -46,7 +46,7 @@ struct SchoolSettingViewPreviews: PreviewProvider {
     SchoolSettingView(
       store: .init(
         initialState: SchoolSettingReducer.State(),
-        reducer: SchoolSettingReducer()
+        reducer: { SchoolSettingReducer() }
       )
     )
   }

@@ -45,7 +45,7 @@ public struct ProfileEditReducer: Reducer {
       }
     }
     .ifLet(\.$manageAccount, action: /Action.manageAccount) {
-      ManageAccountReducer()
+      ManageAccountReducer() }
     }
   }
 }
@@ -117,7 +117,7 @@ struct ProfileEditViewPreviews: PreviewProvider {
       ProfileEditView(
         store: .init(
           initialState: ProfileEditReducer.State(),
-          reducer: ProfileEditReducer()
+          reducer: { ProfileEditReducer() }
         )
       )
     }

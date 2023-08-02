@@ -94,7 +94,7 @@ struct UsernameSettingViewPreviews: PreviewProvider {
       UsernameSettingView(
         store: .init(
           initialState: UsernameSettingReducer.State(),
-          reducer: UsernameSettingReducer()
+          reducer: { UsernameSettingReducer() }
         )
       )
     }

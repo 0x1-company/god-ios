@@ -74,7 +74,7 @@ struct DoubleCheckNameViewPreviews: PreviewProvider {
     DoubleCheckNameView(
       store: .init(
         initialState: DoubleCheckNameReducer.State(),
-        reducer: DoubleCheckNameReducer()
+        reducer: { DoubleCheckNameReducer() }
       )
     )
   }

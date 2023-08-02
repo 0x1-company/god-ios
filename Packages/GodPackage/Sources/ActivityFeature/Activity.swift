@@ -65,7 +65,7 @@ struct ActivityViewPreviews: PreviewProvider {
     ActivityView(
       store: .init(
         initialState: ActivityReducer.State(),
-        reducer: ActivityReducer()
+        reducer: { ActivityReducer() }
       )
     )
   }

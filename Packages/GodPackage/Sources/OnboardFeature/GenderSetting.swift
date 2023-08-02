@@ -46,7 +46,7 @@ struct GenderSettingViewPreviews: PreviewProvider {
     GenderSettingView(
       store: .init(
         initialState: GenderSettingReducer.State(),
-        reducer: GenderSettingReducer()
+        reducer: { GenderSettingReducer() }
       )
     )
   }

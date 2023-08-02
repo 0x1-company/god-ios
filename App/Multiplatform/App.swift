@@ -17,7 +17,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
   static let shared = AppDelegate()
   let store = Store(
     initialState: AppReducer.State(),
-    reducer: AppReducer()._printChanges()
+    reducer: { AppReducer() }._printChanges()
   )
 
   var viewStore: ViewStore<Void, AppReducer.Action> {

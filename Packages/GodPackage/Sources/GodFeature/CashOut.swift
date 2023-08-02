@@ -72,7 +72,7 @@ struct CashOutViewPreviews: PreviewProvider {
     CashOutView(
       store: .init(
         initialState: CashOutReducer.State(),
-        reducer: CashOutReducer()
+        reducer: { CashOutReducer() }
       )
     )
   }

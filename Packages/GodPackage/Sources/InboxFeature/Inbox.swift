@@ -86,7 +86,7 @@ struct InboxViewPreviews: PreviewProvider {
     InboxView(
       store: .init(
         initialState: InboxReducer.State(),
-        reducer: InboxReducer()
+        reducer: { InboxReducer() }
       )
     )
   }

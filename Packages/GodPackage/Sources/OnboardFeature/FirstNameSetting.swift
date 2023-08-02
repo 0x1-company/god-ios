@@ -16,9 +16,9 @@ public struct FirstNameSettingReducer: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
+    BindingReducer() }
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
-      DoubleCheckNameReducer()
+      DoubleCheckNameReducer() }
     }
     Reduce { _, action in
       switch action {
@@ -83,7 +83,7 @@ struct FirstNameSettingViewPreviews: PreviewProvider {
       FirstNameSettingView(
         store: .init(
           initialState: FirstNameSettingReducer.State(),
-          reducer: FirstNameSettingReducer()
+          reducer: { FirstNameSettingReducer() }
         )
       )
     }
