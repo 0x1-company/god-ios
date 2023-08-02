@@ -4,6 +4,11 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  FILE_FIREBASE_DEVELOPMENT: ${{ secrets.FILE_FIREBASE_DEVELOPMENT }}
+  FILE_FIREBASE_STAGING: ${{ secrets.FILE_FIREBASE_STAGING }}
+  FILE_FIREBASE_PRODUCTION: ${{ secrets.FILE_FIREBASE_PRODUCTION }}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
