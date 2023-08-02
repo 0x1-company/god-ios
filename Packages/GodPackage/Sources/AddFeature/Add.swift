@@ -107,7 +107,7 @@ public struct AddView: View {
           switch $0 {
           case .friendsOfFriends:
             CaseLet(
-              state: /AddReducer.Destination.State.friendsOfFriends,
+              /AddReducer.Destination.State.friendsOfFriends,
               action: AddReducer.Destination.Action.friendsOfFriends
             ) { store in
               NavigationStack {
@@ -116,7 +116,7 @@ public struct AddView: View {
             }
           case .fromSchool:
             CaseLet(
-              state: /AddReducer.Destination.State.fromSchool,
+              /AddReducer.Destination.State.fromSchool,
               action: AddReducer.Destination.Action.fromSchool
             ) { store in
               NavigationStack {

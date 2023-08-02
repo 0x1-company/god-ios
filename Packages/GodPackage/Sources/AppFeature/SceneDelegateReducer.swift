@@ -7,7 +7,7 @@ public struct SceneDelegateReducer: Reducer {
     case shortcutItem(UIApplicationShortcutItem)
   }
 
-  public func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     return .none
   }
 }

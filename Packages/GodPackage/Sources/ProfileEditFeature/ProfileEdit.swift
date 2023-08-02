@@ -45,7 +45,7 @@ public struct ProfileEditReducer: Reducer {
       }
     }
     .ifLet(\.$manageAccount, action: /Action.manageAccount) {
-      ManageAccountReducer() }
+      ManageAccountReducer()
     }
   }
 }

@@ -18,7 +18,7 @@ public struct FromSchoolReducer: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
-    BindingReducer() }
+    BindingReducer()
     Reduce { _, action in
       switch action {
       case .onTask:
@@ -52,7 +52,7 @@ public struct FromSchoolView: View {
       .navigationTitle("Friends of Friends")
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
-      .searchable(text: viewStore.binding(\.$searchable))
+      .searchable(text: viewStore.binding(send: \.$searchable))
       .toolbar {
         Button {
           viewStore.send(.closeButtonTapped)

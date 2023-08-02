@@ -16,7 +16,7 @@ public struct FirstNameSettingReducer: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    BindingReducer() }
+    BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
     }
@@ -46,7 +46,7 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?")
           .bold()
           .foregroundColor(.white)
-        TextField("First Name", text: viewStore.binding(\.$firstName))
+        TextField("First Name", text: viewStore.binding(send: \.$firstName))
           .font(.title)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
