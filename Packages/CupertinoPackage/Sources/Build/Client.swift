@@ -10,6 +10,6 @@ public struct Build {
   public var infoDictionary: (String) -> Any?
 
   public func infoDictionary<T>(_ key: String) -> T? {
-    return infoDictionary(key) as? T
+    infoDictionary(key) as? T
   }
 }

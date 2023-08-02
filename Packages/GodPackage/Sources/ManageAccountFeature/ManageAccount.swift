@@ -19,7 +19,7 @@ public struct ManageAccountReducer: Reducer {
       switch action {
       case .closeButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       }
     }

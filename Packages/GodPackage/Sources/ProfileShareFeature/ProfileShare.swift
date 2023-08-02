@@ -29,7 +29,7 @@ public struct ProfileShareReducer: Reducer {
 
       case .closeButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       }
     }

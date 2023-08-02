@@ -68,7 +68,7 @@ public struct AppReducer: Reducer {
         }
 
         return .run { _ in
-          await self.openURL(url)
+          await openURL(url)
         }
       }
     }
