@@ -12,6 +12,7 @@ let package = Package(
     .library(name: "ButtonStyles", targets: ["ButtonStyles"]),
     .library(name: "ColorHex", targets: ["ColorHex"]),
     .library(name: "Colors", targets: ["Colors"]),
+    .library(name: "FullScreenCoverView", targets: ["FullScreenCoverView"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
   ],
   dependencies: [
@@ -20,6 +21,7 @@ let package = Package(
     .target(name: "ButtonStyles"),
     .target(name: "ColorHex"),
     .target(name: "Colors", dependencies: ["ColorHex"]),
+    .target(name: "FullScreenCoverView"),
     .target(name: "LabeledButton"),
   ]
 )
