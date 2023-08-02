@@ -46,7 +46,7 @@ public struct ProfileReducer: Reducer {
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profileEdit, action: /Action.profileEdit) {
-        ProfileEditReducer() }
+        ProfileEditReducer()
       }
     }
   }

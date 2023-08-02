@@ -18,7 +18,7 @@ public struct FirstNameSettingReducer: Reducer {
   public var body: some Reducer<State, Action> {
     BindingReducer() }
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
-      DoubleCheckNameReducer() }
+      DoubleCheckNameReducer()
     }
     Reduce { _, action in
       switch action {

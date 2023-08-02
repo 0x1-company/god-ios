@@ -15,7 +15,7 @@ public struct QuestionReducer: Reducer {
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.vote, action: /Action.vote) {
-      VoteReducer() }
+      VoteReducer()
     }
     Reduce { _, action in
       switch action {
