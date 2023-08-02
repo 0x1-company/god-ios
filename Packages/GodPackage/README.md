@@ -8,6 +8,7 @@ graph TD;
     AboutFeature-->Constants;
     AppFeature-->Constants;
     AppFeature-->NavigationFeature;
+    ForceUpdateFeature-->Constants;
     NavigationFeature-->AboutFeature;
     NavigationFeature-->ActivityFeature;
     NavigationFeature-->AddFeature;
