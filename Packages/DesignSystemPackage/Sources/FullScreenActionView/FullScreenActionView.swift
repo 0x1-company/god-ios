@@ -4,7 +4,7 @@ public struct FullScreenActionView: View {
   let title: LocalizedStringKey
   let actionTitle: LocalizedStringKey
   let action: () -> Void
-  
+
   public init(
     _ title: LocalizedStringKey,
     actionTitle: LocalizedStringKey,
@@ -21,7 +21,7 @@ public struct FullScreenActionView: View {
         .font(.title2)
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
-      
+
       Button(action: action) {
         Text(actionTitle)
           .bold()
