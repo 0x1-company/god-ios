@@ -33,7 +33,7 @@ let package = Package(
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
     .package(path: "../FirebasePackage"),
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.54.0"),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.0.0"),
   ],
   targets: [
     .target(name: "AboutFeature", dependencies: [
