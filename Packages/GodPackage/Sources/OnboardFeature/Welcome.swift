@@ -2,7 +2,7 @@ import ColorHex
 import ComposableArchitecture
 import SwiftUI
 
-public struct WelcomeReducer: ReducerProtocol {
+public struct WelcomeReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -21,7 +21,7 @@ public struct WelcomeReducer: ReducerProtocol {
     case binding(BindingAction<State>)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce { _, action in
       switch action {

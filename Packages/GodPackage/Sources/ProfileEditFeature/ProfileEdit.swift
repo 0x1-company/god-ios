@@ -4,7 +4,7 @@ import LabeledButton
 import ManageAccountFeature
 import SwiftUI
 
-public struct ProfileEditReducer: ReducerProtocol {
+public struct ProfileEditReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -22,7 +22,7 @@ public struct ProfileEditReducer: ReducerProtocol {
 
   @Dependency(\.dismiss) var dismiss
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .restorePurchasesButtonTapped:

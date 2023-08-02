@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import UIKit
 
-public struct AppDelegateReducer: ReducerProtocol {
+public struct AppDelegateReducer: Reducer {
   public struct State: Equatable {}
   public enum Action: Equatable {
     case didFinishLaunching

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FromSchoolReducer: ReducerProtocol {
+public struct FromSchoolReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -17,7 +17,7 @@ public struct FromSchoolReducer: ReducerProtocol {
 
   @Dependency(\.dismiss) var dismiss
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce { _, action in
       switch action {

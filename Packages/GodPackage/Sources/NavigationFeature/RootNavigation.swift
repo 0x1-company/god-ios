@@ -7,7 +7,7 @@ import InboxFeature
 import ProfileFeature
 import SwiftUI
 
-public struct RootNavigationReducer: ReducerProtocol {
+public struct RootNavigationReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -29,7 +29,7 @@ public struct RootNavigationReducer: ReducerProtocol {
     case about(AboutReducer.Action)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Scope(state: \.add, action: /Action.add) {
       AddReducer()
     }

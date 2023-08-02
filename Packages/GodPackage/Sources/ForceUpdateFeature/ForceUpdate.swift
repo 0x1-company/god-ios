@@ -3,7 +3,7 @@ import Constants
 import FullScreenActionView
 import SwiftUI
 
-public struct ForceUpdateReducer: ReducerProtocol {
+public struct ForceUpdateReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -16,7 +16,7 @@ public struct ForceUpdateReducer: ReducerProtocol {
 
   @Dependency(\.openURL) var openURL
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .updateButtonTapped:

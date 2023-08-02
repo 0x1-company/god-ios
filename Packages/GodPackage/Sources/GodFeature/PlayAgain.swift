@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct PlayAgainReducer: ReducerProtocol {
+public struct PlayAgainReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -12,7 +12,7 @@ public struct PlayAgainReducer: ReducerProtocol {
     case inviteFriendButtonTapped
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .inviteFriendButtonTapped:

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct GenderSettingReducer: ReducerProtocol {
+public struct GenderSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -12,7 +12,7 @@ public struct GenderSettingReducer: ReducerProtocol {
     case onTask
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .onTask:

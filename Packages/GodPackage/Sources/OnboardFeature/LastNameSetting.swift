@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct LastNameSettingReducer: ReducerProtocol {
+public struct LastNameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -15,7 +15,7 @@ public struct LastNameSettingReducer: ReducerProtocol {
     case binding(BindingAction<State>)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
