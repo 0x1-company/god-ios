@@ -1,6 +1,6 @@
 ```mermaid
 graph TD;
     GodPackage-->CupertinoPackage;
-    GodPackage-->DesignSystemPackage;
+    GodPackage-->UIComponentPackage;
     GodPackage-->FirebasePackage;
 ```

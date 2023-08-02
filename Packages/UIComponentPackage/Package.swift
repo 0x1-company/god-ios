@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "DesignSystemPackage",
+  name: "UIComponentPackage",
   platforms: [
     .iOS(.v16),
   ],

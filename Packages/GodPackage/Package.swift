@@ -30,7 +30,7 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
-    .package(path: "../DesignSystemPackage"),
+    .package(path: "../UIComponentPackage"),
     .package(path: "../FirebasePackage"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.54.0"),
   ],
@@ -51,26 +51,26 @@ let package = Package(
     ]),
     .target(name: "Constants"),
     .target(name: "GodFeature", dependencies: [
-      .product(name: "ColorHex", package: "DesignSystemPackage"),
-      .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
-      .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "InboxFeature", dependencies: [
-      .product(name: "ColorHex", package: "DesignSystemPackage"),
-      .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ManageAccountFeature", dependencies: [
-      .product(name: "ColorHex", package: "DesignSystemPackage"),
-      .product(name: "ButtonStyles", package: "DesignSystemPackage"),
-      .product(name: "LabeledButton", package: "DesignSystemPackage"),
+      .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "NavigationFeature", dependencies: [
@@ -82,7 +82,7 @@ let package = Package(
       "ProfileFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
-      .product(name: "ColorHex", package: "DesignSystemPackage"),
+      .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [

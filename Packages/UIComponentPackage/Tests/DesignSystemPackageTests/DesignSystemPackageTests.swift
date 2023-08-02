@@ -1,11 +1,11 @@
-@testable import DesignSystemPackage
+@testable import UIComponentPackage
 import XCTest
 
-final class DesignSystemPackageTests: XCTestCase {
+final class UIComponentPackageTests: XCTestCase {
   func testExample() throws {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct
     // results.
-    XCTAssertEqual(DesignSystemPackage().text, "Hello, World!")
+    XCTAssertEqual(UIComponentPackage().text, "Hello, World!")
   }
 }
