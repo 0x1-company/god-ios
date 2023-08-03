@@ -23,9 +23,9 @@ public struct ___VARIABLE_productName:identifier___Reducer: Reducer {
 }
 
 public struct ___VARIABLE_productName:identifier___View: View {
-  let store: StoreOf<___VARIABLE_productName:identifier___Reducer>
+  let store: StoreOf<___VARIABLE_productName: identifier___Reducer>
 
-  public init(store: StoreOf<___VARIABLE_productName:identifier___Reducer>) {
+  public init(store: StoreOf<___VARIABLE_productName: identifier___Reducer>) {
     self.store = store
   }
 
@@ -43,10 +43,10 @@ public struct ___VARIABLE_productName:identifier___View: View {
 
 struct ___VARIABLE_productName:identifier___ViewPreviews: PreviewProvider {
   static var previews: some View {
-    ___VARIABLE_productName:identifier___View(
+    ___VARIABLE_productName: identifier___View(
       store: .init(
-        initialState: ___VARIABLE_productName:identifier___Reducer.State(),
-        reducer: { ___VARIABLE_productName:identifier___Reducer() }
+        initialState: ___VARIABLE_productName: identifier___Reducer.State(),
+        reducer: { ___VARIABLE_productName: identifier___Reducer() }
       )
     )
   }
