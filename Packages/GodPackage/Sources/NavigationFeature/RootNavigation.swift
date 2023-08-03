@@ -103,6 +103,7 @@ public struct RootNavigationView: View {
           )
         )
       }
+      .ignoresSafeArea()
       .tabViewStyle(.page)
     }
   }
