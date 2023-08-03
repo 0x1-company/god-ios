@@ -67,9 +67,6 @@ public struct RootNavigationView: View {
             action: RootNavigationReducer.Action.add
           )
         )
-        .tabItem {
-          Text("Add+")
-        }
 
         ActivityView(
           store: store.scope(
@@ -77,9 +74,6 @@ public struct RootNavigationView: View {
             action: RootNavigationReducer.Action.activity
           )
         )
-        .tabItem {
-          Text("Activity")
-        }
 
         InboxView(
           store: store.scope(
@@ -87,9 +81,6 @@ public struct RootNavigationView: View {
             action: RootNavigationReducer.Action.inbox
           )
         )
-        .tabItem {
-          Text("Inbox")
-        }
 
         QuestionView(
           store: store.scope(
@@ -97,9 +88,6 @@ public struct RootNavigationView: View {
             action: RootNavigationReducer.Action.question
           )
         )
-        .tabItem {
-          Text("God")
-        }
 
         ProfileView(
           store: store.scope(
@@ -107,9 +95,6 @@ public struct RootNavigationView: View {
             action: RootNavigationReducer.Action.profile
           )
         )
-        .tabItem {
-          Text("Profile")
-        }
 
         AboutView(
           store: store.scope(
@@ -117,10 +102,8 @@ public struct RootNavigationView: View {
             action: RootNavigationReducer.Action.about
           )
         )
-        .tabItem {
-          Text("About")
-        }
       }
+      .tabViewStyle(.page)
     }
   }
 }
