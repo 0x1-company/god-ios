@@ -5,19 +5,23 @@ public struct OnboardReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var path = StackState<Path.State>()
     public init() {}
   }
 
   public enum Action: Equatable {
-    case onTask
+    case path(StackAction<Path.State, Path.Action>)
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
-      case .onTask:
+      case .path:
         return .none
       }
+    }
+    .forEach(\.path, action: /Action.path) {
+      Path()
     }
   }
 }
@@ -79,7 +83,6 @@ public struct OnboardView: View {
       }
       .navigationTitle("Onboard")
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
