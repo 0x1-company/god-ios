@@ -6,10 +6,10 @@ struct MyApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationStack {
-        FirstNameSettingView(
+        WelcomeView(
           store: .init(
-            initialState: FirstNameSettingReducer.State(),
-            reducer: { FirstNameSettingReducer()._printChanges() }
+            initialState: WelcomeReducer.State(),
+            reducer: { WelcomeReducer()._printChanges() }
           )
         )
       }

@@ -53,13 +53,13 @@ public struct WelcomeView: View {
         Spacer()
         VStack(spacing: 24) {
           ZStack {
-            Text("By entering your age you agree to our Terms and Privacy Policy")
-              .frame(height: 54)
-              .foregroundColor(Color(0xFF8F_8F8F))
-              .multilineTextAlignment(.center)
-              .padding(.horizontal, 32)
-
-            if viewStore.selection != "- -" {
+            if viewStore.selection == "- -" {
+              Text("By entering your age you agree to our Terms and Privacy Policy")
+                .frame(height: 54)
+                .foregroundColor(Color(0xFF8F_8F8F))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+            } else {
               Button {
                 viewStore.send(.getStartedButtonTapped)
               } label: {
