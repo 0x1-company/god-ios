@@ -5,17 +5,24 @@ public struct OnboardReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var welcome = WelcomeReducer.State()
     var path = StackState<Path.State>()
     public init() {}
   }
 
   public enum Action: Equatable {
+    case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
   }
 
   public var body: some ReducerOf<Self> {
+    Scope(state: \.welcome, action: /Action.welcome) {
+      WelcomeReducer()
+    }
     Reduce { state, action in
       switch action {
+      case .welcome:
+        return .none
       case .path:
         return .none
       }
@@ -24,12 +31,9 @@ public struct OnboardReducer: Reducer {
       Path()
     }
   }
-}
-
-extension OnboardReducer {
+  
   public struct Path: Reducer {
     public enum State: Equatable {
-      case welcome(WelcomeReducer.State = .init())
       case firstNameSetting(FirstNameSettingReducer.State = .init())
       case lastNameSetting(LastNameSettingReducer.State = .init())
       case usernameSetting(UsernameSettingReducer.State = .init())
@@ -38,7 +42,6 @@ extension OnboardReducer {
     }
 
     public enum Action: Equatable {
-      case welcome(WelcomeReducer.Action)
       case firstNameSetting(FirstNameSettingReducer.Action)
       case lastNameSetting(LastNameSettingReducer.Action)
       case usernameSetting(UsernameSettingReducer.Action)
@@ -47,9 +50,6 @@ extension OnboardReducer {
     }
 
     public var body: some ReducerOf<Self> {
-      Scope(state: /State.welcome, action: /Action.welcome) {
-        WelcomeReducer()
-      }
       Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting) {
         FirstNameSettingReducer()
       }
@@ -77,12 +77,51 @@ public struct OnboardView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("Onboard")
+    NavigationStackStore(
+      store.scope(
+        state: \.path,
+        action: OnboardReducer.Action.path
+      )
+    ) {
+      WelcomeView(
+        store: store.scope(
+          state: \.welcome,
+          action: OnboardReducer.Action.welcome
+        )
+      )
+    } destination: {
+      switch $0 {
+      case .firstNameSetting:
+        CaseLet(
+          /OnboardReducer.Path.State.firstNameSetting,
+           action: OnboardReducer.Path.firstNameSetting,
+           then: FirstNameSettingView.init(store:)
+        )
+      case .lastNameSetting:
+        CaseLet(
+          /OnboardReducer.Path.State.lastNameSetting,
+           action: OnboardReducer.Path.lastNameSetting,
+           then: LastNameSettingView.init(store:)
+        )
+      case .usernameSetting:
+        CaseLet(
+          /OnboardReducer.Path.usernameSetting,
+           action: OnboardReducer.Path.usernameSetting,
+           then: UsernameSettingView.init(store:)
+        )
+      case .genderSetting:
+        CaseLet(
+          /OnboardReducer.Path.genderSetting,
+           action: OnboardReducer.Path.genderSetting,
+           then: GenderSettingView.init(store:)
+        )
+      case .avatarSetting:
+        CaseLet(
+          /OnboardReducer.Path.avatarSetting,
+           action: OnboardReducer.Path.avatarSetting,
+           then: AvatarSettingView.init(store:)
+        )
       }
-      .navigationTitle("Onboard")
-      .navigationBarTitleDisplayMode(.inline)
     }
   }
 }
