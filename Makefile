@@ -18,6 +18,7 @@ secrets: # Set secrets
 	@echo $(FILE_FIREBASE_STAGING) | base64 -D > App/Multiplatform/Staging/GoogleService-Info.plist
 	@echo $(FILE_FIREBASE_PRODUCTION) | base64 -D > App/Multiplatform/Production/GoogleService-Info.plist
 
-install-template:
+.PHONY: install-template
+install-template: # Install template
 	@swift build -c release --package-path ./BuildTools/XCTemplateInstallerTool --product XCTemplateInstaller
 	./BuildTools/XCTemplateInstallerTool/.build/release/XCTemplateInstaller --xctemplate-path XCTemplates/TCA.xctemplate
