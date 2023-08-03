@@ -4,24 +4,24 @@ import SwiftUI
 
 public struct WelcomeReducer: Reducer {
   public init() {}
-  
+
   public struct State: Equatable {
     let ages: [String] = {
       var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
       return numbers
     }()
-    
+
     var selection = "- -"
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case loginButtonTapped
     case getStartedButtonTapped
     case ageChanged(String)
   }
-  
+
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
@@ -39,23 +39,23 @@ public struct WelcomeReducer: Reducer {
 
 public struct WelcomeView: View {
   let store: StoreOf<WelcomeReducer>
-  
+
   struct ViewState: Equatable {
     let ages: [String]
     let ageText: String
     let selection: String
-    
+
     init(state: WelcomeReducer.State) {
-      self.ages = state.ages
-      self.ageText = state.selection == "- -" ? "Enter your age" : state.selection
-      self.selection = state.selection
+      ages = state.ages
+      ageText = state.selection == "- -" ? "Enter your age" : state.selection
+      selection = state.selection
     }
   }
-  
+
   public init(store: StoreOf<WelcomeReducer>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
@@ -88,11 +88,11 @@ public struct WelcomeView: View {
               .padding(.horizontal, 16)
             }
           }
-          
+
           Text(viewStore.ageText)
             .foregroundColor(Color(0xFFED_6C43))
             .bold()
-          
+
           Picker(
             "",
             selection: viewStore.binding(
