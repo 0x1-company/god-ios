@@ -4,31 +4,33 @@ import SwiftUI
 
 public struct WelcomeReducer: Reducer {
   public init() {}
-
+  
   public struct State: Equatable {
     let ages: [String] = {
       var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
       return numbers
     }()
-
-    @BindingState var selection = "- -"
+    
+    var selection = "- -"
     public init() {}
   }
-
-  public enum Action: Equatable, BindableAction {
+  
+  public enum Action: Equatable {
+    case loginButtonTapped
     case getStartedButtonTapped
-    case binding(BindingAction<State>)
+    case ageChanged(String)
   }
-
+  
   public var body: some Reducer<State, Action> {
-    BindingReducer()
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
+      case .loginButtonTapped:
+        return .none
       case .getStartedButtonTapped:
         return .none
-
-      case .binding:
+      case let .ageChanged(selection):
+        state.selection = selection
         return .none
       }
     }
@@ -37,13 +39,25 @@ public struct WelcomeReducer: Reducer {
 
 public struct WelcomeView: View {
   let store: StoreOf<WelcomeReducer>
-
+  
+  struct ViewState: Equatable {
+    let ages: [String]
+    let ageText: String
+    let selection: String
+    
+    init(state: WelcomeReducer.State) {
+      self.ages = state.ages
+      self.ageText = state.selection == "- -" ? "Enter your age" : state.selection
+      self.selection = state.selection
+    }
+  }
+  
   public init(store: StoreOf<WelcomeReducer>) {
     self.store = store
   }
-
+  
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
         Spacer()
         Text("God")
@@ -53,13 +67,13 @@ public struct WelcomeView: View {
         Spacer()
         VStack(spacing: 24) {
           ZStack {
-            Text("By entering your age you agree to our Terms and Privacy Policy")
-              .frame(height: 54)
-              .foregroundColor(Color(0xFF8F_8F8F))
-              .multilineTextAlignment(.center)
-              .padding(.horizontal, 32)
-
-            if viewStore.selection != "- -" {
+            if viewStore.selection == "- -" {
+              Text("By entering your age you agree to our Terms and Privacy Policy")
+                .frame(height: 54)
+                .foregroundColor(Color(0xFF8F_8F8F))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+            } else {
               Button {
                 viewStore.send(.getStartedButtonTapped)
               } label: {
@@ -74,15 +88,18 @@ public struct WelcomeView: View {
               .padding(.horizontal, 16)
             }
           }
-
-          Text("Enter your age")
+          
+          Text(viewStore.ageText)
             .foregroundColor(Color(0xFFED_6C43))
             .bold()
-
+          
           Picker(
             "",
-            selection: viewStore.binding(\.$selection)
-              .animation(.default)
+            selection: viewStore.binding(
+              get: \.selection,
+              send: WelcomeReducer.Action.ageChanged
+            )
+            .animation(.default)
           ) {
             ForEach(viewStore.ages, id: \.self) { value in
               Text(value).tag(value)
