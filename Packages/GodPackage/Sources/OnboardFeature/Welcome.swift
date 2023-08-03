@@ -95,8 +95,11 @@ public struct WelcomeView: View {
           
           Picker(
             "",
-            selection: viewStore.binding(get: \.selection, send: WelcomeReducer.Action.ageChanged)
-              .animation(.default)
+            selection: viewStore.binding(
+              get: \.selection,
+              send: WelcomeReducer.Action.ageChanged
+            )
+            .animation(.default)
           ) {
             ForEach(viewStore.ages, id: \.self) { value in
               Text(value).tag(value)
