@@ -5,9 +5,6 @@
       location = "group:PreviewApp/PreviewApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:App/Development.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:App/Staging.xcodeproj">
    </FileRef>
    <FileRef
