@@ -81,7 +81,7 @@ public struct WelcomeView: View {
 
           Picker(
             "",
-            selection: viewStore.binding(\.$selection)
+            selection: viewStore.$selection
               .animation(.default)
           ) {
             ForEach(viewStore.ages, id: \.self) { value in
