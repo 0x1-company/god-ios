@@ -46,7 +46,9 @@ public struct GenderHelpView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 12) {
-        Color.blue
+        Image("restroom", bundle: .module)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
           .frame(width: 64, height: 64)
           .cornerRadius(12)
 
