@@ -97,6 +97,7 @@ public struct GenderSettingView: View {
       ) { store in
         GenderHelpView(store: store)
           .presentationDetents([.fraction(0.4)])
+          .presentationDragIndicator(.visible)
       }
     }
   }
