@@ -13,6 +13,7 @@ public struct FirstNameSettingReducer: Reducer {
   public enum Action: Equatable, BindableAction {
     case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
+    case nextButtonTapped
   }
 
   public var body: some Reducer<State, Action> {
@@ -26,6 +27,9 @@ public struct FirstNameSettingReducer: Reducer {
         return .none
 
       case .binding:
+        return .none
+        
+      case .nextButtonTapped:
         return .none
       }
     }
@@ -52,7 +56,9 @@ public struct FirstNameSettingView: View {
           .multilineTextAlignment(.center)
           .textContentType(.givenName)
         Spacer()
-        Button {} label: {
+        Button {
+          viewStore.send(.nextButtonTapped)
+        } label: {
           Text("Next")
             .bold()
             .frame(height: 54)

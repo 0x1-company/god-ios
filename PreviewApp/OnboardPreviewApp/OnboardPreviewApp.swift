@@ -5,14 +5,12 @@ import SwiftUI
 struct MyApp: App {
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
-        WelcomeView(
-          store: .init(
-            initialState: WelcomeReducer.State(),
-            reducer: { WelcomeReducer()._printChanges() }
-          )
+      OnboardView(
+        store: .init(
+          initialState: OnboardReducer.State(),
+          reducer: { OnboardReducer()._printChanges() }
         )
-      }
+      )
     }
   }
 }
