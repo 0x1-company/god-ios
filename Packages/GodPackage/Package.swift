@@ -48,6 +48,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
+      "OnboardFeature",
       "NavigationFeature",
     ]),
     .target(name: "Constants"),
