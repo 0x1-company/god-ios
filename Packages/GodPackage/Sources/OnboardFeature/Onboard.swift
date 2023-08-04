@@ -27,7 +27,7 @@ public struct OnboardReducer: Reducer {
 
       case .welcome:
         return .none
-        
+
       case .path(.element(_, .firstNameSetting(.nextButtonTapped))):
         state.path.append(.lastNameSetting())
         return .none
@@ -40,7 +40,7 @@ public struct OnboardReducer: Reducer {
       Path()
     }
   }
-  
+
   public struct Path: Reducer {
     public enum State: Equatable {
       case firstNameSetting(FirstNameSettingReducer.State = .init())
@@ -93,32 +93,32 @@ public struct OnboardView: View {
       case .firstNameSetting:
         CaseLet(
           /OnboardReducer.Path.State.firstNameSetting,
-           action: OnboardReducer.Path.Action.firstNameSetting,
-           then: FirstNameSettingView.init(store:)
+          action: OnboardReducer.Path.Action.firstNameSetting,
+          then: FirstNameSettingView.init(store:)
         )
       case .lastNameSetting:
         CaseLet(
           /OnboardReducer.Path.State.lastNameSetting,
-           action: OnboardReducer.Path.Action.lastNameSetting,
-           then: LastNameSettingView.init(store:)
+          action: OnboardReducer.Path.Action.lastNameSetting,
+          then: LastNameSettingView.init(store:)
         )
       case .usernameSetting:
         CaseLet(
           /OnboardReducer.Path.State.usernameSetting,
-           action: OnboardReducer.Path.Action.usernameSetting,
-           then: UsernameSettingView.init(store:)
+          action: OnboardReducer.Path.Action.usernameSetting,
+          then: UsernameSettingView.init(store:)
         )
       case .genderSetting:
         CaseLet(
           /OnboardReducer.Path.State.genderSetting,
-           action: OnboardReducer.Path.Action.genderSetting,
-           then: GenderSettingView.init(store:)
+          action: OnboardReducer.Path.Action.genderSetting,
+          then: GenderSettingView.init(store:)
         )
       case .avatarSetting:
         CaseLet(
           /OnboardReducer.Path.State.avatarSetting,
-           action: OnboardReducer.Path.Action.avatarSetting,
-           then: AvatarSettingView.init(store:)
+          action: OnboardReducer.Path.Action.avatarSetting,
+          then: AvatarSettingView.init(store:)
         )
       }
     }
