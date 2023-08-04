@@ -13,6 +13,12 @@ public struct LastNameSettingReducer: Reducer {
   public enum Action: Equatable, BindableAction {
     case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
+    case nextButtonTapped
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case nextUsernameSetting
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -26,6 +32,13 @@ public struct LastNameSettingReducer: Reducer {
         return .none
 
       case .binding:
+        return .none
+        
+      case .nextButtonTapped:
+        return .run { send in
+          await send(.delegate(.nextUsernameSetting))
+        }
+      case .delegate:
         return .none
       }
     }
@@ -52,7 +65,9 @@ public struct LastNameSettingView: View {
           .multilineTextAlignment(.center)
           .textContentType(.familyName)
         Spacer()
-        Button {} label: {
+        Button {
+          viewStore.send(.nextButtonTapped)
+        } label: {
           Text("Next")
             .bold()
             .frame(height: 54)
