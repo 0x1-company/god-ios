@@ -89,31 +89,31 @@ public struct OnboardView: View {
       case .firstNameSetting:
         CaseLet(
           /OnboardReducer.Path.State.firstNameSetting,
-           action: OnboardReducer.Path.firstNameSetting,
+           action: OnboardReducer.Path.Action.firstNameSetting,
            then: FirstNameSettingView.init(store:)
         )
       case .lastNameSetting:
         CaseLet(
           /OnboardReducer.Path.State.lastNameSetting,
-           action: OnboardReducer.Path.lastNameSetting,
+           action: OnboardReducer.Path.Action.lastNameSetting,
            then: LastNameSettingView.init(store:)
         )
       case .usernameSetting:
         CaseLet(
-          /OnboardReducer.Path.usernameSetting,
-           action: OnboardReducer.Path.usernameSetting,
+          /OnboardReducer.Path.State.usernameSetting,
+           action: OnboardReducer.Path.Action.usernameSetting,
            then: UsernameSettingView.init(store:)
         )
       case .genderSetting:
         CaseLet(
-          /OnboardReducer.Path.genderSetting,
-           action: OnboardReducer.Path.genderSetting,
+          /OnboardReducer.Path.State.genderSetting,
+           action: OnboardReducer.Path.Action.genderSetting,
            then: GenderSettingView.init(store:)
         )
       case .avatarSetting:
         CaseLet(
-          /OnboardReducer.Path.avatarSetting,
-           action: OnboardReducer.Path.avatarSetting,
+          /OnboardReducer.Path.State.avatarSetting,
+           action: OnboardReducer.Path.Action.avatarSetting,
            then: AvatarSettingView.init(store:)
         )
       }
