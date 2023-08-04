@@ -13,7 +13,7 @@ public struct GenderHelpReducer: Reducer {
     case okayButtonTapped
     case preferNotSayButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
@@ -24,12 +24,12 @@ public struct GenderHelpReducer: Reducer {
 
       case .okayButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
-        
+
       case .preferNotSayButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       }
     }

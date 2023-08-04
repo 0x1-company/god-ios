@@ -23,13 +23,13 @@ public struct GenderSettingReducer: Reducer {
       case .infoButtonTapped:
         state.help = .init()
         return .none
-        
+
       case .boyButtonTapped:
         return .none
-        
+
       case .girlButtonTapped:
         return .none
-        
+
       case .nonBinaryButtonTapped:
         return .none
 
@@ -54,7 +54,7 @@ public struct GenderSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 24) {
         Text("What's your gender?")
-        
+
         HStack(spacing: 24) {
           Button {
             viewStore.send(.boyButtonTapped)

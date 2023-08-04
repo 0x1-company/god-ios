@@ -13,7 +13,7 @@ public struct UsernameSettingReducer: Reducer {
     case usernameChanged(String)
     case nextButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextGenderSetting
     }
@@ -30,7 +30,7 @@ public struct UsernameSettingReducer: Reducer {
         return .run { send in
           await send(.delegate(.nextGenderSetting))
         }
-        
+
       case .delegate:
         return .none
       }
