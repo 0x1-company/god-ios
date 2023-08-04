@@ -11,6 +11,7 @@ public struct GenderHelpReducer: Reducer {
   public enum Action: Equatable {
     case onTask
     case okayButtonTapped
+    case preferNotSayButtonTapped
   }
   
   @Dependency(\.dismiss) var dismiss
@@ -22,6 +23,11 @@ public struct GenderHelpReducer: Reducer {
         return .none
 
       case .okayButtonTapped:
+        return .run { _ in
+          await self.dismiss()
+        }
+        
+      case .preferNotSayButtonTapped:
         return .run { _ in
           await self.dismiss()
         }
@@ -58,8 +64,10 @@ public struct GenderHelpView: View {
         .background(Color.orange)
         .clipShape(Capsule())
 
-        Text("Prefer not to say")
-          .foregroundColor(.secondary)
+        Button("Prefer not to say") {
+          viewStore.send(.preferNotSayButtonTapped)
+        }
+        .foregroundColor(.secondary)
       }
       .padding(.horizontal, 24)
     }
