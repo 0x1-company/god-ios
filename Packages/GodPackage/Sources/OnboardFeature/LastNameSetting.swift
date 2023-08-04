@@ -14,6 +14,11 @@ public struct LastNameSettingReducer: Reducer {
     case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
     case nextButtonTapped
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case next
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -30,6 +35,10 @@ public struct LastNameSettingReducer: Reducer {
         return .none
         
       case .nextButtonTapped:
+        return .run { send in
+          await send(.delegate(.next))
+        }
+      case .delegate:
         return .none
       }
     }

@@ -28,11 +28,11 @@ public struct OnboardReducer: Reducer {
       case .welcome:
         return .none
 
-      case .path(.element(_, .firstNameSetting(.nextButtonTapped))):
+      case .path(.element(_, .firstNameSetting(.delegate(.next)))):
         state.path.append(.lastNameSetting())
         return .none
         
-      case .path(.element(_, .lastNameSetting(.nextButtonTapped))):
+      case .path(.element(_, .lastNameSetting(.delegate(.next)))):
         state.path.append(.usernameSetting())
         return .none
 
