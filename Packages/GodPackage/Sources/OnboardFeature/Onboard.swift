@@ -126,5 +126,6 @@ public struct OnboardView: View {
         )
       }
     }
+    .tint(Color.white)
   }
 }
