@@ -15,7 +15,7 @@ public struct FirstNameSettingReducer: Reducer {
     case binding(BindingAction<State>)
     case nextButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextFirstNameSetting
     }
