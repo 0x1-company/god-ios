@@ -36,6 +36,10 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .lastNameSetting(.delegate(.nextUsernameSetting)))):
         state.path.append(.usernameSetting())
         return .none
+        
+      case .path(.element(_, .usernameSetting(.delegate(.nextGenderSetting)))):
+        state.path.append(.genderSetting())
+        return .none
 
       case .path:
         return .none
