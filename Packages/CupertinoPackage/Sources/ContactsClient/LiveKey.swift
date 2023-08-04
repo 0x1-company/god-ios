@@ -8,7 +8,7 @@ extension ContactsClient: DependencyKey {
       authorizationStatus: CNContactStore.authorizationStatus(for:),
       requestAccess: store.requestAccess(for:),
       enumerateContacts: { request in
-        return try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
           do {
             try store.enumerateContacts(with: request) { contact, pointer in
               continuation.resume(with: .success((contact, pointer)))
