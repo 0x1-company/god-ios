@@ -48,6 +48,7 @@ public struct GenderHelpView: View {
         Text("See who likes you on God")
 
         Button {
+          viewStore.send(.okayButtonTapped)
         } label: {
           Text("OK")
             .frame(height: 56)
