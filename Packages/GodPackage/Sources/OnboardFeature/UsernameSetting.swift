@@ -33,11 +33,9 @@ public struct UsernameSettingView: View {
 
   struct ViewState: Equatable {
     var username: String
-    var isNextButtonDisabled: Bool
 
     init(state: UsernameSettingReducer.State) {
       username = state.username
-      isNextButtonDisabled = state.username.isEmpty
     }
   }
 
@@ -79,7 +77,6 @@ public struct UsernameSettingView: View {
             .background(Color.white)
             .clipShape(Capsule())
         }
-        .disabled(viewStore.isNextButtonDisabled)
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
