@@ -15,6 +15,7 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     NavigationFeature-->ProfileFeature;
+    OnboardFeature-->GenderSettingFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ProfileEditFeature;
 ```
