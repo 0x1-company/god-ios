@@ -12,6 +12,11 @@ public struct UsernameSettingReducer: Reducer {
   public enum Action: Equatable {
     case usernameChanged(String)
     case nextButtonTapped
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case nextGenderSetting
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -22,6 +27,11 @@ public struct UsernameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
+        return .run { send in
+          await send(.delegate(.nextGenderSetting))
+        }
+        
+      case .delegate:
         return .none
       }
     }
