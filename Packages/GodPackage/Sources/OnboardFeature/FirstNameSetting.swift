@@ -28,7 +28,7 @@ public struct FirstNameSettingReducer: Reducer {
 
       case .binding:
         return .none
-        
+
       case .nextButtonTapped:
         return .none
       }
