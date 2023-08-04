@@ -21,8 +21,13 @@ public struct OnboardReducer: Reducer {
     }
     Reduce { state, action in
       switch action {
+      case .welcome(.getStartedButtonTapped):
+        state.path.append(.firstNameSetting())
+        return .none
+
       case .welcome:
         return .none
+
       case .path:
         return .none
       }
@@ -77,20 +82,10 @@ public struct OnboardView: View {
   }
 
   public var body: some View {
-    NavigationStackStore(
-      store.scope(
-        state: \.path,
-        action: OnboardReducer.Action.path
-      )
-    ) {
-      WelcomeView(
-        store: store.scope(
-          state: \.welcome,
-          action: OnboardReducer.Action.welcome
-        )
-      )
-    } destination: {
-      switch $0 {
+    NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
+      WelcomeView(store: store.scope(state: \.welcome, action: OnboardReducer.Action.welcome))
+    } destination: { store in
+      switch store {
       case .firstNameSetting:
         CaseLet(
           /OnboardReducer.Path.State.firstNameSetting,
