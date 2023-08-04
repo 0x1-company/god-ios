@@ -10,13 +10,21 @@ public struct GenderHelpReducer: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case okayButtonTapped
   }
+  
+  @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
     Reduce { _, action in
       switch action {
       case .onTask:
         return .none
+
+      case .okayButtonTapped:
+        return .run { _ in
+          await self.dismiss()
+        }
       }
     }
   }
@@ -35,17 +43,20 @@ public struct GenderHelpView: View {
         Color.blue
           .frame(width: 64, height: 64)
           .cornerRadius(12)
-        
+
         Text("Adding your gender helps create your polls")
         Text("See who likes you on God")
-        
-        Button("OK", action: {})
-          .frame(height: 56)
-          .frame(maxWidth: .infinity)
-          .foregroundColor(.white)
-          .background(Color.orange)
-          .clipShape(Capsule())
-        
+
+        Button {
+        } label: {
+          Text("OK")
+            .frame(height: 56)
+            .frame(maxWidth: .infinity)
+        }
+        .foregroundColor(.white)
+        .background(Color.orange)
+        .clipShape(Capsule())
+
         Text("Prefer not to say")
           .foregroundColor(.secondary)
       }
