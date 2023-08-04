@@ -6,7 +6,7 @@ A description of this package.
 ```mermaid
 graph TD;
     AboutFeature-->Constants;
-    AppFeature-->Constants;
+    AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
     ForceUpdateFeature-->Constants;
     NavigationFeature-->AboutFeature;
