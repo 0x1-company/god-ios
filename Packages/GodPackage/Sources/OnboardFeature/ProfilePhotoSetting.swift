@@ -41,11 +41,11 @@ public struct ProfilePhotoSettingView: View {
         Text("Add a profile photo")
           .bold()
           .foregroundColor(Color.white)
-        
+
         Color.red
           .frame(width: 120, height: 120)
           .clipShape(Circle())
-        
+
         Text("Add a photo so your friends can find you")
           .foregroundColor(.secondary)
 
@@ -64,7 +64,7 @@ public struct ProfilePhotoSettingView: View {
           RoundedRectangle(cornerRadius: 56 / 2)
             .stroke(Color.white, lineWidth: 1)
         )
-        
+
         Button {
           viewStore.send(.takePhotoButtonTapped)
         } label: {
