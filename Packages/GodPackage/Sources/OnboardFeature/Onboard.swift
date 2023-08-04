@@ -56,7 +56,7 @@ public struct OnboardReducer: Reducer {
       case lastNameSetting(LastNameSettingReducer.State = .init())
       case usernameSetting(UsernameSettingReducer.State = .init())
       case genderSetting(GenderSettingReducer.State = .init())
-      case avatarSetting(AvatarSettingReducer.State = .init())
+      case profilePhotoSetting(ProfilePhotoSettingReducer.State = .init())
     }
 
     public enum Action: Equatable {
@@ -64,7 +64,7 @@ public struct OnboardReducer: Reducer {
       case lastNameSetting(LastNameSettingReducer.Action)
       case usernameSetting(UsernameSettingReducer.Action)
       case genderSetting(GenderSettingReducer.Action)
-      case avatarSetting(AvatarSettingReducer.Action)
+      case profilePhotoSetting(ProfilePhotoSettingReducer.Action)
     }
 
     public var body: some ReducerOf<Self> {
@@ -80,8 +80,8 @@ public struct OnboardReducer: Reducer {
       Scope(state: /State.genderSetting, action: /Action.genderSetting) {
         GenderSettingReducer()
       }
-      Scope(state: /State.avatarSetting, action: /Action.avatarSetting) {
-        AvatarSettingReducer()
+      Scope(state: /State.profilePhotoSetting, action: /Action.profilePhotoSetting) {
+        ProfilePhotoSettingReducer()
       }
     }
   }
@@ -123,11 +123,11 @@ public struct OnboardView: View {
           action: OnboardReducer.Path.Action.genderSetting,
           then: GenderSettingView.init(store:)
         )
-      case .avatarSetting:
+      case .profilePhotoSetting:
         CaseLet(
-          /OnboardReducer.Path.State.avatarSetting,
-          action: OnboardReducer.Path.Action.avatarSetting,
-          then: AvatarSettingView.init(store:)
+          /OnboardReducer.Path.State.profilePhotoSetting,
+          action: OnboardReducer.Path.Action.profilePhotoSetting,
+          then: ProfilePhotoSettingView.init(store:)
         )
       }
     }
