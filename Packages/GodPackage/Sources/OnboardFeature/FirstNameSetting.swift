@@ -17,7 +17,7 @@ public struct FirstNameSettingReducer: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextFirstNameSetting
+      case nextLastNameSetting
     }
   }
 
@@ -36,7 +36,7 @@ public struct FirstNameSettingReducer: Reducer {
 
       case .nextButtonTapped:
         return .run { send in
-          await send(.delegate(.nextFirstNameSetting))
+          await send(.delegate(.nextLastNameSetting))
         }
       case .delegate:
         return .none
@@ -80,6 +80,7 @@ public struct FirstNameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color(0xFFED_6C43))
+      .navigationBarBackButtonHidden()
       .toolbar {
         DoubleCheckNameView(
           store: store.scope(
