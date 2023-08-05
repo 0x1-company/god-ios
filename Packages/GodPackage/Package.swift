@@ -39,7 +39,7 @@ let package = Package(
   targets: [
     .target(name: "AboutFeature", dependencies: [
       "Constants",
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "HowItWorksFeature",
     ]),
     .target(name: "ActivityFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
