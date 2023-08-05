@@ -6,13 +6,13 @@ public struct WelcomeReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var selection = "- -"
     let ages: [String] = {
       var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
       return numbers
     }()
-
-    var selection = "- -"
     public init() {}
   }
 
@@ -20,6 +20,11 @@ public struct WelcomeReducer: Reducer {
     case loginButtonTapped
     case getStartedButtonTapped
     case ageChanged(String)
+    case alert(PresentationAction<Alert>)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -31,6 +36,27 @@ public struct WelcomeReducer: Reducer {
         return .none
       case let .ageChanged(selection):
         state.selection = selection
+        if Array(0 ... 12).map(String.init).contains(selection) {
+          state.alert = .init(
+            title: {
+              TextState("Sorry")
+            },
+            actions: {
+              ButtonState(action: .confirmOkay) {
+                TextState("OK")
+              }
+            },
+            message: {
+              TextState("You must be at least 13 years old to sign up.")
+            }
+          )
+        }
+        return .none
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
+        state.selection = "- -"
+        return .none
+      case .alert:
         return .none
       }
     }
@@ -110,6 +136,7 @@ public struct WelcomeView: View {
         }
       }
       .background(Color.god.black)
+      .alert(store: store.scope(state: \.$alert, action: WelcomeReducer.Action.alert))
       .toolbar {
         Button("Log In") {}
           .foregroundColor(Color.white)
