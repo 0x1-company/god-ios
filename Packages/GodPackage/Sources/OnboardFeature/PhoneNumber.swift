@@ -83,6 +83,7 @@ public struct PhoneNumberView: View {
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
       }
+      .navigationBarBackButtonHidden()
     }
   }
 }
