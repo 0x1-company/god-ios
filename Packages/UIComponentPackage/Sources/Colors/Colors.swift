@@ -6,9 +6,12 @@ public extension Color {
 }
 
 public struct Colors {
-  public let whiteBackground = Color.white
-  public let blackBackground = Color(0xFF1E_1E1E)
-  public let secondaryBackground = Color(0xFFFA_FAFA)
   public let separator = Color(uiColor: UIColor.separator)
-  public let orange = Color(0xFFED_6C43)
+  
+  public let black = Color("black", bundle: .module)
+  public let service = Color("service", bundle: .module)
+  public let textPrimary = Color("text-primary", bundle: .module)
+  public let textSecondaryDark = Color("text-secondary-dark", bundle: .module)
+  public let textSecondaryLight = Color("text-secondary-light", bundle: .module)
+  public let white = Color("white", bundle: .module)
 }

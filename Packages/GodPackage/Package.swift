@@ -69,7 +69,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
-      .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "InboxFeature", dependencies: [
@@ -93,7 +93,7 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "GenderSettingFeature",
-      .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
