@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import HowItWorksFeature
 import GenderSettingFeature
+import HowItWorksFeature
 import SwiftUI
 
 public struct OnboardReducer: Reducer {
@@ -49,7 +49,7 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .profilePhotoSetting(.delegate(.nextAddFriends)))):
         state.path.append(.addFriends())
         return .none
-        
+
       case .path(.element(_, .addFriends(.delegate(.nextHowItWorks)))):
         state.path.append(.howItWorks())
         return .none
@@ -161,8 +161,8 @@ public struct OnboardView: View {
       case .howItWorks:
         CaseLet(
           /OnboardReducer.Path.State.howItWorks,
-           action: OnboardReducer.Path.Action.howItWorks,
-           then: HowItWorksView.init(store:)
+          action: OnboardReducer.Path.Action.howItWorks,
+          then: HowItWorksView.init(store:)
         )
       }
     }
