@@ -15,7 +15,7 @@ public struct SchoolSettingReducer: Reducer {
     case infoButtonTapped
     case schoolButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextPhoneNumber
     }
@@ -50,7 +50,7 @@ public struct SchoolSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
         Color.god.service
-        
+
         List(0 ..< 100, id: \.self) { _ in
           Button {
             viewStore.send(.schoolButtonTapped)

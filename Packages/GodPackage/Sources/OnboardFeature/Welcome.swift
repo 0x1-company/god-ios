@@ -13,6 +13,7 @@ public struct WelcomeReducer: Reducer {
       numbers.insert("- -", at: 13)
       return numbers
     }()
+
     public init() {}
   }
 
@@ -21,7 +22,7 @@ public struct WelcomeReducer: Reducer {
     case getStartedButtonTapped
     case ageChanged(String)
     case alert(PresentationAction<Alert>)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
