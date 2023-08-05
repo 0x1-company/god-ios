@@ -16,6 +16,11 @@ public struct GenderSettingReducer: Reducer {
     case girlButtonTapped
     case nonBinaryButtonTapped
     case help(PresentationAction<GenderHelpReducer.Action>)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case nextProfilePhotoSetting
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -26,15 +31,21 @@ public struct GenderSettingReducer: Reducer {
         return .none
 
       case .boyButtonTapped:
-        return .none
-
+        return .run { send in
+          await send(.delegate(.nextProfilePhotoSetting))
+        }
       case .girlButtonTapped:
-        return .none
-
+        return .run { send in
+          await send(.delegate(.nextProfilePhotoSetting))
+        }
       case .nonBinaryButtonTapped:
-        return .none
-
+        return .run { send in
+          await send(.delegate(.nextProfilePhotoSetting))
+        }
       case .help:
+        return .none
+        
+      case .delegate:
         return .none
       }
     }

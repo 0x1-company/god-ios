@@ -40,6 +40,10 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .usernameSetting(.delegate(.nextGenderSetting)))):
         state.path.append(.genderSetting())
         return .none
+        
+      case .path(.element(_, .genderSetting(.delegate(.nextProfilePhotoSetting)))):
+        state.path.append(.profilePhotoSetting())
+        return .none
 
       case .path:
         return .none
