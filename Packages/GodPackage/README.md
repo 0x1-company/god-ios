@@ -6,6 +6,7 @@ A description of this package.
 ```mermaid
 graph TD;
     AboutFeature-->Constants;
+    AboutFeature-->HowItWorksFeature;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
     AppFeature-->ForceUpdateFeature;
@@ -16,6 +17,7 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     NavigationFeature-->ProfileFeature;
+    OnboardFeature-->HowItWorksFeature;
     OnboardFeature-->GenderSettingFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ProfileEditFeature;
