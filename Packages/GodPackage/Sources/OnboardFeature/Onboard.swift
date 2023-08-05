@@ -40,11 +40,11 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .usernameSetting(.delegate(.nextGenderSetting)))):
         state.path.append(.genderSetting())
         return .none
-        
+
       case .path(.element(_, .genderSetting(.delegate(.nextProfilePhotoSetting)))):
         state.path.append(.profilePhotoSetting())
         return .none
-        
+
       case .path(.element(_, .profilePhotoSetting(.delegate(.nextAddFriends)))):
         state.path.append(.addFriends())
         return .none
@@ -145,8 +145,8 @@ public struct OnboardView: View {
       case .addFriends:
         CaseLet(
           /OnboardReducer.Path.State.addFriends,
-           action: OnboardReducer.Path.Action.addFriends,
-           then: AddFriendsView.init(store:)
+          action: OnboardReducer.Path.Action.addFriends,
+          then: AddFriendsView.init(store:)
         )
       }
     }

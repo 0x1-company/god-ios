@@ -55,7 +55,7 @@ public struct GenderHelpView: View {
 
         Text("Adding your gender\nhelps create your polls")
           .bold()
-        
+
         Text("See who likes you on God")
 
         Button {
