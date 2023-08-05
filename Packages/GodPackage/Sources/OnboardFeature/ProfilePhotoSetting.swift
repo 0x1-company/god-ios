@@ -1,3 +1,4 @@
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -9,17 +10,32 @@ public struct ProfilePhotoSettingReducer: Reducer {
   }
 
   public enum Action: Equatable {
+    case skipButtonTapped
     case choosePhotoButtonTapped
     case takePhotoButtonTapped
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case nextAddFriends
+    }
   }
 
   public var body: some ReducerOf<Self> {
     Reduce { _, action in
       switch action {
+      case .skipButtonTapped:
+        return .run { send in
+          await send(.delegate(.nextAddFriends))
+        }
       case .choosePhotoButtonTapped:
-        return .none
-
+        return .run { send in
+          await send(.delegate(.nextAddFriends))
+        }
       case .takePhotoButtonTapped:
+        return .run { send in
+          await send(.delegate(.nextAddFriends))
+        }
+      case .delegate:
         return .none
       }
     }
@@ -80,9 +96,11 @@ public struct ProfilePhotoSettingView: View {
         )
       }
       .padding(.horizontal, 24)
-      .background(Color.orange)
+      .background(Color.god.service)
       .toolbar {
-        Button("Skip") {}
+        Button("Skip") {
+          viewStore.send(.skipButtonTapped)
+        }
       }
     }
   }

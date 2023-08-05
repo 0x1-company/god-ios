@@ -40,6 +40,14 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .usernameSetting(.delegate(.nextGenderSetting)))):
         state.path.append(.genderSetting())
         return .none
+        
+      case .path(.element(_, .genderSetting(.delegate(.nextProfilePhotoSetting)))):
+        state.path.append(.profilePhotoSetting())
+        return .none
+        
+      case .path(.element(_, .profilePhotoSetting(.delegate(.nextAddFriends)))):
+        state.path.append(.addFriends())
+        return .none
 
       case .path:
         return .none
@@ -57,6 +65,7 @@ public struct OnboardReducer: Reducer {
       case usernameSetting(UsernameSettingReducer.State = .init())
       case genderSetting(GenderSettingReducer.State = .init())
       case profilePhotoSetting(ProfilePhotoSettingReducer.State = .init())
+      case addFriends(AddFriendsReducer.State = .init())
     }
 
     public enum Action: Equatable {
@@ -65,6 +74,7 @@ public struct OnboardReducer: Reducer {
       case usernameSetting(UsernameSettingReducer.Action)
       case genderSetting(GenderSettingReducer.Action)
       case profilePhotoSetting(ProfilePhotoSettingReducer.Action)
+      case addFriends(AddFriendsReducer.Action)
     }
 
     public var body: some ReducerOf<Self> {
@@ -82,6 +92,9 @@ public struct OnboardReducer: Reducer {
       }
       Scope(state: /State.profilePhotoSetting, action: /Action.profilePhotoSetting) {
         ProfilePhotoSettingReducer()
+      }
+      Scope(state: /State.addFriends, action: /Action.addFriends) {
+        AddFriendsReducer()
       }
     }
   }
@@ -128,6 +141,12 @@ public struct OnboardView: View {
           /OnboardReducer.Path.State.profilePhotoSetting,
           action: OnboardReducer.Path.Action.profilePhotoSetting,
           then: ProfilePhotoSettingView.init(store:)
+        )
+      case .addFriends:
+        CaseLet(
+          /OnboardReducer.Path.State.addFriends,
+           action: OnboardReducer.Path.Action.addFriends,
+           then: AddFriendsView.init(store:)
         )
       }
     }
