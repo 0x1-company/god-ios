@@ -13,7 +13,7 @@ public struct PhoneNumberReducer: Reducer {
     case onTask
     case nextButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextOneTimeCode
     }
@@ -24,12 +24,12 @@ public struct PhoneNumberReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .nextButtonTapped:
         return .run { send in
           await send(.delegate(.nextOneTimeCode))
         }
-        
+
       case .delegate:
         return .none
       }
@@ -49,22 +49,22 @@ public struct PhoneNumberView: View {
       ZStack {
         Color.god.service
           .ignoresSafeArea()
-        
+
         VStack(spacing: 12) {
           Spacer()
           Text("Enter your phone Number")
             .bold()
             .font(.title3)
-          
+
           TextField("Phone Number", text: .constant(""))
             .font(.title)
             .textContentType(.telephoneNumber)
 
           Text("Remember - never sign up\nwith another person's phone number.")
             .multilineTextAlignment(.center)
-          
+
           Spacer()
-          
+
           Button {
             viewStore.send(.nextButtonTapped)
           } label: {
