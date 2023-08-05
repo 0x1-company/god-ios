@@ -14,7 +14,7 @@ public struct ProfilePhotoSettingReducer: Reducer {
     case choosePhotoButtonTapped
     case takePhotoButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextAddFriends
     }

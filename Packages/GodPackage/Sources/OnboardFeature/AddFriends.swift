@@ -13,7 +13,7 @@ public struct AddFriendsReducer: Reducer {
     case onTask
     case nextButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextHowItWorks
     }
@@ -24,7 +24,7 @@ public struct AddFriendsReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .nextButtonTapped:
         return .run { send in
           await send(.delegate(.nextHowItWorks))
@@ -45,7 +45,7 @@ public struct AddFriendsView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List(0..<100, id: \.self) { _ in
+      List(0 ..< 100, id: \.self) { _ in
         HStack(alignment: .center, spacing: 16) {
           Color.red
             .frame(width: 40, height: 40)
@@ -57,9 +57,9 @@ public struct AddFriendsView: View {
             Text("1 mutual friend")
               .foregroundColor(Color.god.textSecondaryLight)
           }
-          
+
           Spacer()
-          
+
           Color.white
             .frame(width: 26, height: 26)
             .overlay(

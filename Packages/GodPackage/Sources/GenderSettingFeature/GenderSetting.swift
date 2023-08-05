@@ -17,7 +17,7 @@ public struct GenderSettingReducer: Reducer {
     case nonBinaryButtonTapped
     case help(PresentationAction<GenderHelpReducer.Action>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextProfilePhotoSetting
     }
@@ -44,7 +44,7 @@ public struct GenderSettingReducer: Reducer {
         }
       case .help:
         return .none
-        
+
       case .delegate:
         return .none
       }

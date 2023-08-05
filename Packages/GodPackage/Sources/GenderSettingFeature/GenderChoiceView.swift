@@ -3,7 +3,7 @@ import SwiftUI
 public struct GenderChoiceView: View {
   let gender: String
   let action: () -> Void
-  
+
   public init(
     _ gender: String,
     action: @escaping () -> Void
@@ -18,7 +18,7 @@ public struct GenderChoiceView: View {
         Color.blue
           .frame(width: 120, height: 120)
           .cornerRadius(12)
-        
+
         Text(gender)
           .foregroundColor(Color.white)
       }
