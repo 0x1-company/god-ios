@@ -24,10 +24,18 @@ public struct OnboardReducer: Reducer {
     Reduce { state, action in
       switch action {
       case .welcome(.getStartedButtonTapped):
-        state.path.append(.firstNameSetting())
+        state.path.append(.phoneNumber())
         return .none
 
       case .welcome:
+        return .none
+        
+      case .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode)))):
+        state.path.append(.oneTimeCode())
+        return .none
+        
+      case .path(.element(_, .oneTimeCode(.delegate(.nextFirstNameSetting)))):
+        state.path.append(.firstNameSetting())
         return .none
 
       case .path(.element(_, .firstNameSetting(.delegate(.nextLastNameSetting)))):
@@ -65,6 +73,8 @@ public struct OnboardReducer: Reducer {
 
   public struct Path: Reducer {
     public enum State: Equatable {
+      case phoneNumber(PhoneNumberReducer.State = .init())
+      case oneTimeCode(OneTimeCodeReducer.State = .init())
       case firstNameSetting(FirstNameSettingReducer.State = .init())
       case lastNameSetting(LastNameSettingReducer.State = .init())
       case usernameSetting(UsernameSettingReducer.State = .init())
@@ -75,6 +85,8 @@ public struct OnboardReducer: Reducer {
     }
 
     public enum Action: Equatable {
+      case phoneNumber(PhoneNumberReducer.Action)
+      case oneTimeCode(OneTimeCodeReducer.Action)
       case firstNameSetting(FirstNameSettingReducer.Action)
       case lastNameSetting(LastNameSettingReducer.Action)
       case usernameSetting(UsernameSettingReducer.Action)
@@ -85,6 +97,12 @@ public struct OnboardReducer: Reducer {
     }
 
     public var body: some ReducerOf<Self> {
+      Scope(state: /State.phoneNumber, action: /Action.phoneNumber) {
+        PhoneNumberReducer()
+      }
+      Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode) {
+        OneTimeCodeReducer()
+      }
       Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting) {
         FirstNameSettingReducer()
       }
@@ -122,6 +140,18 @@ public struct OnboardView: View {
       WelcomeView(store: store.scope(state: \.welcome, action: OnboardReducer.Action.welcome))
     } destination: { store in
       switch store {
+      case .phoneNumber:
+        CaseLet(
+          /OnboardReducer.Path.State.phoneNumber,
+           action: OnboardReducer.Path.Action.phoneNumber,
+           then: PhoneNumberView.init(store:)
+        )
+      case .oneTimeCode:
+        CaseLet(
+          /OnboardReducer.Path.State.oneTimeCode,
+           action: OnboardReducer.Path.Action.oneTimeCode,
+           then: OneTimeCodeView.init(store:)
+        )
       case .firstNameSetting:
         CaseLet(
           /OnboardReducer.Path.State.firstNameSetting,
