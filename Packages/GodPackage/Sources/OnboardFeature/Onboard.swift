@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import HowItWorksFeature
 import GenderSettingFeature
 import SwiftUI
 
@@ -48,6 +49,10 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .profilePhotoSetting(.delegate(.nextAddFriends)))):
         state.path.append(.addFriends())
         return .none
+        
+      case .path(.element(_, .addFriends(.delegate(.nextHowItWorks)))):
+        state.path.append(.howItWorks())
+        return .none
 
       case .path:
         return .none
@@ -66,6 +71,7 @@ public struct OnboardReducer: Reducer {
       case genderSetting(GenderSettingReducer.State = .init())
       case profilePhotoSetting(ProfilePhotoSettingReducer.State = .init())
       case addFriends(AddFriendsReducer.State = .init())
+      case howItWorks(HowItWorksReducer.State = .init())
     }
 
     public enum Action: Equatable {
@@ -75,6 +81,7 @@ public struct OnboardReducer: Reducer {
       case genderSetting(GenderSettingReducer.Action)
       case profilePhotoSetting(ProfilePhotoSettingReducer.Action)
       case addFriends(AddFriendsReducer.Action)
+      case howItWorks(HowItWorksReducer.Action)
     }
 
     public var body: some ReducerOf<Self> {
@@ -95,6 +102,9 @@ public struct OnboardReducer: Reducer {
       }
       Scope(state: /State.addFriends, action: /Action.addFriends) {
         AddFriendsReducer()
+      }
+      Scope(state: /State.howItWorks, action: /Action.howItWorks) {
+        HowItWorksReducer()
       }
     }
   }
@@ -147,6 +157,12 @@ public struct OnboardView: View {
           /OnboardReducer.Path.State.addFriends,
           action: OnboardReducer.Path.Action.addFriends,
           then: AddFriendsView.init(store:)
+        )
+      case .howItWorks:
+        CaseLet(
+          /OnboardReducer.Path.State.howItWorks,
+           action: OnboardReducer.Path.Action.howItWorks,
+           then: HowItWorksView.init(store:)
         )
       }
     }

@@ -39,7 +39,7 @@ let package = Package(
   targets: [
     .target(name: "AboutFeature", dependencies: [
       "Constants",
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "HowItWorksFeature",
     ]),
     .target(name: "ActivityFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -94,9 +94,8 @@ let package = Package(
       "ProfileFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
+      "HowItWorksFeature",
       "GenderSettingFeature",
-      .product(name: "Colors", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
