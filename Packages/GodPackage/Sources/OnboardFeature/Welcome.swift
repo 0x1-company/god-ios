@@ -1,4 +1,4 @@
-import ColorHex
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -63,14 +63,14 @@ public struct WelcomeView: View {
         Text("God")
           .font(.largeTitle)
           .bold()
-          .foregroundColor(Color(0xFF8F_8F8F))
+          .foregroundColor(Color.god.textSecondaryDark)
         Spacer()
         VStack(spacing: 24) {
           ZStack {
             if viewStore.selection == "- -" {
               Text("By entering your age you agree to our Terms and Privacy Policy")
                 .frame(height: 54)
-                .foregroundColor(Color(0xFF8F_8F8F))
+                .foregroundColor(Color.god.textSecondaryDark)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             } else {
@@ -82,7 +82,7 @@ public struct WelcomeView: View {
                   .frame(height: 54)
                   .frame(maxWidth: .infinity)
                   .foregroundColor(Color.white)
-                  .background(Color(0xFFED_6C43))
+                  .background(Color.god.service)
                   .clipShape(Capsule())
               }
               .padding(.horizontal, 16)
@@ -90,7 +90,7 @@ public struct WelcomeView: View {
           }
 
           Text(viewStore.ageText)
-            .foregroundColor(Color(0xFFED_6C43))
+            .foregroundColor(Color.god.service)
             .bold()
 
           Picker(
@@ -109,7 +109,7 @@ public struct WelcomeView: View {
           .environment(\.colorScheme, .dark)
         }
       }
-      .background(Color(0xFF1E_1E1E))
+      .background(Color.god.black)
       .toolbar {
         Button("Log In") {}
           .foregroundColor(Color.white)
