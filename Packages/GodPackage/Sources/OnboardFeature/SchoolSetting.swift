@@ -37,7 +37,10 @@ public struct SchoolSettingView: View {
         Color.god.service
         
         VStack(spacing: 0) {
-          
+          Spacer()
+          Text("hoge")
+            .frame(maxWidth: .infinity)
+          Spacer()
         }
         .foregroundColor(.primary)
         .background(Color.white)
