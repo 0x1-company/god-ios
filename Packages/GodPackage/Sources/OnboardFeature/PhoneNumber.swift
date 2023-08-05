@@ -1,7 +1,7 @@
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import PhoneNumberKit
+import SwiftUI
 
 public struct PhoneNumberReducer: Reducer {
   public init() {}
