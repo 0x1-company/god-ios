@@ -29,15 +29,15 @@ public struct OnboardReducer: Reducer {
 
       case .welcome:
         return .none
-        
+
       case .path(.element(_, .gradeSetting(.delegate(.nextSchoolSetting)))):
         state.path.append(.schoolSetting())
         return .none
-        
+
       case .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode)))):
         state.path.append(.oneTimeCode())
         return .none
-        
+
       case .path(.element(_, .oneTimeCode(.delegate(.nextFirstNameSetting)))):
         state.path.append(.firstNameSetting())
         return .none
@@ -157,26 +157,26 @@ public struct OnboardView: View {
       case .gradeSetting:
         CaseLet(
           /OnboardReducer.Path.State.gradeSetting,
-           action: OnboardReducer.Path.Action.gradeSetting,
-           then: GradeSettingView.init(store:)
+          action: OnboardReducer.Path.Action.gradeSetting,
+          then: GradeSettingView.init(store:)
         )
       case .schoolSetting:
         CaseLet(
           /OnboardReducer.Path.State.schoolSetting,
-           action: OnboardReducer.Path.Action.schoolSetting,
-           then: SchoolSettingView.init(store:)
+          action: OnboardReducer.Path.Action.schoolSetting,
+          then: SchoolSettingView.init(store:)
         )
       case .phoneNumber:
         CaseLet(
           /OnboardReducer.Path.State.phoneNumber,
-           action: OnboardReducer.Path.Action.phoneNumber,
-           then: PhoneNumberView.init(store:)
+          action: OnboardReducer.Path.Action.phoneNumber,
+          then: PhoneNumberView.init(store:)
         )
       case .oneTimeCode:
         CaseLet(
           /OnboardReducer.Path.State.oneTimeCode,
-           action: OnboardReducer.Path.Action.oneTimeCode,
-           then: OneTimeCodeView.init(store:)
+          action: OnboardReducer.Path.Action.oneTimeCode,
+          then: OneTimeCodeView.init(store:)
         )
       case .firstNameSetting:
         CaseLet(

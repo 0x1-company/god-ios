@@ -1,6 +1,6 @@
 import Colors
-import RoundedCorner
 import ComposableArchitecture
+import RoundedCorner
 import SwiftUI
 
 public struct GradeSettingReducer: Reducer {
@@ -18,7 +18,7 @@ public struct GradeSettingReducer: Reducer {
     case grade12ButtonTapped
     case finishedHighSchoolButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextSchoolSetting
     }
@@ -29,7 +29,7 @@ public struct GradeSettingReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .notInHighSchoolButtonTapped:
         return .run { send in
           await send(.delegate(.nextSchoolSetting))
@@ -68,7 +68,7 @@ public struct GradeSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
         Color.god.service
-        
+
         VStack(spacing: 0) {
           selectButton("Not in High School") {
             viewStore.send(.notInHighSchoolButtonTapped)
@@ -80,7 +80,7 @@ public struct GradeSettingView: View {
             .padding(.horizontal, 24)
             .foregroundColor(.secondary)
             .background(Color(uiColor: .quaternarySystemFill))
-          
+
           Divider()
 
           VStack(spacing: 0) {
@@ -116,7 +116,7 @@ public struct GradeSettingView: View {
       .toolbarColorScheme(.dark, for: .navigationBar)
     }
   }
-  
+
   @ViewBuilder
   func selectButton(
     _ title: String,
@@ -129,7 +129,7 @@ public struct GradeSettingView: View {
         .frame(maxWidth: .infinity)
     }
   }
-  
+
   @ViewBuilder
   func gradeButton(
     _ title: String,

@@ -12,7 +12,7 @@ public struct OneTimeCodeReducer: Reducer {
     case onTask
     case nextButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextFirstNameSetting
     }
@@ -23,12 +23,12 @@ public struct OneTimeCodeReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .nextButtonTapped:
         return .run { send in
           await send(.delegate(.nextFirstNameSetting))
         }
-        
+
       case .delegate:
         return .none
       }
@@ -48,27 +48,26 @@ public struct OneTimeCodeView: View {
       ZStack {
         Color.god.service
           .ignoresSafeArea()
-        
+
         VStack(spacing: 12) {
           Spacer()
           Text("We sent you a code to verify\nyour number")
             .bold()
             .font(.title3)
-          
+
           Text("Sent to +81 80-2332-3620")
-          
+
           TextField("Code", text: .constant(""))
             .font(.title)
             .textContentType(.telephoneNumber)
             .textContentType(.oneTimeCode)
 
           Spacer()
-          
+
           VStack(spacing: 24) {
-            Button("Resend in 30") {
-            }
-            .bold()
-            
+            Button("Resend in 30") {}
+              .bold()
+
             Button {
               viewStore.send(.nextButtonTapped)
             } label: {

@@ -1,7 +1,7 @@
-import ComposableArchitecture
-import SwiftUI
 import Colors
+import ComposableArchitecture
 import RoundedCorner
+import SwiftUI
 
 public struct SchoolSettingReducer: Reducer {
   public init() {}
@@ -32,10 +32,10 @@ public struct SchoolSettingView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack(alignment: .center) {
         Color.god.service
-        
+
         VStack(spacing: 0) {
           Spacer()
           Text("hoge")
