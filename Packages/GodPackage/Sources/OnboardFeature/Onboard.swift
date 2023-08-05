@@ -33,7 +33,7 @@ public struct OnboardReducer: Reducer {
       case .path(.element(_, .gradeSetting(.delegate(.nextSchoolSetting)))):
         state.path.append(.schoolSetting())
         return .none
-        
+
       case .path(.element(_, .schoolSetting(.delegate(.nextPhoneNumber)))):
         state.path.append(.phoneNumber())
         return .none
