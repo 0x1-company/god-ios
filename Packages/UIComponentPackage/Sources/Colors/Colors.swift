@@ -7,7 +7,7 @@ public extension Color {
 
 public struct Colors {
   public let separator = Color(uiColor: UIColor.separator)
-  
+
   public let black = Color("black", bundle: .module)
   public let service = Color("service", bundle: .module)
   public let textPrimary = Color("text-primary", bundle: .module)
