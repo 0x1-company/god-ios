@@ -8,6 +8,7 @@ graph TD;
     AboutFeature-->Constants;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
+    AppFeature-->ForceUpdateFeature;
     ForceUpdateFeature-->Constants;
     NavigationFeature-->AboutFeature;
     NavigationFeature-->ActivityFeature;
