@@ -24,10 +24,14 @@ public struct OnboardReducer: Reducer {
     Reduce { state, action in
       switch action {
       case .welcome(.getStartedButtonTapped):
-        state.path.append(.phoneNumber())
+        state.path.append(.gradeSetting())
         return .none
 
       case .welcome:
+        return .none
+        
+      case .path(.element(_, .gradeSetting(.delegate(.nextSchoolSetting)))):
+        state.path.append(.phoneNumber())
         return .none
         
       case .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode)))):
@@ -73,6 +77,7 @@ public struct OnboardReducer: Reducer {
 
   public struct Path: Reducer {
     public enum State: Equatable {
+      case gradeSetting(GradeSettingReducer.State = .init())
       case phoneNumber(PhoneNumberReducer.State = .init())
       case oneTimeCode(OneTimeCodeReducer.State = .init())
       case firstNameSetting(FirstNameSettingReducer.State = .init())
@@ -85,6 +90,7 @@ public struct OnboardReducer: Reducer {
     }
 
     public enum Action: Equatable {
+      case gradeSetting(GradeSettingReducer.Action)
       case phoneNumber(PhoneNumberReducer.Action)
       case oneTimeCode(OneTimeCodeReducer.Action)
       case firstNameSetting(FirstNameSettingReducer.Action)
@@ -97,6 +103,9 @@ public struct OnboardReducer: Reducer {
     }
 
     public var body: some ReducerOf<Self> {
+      Scope(state: /State.gradeSetting, action: /Action.gradeSetting) {
+        GradeSettingReducer()
+      }
       Scope(state: /State.phoneNumber, action: /Action.phoneNumber) {
         PhoneNumberReducer()
       }
@@ -140,6 +149,12 @@ public struct OnboardView: View {
       WelcomeView(store: store.scope(state: \.welcome, action: OnboardReducer.Action.welcome))
     } destination: { store in
       switch store {
+      case .gradeSetting:
+        CaseLet(
+          /OnboardReducer.Path.State.gradeSetting,
+           action: OnboardReducer.Path.Action.gradeSetting,
+           then: GradeSettingView.init(store:)
+        )
       case .phoneNumber:
         CaseLet(
           /OnboardReducer.Path.State.phoneNumber,

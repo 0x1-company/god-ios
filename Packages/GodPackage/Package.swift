@@ -96,6 +96,7 @@ let package = Package(
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
       "GenderSettingFeature",
+      .product(name: "RoundedCorner", package: "UIComponentPackage")
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
