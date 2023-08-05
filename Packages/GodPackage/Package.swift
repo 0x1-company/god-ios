@@ -58,6 +58,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GenderSettingFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [

@@ -1,3 +1,4 @@
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -52,7 +53,9 @@ public struct GenderHelpView: View {
           .frame(width: 64, height: 64)
           .cornerRadius(12)
 
-        Text("Adding your gender helps create your polls")
+        Text("Adding your gender\nhelps create your polls")
+          .bold()
+        
         Text("See who likes you on God")
 
         Button {
@@ -63,13 +66,13 @@ public struct GenderHelpView: View {
             .frame(maxWidth: .infinity)
         }
         .foregroundColor(.white)
-        .background(Color.orange)
+        .background(Color.god.service)
         .clipShape(Capsule())
 
         Button("Prefer not to say") {
           viewStore.send(.preferNotSayButtonTapped)
         }
-        .foregroundColor(.secondary)
+        .foregroundColor(Color.god.textSecondaryLight)
       }
       .padding(.horizontal, 24)
     }

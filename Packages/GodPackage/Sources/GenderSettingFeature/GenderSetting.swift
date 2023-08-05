@@ -1,3 +1,4 @@
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -52,32 +53,27 @@ public struct GenderSettingView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 24) {
-        Text("What's your gender?")
+      ZStack {
+        Color.god.service
+          .ignoresSafeArea()
 
-        HStack(spacing: 24) {
-          Button {
-            viewStore.send(.boyButtonTapped)
-          } label: {
-            Color.red
-              .frame(width: 120, height: 120)
-              .cornerRadius(12)
+        VStack(spacing: 24) {
+          Text("What's your gender?")
+            .bold()
+            .foregroundColor(Color.white)
+
+          HStack(spacing: 24) {
+            GenderChoiceView("Boy") {
+              viewStore.send(.boyButtonTapped)
+            }
+            GenderChoiceView("Girl") {
+              viewStore.send(.girlButtonTapped)
+            }
           }
-          Button {
-            viewStore.send(.girlButtonTapped)
-          } label: {
-            Color.blue
-              .frame(width: 120, height: 120)
-              .cornerRadius(12)
-          }
-        }
-        HStack(spacing: 24) {
-          Button {
-            viewStore.send(.nonBinaryButtonTapped)
-          } label: {
-            Color.orange
-              .frame(width: 120, height: 120)
-              .cornerRadius(12)
+          HStack(spacing: 24) {
+            GenderChoiceView("Non-binary") {
+              viewStore.send(.nonBinaryButtonTapped)
+            }
           }
         }
       }
