@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "FullScreenActionView", targets: ["FullScreenActionView"]),
     .library(name: "FullScreenCoverView", targets: ["FullScreenCoverView"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
+    .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
   ],
   dependencies: [
   ],
@@ -25,5 +26,6 @@ let package = Package(
     .target(name: "FullScreenActionView"),
     .target(name: "FullScreenCoverView"),
     .target(name: "LabeledButton"),
+    .target(name: "RoundedCorner"),
   ]
 )
