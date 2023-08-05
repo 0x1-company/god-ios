@@ -50,6 +50,7 @@ let package = Package(
     .target(name: "AppFeature", dependencies: [
       "OnboardFeature",
       "NavigationFeature",
+      "ForceUpdateFeature",
     ]),
     .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [
