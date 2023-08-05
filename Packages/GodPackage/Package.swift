@@ -94,9 +94,8 @@ let package = Package(
       "ProfileFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
+      "HowItWorksFeature",
       "GenderSettingFeature",
-      .product(name: "Colors", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
