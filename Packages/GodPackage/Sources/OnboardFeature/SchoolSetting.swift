@@ -41,6 +41,9 @@ public struct SchoolSettingReducer: Reducer {
         return .none
       }
     }
+    .ifLet(\.$schoolHelp, action: /Action.schoolHelp) {
+      SchoolHelpSheetReducer()
+    }
   }
 }
 
