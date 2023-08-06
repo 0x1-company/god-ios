@@ -1,3 +1,4 @@
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -31,12 +32,17 @@ public struct MaintenanceView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("Maintenance")
+      VStack(spacing: 24) {
+        Text("メンテナンス中")
+          .bold()
+          .font(.title)
+        Text("サービス再開までしばらくお待ち下さい。")
       }
-      .navigationTitle("Maintenance")
-      .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .padding(.horizontal, 24)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Color.god.service)
+      .foregroundColor(Color.white)
+      .multilineTextAlignment(.center)
     }
   }
 }
