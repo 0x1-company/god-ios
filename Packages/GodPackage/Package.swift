@@ -20,6 +20,7 @@ let package = Package(
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
+    .library(name: "MaintenanceFeature", targets: ["MaintenanceFeature"]),
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
@@ -83,6 +84,10 @@ let package = Package(
     .target(name: "InboxFeature", dependencies: [
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "MaintenanceFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ManageAccountFeature", dependencies: [
