@@ -27,7 +27,6 @@ let package = Package(
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "ProfileShareFeature", targets: ["ProfileShareFeature"]),
-    .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
     .library(name: "ShopFeature", targets: ["ShopFeature"]),
   ],
@@ -118,9 +117,6 @@ let package = Package(
       "ProfileEditFeature",
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
-    .target(name: "SchoolSettingFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [
