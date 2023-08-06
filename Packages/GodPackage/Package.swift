@@ -13,6 +13,7 @@ let package = Package(
     .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
+    .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "GenderSettingFeature", targets: ["GenderSettingFeature"]),
@@ -58,6 +59,10 @@ let package = Package(
       .product(name: "FirestoreClient", package: "FirebasePackage"),
       .product(name: "FirebaseCoreClient", package: "FirebasePackage"),
     ]),
+    .target(name: "CashOutFeature", dependencies: [
+      .product(name: "Lottie", package: "lottie-ios"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ], resources: [.copy("coin.json")]),
     .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [
       "Constants",
@@ -69,11 +74,12 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
+      "CashOutFeature",
       .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ], resources: [.copy("coin.json")]),
+    ]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),

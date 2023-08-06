@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import GodFeature
+import CashOutFeature
 import SwiftUI
 
 @main
