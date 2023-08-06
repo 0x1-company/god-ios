@@ -3,6 +3,7 @@ import FirebaseAuth
 
 extension FirebaseAuthClient: DependencyKey {
   public static let liveValue = Self(
+    languageCode: { Auth.auth().languageCode = $0 },
     verifyPhoneNumber: { phoneNumber in
       try await withCheckedThrowingContinuation { continuation in
         PhoneAuthProvider.provider()
