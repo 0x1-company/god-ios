@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B7008E6F2A8027FA00C36803 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7CCF99F2A7AF46D00B64CFE /* GoogleService-Info.plist */; };
 		B783E0E82A11FFBE002E782F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0E72A11FFBE002E782F /* Assets.xcassets */; };
 		B783E0EB2A11FFBE002E782F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0EA2A11FFBE002E782F /* Preview Assets.xcassets */; };
 		B783E1042A12000A002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1032A12000A002E782F /* App.swift */; };
@@ -162,6 +163,7 @@
 			files = (
 				B783E0EB2A11FFBE002E782F /* Preview Assets.xcassets in Resources */,
 				B783E0E82A11FFBE002E782F /* Assets.xcassets in Resources */,
+				B7008E6F2A8027FA00C36803 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
