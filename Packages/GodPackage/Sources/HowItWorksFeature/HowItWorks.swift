@@ -44,8 +44,8 @@ public struct HowItWorksView: View {
         .foregroundColor(Color.white)
         .background(Color.god.service)
         .clipShape(Capsule())
-        .padding(.horizontal, 16)
       }
+      .padding(.horizontal, 16)
     }
   }
 }
