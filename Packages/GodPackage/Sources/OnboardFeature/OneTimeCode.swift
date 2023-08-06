@@ -12,6 +12,7 @@ public struct OneTimeCodeReducer: Reducer {
   public enum Action: Equatable {
     case onTask
     case changeOneTimeCode(String)
+    case resendButtonTapped
     case nextButtonTapped
     case delegate(Delegate)
 
@@ -28,6 +29,9 @@ public struct OneTimeCodeReducer: Reducer {
         
       case let .changeOneTimeCode(oneTimeCode):
         state.oneTimeCode = oneTimeCode
+        return .none
+        
+      case .resendButtonTapped:
         return .none
 
       case .nextButtonTapped:
@@ -77,8 +81,10 @@ public struct OneTimeCodeView: View {
           Spacer()
 
           VStack(spacing: 24) {
-            Button("Resend in 30") {}
-              .bold()
+            Button("Resend in 30") {
+              viewStore.send(.resendButtonTapped)
+            }
+            .bold()
 
             Button {
               viewStore.send(.nextButtonTapped)
