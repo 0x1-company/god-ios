@@ -6,6 +6,7 @@ import GodFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
+import PollFeature
 
 public struct RootNavigationReducer: Reducer {
   public init() {}
@@ -14,7 +15,7 @@ public struct RootNavigationReducer: Reducer {
     var add = AddReducer.State()
     var activity = ActivityReducer.State()
     var inbox = InboxReducer.State()
-    var question = QuestionReducer.State()
+    var poll = PollReducer.State()
     var profile = ProfileReducer.State()
     var about = AboutReducer.State()
     public init() {}
@@ -24,7 +25,7 @@ public struct RootNavigationReducer: Reducer {
     case add(AddReducer.Action)
     case activity(ActivityReducer.Action)
     case inbox(InboxReducer.Action)
-    case question(QuestionReducer.Action)
+    case poll(PollReducer.Action)
     case profile(ProfileReducer.Action)
     case about(AboutReducer.Action)
   }
@@ -39,8 +40,8 @@ public struct RootNavigationReducer: Reducer {
     Scope(state: \.inbox, action: /Action.inbox) {
       InboxReducer()
     }
-    Scope(state: \.question, action: /Action.question) {
-      QuestionReducer()
+    Scope(state: \.poll, action: /Action.poll) {
+      PollReducer()
     }
     Scope(state: \.profile, action: /Action.profile) {
       ProfileReducer()
@@ -82,10 +83,10 @@ public struct RootNavigationView: View {
           )
         )
 
-        QuestionView(
+        PollView(
           store: store.scope(
-            state: \.question,
-            action: RootNavigationReducer.Action.question
+            state: \.poll,
+            action: RootNavigationReducer.Action.poll
           )
         )
 
