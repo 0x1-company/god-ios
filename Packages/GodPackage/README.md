@@ -12,6 +12,8 @@ graph TD;
     AppFeature-->ForceUpdateFeature;
     AppFeature-->MaintenanceFeature;
     ForceUpdateFeature-->Constants;
+    InboxFeature-->GodModeFeature;
+    InboxFeature-->ShareScreenshotFeature;
     NavigationFeature-->AboutFeature;
     NavigationFeature-->ActivityFeature;
     NavigationFeature-->AddFeature;
@@ -21,5 +23,7 @@ graph TD;
     OnboardFeature-->HowItWorksFeature;
     OnboardFeature-->GenderSettingFeature;
     ProfileEditFeature-->ManageAccountFeature;
+    ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
+    ProfileFeature-->ProfileShareFeature;
 ```
