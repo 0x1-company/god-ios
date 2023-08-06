@@ -1,27 +1,27 @@
 import Build
 import ComposableArchitecture
 import Constants
-import NavigationFeature
-import SwiftUI
 import FirestoreClient
 import ForceUpdateFeature
+import NavigationFeature
+import SwiftUI
 
 public struct AppReducer: Reducer {
   public init() {}
-  
+
   public struct State: Equatable {
     public init() {}
-    
+
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
     var view = View.State.navigation()
-    
+
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
       "talk-to-developer": Constants.developerURL,
     ]
   }
-  
+
   public enum Action: Equatable {
     case appDelegate(AppDelegateReducer.Action)
     case sceneDelegate(SceneDelegateReducer.Action)
@@ -29,11 +29,11 @@ public struct AppReducer: Reducer {
     case quickAction(String)
     case config(TaskResult<FirestoreClient.Config>)
   }
-  
+
   @Dependency(\.build) var build
   @Dependency(\.openURL) var openURL
   @Dependency(\.firestore) var firestore
-  
+
   public var body: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
       AppDelegateReducer()
@@ -49,35 +49,35 @@ public struct AppReducer: Reducer {
       case .appDelegate(.delegate(.didFinishLaunching)):
         enum CancelID { case effect }
         return .run { send in
-          for try await config in try await self.firestore.config() {
+          for try await config in try await firestore.config() {
             await send(.config(.success(config)), animation: .default)
           }
         } catch: { error, send in
           await send(.config(.failure(error)), animation: .default)
         }
         .cancellable(id: CancelID.effect)
-        
+
       case let .appDelegate(.configurationForConnecting(.some(shortcutItem))):
         let type = shortcutItem.type
         return .run { send in
           await send(.quickAction(type))
         }
-        
+
       case .appDelegate:
         return .none
-        
+
       case let .sceneDelegate(.shortcutItem(shortcutItem)):
         let type = shortcutItem.type
         return .run { send in
           await send(.quickAction(type))
         }
-        
+
       case .sceneDelegate:
         return .none
-     
+
       case .view:
         return .none
-        
+
       case let .quickAction(key):
         guard let url = state.quickActionURLs[key] else {
           return .none
@@ -85,32 +85,32 @@ public struct AppReducer: Reducer {
         return .run { _ in
           await openURL(url)
         }
-        
+
       case let .config(.success(config)):
         let shortVersion = build.bundleShortVersion()
         if config.isForceUpdate(shortVersion) {
           state.view = .forceUpdate()
         }
         return .none
-        
+
       case let .config(.failure(error)):
         print(error)
         return .none
       }
     }
   }
-  
+
   public struct View: Reducer {
     public enum State: Equatable {
       case navigation(RootNavigationReducer.State = .init())
       case forceUpdate(ForceUpdateReducer.State = .init())
     }
-    
+
     public enum Action: Equatable {
       case navigation(RootNavigationReducer.Action)
       case forceUpdate(ForceUpdateReducer.Action)
     }
-    
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.navigation, action: /Action.navigation) {
         RootNavigationReducer()
@@ -141,8 +141,8 @@ public struct AppView: View {
       case .forceUpdate:
         CaseLet(
           /AppReducer.View.State.forceUpdate,
-           action: AppReducer.View.Action.forceUpdate,
-           then: ForceUpdateView.init(store:)
+          action: AppReducer.View.Action.forceUpdate,
+          then: ForceUpdateView.init(store:)
         )
       }
     }

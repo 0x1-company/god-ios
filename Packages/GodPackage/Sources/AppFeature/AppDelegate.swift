@@ -9,7 +9,7 @@ public struct AppDelegateReducer: Reducer {
     case didRegisterForRemoteNotifications(TaskResult<Data>)
     case configurationForConnecting(UIApplicationShortcutItem?)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case didFinishLaunching
     }
@@ -21,7 +21,7 @@ public struct AppDelegateReducer: Reducer {
     switch action {
     case .didFinishLaunching:
       return .run { send in
-        self.firebaseCore.configure()
+        firebaseCore.configure()
         await send(.delegate(.didFinishLaunching))
       }
     case .didRegisterForRemoteNotifications(.failure):
@@ -34,7 +34,7 @@ public struct AppDelegateReducer: Reducer {
 
     case .configurationForConnecting:
       return .none
-      
+
     case .delegate:
       return .none
     }
