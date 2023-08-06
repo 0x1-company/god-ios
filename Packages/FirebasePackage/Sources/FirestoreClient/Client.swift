@@ -5,4 +5,9 @@ public struct FirestoreClient {
 public struct Config: Codable {
   public let isMaintenance: Bool
   public let minimumSupportedAppVersion: String
+  
+  public init(isMaintenance: Bool, minimumSupportedAppVersion: String) {
+    self.isMaintenance = isMaintenance
+    self.minimumSupportedAppVersion = minimumSupportedAppVersion
+  }
 }
