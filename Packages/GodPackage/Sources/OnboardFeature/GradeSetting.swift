@@ -7,6 +7,7 @@ public struct GradeSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var gradeHelp: GradeHelpSheetReducer.State?
     public init() {}
   }
 
@@ -18,6 +19,7 @@ public struct GradeSettingReducer: Reducer {
     case grade11ButtonTapped
     case grade12ButtonTapped
     case finishedHighSchoolButtonTapped
+    case gradeHelp(PresentationAction<GradeHelpSheetReducer.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -26,12 +28,13 @@ public struct GradeSettingReducer: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
         
       case .infoButtonTapped:
+        state.gradeHelp = .init()
         return .none
 
       case .notInHighSchoolButtonTapped:
@@ -54,9 +57,14 @@ public struct GradeSettingReducer: Reducer {
         return .run { send in
           await send(.delegate(.nextSchoolSetting))
         }
+      case .gradeHelp:
+        return .none
       case .delegate:
         return .none
       }
+    }
+    .ifLet(\.$gradeHelp, action: /Action.gradeHelp) {
+      GradeHelpSheetReducer()
     }
   }
 }
@@ -125,6 +133,16 @@ public struct GradeSettingView: View {
           Image(systemName: "info.circle.fill")
             .foregroundColor(.white)
         }
+      }
+      .sheet(
+        store: store.scope(
+          state: \.$gradeHelp,
+          action: GradeSettingReducer.Action.gradeHelp
+        )
+      ) { store in
+        GradeHelpSheetView(store: store)
+          .presentationDragIndicator(.visible)
+          .presentationDetents([.fraction(0.4)])
       }
     }
   }

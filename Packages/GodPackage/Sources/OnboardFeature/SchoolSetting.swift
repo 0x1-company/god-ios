@@ -7,6 +7,7 @@ public struct SchoolSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var schoolHelp: SchoolHelpSheetReducer.State?
     public init() {}
   }
 
@@ -14,6 +15,7 @@ public struct SchoolSettingReducer: Reducer {
     case onTask
     case infoButtonTapped
     case schoolButtonTapped
+    case schoolHelp(PresentationAction<SchoolHelpSheetReducer.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -22,16 +24,19 @@ public struct SchoolSettingReducer: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
       case .infoButtonTapped:
+        state.schoolHelp = .init()
         return .none
       case .schoolButtonTapped:
         return .run { send in
           await send(.delegate(.nextPhoneNumber))
         }
+      case .schoolHelp:
+        return .none
       case .delegate:
         return .none
       }
@@ -101,6 +106,16 @@ public struct SchoolSettingView: View {
           Image(systemName: "info.circle.fill")
             .foregroundColor(.white)
         }
+      }
+      .sheet(
+        store: store.scope(
+          state: \.$schoolHelp,
+          action: SchoolSettingReducer.Action.schoolHelp
+        )
+      ) { store in
+        SchoolHelpSheetView(store: store)
+          .presentationDetents([.fraction(0.4)])
+          .presentationDragIndicator(.visible)
       }
     }
   }
