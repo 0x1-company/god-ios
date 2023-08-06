@@ -27,7 +27,7 @@ public struct PhoneNumberReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case let .changePhoneNumber(phoneNumber):
         state.phoneNumber = phoneNumber
         return .none
@@ -73,7 +73,7 @@ public struct PhoneNumberView: View {
           .font(.title)
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
-          
+
           Text("Remember - never sign up\nwith another person's phone number.")
             .multilineTextAlignment(.center)
 
