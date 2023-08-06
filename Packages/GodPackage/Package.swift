@@ -53,12 +53,14 @@ let package = Package(
       "OnboardFeature",
       "NavigationFeature",
       "ForceUpdateFeature",
+      .product(name: "Build", package: "CupertinoPackage"),
+      .product(name: "FirestoreClient", package: "FirebasePackage"),
       .product(name: "FirebaseCoreClient", package: "FirebasePackage"),
     ]),
     .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [
       "Constants",
-      .product(name: "FullScreenActionView", package: "UIComponentPackage"),
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GenderSettingFeature", dependencies: [

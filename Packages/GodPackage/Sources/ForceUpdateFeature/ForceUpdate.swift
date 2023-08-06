@@ -1,6 +1,6 @@
+import Colors
 import ComposableArchitecture
 import Constants
-import FullScreenActionView
 import SwiftUI
 
 public struct ForceUpdateReducer: Reducer {
@@ -36,12 +36,30 @@ public struct ForceUpdateView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { _ in
-      FullScreenActionView(
-        "...おや？！Godのようすが...！\n安定してご利用いただくために、最新バージョンへのアップデートをお願いいたします。",
-        actionTitle: "アップデートする",
-        action: {}
-      )
+    WithViewStore(store, observe: { $0 }) { viewStore in
+      VStack(spacing: 24) {
+        Text("お知らせ")
+          .bold()
+          .font(.title)
+        Text("...おや？！Godのようすが...！\n最新バージョンへのアップデートをお願いします。")
+        
+        Button {
+          viewStore.send(.updateButtonTapped)
+        } label: {
+          Text("アップデート")
+            .bold()
+            .frame(height: 56)
+            .padding(.horizontal, 32)
+        }
+        .background(Color.white)
+        .foregroundColor(Color.black)
+        .clipShape(Capsule())
+      }
+      .padding(.horizontal, 24)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Color.god.service)
+      .foregroundColor(Color.white)
+      .multilineTextAlignment(.center)
     }
   }
 }
