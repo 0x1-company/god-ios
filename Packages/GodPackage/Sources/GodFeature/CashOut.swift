@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import SwiftUI
 import Lottie
+import SwiftUI
 
 public struct CashOutReducer: Reducer {
   public init() {}
@@ -38,7 +38,7 @@ public struct CashOutView: View {
             Text("Congrats")
               .bold()
               .font(.largeTitle)
-            
+
             Text("You earned 9 coins")
               .bold()
           }
@@ -66,7 +66,7 @@ public struct CashOutView: View {
           .shadow(color: .black.opacity(0.2), radius: 25)
           .padding(.horizontal, 65)
         }
-        
+
         LottieView(animation: LottieAnimation.named("coin", bundle: .module))
           .resizable()
           .padding(.bottom, 320)
