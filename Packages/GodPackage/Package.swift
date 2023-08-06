@@ -53,6 +53,7 @@ let package = Package(
       "OnboardFeature",
       "NavigationFeature",
       "ForceUpdateFeature",
+      .product(name: "FirebaseCoreClient", package: "FirebasePackage"),
     ]),
     .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [

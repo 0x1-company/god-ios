@@ -309,6 +309,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Multiplatform/Preview Content\"";
 				DEVELOPMENT_TEAM = Q7NP395GC3;
 				ENABLE_PREVIEWS = YES;
+				FIREBASE_ANALYTICS_COLLECTION_ENABLED = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Multiplatform/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Staging;
@@ -344,6 +345,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Multiplatform/Preview Content\"";
 				DEVELOPMENT_TEAM = Q7NP395GC3;
 				ENABLE_PREVIEWS = YES;
+				FIREBASE_ANALYTICS_COLLECTION_ENABLED = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Multiplatform/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Staging;

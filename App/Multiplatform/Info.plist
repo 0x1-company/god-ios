@@ -9,7 +9,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
-	<false/>
+	<string>$(FIREBASE_ANALYTICS_COLLECTION_ENABLED)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
