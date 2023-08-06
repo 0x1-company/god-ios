@@ -26,11 +26,11 @@ public struct OneTimeCodeReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case let .changeOneTimeCode(oneTimeCode):
         state.oneTimeCode = oneTimeCode
         return .none
-        
+
       case .resendButtonTapped:
         return .none
 
