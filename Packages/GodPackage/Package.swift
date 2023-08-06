@@ -34,7 +34,7 @@ let package = Package(
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
     .package(path: "../FirebasePackage"),
-    .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.2.0"),
+    .package(url: "https://github.com/airbnb/lottie-spm", from: "4.2.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.0.0"),
   ],
