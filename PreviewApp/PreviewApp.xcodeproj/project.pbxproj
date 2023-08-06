@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B7008E612A80004B00C36803 /* CashOutPreviewAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7008E602A80004B00C36803 /* CashOutPreviewAppApp.swift */; };
+		B7008E652A80004C00C36803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7008E642A80004C00C36803 /* Assets.xcassets */; };
+		B7008E682A80004C00C36803 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7008E672A80004C00C36803 /* Preview Assets.xcassets */; };
+		B7008E6D2A80005400C36803 /* GodFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B7008E6C2A80005400C36803 /* GodFeature */; };
 		B720CC0C2A6BC9290047E3FD /* OnboardPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */; };
 		B720CC102A6BC92A0047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */; };
 		B720CC132A6BC92A0047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */; };
@@ -22,6 +26,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B7008E5E2A80004B00C36803 /* CashOutPreviewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CashOutPreviewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7008E602A80004B00C36803 /* CashOutPreviewAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashOutPreviewAppApp.swift; sourceTree = "<group>"; };
+		B7008E642A80004C00C36803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B7008E672A80004C00C36803 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnboardPreviewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardPreviewApp.swift; sourceTree = "<group>"; };
 		B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -37,6 +45,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B7008E5B2A80004B00C36803 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7008E6D2A80005400C36803 /* GodFeature in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B720CC062A6BC9290047E3FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -64,6 +80,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B7008E5F2A80004B00C36803 /* CashOutPreviewApp */ = {
+			isa = PBXGroup;
+			children = (
+				B7008E602A80004B00C36803 /* CashOutPreviewAppApp.swift */,
+				B7008E642A80004C00C36803 /* Assets.xcassets */,
+				B7008E662A80004C00C36803 /* Preview Content */,
+			);
+			path = CashOutPreviewApp;
+			sourceTree = "<group>";
+		};
+		B7008E662A80004C00C36803 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B7008E672A80004C00C36803 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		B720CC0A2A6BC9290047E3FD /* OnboardPreviewApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +165,7 @@
 				B720CC0A2A6BC9290047E3FD /* OnboardPreviewApp */,
 				B720CC1F2A6BEE590047E3FD /* InboxPreviewApp */,
 				B74AA56C2A729C070001B612 /* GodPreviewApp */,
+				B7008E5F2A80004B00C36803 /* CashOutPreviewApp */,
 				B7BFE57A2A27C78100D1CE6F /* Products */,
 				B720CC172A6BC9320047E3FD /* Frameworks */,
 			);
@@ -142,6 +177,7 @@
 				B720CC092A6BC9290047E3FD /* OnboardPreviewApp.app */,
 				B720CC1E2A6BEE590047E3FD /* InboxPreviewApp.app */,
 				B74AA56B2A729C070001B612 /* GodPreviewApp.app */,
+				B7008E5E2A80004B00C36803 /* CashOutPreviewApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,6 +185,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B7008E5D2A80004B00C36803 /* CashOutPreviewApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7008E6B2A80004C00C36803 /* Build configuration list for PBXNativeTarget "CashOutPreviewApp" */;
+			buildPhases = (
+				B7008E5A2A80004B00C36803 /* Sources */,
+				B7008E5B2A80004B00C36803 /* Frameworks */,
+				B7008E5C2A80004B00C36803 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CashOutPreviewApp;
+			packageProductDependencies = (
+				B7008E6C2A80005400C36803 /* GodFeature */,
+			);
+			productName = CashOutPreviewApp;
+			productReference = B7008E5E2A80004B00C36803 /* CashOutPreviewApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B720CC082A6BC9290047E3FD /* OnboardPreviewApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B720CC162A6BC92A0047E3FD /* Build configuration list for PBXNativeTarget "OnboardPreviewApp" */;
@@ -219,6 +275,9 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					B7008E5D2A80004B00C36803 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
 					B720CC082A6BC9290047E3FD = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
@@ -246,11 +305,21 @@
 				B720CC082A6BC9290047E3FD /* OnboardPreviewApp */,
 				B720CC1D2A6BEE590047E3FD /* InboxPreviewApp */,
 				B74AA56A2A729C070001B612 /* GodPreviewApp */,
+				B7008E5D2A80004B00C36803 /* CashOutPreviewApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B7008E5C2A80004B00C36803 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7008E682A80004C00C36803 /* Preview Assets.xcassets in Resources */,
+				B7008E652A80004C00C36803 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B720CC072A6BC9290047E3FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -281,6 +350,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B7008E5A2A80004B00C36803 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7008E612A80004B00C36803 /* CashOutPreviewAppApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B720CC052A6BC9290047E3FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -308,6 +385,62 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		B7008E692A80004C00C36803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CashOutPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.CashOutPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7008E6A2A80004C00C36803 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CashOutPreviewApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomokisun.CashOutPreviewApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B720CC142A6BC92A0047E3FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -593,6 +726,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B7008E6B2A80004C00C36803 /* Build configuration list for PBXNativeTarget "CashOutPreviewApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7008E692A80004C00C36803 /* Debug */,
+				B7008E6A2A80004C00C36803 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B720CC162A6BC92A0047E3FD /* Build configuration list for PBXNativeTarget "OnboardPreviewApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -632,6 +774,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B7008E6C2A80005400C36803 /* GodFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GodFeature;
+		};
 		B720CC182A6BC9320047E3FD /* OnboardFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OnboardFeature;
