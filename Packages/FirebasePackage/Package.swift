@@ -11,6 +11,7 @@ let package = Package(
   ],
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
+    .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
     .library(name: "FirestoreClient", targets: ["FirestoreClient"]),
     .library(name: "ServerConfig", targets: ["ServerConfig"]),
@@ -24,6 +25,10 @@ let package = Package(
     .target(name: "AnalyticsClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
       .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+    ]),
+    .target(name: "FirebaseAuthClient", dependencies: [
+      .product(name: "Dependencies", package: "swift-dependencies"),
+      .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
     ]),
     .target(name: "FirebaseCoreClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
