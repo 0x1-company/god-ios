@@ -18,6 +18,7 @@ extension FirebaseAuthClient: DependencyKey {
       }
     },
     canHandle: { Auth.auth().canHandle($0) },
-    canHandleNotification: { Auth.auth().canHandleNotification($0) }
+    canHandleNotification: { Auth.auth().canHandleNotification($0) },
+    setAPNSToken: { Auth.auth().setAPNSToken($0, type: $1) }
   )
 }
