@@ -23,13 +23,13 @@ public struct PhoneNumberReducer: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
         
       case let .changePhoneNumber(phoneNumber):
-        print(phoneNumber)
+        state.phoneNumber = phoneNumber
         return .none
 
       case .nextButtonTapped:
