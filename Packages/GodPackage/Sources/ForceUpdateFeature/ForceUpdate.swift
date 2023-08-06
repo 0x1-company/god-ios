@@ -42,7 +42,7 @@ public struct ForceUpdateView: View {
           .bold()
           .font(.title)
         Text("...おや？！Godのようすが...！\n最新バージョンへのアップデートをお願いします。")
-        
+
         Button {
           viewStore.send(.updateButtonTapped)
         } label: {
