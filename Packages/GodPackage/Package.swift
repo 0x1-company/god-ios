@@ -122,7 +122,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PollFeature", dependencies: [
-      .product(name: "RoundedCorner", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
