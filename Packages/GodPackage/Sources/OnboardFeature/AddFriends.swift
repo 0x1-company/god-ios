@@ -72,6 +72,9 @@ public struct AddFriendsView: View {
       .background(Color.god.service)
       .navigationTitle("Add Friends")
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(Color.god.service, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
+      .toolbarColorScheme(.dark, for: .navigationBar)
       .task { await viewStore.send(.onTask).finish() }
       .toolbar {
         Button("Next") {
