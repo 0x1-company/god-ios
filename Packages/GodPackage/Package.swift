@@ -27,7 +27,6 @@ let package = Package(
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "ProfileShareFeature", targets: ["ProfileShareFeature"]),
-    .library(name: "SchoolSettingFeature", targets: ["SchoolSettingFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
     .library(name: "ShopFeature", targets: ["ShopFeature"]),
   ],
@@ -83,6 +82,8 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "InboxFeature", dependencies: [
+      "GodModeFeature",
+      "ShareScreenshotFeature",
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -115,12 +116,11 @@ let package = Package(
       "ManageAccountFeature",
     ]),
     .target(name: "ProfileFeature", dependencies: [
+      "ShopFeature",
       "ProfileEditFeature",
+      "ProfileShareFeature",
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
-    .target(name: "SchoolSettingFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [
