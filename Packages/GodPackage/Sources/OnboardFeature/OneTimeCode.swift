@@ -5,11 +5,14 @@ public struct OneTimeCodeReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var oneTimeCode = ""
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case changeOneTimeCode(String)
+    case resendButtonTapped
     case nextButtonTapped
     case delegate(Delegate)
 
@@ -19,9 +22,16 @@ public struct OneTimeCodeReducer: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case let .changeOneTimeCode(oneTimeCode):
+        state.oneTimeCode = oneTimeCode
+        return .none
+        
+      case .resendButtonTapped:
         return .none
 
       case .nextButtonTapped:
@@ -57,16 +67,24 @@ public struct OneTimeCodeView: View {
 
           Text("Sent to +81 80-2332-3620")
 
-          TextField("Code", text: .constant(""))
-            .font(.title)
-            .textContentType(.telephoneNumber)
-            .textContentType(.oneTimeCode)
+          TextField(
+            "Code",
+            text: viewStore.binding(
+              get: \.oneTimeCode,
+              send: OneTimeCodeReducer.Action.changeOneTimeCode
+            )
+          )
+          .font(.title)
+          .textContentType(.oneTimeCode)
+          .keyboardType(.numberPad)
 
           Spacer()
 
           VStack(spacing: 24) {
-            Button("Resend in 30") {}
-              .bold()
+            Button("Resend in 30") {
+              viewStore.send(.resendButtonTapped)
+            }
+            .bold()
 
             Button {
               viewStore.send(.nextButtonTapped)

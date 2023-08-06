@@ -7,11 +7,13 @@ public struct PhoneNumberReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var phoneNumber = ""
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case changePhoneNumber(String)
     case nextButtonTapped
     case delegate(Delegate)
 
@@ -21,9 +23,13 @@ public struct PhoneNumberReducer: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case let .changePhoneNumber(phoneNumber):
+        state.phoneNumber = phoneNumber
         return .none
 
       case .nextButtonTapped:
@@ -57,10 +63,17 @@ public struct PhoneNumberView: View {
             .bold()
             .font(.title3)
 
-          TextField("Phone Number", text: .constant(""))
-            .font(.title)
-            .textContentType(.telephoneNumber)
-
+          TextField(
+            "Phone Number",
+            text: viewStore.binding(
+              get: \.phoneNumber,
+              send: PhoneNumberReducer.Action.changePhoneNumber
+            )
+          )
+          .font(.title)
+          .textContentType(.telephoneNumber)
+          .keyboardType(.phonePad)
+          
           Text("Remember - never sign up\nwith another person's phone number.")
             .multilineTextAlignment(.center)
 
