@@ -31,7 +31,7 @@ public struct MaintenanceView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 24) {
         Text("メンテナンス中")
           .bold()

@@ -1,9 +1,9 @@
 import Build
-import MaintenanceFeature
 import ComposableArchitecture
 import Constants
 import FirestoreClient
 import ForceUpdateFeature
+import MaintenanceFeature
 import NavigationFeature
 import SwiftUI
 
@@ -156,8 +156,8 @@ public struct AppView: View {
       case .maintenance:
         CaseLet(
           /AppReducer.View.State.maintenance,
-           action: AppReducer.View.Action.maintenance,
-           then: MaintenanceView.init(store:)
+          action: AppReducer.View.Action.maintenance,
+          then: MaintenanceView.init(store:)
         )
       }
     }
