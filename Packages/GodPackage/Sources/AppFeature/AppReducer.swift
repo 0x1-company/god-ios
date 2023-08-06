@@ -1,4 +1,5 @@
 import Build
+import OnboardFeature
 import ComposableArchitecture
 import Constants
 import FirestoreClient
@@ -15,7 +16,7 @@ public struct AppReducer: Reducer {
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
-    var view = View.State.navigation()
+    var view = View.State.onboard()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
@@ -106,18 +107,23 @@ public struct AppReducer: Reducer {
 
   public struct View: Reducer {
     public enum State: Equatable {
+      case onboard(OnboardReducer.State = .init())
       case navigation(RootNavigationReducer.State = .init())
       case forceUpdate(ForceUpdateReducer.State = .init())
       case maintenance(MaintenanceReducer.State = .init())
     }
 
     public enum Action: Equatable {
+      case onboard(OnboardReducer.Action)
       case navigation(RootNavigationReducer.Action)
       case forceUpdate(ForceUpdateReducer.Action)
       case maintenance(MaintenanceReducer.Action)
     }
 
     public var body: some Reducer<State, Action> {
+      Scope(state: /State.onboard, action: /Action.onboard) {
+        OnboardReducer()
+      }
       Scope(state: /State.navigation, action: /Action.navigation) {
         RootNavigationReducer()
       }
@@ -141,6 +147,12 @@ public struct AppView: View {
   public var body: some View {
     SwitchStore(store.scope(state: \.view, action: AppReducer.Action.view)) { initialState in
       switch initialState {
+      case .onboard:
+        CaseLet(
+          /AppReducer.View.State.onboard,
+           action: AppReducer.View.Action.onboard,
+           then: OnboardView.init(store:)
+        )
       case .navigation:
         CaseLet(
           /AppReducer.View.State.navigation,
