@@ -1,8 +1,8 @@
 import Foundation
 
 public enum Constants {
-  public static let appId = "6449177523"
-  public static let appStoreURL = URL(string: "https://apps.apple.com/us/app/caaaption/id\(Self.appId)")!
+  public static let appId = "6457261581"
+  public static let appStoreURL = URL(string: "https://apps.apple.com/us/app/id\(Self.appId)")!
   public static let appStoreReviewURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id\(Self.appId)?mt=8&action=write-review")!
   public static let founderURL = URL(string: "https://instagram.com/satoya__")!
   public static let developerURL = URL(string: "https://instagram.com/tomokisun")!
