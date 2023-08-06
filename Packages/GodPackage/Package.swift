@@ -98,6 +98,7 @@ let package = Package(
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
       "GenderSettingFeature",
+      .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
     ]),
