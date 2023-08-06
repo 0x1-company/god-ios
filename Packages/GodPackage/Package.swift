@@ -114,6 +114,7 @@ let package = Package(
       "ManageAccountFeature",
     ]),
     .target(name: "ProfileFeature", dependencies: [
+      "ShopFeature",
       "ProfileEditFeature",
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
