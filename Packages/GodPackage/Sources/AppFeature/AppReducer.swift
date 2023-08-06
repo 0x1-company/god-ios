@@ -1,4 +1,5 @@
 import Build
+import MaintenanceFeature
 import ComposableArchitecture
 import Constants
 import FirestoreClient
@@ -91,6 +92,9 @@ public struct AppReducer: Reducer {
         if config.isForceUpdate(shortVersion) {
           state.view = .forceUpdate()
         }
+        if config.isMaintenance {
+          state.view = .maintenance()
+        }
         return .none
 
       case let .config(.failure(error)):
@@ -104,11 +108,13 @@ public struct AppReducer: Reducer {
     public enum State: Equatable {
       case navigation(RootNavigationReducer.State = .init())
       case forceUpdate(ForceUpdateReducer.State = .init())
+      case maintenance(MaintenanceReducer.State = .init())
     }
 
     public enum Action: Equatable {
       case navigation(RootNavigationReducer.Action)
       case forceUpdate(ForceUpdateReducer.Action)
+      case maintenance(MaintenanceReducer.Action)
     }
 
     public var body: some Reducer<State, Action> {
@@ -117,6 +123,9 @@ public struct AppReducer: Reducer {
       }
       Scope(state: /State.forceUpdate, action: /Action.forceUpdate) {
         ForceUpdateReducer()
+      }
+      Scope(state: /State.maintenance, action: /Action.maintenance) {
+        MaintenanceReducer()
       }
     }
   }
@@ -143,6 +152,12 @@ public struct AppView: View {
           /AppReducer.View.State.forceUpdate,
           action: AppReducer.View.Action.forceUpdate,
           then: ForceUpdateView.init(store:)
+        )
+      case .maintenance:
+        CaseLet(
+          /AppReducer.View.State.maintenance,
+           action: AppReducer.View.Action.maintenance,
+           then: MaintenanceView.init(store:)
         )
       }
     }
