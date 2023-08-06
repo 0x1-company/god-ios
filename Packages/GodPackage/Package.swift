@@ -117,6 +117,7 @@ let package = Package(
     .target(name: "ProfileFeature", dependencies: [
       "ShopFeature",
       "ProfileEditFeature",
+      "ProfileShareFeature",
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
