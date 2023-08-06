@@ -63,7 +63,6 @@ public struct OneTimeCodeView: View {
 
           Text("Sent to +81 80-2332-3620")
 
-          TextField("Code", text: .constant(""))
           TextField(
             "Code",
             text: viewStore.binding(
