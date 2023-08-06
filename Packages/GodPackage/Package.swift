@@ -25,6 +25,8 @@ let package = Package(
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
+    .library(name: "PlayAgainFeature", targets: ["PlayAgainFeature"]),
+    .library(name: "PollFeature", targets: ["PollFeature"]),
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "ProfileShareFeature", targets: ["ProfileShareFeature"]),
@@ -74,11 +76,9 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
+      "PollFeature",
       "CashOutFeature",
-      .product(name: "Lottie", package: "lottie-ios"),
-      .product(name: "ColorHex", package: "UIComponentPackage"),
-      .product(name: "LabeledButton", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "PlayAgainFeature",
     ]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -116,6 +116,12 @@ let package = Package(
       "HowItWorksFeature",
       "GenderSettingFeature",
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
+      .product(name: "RoundedCorner", package: "UIComponentPackage"),
+    ]),
+    .target(name: "PlayAgainFeature", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "PollFeature", dependencies: [
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct QuestionReducer: Reducer {
+public struct PollReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -26,10 +26,10 @@ public struct QuestionReducer: Reducer {
   }
 }
 
-public struct QuestionView: View {
-  let store: StoreOf<QuestionReducer>
+public struct PollView: View {
+  let store: StoreOf<PollReducer>
 
-  public init(store: StoreOf<QuestionReducer>) {
+  public init(store: StoreOf<PollReducer>) {
     self.store = store
   }
 
@@ -39,7 +39,7 @@ public struct QuestionView: View {
         VoteView(
           store: store.scope(
             state: \.vote,
-            action: QuestionReducer.Action.vote
+            action: PollReducer.Action.vote
           )
         )
         Text("2 of 12")
@@ -49,12 +49,12 @@ public struct QuestionView: View {
   }
 }
 
-struct QuestionViewPreviews: PreviewProvider {
+struct PollViewPreviews: PreviewProvider {
   static var previews: some View {
-    QuestionView(
+    PollView(
       store: .init(
-        initialState: QuestionReducer.State(),
-        reducer: { QuestionReducer() }
+        initialState: PollReducer.State(),
+        reducer: { PollReducer() }
       )
     )
   }
