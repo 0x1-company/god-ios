@@ -1,11 +1,11 @@
 import Build
-import OnboardFeature
 import ComposableArchitecture
 import Constants
 import FirestoreClient
 import ForceUpdateFeature
 import MaintenanceFeature
 import NavigationFeature
+import OnboardFeature
 import SwiftUI
 
 public struct AppReducer: Reducer {
@@ -150,8 +150,8 @@ public struct AppView: View {
       case .onboard:
         CaseLet(
           /AppReducer.View.State.onboard,
-           action: AppReducer.View.Action.onboard,
-           then: OnboardView.init(store:)
+          action: AppReducer.View.Action.onboard,
+          then: OnboardView.init(store:)
         )
       case .navigation:
         CaseLet(
