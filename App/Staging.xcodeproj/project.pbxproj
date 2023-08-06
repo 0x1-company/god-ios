@@ -11,7 +11,6 @@
 		B783E0FD2A11FFD0002E782F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0FC2A11FFD0002E782F /* Preview Assets.xcassets */; };
 		B783E1022A120003002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1012A120003002E782F /* App.swift */; };
 		B78862D32A68FCFF0023B1FB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B78862D22A68FCFF0023B1FB /* AppFeature */; };
-		B7CCF9A22A7AF47600B64CFE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7CCF9A12A7AF47600B64CFE /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -165,7 +164,6 @@
 			files = (
 				B783E0FD2A11FFD0002E782F /* Preview Assets.xcassets in Resources */,
 				B783E0FA2A11FFD0002E782F /* Assets.xcassets in Resources */,
-				B7CCF9A22A7AF47600B64CFE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
