@@ -13,7 +13,7 @@ public struct SchoolHelpSheetReducer: Reducer {
     case onTask
     case okayButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
@@ -21,10 +21,10 @@ public struct SchoolHelpSheetReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .okayButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       }
     }

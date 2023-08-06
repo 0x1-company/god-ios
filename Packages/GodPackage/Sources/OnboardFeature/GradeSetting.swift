@@ -32,7 +32,7 @@ public struct GradeSettingReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .infoButtonTapped:
         state.gradeHelp = .init()
         return .none
