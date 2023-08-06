@@ -65,6 +65,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
+      .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -98,7 +99,6 @@ let package = Package(
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
       "GenderSettingFeature",
-      .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
     ]),
