@@ -12,6 +12,7 @@ public struct GradeSettingReducer: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case infoButtonTapped
     case notInHighSchoolButtonTapped
     case grade10ButtonTapped
     case grade11ButtonTapped
@@ -28,6 +29,9 @@ public struct GradeSettingReducer: Reducer {
     Reduce { _, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case .infoButtonTapped:
         return .none
 
       case .notInHighSchoolButtonTapped:
@@ -114,6 +118,14 @@ public struct GradeSettingView: View {
       .toolbarBackground(Color.god.service, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
+      .toolbar {
+        Button {
+          viewStore.send(.infoButtonTapped)
+        } label: {
+          Image(systemName: "info.circle.fill")
+            .foregroundColor(.white)
+        }
+      }
     }
   }
 
