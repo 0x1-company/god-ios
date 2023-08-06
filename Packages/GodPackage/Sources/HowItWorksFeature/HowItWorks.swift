@@ -1,4 +1,4 @@
-import ColorHex
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -40,12 +40,12 @@ public struct HowItWorksView: View {
             .bold()
             .frame(height: 54)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.white)
-            .background(Color(0xFFED_6C43))
-            .clipShape(Capsule())
         }
-        .padding(.horizontal, 16)
+        .foregroundColor(Color.white)
+        .background(Color.god.service)
+        .clipShape(Capsule())
       }
+      .padding(.horizontal, 16)
     }
   }
 }

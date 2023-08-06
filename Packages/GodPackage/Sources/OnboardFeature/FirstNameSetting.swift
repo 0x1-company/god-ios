@@ -13,6 +13,12 @@ public struct FirstNameSettingReducer: Reducer {
   public enum Action: Equatable, BindableAction {
     case doubleCheckName(DoubleCheckNameReducer.Action)
     case binding(BindingAction<State>)
+    case nextButtonTapped
+    case delegate(Delegate)
+
+    public enum Delegate: Equatable {
+      case nextLastNameSetting
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -26,6 +32,13 @@ public struct FirstNameSettingReducer: Reducer {
         return .none
 
       case .binding:
+        return .none
+
+      case .nextButtonTapped:
+        return .run { send in
+          await send(.delegate(.nextLastNameSetting))
+        }
+      case .delegate:
         return .none
       }
     }
@@ -52,7 +65,9 @@ public struct FirstNameSettingView: View {
           .multilineTextAlignment(.center)
           .textContentType(.givenName)
         Spacer()
-        Button {} label: {
+        Button {
+          viewStore.send(.nextButtonTapped)
+        } label: {
           Text("Next")
             .bold()
             .frame(height: 54)
@@ -65,6 +80,7 @@ public struct FirstNameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color(0xFFED_6C43))
+      .navigationBarBackButtonHidden()
       .toolbar {
         DoubleCheckNameView(
           store: store.scope(

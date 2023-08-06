@@ -1,4 +1,4 @@
-import ColorHex
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -6,29 +6,58 @@ public struct WelcomeReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var selection = "- -"
     let ages: [String] = {
       var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
       return numbers
     }()
 
-    @BindingState var selection = "- -"
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: Equatable {
+    case loginButtonTapped
     case getStartedButtonTapped
-    case binding(BindingAction<State>)
+    case ageChanged(String)
+    case alert(PresentationAction<Alert>)
+
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
+      case .loginButtonTapped:
+        return .none
       case .getStartedButtonTapped:
         return .none
-
-      case .binding:
+      case let .ageChanged(selection):
+        state.selection = selection
+        if Array(0 ... 12).map(String.init).contains(selection) {
+          state.alert = .init(
+            title: {
+              TextState("Sorry")
+            },
+            actions: {
+              ButtonState(action: .confirmOkay) {
+                TextState("OK")
+              }
+            },
+            message: {
+              TextState("You must be at least 13 years old to sign up.")
+            }
+          )
+        }
+        return .none
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
+        state.selection = "- -"
+        return .none
+      case .alert:
         return .none
       }
     }
@@ -38,28 +67,40 @@ public struct WelcomeReducer: Reducer {
 public struct WelcomeView: View {
   let store: StoreOf<WelcomeReducer>
 
+  struct ViewState: Equatable {
+    let ages: [String]
+    let ageText: String
+    let selection: String
+
+    init(state: WelcomeReducer.State) {
+      ages = state.ages
+      ageText = state.selection == "- -" ? "Enter your age" : state.selection
+      selection = state.selection
+    }
+  }
+
   public init(store: StoreOf<WelcomeReducer>) {
     self.store = store
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
         Spacer()
         Text("God")
           .font(.largeTitle)
           .bold()
-          .foregroundColor(Color(0xFF8F_8F8F))
+          .foregroundColor(Color.god.textSecondaryDark)
         Spacer()
         VStack(spacing: 24) {
           ZStack {
-            Text("By entering your age you agree to our Terms and Privacy Policy")
-              .frame(height: 54)
-              .foregroundColor(Color(0xFF8F_8F8F))
-              .multilineTextAlignment(.center)
-              .padding(.horizontal, 32)
-
-            if viewStore.selection != "- -" {
+            if viewStore.selection == "- -" {
+              Text("By entering your age you agree to our Terms and Privacy Policy")
+                .frame(height: 54)
+                .foregroundColor(Color.god.textSecondaryDark)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+            } else {
               Button {
                 viewStore.send(.getStartedButtonTapped)
               } label: {
@@ -68,21 +109,24 @@ public struct WelcomeView: View {
                   .frame(height: 54)
                   .frame(maxWidth: .infinity)
                   .foregroundColor(Color.white)
-                  .background(Color(0xFFED_6C43))
+                  .background(Color.god.service)
                   .clipShape(Capsule())
               }
               .padding(.horizontal, 16)
             }
           }
 
-          Text("Enter your age")
-            .foregroundColor(Color(0xFFED_6C43))
+          Text(viewStore.ageText)
+            .foregroundColor(Color.god.service)
             .bold()
 
           Picker(
             "",
-            selection: viewStore.binding(\.$selection)
-              .animation(.default)
+            selection: viewStore.binding(
+              get: \.selection,
+              send: WelcomeReducer.Action.ageChanged
+            )
+            .animation(.default)
           ) {
             ForEach(viewStore.ages, id: \.self) { value in
               Text(value).tag(value)
@@ -92,7 +136,8 @@ public struct WelcomeView: View {
           .environment(\.colorScheme, .dark)
         }
       }
-      .background(Color(0xFF1E_1E1E))
+      .background(Color.god.black)
+      .alert(store: store.scope(state: \.$alert, action: WelcomeReducer.Action.alert))
       .toolbar {
         Button("Log In") {}
           .foregroundColor(Color.white)

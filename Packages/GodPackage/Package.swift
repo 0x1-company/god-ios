@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
+    .library(name: "GenderSettingFeature", targets: ["GenderSettingFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
@@ -33,12 +34,14 @@ let package = Package(
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
     .package(path: "../FirebasePackage"),
+    .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
+    .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.0.0"),
   ],
   targets: [
     .target(name: "AboutFeature", dependencies: [
       "Constants",
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "HowItWorksFeature",
     ]),
     .target(name: "ActivityFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -47,8 +50,9 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
-      "Constants",
+      "OnboardFeature",
       "NavigationFeature",
+      "ForceUpdateFeature",
     ]),
     .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [
@@ -56,16 +60,21 @@ let package = Package(
       .product(name: "FullScreenActionView", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "GenderSettingFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "GodFeature", dependencies: [
+      .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
+    ], resources: [.copy("coin.json")]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
-      .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "InboxFeature", dependencies: [
@@ -88,8 +97,10 @@ let package = Package(
       "ProfileFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
-      .product(name: "ColorHex", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      "HowItWorksFeature",
+      "GenderSettingFeature",
+      .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
+      .product(name: "RoundedCorner", package: "UIComponentPackage"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",

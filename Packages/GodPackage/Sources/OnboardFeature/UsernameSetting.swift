@@ -12,6 +12,11 @@ public struct UsernameSettingReducer: Reducer {
   public enum Action: Equatable {
     case usernameChanged(String)
     case nextButtonTapped
+    case delegate(Delegate)
+
+    public enum Delegate: Equatable {
+      case nextGenderSetting
+    }
   }
 
   public var body: some Reducer<State, Action> {
@@ -22,6 +27,11 @@ public struct UsernameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
+        return .run { send in
+          await send(.delegate(.nextGenderSetting))
+        }
+
+      case .delegate:
         return .none
       }
     }
@@ -33,11 +43,9 @@ public struct UsernameSettingView: View {
 
   struct ViewState: Equatable {
     var username: String
-    var isNextButtonDisabled: Bool
 
     init(state: UsernameSettingReducer.State) {
       username = state.username
-      isNextButtonDisabled = state.username.isEmpty
     }
   }
 
@@ -79,7 +87,6 @@ public struct UsernameSettingView: View {
             .background(Color.white)
             .clipShape(Capsule())
         }
-        .disabled(viewStore.isNextButtonDisabled)
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
