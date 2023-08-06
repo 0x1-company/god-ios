@@ -53,7 +53,8 @@ let package = Package(
     .target(name: "AppFeature", dependencies: [
       "OnboardFeature",
       "NavigationFeature",
-      "ForceUpdateFeature",
+      "ForceUpdateFeature",      
+      "MaintenanceFeature",
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "FirestoreClient", package: "FirebasePackage"),
       .product(name: "FirebaseCoreClient", package: "FirebasePackage"),
