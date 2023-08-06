@@ -71,8 +71,8 @@ public struct OneTimeCodeView: View {
             )
           )
           .font(.title)
-          .textContentType(.telephoneNumber)
           .textContentType(.oneTimeCode)
+          .keyboardType(.numberPad)
 
           Spacer()
 
