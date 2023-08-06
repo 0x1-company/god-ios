@@ -35,6 +35,7 @@
 		B783E1272A120081002E782F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B783E16F2A121FCD002E782F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B783E1742A137F38002E782F /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = App.entitlements; path = Production/App.entitlements; sourceTree = "<group>"; };
+		B7CCF99F2A7AF46D00B64CFE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Production/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +74,7 @@
 				B783E1742A137F38002E782F /* App.entitlements */,
 				B783E0E72A11FFBE002E782F /* Assets.xcassets */,
 				B783E16F2A121FCD002E782F /* Info.plist */,
+				B7CCF99F2A7AF46D00B64CFE /* GoogleService-Info.plist */,
 				B783E0E92A11FFBE002E782F /* Preview Content */,
 			);
 			path = Multiplatform;

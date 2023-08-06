@@ -5,7 +5,6 @@ on:
   workflow_dispatch:
 
 env:
-  FILE_FIREBASE_DEVELOPMENT: ${{ secrets.FILE_FIREBASE_DEVELOPMENT }}
   FILE_FIREBASE_STAGING: ${{ secrets.FILE_FIREBASE_STAGING }}
   FILE_FIREBASE_PRODUCTION: ${{ secrets.FILE_FIREBASE_PRODUCTION }}
 
@@ -18,10 +17,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+      - run: make bootstrap
       - uses: actions/cache@v3
         with:
           path: SourcePackages
           key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
-      - run: make bootstrap
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
       - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
