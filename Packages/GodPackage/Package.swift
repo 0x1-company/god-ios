@@ -13,6 +13,7 @@ let package = Package(
     .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
+    .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "GenderSettingFeature", targets: ["GenderSettingFeature"]),
@@ -24,6 +25,8 @@ let package = Package(
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
+    .library(name: "PlayAgainFeature", targets: ["PlayAgainFeature"]),
+    .library(name: "PollFeature", targets: ["PollFeature"]),
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "ProfileShareFeature", targets: ["ProfileShareFeature"]),
@@ -58,6 +61,10 @@ let package = Package(
       .product(name: "FirestoreClient", package: "FirebasePackage"),
       .product(name: "FirebaseCoreClient", package: "FirebasePackage"),
     ]),
+    .target(name: "CashOutFeature", dependencies: [
+      .product(name: "Lottie", package: "lottie-ios"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ], resources: [.copy("coin.json")]),
     .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [
       "Constants",
@@ -69,11 +76,10 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
-      .product(name: "Lottie", package: "lottie-ios"),
-      .product(name: "ColorHex", package: "UIComponentPackage"),
-      .product(name: "LabeledButton", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ], resources: [.copy("coin.json")]),
+      "PollFeature",
+      "CashOutFeature",
+      "PlayAgainFeature",
+    ]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
@@ -110,6 +116,12 @@ let package = Package(
       "HowItWorksFeature",
       "GenderSettingFeature",
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
+      .product(name: "RoundedCorner", package: "UIComponentPackage"),
+    ]),
+    .target(name: "PlayAgainFeature", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "PollFeature", dependencies: [
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [

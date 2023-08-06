@@ -10,7 +10,7 @@
 		B7008E612A80004B00C36803 /* CashOutPreviewAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7008E602A80004B00C36803 /* CashOutPreviewAppApp.swift */; };
 		B7008E652A80004C00C36803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7008E642A80004C00C36803 /* Assets.xcassets */; };
 		B7008E682A80004C00C36803 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7008E672A80004C00C36803 /* Preview Assets.xcassets */; };
-		B7008E6D2A80005400C36803 /* GodFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B7008E6C2A80005400C36803 /* GodFeature */; };
+		B7008E712A80490600C36803 /* CashOutFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B7008E702A80490600C36803 /* CashOutFeature */; };
 		B720CC0C2A6BC9290047E3FD /* OnboardPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B720CC0B2A6BC9290047E3FD /* OnboardPreviewApp.swift */; };
 		B720CC102A6BC92A0047E3FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC0F2A6BC92A0047E3FD /* Assets.xcassets */; };
 		B720CC132A6BC92A0047E3FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B720CC122A6BC92A0047E3FD /* Preview Assets.xcassets */; };
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7008E6D2A80005400C36803 /* GodFeature in Frameworks */,
+				B7008E712A80490600C36803 /* CashOutFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +199,7 @@
 			);
 			name = CashOutPreviewApp;
 			packageProductDependencies = (
-				B7008E6C2A80005400C36803 /* GodFeature */,
+				B7008E702A80490600C36803 /* CashOutFeature */,
 			);
 			productName = CashOutPreviewApp;
 			productReference = B7008E5E2A80004B00C36803 /* CashOutPreviewApp.app */;
@@ -774,9 +774,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B7008E6C2A80005400C36803 /* GodFeature */ = {
+		B7008E702A80490600C36803 /* CashOutFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = GodFeature;
+			productName = CashOutFeature;
 		};
 		B720CC182A6BC9320047E3FD /* OnboardFeature */ = {
 			isa = XCSwiftPackageProductDependency;
