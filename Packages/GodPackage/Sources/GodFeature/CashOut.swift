@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
+import Lottie
 
 public struct CashOutReducer: Reducer {
   public init() {}
@@ -31,37 +32,44 @@ public struct CashOutView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 88) {
-        VStack(spacing: 44) {
-          Text("Congrats")
-            .bold()
-            .font(.largeTitle)
-          Text("You earned 9 coins")
-            .bold()
-        }
+      ZStack {
+        VStack(spacing: 88) {
+          VStack(spacing: 100) {
+            Text("Congrats")
+              .bold()
+              .font(.largeTitle)
+            
+            Text("You earned 9 coins")
+              .bold()
+          }
 
-        Button {
-          viewStore.send(.cashOutButtonTapped)
-        } label: {
-          Text("Cash Out")
-            .bold()
-            .font(.title2)
-            .frame(height: 54)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
-            .overlay(alignment: .leading) {
-              Image("money-mouth-face", bundle: .module)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 32, height: 32)
-                .clipped()
-            }
-            .padding(.horizontal, 16)
+          Button {
+            viewStore.send(.cashOutButtonTapped)
+          } label: {
+            Text("Cash Out")
+              .bold()
+              .font(.title2)
+              .frame(height: 54)
+              .frame(maxWidth: .infinity)
+              .foregroundColor(Color.black)
+              .overlay(alignment: .leading) {
+                Image("money-mouth-face", bundle: .module)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .frame(width: 32, height: 32)
+                  .clipped()
+              }
+              .padding(.horizontal, 16)
+          }
+          .background(Color.white)
+          .clipShape(Capsule())
+          .shadow(color: .black.opacity(0.2), radius: 25)
+          .padding(.horizontal, 65)
         }
-        .background(Color.white)
-        .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.2), radius: 25)
-        .padding(.horizontal, 65)
+        
+        LottieView(animation: LottieAnimation.named("coin", bundle: .module))
+          .resizable()
+          .padding(.bottom, 320)
       }
     }
   }

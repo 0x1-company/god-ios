@@ -34,7 +34,7 @@ let package = Package(
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
     .package(path: "../FirebasePackage"),
-    .package(url: "https://github.com/airbnb/lottie-spm", from: "4.2.0"),
+    .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.0.0"),
   ],
@@ -65,11 +65,11 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
-      .product(name: "Lottie", package: "lottie-spm"),
+      .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
+    ], resources: [.copy("coin.json")]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
