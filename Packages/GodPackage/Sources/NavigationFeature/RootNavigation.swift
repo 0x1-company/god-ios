@@ -4,9 +4,9 @@ import AddFeature
 import ComposableArchitecture
 import GodFeature
 import InboxFeature
+import PollFeature
 import ProfileFeature
 import SwiftUI
-import PollFeature
 
 public struct RootNavigationReducer: Reducer {
   public init() {}
