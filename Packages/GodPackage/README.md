@@ -24,6 +24,7 @@ graph TD;
     NavigationFeature-->InboxFeature;
     NavigationFeature-->ProfileFeature;
     OnboardFeature-->HowItWorksFeature;
+    OnboardFeature-->PhoneNumberClient;
     OnboardFeature-->GenderSettingFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ShopFeature;
