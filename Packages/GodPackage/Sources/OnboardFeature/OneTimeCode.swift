@@ -8,7 +8,8 @@ public struct OneTimeCodeReducer: Reducer {
 
   public struct State: Equatable {
     var oneTimeCode = ""
-    let verifyID: String
+    var verifyID: String
+    @PresentationState var alert: AlertState<Action.Alert>?
 
     public init(verifyID: String) {
       self.verifyID = verifyID
@@ -19,9 +20,15 @@ public struct OneTimeCodeReducer: Reducer {
     case onTask
     case changeOneTimeCode(String)
     case resendButtonTapped
+    case verifyResponse(TaskResult<String?>)
     case nextButtonTapped
     case signInResponse(TaskResult<AuthDataResult?>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
 
     public enum Delegate: Equatable {
       case nextFirstNameSetting
@@ -29,6 +36,7 @@ public struct OneTimeCodeReducer: Reducer {
   }
 
   @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -41,6 +49,34 @@ public struct OneTimeCodeReducer: Reducer {
         return .none
 
       case .resendButtonTapped:
+        let formatNumber = ""
+        return .run { send in
+          await send(
+            .verifyResponse(
+              TaskResult {
+                try await firebaseAuth.verifyPhoneNumber(formatNumber)
+              }
+            )
+          )
+        }
+      case let .verifyResponse(.success(.some(id))):
+        state.verifyID = id
+        return .none
+        
+      case .verifyResponse(.success(.none)):
+        print("verify response is null")
+        return .none
+
+      case let .verifyResponse(.failure(error)):
+        state.alert = AlertState {
+          TextState("Error")
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK")
+          }
+        } message: {
+          TextState(error.localizedDescription)
+        }
         return .none
 
       case .nextButtonTapped:
@@ -56,14 +92,29 @@ public struct OneTimeCodeReducer: Reducer {
         }
       case let .signInResponse(.success(.some(result))):
         print(result)
-        return .none
+        return .run { send in
+          await send(.delegate(.nextFirstNameSetting))
+        }
       case .signInResponse(.success(.none)):
         print("sign in is null")
         return .none
       case let .signInResponse(.failure(error)):
-        print(error)
+        state.alert = AlertState {
+          TextState("Error")
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK")
+          }
+        } message: {
+          TextState(error.localizedDescription)
+        }
         return .none
-
+      case .alert(.presented(.confirmOkay)):
+        return .run { _ in
+          await self.dismiss()
+        }
+      case .alert:
+        return .none
       case .delegate:
         return .none
       }
