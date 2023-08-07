@@ -4,6 +4,7 @@ import FirebaseAuthClient
 import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+  @Dependency(\.firebaseAuth) var firebaseAuth
   func windowScene(
     _ windowScene: UIWindowScene,
     performActionFor shortcutItem: UIApplicationShortcutItem,
@@ -11,6 +12,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
     AppDelegate.shared.viewStore.send(.sceneDelegate(.shortcutItem(shortcutItem)))
     completionHandler(true)
+  }
+  
+  func scene(
+    _ scene: UIScene,
+    openURLContexts URLContexts: Set<UIOpenURLContext>
+  ) {
+    for context in URLContexts {
+      let url = context.url
+      _ = firebaseAuth.canHandle(url)
+    }
   }
 }
 
