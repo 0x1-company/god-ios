@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
+    .library(name: "PhoneNumberClient", targets: ["PhoneNumberClient"]),
     .library(name: "PlayAgainFeature", targets: ["PlayAgainFeature"]),
     .library(name: "PollFeature", targets: ["PollFeature"]),
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
@@ -118,6 +119,10 @@ let package = Package(
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "FirebaseAuthClient", package: "FirebasePackage"),
+    ]),
+    .target(name: "PhoneNumberClient", dependencies: [
+      .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
