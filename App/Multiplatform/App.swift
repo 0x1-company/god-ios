@@ -1,6 +1,7 @@
 import AppFeature
 import ComposableArchitecture
 import SwiftUI
+import FirebaseAuthClient
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func windowScene(
@@ -14,6 +15,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+  @Dependency(\.firebaseAuth) var firebaseAuth
+
   static let shared = AppDelegate()
   let store = Store(
     initialState: AppReducer.State(),
@@ -45,6 +48,25 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     didFailToRegisterForRemoteNotificationsWithError error: Error
   ) {
     viewStore.send(.appDelegate(.didRegisterForRemoteNotifications(.failure(error))))
+  }
+
+  func application(
+    _ application: UIApplication,
+    didReceiveRemoteNotification userInfo: [AnyHashable : Any]
+  ) async -> UIBackgroundFetchResult {
+    let result = firebaseAuth.canHandleNotification(userInfo)
+    return result ? .noData : .newData
+  }
+  
+  func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+  ) -> Bool {
+    if firebaseAuth.canHandle(url) {
+      return true
+    }
+    return false
   }
 
   func application(

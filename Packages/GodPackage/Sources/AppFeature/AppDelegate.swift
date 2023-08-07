@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import FirebaseCoreClient
 import UIKit
+import FirebaseAuthClient
 
 public struct AppDelegateReducer: Reducer {
   public struct State: Equatable {}
@@ -16,6 +17,7 @@ public struct AppDelegateReducer: Reducer {
   }
 
   @Dependency(\.firebaseCore) var firebaseCore
+  @Dependency(\.firebaseAuth) var firebaseAuth
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
@@ -27,11 +29,10 @@ public struct AppDelegateReducer: Reducer {
     case .didRegisterForRemoteNotifications(.failure):
       return .none
 
-    case let .didRegisterForRemoteNotifications(.success(tokenData)):
-      let token = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
-      print("didRegisterForRemoteNotifications : \(token)")
-      return .none
-
+    case let .didRegisterForRemoteNotifications(.success(deviceToken)):
+      return .run { _ in
+        self.firebaseAuth.setAPNSToken(deviceToken, .sandbox)
+      }
     case .configurationForConnecting:
       return .none
 

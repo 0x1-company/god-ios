@@ -16,6 +16,7 @@ extension FirebaseAuthClient: TestDependencyKey {
     canHandleNotification: unimplemented("\(Self.self).canHandleNotification"),
     setAPNSToken: unimplemented("\(Self.self).setAPNSToken"),
     verifyPhoneNumber: unimplemented("\(Self.self).verifyPhoneNumber"),
-    credential: unimplemented("\(Self.self).credential")
+    credential: unimplemented("\(Self.self).credential"),
+    signIn: unimplemented("\(Self.self).signIn")
   )
 }

@@ -2,12 +2,15 @@ import Colors
 import ComposableArchitecture
 import PhoneNumberKit
 import SwiftUI
+import FirebaseAuthClient
+import PhoneNumberClient
 
 public struct PhoneNumberReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var phoneNumber = ""
+    @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
 
@@ -15,12 +18,21 @@ public struct PhoneNumberReducer: Reducer {
     case onTask
     case changePhoneNumber(String)
     case nextButtonTapped
+    case verifyResponse(TaskResult<String?>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
 
     public enum Delegate: Equatable {
-      case nextOneTimeCode
+      case nextOneTimeCode(verifyID: String)
     }
   }
+  
+  @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.phoneNumberClient) var phoneNumberClient
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -33,9 +45,38 @@ public struct PhoneNumberReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextOneTimeCode))
+        return .run { [phoneNumber = state.phoneNumber] send in
+          let formatNumber = try phoneNumberClient.parseFormat(phoneNumber)
+          await send(
+            .verifyResponse(
+              await TaskResult {
+                try await self.firebaseAuth.verifyPhoneNumber(formatNumber)
+              }
+            )
+          )
         }
+      case let .verifyResponse(.success(.some(id))):
+        return .run { send in
+          await send(.delegate(.nextOneTimeCode(verifyID: id)))
+        }
+      case .verifyResponse(.success(.none)):
+        print("verify id is null")
+        return .none
+        
+      case let .verifyResponse(.failure(error)):
+        state.alert = AlertState {
+          TextState("Error")
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK")
+          }
+        } message: {
+          TextState(error.localizedDescription)
+        }
+        return .none
+        
+      case .alert:
+        return .none
 
       case .delegate:
         return .none
@@ -97,6 +138,7 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
+      .alert(store: store.scope(state: \.$alert, action: PhoneNumberReducer.Action.alert))
     }
   }
 }
