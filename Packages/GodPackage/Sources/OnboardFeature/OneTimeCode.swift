@@ -7,7 +7,11 @@ public struct OneTimeCodeReducer: Reducer {
 
   public struct State: Equatable {
     var oneTimeCode = ""
-    public init() {}
+    let verifyID: String
+
+    public init(verifyID: String) {
+      self.verifyID = verifyID
+    }
   }
 
   public enum Action: Equatable {
@@ -113,7 +117,7 @@ struct OneTimeCodeViewPreviews: PreviewProvider {
   static var previews: some View {
     OneTimeCodeView(
       store: .init(
-        initialState: OneTimeCodeReducer.State(),
+        initialState: OneTimeCodeReducer.State(verifyID: ""),
         reducer: { OneTimeCodeReducer() }
       )
     )

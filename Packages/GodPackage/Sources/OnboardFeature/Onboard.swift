@@ -38,9 +38,10 @@ public struct OnboardReducer: Reducer {
         state.path.append(.phoneNumber())
         return .none
 
-      case .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode)))):
-        state.path.append(.oneTimeCode())
+      case let .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode(verifyID))))):
+        state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
         return .none
+        
 
       case .path(.element(_, .oneTimeCode(.delegate(.nextFirstNameSetting)))):
         state.path.append(.firstNameSetting())
@@ -84,7 +85,7 @@ public struct OnboardReducer: Reducer {
       case gradeSetting(GradeSettingReducer.State = .init())
       case schoolSetting(SchoolSettingReducer.State = .init())
       case phoneNumber(PhoneNumberReducer.State = .init())
-      case oneTimeCode(OneTimeCodeReducer.State = .init())
+      case oneTimeCode(OneTimeCodeReducer.State)
       case firstNameSetting(FirstNameSettingReducer.State = .init())
       case lastNameSetting(LastNameSettingReducer.State = .init())
       case usernameSetting(UsernameSettingReducer.State = .init())
