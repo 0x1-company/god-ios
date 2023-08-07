@@ -117,6 +117,7 @@ let package = Package(
       "GenderSettingFeature",
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
+      .product(name: "FirebaseAuthClient", package: "FirebasePackage"),
     ]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

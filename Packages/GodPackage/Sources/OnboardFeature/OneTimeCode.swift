@@ -1,3 +1,4 @@
+import FirebaseAuthClient
 import ComposableArchitecture
 import SwiftUI
 

@@ -2,6 +2,7 @@ import Colors
 import ComposableArchitecture
 import PhoneNumberKit
 import SwiftUI
+import FirebaseAuthClient
 
 public struct PhoneNumberReducer: Reducer {
   public init() {}
