@@ -1,9 +1,9 @@
 import Colors
 import ComposableArchitecture
-import PhoneNumberKit
-import SwiftUI
 import FirebaseAuthClient
 import PhoneNumberClient
+import PhoneNumberKit
+import SwiftUI
 
 public struct PhoneNumberReducer: Reducer {
   public init() {}
@@ -21,7 +21,7 @@ public struct PhoneNumberReducer: Reducer {
     case verifyResponse(TaskResult<String?>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -30,7 +30,7 @@ public struct PhoneNumberReducer: Reducer {
       case nextOneTimeCode(verifyID: String)
     }
   }
-  
+
   @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.phoneNumberClient) var phoneNumberClient
 
@@ -49,8 +49,8 @@ public struct PhoneNumberReducer: Reducer {
           let formatNumber = try phoneNumberClient.parseFormat(phoneNumber)
           await send(
             .verifyResponse(
-              await TaskResult {
-                try await self.firebaseAuth.verifyPhoneNumber(formatNumber)
+              TaskResult {
+                try await firebaseAuth.verifyPhoneNumber(formatNumber)
               }
             )
           )
@@ -62,7 +62,7 @@ public struct PhoneNumberReducer: Reducer {
       case .verifyResponse(.success(.none)):
         print("verify id is null")
         return .none
-        
+
       case let .verifyResponse(.failure(error)):
         state.alert = AlertState {
           TextState("Error")
@@ -74,7 +74,7 @@ public struct PhoneNumberReducer: Reducer {
           TextState(error.localizedDescription)
         }
         return .none
-        
+
       case .alert:
         return .none
 
