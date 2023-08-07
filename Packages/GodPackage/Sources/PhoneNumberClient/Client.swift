@@ -5,10 +5,10 @@ public struct PhoneNumberClient {
   public var format: (PhoneNumber, PhoneNumberFormat, Bool) -> String
 }
 
-extension PhoneNumberClient {
-  public func parseFormat(_ phoneNumber: String) throws -> String {
-    let content = try self.parse(phoneNumber, "JP", true)
-    let formatPhoneNumber = self.format(content, .e164, true)
+public extension PhoneNumberClient {
+  func parseFormat(_ phoneNumber: String) throws -> String {
+    let content = try parse(phoneNumber, "JP", true)
+    let formatPhoneNumber = format(content, .e164, true)
     return formatPhoneNumber
   }
 }

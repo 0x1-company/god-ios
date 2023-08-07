@@ -1,7 +1,7 @@
 import AppFeature
 import ComposableArchitecture
-import SwiftUI
 import FirebaseAuthClient
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func windowScene(
@@ -52,16 +52,16 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
   func application(
     _ application: UIApplication,
-    didReceiveRemoteNotification userInfo: [AnyHashable : Any]
+    didReceiveRemoteNotification userInfo: [AnyHashable: Any]
   ) async -> UIBackgroundFetchResult {
     let result = firebaseAuth.canHandleNotification(userInfo)
     return result ? .noData : .newData
   }
-  
+
   func application(
     _ app: UIApplication,
     open url: URL,
-    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
     if firebaseAuth.canHandle(url) {
       return true

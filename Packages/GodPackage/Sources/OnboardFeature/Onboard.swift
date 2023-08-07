@@ -41,7 +41,6 @@ public struct OnboardReducer: Reducer {
       case let .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode(verifyID))))):
         state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
         return .none
-        
 
       case .path(.element(_, .oneTimeCode(.delegate(.nextFirstNameSetting)))):
         state.path.append(.firstNameSetting())

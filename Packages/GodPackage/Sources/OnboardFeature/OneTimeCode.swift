@@ -1,7 +1,7 @@
-import FirebaseAuthClient
 import ComposableArchitecture
-import SwiftUI
 import FirebaseAuth
+import FirebaseAuthClient
+import SwiftUI
 
 public struct OneTimeCodeReducer: Reducer {
   public init() {}
@@ -27,7 +27,7 @@ public struct OneTimeCodeReducer: Reducer {
       case nextFirstNameSetting
     }
   }
-  
+
   @Dependency(\.firebaseAuth) var firebaseAuth
 
   public var body: some ReducerOf<Self> {

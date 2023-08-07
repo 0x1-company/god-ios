@@ -1,7 +1,7 @@
 import ComposableArchitecture
+import FirebaseAuthClient
 import FirebaseCoreClient
 import UIKit
-import FirebaseAuthClient
 
 public struct AppDelegateReducer: Reducer {
   public struct State: Equatable {}
@@ -31,7 +31,7 @@ public struct AppDelegateReducer: Reducer {
 
     case let .didRegisterForRemoteNotifications(.success(deviceToken)):
       return .run { _ in
-        self.firebaseAuth.setAPNSToken(deviceToken, .sandbox)
+        firebaseAuth.setAPNSToken(deviceToken, .sandbox)
       }
     case .configurationForConnecting:
       return .none
