@@ -115,6 +115,7 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
+      "PhoneNumberClient",
       "GenderSettingFeature",
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
