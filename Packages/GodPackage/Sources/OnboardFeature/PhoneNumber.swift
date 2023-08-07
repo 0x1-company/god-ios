@@ -22,6 +22,8 @@ public struct PhoneNumberReducer: Reducer {
       case nextOneTimeCode
     }
   }
+  
+  @Dependency(\.firebaseAuth) var firebaseAuth
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
