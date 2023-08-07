@@ -57,6 +57,17 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     let result = firebaseAuth.canHandleNotification(userInfo)
     return result ? .noData : .newData
   }
+  
+  func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+  ) -> Bool {
+    if firebaseAuth.canHandle(url) {
+      return true
+    }
+    return false
+  }
 
   func application(
     _ application: UIApplication,
