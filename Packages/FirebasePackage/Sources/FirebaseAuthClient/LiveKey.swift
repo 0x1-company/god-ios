@@ -21,7 +21,7 @@ extension FirebaseAuthClient: DependencyKey {
       }
     },
     credential: { PhoneAuthProvider.provider().credential(withVerificationID: $0, verificationCode: $1) },
-    signInAndRetrieveData: { credential in
+    signIn: { credential in
       try await withCheckedThrowingContinuation { continuation in
         Auth.auth().signIn(with: credential) { result, error in
           if let error {

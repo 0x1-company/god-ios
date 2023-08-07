@@ -1,6 +1,7 @@
 import FirebaseAuthClient
 import ComposableArchitecture
 import SwiftUI
+import FirebaseAuth
 
 public struct OneTimeCodeReducer: Reducer {
   public init() {}
@@ -19,12 +20,15 @@ public struct OneTimeCodeReducer: Reducer {
     case changeOneTimeCode(String)
     case resendButtonTapped
     case nextButtonTapped
+    case signInResponse(TaskResult<AuthDataResult?>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
       case nextFirstNameSetting
     }
   }
+  
+  @Dependency(\.firebaseAuth) var firebaseAuth
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -40,9 +44,25 @@ public struct OneTimeCodeReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
+        let credential = firebaseAuth.credential(state.verifyID, state.oneTimeCode)
         return .run { send in
-          await send(.delegate(.nextFirstNameSetting))
+          await send(
+            .signInResponse(
+              TaskResult {
+                try await firebaseAuth.signIn(credential)
+              }
+            )
+          )
         }
+      case let .signInResponse(.success(.some(result))):
+        print(result)
+        return .none
+      case .signInResponse(.success(.none)):
+        print("sign in is null")
+        return .none
+      case let .signInResponse(.failure(error)):
+        print(error)
+        return .none
 
       case .delegate:
         return .none
