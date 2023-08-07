@@ -110,39 +110,17 @@ public struct OnboardReducer: Reducer {
     }
 
     public var body: some ReducerOf<Self> {
-      Scope(state: /State.gradeSetting, action: /Action.gradeSetting) {
-        GradeSettingReducer()
-      }
-      Scope(state: /State.schoolSetting, action: /Action.schoolSetting) {
-        SchoolSettingReducer()
-      }
-      Scope(state: /State.phoneNumber, action: /Action.phoneNumber) {
-        PhoneNumberReducer()
-      }
-      Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode) {
-        OneTimeCodeReducer()
-      }
-      Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting) {
-        FirstNameSettingReducer()
-      }
-      Scope(state: /State.lastNameSetting, action: /Action.lastNameSetting) {
-        LastNameSettingReducer()
-      }
-      Scope(state: /State.usernameSetting, action: /Action.usernameSetting) {
-        UsernameSettingReducer()
-      }
-      Scope(state: /State.genderSetting, action: /Action.genderSetting) {
-        GenderSettingReducer()
-      }
-      Scope(state: /State.profilePhotoSetting, action: /Action.profilePhotoSetting) {
-        ProfilePhotoSettingReducer()
-      }
-      Scope(state: /State.addFriends, action: /Action.addFriends) {
-        AddFriendsReducer()
-      }
-      Scope(state: /State.howItWorks, action: /Action.howItWorks) {
-        HowItWorksReducer()
-      }
+      Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingReducer.init)
+      Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingReducer.init)
+      Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberReducer.init)
+      Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: OneTimeCodeReducer.init)
+      Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting, child: FirstNameSettingReducer.init)
+      Scope(state: /State.lastNameSetting, action: /Action.lastNameSetting, child: LastNameSettingReducer.init)
+      Scope(state: /State.usernameSetting, action: /Action.usernameSetting, child: UsernameSettingReducer.init)
+      Scope(state: /State.genderSetting, action: /Action.genderSetting, child: GenderSettingReducer.init)
+      Scope(state: /State.profilePhotoSetting, action: /Action.profilePhotoSetting, child: ProfilePhotoSettingReducer.init)
+      Scope(state: /State.addFriends, action: /Action.addFriends, child: AddFriendsReducer.init)
+      Scope(state: /State.howItWorks, action: /Action.howItWorks, child: HowItWorksReducer.init)
     }
   }
 }
