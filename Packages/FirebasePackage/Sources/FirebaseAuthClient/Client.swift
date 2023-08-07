@@ -9,4 +9,5 @@ public struct FirebaseAuthClient {
   public var setAPNSToken: @Sendable (Data, AuthAPNSTokenType) -> Void
   public var verifyPhoneNumber: @Sendable (String) async throws -> String?
   public var credential: @Sendable (String, String) -> PhoneAuthCredential
+  public var signInAndRetrieveData: @Sendable (PhoneAuthCredential) async throws -> AuthDataResult?
 }
