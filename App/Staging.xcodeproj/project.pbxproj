@@ -35,7 +35,7 @@
 		B783E1012A120003002E782F /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		B783E13E2A1200A1002E782F /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B783E1402A1200A1002E782F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		B783E16E2A121FC6002E782F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B783E16E2A121FC6002E782F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Staging/Info.plist; sourceTree = "<group>"; };
 		B783E1752A137F3E002E782F /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = App.entitlements; path = Staging/App.entitlements; sourceTree = "<group>"; };
 		B7CCF9A12A7AF47600B64CFE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Staging/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -309,9 +309,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Multiplatform/Preview Content\"";
 				DEVELOPMENT_TEAM = Q7NP395GC3;
 				ENABLE_PREVIEWS = YES;
-				FIREBASE_ANALYTICS_COLLECTION_ENABLED = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Multiplatform/Info.plist;
+				INFOPLIST_FILE = Multiplatform/Staging/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Staging;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -345,9 +344,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Multiplatform/Preview Content\"";
 				DEVELOPMENT_TEAM = Q7NP395GC3;
 				ENABLE_PREVIEWS = YES;
-				FIREBASE_ANALYTICS_COLLECTION_ENABLED = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Multiplatform/Info.plist;
+				INFOPLIST_FILE = Multiplatform/Staging/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Staging;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

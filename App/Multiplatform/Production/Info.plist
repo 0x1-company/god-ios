@@ -23,14 +23,6 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-16565601261-ios-a77ccbf2c01d4950d05de4</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
 				<string>app-1-956650290643-ios-cce3e433965d915d2ac326</string>
 			</array>
 		</dict>
@@ -38,7 +30,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
-	<string>$(FIREBASE_ANALYTICS_COLLECTION_ENABLED)</string>
+	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
