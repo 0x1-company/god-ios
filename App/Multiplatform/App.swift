@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     AppDelegate.shared.viewStore.send(.sceneDelegate(.shortcutItem(shortcutItem)))
     completionHandler(true)
   }
-  
+
   func scene(
     _ scene: UIScene,
     openURLContexts URLContexts: Set<UIOpenURLContext>

@@ -25,7 +25,7 @@ public struct OneTimeCodeReducer: Reducer {
     case signInResponse(TaskResult<AuthDataResult?>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -62,7 +62,7 @@ public struct OneTimeCodeReducer: Reducer {
       case let .verifyResponse(.success(.some(id))):
         state.verifyID = id
         return .none
-        
+
       case .verifyResponse(.success(.none)):
         print("verify response is null")
         return .none
@@ -111,7 +111,7 @@ public struct OneTimeCodeReducer: Reducer {
         return .none
       case .alert(.presented(.confirmOkay)):
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       case .alert:
         return .none
