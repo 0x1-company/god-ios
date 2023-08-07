@@ -17,10 +17,11 @@ public struct PhoneNumberReducer: Reducer {
     case onTask
     case changePhoneNumber(String)
     case nextButtonTapped
+    case verifyResponse(TaskResult<String?>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextOneTimeCode
+      case nextOneTimeCode(verifyID: String)
     }
   }
   
@@ -38,9 +39,27 @@ public struct PhoneNumberReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextOneTimeCode))
+        return .run { [phoneNumber = state.phoneNumber] send in
+          let formatNumber = try phoneNumberClient.parseFormat(phoneNumber)
+          await send(
+            .verifyResponse(
+              await TaskResult {
+                try await self.firebaseAuth.verifyPhoneNumber(formatNumber)
+              }
+            )
+          )
         }
+      case let .verifyResponse(.success(.some(id))):
+        return .run { send in
+          await send(.delegate(.nextOneTimeCode(verifyID: id)))
+        }
+      case .verifyResponse(.success(.none)):
+        print("verify id is null")
+        return .none
+        
+      case let .verifyResponse(.failure(error)):
+        print(error)
+        return .none
 
       case .delegate:
         return .none
