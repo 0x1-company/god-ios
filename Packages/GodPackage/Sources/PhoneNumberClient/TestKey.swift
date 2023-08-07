@@ -2,7 +2,7 @@ import Dependencies
 import XCTestDynamicOverlay
 
 public extension DependencyValues {
-  var phoneNumber: PhoneNumberClient {
+  var phoneNumberClient: PhoneNumberClient {
     get { self[PhoneNumberClient.self] }
     set { self[PhoneNumberClient.self] = newValue }
   }

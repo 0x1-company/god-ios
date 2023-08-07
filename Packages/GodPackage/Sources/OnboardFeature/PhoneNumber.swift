@@ -3,6 +3,7 @@ import ComposableArchitecture
 import PhoneNumberKit
 import SwiftUI
 import FirebaseAuthClient
+import PhoneNumberClient
 
 public struct PhoneNumberReducer: Reducer {
   public init() {}
@@ -24,6 +25,7 @@ public struct PhoneNumberReducer: Reducer {
   }
   
   @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.phoneNumberClient) var phoneNumberClient
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
