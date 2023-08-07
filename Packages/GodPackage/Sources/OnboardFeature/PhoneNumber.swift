@@ -10,6 +10,7 @@ public struct PhoneNumberReducer: Reducer {
 
   public struct State: Equatable {
     var phoneNumber = ""
+    @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
 
@@ -18,7 +19,12 @@ public struct PhoneNumberReducer: Reducer {
     case changePhoneNumber(String)
     case nextButtonTapped
     case verifyResponse(TaskResult<String?>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
 
     public enum Delegate: Equatable {
       case nextOneTimeCode(verifyID: String)
@@ -58,7 +64,18 @@ public struct PhoneNumberReducer: Reducer {
         return .none
         
       case let .verifyResponse(.failure(error)):
-        print(error)
+        state.alert = AlertState {
+          TextState("Error")
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK")
+          }
+        } message: {
+          TextState(error.localizedDescription)
+        }
+        return .none
+        
+      case .alert:
         return .none
 
       case .delegate:
@@ -121,6 +138,7 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
+      .alert(store: store.scope(state: \.$alert, action: PhoneNumberReducer.Action.alert))
     }
   }
 }
