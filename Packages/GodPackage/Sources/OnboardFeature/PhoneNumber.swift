@@ -10,6 +10,8 @@ public struct PhoneNumberReducer: Reducer {
 
   public struct State: Equatable {
     var phoneNumber = ""
+    var isDisabled = true
+    var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
@@ -42,9 +44,11 @@ public struct PhoneNumberReducer: Reducer {
 
       case let .changePhoneNumber(phoneNumber):
         state.phoneNumber = phoneNumber
+        state.isDisabled = phoneNumber.isEmpty
         return .none
 
       case .nextButtonTapped:
+        state.isActivityIndicatorVisible = true
         return .run { [phoneNumber = state.phoneNumber] send in
           let formatNumber = try phoneNumberClient.parseFormat(phoneNumber)
           await send(
@@ -73,6 +77,11 @@ public struct PhoneNumberReducer: Reducer {
         } message: {
           TextState(error.localizedDescription)
         }
+        return .none
+        
+      case .verifyResponse:
+        print(".verifyResponse")
+        state.isActivityIndicatorVisible = false
         return .none
 
       case .alert:
@@ -120,17 +129,12 @@ public struct PhoneNumberView: View {
 
           Spacer()
 
-          Button {
+          NextButton(
+            isLoading: viewStore.isActivityIndicatorVisible,
+            isDisabled: viewStore.isDisabled
+          ) {
             viewStore.send(.nextButtonTapped)
-          } label: {
-            Text("Next")
-              .bold()
-              .frame(height: 56)
-              .frame(maxWidth: .infinity)
           }
-          .foregroundColor(Color.god.textPrimary)
-          .background(Color.white)
-          .clipShape(Capsule())
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
