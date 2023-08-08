@@ -7,8 +7,8 @@ public struct NextButton: View {
   let action: () -> Void
   
   public init(
-    isLoading: Bool,
-    isDisabled: Bool,
+    isLoading: Bool = false,
+    isDisabled: Bool = false,
     action: @escaping () -> Void
   ) {
     self.isLoading = isLoading
