@@ -1,11 +1,5 @@
 import SwiftUI
-
-public struct NextButtonStyle: ButtonStyle {
-  public func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
-  }
-}
+import ButtonStyles
 
 public struct NextButton: View {
   let isLoading: Bool
@@ -42,7 +36,7 @@ public struct NextButton: View {
       .opacity(isLoading || isDisabled ? 0.5 : 1.0)
     }
     .disabled(isLoading || isDisabled)
-    .buttonStyle(NextButtonStyle())
+    .buttonStyle(HoldDownButtonStyle())
   }
 }
 
