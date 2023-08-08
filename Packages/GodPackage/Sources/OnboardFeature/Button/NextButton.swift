@@ -1,11 +1,11 @@
-import SwiftUI
 import ButtonStyles
+import SwiftUI
 
 public struct NextButton: View {
   let isLoading: Bool
   let isDisabled: Bool
   let action: () -> Void
-  
+
   public init(
     isLoading: Bool = false,
     isDisabled: Bool = false,

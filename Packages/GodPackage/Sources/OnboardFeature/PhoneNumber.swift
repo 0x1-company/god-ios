@@ -78,7 +78,7 @@ public struct PhoneNumberReducer: Reducer {
           TextState(error.localizedDescription)
         }
         return .none
-        
+
       case .verifyResponse:
         print(".verifyResponse")
         state.isActivityIndicatorVisible = false
