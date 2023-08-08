@@ -1,4 +1,5 @@
 import Colors
+import ButtonStyles
 import ComposableArchitecture
 import SwiftUI
 
@@ -112,6 +113,7 @@ public struct WelcomeView: View {
                   .background(Color.god.service)
                   .clipShape(Capsule())
               }
+              .buttonStyle(HoldDownButtonStyle())
               .padding(.horizontal, 16)
             }
           }
