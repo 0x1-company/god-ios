@@ -3,6 +3,7 @@ import FirebaseAuth
 
 extension FirebaseAuthClient: DependencyKey {
   public static let liveValue = Self(
+    currentUser: { Auth.auth().currentUser },
     languageCode: { Auth.auth().languageCode = $0 },
     signOut: { try Auth.auth().signOut() },
     canHandle: { Auth.auth().canHandle($0) },
