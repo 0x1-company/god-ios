@@ -29,7 +29,7 @@ public struct AppReducer: Reducer {
     case sceneDelegate(SceneDelegateReducer.Action)
     case view(View.Action)
     case quickAction(String)
-    case config(TaskResult<FirestoreClient.Config>)
+    case configResponse(TaskResult<FirestoreClient.Config>)
   }
 
   @Dependency(\.build) var build
@@ -52,10 +52,10 @@ public struct AppReducer: Reducer {
         enum CancelID { case effect }
         return .run { send in
           for try await config in try await firestore.config() {
-            await send(.config(.success(config)), animation: .default)
+            await send(.configResponse(.success(config)), animation: .default)
           }
         } catch: { error, send in
-          await send(.config(.failure(error)), animation: .default)
+          await send(.configResponse(.failure(error)), animation: .default)
         }
         .cancellable(id: CancelID.effect)
 
@@ -88,7 +88,7 @@ public struct AppReducer: Reducer {
           await openURL(url)
         }
 
-      case let .config(.success(config)):
+      case let .configResponse(.success(config)):
         let shortVersion = build.bundleShortVersion()
         if config.isForceUpdate(shortVersion) {
           state.view = .forceUpdate()
@@ -98,7 +98,7 @@ public struct AppReducer: Reducer {
         }
         return .none
 
-      case let .config(.failure(error)):
+      case let .configResponse(.failure(error)):
         print(error)
         return .none
       }
