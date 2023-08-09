@@ -7,6 +7,7 @@ import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
+import FirebaseAuthClient
 
 public struct AppReducer: Reducer {
   public init() {}
@@ -16,7 +17,7 @@ public struct AppReducer: Reducer {
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
-    var view = View.State.onboard()
+    var view = View.State.navigation()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
@@ -35,6 +36,7 @@ public struct AppReducer: Reducer {
   @Dependency(\.build) var build
   @Dependency(\.openURL) var openURL
   @Dependency(\.firestore) var firestore
+  @Dependency(\.firebaseAuth) var firebaseAuth
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
@@ -95,6 +97,9 @@ public struct AppReducer: Reducer {
         }
         if config.isMaintenance {
           state.view = .maintenance()
+        }
+        if firebaseAuth.currentUser() == nil {
+          state.view = .onboard()
         }
         return .none
 
