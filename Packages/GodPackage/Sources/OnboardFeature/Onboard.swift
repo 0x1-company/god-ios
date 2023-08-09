@@ -29,45 +29,41 @@ public struct OnboardReducer: Reducer {
 
       case .welcome:
         return .none
+        
+      case let .path(.element(_, action)):
+        switch action {
+        case .gradeSetting(.delegate(.nextSchoolSetting)):
+          state.path.append(.schoolSetting())
+        
+        case .schoolSetting(.delegate(.nextPhoneNumber)):
+          state.path.append(.phoneNumber())
+        
+        case let .phoneNumber(.delegate(.nextOneTimeCode(verifyID))):
+          state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
+          
+        case .oneTimeCode(.delegate(.nextFirstNameSetting)):
+          state.path.append(.firstNameSetting())
 
-      case .path(.element(_, .gradeSetting(.delegate(.nextSchoolSetting)))):
-        state.path.append(.schoolSetting())
-        return .none
+        case .firstNameSetting(.delegate(.nextLastNameSetting)):
+          state.path.append(.lastNameSetting())
 
-      case .path(.element(_, .schoolSetting(.delegate(.nextPhoneNumber)))):
-        state.path.append(.phoneNumber())
-        return .none
+        case .lastNameSetting(.delegate(.nextUsernameSetting)):
+          state.path.append(.usernameSetting())
 
-      case let .path(.element(_, .phoneNumber(.delegate(.nextOneTimeCode(verifyID))))):
-        state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
-        return .none
+        case .usernameSetting(.delegate(.nextGenderSetting)):
+          state.path.append(.genderSetting())
 
-      case .path(.element(_, .oneTimeCode(.delegate(.nextFirstNameSetting)))):
-        state.path.append(.firstNameSetting())
-        return .none
+        case .genderSetting(.delegate(.nextProfilePhotoSetting)):
+          state.path.append(.profilePhotoSetting())
 
-      case .path(.element(_, .firstNameSetting(.delegate(.nextLastNameSetting)))):
-        state.path.append(.lastNameSetting())
-        return .none
+        case .profilePhotoSetting(.delegate(.nextAddFriends)):
+          state.path.append(.addFriends())
 
-      case .path(.element(_, .lastNameSetting(.delegate(.nextUsernameSetting)))):
-        state.path.append(.usernameSetting())
-        return .none
-
-      case .path(.element(_, .usernameSetting(.delegate(.nextGenderSetting)))):
-        state.path.append(.genderSetting())
-        return .none
-
-      case .path(.element(_, .genderSetting(.delegate(.nextProfilePhotoSetting)))):
-        state.path.append(.profilePhotoSetting())
-        return .none
-
-      case .path(.element(_, .profilePhotoSetting(.delegate(.nextAddFriends)))):
-        state.path.append(.addFriends())
-        return .none
-
-      case .path(.element(_, .addFriends(.delegate(.nextHowItWorks)))):
-        state.path.append(.howItWorks())
+        case .addFriends(.delegate(.nextHowItWorks)):
+          state.path.append(.howItWorks())
+        default:
+          print(action)
+        }
         return .none
 
       case .path:
