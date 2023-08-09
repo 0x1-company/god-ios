@@ -10,6 +10,7 @@ public extension DependencyValues {
 
 extension FirebaseAuthClient: TestDependencyKey {
   public static let testValue = Self(
+    currentUser: unimplemented("\(Self.self).currentUser"),
     languageCode: unimplemented("\(Self.self).languageCode"),
     signOut: unimplemented("\(Self.self).signOut"),
     canHandle: unimplemented("\(Self.self).canHandle"),
