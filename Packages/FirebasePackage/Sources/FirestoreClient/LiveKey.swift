@@ -20,6 +20,9 @@ extension FirestoreClient: DependencyKey {
               }
             }
           }
+        continuation.onTermination = { @Sendable _ in
+          listener.remove()
+        }
       }
     }
   )
