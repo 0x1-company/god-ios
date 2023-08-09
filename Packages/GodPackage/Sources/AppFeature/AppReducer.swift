@@ -1,13 +1,13 @@
 import Build
 import ComposableArchitecture
 import Constants
+import FirebaseAuthClient
 import FirestoreClient
 import ForceUpdateFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
-import FirebaseAuthClient
 
 public struct AppReducer: Reducer {
   public init() {}
