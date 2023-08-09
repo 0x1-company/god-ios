@@ -29,18 +29,18 @@ public struct OnboardReducer: Reducer {
 
       case .welcome:
         return .none
-        
+
       case let .path(.element(_, action)):
         switch action {
         case .gradeSetting(.delegate(.nextSchoolSetting)):
           state.path.append(.schoolSetting())
-        
+
         case .schoolSetting(.delegate(.nextPhoneNumber)):
           state.path.append(.phoneNumber())
-        
+
         case let .phoneNumber(.delegate(.nextOneTimeCode(verifyID))):
           state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
-          
+
         case .oneTimeCode(.delegate(.nextFirstNameSetting)):
           state.path.append(.firstNameSetting())
 
