@@ -26,7 +26,7 @@ extension ProfileClient: DependencyKey {
     },
     isAvailableUsername: { username in
       try await Firestore.firestore().collection("/users")
-        .whereField("username", isNotEqualTo: username)
+        .whereField("username", isEqualTo: username)
         .getDocuments()
         .isEmpty
     }
