@@ -10,7 +10,6 @@ public extension DependencyValues {
 
 extension FirestoreClient: TestDependencyKey {
   public static let testValue = Self(
-    config: unimplemented("\(Self.self).config"),
-    user: unimplemented("\(Self.self).user")
+    config: unimplemented("\(Self.self).config")
   )
 }
