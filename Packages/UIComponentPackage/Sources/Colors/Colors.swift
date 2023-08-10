@@ -14,5 +14,5 @@ public struct Colors {
   public let textSecondaryDark = Color("text-secondary-dark", bundle: .module)
   public let textSecondaryLight = Color("text-secondary-light", bundle: .module)
   public let white = Color("white", bundle: .module)
-    public let backgroundWhite = Color("background-white", bundle: .module)
+  public let backgroundWhite = Color("background-white", bundle: .module)
 }
