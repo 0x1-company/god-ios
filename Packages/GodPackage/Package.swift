@@ -117,6 +117,7 @@ let package = Package(
       "HowItWorksFeature",
       "PhoneNumberClient",
       "GenderSettingFeature",
+      .product(name: "ProfileClient", package: "FirebasePackage"),
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
