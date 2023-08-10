@@ -5,13 +5,11 @@ Only xxxFeature in GodPackage
 ## Package Dependencies
 ```mermaid
 graph TD;
-    AboutFeature-->Constants;
     AboutFeature-->HowItWorksFeature;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
     AppFeature-->ForceUpdateFeature;
     AppFeature-->MaintenanceFeature;
-    ForceUpdateFeature-->Constants;
     GodFeature-->PollFeature;
     GodFeature-->CashOutFeature;
     GodFeature-->PlayAgainFeature;
@@ -24,7 +22,6 @@ graph TD;
     NavigationFeature-->InboxFeature;
     NavigationFeature-->ProfileFeature;
     OnboardFeature-->HowItWorksFeature;
-    OnboardFeature-->PhoneNumberClient;
     OnboardFeature-->GenderSettingFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ShopFeature;
