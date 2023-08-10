@@ -1,6 +1,6 @@
 # GodPackage
 
-A description of this package.
+Only xxxFeature in GodPackage
 
 ## Package Dependencies
 ```mermaid
