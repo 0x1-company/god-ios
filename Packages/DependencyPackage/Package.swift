@@ -32,8 +32,8 @@ let package = Package(
     ]),
     .target(name: "Constants"),
     .target(name: "FirebaseAuthClient", dependencies: [
-      .product(name: "Dependencies", package: "swift-dependencies"),
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+      .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "FirebaseCoreClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
@@ -46,7 +46,7 @@ let package = Package(
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "ProfileClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
