@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import ProfileClient
 import SwiftUI
+import FirebaseAuthClient
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
@@ -23,6 +24,7 @@ public struct UsernameSettingReducer: Reducer {
   }
 
   @Dependency(\.profileClient) var profileClient
+  @Dependency(\.firebaseAuth.currentUser) var currentUser
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -46,7 +48,14 @@ public struct UsernameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
-        return .run { send in
+        guard let uid = currentUser()?.uid else {
+          return .none
+        }
+        return .run { [username = state.username] send in
+          try await profileClient.setUserProfile(
+            uid: uid,
+            field: .init(username: username)
+          )
           await send(.delegate(.nextGenderSetting))
         } catch: { error, _ in
           print(error)
