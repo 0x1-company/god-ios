@@ -1,4 +1,4 @@
-# FirebasePackage
+# DependencyPackage
 
 A description of this package.
 

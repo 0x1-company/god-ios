@@ -19,7 +19,7 @@ jobs:
           key: ${{ runner.os }}-DependenciesGraph-${{ hashFiles('BuildTools/DependenciesGraph/Package.resolved') }}
       - run: swift build -c release --package-path ./BuildTools/DependenciesGraph --product dgraph
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/CupertinoPackage
-      - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/FirebasePackage
+      - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/DependencyPackage
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/GodPackage
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/UIComponentPackage
       - continue-on-error: true

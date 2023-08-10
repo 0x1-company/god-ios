@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "FirebasePackage",
+  name: "DependencyPackage",
   platforms: [
     .iOS(.v16),
     .macOS(.v13),

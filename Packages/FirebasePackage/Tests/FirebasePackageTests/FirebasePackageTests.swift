@@ -1,11 +1,11 @@
-@testable import FirebasePackage
+@testable import DependencyPackage
 import XCTest
 
-final class FirebasePackageTests: XCTestCase {
+final class DependencyPackageTests: XCTestCase {
   func testExample() throws {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct
     // results.
-    XCTAssertEqual(FirebasePackage().text, "Hello, World!")
+    XCTAssertEqual(DependencyPackage().text, "Hello, World!")
   }
 }

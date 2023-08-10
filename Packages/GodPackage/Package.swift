@@ -37,7 +37,7 @@ let package = Package(
   dependencies: [
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
-    .package(path: "../FirebasePackage"),
+    .package(path: "../DependencyPackage"),
     .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.0.0"),
@@ -59,8 +59,8 @@ let package = Package(
       "ForceUpdateFeature",
       "MaintenanceFeature",
       .product(name: "Build", package: "CupertinoPackage"),
-      .product(name: "FirestoreClient", package: "FirebasePackage"),
-      .product(name: "FirebaseCoreClient", package: "FirebasePackage"),
+      .product(name: "FirestoreClient", package: "DependencyPackage"),
+      .product(name: "FirebaseCoreClient", package: "DependencyPackage"),
     ]),
     .target(name: "CashOutFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-ios"),
@@ -117,11 +117,11 @@ let package = Package(
       "HowItWorksFeature",
       "PhoneNumberClient",
       "GenderSettingFeature",
-      .product(name: "ProfileClient", package: "FirebasePackage"),
+      .product(name: "ProfileClient", package: "DependencyPackage"),
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
-      .product(name: "FirebaseAuthClient", package: "FirebasePackage"),
+      .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
