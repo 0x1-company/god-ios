@@ -3,6 +3,7 @@ import ComposableArchitecture
 import LabeledButton
 import ManageAccountFeature
 import SwiftUI
+import FirebaseAuthClient
 
 public struct ProfileEditReducer: Reducer {
   public init() {}
@@ -21,6 +22,7 @@ public struct ProfileEditReducer: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.firebaseAuth) var firebaseAuth
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -33,7 +35,11 @@ public struct ProfileEditReducer: Reducer {
         return .none
 
       case .logoutButtonTapped:
-        return .none
+        return .run { _ in
+          try firebaseAuth.signOut()
+        } catch: { error, send in
+          print(error)
+        }
 
       case .closeButtonTapped:
         return .run { _ in

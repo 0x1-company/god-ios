@@ -8,6 +8,7 @@ import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
+import FirebaseAuth
 
 public struct AppReducer: Reducer {
   public init() {}
@@ -31,6 +32,7 @@ public struct AppReducer: Reducer {
     case view(View.Action)
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
+    case userResponse(FirebaseAuth.User?)
   }
 
   @Dependency(\.build) var build
@@ -53,8 +55,13 @@ public struct AppReducer: Reducer {
       case .appDelegate(.delegate(.didFinishLaunching)):
         enum CancelID { case effect }
         return .run { send in
-          for try await config in try await firestore.config() {
-            await send(.configResponse(.success(config)), animation: .default)
+          try await withTaskCancellation(id: CancelID.effect, cancelInFlight: true) {
+            for try await user in firebaseAuth.addStateDidChangeListener() {
+              await send(.userResponse(user), animation: .default)
+            }
+            for try await config in try await firestore.config() {
+              await send(.configResponse(.success(config)), animation: .default)
+            }
           }
         } catch: { error, send in
           await send(.configResponse(.failure(error)), animation: .default)
@@ -98,13 +105,18 @@ public struct AppReducer: Reducer {
         if config.isMaintenance {
           state.view = .maintenance()
         }
-        if firebaseAuth.currentUser() == nil {
-          state.view = .onboard()
-        }
         return .none
 
       case let .configResponse(.failure(error)):
         print(error)
+        return .none
+        
+      case .userResponse(.some):
+        state.view = .navigation()
+        return .none
+
+      case .userResponse(.none):
+        state.view = .onboard()
         return .none
       }
     }
