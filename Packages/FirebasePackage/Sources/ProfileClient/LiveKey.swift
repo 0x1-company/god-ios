@@ -23,6 +23,12 @@ extension ProfileClient: DependencyKey {
           listener.remove()
         }
       }
+    },
+    isAvailableUsername: { username in
+      try await Firestore.firestore().collection("/users")
+        .whereField("username", isNotEqualTo: username)
+        .getDocuments()
+        .isEmpty
     }
   )
 }
