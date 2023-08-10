@@ -13,7 +13,7 @@ extension FirestoreClient: DependencyKey {
             }
             if let documentSnapshot {
               do {
-                continuation.yield(try documentSnapshot.data(as: Config.self))
+                try continuation.yield(documentSnapshot.data(as: Config.self))
               } catch {
                 continuation.finish(throwing: error)
               }

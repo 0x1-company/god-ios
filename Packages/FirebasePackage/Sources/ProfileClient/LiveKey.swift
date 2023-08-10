@@ -13,7 +13,7 @@ extension ProfileClient: DependencyKey {
             }
             if let documentSnapshot {
               do {
-                continuation.yield(try documentSnapshot.data(as: User.self))
+                try continuation.yield(documentSnapshot.data(as: User.self))
               } catch {
                 continuation.finish(throwing: error)
               }

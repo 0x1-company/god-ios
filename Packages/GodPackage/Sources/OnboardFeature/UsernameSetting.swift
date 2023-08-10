@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import SwiftUI
 import ProfileClient
+import SwiftUI
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
@@ -21,7 +21,7 @@ public struct UsernameSettingReducer: Reducer {
       case nextGenderSetting
     }
   }
-  
+
   @Dependency(\.profileClient) var profileClient
 
   public var body: some Reducer<State, Action> {
@@ -31,12 +31,12 @@ public struct UsernameSettingReducer: Reducer {
         enum CancelID { case effect }
         state.username = username
         return .run { [username = state.username] send in
-          await send(
+          try await send(
             .isAvailableUsernameUpdated(
-              try await profileClient.isAvailableUsername(username)
+              profileClient.isAvailableUsername(username)
             )
           )
-        } catch: { error, send in
+        } catch: { error, _ in
           print(error)
         }
         .cancellable(id: CancelID.effect, cancelInFlight: true)
@@ -48,7 +48,7 @@ public struct UsernameSettingReducer: Reducer {
       case .nextButtonTapped:
         return .run { send in
           await send(.delegate(.nextGenderSetting))
-        } catch: { error, send in
+        } catch: { error, _ in
           print(error)
         }
 
@@ -67,8 +67,8 @@ public struct UsernameSettingView: View {
     var isDisabled: Bool
 
     init(state: UsernameSettingReducer.State) {
-      self.username = state.username
-      self.isDisabled = !state.isAvailableUsername
+      username = state.username
+      isDisabled = !state.isAvailableUsername
     }
   }
 
