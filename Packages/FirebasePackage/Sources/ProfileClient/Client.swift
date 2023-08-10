@@ -11,7 +11,7 @@ public extension ProfileClient {
     public let yearId: Int
     public let schoolId: String
     public let gender: Gender
-    
+
     public enum Gender: String, Codable {
       case boy
       case girl
