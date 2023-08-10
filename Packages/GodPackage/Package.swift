@@ -14,7 +14,6 @@ let package = Package(
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
-    .library(name: "Constants", targets: ["Constants"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "GenderSettingFeature", targets: ["GenderSettingFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
@@ -25,7 +24,6 @@ let package = Package(
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
     .library(name: "OnboardFeature", targets: ["OnboardFeature"]),
-    .library(name: "PhoneNumberClient", targets: ["PhoneNumberClient"]),
     .library(name: "PlayAgainFeature", targets: ["PlayAgainFeature"]),
     .library(name: "PollFeature", targets: ["PollFeature"]),
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
@@ -39,13 +37,12 @@ let package = Package(
     .package(path: "../UIComponentPackage"),
     .package(path: "../DependencyPackage"),
     .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
-    .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.0.0"),
   ],
   targets: [
     .target(name: "AboutFeature", dependencies: [
-      "Constants",
       "HowItWorksFeature",
+      .product(name: "Constants", package: "DependencyPackage"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -66,10 +63,9 @@ let package = Package(
       .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ], resources: [.copy("coin.json")]),
-    .target(name: "Constants"),
     .target(name: "ForceUpdateFeature", dependencies: [
-      "Constants",
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GenderSettingFeature", dependencies: [
@@ -115,17 +111,13 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
-      "PhoneNumberClient",
       "GenderSettingFeature",
-      .product(name: "ProfileClient", package: "DependencyPackage"),
+      .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
+      .product(name: "ProfileClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
-    ]),
-    .target(name: "PhoneNumberClient", dependencies: [
-      .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
