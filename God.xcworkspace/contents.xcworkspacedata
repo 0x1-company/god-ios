@@ -17,7 +17,7 @@
       location = "group:Packages/UIComponentPackage">
    </FileRef>
    <FileRef
-      location = "group:Packages/FirebasePackage">
+      location = "group:Packages/DependencyPackage">
    </FileRef>
    <FileRef
       location = "group:Packages/GodPackage">
