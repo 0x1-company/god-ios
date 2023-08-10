@@ -1,16 +1,19 @@
 import ComposableArchitecture
 import SwiftUI
+import ProfileClient
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var username = ""
+    var isAvailableUsername = false
     public init() {}
   }
 
   public enum Action: Equatable {
     case usernameChanged(String)
+    case isAvailableUsernameUpdated(Bool)
     case nextButtonTapped
     case delegate(Delegate)
 
@@ -18,17 +21,35 @@ public struct UsernameSettingReducer: Reducer {
       case nextGenderSetting
     }
   }
+  
+  @Dependency(\.profileClient) var profileClient
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case let .usernameChanged(username):
+        enum CancelID { case effect }
         state.username = username
+        return .run { [username = state.username] send in
+          await send(
+            .isAvailableUsernameUpdated(
+              try await profileClient.isAvailableUsername(username)
+            )
+          )
+        } catch: { error, send in
+          print(error)
+        }
+        .cancellable(id: CancelID.effect, cancelInFlight: true)
+
+      case let .isAvailableUsernameUpdated(isAvailableUsername):
+        state.isAvailableUsername = isAvailableUsername
         return .none
 
       case .nextButtonTapped:
         return .run { send in
           await send(.delegate(.nextGenderSetting))
+        } catch: { error, send in
+          print(error)
         }
 
       case .delegate:
@@ -43,9 +64,11 @@ public struct UsernameSettingView: View {
 
   struct ViewState: Equatable {
     var username: String
+    var isDisabled: Bool
 
     init(state: UsernameSettingReducer.State) {
-      username = state.username
+      self.username = state.username
+      self.isDisabled = !state.isAvailableUsername
     }
   }
 
@@ -76,16 +99,11 @@ public struct UsernameSettingView: View {
 
         Spacer()
 
-        Button {
+        NextButton(
+          isLoading: false,
+          isDisabled: viewStore.isDisabled
+        ) {
           viewStore.send(.nextButtonTapped)
-        } label: {
-          Text("Next")
-            .bold()
-            .frame(height: 54)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
-            .background(Color.white)
-            .clipShape(Capsule())
         }
       }
       .padding(.horizontal, 24)
