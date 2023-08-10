@@ -93,6 +93,8 @@ public struct OneTimeCodeReducer: Reducer {
       case let .signInResponse(.success(.some(result))):
         print(result)
         return .run { send in
+          let idToken = try await result.user.getIDToken()
+          print("FIREBASE ID TOKEN: \(idToken)")
           await send(.delegate(.nextFirstNameSetting))
         }
       case .signInResponse(.success(.none)):
