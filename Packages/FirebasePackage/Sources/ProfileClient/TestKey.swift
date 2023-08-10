@@ -11,6 +11,7 @@ public extension DependencyValues {
 extension ProfileClient: TestDependencyKey {
   public static let testValue = Self(
     user: unimplemented("\(Self.self).user"),
-    isAvailableUsername: unimplemented("\(Self.self).isAvailableUsername")
+    isAvailableUsername: unimplemented("\(Self.self).isAvailableUsername"),
+    setDocumentData: unimplemented("\(Self.self).setDocumentData")
   )
 }

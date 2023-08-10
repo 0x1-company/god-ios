@@ -1,6 +1,8 @@
 public struct ProfileClient {
   public var user: @Sendable (_ uid: String) async throws -> AsyncThrowingStream<User, Error>
   public var isAvailableUsername: @Sendable (_ username: String) async throws -> Bool
+  
+  public var setDocumentData: (_ documentPath: String, _ documentData: [String : Any]) async throws -> Void
 }
 
 public extension ProfileClient {
