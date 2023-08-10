@@ -1,7 +1,7 @@
 import ComposableArchitecture
-import SwiftUI
 import FirebaseAuthClient
 import ProfileClient
+import SwiftUI
 
 public struct LastNameSettingReducer: Reducer {
   public init() {}
@@ -22,7 +22,7 @@ public struct LastNameSettingReducer: Reducer {
       case nextUsernameSetting
     }
   }
-  
+
   @Dependency(\.profileClient) var profileClient
   @Dependency(\.firebaseAuth.currentUser) var currentUser
 
