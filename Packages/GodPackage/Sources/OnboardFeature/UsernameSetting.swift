@@ -1,7 +1,7 @@
 import ComposableArchitecture
+import FirebaseAuthClient
 import ProfileClient
 import SwiftUI
-import FirebaseAuthClient
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}

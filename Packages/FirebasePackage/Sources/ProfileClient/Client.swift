@@ -1,8 +1,8 @@
 public struct ProfileClient {
   public var user: @Sendable (_ uid: String) async throws -> AsyncThrowingStream<User, Error>
   public var isAvailableUsername: @Sendable (_ username: String) async throws -> Bool
-  
-  public var setDocumentData: (_ documentPath: String, _ documentData: [String : Any]) async throws -> Void
+
+  public var setDocumentData: (_ documentPath: String, _ documentData: [String: Any]) async throws -> Void
 }
 
 public extension ProfileClient {
@@ -20,7 +20,7 @@ public extension ProfileClient {
     public let schoolId: String
     public let gender: Gender
   }
-  
+
   struct UserFirestoreField: Codable, Equatable {
     public let firstName: String?
     public let lastName: String?
@@ -28,7 +28,7 @@ public extension ProfileClient {
     public let yearId: Int?
     public let schoolId: String?
     public let gender: Gender?
-    
+
     public init(
       firstName: String? = nil,
       lastName: String? = nil,
