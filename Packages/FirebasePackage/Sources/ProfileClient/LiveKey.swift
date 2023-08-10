@@ -29,6 +29,9 @@ extension ProfileClient: DependencyKey {
         .whereField("username", isEqualTo: username)
         .getDocuments()
         .isEmpty
+    },
+    setDocumentData: { path, data in
+      try await Firestore.firestore().document(path).setData(data, merge: true)
     }
   )
 }

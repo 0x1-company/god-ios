@@ -1,5 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
+import ProfileClient
+import FirebaseAuthClient
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
@@ -20,13 +22,18 @@ public struct FirstNameSettingReducer: Reducer {
       case nextLastNameSetting
     }
   }
+  
+  enum CancelId { case effect }
+  
+  @Dependency(\.profileClient) var profileClient
+  @Dependency(\.firebaseAuth.currentUser) var currentUser
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
     }
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .doubleCheckName:
         return .none
@@ -35,7 +42,14 @@ public struct FirstNameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
-        return .run { send in
+        guard let uid = currentUser()?.uid else {
+          return .none
+        }
+        return .run { [firstName = state.firstName] send in
+          try await profileClient.setUserProfile(
+            uid: uid,
+            field: .init(firstName: firstName)
+          )
           await send(.delegate(.nextLastNameSetting))
         }
       case .delegate:
