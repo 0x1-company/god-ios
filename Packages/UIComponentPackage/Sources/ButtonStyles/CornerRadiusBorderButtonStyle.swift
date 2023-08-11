@@ -15,3 +15,11 @@ public struct CornerRadiusBorderButtonStyle: ButtonStyle {
       )
   }
 }
+
+public struct BorderFormStyle: FormStyle {
+
+    public func makeBody(configuration: Configuration) -> some View {
+        configuration.content
+            .padding()
+    }
+}
