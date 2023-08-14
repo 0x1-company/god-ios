@@ -48,7 +48,7 @@
 	<array>
 		<dict>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>もし、アプリについて話したいならこちら</string>
+			<string>もしアプリについて話したいならこちら</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>👋社長と話す！</string>
 			<key>UIApplicationShortcutItemType</key>
@@ -56,11 +56,19 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>もし、開発について話したいならこちら</string>
+			<string>もし開発について話したいならこちら</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>👨🏻‍💻エンジニアと話す！</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>talk-to-developer</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>もう1度チャンスをください</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>🥺Godを消さないで</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>/</string>
 		</dict>
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
