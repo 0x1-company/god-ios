@@ -96,7 +96,7 @@ public struct ProfilePhotoSettingView: View {
         )
       }
       .padding(.horizontal, 24)
-      .background(Color.god.service)
+      .background(Color.godService)
       .toolbar {
         Button("Skip") {
           viewStore.send(.skipButtonTapped)

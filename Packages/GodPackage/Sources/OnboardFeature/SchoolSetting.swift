@@ -57,7 +57,7 @@ public struct SchoolSettingView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
-        Color.god.service
+        Color.godService
 
         List(0 ..< 100, id: \.self) { _ in
           Button {
@@ -74,7 +74,7 @@ public struct SchoolSettingView: View {
                   .lineLimit(1)
 
                 Text("New York, NY")
-                  .foregroundColor(Color.god.textSecondaryLight)
+                  .foregroundColor(Color.godTextSecondaryLight)
               }
               .font(.footnote)
               .frame(maxWidth: .infinity)
@@ -82,9 +82,9 @@ public struct SchoolSettingView: View {
               VStack(spacing: 0) {
                 Text("164")
                   .bold()
-                  .foregroundColor(Color.god.service)
+                  .foregroundColor(Color.godService)
                 Text("MEMBERS")
-                  .foregroundColor(Color.god.textSecondaryLight)
+                  .foregroundColor(Color.godTextSecondaryLight)
               }
               .font(.footnote)
             }
@@ -99,7 +99,7 @@ public struct SchoolSettingView: View {
       }
       .navigationTitle("Pick your school")
       .navigationBarTitleDisplayMode(.inline)
-      .toolbarBackground(Color.god.service, for: .navigationBar)
+      .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
       .toolbar {

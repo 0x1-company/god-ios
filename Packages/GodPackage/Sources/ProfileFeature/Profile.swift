@@ -120,7 +120,7 @@ public struct ProfileView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.horizontal, 16)
           .padding(.bottom, 16)
-          .background(Color.god.white)
+          .background(Color.godWhite)
 
           Divider()
 
@@ -131,7 +131,7 @@ public struct ProfileView: View {
           topFlamesSection
             .padding(.bottom, 16)
           friendsSection
-        }.background(Color.god.backgroundWhite)
+        }.background(Color.godBackgroundWhite)
       }
       .listStyle(.plain)
       .navigationTitle("Profile")
@@ -218,7 +218,7 @@ public struct ProfileView: View {
         .padding(.horizontal, 16)
         Divider()
       }
-    }.background(Color.god.white)
+    }.background(Color.godWhite)
   }
 
   private static let mockFriends: [String] = [
@@ -251,12 +251,12 @@ public struct ProfileView: View {
             Text("ADDED")
               .font(.body)
               .bold()
-              .foregroundColor(.god.textSecondaryLight)
+              .foregroundColor(Color.godTextSecondaryLight)
               .frame(height: 32)
               .padding(.horizontal, 12)
               .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                  .stroke(Color.god.textSecondaryLight, lineWidth: 1)
+                  .stroke(Color.godTextSecondaryLight, lineWidth: 1)
               )
           })
         }
@@ -264,7 +264,7 @@ public struct ProfileView: View {
         .padding(.horizontal, 16)
         Divider()
       }
-    }.background(Color.god.white)
+    }.background(Color.godWhite)
   }
 }
 

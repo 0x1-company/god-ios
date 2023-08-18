@@ -79,7 +79,7 @@ public struct GradeSettingView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
-        Color.god.service
+        Color.godService
 
         VStack(spacing: 0) {
           selectButton("Not in High School") {
@@ -123,7 +123,7 @@ public struct GradeSettingView: View {
       .navigationTitle("What grade are you in?")
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden()
-      .toolbarBackground(Color.god.service, for: .navigationBar)
+      .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
       .toolbar {

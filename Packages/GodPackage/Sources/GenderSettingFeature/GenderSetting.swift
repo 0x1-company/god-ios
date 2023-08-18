@@ -65,7 +65,7 @@ public struct GenderSettingView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
-        Color.god.service
+        Color.godService
           .ignoresSafeArea()
 
         VStack(spacing: 24) {
