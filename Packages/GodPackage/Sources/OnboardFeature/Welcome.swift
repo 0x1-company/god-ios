@@ -91,14 +91,14 @@ public struct WelcomeView: View {
         Text("God")
           .font(.largeTitle)
           .bold()
-          .foregroundColor(Color.god.textSecondaryDark)
+          .foregroundColor(Color.godTextSecondaryDark)
         Spacer()
         VStack(spacing: 24) {
           ZStack {
             if viewStore.selection == "- -" {
               Text("By entering your age you agree to our Terms and Privacy Policy")
                 .frame(height: 54)
-                .foregroundColor(Color.god.textSecondaryDark)
+                .foregroundColor(Color.godTextSecondaryDark)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             } else {
@@ -110,7 +110,7 @@ public struct WelcomeView: View {
                   .frame(height: 54)
                   .frame(maxWidth: .infinity)
                   .foregroundColor(Color.white)
-                  .background(Color.god.service)
+                  .background(Color.godService)
                   .clipShape(Capsule())
               }
               .buttonStyle(HoldDownButtonStyle())
@@ -119,7 +119,7 @@ public struct WelcomeView: View {
           }
 
           Text(viewStore.ageText)
-            .foregroundColor(Color.god.service)
+            .foregroundColor(Color.godService)
             .bold()
 
           Picker(
@@ -138,7 +138,7 @@ public struct WelcomeView: View {
           .environment(\.colorScheme, .dark)
         }
       }
-      .background(Color.god.black)
+      .background(Color.godBlack)
       .alert(store: store.scope(state: \.$alert, action: WelcomeReducer.Action.alert))
       .toolbar {
         Button("Log In") {}

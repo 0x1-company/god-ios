@@ -42,7 +42,7 @@ public struct HowItWorksView: View {
             .frame(maxWidth: .infinity)
         }
         .foregroundColor(Color.white)
-        .background(Color.god.service)
+        .background(Color.godService)
         .clipShape(Capsule())
       }
       .padding(.horizontal, 16)

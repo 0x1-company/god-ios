@@ -60,7 +60,7 @@ public struct SchoolHelpSheetView: View {
             .frame(maxWidth: .infinity)
         }
         .foregroundColor(.white)
-        .background(Color.god.service)
+        .background(Color.godService)
         .clipShape(Capsule())
       }
       .padding(.horizontal, 24)

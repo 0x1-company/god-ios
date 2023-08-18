@@ -30,6 +30,6 @@ struct GenderChoiceViewPreviews: PreviewProvider {
   static var previews: some View {
     GenderChoiceView("Boy", action: {})
       .previewLayout(.sizeThatFits)
-      .background(Color.god.service)
+      .background(Color.godService)
   }
 }

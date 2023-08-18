@@ -66,13 +66,13 @@ public struct GenderHelpView: View {
             .frame(maxWidth: .infinity)
         }
         .foregroundColor(.white)
-        .background(Color.god.service)
+        .background(Color.godService)
         .clipShape(Capsule())
 
         Button("Prefer not to say") {
           viewStore.send(.preferNotSayButtonTapped)
         }
-        .foregroundColor(Color.god.textSecondaryLight)
+        .foregroundColor(.godTextSecondaryLight)
       }
       .padding(.horizontal, 24)
     }

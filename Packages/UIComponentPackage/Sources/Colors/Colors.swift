@@ -1,18 +1,13 @@
 import ColorHex
 import SwiftUI
 
-public extension Color {
-  static let god = Colors()
-}
-
-public struct Colors {
-  public let separator = Color(uiColor: UIColor.separator)
-
-  public let black = Color("black", bundle: .module)
-  public let service = Color("service", bundle: .module)
-  public let textPrimary = Color("text-primary", bundle: .module)
-  public let textSecondaryDark = Color("text-secondary-dark", bundle: .module)
-  public let textSecondaryLight = Color("text-secondary-light", bundle: .module)
-  public let white = Color("white", bundle: .module)
-  public let backgroundWhite = Color("background-white", bundle: .module)
+extension Color {
+  public static let godSeparator = Color(uiColor: UIColor.separator)
+  public static let godBlack = Color("black", bundle: .module)
+  public static let godService = Color("service", bundle: .module)
+  public static let godTextPrimary = Color("text-primary", bundle: .module)
+  public static let godTextSecondaryDark = Color("text-secondary-dark", bundle: .module)
+  public static let godTextSecondaryLight = Color("text-secondary-light", bundle: .module)
+  public static let godWhite = Color("white", bundle: .module)
+  public static let godBackgroundWhite = Color("background-white", bundle: .module)
 }

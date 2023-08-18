@@ -134,7 +134,7 @@ public struct OneTimeCodeView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
-        Color.god.service
+        Color.godService
           .ignoresSafeArea()
 
         VStack(spacing: 12) {
@@ -172,7 +172,7 @@ public struct OneTimeCodeView: View {
                 .frame(height: 56)
                 .frame(maxWidth: .infinity)
             }
-            .foregroundColor(Color.god.textPrimary)
+            .foregroundColor(Color.godTextPrimary)
             .background(Color.white)
             .clipShape(Capsule())
           }
