@@ -2,14 +2,16 @@ name: CI
 
 on:
   push:
-  workflow_dispatch:
+    branches:
+      - main
+  pull_request:
 
 env:
   FILE_FIREBASE_STAGING: ${{ secrets.FILE_FIREBASE_STAGING }}
   FILE_FIREBASE_PRODUCTION: ${{ secrets.FILE_FIREBASE_PRODUCTION }}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
