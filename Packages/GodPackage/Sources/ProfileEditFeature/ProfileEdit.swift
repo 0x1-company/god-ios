@@ -116,8 +116,8 @@ public struct ProfileEditView: View {
 
                         Spacer()
 
-                        Text("class of 2026")
-                            .font(.footnote)
+                        Text("Class of 2026")
+                            .font(.caption)
                             .foregroundColor(.godTextSecondaryLight)
 
                         Text(Image(systemName: "chevron.right"))
