@@ -7,7 +7,7 @@ import Colors
 
 public extension Divider {
     func god() -> some View {
-        self.background(Color.god.separator)
+        self.background(Color.godSeparator)
     }
 }
 
@@ -82,22 +82,22 @@ public struct ProfileEditView: View {
                 Text("SCHOOL")
                     .font(.caption)
                     .bold()
-                    .foregroundColor(.god.textSecondaryLight)
+                    .foregroundColor(.godTextSecondaryLight)
 
                 VStack(alignment: .center, spacing: 0) {
                     HStack(alignment: .center, spacing: 8) {
                         Text(Image(systemName: "house.fill"))
-                            .foregroundColor(.god.textSecondaryLight)
+                            .foregroundColor(.godTextSecondaryLight)
                             .font(.body)
 
                         Text("Las Vegas Academy of Arts")
                             .font(.body)
-                            .foregroundColor(.god.black)
+                            .foregroundColor(.godBlack)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                         Text("＞")
                             .font(.body)
-                            .foregroundColor(.god.textSecondaryLight)
+                            .foregroundColor(.godTextSecondaryLight)
                     }
                         .padding(.horizontal, 12)
                         .frame(maxWidth: .infinity)
@@ -105,22 +105,22 @@ public struct ProfileEditView: View {
                     separator
                     HStack(alignment: .center, spacing: 8) {
                         Text(Image(systemName: "graduationcap.fill"))
-                            .foregroundColor(.god.textSecondaryLight)
+                            .foregroundColor(.godTextSecondaryLight)
                             .font(.body)
 
                         Text("9th Grade")
                             .font(.body)
-                            .foregroundColor(.god.black)
+                            .foregroundColor(.godBlack)
 
                         Spacer()
 
                         Text("class of 2026")
                             .font(.footnote)
-                            .foregroundColor(.god.textSecondaryLight)
+                            .foregroundColor(.godTextSecondaryLight)
 
                         Text("＞")
                             .font(.body)
-                            .foregroundColor(.god.textSecondaryLight)
+                            .foregroundColor(.godTextSecondaryLight)
                     }
                         .padding(.horizontal, 12)
                         .frame(maxWidth: .infinity)
@@ -128,7 +128,7 @@ public struct ProfileEditView: View {
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.god.separator)
+                        .stroke(Color.godSeparator)
                 )
             }
 
@@ -136,7 +136,7 @@ public struct ProfileEditView: View {
               Text("ACCOUNT SETTING")
                   .font(.caption)
                   .bold()
-                  .foregroundColor(.god.textSecondaryLight)
+                  .foregroundColor(.godTextSecondaryLight)
             LabeledButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
               viewStore.send(.restorePurchasesButtonTapped)
             }
@@ -182,7 +182,7 @@ public struct ProfileEditView: View {
   }
 
     private var separator: some View {
-        Color.god.separator
+        Color.godSeparator
             .frame(height: 1)
             .frame(maxWidth: .infinity)
     }
@@ -192,14 +192,14 @@ public struct ProfileEditView: View {
             HStack(alignment: .center, spacing: 0) {
                 Text("First Name")
                     .font(.body)
-                    .foregroundColor(.god.textSecondaryLight)
+                    .foregroundColor(.godTextSecondaryLight)
                     .frame(width: 108, alignment: .leading)
 
                 TextField("", text: $firstName)
                     .multilineTextAlignment(.leading)
                     .textFieldStyle(PlainTextFieldStyle())
                     .font(.body)
-                    .foregroundColor(.god.black)
+                    .foregroundColor(.godBlack)
             }
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
@@ -210,14 +210,14 @@ public struct ProfileEditView: View {
             HStack(alignment: .center, spacing: 0) {
                 Text("Last Name")
                     .font(.body)
-                    .foregroundColor(.god.textSecondaryLight)
+                    .foregroundColor(.godTextSecondaryLight)
                     .frame(width: 108, alignment: .leading)
 
                 TextField("", text: $lastName)
                     .multilineTextAlignment(.leading)
                     .textFieldStyle(PlainTextFieldStyle())
                     .font(.body)
-                    .foregroundColor(.god.black)
+                    .foregroundColor(.godBlack)
             }
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
@@ -228,14 +228,14 @@ public struct ProfileEditView: View {
             HStack(alignment: .center, spacing: 0) {
                 Text("Username")
                     .font(.body)
-                    .foregroundColor(.god.textSecondaryLight)
+                    .foregroundColor(.godTextSecondaryLight)
                     .frame(width: 108, alignment: .leading)
 
                 TextField("", text: $username)
                     .multilineTextAlignment(.leading)
                     .textFieldStyle(PlainTextFieldStyle())
                     .font(.body)
-                    .foregroundColor(.god.black)
+                    .foregroundColor(.godBlack)
             }
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
@@ -249,19 +249,19 @@ public struct ProfileEditView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Text("Gender")
                         .font(.body)
-                        .foregroundColor(.god.textSecondaryLight)
+                        .foregroundColor(.godTextSecondaryLight)
                         .frame(width: 108, alignment: .leading)
 
                     Text("Boy")
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.body)
-                        .foregroundColor(.god.black)
+                        .foregroundColor(.godBlack)
 
                     // アイコン来るまでパワー実装
                     Text("＞")
                         .font(.body)
-                        .foregroundColor(.god.textSecondaryLight)
+                        .foregroundColor(.godTextSecondaryLight)
                 }
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
@@ -270,7 +270,7 @@ public struct ProfileEditView: View {
         }
         .overlay(
             RoundedRectangle(cornerRadius: 16)
-                .stroke(Color.god.separator)
+                .stroke(Color.godSeparator)
         )
     }
 }
