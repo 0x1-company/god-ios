@@ -5,12 +5,6 @@ import ManageAccountFeature
 import SwiftUI
 import Colors
 
-public extension Divider {
-    func god() -> some View {
-        self.background(Color.godSeparator)
-    }
-}
-
 public struct ProfileEditReducer: Reducer {
   public init() {}
 
