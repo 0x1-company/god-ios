@@ -69,6 +69,14 @@ public struct ProfileEditView: View {
           Color.green
             .frame(width: 145, height: 145)
             .clipShape(Circle())
+            .overlay(
+                Image(systemName: "camera.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.godWhite)
+                    .frame(width: 40, height: 40)
+                    .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
+            )
 
             userSettingsSection
 
@@ -252,7 +260,6 @@ public struct ProfileEditView: View {
                         .font(.body)
                         .foregroundColor(.godBlack)
 
-                    // アイコン来るまでパワー実装
                     Text(Image(systemName: "chevron.right"))
                         .font(.body)
                         .foregroundColor(.godTextSecondaryLight)
