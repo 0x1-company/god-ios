@@ -89,7 +89,7 @@ public struct ProfileEditView: View {
                             .foregroundColor(.godBlack)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text("＞")
+                        Text(Image(systemName: "chevron.right"))
                             .font(.body)
                             .foregroundColor(.godTextSecondaryLight)
                     }
@@ -112,7 +112,7 @@ public struct ProfileEditView: View {
                             .font(.footnote)
                             .foregroundColor(.godTextSecondaryLight)
 
-                        Text("＞")
+                        Text(Image(systemName: "chevron.right"))
                             .font(.body)
                             .foregroundColor(.godTextSecondaryLight)
                     }
@@ -253,7 +253,7 @@ public struct ProfileEditView: View {
                         .foregroundColor(.godBlack)
 
                     // アイコン来るまでパワー実装
-                    Text("＞")
+                    Text(Image(systemName: "chevron.right"))
                         .font(.body)
                         .foregroundColor(.godTextSecondaryLight)
                 }
