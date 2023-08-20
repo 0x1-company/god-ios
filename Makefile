@@ -21,3 +21,9 @@ secrets: # Set secrets
 install-template: # Install template
 	@swift build -c release --package-path ./BuildTools/XCTemplateInstallerTool --product XCTemplateInstaller
 	./BuildTools/XCTemplateInstallerTool/.build/release/XCTemplateInstaller --xctemplate-path XCTemplates/TCA.xctemplate
+
+apollo-cli-install:
+	@swift package --package-path ./Packages/DependencyPackage --allow-writing-to-package-directory apollo-cli-install
+
+apollo-generate:
+	./Packages/DependencyPackage/apollo-ios-cli generate --ignore-version-mismatch
