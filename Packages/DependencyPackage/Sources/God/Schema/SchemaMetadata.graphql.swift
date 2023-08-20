@@ -31,8 +31,9 @@ public extension God {
 
     public static func objectType(forTypename typename: String) -> Object? {
       switch typename {
-      case "Query": return God.Objects.Query
+      case "Mutation": return God.Objects.Mutation
       case "User": return God.Objects.User
+      case "Query": return God.Objects.Query
       case "School": return God.Objects.School
       default: return nil
       }

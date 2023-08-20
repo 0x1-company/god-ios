@@ -121,6 +121,9 @@ type Mutation {
 
   """update a user profile"""
   updateUserProfile(input: UpdateUserProfileInput!): User!
+
+  """update a username"""
+  updateUsername(input: UpdateUsernameInput!): User!
 }
 
 type PageInfo {
@@ -184,12 +187,6 @@ type Query {
   """自分に対する投票"""
   inbox(after: String!, first: Float!): PaginatedVote!
 
-  """作られているuser idの一覧を取得"""
-  listFirebaseUsers: [String!]!
-
-  """list all users"""
-  listUsers: [User!]!
-
   """get poll"""
   poll: Poll!
 
@@ -211,8 +208,17 @@ type Query {
   """get user by username"""
   userByUsername(username: String!): User!
 
+  """get users by schoolId"""
+  usersBySchoolId(schoolId: String!): [User!]!
+
   """get me"""
   verifyToken: String!
+
+  """ユーザー名で指定したユーザーが投票された質問を最大5個まで降順で取得する"""
+  votedQuestions(
+    """ユーザー名"""
+    username: String!
+  ): VotedQuestions!
 }
 
 type Question {
@@ -275,9 +281,10 @@ input UpdateUserProfileInput {
 
   """学校。nullの場合は更新しない"""
   schoolId: String
+}
 
-  """username。nullの場合は更新しない"""
-  username: String
+input UpdateUsernameInput {
+  username: String!
 }
 
 type User {
@@ -339,6 +346,20 @@ type Vote {
 type VoteEdge {
   cursor: String!
   node: Vote!
+}
+
+type VotedQuestions {
+  """投票数が降順の質問最大5個"""
+  questions(
+    """取得したい個数、範囲: 1 ~ 5"""
+    first: Int!
+  ): [Question!]!
+
+  """ユーザーが投票された総数"""
+  totalCount: Int!
+
+  """投票されたユーザー名"""
+  votedUsername: String!
 }
 
 type Wallet {
