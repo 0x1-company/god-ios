@@ -1,8 +1,6 @@
-"""Exposes a URL that specifies the behavior of this scalar."""
-directive @specifiedBy(
-  """The URL that specifies the behavior of this scalar."""
-  url: String!
-) on SCALAR
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
 
 input ApproveFriendRequestInput {
   """リクエストを承認するID"""
@@ -30,6 +28,11 @@ input CreateFriendRequestInput {
 input CreateUserBlockInput {
   """ブロックしたいユーザーのID"""
   blockedUserId: String!
+}
+
+input CreateUserHideInput {
+  """非表示にしたいユーザーのID"""
+  hiddenUserId: String!
 }
 
 input CreateUserInput {
@@ -110,6 +113,7 @@ type Mutation {
 
   """block a user"""
   createUserBlock(input: CreateUserBlockInput!): UserBlock
+  createUserHide(input: CreateUserHideInput!): UserHide!
 
   """投票"""
   createVote(input: CreateVoteInput!): Vote!
@@ -169,6 +173,9 @@ input PurchaseInput {
 type Query {
   """フレンドに投票されたVotes"""
   activities: [Vote!]!
+
+  """list all friend requests"""
+  friendRequests: [Friend!]!
 
   """list all friends"""
   friends: [Friend!]!
@@ -260,8 +267,14 @@ input UpdateUserProfileInput {
   """性別。nullの場合は更新しない"""
   gender: Gender
 
+  """学年。nullの場合は更新しない"""
+  generation: Int
+
   """苗字。nullの場合は更新しない"""
   lastName: String
+
+  """学校。nullの場合は更新しない"""
+  schoolId: String
 
   """username。nullの場合は更新しない"""
   username: String
@@ -276,6 +289,9 @@ type User {
 
   """gender"""
   gender: Gender!
+
+  """年代"""
+  generation: Int
 
   """user id"""
   id: ID!
@@ -296,6 +312,12 @@ type User {
 
 type UserBlock {
   blockedUserId: String!
+  id: ID!
+  userId: String!
+}
+
+type UserHide {
+  hiddenUserId: String!
   id: ID!
   userId: String!
 }
@@ -324,4 +346,3 @@ type Wallet {
   coinBalance: Int!
   id: ID!
 }
-

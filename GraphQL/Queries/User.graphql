@@ -1,0 +1,14 @@
+query User($id: String!) {
+  user(id: $id) {
+    id
+    firstName
+    lastName
+    username
+    schoolId
+    school {
+      id
+      name
+      shortName
+    }
+  }
+}
