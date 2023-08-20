@@ -1,0 +1,327 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+input ApproveFriendRequestInput {
+  """リクエストを承認するID"""
+  id: String!
+}
+
+type Choice {
+  """その選択肢に対応するユーザID"""
+  id: ID!
+
+  """表示する名前"""
+  text: String!
+}
+
+input CreateFirebaseRegistrationTokenInput {
+  """registration token"""
+  token: String!
+}
+
+input CreateFriendRequestInput {
+  """友達にしたいユーザーのID"""
+  toUserId: String!
+}
+
+input CreateUserBlockInput {
+  """ブロックしたいユーザーのID"""
+  blockedUserId: String!
+}
+
+input CreateUserInput {
+  """Phone Number"""
+  phoneNumber: PhoneNumberInput!
+}
+
+input CreateVoteInput {
+  questionId: String!
+
+  """投票された人のID"""
+  votedUserId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type FirebaseRegistrationToken {
+  """firebase registration token id"""
+  id: ID!
+
+  """firebase registration token"""
+  token: String!
+}
+
+type Friend {
+  createdAt: DateTime!
+  friendUserId: String!
+  id: ID!
+
+  """フレンド状態"""
+  status: FriendStatus!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+enum FriendStatus {
+  APPROVED
+  CANCELED
+  REQUESTED
+  UNSPECIFIED
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type Item {
+  """アイテムID"""
+  id: ID!
+
+  """タイトル"""
+  title: LocalizableString!
+}
+
+type LocalizableString {
+  """日本語"""
+  ja: String!
+}
+
+type Mutation {
+  """フレンドリクエスト承認"""
+  approveFriendRequest(input: ApproveFriendRequestInput!): Friend!
+
+  """create a firebase registration token"""
+  createFirebaseRegistrationToken(input: CreateFirebaseRegistrationTokenInput!): FirebaseRegistrationToken!
+  createFirebaseUser(phoneNumber: String!): String!
+
+  """フレンドリクエスト送信"""
+  createFriendRequest(input: CreateFriendRequestInput!): Friend!
+
+  """create a user"""
+  createUser(input: CreateUserInput!): User!
+
+  """block a user"""
+  createUserBlock(input: CreateUserBlockInput!): UserBlock
+
+  """投票"""
+  createVote(input: CreateVoteInput!): Vote!
+  purchase(input: PurchaseInput!): Boolean!
+
+  """update a user profile"""
+  updateUserProfile(input: UpdateUserProfileInput!): User!
+}
+
+type PageInfo {
+  """最後のedgeのカーソル"""
+  endCursor: String
+
+  """次のページがあるかどうか"""
+  hasNextPage: Boolean!
+
+  """最初のedgeのカーソル"""
+  startCursor: String
+}
+
+type PaginatedVote {
+  edges: [VoteEdge!]!
+  pageInfo: PageInfo!
+}
+
+input PhoneNumberInput {
+  """国別コード"""
+  countryCode: String!
+
+  """番号"""
+  numbers: String!
+}
+
+type Poll {
+  id: ID!
+
+  """12の質問"""
+  pollQuestions: [PollQuestion!]!
+}
+
+type PollQuestion {
+  """選択肢"""
+  choices: [Choice!]!
+
+  """質問"""
+  question: Question!
+}
+
+input PurchaseInput {
+  """価格"""
+  coinAmount: Int!
+
+  """Store Item ID. item IDじゃないので注意"""
+  storeItemId: String!
+}
+
+type Query {
+  """フレンドに投票されたVotes"""
+  activities: [Vote!]!
+
+  """list all friends"""
+  friends: [Friend!]!
+  getFirebaseUser(phoneNumber: String!): String!
+
+  """自分に対する投票"""
+  inbox(after: String!, first: Float!): PaginatedVote!
+
+  """作られているuser idの一覧を取得"""
+  listFirebaseUsers: [String!]!
+
+  """list all users"""
+  listUsers: [User!]!
+
+  """get poll"""
+  poll: Poll!
+
+  """get question"""
+  question(id: String!): Question!
+
+  """get schools"""
+  schools: [School!]!
+
+  """get store"""
+  store: Store!
+
+  """投票数が多い順に質問を最大5個まで取得する"""
+  topFlames(first: Float!, username: String!): [Question!]!
+
+  """get question"""
+  user(id: String!): User!
+
+  """get user by username"""
+  userByUsername(username: String!): User!
+
+  """get me"""
+  verifyToken: String!
+}
+
+type Question {
+  id: ID!
+
+  """imageFileName"""
+  imageFileName: String!
+
+  """text"""
+  text: LocalizableString!
+}
+
+type School {
+  id: ID!
+
+  """学校名"""
+  name: String!
+
+  """学校名（略称）"""
+  shortName: String!
+}
+
+type Store {
+  """商品一覧"""
+  items: [StoreItem!]!
+}
+
+type StoreItem {
+  """価格(コイン)"""
+  coinAmount: Int!
+  id: ID!
+
+  """item"""
+  item: Item!
+
+  """アイテムID"""
+  itemId: String!
+
+  """ステータス"""
+  status: StoreItemStatus!
+}
+
+enum StoreItemStatus {
+  PUBLIC
+  UNSPECIFIED
+}
+
+input UpdateUserProfileInput {
+  """名前。nullの場合は更新しない"""
+  firstName: String
+
+  """性別。nullの場合は更新しない"""
+  gender: Gender
+
+  """苗字。nullの場合は更新しない"""
+  lastName: String
+
+  """username。nullの場合は更新しない"""
+  username: String
+}
+
+type User {
+  """firebase uid"""
+  firebaseUid: String!
+
+  """first name"""
+  firstName: String!
+
+  """gender"""
+  gender: Gender!
+
+  """user id"""
+  id: ID!
+
+  """last name"""
+  lastName: String!
+
+  """school to which the user belongs"""
+  school: School
+  schoolId: String
+
+  """username"""
+  username: String!
+
+  """wallet"""
+  wallet: Wallet
+}
+
+type UserBlock {
+  blockedUserId: String!
+  id: ID!
+  userId: String!
+}
+
+type Vote {
+  createdAt: DateTime!
+  id: ID!
+  question: Question!
+  questionId: ID!
+  user: User!
+
+  """投票された人"""
+  votedUser: User!
+
+  """投票された人"""
+  votedUserId: ID!
+}
+
+type VoteEdge {
+  cursor: String!
+  node: Vote!
+}
+
+type Wallet {
+  """コイン枚数"""
+  coinBalance: Int!
+  id: ID!
+}
+
