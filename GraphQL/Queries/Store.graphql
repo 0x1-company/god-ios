@@ -9,6 +9,9 @@ query Store {
         title {
           ja
         }
+        description {
+          ja
+        }
       }
     }
   }
