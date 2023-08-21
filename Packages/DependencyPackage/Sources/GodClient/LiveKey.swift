@@ -16,6 +16,10 @@ public extension GodClient {
     updateUsername: { input in
       let mutation = God.UpdateUsernameMutation(input: input)
       return try await ApolloClient.god.perform(mutation: mutation)
+    },
+    store: {
+      let query = God.StoreQuery()
+      return ApolloClient.god.watch(query: query)
     }
   )
 }
