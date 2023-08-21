@@ -9,4 +9,5 @@ public extension God {
     case male = "MALE"
     case other = "OTHER"
   }
+
 }

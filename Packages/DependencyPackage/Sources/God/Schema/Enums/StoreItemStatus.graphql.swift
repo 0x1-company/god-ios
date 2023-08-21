@@ -4,10 +4,8 @@
 import ApolloAPI
 
 public extension God {
-  enum FriendStatus: String, EnumType {
-    case approved = "APPROVED"
-    case canceled = "CANCELED"
-    case requested = "REQUESTED"
+  enum StoreItemStatus: String, EnumType {
+    case `public` = "PUBLIC"
     case unspecified = "UNSPECIFIED"
   }
 

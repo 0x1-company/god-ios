@@ -4,8 +4,8 @@
 import ApolloAPI
 
 public extension God.Objects {
-  static let Query = Object(
-    typename: "Query",
+  static let Store = Object(
+    typename: "Store",
     implementedInterfaces: []
   )
 }

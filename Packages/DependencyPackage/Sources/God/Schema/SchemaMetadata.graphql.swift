@@ -4,16 +4,16 @@
 import ApolloAPI
 
 public protocol God_SelectionSet: ApolloAPI.SelectionSet & ApolloAPI.RootSelectionSet
-  where Schema == God.SchemaMetadata {}
+where Schema == God.SchemaMetadata {}
 
 public protocol God_InlineFragment: ApolloAPI.SelectionSet & ApolloAPI.InlineFragment
-  where Schema == God.SchemaMetadata {}
+where Schema == God.SchemaMetadata {}
 
 public protocol God_MutableSelectionSet: ApolloAPI.MutableRootSelectionSet
-  where Schema == God.SchemaMetadata {}
+where Schema == God.SchemaMetadata {}
 
 public protocol God_MutableInlineFragment: ApolloAPI.MutableSelectionSet & ApolloAPI.InlineFragment
-  where Schema == God.SchemaMetadata {}
+where Schema == God.SchemaMetadata {}
 
 public extension God {
   typealias ID = String
@@ -38,6 +38,10 @@ public extension God {
       case "UserHide": return God.Objects.UserHide
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
+      case "Store": return God.Objects.Store
+      case "StoreItem": return God.Objects.StoreItem
+      case "Item": return God.Objects.Item
+      case "LocalizableString": return God.Objects.LocalizableString
       default: return nil
       }
     }
@@ -46,4 +50,5 @@ public extension God {
   enum Objects {}
   enum Interfaces {}
   enum Unions {}
+
 }
