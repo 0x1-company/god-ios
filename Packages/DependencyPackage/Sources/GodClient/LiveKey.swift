@@ -1,8 +1,8 @@
-import Dependencies
-import God
-import AsyncApollo
-import Foundation
 import Apollo
+import AsyncApollo
+import Dependencies
+import Foundation
+import God
 
 public extension ApolloClient {
   static let god: ApolloClient = {

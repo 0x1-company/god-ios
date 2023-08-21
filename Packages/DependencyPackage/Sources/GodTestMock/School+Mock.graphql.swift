@@ -7,7 +7,7 @@ import God
 public class School: MockObject {
   public static let objectType: Object = God.Objects.School
   public static let _mockFields = MockFields()
-  public typealias MockValueCollectionType = Array<Mock<School>>
+  public typealias MockValueCollectionType = [Mock<School>]
 
   public struct MockFields {
     @Field<God.ID>("id") public var id

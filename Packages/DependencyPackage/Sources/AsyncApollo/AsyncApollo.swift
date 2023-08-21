@@ -1,7 +1,7 @@
-import os
 import Apollo
 import ApolloAPI
 import Foundation
+import os
 
 private let logger = Logger(subsystem: "jp.godapp", category: "ApolloClient")
 
@@ -40,13 +40,13 @@ public extension ApolloClient {
       }
     }
   }
-  
+
   func perform<Mutation: GraphQLMutation>(
     mutation: Mutation,
     publishResultToStore: Bool = true,
     queue: DispatchQueue = .main
   ) async throws -> Mutation.Data {
-    return try await withCheckedThrowingContinuation { continuation in
+    try await withCheckedThrowingContinuation { continuation in
       perform(
         mutation: mutation,
         publishResultToStore: publishResultToStore,
