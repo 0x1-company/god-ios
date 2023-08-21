@@ -1,0 +1,7 @@
+mutation CreateUserHide($input: CreateUserHideInput!) {
+  createUserHide(input: $input) {
+    id
+    userId
+    hiddenUserId
+  }
+}
