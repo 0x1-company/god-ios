@@ -1,3 +1,8 @@
+# file options
+
+--exclude ./Packages/DependencyPackage/Sources/God
+--exclude ./Packages/DependencyPackage/Sources/GodTestMock
+
 # format options
 
 --stripunusedargs closure-only
