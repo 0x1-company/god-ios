@@ -1,25 +1,47 @@
 import ComposableArchitecture
 import SwiftUI
+import God
+import GodClient
 
 public struct ShopReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var storeItems: [God.StoreQuery.Data.Store.Item] = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case responseStore(TaskResult<God.StoreQuery.Data>)
     case closeButtonTapped
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
+        enum CancelID { case effect }
+        return .run { send in
+          for try await data in self.godClient.store() {
+            await send(.responseStore(.success(data)), animation: .default)
+          }
+        } catch: { error, send in
+          await send(.responseStore(.failure(error)), animation: .default)
+        }
+        .cancellable(id: CancelID.effect)
+        
+      case let .responseStore(.success(data)):
+        state.storeItems = data.store.items
         return .none
+
+      case let .responseStore(.failure(error)):
+        print(error)
+        return .none
+        
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -52,17 +74,13 @@ public struct ShopView: View {
           .foregroundColor(Color.gray)
 
         VStack {
-          ShopItemView(
-            name: "Get Your Name on 3 Random Polls",
-            description: nil,
-            amount: 100
-          )
-
-          ShopItemView(
-            name: "Put Your Name in Your Crush's Poll",
-            description: "Your name remains secret",
-            amount: 300
-          )
+          ForEach(viewStore.storeItems, id: \.self) { storeItem in
+            ShopItemView(
+              name: storeItem.item.title.ja,
+              description: nil,
+              amount: storeItem.coinAmount
+            )
+          }
         }
         .padding(.horizontal, 16)
 
