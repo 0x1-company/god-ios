@@ -1,0 +1,8 @@
+mutation ApproveFriendRequest($input: ApproveFriendRequestInput!) {
+  approveFriendRequest(input: $input) {
+    id
+    userId
+    friendUserId
+    status
+  }
+}
