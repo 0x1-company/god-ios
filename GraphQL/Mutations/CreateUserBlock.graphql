@@ -1,0 +1,7 @@
+mutation CreateUserBlock($input: CreateUserBlockInput!) {
+  createUserBlock(input: $input) {
+    id
+    userId
+    blockedUserId
+  }
+}

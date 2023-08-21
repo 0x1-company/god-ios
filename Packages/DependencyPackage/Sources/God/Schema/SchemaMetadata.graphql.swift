@@ -32,7 +32,10 @@ public extension God {
     public static func objectType(forTypename typename: String) -> Object? {
       switch typename {
       case "Mutation": return God.Objects.Mutation
+      case "Friend": return God.Objects.Friend
       case "User": return God.Objects.User
+      case "UserBlock": return God.Objects.UserBlock
+      case "UserHide": return God.Objects.UserHide
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
       default: return nil
