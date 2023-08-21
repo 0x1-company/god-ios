@@ -1,7 +1,7 @@
 import ComposableArchitecture
-import SwiftUI
 import God
 import GodClient
+import SwiftUI
 
 public struct ShopReducer: Reducer {
   public init() {}
@@ -26,14 +26,14 @@ public struct ShopReducer: Reducer {
       case .onTask:
         enum CancelID { case effect }
         return .run { send in
-          for try await data in self.godClient.store() {
+          for try await data in godClient.store() {
             await send(.responseStore(.success(data)), animation: .default)
           }
         } catch: { error, send in
           await send(.responseStore(.failure(error)), animation: .default)
         }
         .cancellable(id: CancelID.effect)
-        
+
       case let .responseStore(.success(data)):
         state.storeItems = data.store.items
         return .none
@@ -41,7 +41,7 @@ public struct ShopReducer: Reducer {
       case let .responseStore(.failure(error)):
         print(error)
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
