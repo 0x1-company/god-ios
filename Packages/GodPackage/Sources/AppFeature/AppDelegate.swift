@@ -22,9 +22,9 @@ public struct AppDelegateReducer: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .didFinishLaunching:
-      return .run { send in
+      return .run { @MainActor send in
         firebaseCore.configure()
-        await send(.delegate(.didFinishLaunching))
+        send(.delegate(.didFinishLaunching))
       }
     case .didRegisterForRemoteNotifications(.failure):
       return .none
