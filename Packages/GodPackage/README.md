@@ -1,6 +1,6 @@
 # GodPackage
 
-Only xxxFeature in GodPackage
+Only XxxFeature in GodPackage
 
 ## Package Dependencies
 ```mermaid
