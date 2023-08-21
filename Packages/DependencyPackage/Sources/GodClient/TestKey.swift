@@ -2,13 +2,13 @@ import Dependencies
 import XCTestDynamicOverlay
 
 public extension DependencyValues {
-  var user: UserClient {
-    get { self[UserClient.self] }
-    set { self[UserClient.self] = newValue }
+  var god: GodClient {
+    get { self[GodClient.self] }
+    set { self[GodClient.self] = newValue }
   }
 }
 
-extension UserClient: TestDependencyKey {
+extension GodClient: TestDependencyKey {
   public static let testValue = Self(
     updateUsername: unimplemented("\(Self.self).updateUsername")
   )

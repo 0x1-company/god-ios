@@ -5,7 +5,7 @@ import Foundation
 import GodApolloClient
 import Apollo
 
-public extension UserClient {
+public extension GodClient {
   static let liveValue = Self(
     updateUsername: { input in
       let mutation = God.UpdateUsernameMutation(input: input)
