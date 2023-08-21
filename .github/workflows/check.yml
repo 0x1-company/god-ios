@@ -1,4 +1,4 @@
-name: Generate
+name: check
 
 on:
   pull_request:
@@ -11,7 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
+  generate:
+    name: GraphQL Schema
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v3
