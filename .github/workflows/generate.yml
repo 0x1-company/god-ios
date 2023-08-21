@@ -1,0 +1,19 @@
+name: generate
+
+on:
+  pull_request:
+    paths:
+      - 'GraphQL'
+
+jobs:
+  check:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: make apollo-cli-install
+      - run: make apollo-generate
+      - run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Error: Uncommitted changes found."
+            exit 1
+          fi
