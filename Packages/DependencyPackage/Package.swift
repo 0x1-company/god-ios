@@ -57,7 +57,6 @@ let package = Package(
     .target(name: "GodClient", dependencies: [
       "God",
       "AsyncApollo",
-      "GodApolloClient",
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
