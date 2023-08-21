@@ -4,16 +4,16 @@
 import ApolloAPI
 
 public protocol God_SelectionSet: ApolloAPI.SelectionSet & ApolloAPI.RootSelectionSet
-where Schema == God.SchemaMetadata {}
+  where Schema == God.SchemaMetadata {}
 
 public protocol God_InlineFragment: ApolloAPI.SelectionSet & ApolloAPI.InlineFragment
-where Schema == God.SchemaMetadata {}
+  where Schema == God.SchemaMetadata {}
 
 public protocol God_MutableSelectionSet: ApolloAPI.MutableRootSelectionSet
-where Schema == God.SchemaMetadata {}
+  where Schema == God.SchemaMetadata {}
 
 public protocol God_MutableInlineFragment: ApolloAPI.MutableSelectionSet & ApolloAPI.InlineFragment
-where Schema == God.SchemaMetadata {}
+  where Schema == God.SchemaMetadata {}
 
 public extension God {
   typealias ID = String
@@ -43,5 +43,4 @@ public extension God {
   enum Objects {}
   enum Interfaces {}
   enum Unions {}
-
 }
