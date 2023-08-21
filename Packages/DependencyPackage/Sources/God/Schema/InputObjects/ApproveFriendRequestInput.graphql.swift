@@ -15,7 +15,7 @@ public extension God {
       id: String
     ) {
       __data = InputDict([
-        "id": id
+        "id": id,
       ])
     }
 
@@ -25,5 +25,4 @@ public extension God {
       set { __data["id"] = newValue }
     }
   }
-
 }

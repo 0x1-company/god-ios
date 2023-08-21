@@ -7,7 +7,7 @@ import God
 public class UserBlock: MockObject {
   public static let objectType: Object = God.Objects.UserBlock
   public static let _mockFields = MockFields()
-  public typealias MockValueCollectionType = Array<Mock<UserBlock>>
+  public typealias MockValueCollectionType = [Mock<UserBlock>]
 
   public struct MockFields {
     @Field<String>("blockedUserId") public var blockedUserId

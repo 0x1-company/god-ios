@@ -17,7 +17,7 @@ public extension God {
     ) {
       __data = InputDict([
         "countryCode": countryCode,
-        "numbers": numbers
+        "numbers": numbers,
       ])
     }
 
@@ -33,5 +33,4 @@ public extension God {
       set { __data["numbers"] = newValue }
     }
   }
-
 }
