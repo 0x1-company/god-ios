@@ -11,6 +11,7 @@ let package = Package(
   ],
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
+    .library(name: "AsyncApollo", targets: ["AsyncApollo"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
@@ -31,6 +32,9 @@ let package = Package(
     .target(name: "AnalyticsClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
       .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+    ]),
+    .target(name: "AsyncApollo", dependencies: [
+      .product(name: "Apollo", package: "apollo-ios"),
     ]),
     .target(name: "Constants"),
     .target(name: "FirebaseAuthClient", dependencies: [
