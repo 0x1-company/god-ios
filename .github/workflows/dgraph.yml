@@ -1,4 +1,4 @@
-name: dgraph
+name: Dgraph
 
 on:
   workflow_dispatch:

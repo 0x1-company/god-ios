@@ -7,7 +7,7 @@ import God
 public class Mutation: MockObject {
   public static let objectType: Object = God.Objects.Mutation
   public static let _mockFields = MockFields()
-  public typealias MockValueCollectionType = [Mock<Mutation>]
+  public typealias MockValueCollectionType = Array<Mock<Mutation>>
 
   public struct MockFields {
     @Field<Friend>("approveFriendRequest") public var approveFriendRequest

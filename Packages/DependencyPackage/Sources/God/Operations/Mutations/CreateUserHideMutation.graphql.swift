@@ -51,4 +51,5 @@ public extension God {
       }
     }
   }
+
 }
