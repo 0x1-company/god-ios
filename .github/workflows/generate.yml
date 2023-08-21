@@ -3,7 +3,8 @@ name: generate
 on:
   pull_request:
     paths:
-      - 'GraphQL'
+      - '**/*.graphql'
+      - '**/*.graphqls'
 
 jobs:
   check:
