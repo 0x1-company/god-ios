@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Store"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Store { store { __typename items { __typename id coinAmount itemId status item { __typename title { __typename ja } } } } }"#
+        #"query Store { store { __typename items { __typename id coinAmount itemId status item { __typename title { __typename ja } description { __typename ja } } } } }"#
       ))
 
     public init() {}
@@ -79,15 +79,35 @@ public extension God {
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
               .field("title", Title.self),
+              .field("description", Description?.self),
             ] }
 
             /// タイトル
             public var title: Title { __data["title"] }
+            /// 説明
+            public var description: Description? { __data["description"] }
 
             /// Store.Item.Item.Title
             ///
             /// Parent Type: `LocalizableString`
             public struct Title: God.SelectionSet {
+              public let __data: DataDict
+              public init(_dataDict: DataDict) { __data = _dataDict }
+
+              public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
+              public static var __selections: [ApolloAPI.Selection] { [
+                .field("__typename", String.self),
+                .field("ja", String.self),
+              ] }
+
+              /// 日本語
+              public var ja: String { __data["ja"] }
+            }
+
+            /// Store.Item.Item.Description
+            ///
+            /// Parent Type: `LocalizableString`
+            public struct Description: God.SelectionSet {
               public let __data: DataDict
               public init(_dataDict: DataDict) { __data = _dataDict }
 
