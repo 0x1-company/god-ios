@@ -21,6 +21,7 @@ let package = Package(
     .library(name: "ProfileClient", targets: ["ProfileClient"]),
     .library(name: "ServerConfig", targets: ["ServerConfig"]),
     .library(name: "ServerConfigClient", targets: ["ServerConfigClient"]),
+    .library(name: "UserClient", targets: ["UserClient"]),
   ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
@@ -53,6 +54,9 @@ let package = Package(
     .target(name: "God", dependencies: [
       .product(name: "ApolloAPI", package: "apollo-ios"),
     ]),
+    .target(name: "GodApolloClient", dependencies: [
+      .product(name: "Apollo", package: "apollo-ios"),
+    ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "Dependencies", package: "swift-dependencies"),
@@ -66,6 +70,11 @@ let package = Package(
     .target(name: "ServerConfigClient", dependencies: [
       "ServerConfig",
       .product(name: "Dependencies", package: "swift-dependencies"),
+    ]),
+    .target(name: "UserClient", dependencies: [
+      "God",
+      "AsyncApollo",
+      "GodApolloClient",
     ]),
   ]
 )
