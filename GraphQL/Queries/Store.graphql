@@ -1,0 +1,15 @@
+query Store {
+  store {
+    items {
+      id
+      coinAmount
+      itemId
+      status
+      item {
+        title {
+          ja
+        }
+      }
+    }
+  }
+}
