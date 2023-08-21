@@ -85,6 +85,9 @@ enum Gender {
 }
 
 type Item {
+  """説明"""
+  description: LocalizableString
+
   """アイテムID"""
   id: ID!
 
