@@ -15,7 +15,7 @@ public extension God {
       blockedUserId: String
     ) {
       __data = InputDict([
-        "blockedUserId": blockedUserId
+        "blockedUserId": blockedUserId,
       ])
     }
 
@@ -25,5 +25,4 @@ public extension God {
       set { __data["blockedUserId"] = newValue }
     }
   }
-
 }

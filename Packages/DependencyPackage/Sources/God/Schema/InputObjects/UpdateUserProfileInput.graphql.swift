@@ -23,7 +23,7 @@ public extension God {
         "gender": gender,
         "generation": generation,
         "lastName": lastName,
-        "schoolId": schoolId
+        "schoolId": schoolId,
       ])
     }
 
@@ -57,5 +57,4 @@ public extension God {
       set { __data["schoolId"] = newValue }
     }
   }
-
 }

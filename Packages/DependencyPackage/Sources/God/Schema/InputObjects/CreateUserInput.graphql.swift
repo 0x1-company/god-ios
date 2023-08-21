@@ -15,7 +15,7 @@ public extension God {
       phoneNumber: PhoneNumberInput
     ) {
       __data = InputDict([
-        "phoneNumber": phoneNumber
+        "phoneNumber": phoneNumber,
       ])
     }
 
@@ -25,5 +25,4 @@ public extension God {
       set { __data["phoneNumber"] = newValue }
     }
   }
-
 }

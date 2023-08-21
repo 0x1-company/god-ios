@@ -10,5 +10,4 @@ public extension God {
     case requested = "REQUESTED"
     case unspecified = "UNSPECIFIED"
   }
-
 }
