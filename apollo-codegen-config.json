@@ -1,0 +1,31 @@
+{
+    "schemaNamespace" : "God",
+    "input" : {
+      "operationSearchPaths" : [
+        "**/*.graphql"
+      ],
+      "schemaSearchPaths" : [
+        "**/*.graphqls"
+      ]
+    },
+    "output" : {
+      "testMocks" : {
+        "absolute" : {
+          "path": "./Packages/DependencyPackage/Sources/GodTestMock"
+        }
+      },
+      "schemaTypes" : {
+        "path" : "./Packages/DependencyPackage/Sources/God",
+        "moduleType" : {
+          "embeddedInTarget" : {
+            "name" : "God",
+            "accessModifier": "public"
+          }
+        }
+      },
+      "operations" : {
+        "inSchemaModule" : {
+        }
+      }
+    }
+  }

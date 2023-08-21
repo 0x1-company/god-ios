@@ -11,10 +11,13 @@ let package = Package(
   ],
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
+    .library(name: "AsyncApollo", targets: ["AsyncApollo"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
     .library(name: "FirestoreClient", targets: ["FirestoreClient"]),
+    .library(name: "God", targets: ["God"]),
+    .library(name: "GodClient", targets: ["GodClient"]),
     .library(name: "PhoneNumberClient", targets: ["PhoneNumberClient"]),
     .library(name: "ProfileClient", targets: ["ProfileClient"]),
     .library(name: "ServerConfig", targets: ["ServerConfig"]),
@@ -24,11 +27,15 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.8.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
+    .package(url: "https://github.com/apollographql/apollo-ios", from: "1.4.0"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
       .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+    ]),
+    .target(name: "AsyncApollo", dependencies: [
+      .product(name: "Apollo", package: "apollo-ios"),
     ]),
     .target(name: "Constants"),
     .target(name: "FirebaseAuthClient", dependencies: [
@@ -43,6 +50,13 @@ let package = Package(
       .product(name: "Dependencies", package: "swift-dependencies"),
       .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
       .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
+    ]),
+    .target(name: "God", dependencies: [
+      .product(name: "ApolloAPI", package: "apollo-ios"),
+    ]),
+    .target(name: "GodClient", dependencies: [
+      "God",
+      "AsyncApollo",
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
