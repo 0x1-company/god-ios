@@ -2,8 +2,14 @@ import Dependencies
 import God
 import AsyncApollo
 import Foundation
-import GodApolloClient
 import Apollo
+
+public extension ApolloClient {
+  static let god: ApolloClient = {
+    let url = URL(string: "")!
+    return ApolloClient(url: url)
+  }()
+}
 
 public extension GodClient {
   static let liveValue = Self(

@@ -54,9 +54,6 @@ let package = Package(
     .target(name: "God", dependencies: [
       .product(name: "ApolloAPI", package: "apollo-ios"),
     ]),
-    .target(name: "GodApolloClient", dependencies: [
-      .product(name: "Apollo", package: "apollo-ios"),
-    ]),
     .target(name: "GodClient", dependencies: [
       "God",
       "AsyncApollo",
