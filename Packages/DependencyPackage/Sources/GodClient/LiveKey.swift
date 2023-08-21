@@ -11,8 +11,8 @@ public extension ApolloClient {
   }()
 }
 
-public extension GodClient {
-  static let liveValue = Self(
+extension GodClient: DependencyKey {
+  public static let liveValue = Self(
     updateUsername: { input in
       let mutation = God.UpdateUsernameMutation(input: input)
       return try await ApolloClient.god.perform(mutation: mutation)
