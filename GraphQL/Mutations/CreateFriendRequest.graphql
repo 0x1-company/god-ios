@@ -1,0 +1,8 @@
+mutation CreateFriendRequest($input: CreateFriendRequestInput!) {
+  createFriendRequest(input: $input) {
+    id
+    userId
+    friendUserId
+    status
+  }
+}
