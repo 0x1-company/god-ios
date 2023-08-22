@@ -9,4 +9,4 @@ DerivedData/
 **/*/Secrets.swift
 **/*/GoogleService-Info.plist
 SourcePackages
-Packages/DependencyPackage/apollo-ios-cli
+**/*/apollo-ios-cli
