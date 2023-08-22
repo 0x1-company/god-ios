@@ -32,6 +32,10 @@ extension FirebaseAuthClient: DependencyKey {
           }
         }
       }
+    },
+    currentUserIdToken: {
+      guard let currentUser = Auth.auth().currentUser else { return nil }
+      return try await currentUser.getIDToken()
     }
   )
 }

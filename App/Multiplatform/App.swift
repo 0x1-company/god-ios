@@ -1,4 +1,7 @@
 import AppFeature
+import Build
+import Apollo
+import GodClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import SwiftUI
@@ -31,7 +34,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
   static let shared = AppDelegate()
   let store = Store(
     initialState: AppReducer.State(),
-    reducer: { AppReducer()._printChanges() }
+    reducer: {
+      AppReducer()
+        ._printChanges()
+        .transformDependency(\.self) {
+          $0.godClient = .live(authClient: $0.firebaseAuth, build: $0.build)
+      }
+    }
   )
 
   var viewStore: ViewStore<AppReducer.State, AppReducer.Action> {
@@ -103,5 +112,33 @@ struct CaaaptionApp: App {
     WindowGroup {
       AppView(store: appDelegate.store)
     }
+  }
+}
+
+
+extension GodClient {
+  static func live(authClient: FirebaseAuthClient, build: Build) -> Self {
+    return .live(
+      apolloClient: {
+        let appVersion = build.bundleShortVersion()
+        
+        let store = ApolloStore()
+        let provider = DefaultInterceptorProvider(store: store)
+        let url = URL(string: "")!
+        let requestChainTransport = RequestChainNetworkTransport(
+          interceptorProvider: provider,
+          endpointURL: url,
+          additionalHeaders: [
+            "Content-Type": "application/json",
+            "User-Agent": "God/\(appVersion) iOS/16.0",
+            "Authentication": ""
+          ]
+        )
+        return ApolloClient(
+          networkTransport: requestChainTransport,
+          store: store
+        )
+      }
+    )
   }
 }
