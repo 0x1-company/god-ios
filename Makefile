@@ -23,7 +23,7 @@ install-template: # Install template
 	./BuildTools/XCTemplateInstallerTool/.build/release/XCTemplateInstaller --xctemplate-path XCTemplates/TCA.xctemplate
 
 apollo-cli-install:
-	@swift package --package-path ./Packages/DependencyPackage --allow-writing-to-package-directory apollo-cli-install
+	@swift package --package-path ./BuildTools/ApolloTool --allow-writing-to-package-directory apollo-cli-install
 
 apollo-generate:
-	./Packages/DependencyPackage/apollo-ios-cli generate --ignore-version-mismatch
+	./BuildTools/ApolloTool/apollo-ios-cli generate --ignore-version-mismatch
