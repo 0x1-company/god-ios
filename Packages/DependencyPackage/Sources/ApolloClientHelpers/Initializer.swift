@@ -1,5 +1,6 @@
 import Apollo
 import Build
+import Foundation
 
 extension ApolloClient {
   public convenience init(build: Build) {
@@ -12,6 +13,8 @@ extension ApolloClient {
       interceptorProvider: provider,
       endpointURL: url,
       additionalHeaders: [
+        "Content-Type": "application/json",
+        "User-Agent": "God/\(appVersion) iOS/16.0"
       ]
     )
     self.init(

@@ -42,10 +42,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
       AppReducer()
         ._printChanges()
         .transformDependency(\.self) {
-          $0.godClient = .live(
-            apolloClient: .init(build: $0.build)
-          )
-      }
+          $0.godClient = .live(apolloClient: ApolloClient(build: $0.build))
+        }
     }
   )
 
