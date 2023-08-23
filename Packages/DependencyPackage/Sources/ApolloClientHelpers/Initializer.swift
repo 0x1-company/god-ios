@@ -6,12 +6,15 @@ extension ApolloClient {
   public convenience init(build: Build) {
     let appVersion = build.bundleShortVersion()
     
+    guard let endpoint = build.infoDictionary("endpointURL", for: String.self) else {
+      fatalError("")
+    }
+    
     let store = ApolloStore()
     let provider = NetworkInterceptorProvider(store: store)
-    let url = URL(string: "")!
     let requestChainTransport = RequestChainNetworkTransport(
       interceptorProvider: provider,
-      endpointURL: url,
+      endpointURL: URL(string: endpoint)!,
       additionalHeaders: [
         "Content-Type": "application/json",
         "User-Agent": "God/\(appVersion) iOS/16.0"
