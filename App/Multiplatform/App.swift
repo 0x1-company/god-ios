@@ -1,7 +1,14 @@
 import AppFeature
+import Build
+import Apollo
+import ApolloAPI
+import GodClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import SwiftUI
+import FirebaseAuth
+import os
+import ApolloClientHelpers
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   @Dependency(\.firebaseAuth) var firebaseAuth
@@ -10,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     performActionFor shortcutItem: UIApplicationShortcutItem,
     completionHandler: @escaping (Bool) -> Void
   ) {
-    AppDelegate.shared.viewStore.send(.sceneDelegate(.shortcutItem(shortcutItem)))
+    AppDelegate.shared.store.send(.sceneDelegate(.shortcutItem(shortcutItem)))
     completionHandler(true)
   }
 
@@ -31,18 +38,20 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
   static let shared = AppDelegate()
   let store = Store(
     initialState: AppReducer.State(),
-    reducer: { AppReducer()._printChanges() }
+    reducer: {
+      AppReducer()
+        ._printChanges()
+        .transformDependency(\.self) {
+          $0.godClient = .live(apolloClient: ApolloClient(build: $0.build))
+        }
+    }
   )
-
-  var viewStore: ViewStore<AppReducer.State, AppReducer.Action> {
-    ViewStore(store, observe: { $0 })
-  }
 
   func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    viewStore.send(.appDelegate(.didFinishLaunching))
+    store.send(.appDelegate(.didFinishLaunching))
 
     return true
   }
@@ -51,14 +60,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
   ) {
-    viewStore.send(.appDelegate(.didRegisterForRemoteNotifications(.success(deviceToken))))
+    store.send(.appDelegate(.didRegisterForRemoteNotifications(.success(deviceToken))))
   }
 
   func application(
     _ application: UIApplication,
     didFailToRegisterForRemoteNotificationsWithError error: Error
   ) {
-    viewStore.send(.appDelegate(.didRegisterForRemoteNotifications(.failure(error))))
+    store.send(.appDelegate(.didRegisterForRemoteNotifications(.failure(error))))
   }
 
   func application(
@@ -85,7 +94,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     configurationForConnecting connectingSceneSession: UISceneSession,
     options: UIScene.ConnectionOptions
   ) -> UISceneConfiguration {
-    viewStore.send(.appDelegate(.configurationForConnecting(options.shortcutItem)))
+    store.send(.appDelegate(.configurationForConnecting(options.shortcutItem)))
     let config = UISceneConfiguration(
       name: connectingSceneSession.configuration.name,
       sessionRole: connectingSceneSession.role

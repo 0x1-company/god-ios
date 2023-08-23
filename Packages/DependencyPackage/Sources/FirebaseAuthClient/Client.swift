@@ -11,4 +11,5 @@ public struct FirebaseAuthClient {
   public var verifyPhoneNumber: @Sendable (String) async throws -> String?
   public var credential: @Sendable (String, String) -> PhoneAuthCredential
   public var signIn: @Sendable (PhoneAuthCredential) async throws -> AuthDataResult?
+  public var currentUserIdToken: @Sendable () async throws -> String?
 }

@@ -11,6 +11,7 @@ let package = Package(
   ],
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
+    .library(name: "ApolloClientHelpers", targets: ["ApolloClientHelpers"]),
     .library(name: "AsyncApollo", targets: ["AsyncApollo"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
@@ -24,6 +25,7 @@ let package = Package(
     .library(name: "ServerConfigClient", targets: ["ServerConfigClient"]),
   ],
   dependencies: [
+    .package(path: "../CupertinoPackage"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.8.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.0"),
@@ -33,6 +35,11 @@ let package = Package(
     .target(name: "AnalyticsClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
       .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+    ]),
+    .target(name: "ApolloClientHelpers", dependencies: [
+      .product(name: "Apollo", package: "apollo-ios"),
+      .product(name: "Build", package: "CupertinoPackage"),
+      .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
     ]),
     .target(name: "AsyncApollo", dependencies: [
       .product(name: "Apollo", package: "apollo-ios"),
