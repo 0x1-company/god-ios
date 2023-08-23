@@ -96,7 +96,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 @main
-struct CaaaptionApp: App {
+struct GodApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
   var body: some Scene {
