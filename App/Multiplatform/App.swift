@@ -1,14 +1,14 @@
-import AppFeature
-import Build
 import Apollo
 import ApolloAPI
-import GodClient
-import ComposableArchitecture
-import FirebaseAuthClient
-import SwiftUI
-import FirebaseAuth
-import os
 import ApolloClientHelpers
+import AppFeature
+import Build
+import ComposableArchitecture
+import FirebaseAuth
+import FirebaseAuthClient
+import GodClient
+import os
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   @Dependency(\.firebaseAuth) var firebaseAuth

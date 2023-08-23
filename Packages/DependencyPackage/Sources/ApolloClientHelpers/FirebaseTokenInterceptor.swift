@@ -1,8 +1,8 @@
 import Apollo
-import Foundation
 import ApolloAPI
-import os
 import FirebaseAuth
+import Foundation
+import os
 
 let logger = Logger(subsystem: "jp.godapp", category: #file)
 
@@ -31,7 +31,7 @@ class FirebaseTokenInterceptor: ApolloInterceptor {
       )
     })
   }
-  
+
   private func addTokenAndProceed<Operation: GraphQLOperation>(
     _ token: String,
     to request: HTTPRequest<Operation>,

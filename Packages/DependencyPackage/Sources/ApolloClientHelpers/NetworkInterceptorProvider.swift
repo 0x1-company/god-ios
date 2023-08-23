@@ -3,10 +3,10 @@ import ApolloAPI
 
 class NetworkInterceptorProvider: InterceptorProvider {
   private let store: ApolloStore
-  
+
   private let client = URLSessionClient()
   private let shouldInvalidateClientOnDeinit = true
-  
+
   init(store: ApolloStore) {
     self.store = store
   }
@@ -17,23 +17,23 @@ class NetworkInterceptorProvider: InterceptorProvider {
     }
   }
 
-  func interceptors<Operation: GraphQLOperation>(
-    for operation: Operation
+  func interceptors(
+    for operation: some GraphQLOperation
   ) -> [any ApolloInterceptor] {
-      return [
-        MaxRetryInterceptor(),
-        CacheReadInterceptor(store: self.store),
-        FirebaseTokenInterceptor(),
-        NetworkFetchInterceptor(client: self.client),
-        ResponseCodeInterceptor(),
-        MultipartResponseParsingInterceptor(),
-        JSONResponseParsingInterceptor(),
-        AutomaticPersistedQueryInterceptor(),
-        CacheWriteInterceptor(store: self.store),
+    [
+      MaxRetryInterceptor(),
+      CacheReadInterceptor(store: store),
+      FirebaseTokenInterceptor(),
+      NetworkFetchInterceptor(client: client),
+      ResponseCodeInterceptor(),
+      MultipartResponseParsingInterceptor(),
+      JSONResponseParsingInterceptor(),
+      AutomaticPersistedQueryInterceptor(),
+      CacheWriteInterceptor(store: store),
     ]
   }
 
-  func additionalErrorInterceptor<Operation: GraphQLOperation>(for operation: Operation) -> ApolloErrorInterceptor? {
-    return nil
+  func additionalErrorInterceptor(for operation: some GraphQLOperation) -> ApolloErrorInterceptor? {
+    nil
   }
 }
