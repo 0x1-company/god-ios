@@ -30,7 +30,7 @@ jobs:
           author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
           committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
           branch-suffix: short-commit-hash
-          commit-message: Run dgraph
+          commit-message: "chore: 🤖 dgraph"
           title: Run dgraph
       - continue-on-error: true
         run: gh pr merge --auto --merge "$PR_URL"
