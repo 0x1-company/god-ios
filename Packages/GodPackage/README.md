@@ -6,6 +6,7 @@ Only XxxFeature in GodPackage
 ```mermaid
 graph TD;
     AboutFeature-->HowItWorksFeature;
+    AppFeature-->LaunchFeature;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
     AppFeature-->ForceUpdateFeature;
