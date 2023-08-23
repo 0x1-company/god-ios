@@ -20,6 +20,7 @@ let package = Package(
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
+    .library(name: "LaunchFeature", targets: ["LaunchFeature"]),
     .library(name: "MaintenanceFeature", targets: ["MaintenanceFeature"]),
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
     .library(name: "NavigationFeature", targets: ["NavigationFeature"]),
@@ -51,6 +52,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
+      "LaunchFeature",
       "OnboardFeature",
       "NavigationFeature",
       "ForceUpdateFeature",
@@ -89,6 +91,10 @@ let package = Package(
       "ShareScreenshotFeature",
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "LaunchFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "MaintenanceFeature", dependencies: [
