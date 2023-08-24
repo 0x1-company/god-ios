@@ -11,6 +11,7 @@ public extension DependencyValues {
 extension GodClient: TestDependencyKey {
   public static let testValue = Self(
     updateUsername: unimplemented("\(Self.self).updateUsername"),
+    updateUserProfile: unimplemented("\(Self.self).updateUserProfile"),
     store: unimplemented("\(Self.self).store")
   )
 }
