@@ -12,11 +12,11 @@ extension GodClient: TestDependencyKey {
   public static let testValue = Self(
     updateUsername: unimplemented("\(Self.self).updateUsername"),
     updateUserProfile: unimplemented("\(Self.self).updateUserProfile"),
-    createUserBlock: unimplemented("\(Self.self)."),
-    createUserHide: unimplemented("\(Self.self)."),
-    createUser: unimplemented("\(Self.self)."),
-    createFriendRequest: unimplemented("\(Self.self)."),
-    approveFriendRequest: unimplemented("\(Self.self)."),
+    createUserBlock: unimplemented("\(Self.self).createUserBlock"),
+    createUserHide: unimplemented("\(Self.self).createUserHide"),
+    createUser: unimplemented("\(Self.self).createUser"),
+    createFriendRequest: unimplemented("\(Self.self).createFriendRequest"),
+    approveFriendRequest: unimplemented("\(Self.self).approveFriendRequest"),
     store: unimplemented("\(Self.self).store")
   )
 }
