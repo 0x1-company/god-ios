@@ -8,16 +8,16 @@ public extension God {
     public static let operationName: String = "User"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query User($id: String!) { user(id: $id) { __typename id firstName lastName username schoolId school { __typename id name shortName } } }"#
+        #"query User($where: UserWhere!) { user(where: $where) { __typename id firstName lastName username schoolId school { __typename id name shortName } } }"#
       ))
 
-    public var id: String
+    public var `where`: UserWhere
 
-    public init(id: String) {
-      self.id = id
+    public init(`where`: UserWhere) {
+      self.`where` = `where`
     }
 
-    public var __variables: Variables? { ["id": id] }
+    public var __variables: Variables? { ["where": `where`] }
 
     public struct Data: God.SelectionSet {
       public let __data: DataDict
@@ -25,10 +25,10 @@ public extension God {
 
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
-        .field("user", User.self, arguments: ["id": .variable("id")]),
+        .field("user", User.self, arguments: ["where": .variable("where")]),
       ] }
 
-      /// get question
+      /// get user
       public var user: User { __data["user"] }
 
       /// User

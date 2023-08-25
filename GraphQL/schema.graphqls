@@ -15,6 +15,14 @@ type Choice {
   text: String!
 }
 
+input ContactInput {
+  """ニックネームもしくはフルネーム、表示用の名前"""
+  name: String!
+
+  """電話番号"""
+  phoneNumber: PhoneNumberInput!
+}
+
 input CreateFirebaseRegistrationTokenInput {
   """registration token"""
   token: String!
@@ -41,16 +49,14 @@ input CreateUserInput {
 }
 
 input CreateVoteInput {
-  questionId: String!
+  pollQuestionId: String!
 
   """投票された人のID"""
   votedUserId: String!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+"""Date custom scalar type"""
+scalar Date
 
 type FirebaseRegistrationToken {
   """firebase registration token id"""
@@ -61,13 +67,13 @@ type FirebaseRegistrationToken {
 }
 
 type Friend {
-  createdAt: DateTime!
+  createdAt: Date!
   friendUserId: String!
   id: ID!
 
   """フレンド状態"""
   status: FriendStatus!
-  updatedAt: DateTime!
+  updatedAt: Date!
   userId: String!
 }
 
@@ -104,6 +110,12 @@ type Mutation {
   """フレンドリクエスト承認"""
   approveFriendRequest(input: ApproveFriendRequestInput!): Friend!
 
+  """連絡先を保存する"""
+  createContacts(
+    """連絡先一覧。長さは500までにクライアント側で分割してから送る"""
+    contacts: [ContactInput!]!
+  ): Boolean!
+
   """create a firebase registration token"""
   createFirebaseRegistrationToken(input: CreateFirebaseRegistrationTokenInput!): FirebaseRegistrationToken!
   createFirebaseUser(phoneNumber: String!): String!
@@ -118,7 +130,7 @@ type Mutation {
   createUserBlock(input: CreateUserBlockInput!): UserBlock
   createUserHide(input: CreateUserHideInput!): UserHide!
 
-  """投票"""
+  """投票する"""
   createVote(input: CreateVoteInput!): Vote!
   purchase(input: PurchaseInput!): Boolean!
 
@@ -140,11 +152,6 @@ type PageInfo {
   startCursor: String
 }
 
-type PaginatedVote {
-  edges: [VoteEdge!]!
-  pageInfo: PageInfo!
-}
-
 input PhoneNumberInput {
   """国別コード"""
   countryCode: String!
@@ -164,8 +171,12 @@ type PollQuestion {
   """選択肢"""
   choices: [Choice!]!
 
-  """質問"""
+  """ID"""
+  id: ID!
   question: Question!
+
+  """質問ID"""
+  questionId: String!
 }
 
 input PurchaseInput {
@@ -187,8 +198,17 @@ type Query {
   friends: [Friend!]!
   getFirebaseUser(phoneNumber: String!): String!
 
-  """自分に対する投票"""
-  inbox(after: String!, first: Float!): PaginatedVote!
+  """自分に対する投票を一覧で取得する"""
+  inbox(after: String, first: Int!): VoteConnection!
+
+  """持っているアイテム一覧"""
+  listUserItems(
+    after: String
+
+    """nullなら指定なし、true/falseなら絞り込む"""
+    consumed: Boolean
+    first: Int!
+  ): UserItemConnection!
 
   """get poll"""
   poll: Poll!
@@ -205,11 +225,8 @@ type Query {
   """投票数が多い順に質問を最大5個まで取得する"""
   topFlames(first: Float!, username: String!): [Question!]!
 
-  """get question"""
-  user(id: String!): User!
-
-  """get user by username"""
-  userByUsername(username: String!): User!
+  """get user"""
+  user(where: UserWhere!): User!
 
   """get users by schoolId"""
   usersBySchoolId(schoolId: String!): [User!]!
@@ -332,18 +349,47 @@ type UserHide {
   userId: String!
 }
 
+type UserItem {
+  consumed: Boolean!
+  consumedAt: Date
+  createdAt: Date!
+  id: String!
+  item: UserItem!
+  itemId: String!
+  updatedAt: Date!
+}
+
+type UserItemConnection {
+  edges: [UserItemEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UserItemEdge {
+  cursor: String!
+  node: UserItem!
+}
+
+input UserWhere {
+  id: ID
+  username: String
+}
+
 type Vote {
-  createdAt: DateTime!
+  createdAt: Date!
   id: ID!
   question: Question!
-  questionId: ID!
-  user: User!
+  questionId: String!
 
   """投票された人"""
   votedUser: User!
 
   """投票された人"""
-  votedUserId: ID!
+  votedUserId: String!
+}
+
+type VoteConnection {
+  edges: [VoteEdge!]!
+  pageInfo: PageInfo!
 }
 
 type VoteEdge {
