@@ -37,7 +37,7 @@ public struct ProfileEditReducer: Reducer {
 
       case .logoutButtonTapped:
         return .run { _ in
-          await signOut()
+          try signOut()
         }
 
       case .closeButtonTapped:
