@@ -1,5 +1,5 @@
-query User($id: String!) {
-  user(id: $id) {
+query User($where: UserWhere!) {
+  user(where: $where) {
     id
     firstName
     lastName
