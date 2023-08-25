@@ -6,6 +6,7 @@ public struct GodClient: Sendable {
   public var createUserBlock: @Sendable (God.CreateUserBlockInput) async throws -> God.CreateUserBlockMutation.Data
   public var createUserHide: @Sendable (God.CreateUserHideInput) async throws -> God.CreateUserHideMutation.Data
   public var createUser: @Sendable (God.CreateUserInput) async throws -> God.CreateUserMutation.Data
+  public var user: @Sendable (God.UserWhere) -> AsyncThrowingStream<God.UserQuery.Data, Error>
   
   public var createFriendRequest: @Sendable (God.CreateFriendRequestInput) async throws -> God.CreateFriendRequestMutation.Data
   public var approveFriendRequest: @Sendable (God.ApproveFriendRequestInput) async throws -> God.ApproveFriendRequestMutation.Data
