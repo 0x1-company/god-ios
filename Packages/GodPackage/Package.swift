@@ -133,6 +133,7 @@ let package = Package(
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
+      .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
       "ShopFeature",
