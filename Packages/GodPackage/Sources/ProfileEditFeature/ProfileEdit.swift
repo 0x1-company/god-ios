@@ -4,6 +4,7 @@ import ComposableArchitecture
 import LabeledButton
 import ManageAccountFeature
 import SwiftUI
+import FirebaseAuthClient
 
 public struct ProfileEditReducer: Reducer {
   public init() {}
@@ -22,6 +23,7 @@ public struct ProfileEditReducer: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.firebaseAuth.signOut) var signOut
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -34,7 +36,9 @@ public struct ProfileEditReducer: Reducer {
         return .none
 
       case .logoutButtonTapped:
-        return .none
+        return .run { _ in
+          try signOut()
+        }
 
       case .closeButtonTapped:
         return .run { _ in
@@ -139,15 +143,15 @@ public struct ProfileEditView: View {
               .font(.caption)
               .bold()
               .foregroundColor(.godTextSecondaryLight)
-            LabeledButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
+            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
               viewStore.send(.restorePurchasesButtonTapped)
             }
-
-            LabeledButton("Manage Account", systemImage: "gearshape.fill") {
+            
+            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
               viewStore.send(.manageAccountButtonTapped)
             }
 
-            LabeledButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
+            CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               viewStore.send(.logoutButtonTapped)
             }
 
@@ -155,7 +159,6 @@ public struct ProfileEditView: View {
               .foregroundColor(.secondary)
               .font(.caption2)
           }
-          .buttonStyle(CornerRadiusBorderButtonStyle())
         }
         .padding(.all, 24)
       }

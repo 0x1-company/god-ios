@@ -8,21 +8,30 @@ import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
+import TcaHelpers
 
 public struct AppReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
+    
+    var account = Account()
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
-    var view = View.State.navigation()
+    var view = View.State.onboard()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
       "talk-to-developer": Constants.developerURL,
     ]
+    
+    public struct Account: Equatable {
+      var authUser: FirebaseAuthClient.User?
+      var isForceUpdate = true
+      var isMaintenance = false
+    }
   }
 
   public enum Action: Equatable {
@@ -31,14 +40,37 @@ public struct AppReducer: Reducer {
     case view(View.Action)
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
+    case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
   }
 
   @Dependency(\.build) var build
   @Dependency(\.openURL) var openURL
   @Dependency(\.firestore) var firestore
   @Dependency(\.firebaseAuth) var firebaseAuth
-
+  
   public var body: some Reducer<State, Action> {
+    self.core
+      .onChange(of: \.account) { account, state, _ in
+        if account.isForceUpdate {
+          state.view = .forceUpdate()
+          return .none
+        }
+        if account.isMaintenance {
+          state.view = .maintenance()
+          return .none
+        }
+        if account.authUser == nil {
+          state.view = .onboard()
+          return .none
+        }
+        /// UserDefaultsにあるオンボーディング突破フラグがONだとnavigationにする
+//        state.view = .navigation()
+        return .none
+      }
+  }
+  
+  @ReducerBuilder<State, Action>
+  var core: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
       AppDelegateReducer()
     }
@@ -48,66 +80,9 @@ public struct AppReducer: Reducer {
     Scope(state: \.view, action: /Action.view) {
       View()
     }
-    Reduce { state, action in
-      switch action {
-      case .appDelegate(.delegate(.didFinishLaunching)):
-        enum CancelID { case effect }
-        return .run { send in
-          for try await config in try await firestore.config() {
-            await send(.configResponse(.success(config)), animation: .default)
-          }
-        } catch: { error, send in
-          await send(.configResponse(.failure(error)), animation: .default)
-        }
-        .cancellable(id: CancelID.effect)
-
-      case let .appDelegate(.configurationForConnecting(.some(shortcutItem))):
-        let type = shortcutItem.type
-        return .run { send in
-          await send(.quickAction(type))
-        }
-
-      case .appDelegate:
-        return .none
-
-      case let .sceneDelegate(.shortcutItem(shortcutItem)):
-        let type = shortcutItem.type
-        return .run { send in
-          await send(.quickAction(type))
-        }
-
-      case .sceneDelegate:
-        return .none
-
-      case .view:
-        return .none
-
-      case let .quickAction(key):
-        guard let url = state.quickActionURLs[key] else {
-          return .none
-        }
-        return .run { _ in
-          await openURL(url)
-        }
-
-      case let .configResponse(.success(config)):
-        let shortVersion = build.bundleShortVersion()
-        if config.isForceUpdate(shortVersion) {
-          state.view = .forceUpdate()
-        }
-        if config.isMaintenance {
-          state.view = .maintenance()
-        }
-        if firebaseAuth.currentUser() == nil {
-          state.view = .onboard()
-        }
-        return .none
-
-      case let .configResponse(.failure(error)):
-        print(error)
-        return .none
-      }
-    }
+    AuthLogic()
+    FirestoreLogic()
+    CoreLogic()
   }
 
   public struct View: Reducer {
@@ -126,18 +101,10 @@ public struct AppReducer: Reducer {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.onboard, action: /Action.onboard) {
-        OnboardReducer()
-      }
-      Scope(state: /State.navigation, action: /Action.navigation) {
-        RootNavigationReducer()
-      }
-      Scope(state: /State.forceUpdate, action: /Action.forceUpdate) {
-        ForceUpdateReducer()
-      }
-      Scope(state: /State.maintenance, action: /Action.maintenance) {
-        MaintenanceReducer()
-      }
+      Scope(state: /State.onboard, action: /Action.onboard, child: OnboardReducer.init)
+      Scope(state: /State.navigation, action: /Action.navigation, child: RootNavigationReducer.init)
+      Scope(state: /State.forceUpdate, action: /Action.forceUpdate, child: ForceUpdateReducer.init)
+      Scope(state: /State.maintenance, action: /Action.maintenance, child: MaintenanceReducer.init)
     }
   }
 }

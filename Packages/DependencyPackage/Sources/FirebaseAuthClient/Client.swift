@@ -2,7 +2,10 @@ import FirebaseAuth
 import Foundation
 
 public struct FirebaseAuthClient {
+  public typealias User = FirebaseAuth.User
+  
   public var currentUser: @Sendable () -> User?
+  public var addStateDidChangeListener: @Sendable () -> AsyncStream<User?>
   public var languageCode: @Sendable (String?) -> Void
   public var signOut: @Sendable () throws -> Void
   public var canHandle: @Sendable (URL) -> Bool

@@ -58,6 +58,7 @@ let package = Package(
       "ForceUpdateFeature",
       "MaintenanceFeature",
       .product(name: "Build", package: "CupertinoPackage"),
+      .product(name: "TcaHelpers", package: "DependencyPackage"),
       .product(name: "FirestoreClient", package: "DependencyPackage"),
       .product(name: "FirebaseCoreClient", package: "DependencyPackage"),
     ]),
@@ -102,6 +103,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ManageAccountFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
@@ -133,6 +135,7 @@ let package = Package(
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
+      .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
       "ShopFeature",
