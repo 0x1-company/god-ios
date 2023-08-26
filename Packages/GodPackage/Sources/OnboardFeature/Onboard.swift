@@ -10,6 +10,8 @@ public struct OnboardReducer: Reducer {
   public struct State: Equatable {
     var welcome = WelcomeReducer.State()
     var path = StackState<Path.State>()
+    
+    var generation: Int?
     public init() {}
   }
 
@@ -17,6 +19,7 @@ public struct OnboardReducer: Reducer {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
     
+    case generationChanged(Int?)
     case genderChanged(God.Gender)
   }
   
@@ -43,8 +46,11 @@ public struct OnboardReducer: Reducer {
 
       case let .path(.element(_, action)):
         switch action {
-        case .gradeSetting(.delegate(.nextScreen)):
+        case let .gradeSetting(.delegate(.nextScreen(generation))):
           state.path.append(.schoolSetting())
+          return .run { send in
+            await send(.generationChanged(generation))
+          }
 
         case .schoolSetting(.delegate(.nextScreen)):
           if case .notDetermined = authorizationStatus(.contacts) {

@@ -14,16 +14,12 @@ public struct GradeSettingReducer: Reducer {
   public enum Action: Equatable {
     case onTask
     case infoButtonTapped
-    case notInHighSchoolButtonTapped
-    case grade10ButtonTapped
-    case grade11ButtonTapped
-    case grade12ButtonTapped
-    case finishedHighSchoolButtonTapped
+    case generationButtonTapped(Int?)
     case gradeHelp(PresentationAction<GradeHelpSheetReducer.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextScreen
+      case nextScreen(Int?)
     }
   }
 
@@ -37,25 +33,9 @@ public struct GradeSettingReducer: Reducer {
         state.gradeHelp = .init()
         return .none
 
-      case .notInHighSchoolButtonTapped:
+      case let .generationButtonTapped(generation):
         return .run { send in
-          await send(.delegate(.nextScreen))
-        }
-      case .grade10ButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
-      case .grade11ButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
-      case .grade12ButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
-      case .finishedHighSchoolButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
+          await send(.delegate(.nextScreen(generation)))
         }
       case .gradeHelp:
         return .none
@@ -83,7 +63,7 @@ public struct GradeSettingView: View {
 
         VStack(spacing: 0) {
           selectButton("Not in High School") {
-            viewStore.send(.notInHighSchoolButtonTapped)
+            viewStore.send(.generationButtonTapped(nil))
           }
           Divider()
           Text("HIGH SCHOOL")
@@ -97,19 +77,19 @@ public struct GradeSettingView: View {
 
           VStack(spacing: 0) {
             gradeButton("Grade 10", year: "CLASS OF\n2025") {
-              viewStore.send(.grade10ButtonTapped)
+              viewStore.send(.generationButtonTapped(2007))
             }
             Divider()
             gradeButton("Grade 11", year: "CLASS OF\n2024") {
-              viewStore.send(.grade11ButtonTapped)
+              viewStore.send(.generationButtonTapped(2006))
             }
             Divider()
             gradeButton("Grade 12", year: "CLASS OF\n2023") {
-              viewStore.send(.grade12ButtonTapped)
+              viewStore.send(.generationButtonTapped(2005))
             }
             Divider()
             selectButton("Finished High School") {
-              viewStore.send(.finishedHighSchoolButtonTapped)
+              viewStore.send(.generationButtonTapped(nil))
             }
             Divider()
           }
