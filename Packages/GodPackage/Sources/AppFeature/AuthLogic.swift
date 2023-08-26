@@ -21,12 +21,12 @@ public struct AuthLogic: Reducer {
       .cancellable(id: CancelID.effect)
       
     case let .authUserResponse(.success(authUser)):
-      state.authUser = authUser
+      state.account.authUser = authUser
       return .none
 
     case let .authUserResponse(.failure(error)):
       print(error)
-      state.authUser = nil
+      state.account.authUser = nil
       return .none
       
     default:

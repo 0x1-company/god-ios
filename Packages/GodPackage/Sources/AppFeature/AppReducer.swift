@@ -8,6 +8,7 @@ import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
+import TcaHelpers
 
 public struct AppReducer: Reducer {
   public init() {}
@@ -15,16 +16,22 @@ public struct AppReducer: Reducer {
   public struct State: Equatable {
     public init() {}
     
-    var authUser: FirebaseAuthClient.User?
+    var account = Account()
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
-    var view = View.State.navigation()
+    var view = View.State.onboard()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
       "talk-to-developer": Constants.developerURL,
     ]
+    
+    public struct Account: Equatable {
+      var authUser: FirebaseAuthClient.User?
+      var isForceUpdate = false
+      var isMaintenance = false
+    }
   }
 
   public enum Action: Equatable {
@@ -51,8 +58,26 @@ public struct AppReducer: Reducer {
     Scope(state: \.view, action: /Action.view) {
       View()
     }
-    CoreLogic()
     AuthLogic()
+    FirestoreLogic()
+    CoreLogic()
+      .onChange(of: \.account) { account, state, _ in
+        if account.isForceUpdate {
+          state.view = .forceUpdate()
+          return .none
+        }
+        if account.isMaintenance {
+          state.view = .maintenance()
+          return .none
+        }
+        if account.authUser == nil {
+          state.view = .onboard()
+          return .none
+        }
+        /// UserDefaultsにあるオンボーディング突破フラグがONだとnavigationにする
+//        state.view = .navigation()
+        return .none
+      }
   }
 
   public struct View: Reducer {
