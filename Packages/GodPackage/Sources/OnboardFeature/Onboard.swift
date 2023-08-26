@@ -79,6 +79,7 @@ public struct OnboardReducer: Reducer {
     public enum State: Equatable {
       case gradeSetting(GradeSettingReducer.State = .init())
       case schoolSetting(SchoolSettingReducer.State = .init())
+      case findFriend(FindFriendReducer.State = .init())
       case phoneNumber(PhoneNumberReducer.State = .init())
       case oneTimeCode(OneTimeCodeReducer.State)
       case firstNameSetting(FirstNameSettingReducer.State = .init())
@@ -93,6 +94,7 @@ public struct OnboardReducer: Reducer {
     public enum Action: Equatable {
       case gradeSetting(GradeSettingReducer.Action)
       case schoolSetting(SchoolSettingReducer.Action)
+      case findFriend(FindFriendReducer.Action)
       case phoneNumber(PhoneNumberReducer.Action)
       case oneTimeCode(OneTimeCodeReducer.Action)
       case firstNameSetting(FirstNameSettingReducer.Action)
@@ -107,6 +109,7 @@ public struct OnboardReducer: Reducer {
     public var body: some ReducerOf<Self> {
       Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingReducer.init)
       Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingReducer.init)
+      Scope(state: /State.findFriend, action: /Action.findFriend, child: FindFriendReducer.init)
       Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberReducer.init)
       Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: OneTimeCodeReducer.init)
       Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting, child: FirstNameSettingReducer.init)
@@ -143,6 +146,12 @@ public struct OnboardView: View {
           /OnboardReducer.Path.State.schoolSetting,
           action: OnboardReducer.Path.Action.schoolSetting,
           then: SchoolSettingView.init(store:)
+        )
+      case .findFriend:
+        CaseLet(
+          /OnboardReducer.Path.State.findFriend,
+          action: OnboardReducer.Path.Action.findFriend,
+          then: FindFriendView.init(store:)
         )
       case .phoneNumber:
         CaseLet(
