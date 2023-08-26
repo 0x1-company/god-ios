@@ -26,6 +26,7 @@ public struct OnboardReducer: Reducer {
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   
   public var body: some Reducer<State, Action> {
+    GradeSettingLogic()
     GenderSettingLogic()
     self.core
   }
