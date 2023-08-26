@@ -32,34 +32,34 @@ public struct OnboardReducer: Reducer {
 
       case let .path(.element(_, action)):
         switch action {
-        case .gradeSetting(.delegate(.nextSchoolSetting)):
+        case .gradeSetting(.delegate(.nextScreen)):
           state.path.append(.schoolSetting())
 
-        case .schoolSetting(.delegate(.nextPhoneNumber)):
+        case .schoolSetting(.delegate(.nextScreen)):
           state.path.append(.phoneNumber())
 
-        case let .phoneNumber(.delegate(.nextOneTimeCode(verifyID))):
+        case let .phoneNumber(.delegate(.nextScreen(verifyID))):
           state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
 
-        case .oneTimeCode(.delegate(.nextFirstNameSetting)):
+        case .oneTimeCode(.delegate(.nextScreen)):
           state.path.append(.firstNameSetting())
 
-        case .firstNameSetting(.delegate(.nextLastNameSetting)):
+        case .firstNameSetting(.delegate(.nextScreen)):
           state.path.append(.lastNameSetting())
 
-        case .lastNameSetting(.delegate(.nextUsernameSetting)):
+        case .lastNameSetting(.delegate(.nextScreen)):
           state.path.append(.usernameSetting())
 
-        case .usernameSetting(.delegate(.nextGenderSetting)):
+        case .usernameSetting(.delegate(.nextScreen)):
           state.path.append(.genderSetting())
 
-        case .genderSetting(.delegate(.nextProfilePhotoSetting)):
+        case .genderSetting(.delegate(.nextScreen)):
           state.path.append(.profilePhotoSetting())
 
-        case .profilePhotoSetting(.delegate(.nextAddFriends)):
+        case .profilePhotoSetting(.delegate(.nextScreen)):
           state.path.append(.addFriends())
 
-        case .addFriends(.delegate(.nextHowItWorks)):
+        case .addFriends(.delegate(.nextScreen)):
           state.path.append(.howItWorks())
         default:
           print(action)

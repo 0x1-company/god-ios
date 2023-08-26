@@ -16,7 +16,7 @@ public struct ProfilePhotoSettingReducer: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextAddFriends
+      case nextScreen
     }
   }
 
@@ -25,15 +25,15 @@ public struct ProfilePhotoSettingReducer: Reducer {
       switch action {
       case .skipButtonTapped:
         return .run { send in
-          await send(.delegate(.nextAddFriends))
+          await send(.delegate(.nextScreen))
         }
       case .choosePhotoButtonTapped:
         return .run { send in
-          await send(.delegate(.nextAddFriends))
+          await send(.delegate(.nextScreen))
         }
       case .takePhotoButtonTapped:
         return .run { send in
-          await send(.delegate(.nextAddFriends))
+          await send(.delegate(.nextScreen))
         }
       case .delegate:
         return .none

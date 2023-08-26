@@ -23,7 +23,7 @@ public struct GradeSettingReducer: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextSchoolSetting
+      case nextScreen
     }
   }
 
@@ -39,23 +39,23 @@ public struct GradeSettingReducer: Reducer {
 
       case .notInHighSchoolButtonTapped:
         return .run { send in
-          await send(.delegate(.nextSchoolSetting))
+          await send(.delegate(.nextScreen))
         }
       case .grade10ButtonTapped:
         return .run { send in
-          await send(.delegate(.nextSchoolSetting))
+          await send(.delegate(.nextScreen))
         }
       case .grade11ButtonTapped:
         return .run { send in
-          await send(.delegate(.nextSchoolSetting))
+          await send(.delegate(.nextScreen))
         }
       case .grade12ButtonTapped:
         return .run { send in
-          await send(.delegate(.nextSchoolSetting))
+          await send(.delegate(.nextScreen))
         }
       case .finishedHighSchoolButtonTapped:
         return .run { send in
-          await send(.delegate(.nextSchoolSetting))
+          await send(.delegate(.nextScreen))
         }
       case .gradeHelp:
         return .none

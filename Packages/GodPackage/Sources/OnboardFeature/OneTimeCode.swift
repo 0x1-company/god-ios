@@ -31,7 +31,7 @@ public struct OneTimeCodeReducer: Reducer {
     }
 
     public enum Delegate: Equatable {
-      case nextFirstNameSetting
+      case nextScreen
     }
   }
 
@@ -95,7 +95,7 @@ public struct OneTimeCodeReducer: Reducer {
         return .run { send in
           let idToken = try await result.user.getIDToken()
           print("FIREBASE ID TOKEN: \(idToken)")
-          await send(.delegate(.nextFirstNameSetting))
+          await send(.delegate(.nextScreen))
         }
       case .signInResponse(.success(.none)):
         print("sign in is null")

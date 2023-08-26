@@ -29,7 +29,7 @@ public struct PhoneNumberReducer: Reducer {
     }
 
     public enum Delegate: Equatable {
-      case nextOneTimeCode(verifyID: String)
+      case nextScreen(verifyID: String)
     }
   }
 
@@ -61,7 +61,7 @@ public struct PhoneNumberReducer: Reducer {
         }
       case let .verifyResponse(.success(.some(id))):
         return .run { send in
-          await send(.delegate(.nextOneTimeCode(verifyID: id)))
+          await send(.delegate(.nextScreen(verifyID: id)))
         }
       case .verifyResponse(.success(.none)):
         print("verify id is null")

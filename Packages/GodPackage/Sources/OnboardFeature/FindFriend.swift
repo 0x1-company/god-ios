@@ -17,7 +17,7 @@ public struct FindFriendReducer: Reducer {
     case delegate(Delegate)
     
     public enum Delegate: Equatable {
-      case nextPhoneNumber
+      case nextScreen
     }
   }
   
@@ -29,7 +29,7 @@ public struct FindFriendReducer: Reducer {
       case .findButtonTapped:
         return .run { send in
           _ = try await self.requestAccess(.contacts)
-          await send(.delegate(.nextPhoneNumber))
+          await send(.delegate(.nextScreen))
         }
         
       case .delegate:
