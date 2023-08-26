@@ -7,5 +7,4 @@ A description of this package.
 graph TD;
     GodClient-->God;
     GodClient-->AsyncApollo;
-    ServerConfigClient-->ServerConfig;
 ```
