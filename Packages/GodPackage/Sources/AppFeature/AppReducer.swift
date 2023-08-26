@@ -15,7 +15,7 @@ public struct AppReducer: Reducer {
 
   public struct State: Equatable {
     public init() {}
-    
+
     var account = Account()
 
     var appDelegate = AppDelegateReducer.State()
@@ -26,7 +26,7 @@ public struct AppReducer: Reducer {
       "talk-to-founder": Constants.founderURL,
       "talk-to-developer": Constants.developerURL,
     ]
-    
+
     public struct Account: Equatable {
       var authUser: FirebaseAuthClient.User?
       var isForceUpdate = true
@@ -47,9 +47,9 @@ public struct AppReducer: Reducer {
   @Dependency(\.openURL) var openURL
   @Dependency(\.firestore) var firestore
   @Dependency(\.firebaseAuth) var firebaseAuth
-  
+
   public var body: some Reducer<State, Action> {
-    self.core
+    core
       .onChange(of: \.account) { account, state, _ in
         if account.isForceUpdate {
           state.view = .forceUpdate()
@@ -68,7 +68,7 @@ public struct AppReducer: Reducer {
         return .none
       }
   }
-  
+
   @ReducerBuilder<State, Action>
   var core: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {

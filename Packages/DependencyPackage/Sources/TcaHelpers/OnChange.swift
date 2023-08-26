@@ -1,16 +1,16 @@
 import ComposableArchitecture
 
-extension Reducer {
+public extension Reducer {
   @inlinable
-  public func onChange<ChildState: Equatable>(
+  func onChange<ChildState: Equatable>(
     of toLocalState: @escaping (State) -> ChildState,
     perform additionalEffects: @escaping (ChildState, inout State, Action) -> Effect<Action>
   ) -> some Reducer<State, Action> {
-    self.onChange(of: toLocalState) { additionalEffects($1, &$2, $3) }
+    onChange(of: toLocalState) { additionalEffects($1, &$2, $3) }
   }
 
   @inlinable
-  public func onChange<ChildState: Equatable>(
+  func onChange<ChildState: Equatable>(
     of toLocalState: @escaping (State) -> ChildState,
     perform additionalEffects: @escaping (ChildState, ChildState, inout State, Action) ->
       Effect<Action>
@@ -45,12 +45,12 @@ struct ChangeReducer<Base: Reducer, ChildState: Equatable>: Reducer {
 
   @inlinable
   public func reduce(into state: inout Base.State, action: Base.Action) -> Effect<Base.Action> {
-    let previousLocalState = self.toLocalState(state)
-    let effects = self.base.reduce(into: &state, action: action)
-    let localState = self.toLocalState(state)
+    let previousLocalState = toLocalState(state)
+    let effects = base.reduce(into: &state, action: action)
+    let localState = toLocalState(state)
 
     return previousLocalState != localState
-      ? .merge(effects, self.perform(previousLocalState, localState, &state, action))
+      ? .merge(effects, perform(previousLocalState, localState, &state, action))
       : effects
   }
 }

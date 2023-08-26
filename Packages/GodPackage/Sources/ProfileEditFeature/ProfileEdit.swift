@@ -1,10 +1,10 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import FirebaseAuthClient
 import LabeledButton
 import ManageAccountFeature
 import SwiftUI
-import FirebaseAuthClient
 
 public struct ProfileEditReducer: Reducer {
   public init() {}
@@ -146,7 +146,7 @@ public struct ProfileEditView: View {
             CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
               viewStore.send(.restorePurchasesButtonTapped)
             }
-            
+
             CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
               viewStore.send(.manageAccountButtonTapped)
             }

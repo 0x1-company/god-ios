@@ -1,11 +1,11 @@
+import Build
 import ComposableArchitecture
 import FirestoreClient
-import Build
 
 public struct FirestoreLogic: Reducer {
   @Dependency(\.firestore) var firestore
   @Dependency(\.build.bundleShortVersion) var bundleShortVersion
-  
+
   public func reduce(
     into state: inout AppReducer.State,
     action: AppReducer.Action
