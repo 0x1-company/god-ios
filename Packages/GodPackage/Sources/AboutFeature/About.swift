@@ -108,15 +108,16 @@ public struct AboutView: View {
         Spacer()
 
         HStack(spacing: 16) {
-          Link(destination: Constants.twitterURL) {
-            Image("twitter", bundle: .module)
+            Link(destination: Constants.instagramURL) {
+                Image("instagram", bundle: .module)
+                    .resizable()
+                    .frame(width: 62, height: 62)
+            }
+          Link(destination: Constants.xURL) {
+            Image("x", bundle: .module)
               .resizable()
               .frame(width: 62, height: 62)
-          }
-          Link(destination: Constants.instagramURL) {
-            Image("instagram", bundle: .module)
-              .resizable()
-              .frame(width: 62, height: 62)
+              .clipShape(Circle())
           }
           Link(destination: Constants.tiktokURL) {
             Image("tiktok", bundle: .module)

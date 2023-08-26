@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "TikTok_Icon_Black_Circle.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
