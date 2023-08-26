@@ -121,10 +121,11 @@ let package = Package(
       "HowItWorksFeature",
       "GenderSettingFeature",
       .product(name: "Constants", package: "DependencyPackage"),
-      .product(name: "PhoneNumberClient", package: "DependencyPackage"),
+      .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "ProfileClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
+      .product(name: "PhoneNumberClient", package: "DependencyPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
     ]),
     .target(name: "PlayAgainFeature", dependencies: [
