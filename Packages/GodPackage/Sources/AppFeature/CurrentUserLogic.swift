@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import GodClient
 import God
+import GodClient
 import os
 
 public struct CurrentUserLogic: Reducer {
@@ -23,11 +23,11 @@ public struct CurrentUserLogic: Reducer {
         await send(.currentUserResponse(.failure(error)))
       }
       .cancellable(id: Cancel.id)
-      
+
     case let .currentUserResponse(.success(user)):
       state.account.currentUser = user
       return .none
-      
+
     case let .currentUserResponse(.failure(error)):
       logger.error("""
       function: \(#function)
