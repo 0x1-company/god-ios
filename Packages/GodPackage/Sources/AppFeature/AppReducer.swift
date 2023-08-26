@@ -42,13 +42,6 @@ public struct AppReducer: Reducer {
   @Dependency(\.firebaseAuth) var firebaseAuth
   
   public var body: some Reducer<State, Action> {
-    self.core
-    
-    AuthLogic()
-  }
-  
-  @ReducerBuilder<State, Action>
-  var core: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
       AppDelegateReducer()
     }
@@ -58,69 +51,8 @@ public struct AppReducer: Reducer {
     Scope(state: \.view, action: /Action.view) {
       View()
     }
-    Reduce { state, action in
-      switch action {
-      case .appDelegate(.delegate(.didFinishLaunching)):
-        enum CancelID { case effect }
-        return .run { send in
-          for try await config in try await firestore.config() {
-            await send(.configResponse(.success(config)), animation: .default)
-          }
-        } catch: { error, send in
-          await send(.configResponse(.failure(error)), animation: .default)
-        }
-        .cancellable(id: CancelID.effect)
-
-      case let .appDelegate(.configurationForConnecting(.some(shortcutItem))):
-        let type = shortcutItem.type
-        return .run { send in
-          await send(.quickAction(type))
-        }
-
-      case .appDelegate:
-        return .none
-
-      case let .sceneDelegate(.shortcutItem(shortcutItem)):
-        let type = shortcutItem.type
-        return .run { send in
-          await send(.quickAction(type))
-        }
-
-      case .sceneDelegate:
-        return .none
-
-      case .view:
-        return .none
-
-      case let .quickAction(key):
-        guard let url = state.quickActionURLs[key] else {
-          return .none
-        }
-        return .run { _ in
-          await openURL(url)
-        }
-
-      case let .configResponse(.success(config)):
-        let shortVersion = build.bundleShortVersion()
-        if config.isForceUpdate(shortVersion) {
-          state.view = .forceUpdate()
-        }
-        if config.isMaintenance {
-          state.view = .maintenance()
-        }
-        if firebaseAuth.currentUser() == nil {
-          state.view = .onboard()
-        }
-        return .none
-
-      case let .configResponse(.failure(error)):
-        print(error)
-        return .none
-        
-      case .authUserResponse:
-        return .none
-      }
-    }
+    CoreLogic()
+    AuthLogic()
   }
 
   public struct View: Reducer {
