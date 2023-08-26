@@ -12,6 +12,7 @@ public struct OnboardReducer: Reducer {
     var path = StackState<Path.State>()
     
     var generation: Int?
+    var schoolId: String?
     public init() {}
   }
 
@@ -49,7 +50,9 @@ public struct OnboardReducer: Reducer {
           state.generation = generation
           state.path.append(.schoolSetting())
 
-        case .schoolSetting(.delegate(.nextScreen)):
+        case let .schoolSetting(.delegate(.nextScreen(schoolId))):
+          state.schoolId = schoolId
+
           if case .notDetermined = authorizationStatus(.contacts) {
             state.path.append(.findFriend())
           } else {
