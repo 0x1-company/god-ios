@@ -44,7 +44,7 @@ public struct WelcomeReducer: Reducer {
               TextState("Sorry")
             },
             actions: {
-              ButtonState(action: .confirmOkay) {
+              ButtonState(action: .send(.confirmOkay, animation: .default)) {
                 TextState("OK")
               }
             },
