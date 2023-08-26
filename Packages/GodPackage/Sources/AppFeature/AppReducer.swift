@@ -14,6 +14,8 @@ public struct AppReducer: Reducer {
 
   public struct State: Equatable {
     public init() {}
+    
+    var authUser: FirebaseAuthClient.User?
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
@@ -31,14 +33,22 @@ public struct AppReducer: Reducer {
     case view(View.Action)
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
+    case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
   }
 
   @Dependency(\.build) var build
   @Dependency(\.openURL) var openURL
   @Dependency(\.firestore) var firestore
   @Dependency(\.firebaseAuth) var firebaseAuth
-
+  
   public var body: some Reducer<State, Action> {
+    self.core
+    
+    AuthLogic()
+  }
+  
+  @ReducerBuilder<State, Action>
+  var core: some Reducer<State, Action> {
     Scope(state: \.appDelegate, action: /Action.appDelegate) {
       AppDelegateReducer()
     }
@@ -105,6 +115,9 @@ public struct AppReducer: Reducer {
 
       case let .configResponse(.failure(error)):
         print(error)
+        return .none
+        
+      case .authUserResponse:
         return .none
       }
     }
