@@ -143,15 +143,15 @@ public struct ProfileEditView: View {
               .font(.caption)
               .bold()
               .foregroundColor(.godTextSecondaryLight)
-            LabeledButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
+            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
               viewStore.send(.restorePurchasesButtonTapped)
             }
-
-            LabeledButton("Manage Account", systemImage: "gearshape.fill") {
+            
+            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
               viewStore.send(.manageAccountButtonTapped)
             }
 
-            LabeledButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
+            CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               viewStore.send(.logoutButtonTapped)
             }
 
@@ -159,7 +159,6 @@ public struct ProfileEditView: View {
               .foregroundColor(.secondary)
               .font(.caption2)
           }
-          .buttonStyle(CornerRadiusBorderButtonStyle())
         }
         .padding(.all, 24)
       }
