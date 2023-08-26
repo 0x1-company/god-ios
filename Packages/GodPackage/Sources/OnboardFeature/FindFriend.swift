@@ -64,13 +64,6 @@ public struct FindFriendView: View {
             .frame(height: 54)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color.black)
-            .overlay(alignment: .leading) {
-              Image("money-mouth-face", bundle: .module)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 32, height: 32)
-                .clipped()
-            }
             .padding(.horizontal, 16)
             .background(Color.white)
             .clipShape(Capsule())
