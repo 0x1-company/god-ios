@@ -36,6 +36,9 @@ public struct OnboardReducer: Reducer {
           state.path.append(.schoolSetting())
 
         case .schoolSetting(.delegate(.nextScreen)):
+          state.path.append(.findFriend())
+          
+        case .findFriend(.delegate(.nextScreen)):
           state.path.append(.phoneNumber())
 
         case let .phoneNumber(.delegate(.nextScreen(verifyID))):
