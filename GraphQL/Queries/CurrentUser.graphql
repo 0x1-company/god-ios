@@ -4,6 +4,8 @@ query CurrentUser {
     firstName
     lastName
     username
+    generation
+    gender
     schoolId
     school {
       id

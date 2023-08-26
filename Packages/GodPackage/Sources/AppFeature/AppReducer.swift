@@ -66,8 +66,15 @@ public struct AppReducer: Reducer {
           state.view = .onboard()
           return .none
         }
-        /// UserDefaultsにあるオンボーディング突破フラグがONだとnavigationにする
-//        state.view = .navigation()
+        guard let currentUser = account.currentUser else {
+          state.view = .onboard()
+          return .none
+        }
+        if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username.isEmpty {
+          state.view = .onboard()
+          return .none
+        }
+        state.view = .navigation()
         return .none
       }
   }
