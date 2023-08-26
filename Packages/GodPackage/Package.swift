@@ -15,7 +15,6 @@ let package = Package(
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
-    .library(name: "GenderSettingFeature", targets: ["GenderSettingFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
@@ -71,10 +70,6 @@ let package = Package(
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
-    .target(name: "GenderSettingFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
     .target(name: "GodFeature", dependencies: [
       "PollFeature",
       "CashOutFeature",
@@ -119,7 +114,6 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
-      "GenderSettingFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "ProfileClient", package: "DependencyPackage"),
