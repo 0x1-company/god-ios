@@ -1,12 +1,14 @@
 import ComposableArchitecture
 import Constants
 import SwiftUI
+import Colors
 
 public struct AboutReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
+    var isShareFeedbackHalfModalPresented: Bool = false
     public init() {}
   }
 
@@ -14,6 +16,7 @@ public struct AboutReducer: Reducer {
     case howItWorksButtonTapped
     case faqButtonTapped
     case shareFeedbackButtonTapped
+    case shareFeedbackHalfModalStateChanged(Bool)
     case getHelpButtonTapped
     case safetyCenterButtonTapped
     case confirmationDialog(PresentationAction<ConfirmationDialog>)
@@ -40,8 +43,11 @@ public struct AboutReducer: Reducer {
         return .none
 
       case .shareFeedbackButtonTapped:
-        return .none
-
+          state.isShareFeedbackHalfModalPresented = true
+          return .none
+      case let .shareFeedbackHalfModalStateChanged(isPresented):
+          state.isShareFeedbackHalfModalPresented = isPresented
+          return .none
       case .getHelpButtonTapped:
         state.confirmationDialog = .faq
         return .none
@@ -82,6 +88,7 @@ public struct AboutView: View {
     self.store = store
   }
 
+    @State private var isPresented: Bool = false
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 32) {
@@ -94,6 +101,7 @@ public struct AboutView: View {
           }
           IconButton("Share Feedback", name: "megaphone") {
             viewStore.send(.shareFeedbackButtonTapped)
+              isPresented = true
           }
           IconButton("Get Help", name: "rescue-workers-helmet") {
             viewStore.send(.getHelpButtonTapped)
@@ -139,6 +147,47 @@ public struct AboutView: View {
           action: { .confirmationDialog($0) }
         )
       )
+//      .sheet(isPresented: viewStore.binding(get: \.isShareFeedbackHalfModalPresented, send: { isPresented in .shareFeedbackHalfModalStateChanged(isPresented) })) {
+//          Text("AAA")
+//              .frame(height: 300)
+//              .background(Color.black)
+//              .presentationDetents([.height(300)])
+//      }
+      .sheet(isPresented: $isPresented) {
+          VStack(alignment: .center, spacing: 32) {
+              VStack(alignment: .center, spacing: 12) {
+                  Text("Email us")
+                      .font(.subheadline)
+                      .bold()
+                  Text("If you need help with the app or want to share feedback, send us an email and we'll get back to you right away.")
+                      .font(.caption)
+                      .foregroundColor(.godTextSecondaryLight)
+                      .lineLimit(3)
+              }
+              HStack(alignment: .center) {
+                  VStack(alignment: .center, spacing: 8) {
+                      RoundedRectangle(cornerRadius: 8)
+                          .frame(width: 60, height: 60)
+                          .background(Color.blue)
+                      Text("Mail")
+                          .foregroundColor(.godBlack)
+                  }
+              }
+              Button(action: {
+                  viewStore.send(.shareFeedbackHalfModalStateChanged(false))
+              }, label: {
+                  Text("Close")
+                      .font(.body)
+                      .foregroundColor(.godBlack)
+                      .frame(height: 44)
+                      .frame(maxWidth: .infinity)
+                      .overlay(
+                            RoundedRectangle(cornerRadius: 22)
+                                .stroke(Color.black, lineWidth: 1)
+                      )
+              })
+          }.presentationDetents([.height(300)])
+      }
     }
   }
 }
