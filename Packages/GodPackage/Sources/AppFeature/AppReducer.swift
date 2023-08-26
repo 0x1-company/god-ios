@@ -9,6 +9,7 @@ import NavigationFeature
 import OnboardFeature
 import SwiftUI
 import TcaHelpers
+import God
 
 public struct AppReducer: Reducer {
   public init() {}
@@ -29,7 +30,8 @@ public struct AppReducer: Reducer {
 
     public struct Account: Equatable {
       var authUser: FirebaseAuthClient.User?
-      var isForceUpdate = true
+      var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+      var isForceUpdate = false
       var isMaintenance = false
     }
   }
@@ -41,6 +43,7 @@ public struct AppReducer: Reducer {
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
   }
 
   @Dependency(\.build) var build
@@ -83,6 +86,7 @@ public struct AppReducer: Reducer {
     AuthLogic()
     FirestoreLogic()
     CoreLogic()
+    CurrentUserLogic()
   }
 
   public struct View: Reducer {

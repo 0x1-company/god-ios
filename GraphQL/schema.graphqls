@@ -191,11 +191,17 @@ type Query {
   """フレンドに投票されたVotes"""
   activities: [Vote!]!
 
+  """get current user"""
+  currentUser: User!
+
   """list all friend requests"""
   friendRequests: [Friend!]!
 
   """list all friends"""
   friends: [Friend!]!
+
+  """list all friends of friends"""
+  friendsOfFriends: [User!]!
   getFirebaseUser(phoneNumber: String!): String!
 
   """自分に対する投票を一覧で取得する"""
@@ -325,6 +331,9 @@ type User {
 
   """last name"""
   lastName: String!
+
+  """mutual friends count"""
+  mutualFriendsCount: Int
 
   """school to which the user belongs"""
   school: School

@@ -1,0 +1,14 @@
+query CurrentUser {
+  currentUser {
+    id
+    firstName
+    lastName
+    username
+    schoolId
+    school {
+      id
+      name
+      shortName
+    }
+  }
+}

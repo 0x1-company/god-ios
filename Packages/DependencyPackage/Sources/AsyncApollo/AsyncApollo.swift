@@ -23,6 +23,7 @@ public extension ApolloClient {
           if let data = response.data {
             continuation.yield(data)
           }
+          /// エラー周りをどうするか考える
           if let errors = response.errors {
             errors.forEach { error in
               logger.error("""
