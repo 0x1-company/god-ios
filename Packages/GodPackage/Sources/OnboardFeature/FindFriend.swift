@@ -78,6 +78,7 @@ public struct FindFriendView: View {
       }
       .multilineTextAlignment(.center)
       .background(Color.godService)
+      .navigationBarBackButtonHidden()
     }
   }
 }
