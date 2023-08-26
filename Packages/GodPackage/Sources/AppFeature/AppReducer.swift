@@ -4,12 +4,12 @@ import Constants
 import FirebaseAuthClient
 import FirestoreClient
 import ForceUpdateFeature
+import God
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
 import TcaHelpers
-import God
 
 public struct AppReducer: Reducer {
   public init() {}
