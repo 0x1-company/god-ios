@@ -19,14 +19,12 @@ public struct OnboardReducer: Reducer {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
     
-    case generationChanged(Int?)
     case genderChanged(God.Gender)
   }
   
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   
   public var body: some Reducer<State, Action> {
-    GradeSettingLogic()
     GenderSettingLogic()
     self.core
   }
@@ -48,10 +46,8 @@ public struct OnboardReducer: Reducer {
       case let .path(.element(_, action)):
         switch action {
         case let .gradeSetting(.delegate(.nextScreen(generation))):
+          state.generation = generation
           state.path.append(.schoolSetting())
-          return .run { send in
-            await send(.generationChanged(generation))
-          }
 
         case .schoolSetting(.delegate(.nextScreen)):
           if case .notDetermined = authorizationStatus(.contacts) {
