@@ -13,6 +13,8 @@ public struct OnboardReducer: Reducer {
     
     var generation: Int?
     var schoolId: String?
+    var phoneNumber = ""
+
     public init() {}
   }
 
@@ -61,6 +63,9 @@ public struct OnboardReducer: Reducer {
           
         case .findFriend(.delegate(.nextScreen)):
           state.path.append(.phoneNumber())
+          
+        case let .phoneNumber(.delegate(.numberChanged(number))):
+          state.phoneNumber = number
 
         case let .phoneNumber(.delegate(.nextScreen(verifyID))):
           state.path.append(.oneTimeCode(.init(verifyID: verifyID)))

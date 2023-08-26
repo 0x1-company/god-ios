@@ -29,6 +29,7 @@ public struct PhoneNumberReducer: Reducer {
     }
 
     public enum Delegate: Equatable {
+      case numberChanged(String)
       case nextScreen(verifyID: String)
     }
   }
