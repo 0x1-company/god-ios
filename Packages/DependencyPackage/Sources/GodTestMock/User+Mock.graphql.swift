@@ -12,6 +12,7 @@ public class User: MockObject {
   public struct MockFields {
     @Field<String>("firstName") public var firstName
     @Field<GraphQLEnum<God.Gender>>("gender") public var gender
+    @Field<Int>("generation") public var generation
     @Field<God.ID>("id") public var id
     @Field<String>("lastName") public var lastName
     @Field<School>("school") public var school
@@ -24,6 +25,7 @@ public extension Mock where O == User {
   convenience init(
     firstName: String? = nil,
     gender: GraphQLEnum<God.Gender>? = nil,
+    generation: Int? = nil,
     id: God.ID? = nil,
     lastName: String? = nil,
     school: Mock<School>? = nil,
@@ -33,6 +35,7 @@ public extension Mock where O == User {
     self.init()
     _setScalar(firstName, for: \.firstName)
     _setScalar(gender, for: \.gender)
+    _setScalar(generation, for: \.generation)
     _setScalar(id, for: \.id)
     _setScalar(lastName, for: \.lastName)
     _setEntity(school, for: \.school)

@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "CurrentUser"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentUser { currentUser { __typename id firstName lastName username schoolId school { __typename id name shortName } } }"#
+        #"query CurrentUser { currentUser { __typename id firstName lastName username generation gender schoolId school { __typename id name shortName } } }"#
       ))
 
     public init() {}
@@ -39,6 +39,8 @@ public extension God {
           .field("firstName", String.self),
           .field("lastName", String.self),
           .field("username", String.self),
+          .field("generation", Int?.self),
+          .field("gender", GraphQLEnum<God.Gender>.self),
           .field("schoolId", String?.self),
           .field("school", School?.self),
         ] }
@@ -51,6 +53,10 @@ public extension God {
         public var lastName: String { __data["lastName"] }
         /// username
         public var username: String { __data["username"] }
+        /// 年代
+        public var generation: Int? { __data["generation"] }
+        /// gender
+        public var gender: GraphQLEnum<God.Gender> { __data["gender"] }
         public var schoolId: String? { __data["schoolId"] }
         /// school to which the user belongs
         public var school: School? { __data["school"] }
