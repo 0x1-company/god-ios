@@ -2,6 +2,7 @@ import ComposableArchitecture
 import GenderSettingFeature
 import HowItWorksFeature
 import SwiftUI
+import ContactsClient
 
 public struct OnboardReducer: Reducer {
   public init() {}
@@ -16,6 +17,8 @@ public struct OnboardReducer: Reducer {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
   }
+  
+  @Dependency(\.contacts.authorizationStatus) var authorizationStatus
 
   public var body: some ReducerOf<Self> {
     Scope(state: \.welcome, action: /Action.welcome) {
@@ -36,7 +39,11 @@ public struct OnboardReducer: Reducer {
           state.path.append(.schoolSetting())
 
         case .schoolSetting(.delegate(.nextScreen)):
-          state.path.append(.findFriend())
+          if case .notDetermined = authorizationStatus(.contacts) {
+            state.path.append(.findFriend())
+          } else {
+            state.path.append(.phoneNumber())
+          }
           
         case .findFriend(.delegate(.nextScreen)):
           state.path.append(.phoneNumber())
