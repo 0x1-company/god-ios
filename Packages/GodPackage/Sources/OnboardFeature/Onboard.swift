@@ -2,6 +2,7 @@ import ComposableArchitecture
 import HowItWorksFeature
 import SwiftUI
 import ContactsClient
+import God
 
 public struct OnboardReducer: Reducer {
   public init() {}
@@ -15,11 +16,19 @@ public struct OnboardReducer: Reducer {
   public enum Action: Equatable {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
+    
+    case genderChanged(God.Gender)
   }
   
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
+  
+  public var body: some Reducer<State, Action> {
+    GenderSettingLogic()
+    self.core
+  }
 
-  public var body: some ReducerOf<Self> {
+  @ReducerBuilder<State, Action>
+  var core: some Reducer<State, Action> {
     Scope(state: \.welcome, action: /Action.welcome) {
       WelcomeReducer()
     }
@@ -62,8 +71,11 @@ public struct OnboardReducer: Reducer {
         case .usernameSetting(.delegate(.nextScreen)):
           state.path.append(.genderSetting())
 
-        case .genderSetting(.delegate(.nextScreen)):
+        case let .genderSetting(.delegate(.nextScreen(gender))):
           state.path.append(.profilePhotoSetting())
+          return .run { send in
+            await send(.genderChanged(gender))
+          }
 
         case .profilePhotoSetting(.delegate(.nextScreen)):
           state.path.append(.addFriends())
@@ -75,7 +87,7 @@ public struct OnboardReducer: Reducer {
         }
         return .none
 
-      case .path:
+      default:
         return .none
       }
     }
