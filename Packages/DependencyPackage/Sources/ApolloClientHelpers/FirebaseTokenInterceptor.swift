@@ -4,7 +4,7 @@ import FirebaseAuth
 import Foundation
 import os
 
-let logger = Logger(subsystem: "jp.godapp", category: #file)
+private let logger = Logger(subsystem: "jp.godapp", category: "FirebaseTokenInterceptor")
 
 class FirebaseTokenInterceptor: ApolloInterceptor {
   var id: String = UUID().uuidString
@@ -15,7 +15,18 @@ class FirebaseTokenInterceptor: ApolloInterceptor {
     response: HTTPResponse<Operation>?,
     completion: @escaping (Result<GraphQLResult<Operation.Data>, Error>) -> Void
   ) {
-    Auth.auth().currentUser?.getIDToken(completion: { [weak self] token, error in
+    guard let currentUser = Auth.auth().currentUser else {
+      logger.warning("not found firebase current user")
+      addTokenAndProceed(
+        "",
+        to: request,
+        chain: chain,
+        response: response,
+        completion: completion
+      )
+      return
+    }
+    currentUser.getIDToken(completion: { [weak self] token, error in
       if let error {
         logger.error("\(error.localizedDescription)")
       }

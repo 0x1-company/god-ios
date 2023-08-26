@@ -15,7 +15,8 @@ extension GodClient: TestDependencyKey {
     createUserBlock: unimplemented("\(Self.self).createUserBlock"),
     createUserHide: unimplemented("\(Self.self).createUserHide"),
     createUser: unimplemented("\(Self.self).createUser"),
-    user: unimplemented("\(Self.self)"),
+    user: unimplemented("\(Self.self).user"),
+    currentUser: unimplemented("\(Self.self).currentUser"),
     createFriendRequest: unimplemented("\(Self.self).createFriendRequest"),
     approveFriendRequest: unimplemented("\(Self.self).approveFriendRequest"),
     store: unimplemented("\(Self.self).store")
