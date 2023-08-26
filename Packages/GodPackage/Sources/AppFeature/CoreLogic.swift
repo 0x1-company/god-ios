@@ -1,15 +1,14 @@
-import ComposableArchitecture
 import Build
-import FirestoreClient
+import ComposableArchitecture
 import FirebaseAuthClient
+import FirestoreClient
 
 public struct CoreLogic: Reducer {
-  
   @Dependency(\.build) var build
   @Dependency(\.openURL) var openURL
   @Dependency(\.firestore) var firestore
   @Dependency(\.firebaseAuth) var firebaseAuth
-  
+
   public func reduce(
     into state: inout AppReducer.State,
     action: AppReducer.Action
