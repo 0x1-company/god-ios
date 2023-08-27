@@ -18,14 +18,14 @@ public struct OnboardStreamLogic: Reducer {
       } catch: { error, send in
         await send(.currentUserResponse(.failure(error)))
       }
-      
+
     case let .currentUserResponse(.success(user)):
       state.currentUser = user
       return .none
-      
+
     case .currentUserResponse(.failure):
       return .none
-      
+
     default:
       return .none
     }

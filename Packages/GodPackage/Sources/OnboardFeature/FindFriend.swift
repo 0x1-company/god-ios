@@ -1,8 +1,8 @@
-import ComposableArchitecture
+import ButtonStyles
 import Colors
+import ComposableArchitecture
 import Contacts
 import ContactsClient
-import ButtonStyles
 import SwiftUI
 
 public struct FindFriendReducer: Reducer {
@@ -15,12 +15,12 @@ public struct FindFriendReducer: Reducer {
   public enum Action: Equatable {
     case findButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextScreen
     }
   }
-  
+
   @Dependency(\.contacts.requestAccess) var requestAccess
 
   public var body: some ReducerOf<Self> {
@@ -28,10 +28,10 @@ public struct FindFriendReducer: Reducer {
       switch action {
       case .findButtonTapped:
         return .run { send in
-          _ = try await self.requestAccess(.contacts)
+          _ = try await requestAccess(.contacts)
           await send(.delegate(.nextScreen))
         }
-        
+
       case .delegate:
         return .none
       }
@@ -50,7 +50,7 @@ public struct FindFriendView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 28) {
         Spacer()
-        
+
         Text("God uses your contacts\nto find friends")
           .bold()
           .foregroundColor(Color.godWhite)
@@ -70,9 +70,9 @@ public struct FindFriendView: View {
         }
         .padding(.horizontal, 34)
         .buttonStyle(HoldDownButtonStyle())
-        
+
         Spacer()
-        
+
         Text("God cares intensely about your privacy.\nWeb will never text or spam your contacts.")
           .foregroundColor(Color.godWhite)
       }

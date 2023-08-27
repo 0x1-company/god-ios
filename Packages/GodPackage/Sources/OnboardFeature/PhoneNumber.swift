@@ -1,10 +1,10 @@
 import Colors
-import UserDefaultsClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import PhoneNumberClient
 import PhoneNumberKit
 import SwiftUI
+import UserDefaultsClient
 
 public struct PhoneNumberReducer: Reducer {
   public struct State: Equatable {
@@ -12,33 +12,33 @@ public struct PhoneNumberReducer: Reducer {
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case nextButtonTapped
     case changePhoneNumber(String)
     case verifyResponse(TaskResult<String?>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextScreen
     }
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
   }
-  
+
   @Dependency(\.userDefaults) var userDefaultsClient
   @Dependency(\.phoneNumberClient) var phoneNumberClient
   @Dependency(\.firebaseAuth.verifyPhoneNumber) var verifyPhoneNumber
-  
+
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .nextButtonTapped:
       return .run { [state] send in
         async let next: Void = send(.delegate(.nextScreen), animation: .default)
-        
+
         let format = try phoneNumberClient.parseFormat(state.phoneNumber)
         async let save: Void = await userDefaultsClient.setString(format, "format-phone-number")
         async let verify: Void = await send(
@@ -53,13 +53,13 @@ public struct PhoneNumberReducer: Reducer {
     case let .changePhoneNumber(number):
       state.phoneNumber = number
       return .none
-      
+
     case let .verifyResponse(.success(id)):
       let verifyId = id ?? ""
       return .run { _ in
         await userDefaultsClient.setString(verifyId, "verify-id")
       }
-      
+
     case let .verifyResponse(.failure(error)):
       state.alert = AlertState {
         TextState("Error")
@@ -71,10 +71,10 @@ public struct PhoneNumberReducer: Reducer {
         TextState(error.localizedDescription)
       }
       return .none
-      
+
     case .alert(.presented(.confirmOkay)):
       return .none
-      
+
     case .alert:
       return .none
 

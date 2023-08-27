@@ -15,7 +15,7 @@ public struct GenderSettingLogic: Reducer {
         gender: .init(gender)
       )
       return .run { _ in
-        _ = try await self.updateUserProfile(input)
+        _ = try await updateUserProfile(input)
       }
     default:
       return .none

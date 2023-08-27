@@ -1,7 +1,7 @@
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import God
+import SwiftUI
 
 public struct GenderSettingReducer: Reducer {
   public init() {}
