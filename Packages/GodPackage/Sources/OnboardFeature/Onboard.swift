@@ -3,6 +3,7 @@ import HowItWorksFeature
 import SwiftUI
 import ContactsClient
 import God
+import FirebaseAuth
 
 public struct OnboardReducer: Reducer {
   public init() {}
@@ -10,24 +11,38 @@ public struct OnboardReducer: Reducer {
   public struct State: Equatable {
     var welcome = WelcomeReducer.State()
     var path = StackState<Path.State>()
-    
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var phoneNumberAuth = PhoneNumberAuthReducer.State()
+    var auth = Auth()
+
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     
     var generation: Int?
     var schoolId: String?
-    var phoneNumber = ""
 
     public init() {}
+    
+    public struct Auth: Equatable {
+      var phoneNumber = ""
+      var verifyId = ""
+      var oneTimeCode = ""
+      var isActivityIndicatorVisible = false
+    }
   }
 
   public enum Action: Equatable {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
+    case alert(PresentationAction<Alert>)
     
     case onTask
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
     
     case genderChanged(God.Gender)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
   
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
@@ -64,8 +79,8 @@ public struct OnboardReducer: Reducer {
       case gradeSetting(GradeSettingReducer.State = .init())
       case schoolSetting(SchoolSettingReducer.State = .init())
       case findFriend(FindFriendReducer.State = .init())
-      case phoneNumber(PhoneNumberReducer.State = .init())
-      case oneTimeCode(OneTimeCodeReducer.State)
+      case phoneNumber(PhoneNumberAuthReducer.State)
+      case oneTimeCode(PhoneNumberAuthReducer.State)
       case firstNameSetting(FirstNameSettingReducer.State = .init())
       case lastNameSetting(LastNameSettingReducer.State = .init())
       case usernameSetting(UsernameSettingReducer.State = .init())
@@ -79,8 +94,8 @@ public struct OnboardReducer: Reducer {
       case gradeSetting(GradeSettingReducer.Action)
       case schoolSetting(SchoolSettingReducer.Action)
       case findFriend(FindFriendReducer.Action)
-      case phoneNumber(PhoneNumberReducer.Action)
-      case oneTimeCode(OneTimeCodeReducer.Action)
+      case phoneNumber(PhoneNumberAuthReducer.Action)
+      case oneTimeCode(PhoneNumberAuthReducer.Action)
       case firstNameSetting(FirstNameSettingReducer.Action)
       case lastNameSetting(LastNameSettingReducer.Action)
       case usernameSetting(UsernameSettingReducer.Action)
@@ -94,8 +109,8 @@ public struct OnboardReducer: Reducer {
       Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingReducer.init)
       Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingReducer.init)
       Scope(state: /State.findFriend, action: /Action.findFriend, child: FindFriendReducer.init)
-      Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberReducer.init)
-      Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: OneTimeCodeReducer.init)
+      Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberAuthReducer.init)
+      Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: PhoneNumberAuthReducer.init)
       Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting, child: FirstNameSettingReducer.init)
       Scope(state: /State.lastNameSetting, action: /Action.lastNameSetting, child: LastNameSettingReducer.init)
       Scope(state: /State.usernameSetting, action: /Action.usernameSetting, child: UsernameSettingReducer.init)
@@ -195,5 +210,6 @@ public struct OnboardView: View {
     }
     .tint(Color.white)
     .task { await store.send(.onTask).finish() }
+    .alert(store: store.scope(state: \.$alert, action: OnboardReducer.Action.alert))
   }
 }

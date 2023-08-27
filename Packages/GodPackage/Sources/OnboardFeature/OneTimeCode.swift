@@ -3,131 +3,10 @@ import FirebaseAuth
 import FirebaseAuthClient
 import SwiftUI
 
-public struct OneTimeCodeReducer: Reducer {
-  public init() {}
-
-  public struct State: Equatable {
-    var oneTimeCode = ""
-    var verifyID: String
-    @PresentationState var alert: AlertState<Action.Alert>?
-
-    public init(verifyID: String) {
-      self.verifyID = verifyID
-    }
-  }
-
-  public enum Action: Equatable {
-    case onTask
-    case changeOneTimeCode(String)
-    case resendButtonTapped
-    case verifyResponse(TaskResult<String?>)
-    case nextButtonTapped
-    case signInResponse(TaskResult<AuthDataResult?>)
-    case alert(PresentationAction<Alert>)
-    case delegate(Delegate)
-
-    public enum Alert: Equatable {
-      case confirmOkay
-    }
-
-    public enum Delegate: Equatable {
-      case nextScreen
-    }
-  }
-
-  @Dependency(\.firebaseAuth) var firebaseAuth
-  @Dependency(\.dismiss) var dismiss
-
-  public var body: some ReducerOf<Self> {
-    Reduce { state, action in
-      switch action {
-      case .onTask:
-        return .none
-
-      case let .changeOneTimeCode(oneTimeCode):
-        state.oneTimeCode = oneTimeCode
-        return .none
-
-      case .resendButtonTapped:
-        let formatNumber = ""
-        return .run { send in
-          await send(
-            .verifyResponse(
-              TaskResult {
-                try await firebaseAuth.verifyPhoneNumber(formatNumber)
-              }
-            )
-          )
-        }
-      case let .verifyResponse(.success(.some(id))):
-        state.verifyID = id
-        return .none
-
-      case .verifyResponse(.success(.none)):
-        print("verify response is null")
-        return .none
-
-      case let .verifyResponse(.failure(error)):
-        state.alert = AlertState {
-          TextState("Error")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState(error.localizedDescription)
-        }
-        return .none
-
-      case .nextButtonTapped:
-        let credential = firebaseAuth.credential(state.verifyID, state.oneTimeCode)
-        return .run { send in
-          await send(
-            .signInResponse(
-              TaskResult {
-                try await firebaseAuth.signIn(credential)
-              }
-            )
-          )
-        }
-      case let .signInResponse(.success(.some(result))):
-        print(result)
-        return .run { send in
-          let idToken = try await result.user.getIDToken()
-          print("FIREBASE ID TOKEN: \(idToken)")
-          await send(.delegate(.nextScreen))
-        }
-      case .signInResponse(.success(.none)):
-        print("sign in is null")
-        return .none
-      case let .signInResponse(.failure(error)):
-        state.alert = AlertState {
-          TextState("Error")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState(error.localizedDescription)
-        }
-        return .none
-      case .alert(.presented(.confirmOkay)):
-        return .run { _ in
-          await dismiss()
-        }
-      case .alert:
-        return .none
-      case .delegate:
-        return .none
-      }
-    }
-  }
-}
-
 public struct OneTimeCodeView: View {
-  let store: StoreOf<OneTimeCodeReducer>
+  let store: StoreOf<PhoneNumberAuthReducer>
 
-  public init(store: StoreOf<OneTimeCodeReducer>) {
+  public init(store: StoreOf<PhoneNumberAuthReducer>) {
     self.store = store
   }
 
@@ -149,7 +28,7 @@ public struct OneTimeCodeView: View {
             "Code",
             text: viewStore.binding(
               get: \.oneTimeCode,
-              send: OneTimeCodeReducer.Action.changeOneTimeCode
+              send: PhoneNumberAuthReducer.Action.changeOneTimeCode
             )
           )
           .font(.title)
@@ -164,17 +43,9 @@ public struct OneTimeCodeView: View {
             }
             .bold()
 
-            Button {
-              viewStore.send(.nextButtonTapped)
-            } label: {
-              Text("Next")
-                .bold()
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
+            NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
+              viewStore.send(.nextFromOneTimeCodeButtonTapped)
             }
-            .foregroundColor(Color.godTextPrimary)
-            .background(Color.white)
-            .clipShape(Capsule())
           }
         }
         .padding(.horizontal, 24)
@@ -182,6 +53,7 @@ public struct OneTimeCodeView: View {
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
       }
+      .alert(store: store.scope(state: \.$alert, action: PhoneNumberAuthReducer.Action.alert))
     }
   }
 }
@@ -190,8 +62,8 @@ struct OneTimeCodeViewPreviews: PreviewProvider {
   static var previews: some View {
     OneTimeCodeView(
       store: .init(
-        initialState: OneTimeCodeReducer.State(verifyID: ""),
-        reducer: { OneTimeCodeReducer() }
+        initialState: PhoneNumberAuthReducer.State(),
+        reducer: { PhoneNumberAuthReducer() }
       )
     )
   }

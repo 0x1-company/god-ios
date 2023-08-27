@@ -5,102 +5,10 @@ import PhoneNumberClient
 import PhoneNumberKit
 import SwiftUI
 
-public struct PhoneNumberReducer: Reducer {
-  public init() {}
-
-  public struct State: Equatable {
-    var phoneNumber = ""
-    var isDisabled = true
-    var isActivityIndicatorVisible = false
-    @PresentationState var alert: AlertState<Action.Alert>?
-    public init() {}
-  }
-
-  public enum Action: Equatable {
-    case onTask
-    case changePhoneNumber(String)
-    case nextButtonTapped
-    case verifyResponse(TaskResult<String?>)
-    case alert(PresentationAction<Alert>)
-    case delegate(Delegate)
-
-    public enum Alert: Equatable {
-      case confirmOkay
-    }
-
-    public enum Delegate: Equatable {
-      case numberChanged(String)
-      case nextScreen(verifyID: String)
-    }
-  }
-
-  @Dependency(\.firebaseAuth) var firebaseAuth
-  @Dependency(\.phoneNumberClient) var phoneNumberClient
-
-  public var body: some ReducerOf<Self> {
-    Reduce { state, action in
-      switch action {
-      case .onTask:
-        return .none
-
-      case let .changePhoneNumber(phoneNumber):
-        state.phoneNumber = phoneNumber
-        state.isDisabled = phoneNumber.isEmpty
-        return .run { send in
-          await send(.delegate(.numberChanged(phoneNumber)))
-        }
-
-      case .nextButtonTapped:
-        state.isActivityIndicatorVisible = true
-        return .run { [phoneNumber = state.phoneNumber] send in
-          let formatNumber = try phoneNumberClient.parseFormat(phoneNumber)
-          await send(
-            .verifyResponse(
-              TaskResult {
-                try await firebaseAuth.verifyPhoneNumber(formatNumber)
-              }
-            )
-          )
-        }
-      case let .verifyResponse(.success(.some(id))):
-        return .run { send in
-          await send(.delegate(.nextScreen(verifyID: id)))
-        }
-      case .verifyResponse(.success(.none)):
-        print("verify id is null")
-        return .none
-
-      case let .verifyResponse(.failure(error)):
-        state.alert = AlertState {
-          TextState("Error")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState(error.localizedDescription)
-        }
-        return .none
-
-      case .verifyResponse:
-        print(".verifyResponse")
-        state.isActivityIndicatorVisible = false
-        return .none
-
-      case .alert:
-        return .none
-
-      case .delegate:
-        return .none
-      }
-    }
-  }
-}
-
 public struct PhoneNumberView: View {
-  let store: StoreOf<PhoneNumberReducer>
+  let store: StoreOf<PhoneNumberAuthReducer>
 
-  public init(store: StoreOf<PhoneNumberReducer>) {
+  public init(store: StoreOf<PhoneNumberAuthReducer>) {
     self.store = store
   }
 
@@ -120,7 +28,7 @@ public struct PhoneNumberView: View {
             "Phone Number",
             text: viewStore.binding(
               get: \.phoneNumber,
-              send: PhoneNumberReducer.Action.changePhoneNumber
+              send: PhoneNumberAuthReducer.Action.changePhoneNumber
             )
           )
           .font(.title)
@@ -133,10 +41,10 @@ public struct PhoneNumberView: View {
           Spacer()
 
           NextButton(
-            isLoading: viewStore.isActivityIndicatorVisible,
-            isDisabled: viewStore.isDisabled
+            isLoading: false,
+            isDisabled: false
           ) {
-            viewStore.send(.nextButtonTapped)
+            viewStore.send(.nextFromPhoneNumberButtonTapped)
           }
         }
         .padding(.horizontal, 24)
@@ -145,7 +53,7 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
-      .alert(store: store.scope(state: \.$alert, action: PhoneNumberReducer.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: PhoneNumberAuthReducer.Action.alert))
     }
   }
 }
@@ -154,8 +62,8 @@ struct PhoneNumberViewPreviews: PreviewProvider {
   static var previews: some View {
     PhoneNumberView(
       store: .init(
-        initialState: PhoneNumberReducer.State(),
-        reducer: { PhoneNumberReducer() }
+        initialState: PhoneNumberAuthReducer.State(),
+        reducer: { PhoneNumberAuthReducer() }
       )
     )
   }

@@ -21,7 +21,7 @@ public struct OnboardPathLogic: Reducer {
         if generation != nil {
           state.path.append(.schoolSetting())
         } else if skipFindFriend() {
-          state.path.append(.phoneNumber())
+          state.path.append(.phoneNumber(state.phoneNumberAuth))
         } else {
           state.path.append(.findFriend())
         }
@@ -31,25 +31,21 @@ public struct OnboardPathLogic: Reducer {
         state.schoolId = schoolId
 
         if skipFindFriend() {
-          state.path.append(.phoneNumber())
+          state.path.append(.phoneNumber(state.phoneNumberAuth))
         } else {
           state.path.append(.findFriend())
         }
         return .none
         
       case .findFriend(.delegate(.nextScreen)):
-        state.path.append(.phoneNumber())
+        state.path.append(.phoneNumber(state.phoneNumberAuth))
+        return .none
+
+      case .phoneNumber(.delegate(.nextScreenFromPhoneNumber)):
+        state.path.append(.oneTimeCode(state.phoneNumberAuth))
         return .none
         
-      case let .phoneNumber(.delegate(.numberChanged(number))):
-        state.phoneNumber = number
-        return .none
-        
-      case let .phoneNumber(.delegate(.nextScreen(verifyID))):
-        state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
-        return .none
-        
-      case .oneTimeCode(.delegate(.nextScreen)):
+      case .oneTimeCode(.delegate(.nextScreenFromOneTimeCode)):
         state.path.append(.firstNameSetting())
         return .none
         
