@@ -5,10 +5,44 @@ import PhoneNumberClient
 import PhoneNumberKit
 import SwiftUI
 
-public struct PhoneNumberView: View {
-  let store: StoreOf<PhoneNumberAuthReducer>
+public struct PhoneNumberReducer: Reducer {
+  public struct State: Equatable {
+    var phoneNumber = ""
+    public init() {}
+  }
+  
+  public enum Action: Equatable {
+    case nextButtonTapped
+    case changePhoneNumber(String)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case nextScreen
+      case changePhoneNumber(String)
+    }
+  }
+  
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
+    switch action {
+    case .nextButtonTapped:
+      return .run { send in
+        await send(.delegate(.nextScreen))
+      }
+    case let .changePhoneNumber(number):
+      state.phoneNumber = number
+      return .run { send in
+        await send(.delegate(.changePhoneNumber(number)))
+      }
+    case .delegate:
+      return .none
+    }
+  }
+}
 
-  public init(store: StoreOf<PhoneNumberAuthReducer>) {
+public struct PhoneNumberView: View {
+  let store: StoreOf<PhoneNumberReducer>
+
+  public init(store: StoreOf<PhoneNumberReducer>) {
     self.store = store
   }
 
@@ -28,7 +62,7 @@ public struct PhoneNumberView: View {
             "Phone Number",
             text: viewStore.binding(
               get: \.phoneNumber,
-              send: PhoneNumberAuthReducer.Action.changePhoneNumber
+              send: PhoneNumberReducer.Action.changePhoneNumber
             )
           )
           .font(.title)
@@ -44,7 +78,7 @@ public struct PhoneNumberView: View {
             isLoading: false,
             isDisabled: false
           ) {
-            viewStore.send(.nextFromPhoneNumberButtonTapped)
+            viewStore.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
@@ -53,7 +87,6 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
-      .alert(store: store.scope(state: \.$alert, action: PhoneNumberAuthReducer.Action.alert))
     }
   }
 }
@@ -62,8 +95,8 @@ struct PhoneNumberViewPreviews: PreviewProvider {
   static var previews: some View {
     PhoneNumberView(
       store: .init(
-        initialState: PhoneNumberAuthReducer.State(),
-        reducer: { PhoneNumberAuthReducer() }
+        initialState: PhoneNumberReducer.State(),
+        reducer: { PhoneNumberReducer() }
       )
     )
   }

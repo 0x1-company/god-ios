@@ -3,10 +3,52 @@ import FirebaseAuth
 import FirebaseAuthClient
 import SwiftUI
 
-public struct OneTimeCodeView: View {
-  let store: StoreOf<PhoneNumberAuthReducer>
+public struct OneTimeCodeReducer: Reducer {
+  public struct State: Equatable {
+    var oneTimeCode = ""
+    var isActivityIndicatorVisible = false
 
-  public init(store: StoreOf<PhoneNumberAuthReducer>) {
+    public init() {}
+  }
+  
+  public enum Action: Equatable {
+    case resendButtonTapped
+    case nextButtonTapped
+    case changeOneTimeCode(String)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case changeOneTimeCode(String)
+      case resend
+      case send
+    }
+  }
+  
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
+    switch action {
+    case .resendButtonTapped:
+      return .run { send in
+        await send(.delegate(.resend))
+      }
+    case .nextButtonTapped:
+      return .run { send in
+        await send(.delegate(.send))
+      }
+    case let .changeOneTimeCode(code):
+      state.oneTimeCode = code
+      return .run { send in
+        await send(.delegate(.changeOneTimeCode(code)))
+      }
+    case .delegate:
+      return .none
+    }
+  }
+}
+
+public struct OneTimeCodeView: View {
+  let store: StoreOf<OneTimeCodeReducer>
+
+  public init(store: StoreOf<OneTimeCodeReducer>) {
     self.store = store
   }
 
@@ -28,7 +70,7 @@ public struct OneTimeCodeView: View {
             "Code",
             text: viewStore.binding(
               get: \.oneTimeCode,
-              send: PhoneNumberAuthReducer.Action.changeOneTimeCode
+              send: OneTimeCodeReducer.Action.changeOneTimeCode
             )
           )
           .font(.title)
@@ -44,7 +86,7 @@ public struct OneTimeCodeView: View {
             .bold()
 
             NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
-              viewStore.send(.nextFromOneTimeCodeButtonTapped)
+              viewStore.send(.nextButtonTapped)
             }
           }
         }
@@ -53,7 +95,6 @@ public struct OneTimeCodeView: View {
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
       }
-      .alert(store: store.scope(state: \.$alert, action: PhoneNumberAuthReducer.Action.alert))
     }
   }
 }
@@ -62,8 +103,8 @@ struct OneTimeCodeViewPreviews: PreviewProvider {
   static var previews: some View {
     OneTimeCodeView(
       store: .init(
-        initialState: PhoneNumberAuthReducer.State(),
-        reducer: { PhoneNumberAuthReducer() }
+        initialState: OneTimeCodeReducer.State(),
+        reducer: { OneTimeCodeReducer() }
       )
     )
   }
