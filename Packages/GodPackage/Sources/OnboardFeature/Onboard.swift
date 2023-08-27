@@ -11,6 +11,8 @@ public struct OnboardReducer: Reducer {
     var welcome = WelcomeReducer.State()
     var path = StackState<Path.State>()
     
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    
     var generation: Int?
     var schoolId: String?
     var phoneNumber = ""
@@ -22,6 +24,9 @@ public struct OnboardReducer: Reducer {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
     
+    case onTask
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
+    
     case genderChanged(God.Gender)
   }
   
@@ -30,6 +35,7 @@ public struct OnboardReducer: Reducer {
   public var body: some Reducer<State, Action> {
     GenderSettingLogic()
     OnboardPathLogic()
+    OnboardStreamLogic()
     self.core
   }
 
@@ -188,5 +194,6 @@ public struct OnboardView: View {
       }
     }
     .tint(Color.white)
+    .task { await store.send(.onTask).finish() }
   }
 }
