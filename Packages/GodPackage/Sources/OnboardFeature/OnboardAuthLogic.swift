@@ -52,6 +52,7 @@ public struct OnboardAuthLogic: Reducer {
           )
         }
       case .oneTimeCode(.delegate(.send)):
+        state.auth.isActivityIndicatorVisible = true
         return .run { [state] send in
           let verifyId = state.auth.verifyId
           let oneTimeCode = state.auth.oneTimeCode
@@ -100,6 +101,7 @@ public struct OnboardAuthLogic: Reducer {
       }
       
     case let .signInResponse(.failure(error)):
+      state.auth.isActivityIndicatorVisible = false
       state.alert = AlertState {
         TextState("Error")
       } message: {
@@ -108,8 +110,6 @@ public struct OnboardAuthLogic: Reducer {
       return .none
       
     case .createUserResponse(.success):
-      state.path.append(.firstNameSetting())
-
       return .run { [state] send in
         let schoolId: GraphQLNullable<String> = state.schoolId ?? nil
         let generation: GraphQLNullable<Int> = state.generation ?? nil
@@ -127,7 +127,13 @@ public struct OnboardAuthLogic: Reducer {
         )
       }
     case .createUserResponse(.failure):
+      state.auth.isActivityIndicatorVisible = false
       state.path.removeAll()
+      return .none
+      
+    case .updateProfileResponse:
+      state.auth.isActivityIndicatorVisible = false
+      state.path.append(.firstNameSetting())
       return .none
 
     default:

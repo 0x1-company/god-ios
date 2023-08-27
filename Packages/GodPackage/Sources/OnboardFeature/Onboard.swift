@@ -140,86 +140,99 @@ public struct OnboardView: View {
   }
 
   public var body: some View {
-    NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
-      WelcomeView(store: store.scope(state: \.welcome, action: OnboardReducer.Action.welcome))
-    } destination: { store in
-      switch store {
-      case .gradeSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.gradeSetting,
-          action: OnboardReducer.Path.Action.gradeSetting,
-          then: GradeSettingView.init(store:)
-        )
-      case .schoolSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.schoolSetting,
-          action: OnboardReducer.Path.Action.schoolSetting,
-          then: SchoolSettingView.init(store:)
-        )
-      case .findFriend:
-        CaseLet(
-          /OnboardReducer.Path.State.findFriend,
-          action: OnboardReducer.Path.Action.findFriend,
-          then: FindFriendView.init(store:)
-        )
-      case .phoneNumber:
-        CaseLet(
-          /OnboardReducer.Path.State.phoneNumber,
-          action: OnboardReducer.Path.Action.phoneNumber,
-          then: PhoneNumberView.init(store:)
-        )
-      case .oneTimeCode:
-        CaseLet(
-          /OnboardReducer.Path.State.oneTimeCode,
-          action: OnboardReducer.Path.Action.oneTimeCode,
-          then: OneTimeCodeView.init(store:)
-        )
-      case .firstNameSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.firstNameSetting,
-          action: OnboardReducer.Path.Action.firstNameSetting,
-          then: FirstNameSettingView.init(store:)
-        )
-      case .lastNameSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.lastNameSetting,
-          action: OnboardReducer.Path.Action.lastNameSetting,
-          then: LastNameSettingView.init(store:)
-        )
-      case .usernameSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.usernameSetting,
-          action: OnboardReducer.Path.Action.usernameSetting,
-          then: UsernameSettingView.init(store:)
-        )
-      case .genderSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.genderSetting,
-          action: OnboardReducer.Path.Action.genderSetting,
-          then: GenderSettingView.init(store:)
-        )
-      case .profilePhotoSetting:
-        CaseLet(
-          /OnboardReducer.Path.State.profilePhotoSetting,
-          action: OnboardReducer.Path.Action.profilePhotoSetting,
-          then: ProfilePhotoSettingView.init(store:)
-        )
-      case .addFriends:
-        CaseLet(
-          /OnboardReducer.Path.State.addFriends,
-          action: OnboardReducer.Path.Action.addFriends,
-          then: AddFriendsView.init(store:)
-        )
-      case .howItWorks:
-        CaseLet(
-          /OnboardReducer.Path.State.howItWorks,
-          action: OnboardReducer.Path.Action.howItWorks,
-          then: HowItWorksView.init(store:)
-        )
+    WithViewStore(store, observe: \.auth) { viewStore in
+      NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
+        WelcomeView(store: store.scope(state: \.welcome, action: OnboardReducer.Action.welcome))
+      } destination: { store in
+        switch store {
+        case .gradeSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.gradeSetting,
+            action: OnboardReducer.Path.Action.gradeSetting,
+            then: GradeSettingView.init(store:)
+          )
+        case .schoolSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.schoolSetting,
+            action: OnboardReducer.Path.Action.schoolSetting,
+            then: SchoolSettingView.init(store:)
+          )
+        case .findFriend:
+          CaseLet(
+            /OnboardReducer.Path.State.findFriend,
+            action: OnboardReducer.Path.Action.findFriend,
+            then: FindFriendView.init(store:)
+          )
+        case .phoneNumber:
+          CaseLet(
+            /OnboardReducer.Path.State.phoneNumber,
+            action: OnboardReducer.Path.Action.phoneNumber,
+            then: PhoneNumberView.init(store:)
+          )
+        case .oneTimeCode:
+          CaseLet(
+            /OnboardReducer.Path.State.oneTimeCode,
+            action: OnboardReducer.Path.Action.oneTimeCode,
+            then: OneTimeCodeView.init(store:)
+          )
+        case .firstNameSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.firstNameSetting,
+            action: OnboardReducer.Path.Action.firstNameSetting,
+            then: FirstNameSettingView.init(store:)
+          )
+        case .lastNameSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.lastNameSetting,
+            action: OnboardReducer.Path.Action.lastNameSetting,
+            then: LastNameSettingView.init(store:)
+          )
+        case .usernameSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.usernameSetting,
+            action: OnboardReducer.Path.Action.usernameSetting,
+            then: UsernameSettingView.init(store:)
+          )
+        case .genderSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.genderSetting,
+            action: OnboardReducer.Path.Action.genderSetting,
+            then: GenderSettingView.init(store:)
+          )
+        case .profilePhotoSetting:
+          CaseLet(
+            /OnboardReducer.Path.State.profilePhotoSetting,
+            action: OnboardReducer.Path.Action.profilePhotoSetting,
+            then: ProfilePhotoSettingView.init(store:)
+          )
+        case .addFriends:
+          CaseLet(
+            /OnboardReducer.Path.State.addFriends,
+            action: OnboardReducer.Path.Action.addFriends,
+            then: AddFriendsView.init(store:)
+          )
+        case .howItWorks:
+          CaseLet(
+            /OnboardReducer.Path.State.howItWorks,
+            action: OnboardReducer.Path.Action.howItWorks,
+            then: HowItWorksView.init(store:)
+          )
+        }
+      }
+      .tint(Color.white)
+      .task { await store.send(.onTask).finish() }
+      .alert(store: store.scope(state: \.$alert, action: OnboardReducer.Action.alert))
+      .overlay {
+        if viewStore.isActivityIndicatorVisible {
+          Color.black.opacity(0.3)
+            .ignoresSafeArea()
+            .overlay {
+              ProgressView()
+                .tint(Color.white)
+                .progressViewStyle(.circular)
+            }
+        }
       }
     }
-    .tint(Color.white)
-    .task { await store.send(.onTask).finish() }
-    .alert(store: store.scope(state: \.$alert, action: OnboardReducer.Action.alert))
   }
 }
