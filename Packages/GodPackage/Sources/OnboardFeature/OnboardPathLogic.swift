@@ -4,6 +4,10 @@ import ContactsClient
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   
+  func skipFindFriend() -> Bool {
+    return .notDetermined != authorizationStatus(.contacts)
+  }
+  
   public func reduce(
     into state: inout OnboardReducer.State,
     action: OnboardReducer.Action
@@ -13,16 +17,23 @@ public struct OnboardPathLogic: Reducer {
       switch action {
       case let .gradeSetting(.delegate(.nextScreen(generation))):
         state.generation = generation
-        state.path.append(.schoolSetting())
+        
+        if generation != nil {
+          state.path.append(.schoolSetting())
+        } else if skipFindFriend() {
+          state.path.append(.phoneNumber())
+        } else {
+          state.path.append(.findFriend())
+        }
         return .none
         
       case let .schoolSetting(.delegate(.nextScreen(schoolId))):
         state.schoolId = schoolId
 
-        if case .notDetermined = authorizationStatus(.contacts) {
-          state.path.append(.findFriend())
-        } else {
+        if skipFindFriend() {
           state.path.append(.phoneNumber())
+        } else {
+          state.path.append(.findFriend())
         }
         return .none
         
