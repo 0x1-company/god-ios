@@ -25,14 +25,12 @@ public struct PhoneNumberReducer: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .nextButtonTapped:
-      return .run { send in
-        await send(.delegate(.nextScreen))
-      }
+      return .send(.delegate(.nextScreen))
+
     case let .changePhoneNumber(number):
       state.phoneNumber = number
-      return .run { send in
-        await send(.delegate(.changePhoneNumber(number)))
-      }
+      return .send(.delegate(.changePhoneNumber(number)))
+
     case .delegate:
       return .none
     }

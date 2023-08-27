@@ -13,6 +13,10 @@ public struct OnboardPathLogic: Reducer {
     action: OnboardReducer.Action
   ) -> Effect<OnboardReducer.Action> {
     switch action {
+    case let .pathInsert(value):
+      state.path.append(value)
+      return .none
+
     case let .path(.element(_, action)):
       switch action {
       case let .gradeSetting(.delegate(.nextScreen(generation))):
@@ -59,9 +63,7 @@ public struct OnboardPathLogic: Reducer {
 
       case let .genderSetting(.delegate(.nextScreen(gender))):
         state.path.append(.profilePhotoSetting())
-        return .run { send in
-          await send(.genderChanged(gender))
-        }
+        return .send(.genderChanged(gender))
 
       case .profilePhotoSetting(.delegate(.nextScreen)):
         state.path.append(.addFriends())

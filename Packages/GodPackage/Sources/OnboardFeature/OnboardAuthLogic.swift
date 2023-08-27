@@ -77,6 +77,10 @@ public struct OnboardAuthLogic: Reducer {
     case let .verifyResponse(.failure(error)):
       state.alert = AlertState {
         TextState("Error")
+      } actions: {
+        ButtonState(action: .send(.confirmOkay, animation: .default)) {
+          TextState("OK")
+        }
       } message: {
         TextState(error.localizedDescription)
       }
@@ -104,6 +108,10 @@ public struct OnboardAuthLogic: Reducer {
       state.auth.isActivityIndicatorVisible = false
       state.alert = AlertState {
         TextState("Error")
+      } actions: {
+        ButtonState(action: .send(.confirmOkay, animation: .default)) {
+          TextState("OK")
+        }
       } message: {
         TextState(error.localizedDescription)
       }
@@ -133,7 +141,12 @@ public struct OnboardAuthLogic: Reducer {
       
     case .updateProfileResponse:
       state.auth.isActivityIndicatorVisible = false
-      state.path.append(.firstNameSetting())
+      return .send(.pathInsert(.firstNameSetting()), animation: .default)
+      
+    case .alert(.presented(.confirmOkay)):
+      guard let id = state.path.ids.last
+      else { return .none }
+      state.path.pop(from: id)
       return .none
 
     default:

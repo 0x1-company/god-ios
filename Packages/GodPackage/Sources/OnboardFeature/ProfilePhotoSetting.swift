@@ -24,17 +24,14 @@ public struct ProfilePhotoSettingReducer: Reducer {
     Reduce { _, action in
       switch action {
       case .skipButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
+        return .send(.delegate(.nextScreen))
+
       case .choosePhotoButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
+        return .send(.delegate(.nextScreen))
+
       case .takePhotoButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
+        return .send(.delegate(.nextScreen))
+
       case .delegate:
         return .none
       }

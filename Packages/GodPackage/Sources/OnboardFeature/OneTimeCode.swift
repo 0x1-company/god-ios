@@ -32,14 +32,11 @@ public struct OneTimeCodeReducer: Reducer {
         await send(.delegate(.resend), animation: .default)
       }
     case .nextButtonTapped:
-      return .run { send in
-        await send(.delegate(.send), animation: .default)
-      }
+      return .send(.delegate(.send))
+
     case let .changeOneTimeCode(code):
       state.oneTimeCode = code
-      return .run { send in
-        await send(.delegate(.changeOneTimeCode(code)), animation: .default)
-      }
+      return .send(.delegate(.changeOneTimeCode(code)))
     case .delegate:
       return .none
     }

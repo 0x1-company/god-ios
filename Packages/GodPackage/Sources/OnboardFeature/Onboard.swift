@@ -34,6 +34,7 @@ public struct OnboardReducer: Reducer {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
     case alert(PresentationAction<Alert>)
+    case pathInsert(Path.State)
     
     case onTask
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)

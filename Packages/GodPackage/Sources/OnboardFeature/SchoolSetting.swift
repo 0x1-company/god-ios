@@ -32,9 +32,7 @@ public struct SchoolSettingReducer: Reducer {
         state.schoolHelp = .init()
         return .none
       case .schoolButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen(id: nil)))
-        }
+        return .send(.delegate(.nextScreen(id: nil)))
       case .schoolHelp:
         return .none
       case .delegate:
