@@ -23,8 +23,7 @@ public struct OnboardStreamLogic: Reducer {
       state.currentUser = user
       return .none
       
-    case let .currentUserResponse(.failure(error)):
-      print(error)
+    case .currentUserResponse(.failure):
       return .none
       
     default:

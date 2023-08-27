@@ -122,17 +122,8 @@ public struct OnboardAuthLogic: Reducer {
           )
         )
       }
-      
-    case let .createUserResponse(.failure(error)):
-      print(error)
+    case .createUserResponse(.failure):
       state.path.removeAll()
-      return .none
-      
-    case .updateProfileResponse(.success):
-      return .none
-
-    case let .updateProfileResponse(.failure(error)):
-      print(error)
       return .none
 
     default:

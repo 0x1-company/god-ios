@@ -28,10 +28,6 @@ public struct FirestoreLogic: Reducer {
       state.account.isMaintenance = config.isMaintenance
       return .none
 
-    case let .configResponse(.failure(error)):
-      print(error)
-      return .none
-
     default:
       return .none
     }
