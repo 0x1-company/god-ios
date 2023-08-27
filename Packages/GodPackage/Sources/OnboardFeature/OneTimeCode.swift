@@ -2,124 +2,168 @@ import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthClient
 import SwiftUI
+import UserDefaultsClient
+import PhoneNumberClient
+import God
+import GodClient
 
 public struct OneTimeCodeReducer: Reducer {
-  public init() {}
-
   public struct State: Equatable {
+    var phoneNumber = ""
     var oneTimeCode = ""
-    var verifyID: String
+    var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
 
-    public init(verifyID: String) {
-      self.verifyID = verifyID
-    }
+    public init() {}
   }
-
+  
   public enum Action: Equatable {
     case onTask
-    case changeOneTimeCode(String)
     case resendButtonTapped
-    case verifyResponse(TaskResult<String?>)
     case nextButtonTapped
+    case changeOneTimeCode(String)
+    case verifyResponse(TaskResult<String?>)
     case signInResponse(TaskResult<AuthDataResult?>)
+    case createUserResponse(TaskResult<God.CreateUserMutation.Data>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-
+    
+    public enum Delegate: Equatable {
+      case nextScreen
+      case popToRoot
+    }
+    
     public enum Alert: Equatable {
       case confirmOkay
     }
-
-    public enum Delegate: Equatable {
-      case nextFirstNameSetting
-    }
   }
 
-  @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.dismiss) var dismiss
-
-  public var body: some ReducerOf<Self> {
-    Reduce { state, action in
-      switch action {
-      case .onTask:
-        return .none
-
-      case let .changeOneTimeCode(oneTimeCode):
-        state.oneTimeCode = oneTimeCode
-        return .none
-
-      case .resendButtonTapped:
-        let formatNumber = ""
-        return .run { send in
-          await send(
-            .verifyResponse(
-              TaskResult {
-                try await firebaseAuth.verifyPhoneNumber(formatNumber)
-              }
-            )
-          )
-        }
-      case let .verifyResponse(.success(.some(id))):
-        state.verifyID = id
-        return .none
-
-      case .verifyResponse(.success(.none)):
-        print("verify response is null")
-        return .none
-
-      case let .verifyResponse(.failure(error)):
-        state.alert = AlertState {
-          TextState("Error")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState(error.localizedDescription)
-        }
-        return .none
-
-      case .nextButtonTapped:
-        let credential = firebaseAuth.credential(state.verifyID, state.oneTimeCode)
-        return .run { send in
-          await send(
-            .signInResponse(
-              TaskResult {
-                try await firebaseAuth.signIn(credential)
-              }
-            )
-          )
-        }
-      case let .signInResponse(.success(.some(result))):
-        print(result)
-        return .run { send in
-          let idToken = try await result.user.getIDToken()
-          print("FIREBASE ID TOKEN: \(idToken)")
-          await send(.delegate(.nextFirstNameSetting))
-        }
-      case .signInResponse(.success(.none)):
-        print("sign in is null")
-        return .none
-      case let .signInResponse(.failure(error)):
-        state.alert = AlertState {
-          TextState("Error")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState(error.localizedDescription)
-        }
-        return .none
-      case .alert(.presented(.confirmOkay)):
+  @Dependency(\.userDefaults) var userDefaults
+  @Dependency(\.phoneNumberClient) var phoneNumberClient
+  @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.godClient) var godClient
+  
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
+    switch action {
+    case .onTask:
+      guard let number = userDefaults.stringForKey("format-phone-number") else {
         return .run { _ in
           await dismiss()
         }
-      case .alert:
-        return .none
-      case .delegate:
-        return .none
       }
+      state.phoneNumber = number
+      return .none
+
+    case .resendButtonTapped:
+      state.oneTimeCode = ""
+      return .run { [state] send in
+        await send(
+          .verifyResponse(
+            TaskResult {
+              try await firebaseAuth.verifyPhoneNumber(state.phoneNumber)
+            }
+          )
+        )
+      }
+    case .nextButtonTapped:
+      let oneTimeCode = state.oneTimeCode
+      guard let id = userDefaults.stringForKey("verify-id") else {
+        return .run { _ in
+          await dismiss()
+        }
+      }
+      let credential = firebaseAuth.credential(id, oneTimeCode)
+      state.isActivityIndicatorVisible = true
+      return .run { send in
+        await send(
+          .signInResponse(
+            TaskResult {
+              try await firebaseAuth.signIn(credential)
+            }
+          )
+        )
+      }
+    case let .verifyResponse(.success(id)):
+      guard let verifyId = id else {
+        return .run { _ in
+          await dismiss()
+        }
+      }
+      return .run { _ in
+        await userDefaults.setString(verifyId, "verify-id")
+      }
+    case let .verifyResponse(.failure(error)):
+      state.alert = AlertState {
+        TextState("Error")
+      } actions: {
+        ButtonState(action: .send(.confirmOkay, animation: .default)) {
+          TextState("OK")
+        }
+      } message: {
+        TextState(error.localizedDescription)
+      }
+      return .none
+
+    case let .changeOneTimeCode(code):
+      state.oneTimeCode = code
+      return .none
+      
+    case .signInResponse(.success):
+      guard let number = userDefaults.stringForKey("format-phone-number") else {
+        state.isActivityIndicatorVisible = false
+        return .run { _ in
+          await dismiss()
+        }
+      }
+      let phoneNumber = God.PhoneNumberInput(
+        countryCode: "+81",
+        numbers: number.replacing("+81", with: "")
+      )
+      let input = God.CreateUserInput(phoneNumber: phoneNumber)
+      return .run { send in
+        await send(
+          .createUserResponse(
+            TaskResult {
+              try await godClient.createUser(input)
+            }
+          )
+        )
+      }
+    case let .signInResponse(.failure(error)):
+      state.isActivityIndicatorVisible = false
+      state.alert = AlertState {
+        TextState("Error")
+      } actions: {
+        ButtonState(action: .send(.confirmOkay, animation: .default)) {
+          TextState("OK")
+        }
+      } message: {
+        TextState(error.localizedDescription)
+      }
+      return .none
+      
+    case .createUserResponse(.success):
+      state.isActivityIndicatorVisible = false
+//      return .run(priority: .high) { @MainActor send in
+      return .run { @MainActor send in
+        send(.delegate(.nextScreen), animation: .default)
+      }
+      
+    case .createUserResponse(.failure):
+      state.isActivityIndicatorVisible = false
+      return .send(.delegate(.popToRoot), animation: .default)
+      
+    case .alert(.presented(.confirmOkay)):
+      return .run { _ in
+        await dismiss()
+      }
+      
+    case .alert:
+      return .none
+
+    case .delegate:
+      return .none
     }
   }
 }
@@ -164,17 +208,9 @@ public struct OneTimeCodeView: View {
             }
             .bold()
 
-            Button {
+            NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
               viewStore.send(.nextButtonTapped)
-            } label: {
-              Text("Next")
-                .bold()
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
             }
-            .foregroundColor(Color.godTextPrimary)
-            .background(Color.white)
-            .clipShape(Capsule())
           }
         }
         .padding(.horizontal, 24)
@@ -182,6 +218,7 @@ public struct OneTimeCodeView: View {
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
       }
+      .alert(store: store.scope(state: \.$alert, action: OneTimeCodeReducer.Action.alert))
     }
   }
 }
@@ -190,7 +227,7 @@ struct OneTimeCodeViewPreviews: PreviewProvider {
   static var previews: some View {
     OneTimeCodeView(
       store: .init(
-        initialState: OneTimeCodeReducer.State(verifyID: ""),
+        initialState: OneTimeCodeReducer.State(),
         reducer: { OneTimeCodeReducer() }
       )
     )

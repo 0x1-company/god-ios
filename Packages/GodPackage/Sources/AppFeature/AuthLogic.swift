@@ -24,8 +24,7 @@ public struct AuthLogic: Reducer {
       state.account.authUser = authUser
       return .none
 
-    case let .authUserResponse(.failure(error)):
-      print(error)
+    case .authUserResponse(.failure):
       state.account.authUser = nil
       return .none
 

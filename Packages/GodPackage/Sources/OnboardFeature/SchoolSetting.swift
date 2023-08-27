@@ -19,7 +19,7 @@ public struct SchoolSettingReducer: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextPhoneNumber
+      case nextScreen(id: String?)
     }
   }
 
@@ -32,9 +32,7 @@ public struct SchoolSettingReducer: Reducer {
         state.schoolHelp = .init()
         return .none
       case .schoolButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextPhoneNumber))
-        }
+        return .send(.delegate(.nextScreen(id: nil)))
       case .schoolHelp:
         return .none
       case .delegate:

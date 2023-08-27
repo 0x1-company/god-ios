@@ -1,6 +1,7 @@
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import God
 
 public struct GenderSettingReducer: Reducer {
   public init() {}
@@ -12,14 +13,12 @@ public struct GenderSettingReducer: Reducer {
 
   public enum Action: Equatable {
     case infoButtonTapped
-    case boyButtonTapped
-    case girlButtonTapped
-    case nonBinaryButtonTapped
+    case genderButtonTapped(God.Gender)
     case help(PresentationAction<GenderHelpReducer.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextProfilePhotoSetting
+      case nextScreen(God.Gender)
     }
   }
 
@@ -30,18 +29,11 @@ public struct GenderSettingReducer: Reducer {
         state.help = .init()
         return .none
 
-      case .boyButtonTapped:
+      case let .genderButtonTapped(gender):
         return .run { send in
-          await send(.delegate(.nextProfilePhotoSetting))
+          await send(.delegate(.nextScreen(gender)))
         }
-      case .girlButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextProfilePhotoSetting))
-        }
-      case .nonBinaryButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextProfilePhotoSetting))
-        }
+
       case .help:
         return .none
 
@@ -75,15 +67,15 @@ public struct GenderSettingView: View {
 
           HStack(spacing: 24) {
             GenderChoiceView("Boy") {
-              viewStore.send(.boyButtonTapped)
+              viewStore.send(.genderButtonTapped(.male))
             }
             GenderChoiceView("Girl") {
-              viewStore.send(.girlButtonTapped)
+              viewStore.send(.genderButtonTapped(.female))
             }
           }
           HStack(spacing: 24) {
             GenderChoiceView("Non-binary") {
-              viewStore.send(.nonBinaryButtonTapped)
+              viewStore.send(.genderButtonTapped(.other))
             }
           }
         }

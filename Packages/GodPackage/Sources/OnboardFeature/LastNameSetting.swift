@@ -19,7 +19,7 @@ public struct LastNameSettingReducer: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextUsernameSetting
+      case nextScreen
     }
   }
 
@@ -48,7 +48,7 @@ public struct LastNameSettingReducer: Reducer {
             uid: uid,
             field: .init(lastName: lastName)
           )
-          await send(.delegate(.nextUsernameSetting))
+          await send(.delegate(.nextScreen))
         }
       case .delegate:
         return .none

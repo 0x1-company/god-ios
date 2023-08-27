@@ -1,4 +1,5 @@
 import Colors
+import UserDefaultsClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import PhoneNumberClient
@@ -6,90 +7,79 @@ import PhoneNumberKit
 import SwiftUI
 
 public struct PhoneNumberReducer: Reducer {
-  public init() {}
-
   public struct State: Equatable {
     var phoneNumber = ""
-    var isDisabled = true
-    var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
-
+  
   public enum Action: Equatable {
-    case onTask
-    case changePhoneNumber(String)
     case nextButtonTapped
+    case changePhoneNumber(String)
     case verifyResponse(TaskResult<String?>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-
+    
+    public enum Delegate: Equatable {
+      case nextScreen
+    }
+    
     public enum Alert: Equatable {
       case confirmOkay
     }
-
-    public enum Delegate: Equatable {
-      case nextOneTimeCode(verifyID: String)
-    }
   }
-
-  @Dependency(\.firebaseAuth) var firebaseAuth
+  
+  @Dependency(\.userDefaults) var userDefaultsClient
   @Dependency(\.phoneNumberClient) var phoneNumberClient
-
-  public var body: some ReducerOf<Self> {
-    Reduce { state, action in
-      switch action {
-      case .onTask:
-        return .none
-
-      case let .changePhoneNumber(phoneNumber):
-        state.phoneNumber = phoneNumber
-        state.isDisabled = phoneNumber.isEmpty
-        return .none
-
-      case .nextButtonTapped:
-        state.isActivityIndicatorVisible = true
-        return .run { [phoneNumber = state.phoneNumber] send in
-          let formatNumber = try phoneNumberClient.parseFormat(phoneNumber)
-          await send(
-            .verifyResponse(
-              TaskResult {
-                try await firebaseAuth.verifyPhoneNumber(formatNumber)
-              }
-            )
+  @Dependency(\.firebaseAuth.verifyPhoneNumber) var verifyPhoneNumber
+  
+  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
+    switch action {
+    case .nextButtonTapped:
+      return .run { [state] send in
+        async let next: Void = send(.delegate(.nextScreen), animation: .default)
+        
+        let format = try phoneNumberClient.parseFormat(state.phoneNumber)
+        async let save: Void = await userDefaultsClient.setString(format, "format-phone-number")
+        async let verify: Void = await send(
+          .verifyResponse(
+            TaskResult {
+              try await verifyPhoneNumber(format)
+            }
           )
-        }
-      case let .verifyResponse(.success(.some(id))):
-        return .run { send in
-          await send(.delegate(.nextOneTimeCode(verifyID: id)))
-        }
-      case .verifyResponse(.success(.none)):
-        print("verify id is null")
-        return .none
-
-      case let .verifyResponse(.failure(error)):
-        state.alert = AlertState {
-          TextState("Error")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState(error.localizedDescription)
-        }
-        return .none
-
-      case .verifyResponse:
-        print(".verifyResponse")
-        state.isActivityIndicatorVisible = false
-        return .none
-
-      case .alert:
-        return .none
-
-      case .delegate:
-        return .none
+        )
+        _ = await (next, save, verify)
       }
+    case let .changePhoneNumber(number):
+      state.phoneNumber = number
+      return .none
+      
+    case let .verifyResponse(.success(id)):
+      let verifyId = id ?? ""
+      return .run { _ in
+        await userDefaultsClient.setString(verifyId, "verify-id")
+      }
+      
+    case let .verifyResponse(.failure(error)):
+      state.alert = AlertState {
+        TextState("Error")
+      } actions: {
+        ButtonState(action: .send(.confirmOkay, animation: .default)) {
+          TextState("OK")
+        }
+      } message: {
+        TextState(error.localizedDescription)
+      }
+      return .none
+      
+    case .alert(.presented(.confirmOkay)):
+      return .none
+      
+    case .alert:
+      return .none
+
+    case .delegate:
+      return .none
     }
   }
 }
@@ -130,8 +120,8 @@ public struct PhoneNumberView: View {
           Spacer()
 
           NextButton(
-            isLoading: viewStore.isActivityIndicatorVisible,
-            isDisabled: viewStore.isDisabled
+            isLoading: false,
+            isDisabled: false
           ) {
             viewStore.send(.nextButtonTapped)
           }
@@ -142,7 +132,6 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
-      .alert(store: store.scope(state: \.$alert, action: PhoneNumberReducer.Action.alert))
     }
   }
 }

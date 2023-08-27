@@ -15,7 +15,7 @@ public struct AddFriendsReducer: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextHowItWorks
+      case nextScreen
     }
   }
 
@@ -27,7 +27,7 @@ public struct AddFriendsReducer: Reducer {
 
       case .nextButtonTapped:
         return .run { send in
-          await send(.delegate(.nextHowItWorks))
+          await send(.delegate(.nextScreen))
         }
       case .delegate:
         return .none

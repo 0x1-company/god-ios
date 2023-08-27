@@ -17,11 +17,13 @@ extension UserDefaultsClient: DependencyKey {
       dataForKey: { defaults().data(forKey: $0) },
       doubleForKey: { defaults().double(forKey: $0) },
       integerForKey: { defaults().integer(forKey: $0) },
+      stringForKey: { defaults().string(forKey: $0) },
       remove: { defaults().removeObject(forKey: $0) },
       setBool: { defaults().set($0, forKey: $1) },
       setData: { defaults().set($0, forKey: $1) },
       setDouble: { defaults().set($0, forKey: $1) },
-      setInteger: { defaults().set($0, forKey: $1) }
+      setInteger: { defaults().set($0, forKey: $1) },
+      setString: { defaults().set($0, forKey: $1) }
     )
   }
 }

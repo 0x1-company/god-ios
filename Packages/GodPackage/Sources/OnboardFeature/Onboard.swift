@@ -1,7 +1,9 @@
 import ComposableArchitecture
-import GenderSettingFeature
 import HowItWorksFeature
 import SwiftUI
+import ContactsClient
+import God
+import FirebaseAuth
 
 public struct OnboardReducer: Reducer {
   public init() {}
@@ -9,15 +11,42 @@ public struct OnboardReducer: Reducer {
   public struct State: Equatable {
     var welcome = WelcomeReducer.State()
     var path = StackState<Path.State>()
+
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    
+    var generation: Int?
+    var schoolId: String?
+
     public init() {}
   }
 
   public enum Action: Equatable {
     case welcome(WelcomeReducer.Action)
     case path(StackAction<Path.State, Path.Action>)
+    case alert(PresentationAction<Alert>)
+    case pathInsert(Path.State)
+    
+    case onTask
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
+    
+    case genderChanged(God.Gender)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
+  }
+  
+  @Dependency(\.contacts.authorizationStatus) var authorizationStatus
+  
+  public var body: some Reducer<State, Action> {
+    GenderSettingLogic()
+    OnboardPathLogic()
+    OnboardStreamLogic()
+    self.core
   }
 
-  public var body: some ReducerOf<Self> {
+  @ReducerBuilder<State, Action>
+  var core: some Reducer<State, Action> {
     Scope(state: \.welcome, action: /Action.welcome) {
       WelcomeReducer()
     }
@@ -27,46 +56,7 @@ public struct OnboardReducer: Reducer {
         state.path.append(.gradeSetting())
         return .none
 
-      case .welcome:
-        return .none
-
-      case let .path(.element(_, action)):
-        switch action {
-        case .gradeSetting(.delegate(.nextSchoolSetting)):
-          state.path.append(.schoolSetting())
-
-        case .schoolSetting(.delegate(.nextPhoneNumber)):
-          state.path.append(.phoneNumber())
-
-        case let .phoneNumber(.delegate(.nextOneTimeCode(verifyID))):
-          state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
-
-        case .oneTimeCode(.delegate(.nextFirstNameSetting)):
-          state.path.append(.firstNameSetting())
-
-        case .firstNameSetting(.delegate(.nextLastNameSetting)):
-          state.path.append(.lastNameSetting())
-
-        case .lastNameSetting(.delegate(.nextUsernameSetting)):
-          state.path.append(.usernameSetting())
-
-        case .usernameSetting(.delegate(.nextGenderSetting)):
-          state.path.append(.genderSetting())
-
-        case .genderSetting(.delegate(.nextProfilePhotoSetting)):
-          state.path.append(.profilePhotoSetting())
-
-        case .profilePhotoSetting(.delegate(.nextAddFriends)):
-          state.path.append(.addFriends())
-
-        case .addFriends(.delegate(.nextHowItWorks)):
-          state.path.append(.howItWorks())
-        default:
-          print(action)
-        }
-        return .none
-
-      case .path:
+      default:
         return .none
       }
     }
@@ -79,8 +69,9 @@ public struct OnboardReducer: Reducer {
     public enum State: Equatable {
       case gradeSetting(GradeSettingReducer.State = .init())
       case schoolSetting(SchoolSettingReducer.State = .init())
+      case findFriend(FindFriendReducer.State = .init())
       case phoneNumber(PhoneNumberReducer.State = .init())
-      case oneTimeCode(OneTimeCodeReducer.State)
+      case oneTimeCode(OneTimeCodeReducer.State = .init())
       case firstNameSetting(FirstNameSettingReducer.State = .init())
       case lastNameSetting(LastNameSettingReducer.State = .init())
       case usernameSetting(UsernameSettingReducer.State = .init())
@@ -93,6 +84,7 @@ public struct OnboardReducer: Reducer {
     public enum Action: Equatable {
       case gradeSetting(GradeSettingReducer.Action)
       case schoolSetting(SchoolSettingReducer.Action)
+      case findFriend(FindFriendReducer.Action)
       case phoneNumber(PhoneNumberReducer.Action)
       case oneTimeCode(OneTimeCodeReducer.Action)
       case firstNameSetting(FirstNameSettingReducer.Action)
@@ -107,6 +99,7 @@ public struct OnboardReducer: Reducer {
     public var body: some ReducerOf<Self> {
       Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingReducer.init)
       Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingReducer.init)
+      Scope(state: /State.findFriend, action: /Action.findFriend, child: FindFriendReducer.init)
       Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberReducer.init)
       Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: OneTimeCodeReducer.init)
       Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting, child: FirstNameSettingReducer.init)
@@ -143,6 +136,12 @@ public struct OnboardView: View {
           /OnboardReducer.Path.State.schoolSetting,
           action: OnboardReducer.Path.Action.schoolSetting,
           then: SchoolSettingView.init(store:)
+        )
+      case .findFriend:
+        CaseLet(
+          /OnboardReducer.Path.State.findFriend,
+          action: OnboardReducer.Path.Action.findFriend,
+          then: FindFriendView.init(store:)
         )
       case .phoneNumber:
         CaseLet(
@@ -201,5 +200,6 @@ public struct OnboardView: View {
       }
     }
     .tint(Color.white)
+    .task { await store.send(.onTask).finish() }
   }
 }
