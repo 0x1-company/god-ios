@@ -1,3 +1,4 @@
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
@@ -58,10 +59,11 @@ public struct GradeHelpSheetView: View {
           Text("OK")
             .frame(height: 56)
             .frame(maxWidth: .infinity)
+            .foregroundColor(.white)
+            .background(Color.godService)
+            .clipShape(Capsule())
         }
-        .foregroundColor(.white)
-        .background(Color.godService)
-        .clipShape(Capsule())
+        .buttonStyle(HoldDownButtonStyle())
       }
       .padding(.horizontal, 24)
       .multilineTextAlignment(.center)
