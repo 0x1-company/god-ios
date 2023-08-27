@@ -46,7 +46,9 @@ public struct PhoneNumberReducer: Reducer {
       case let .changePhoneNumber(phoneNumber):
         state.phoneNumber = phoneNumber
         state.isDisabled = phoneNumber.isEmpty
-        return .none
+        return .run { send in
+          await send(.delegate(.numberChanged(phoneNumber)))
+        }
 
       case .nextButtonTapped:
         state.isActivityIndicatorVisible = true
