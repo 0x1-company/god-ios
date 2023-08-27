@@ -29,6 +29,7 @@ public struct OnboardReducer: Reducer {
   
   public var body: some Reducer<State, Action> {
     GenderSettingLogic()
+    OnboardPathLogic()
     self.core
   }
 
@@ -41,61 +42,6 @@ public struct OnboardReducer: Reducer {
       switch action {
       case .welcome(.getStartedButtonTapped):
         state.path.append(.gradeSetting())
-        return .none
-
-      case .welcome:
-        return .none
-
-      case let .path(.element(_, action)):
-        switch action {
-        case let .gradeSetting(.delegate(.nextScreen(generation))):
-          state.generation = generation
-          state.path.append(.schoolSetting())
-
-        case let .schoolSetting(.delegate(.nextScreen(schoolId))):
-          state.schoolId = schoolId
-
-          if case .notDetermined = authorizationStatus(.contacts) {
-            state.path.append(.findFriend())
-          } else {
-            state.path.append(.phoneNumber())
-          }
-          
-        case .findFriend(.delegate(.nextScreen)):
-          state.path.append(.phoneNumber())
-          
-        case let .phoneNumber(.delegate(.numberChanged(number))):
-          state.phoneNumber = number
-
-        case let .phoneNumber(.delegate(.nextScreen(verifyID))):
-          state.path.append(.oneTimeCode(.init(verifyID: verifyID)))
-
-        case .oneTimeCode(.delegate(.nextScreen)):
-          state.path.append(.firstNameSetting())
-
-        case .firstNameSetting(.delegate(.nextScreen)):
-          state.path.append(.lastNameSetting())
-
-        case .lastNameSetting(.delegate(.nextScreen)):
-          state.path.append(.usernameSetting())
-
-        case .usernameSetting(.delegate(.nextScreen)):
-          state.path.append(.genderSetting())
-
-        case let .genderSetting(.delegate(.nextScreen(gender))):
-          state.path.append(.profilePhotoSetting())
-          return .run { send in
-            await send(.genderChanged(gender))
-          }
-
-        case .profilePhotoSetting(.delegate(.nextScreen)):
-          state.path.append(.addFriends())
-
-        case .addFriends(.delegate(.nextScreen)):
-          state.path.append(.howItWorks())
-        default:
-          print(action)
-        }
         return .none
 
       default:
