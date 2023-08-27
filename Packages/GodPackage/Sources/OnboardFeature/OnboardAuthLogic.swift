@@ -34,7 +34,8 @@ public struct OnboardAuthLogic: Reducer {
               TaskResult {
                 try await firebaseAuth.verifyPhoneNumber(formatNumber)
               }
-            )
+            ),
+            animation: .default
           )
         }
       case .oneTimeCode(.delegate(.resend)):
@@ -46,7 +47,8 @@ public struct OnboardAuthLogic: Reducer {
               TaskResult {
                 try await firebaseAuth.verifyPhoneNumber(formatNumber)
               }
-            )
+            ),
+            animation: .default
           )
         }
       case .oneTimeCode(.delegate(.send)):
@@ -59,7 +61,8 @@ public struct OnboardAuthLogic: Reducer {
               TaskResult {
                 try await firebaseAuth.signIn(credential)
               }
-            )
+            ),
+            animation: .default
           )
         }
       default:
@@ -119,7 +122,8 @@ public struct OnboardAuthLogic: Reducer {
             TaskResult {
               try await godClient.updateUserProfile(input)
             }
-          )
+          ),
+          animation: .default
         )
       }
     case .createUserResponse(.failure):

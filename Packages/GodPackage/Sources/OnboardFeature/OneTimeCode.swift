@@ -28,16 +28,17 @@ public struct OneTimeCodeReducer: Reducer {
     switch action {
     case .resendButtonTapped:
       return .run { send in
-        await send(.delegate(.resend))
+        await send(.changeOneTimeCode(""))
+        await send(.delegate(.resend), animation: .default)
       }
     case .nextButtonTapped:
       return .run { send in
-        await send(.delegate(.send))
+        await send(.delegate(.send), animation: .default)
       }
     case let .changeOneTimeCode(code):
       state.oneTimeCode = code
       return .run { send in
-        await send(.delegate(.changeOneTimeCode(code)))
+        await send(.delegate(.changeOneTimeCode(code)), animation: .default)
       }
     case .delegate:
       return .none
