@@ -1,11 +1,11 @@
 import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthClient
-import SwiftUI
-import UserDefaultsClient
-import PhoneNumberClient
 import God
 import GodClient
+import PhoneNumberClient
+import SwiftUI
+import UserDefaultsClient
 
 public struct OneTimeCodeReducer: Reducer {
   public struct State: Equatable {
@@ -16,7 +16,7 @@ public struct OneTimeCodeReducer: Reducer {
 
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case onTask
     case resendButtonTapped
@@ -27,12 +27,12 @@ public struct OneTimeCodeReducer: Reducer {
     case createUserResponse(TaskResult<God.CreateUserMutation.Data>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextScreen
       case popToRoot
     }
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -43,7 +43,7 @@ public struct OneTimeCodeReducer: Reducer {
   @Dependency(\.phoneNumberClient) var phoneNumberClient
   @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.godClient) var godClient
-  
+
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .onTask:
@@ -108,7 +108,7 @@ public struct OneTimeCodeReducer: Reducer {
     case let .changeOneTimeCode(code):
       state.oneTimeCode = code
       return .none
-      
+
     case .signInResponse(.success):
       guard let number = userDefaults.stringForKey("format-phone-number") else {
         state.isActivityIndicatorVisible = false
@@ -142,23 +142,23 @@ public struct OneTimeCodeReducer: Reducer {
         TextState(error.localizedDescription)
       }
       return .none
-      
+
     case .createUserResponse(.success):
       state.isActivityIndicatorVisible = false
 //      return .run(priority: .high) { @MainActor send in
       return .run { @MainActor send in
         send(.delegate(.nextScreen), animation: .default)
       }
-      
+
     case .createUserResponse(.failure):
       state.isActivityIndicatorVisible = false
       return .send(.delegate(.popToRoot), animation: .default)
-      
+
     case .alert(.presented(.confirmOkay)):
       return .run { _ in
         await dismiss()
       }
-      
+
     case .alert:
       return .none
 

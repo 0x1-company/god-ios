@@ -1,9 +1,9 @@
 import ComposableArchitecture
+import ContactsClient
+import FirebaseAuth
+import God
 import HowItWorksFeature
 import SwiftUI
-import ContactsClient
-import God
-import FirebaseAuth
 
 public struct OnboardReducer: Reducer {
   public init() {}
@@ -13,7 +13,7 @@ public struct OnboardReducer: Reducer {
     var path = StackState<Path.State>()
 
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-    
+
     var generation: Int?
     var schoolId: String?
 
@@ -25,24 +25,24 @@ public struct OnboardReducer: Reducer {
     case path(StackAction<Path.State, Path.Action>)
     case alert(PresentationAction<Alert>)
     case pathInsert(Path.State)
-    
+
     case onTask
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
-    
+
     case genderChanged(God.Gender)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
   }
-  
+
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
-  
+
   public var body: some Reducer<State, Action> {
     GenderSettingLogic()
     OnboardPathLogic()
     OnboardStreamLogic()
-    self.core
+    core
   }
 
   @ReducerBuilder<State, Action>
