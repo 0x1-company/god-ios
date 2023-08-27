@@ -119,6 +119,7 @@ let package = Package(
       .product(name: "ProfileClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
+      .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "PhoneNumberClient", package: "DependencyPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
     ]),

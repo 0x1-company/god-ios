@@ -1,4 +1,5 @@
 import Colors
+import UserDefaultsClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import PhoneNumberClient
@@ -8,28 +9,74 @@ import SwiftUI
 public struct PhoneNumberReducer: Reducer {
   public struct State: Equatable {
     var phoneNumber = ""
+    @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
   
   public enum Action: Equatable {
     case nextButtonTapped
     case changePhoneNumber(String)
+    case verifyResponse(TaskResult<String?>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
     
     public enum Delegate: Equatable {
       case nextScreen
-      case changePhoneNumber(String)
+    }
+    
+    public enum Alert: Equatable {
+      case confirmOkay
     }
   }
+  
+  @Dependency(\.userDefaults) var userDefaultsClient
+  @Dependency(\.phoneNumberClient) var phoneNumberClient
+  @Dependency(\.firebaseAuth.verifyPhoneNumber) var verifyPhoneNumber
   
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .nextButtonTapped:
-      return .send(.delegate(.nextScreen))
-
+      return .run { [state] send in
+        async let next: Void = send(.delegate(.nextScreen), animation: .default)
+        
+        let format = try phoneNumberClient.parseFormat(state.phoneNumber)
+        async let save: Void = await userDefaultsClient.setString(format, "format-phone-number")
+        async let verify: Void = await send(
+          .verifyResponse(
+            TaskResult {
+              try await verifyPhoneNumber(format)
+            }
+          )
+        )
+        _ = await (next, save, verify)
+      }
     case let .changePhoneNumber(number):
       state.phoneNumber = number
-      return .send(.delegate(.changePhoneNumber(number)))
+      return .none
+      
+    case let .verifyResponse(.success(id)):
+      let verifyId = id ?? ""
+      return .run { _ in
+        await userDefaultsClient.setString(verifyId, "verify-id")
+      }
+      
+    case let .verifyResponse(.failure(error)):
+      state.alert = AlertState {
+        TextState("Error")
+      } actions: {
+        ButtonState(action: .send(.confirmOkay, animation: .default)) {
+          TextState("OK")
+        }
+      } message: {
+        TextState(error.localizedDescription)
+      }
+      return .none
+      
+    case .alert(.presented(.confirmOkay)):
+      return .none
+      
+    case .alert:
+      return .none
 
     case .delegate:
       return .none

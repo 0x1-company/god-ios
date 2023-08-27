@@ -49,6 +49,14 @@ public struct OnboardPathLogic: Reducer {
         state.path.append(.oneTimeCode())
         return .none
         
+      case .oneTimeCode(.delegate(.nextScreen)):
+        state.path.append(.firstNameSetting())
+        return .none
+        
+      case .oneTimeCode(.delegate(.popToRoot)):
+        state.path.removeAll()
+        return .none
+        
       case .firstNameSetting(.delegate(.nextScreen)):
         state.path.append(.lastNameSetting())
         return .none
