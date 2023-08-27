@@ -82,13 +82,13 @@ public struct OnboardAuthLogic: Reducer {
       return .none
       
     case .signInResponse(.success):
-      let phoneNumber = God.PhoneNumberInput(
-        countryCode: "+81",
-//        numbers: state.auth.phoneNumber
-        numbers: "8023323620"
-      )
-      let input = God.CreateUserInput(phoneNumber: phoneNumber)
-      return .run { send in
+      return .run { [state] send in
+        let format = try phoneNumberClient.parseFormat(state.auth.phoneNumber)
+        let phoneNumber = God.PhoneNumberInput(
+          countryCode: "+81",
+          numbers: format.replacing("+81", with: "")
+        )
+        let input = God.CreateUserInput(phoneNumber: phoneNumber)
         await send(
           .createUserResponse(
             TaskResult {

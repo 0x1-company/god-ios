@@ -30,9 +30,6 @@ class FirebaseTokenInterceptor: ApolloInterceptor {
       if let error {
         logger.error("\(error.localizedDescription)")
       }
-      if let token {
-        logger.info("\(token)")
-      }
       self?.addTokenAndProceed(
         token ?? "",
         to: request,
