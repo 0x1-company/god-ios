@@ -23,7 +23,6 @@ graph TD;
     NavigationFeature-->InboxFeature;
     NavigationFeature-->ProfileFeature;
     OnboardFeature-->HowItWorksFeature;
-    OnboardFeature-->GenderSettingFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
