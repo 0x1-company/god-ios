@@ -2,43 +2,41 @@ import ComposableArchitecture
 import FirebaseAuthClient
 import ProfileClient
 import SwiftUI
+import Colors
+import God
+import GodClient
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameReducer.State()
-    @BindingState var firstName = ""
+    var firstName = ""
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
-    case doubleCheckName(DoubleCheckNameReducer.Action)
-    case binding(BindingAction<State>)
+  public enum Action: Equatable {
+    case firstNameChanged(String)
     case nextButtonTapped
     case delegate(Delegate)
+    case doubleCheckName(DoubleCheckNameReducer.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
     }
   }
 
-  enum CancelId { case effect }
-
   @Dependency(\.profileClient) var profileClient
   @Dependency(\.firebaseAuth.currentUser) var currentUser
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
     }
     Reduce { state, action in
       switch action {
-      case .doubleCheckName:
-        return .none
-
-      case .binding:
+      case let .firstNameChanged(firstName):
+        state.firstName = firstName
         return .none
 
       case .nextButtonTapped:
@@ -52,7 +50,10 @@ public struct FirstNameSettingReducer: Reducer {
           )
           await send(.delegate(.nextScreen))
         }
+
       case .delegate:
+        return .none
+      case .doubleCheckName:
         return .none
       }
     }
@@ -73,27 +74,25 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?")
           .bold()
           .foregroundColor(.white)
-        TextField("First Name", text: viewStore.$firstName)
-          .font(.title)
-          .foregroundColor(.white)
-          .multilineTextAlignment(.center)
-          .textContentType(.givenName)
+        TextField(
+          "First Name",
+          text: viewStore.binding(
+            get: \.firstName,
+            send: FirstNameSettingReducer.Action.firstNameChanged
+          )
+        )
+        .font(.title)
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
+        .textContentType(.givenName)
         Spacer()
-        Button {
+        NextButton {
           viewStore.send(.nextButtonTapped)
-        } label: {
-          Text("Next")
-            .bold()
-            .frame(height: 54)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
-            .background(Color.white)
-            .clipShape(Capsule())
         }
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED_6C43))
+      .background(Color.godService)
       .navigationBarBackButtonHidden()
       .toolbar {
         DoubleCheckNameView(
