@@ -4,6 +4,7 @@ import God
 import GodClient
 import StringHelpers
 import SwiftUI
+import ContactsClient
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
@@ -33,6 +34,7 @@ public struct FirstNameSettingReducer: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
+  @Dependency(\.contacts) var contactsClient
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
@@ -117,7 +119,6 @@ public struct FirstNameSettingView: View {
         .font(.title)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
-        .textContentType(.givenName)
         Spacer()
         NextButton {
           viewStore.send(.nextButtonTapped)

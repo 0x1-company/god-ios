@@ -17,6 +17,9 @@ extension ContactsClient: DependencyKey {
             continuation.resume(throwing: error)
           }
         }
+      },
+      unifiedContacts: { predicate, keysToFetch in
+        try store.unifiedContacts(matching: predicate, keysToFetch: keysToFetch)
       }
     )
   }()
