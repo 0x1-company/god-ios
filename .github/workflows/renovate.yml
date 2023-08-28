@@ -11,6 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)"
+      - run: swift build -c release --package-path ./BuildTools/DependenciesGraph --product dgraph
+      - run: swift build -c release --package-path ./BuildTools/SwiftFormatTool --product swiftformat
+      - run: swift build -c release --package-path ./BuildTools/XCTemplateInstallerTool --product XCTemplateInstaller
       - continue-on-error: true
         run: |
           git config --local user.name 'github-actions[bot]'
