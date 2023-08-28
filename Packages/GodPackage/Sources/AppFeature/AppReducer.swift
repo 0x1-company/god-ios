@@ -70,7 +70,7 @@ public struct AppReducer: Reducer {
           state.view = .onboard()
           return .none
         }
-        if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username.isEmpty {
+        if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username == nil {
           state.view = .onboard()
           return .none
         }

@@ -2,6 +2,28 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Activity {
+  createdAt: Date!
+
+  """ID"""
+  id: ID!
+  question: Question!
+  questionId: String!
+
+  """アクティビティの対象"""
+  userId: String!
+}
+
+type ActivityConnection {
+  edges: [ActivityEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ActivityEdge {
+  cursor: String!
+  node: Activity!
+}
+
 input ApproveFriendRequestInput {
   """リクエストを承認するID"""
   id: String!
@@ -90,6 +112,34 @@ enum Gender {
   OTHER
 }
 
+type InboxActivity {
+  createdAt: Date!
+
+  """ID"""
+  id: ID!
+
+  """イニシャル"""
+  initial: String!
+
+  """既読かどうか"""
+  isRead: Boolean!
+  question: Question!
+  questionId: String!
+
+  """アクティビティの対象"""
+  userId: String!
+}
+
+type InboxActivityConnection {
+  edges: [InboxActivityEdge!]!
+  pageInfo: PageInfo!
+}
+
+type InboxActivityEdge {
+  cursor: String!
+  node: InboxActivity!
+}
+
 type Item {
   """説明"""
   description: LocalizableString
@@ -133,6 +183,11 @@ type Mutation {
   """投票する"""
   createVote(input: CreateVoteInput!): Vote!
   purchase(input: PurchaseInput!): Boolean!
+
+  """既読にする"""
+  readActivity(activityId: String!): Boolean!
+  revealFullName(input: RevealFullNameInput!): String!
+  revealFullNameByPurchase(input: RevealFullNameInput!): String!
 
   """update a user profile"""
   updateUserProfile(input: UpdateUserProfileInput!): User!
@@ -188,9 +243,6 @@ input PurchaseInput {
 }
 
 type Query {
-  """フレンドに投票されたVotes"""
-  activities: [Vote!]!
-
   """get current user"""
   currentUser: User!
 
@@ -204,8 +256,11 @@ type Query {
   friendsOfFriends: [User!]!
   getFirebaseUser(phoneNumber: String!): String!
 
-  """自分に対する投票を一覧で取得する"""
-  inbox(after: String, first: Int!): VoteConnection!
+  """activityを一覧で取得する"""
+  listActivities(after: String, first: Int!): ActivityConnection!
+
+  """自分に対するactivityを一覧で取得する"""
+  listInboxActivities(after: String, first: Int!): InboxActivityConnection!
 
   """持っているアイテム一覧"""
   listUserItems(
@@ -257,6 +312,10 @@ type Question {
   text: LocalizableString!
 }
 
+input RevealFullNameInput {
+  activityId: String!
+}
+
 type School {
   id: ID!
 
@@ -265,6 +324,9 @@ type School {
 
   """学校名（略称）"""
   shortName: String!
+
+  """get users of school count"""
+  usersCount: Int!
 }
 
 type Store {
@@ -320,6 +382,9 @@ type User {
   """first name"""
   firstName: String!
 
+  """friends count"""
+  friendsCount: Int
+
   """gender"""
   gender: Gender!
 
@@ -340,7 +405,7 @@ type User {
   schoolId: String
 
   """username"""
-  username: String!
+  username: String
 
   """wallet"""
   wallet: Wallet
@@ -394,16 +459,6 @@ type Vote {
 
   """投票された人"""
   votedUserId: String!
-}
-
-type VoteConnection {
-  edges: [VoteEdge!]!
-  pageInfo: PageInfo!
-}
-
-type VoteEdge {
-  cursor: String!
-  node: Vote!
 }
 
 type VotedQuestions {

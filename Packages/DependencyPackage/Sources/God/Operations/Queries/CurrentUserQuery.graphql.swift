@@ -38,7 +38,7 @@ public extension God {
           .field("id", God.ID.self),
           .field("firstName", String.self),
           .field("lastName", String.self),
-          .field("username", String.self),
+          .field("username", String?.self),
           .field("generation", Int?.self),
           .field("gender", GraphQLEnum<God.Gender>.self),
           .field("schoolId", String?.self),
@@ -52,7 +52,7 @@ public extension God {
         /// last name
         public var lastName: String { __data["lastName"] }
         /// username
-        public var username: String { __data["username"] }
+        public var username: String? { __data["username"] }
         /// 年代
         public var generation: Int? { __data["generation"] }
         /// gender
