@@ -1,10 +1,10 @@
 import Colors
 import ComposableArchitecture
+import ContactsClient
 import God
 import GodClient
 import StringHelpers
 import SwiftUI
-import ContactsClient
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
