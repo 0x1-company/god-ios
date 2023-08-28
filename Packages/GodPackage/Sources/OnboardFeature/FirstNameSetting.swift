@@ -3,12 +3,14 @@ import SwiftUI
 import Colors
 import God
 import GodClient
+import StringHelpers
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameReducer.State()
+    @PresentationState var alert: AlertState<Action.Alert>?
     var firstName = ""
     public init() {}
   }
@@ -17,11 +19,16 @@ public struct FirstNameSettingReducer: Reducer {
     case firstNameChanged(String)
     case nextButtonTapped
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
     case doubleCheckName(DoubleCheckNameReducer.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
+    }
+    
+    public enum Alert: Equatable {
+      case confirmOkay
     }
   }
 
@@ -38,8 +45,13 @@ public struct FirstNameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
+        let firstName = state.firstName
+        guard validateHiragana(for: firstName) else {
+          state.alert = .hiraganaValidateError()
+          return .none
+        }
         let input = God.UpdateUserProfileInput(
-          firstName: .init(stringLiteral: state.firstName)
+          firstName: .init(stringLiteral: firstName)
         )
         return .run { send in
           async let next: Void = send(.delegate(.nextScreen))
@@ -56,11 +68,27 @@ public struct FirstNameSettingReducer: Reducer {
         return .none
       case .updateProfileResponse(.failure):
         return .none
+      case .alert:
+        return .none
       case .delegate:
         return .none
       case .doubleCheckName:
         return .none
       }
+    }
+  }
+}
+
+extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
+  static func hiraganaValidateError() -> Self {
+    Self {
+      TextState("title")
+    } actions: {
+      ButtonState(action: .confirmOkay) {
+        TextState("OK")
+      }
+    } message: {
+      TextState("ひらがなのみ設定できます")
     }
   }
 }
@@ -107,6 +135,7 @@ public struct FirstNameSettingView: View {
           )
         )
       }
+      .alert(store: store.scope(state: \.$alert, action: FirstNameSettingReducer.Action.alert))
     }
   }
 }
