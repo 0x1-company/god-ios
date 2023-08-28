@@ -7,7 +7,7 @@ let package = Package(
   name: "DependenciesGraph",
   platforms: [.macOS(.v10_13)],
   dependencies: [
-    .package(url: "https://github.com/Ryu0118/swift-dependencies-graph", from: "0.0.1"),
+    .package(url: "https://github.com/Ryu0118/swift-dependencies-graph", from: "0.0.2"),
   ],
   targets: [.target(name: "DependenciesGraph", path: "")]
 )
