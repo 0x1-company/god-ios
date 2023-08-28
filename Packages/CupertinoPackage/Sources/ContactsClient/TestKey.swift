@@ -12,6 +12,7 @@ extension ContactsClient: TestDependencyKey {
   public static let testValue = Self(
     authorizationStatus: unimplemented("\(Self.self).authorizationStatus"),
     requestAccess: unimplemented("\(Self.self).requestAccess"),
-    enumerateContacts: unimplemented("\(Self.self).enumerateContacts")
+    enumerateContacts: unimplemented("\(Self.self).enumerateContacts"),
+    unifiedContacts: unimplemented("\(Self.self).unifiedContacts")
   )
 }
