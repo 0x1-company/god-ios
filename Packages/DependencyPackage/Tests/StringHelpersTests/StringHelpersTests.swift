@@ -1,5 +1,5 @@
-import XCTest
 import StringHelpers
+import XCTest
 
 final class StringHelpersTests: XCTestCase {
   func testTransformToHiragana_成功() {
@@ -7,18 +7,18 @@ final class StringHelpersTests: XCTestCase {
     let hiragana = try! transformToHiragana(for: katakana)
     XCTAssertEqual(hiragana, "ともき")
   }
-  
+
   func testTransformToHiragana_カタカナ以外がインプットされたとき() {
     let value = "Tomoki"
     XCTAssertThrowsError(try transformToHiragana(for: value), "カタカナ以外がインプットされたとき")
   }
-  
+
   func testValidateHiragana() {
     XCTAssertTrue(validateHiragana(for: "ともき"))
     XCTAssertFalse(validateHiragana(for: "トモキ"))
     XCTAssertFalse(validateHiragana(for: "Tomoki"))
   }
-  
+
   func testValidateKatakana() {
     XCTAssertTrue(validateKatakana(for: "トモキ"))
     XCTAssertFalse(validateKatakana(for: "ともき"))

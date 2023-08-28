@@ -1,9 +1,9 @@
-import ComposableArchitecture
-import SwiftUI
 import Colors
+import ComposableArchitecture
 import God
 import GodClient
 import StringHelpers
+import SwiftUI
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
@@ -26,7 +26,7 @@ public struct FirstNameSettingReducer: Reducer {
     public enum Delegate: Equatable {
       case nextScreen
     }
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
