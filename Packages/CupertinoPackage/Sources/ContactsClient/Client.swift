@@ -7,14 +7,14 @@ public struct ContactsClient {
   public var unifiedContacts: @Sendable (NSPredicate, [CNKeyDescriptor]) throws -> [CNContact]
 }
 
-extension ContactsClient {
-  public func findByPhoneNumber(number: String) throws -> [CNContact] {
+public extension ContactsClient {
+  func findByPhoneNumber(number: String) throws -> [CNContact] {
     let phoneNumberPredicate = CNPhoneNumber(stringValue: number)
     let predicate = CNContact.predicateForContacts(matching: phoneNumberPredicate)
     let keysToFetch: [CNKeyDescriptor] = [
       CNContactPhoneticGivenNameKey as CNKeyDescriptor,
       CNContactPhoneticFamilyNameKey as CNKeyDescriptor,
-      CNContactPhoneNumbersKey as CNKeyDescriptor
+      CNContactPhoneNumbersKey as CNKeyDescriptor,
     ]
     return try unifiedContacts(predicate, keysToFetch)
   }
