@@ -96,17 +96,17 @@ public struct FirstNameSettingView: View {
   public init(store: StoreOf<FirstNameSettingReducer>) {
     self.store = store
   }
-  
+
   struct ViewState: Equatable {
     let firstName: String
     let isDisabled: Bool
-    
+
     init(state: FirstNameSettingReducer.State) {
-      self.firstName = state.firstName
-      self.isDisabled = state.firstName.isEmpty
+      firstName = state.firstName
+      isDisabled = state.firstName.isEmpty
     }
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
