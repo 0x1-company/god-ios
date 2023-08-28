@@ -44,7 +44,7 @@ public extension God {
           .field("id", God.ID.self),
           .field("firstName", String.self),
           .field("lastName", String.self),
-          .field("username", String.self),
+          .field("username", String?.self),
           .field("schoolId", String?.self),
           .field("school", School?.self),
         ] }
@@ -56,7 +56,7 @@ public extension God {
         /// last name
         public var lastName: String { __data["lastName"] }
         /// username
-        public var username: String { __data["username"] }
+        public var username: String? { __data["username"] }
         public var schoolId: String? { __data["schoolId"] }
         /// school to which the user belongs
         public var school: School? { __data["school"] }

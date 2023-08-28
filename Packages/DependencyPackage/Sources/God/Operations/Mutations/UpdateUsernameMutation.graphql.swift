@@ -41,11 +41,11 @@ public extension God {
         public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("username", String.self),
+          .field("username", String?.self),
         ] }
 
         /// username
-        public var username: String { __data["username"] }
+        public var username: String? { __data["username"] }
       }
     }
   }

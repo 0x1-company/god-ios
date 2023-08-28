@@ -82,7 +82,6 @@ public struct OnboardPathLogic: Reducer {
         return .none
 
       default:
-        print(action)
         return .none
       }
     default:
