@@ -7,6 +7,7 @@ on:
   pull_request:
 
 env:
+  PLATFORM_IOS: iOS Simulator,name=iPhone 14 Pro,OS=16.2
   FILE_FIREBASE_STAGING: ${{ secrets.FILE_FIREBASE_STAGING }}
   FILE_FIREBASE_PRODUCTION: ${{ secrets.FILE_FIREBASE_PRODUCTION }}
 
@@ -36,4 +37,4 @@ jobs:
           path: SourcePackages
           key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
-      - run: xcodebuild test -testPlan App -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
+      - run: xcodebuild -workspace God.xcworkspace -scheme "App (Staging project)" test -testPlan App -destination platform="${{ env.PLATFORM_IOS }}" -clonedSourcePackagesDirPath SourcePackages
