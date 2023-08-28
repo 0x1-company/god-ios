@@ -6,21 +6,10 @@ on:
       - 'renovate/**'
 
 jobs:
-  precheck:
-    runs-on: ubuntu-latest
-    outputs:
-      files_changed: ${{ steps.file_changes.outputs.files }}
-    steps:
-      - uses: actions/checkout@v3
-      - id: file_changes
-        uses: tj-actions/changed-files@v38
   update:
     runs-on: ubuntu-latest
-    needs: precheck
-    if: contains(fromJson(needs.precheck.outputs.files_changed), 'Package.resolved') == false
     steps:
       - uses: actions/checkout@v3
-      - run: xcodebuild -resolvePackageDependencies -workspace "$workspace" -scheme "$scheme"
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)"
       - continue-on-error: true
         run: |
