@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Ryu0118/swift-dependencies-graph",
       "state" : {
-        "revision" : "ad9cb104a32f81b0621bb74d490c611ccb2a1696",
-        "version" : "0.0.1"
+        "revision" : "d371eb57b95f1f895aa23f8e514485da87bd97cc",
+        "version" : "0.0.2"
       }
     }
   ],
