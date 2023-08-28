@@ -7,4 +7,5 @@ A description of this package.
 graph TD;
     GodClient-->God;
     GodClient-->AsyncApollo;
+    StringHelpersTests-->StringHelpers;
 ```
