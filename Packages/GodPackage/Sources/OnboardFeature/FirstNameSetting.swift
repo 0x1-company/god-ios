@@ -45,10 +45,13 @@ public struct FirstNameSettingReducer: Reducer {
       case let .firstNameChanged(firstName):
         state.firstName = firstName
         return .none
-
+        
       case .nextButtonTapped:
         let firstName = state.firstName
-        guard validateHiragana(for: firstName) else {
+        guard
+          !firstName.isEmpty,
+          validateHiragana(for: firstName)
+        else {
           state.alert = .hiraganaValidateError()
           return .none
         }
