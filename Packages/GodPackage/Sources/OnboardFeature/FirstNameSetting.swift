@@ -69,15 +69,7 @@ public struct FirstNameSettingReducer: Reducer {
           )
           _ = await (next, update)
         }
-      case .updateProfileResponse(.success):
-        return .none
-      case .updateProfileResponse(.failure):
-        return .none
-      case .alert:
-        return .none
-      case .delegate:
-        return .none
-      case .doubleCheckName:
+      default:
         return .none
       }
     }
@@ -104,9 +96,19 @@ public struct FirstNameSettingView: View {
   public init(store: StoreOf<FirstNameSettingReducer>) {
     self.store = store
   }
-
+  
+  struct ViewState: Equatable {
+    let firstName: String
+    let isDisabled: Bool
+    
+    init(state: FirstNameSettingReducer.State) {
+      self.firstName = state.firstName
+      self.isDisabled = state.firstName.isEmpty
+    }
+  }
+  
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
         Spacer()
         Text("What's your first name?")
@@ -123,7 +125,7 @@ public struct FirstNameSettingView: View {
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
         Spacer()
-        NextButton {
+        NextButton(isDisabled: viewStore.isDisabled) {
           viewStore.send(.nextButtonTapped)
         }
       }
