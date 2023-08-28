@@ -92,11 +92,11 @@ extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
 
 public struct FirstNameSettingView: View {
   let store: StoreOf<FirstNameSettingReducer>
-
+              
   public init(store: StoreOf<FirstNameSettingReducer>) {
     self.store = store
   }
-
+    
   struct ViewState: Equatable {
     let firstName: String
     let isDisabled: Bool
@@ -106,7 +106,7 @@ public struct FirstNameSettingView: View {
       isDisabled = state.firstName.isEmpty
     }
   }
-
+      
   public var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {

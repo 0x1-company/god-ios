@@ -43,4 +43,4 @@ jobs:
         run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
