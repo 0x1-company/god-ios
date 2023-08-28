@@ -1,6 +1,4 @@
 import ComposableArchitecture
-import FirebaseAuthClient
-import ProfileClient
 import SwiftUI
 import Colors
 import God
@@ -18,6 +16,7 @@ public struct FirstNameSettingReducer: Reducer {
   public enum Action: Equatable {
     case firstNameChanged(String)
     case nextButtonTapped
+    case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case delegate(Delegate)
     case doubleCheckName(DoubleCheckNameReducer.Action)
 
@@ -26,8 +25,7 @@ public struct FirstNameSettingReducer: Reducer {
     }
   }
 
-  @Dependency(\.profileClient) var profileClient
-  @Dependency(\.firebaseAuth.currentUser) var currentUser
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
@@ -40,17 +38,24 @@ public struct FirstNameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
-        guard let uid = currentUser()?.uid else {
-          return .none
-        }
-        return .run { [firstName = state.firstName] send in
-          try await profileClient.setUserProfile(
-            uid: uid,
-            field: .init(firstName: firstName)
+        let input = God.UpdateUserProfileInput(
+          firstName: .init(stringLiteral: state.firstName)
+        )
+        return .run { send in
+          async let next: Void = send(.delegate(.nextScreen))
+          async let update: Void = send(
+            .updateProfileResponse(
+              TaskResult {
+                try await godClient.updateUserProfile(input)
+              }
+            )
           )
-          await send(.delegate(.nextScreen))
+          _ = await (next, update)
         }
-
+      case .updateProfileResponse(.success):
+        return .none
+      case .updateProfileResponse(.failure):
+        return .none
       case .delegate:
         return .none
       case .doubleCheckName:
