@@ -7,7 +7,7 @@ let package = Package(
   name: "XCTemplateInstallerTool",
   platforms: [.macOS(.v10_13)],
   dependencies: [
-    .package(url: "https://github.com/noppefoxwolf/XCTemplateInstaller", from: "1.0.5"),
+    .package(url: "https://github.com/noppefoxwolf/XCTemplateInstaller", from: "1.0.6"),
   ],
   targets: [.target(name: "XCTemplateInstallerTool", path: "")]
 )
