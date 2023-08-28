@@ -12,6 +12,13 @@
 
   },
   "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/Packages\/DependencyPackage",
+        "identifier" : "StringHelpersTests",
+        "name" : "StringHelpersTests"
+      }
+    }
   ],
   "version" : 1
 }

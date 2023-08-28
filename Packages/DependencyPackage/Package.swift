@@ -21,6 +21,7 @@ let package = Package(
     .library(name: "GodClient", targets: ["GodClient"]),
     .library(name: "PhoneNumberClient", targets: ["PhoneNumberClient"]),
     .library(name: "ProfileClient", targets: ["ProfileClient"]),
+    .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
   ],
   dependencies: [
@@ -72,6 +73,10 @@ let package = Package(
       .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
       .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "StringHelpers"),
+    .testTarget(name: "StringHelpersTests", dependencies: [
+      "StringHelpers",
     ]),
     .target(name: "TcaHelpers", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

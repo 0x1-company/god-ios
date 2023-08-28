@@ -1,60 +1,94 @@
 import ComposableArchitecture
-import FirebaseAuthClient
-import ProfileClient
 import SwiftUI
+import Colors
+import God
+import GodClient
+import StringHelpers
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameReducer.State()
-    @BindingState var firstName = ""
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var firstName = ""
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
-    case doubleCheckName(DoubleCheckNameReducer.Action)
-    case binding(BindingAction<State>)
+  public enum Action: Equatable {
+    case firstNameChanged(String)
     case nextButtonTapped
+    case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
+    case doubleCheckName(DoubleCheckNameReducer.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
     }
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
 
-  enum CancelId { case effect }
-
-  @Dependency(\.profileClient) var profileClient
-  @Dependency(\.firebaseAuth.currentUser) var currentUser
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
     }
     Reduce { state, action in
       switch action {
-      case .doubleCheckName:
-        return .none
-
-      case .binding:
+      case let .firstNameChanged(firstName):
+        state.firstName = firstName
         return .none
 
       case .nextButtonTapped:
-        guard let uid = currentUser()?.uid else {
+        let firstName = state.firstName
+        guard validateHiragana(for: firstName) else {
+          state.alert = .hiraganaValidateError()
           return .none
         }
-        return .run { [firstName = state.firstName] send in
-          try await profileClient.setUserProfile(
-            uid: uid,
-            field: .init(firstName: firstName)
+        let input = God.UpdateUserProfileInput(
+          firstName: .init(stringLiteral: firstName)
+        )
+        return .run { send in
+          async let next: Void = send(.delegate(.nextScreen))
+          async let update: Void = send(
+            .updateProfileResponse(
+              TaskResult {
+                try await godClient.updateUserProfile(input)
+              }
+            )
           )
-          await send(.delegate(.nextScreen))
+          _ = await (next, update)
         }
+      case .updateProfileResponse(.success):
+        return .none
+      case .updateProfileResponse(.failure):
+        return .none
+      case .alert:
+        return .none
       case .delegate:
         return .none
+      case .doubleCheckName:
+        return .none
       }
+    }
+  }
+}
+
+extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
+  static func hiraganaValidateError() -> Self {
+    Self {
+      TextState("title")
+    } actions: {
+      ButtonState(action: .confirmOkay) {
+        TextState("OK")
+      }
+    } message: {
+      TextState("ひらがなのみ設定できます")
     }
   }
 }
@@ -73,27 +107,25 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?")
           .bold()
           .foregroundColor(.white)
-        TextField("First Name", text: viewStore.$firstName)
-          .font(.title)
-          .foregroundColor(.white)
-          .multilineTextAlignment(.center)
-          .textContentType(.givenName)
+        TextField(
+          "First Name",
+          text: viewStore.binding(
+            get: \.firstName,
+            send: FirstNameSettingReducer.Action.firstNameChanged
+          )
+        )
+        .font(.title)
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
+        .textContentType(.givenName)
         Spacer()
-        Button {
+        NextButton {
           viewStore.send(.nextButtonTapped)
-        } label: {
-          Text("Next")
-            .bold()
-            .frame(height: 54)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
-            .background(Color.white)
-            .clipShape(Capsule())
         }
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED_6C43))
+      .background(Color.godService)
       .navigationBarBackButtonHidden()
       .toolbar {
         DoubleCheckNameView(
@@ -103,6 +135,7 @@ public struct FirstNameSettingView: View {
           )
         )
       }
+      .alert(store: store.scope(state: \.$alert, action: FirstNameSettingReducer.Action.alert))
     }
   }
 }
