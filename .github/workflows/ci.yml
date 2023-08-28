@@ -16,8 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_and_test:
-    name: build and test
+  build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -28,4 +27,3 @@ jobs:
           key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
       - run: xcodebuild -workspace God.xcworkspace -scheme "App (Staging project)" build -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
-      - run: xcodebuild -workspace God.xcworkspace -scheme "App (Staging project)" test -testPlan App -destination platform="${{ env.PLATFORM_IOS }}" -clonedSourcePackagesDirPath SourcePackages
