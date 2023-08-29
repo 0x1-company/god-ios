@@ -47,28 +47,29 @@ public struct OneTimeCodeReducer: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .onTask:
-      guard let number = userDefaults.stringForKey("format-phone-number") else {
-        return .run { _ in
-          await dismiss()
-        }
+      if let phoneNumber = userDefaults.phoneNumber() {
+        state.phoneNumber = phoneNumber
+        return .none
       }
-      state.phoneNumber = number
-      return .none
+      return .run { _ in
+        await dismiss()
+      }
 
     case .resendButtonTapped:
       state.oneTimeCode = ""
       return .run { [state] send in
+        let format = try phoneNumberClient.parseFormat(state.phoneNumber)
         await send(
           .verifyResponse(
             TaskResult {
-              try await firebaseAuth.verifyPhoneNumber(state.phoneNumber)
+              try await firebaseAuth.verifyPhoneNumber(format)
             }
           )
         )
       }
     case .nextButtonTapped:
       let oneTimeCode = state.oneTimeCode
-      guard let id = userDefaults.stringForKey("verify-id") else {
+      guard let id = userDefaults.verificationId() else {
         return .run { _ in
           await dismiss()
         }
@@ -85,13 +86,12 @@ public struct OneTimeCodeReducer: Reducer {
         )
       }
     case let .verifyResponse(.success(id)):
-      guard let verifyId = id else {
-        return .run { _ in
+      return .run { _ in
+        if let id {
+          await userDefaults.setVerificationId(id)
+        } else {
           await dismiss()
         }
-      }
-      return .run { _ in
-        await userDefaults.setString(verifyId, "verify-id")
       }
     case let .verifyResponse(.failure(error)):
       state.alert = AlertState {
@@ -110,18 +110,19 @@ public struct OneTimeCodeReducer: Reducer {
       return .none
 
     case .signInResponse(.success):
-      guard let number = userDefaults.stringForKey("format-phone-number") else {
+      guard let number = userDefaults.phoneNumber() else {
         state.isActivityIndicatorVisible = false
         return .run { _ in
           await dismiss()
         }
       }
-      let phoneNumber = God.PhoneNumberInput(
-        countryCode: "+81",
-        numbers: number.replacing("+81", with: "")
-      )
-      let input = God.CreateUserInput(phoneNumber: phoneNumber)
       return .run { send in
+        let format = try phoneNumberClient.parseFormat(number)
+        let phoneNumber = God.PhoneNumberInput(
+          countryCode: "+81",
+          numbers: format.replacing("+81", with: "")
+        )
+        let input = God.CreateUserInput(phoneNumber: phoneNumber)
         await send(
           .createUserResponse(
             TaskResult {
@@ -145,7 +146,6 @@ public struct OneTimeCodeReducer: Reducer {
 
     case .createUserResponse(.success):
       state.isActivityIndicatorVisible = false
-//      return .run(priority: .high) { @MainActor send in
       return .run { @MainActor send in
         send(.delegate(.nextScreen), animation: .default)
       }

@@ -29,7 +29,7 @@ public struct PhoneNumberReducer: Reducer {
     }
   }
 
-  @Dependency(\.userDefaults) var userDefaultsClient
+  @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.phoneNumberClient) var phoneNumberClient
   @Dependency(\.firebaseAuth.verifyPhoneNumber) var verifyPhoneNumber
 
@@ -38,10 +38,9 @@ public struct PhoneNumberReducer: Reducer {
     case .nextButtonTapped:
       return .run { [state] send in
         async let next: Void = send(.delegate(.nextScreen), animation: .default)
-
+        async let save: Void = userDefaults.setPhoneNumber(state.phoneNumber)
         let format = try phoneNumberClient.parseFormat(state.phoneNumber)
-        async let save: Void = await userDefaultsClient.setString(format, "format-phone-number")
-        async let verify: Void = await send(
+        async let verify: Void = send(
           .verifyResponse(
             TaskResult {
               try await verifyPhoneNumber(format)
@@ -55,9 +54,8 @@ public struct PhoneNumberReducer: Reducer {
       return .none
 
     case let .verifyResponse(.success(id)):
-      let verifyId = id ?? ""
       return .run { _ in
-        await userDefaultsClient.setString(verifyId, "verify-id")
+        await userDefaults.setVerificationId(id ?? "")
       }
 
     case let .verifyResponse(.failure(error)):
