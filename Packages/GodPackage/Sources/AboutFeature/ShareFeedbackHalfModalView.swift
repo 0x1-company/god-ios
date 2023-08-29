@@ -29,10 +29,19 @@ public struct ShareFeedbackHalfModalReducer: Reducer {
         Reduce { _, action in
           switch action {
           case .shareByEmailTapped:
+              let urlString = "mailto:\(Self.supportEmailAddress)?subject=\(Self.supportEmailSubject)&body=\(Self.emailTemplateText)"
 
+              if let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) {
+                  UIApplication.shared.open(url)
+              } else {
+
+              }
               return .none
           case .shareByGmailTapped:
-
+              let urlString = "googlegmail:///co?to=\(Self.supportEmailAddress)&subject=\(Self.supportEmailSubject)&body=\(Self.emailTemplateText)"
+              if let url = URL(string: urlString) {
+                  UIApplication.shared.open(url)
+              }
               return .none
           case .copyTextTapped:
               UIPasteboard.general.string = Self.emailTemplateText
@@ -66,28 +75,40 @@ public struct ShareFeedbackHalfModalView: View {
                 }
                 .padding(.horizontal, 60)
                 HStack(alignment: .center) {
-                    VStack(alignment: .center, spacing: 8) {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.blue)
-                            .frame(width: 60, height: 60)
-                        Text("Mail")
-                            .foregroundColor(.godBlack)
+                    Button(action: {
+                        viewStore.send(.shareByEmailTapped)
+                    }) {
+                        VStack(alignment: .center, spacing: 8) {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.blue)
+                                .frame(width: 60, height: 60)
+                            Text("Mail")
+                                .foregroundColor(.godBlack)
+                        }
                     }
                     Spacer()
-                    VStack(alignment: .center, spacing: 8) {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.blue)
-                            .frame(width: 60, height: 60)
-                        Text("Mail")
-                            .foregroundColor(.godBlack)
+                    Button(action: {
+                        viewStore.send(.shareByGmailTapped)
+                    }) {
+                        VStack(alignment: .center, spacing: 8) {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.blue)
+                                .frame(width: 60, height: 60)
+                            Text("Gmail")
+                                .foregroundColor(.godBlack)
+                        }
                     }
                     Spacer()
-                    VStack(alignment: .center, spacing: 8) {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.blue)
-                            .frame(width: 60, height: 60)
-                        Text("Mail")
-                            .foregroundColor(.godBlack)
+                    Button(action: {
+                        viewStore.send(.copyTextTapped)
+                    }) {
+                        VStack(alignment: .center, spacing: 8) {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.blue)
+                                .frame(width: 60, height: 60)
+                            Text("Copy")
+                                .foregroundColor(.godBlack)
+                        }
                     }
                 }
                 .padding(.horizontal, 56)
