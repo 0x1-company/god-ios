@@ -1,11 +1,11 @@
-import ComposableArchitecture
-import SwiftUI
 import Colors
+import ComposableArchitecture
 import Contacts
 import God
 import GodClient
-import UserDefaultsClient
 import StringHelpers
+import SwiftUI
+import UserDefaultsClient
 
 public struct LastNameSettingReducer: Reducer {
   public init() {}
@@ -29,7 +29,7 @@ public struct LastNameSettingReducer: Reducer {
     public enum Delegate: Equatable {
       case nextScreen
     }
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -57,7 +57,7 @@ public struct LastNameSettingReducer: Reducer {
       case let .lastNameChanged(lastName):
         state.lastName = lastName
         return .none
-        
+
       case .nextButtonTapped:
         let lastName = state.lastName
         guard
@@ -101,7 +101,6 @@ extension AlertState where Action == LastNameSettingReducer.Action.Alert {
     }
   }
 }
-
 
 public struct LastNameSettingView: View {
   let store: StoreOf<LastNameSettingReducer>
