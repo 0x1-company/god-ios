@@ -20,7 +20,6 @@ public struct FirstNameSettingReducer: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case contactsResponse([CNContact])
     case firstNameChanged(String)
     case nextButtonTapped
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
@@ -48,21 +47,10 @@ public struct FirstNameSettingReducer: Reducer {
     Reduce { state, action in
       switch action {
       case .onTask:
-        guard case .authorized  = contactsClient.authorizationStatus(.contacts)
-        else { return .none }
         guard
           case .authorized = contactsClient.authorizationStatus(.contacts),
-          let number = userDefaults.phoneNumber()
-        else { return .none }
-        return .run { send in
-          await send(
-            .contactsResponse(
-              try contactsClient.findByPhoneNumber(number: number)
-            )
-          )
-        }
-      case let .contactsResponse(contacts):
-        guard let contact = contacts.first
+          let number = userDefaults.phoneNumber(),
+          let contact = try? contactsClient.findByPhoneNumber(number: number).first
         else { return .none }
         state.firstName = contact.phoneticGivenName
         return .none
