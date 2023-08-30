@@ -11,6 +11,7 @@ public struct UsernameSettingReducer: Reducer {
   public struct State: Equatable {
     var username = ""
     var isDisabled = true
+    var isActivityIndicatorVisible = false
     public init() {}
   }
 
@@ -36,12 +37,26 @@ public struct UsernameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
+        state.isActivityIndicatorVisible = true
         return .none
 
       case let .updateUsernameResponse(.success(result)):
+        state.isActivityIndicatorVisible = false
+        if let data = result.data {
+          print(data)
+          return .run { send in
+            await send(.delegate(.nextScreen))
+          }
+        }
+        if let errors = result.errors {
+          /// error handling
+          print(errors)
+          return .none
+        }
         return .none
 
       case .updateUsernameResponse(.failure):
+        state.isActivityIndicatorVisible = false
         return .none
 
       case .delegate:
