@@ -22,7 +22,6 @@ public extension ApolloClient {
         case let .success(response):
           if let data = response.data {
             continuation.yield(data)
-            return
           }
           if let error = response.errors?.last {
             continuation.finish(throwing: GodClient.GodServerError(error: error))
