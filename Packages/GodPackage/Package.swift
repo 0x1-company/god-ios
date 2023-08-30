@@ -114,6 +114,7 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
+      .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "God", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
@@ -125,7 +126,7 @@ let package = Package(
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "PhoneNumberClient", package: "DependencyPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
-    ]),
+    ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
