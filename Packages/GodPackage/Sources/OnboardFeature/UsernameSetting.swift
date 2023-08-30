@@ -16,12 +16,15 @@ public struct UsernameSettingReducer: Reducer {
   public enum Action: Equatable {
     case usernameChanged(String)
     case nextButtonTapped
+    case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
       case nextScreen
     }
   }
+  
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -32,6 +35,12 @@ public struct UsernameSettingReducer: Reducer {
         return .none
 
       case .nextButtonTapped:
+        return .none
+        
+      case let .updateUsernameResponse(.success(mutation)):
+        return .none
+
+      case .updateUsernameResponse(.failure):
         return .none
 
       case .delegate:
