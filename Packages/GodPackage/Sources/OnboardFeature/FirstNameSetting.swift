@@ -1,10 +1,12 @@
 import Colors
+import Contacts
 import ComposableArchitecture
 import ContactsClient
 import God
 import GodClient
 import StringHelpers
 import SwiftUI
+import UserDefaultsClient
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}
@@ -17,6 +19,7 @@ public struct FirstNameSettingReducer: Reducer {
   }
 
   public enum Action: Equatable {
+    case onTask
     case firstNameChanged(String)
     case nextButtonTapped
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
@@ -35,6 +38,7 @@ public struct FirstNameSettingReducer: Reducer {
 
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts) var contactsClient
+  @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
@@ -42,6 +46,15 @@ public struct FirstNameSettingReducer: Reducer {
     }
     Reduce { state, action in
       switch action {
+      case .onTask:
+        guard
+          case .authorized = contactsClient.authorizationStatus(.contacts),
+          let number = userDefaults.phoneNumber(),
+          let contact = try? contactsClient.findByPhoneNumber(number: number).first
+        else { return .none }
+        state.firstName = contact.phoneticGivenName
+        return .none
+
       case let .firstNameChanged(firstName):
         state.firstName = firstName
         return .none
@@ -133,6 +146,7 @@ public struct FirstNameSettingView: View {
       .padding(.bottom, 16)
       .background(Color.godService)
       .navigationBarBackButtonHidden()
+      .task { await viewStore.send(.onTask).finish() }
       .toolbar {
         DoubleCheckNameView(
           store: store.scope(
