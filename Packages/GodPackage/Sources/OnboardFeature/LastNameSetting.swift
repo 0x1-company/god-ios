@@ -1,61 +1,107 @@
 import ComposableArchitecture
-import FirebaseAuthClient
-import ProfileClient
 import SwiftUI
+import Colors
+import Contacts
+import God
+import GodClient
+import UserDefaultsClient
+import StringHelpers
 
 public struct LastNameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameReducer.State()
-    @BindingState var lastName = ""
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var lastName = ""
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
-    case doubleCheckName(DoubleCheckNameReducer.Action)
-    case binding(BindingAction<State>)
+  public enum Action: Equatable {
+    case onTask
+    case lastNameChanged(String)
     case nextButtonTapped
+    case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
+    case doubleCheckName(DoubleCheckNameReducer.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
     }
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
 
-  @Dependency(\.profileClient) var profileClient
-  @Dependency(\.firebaseAuth.currentUser) var currentUser
+  @Dependency(\.godClient) var godClient
+  @Dependency(\.contacts) var contactsClient
+  @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameReducer()
     }
     Reduce { state, action in
       switch action {
-      case .doubleCheckName:
+      case .onTask:
+        guard
+          case .authorized = contactsClient.authorizationStatus(.contacts),
+          let number = userDefaults.phoneNumber(),
+          let contact = try? contactsClient.findByPhoneNumber(number: number).first
+        else { return .none }
+        state.lastName = contact.phoneticFamilyName
         return .none
 
-      case .binding:
+      case let .lastNameChanged(lastName):
+        state.lastName = lastName
         return .none
-
+        
       case .nextButtonTapped:
-        guard let uid = currentUser()?.uid else {
+        let lastName = state.lastName
+        guard
+          !lastName.isEmpty,
+          validateHiragana(for: lastName)
+        else {
+          state.alert = .hiraganaValidateError()
           return .none
         }
-        return .run { [lastName = state.lastName] send in
-          try await profileClient.setUserProfile(
-            uid: uid,
-            field: .init(lastName: lastName)
+        let input = God.UpdateUserProfileInput(
+          lastName: .init(stringLiteral: lastName)
+        )
+        return .run { send in
+          async let next: Void = send(.delegate(.nextScreen))
+          async let update: Void = send(
+            .updateProfileResponse(
+              TaskResult {
+                try await godClient.updateUserProfile(input)
+              }
+            )
           )
-          await send(.delegate(.nextScreen))
+          _ = await (next, update)
         }
-      case .delegate:
+      default:
         return .none
       }
     }
   }
 }
+
+extension AlertState where Action == LastNameSettingReducer.Action.Alert {
+  static func hiraganaValidateError() -> Self {
+    Self {
+      TextState("title")
+    } actions: {
+      ButtonState(action: .confirmOkay) {
+        TextState("OK")
+      }
+    } message: {
+      TextState("ひらがなのみ設定できます")
+    }
+  }
+}
+
 
 public struct LastNameSettingView: View {
   let store: StoreOf<LastNameSettingReducer>
@@ -71,11 +117,16 @@ public struct LastNameSettingView: View {
         Text("What's your last name?")
           .bold()
           .foregroundColor(.white)
-        TextField("Last Name", text: viewStore.$lastName)
-          .font(.title)
-          .foregroundColor(.white)
-          .multilineTextAlignment(.center)
-          .textContentType(.familyName)
+        TextField(
+          "Last Name",
+          text: viewStore.binding(
+            get: \.lastName,
+            send: LastNameSettingReducer.Action.lastNameChanged
+          )
+        )
+        .font(.title)
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
         Spacer()
         Button {
           viewStore.send(.nextButtonTapped)
@@ -91,7 +142,8 @@ public struct LastNameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED_6C43))
+      .background(Color.godService)
+      .task { await viewStore.send(.onTask).finish() }
       .toolbar {
         DoubleCheckNameView(
           store: store.scope(
@@ -100,6 +152,7 @@ public struct LastNameSettingView: View {
           )
         )
       }
+      .alert(store: store.scope(state: \.alert, action: LastNameSettingReducer.Action.alert))
     }
   }
 }
