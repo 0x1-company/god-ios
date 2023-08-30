@@ -24,21 +24,21 @@ public extension UserDefaultsClient {
     guard let data = dataForKey(key) else { return nil }
     return try? decoder.decode(T.self, from: data)
   }
-  
+
   func setPhoneNumber(_ value: String) async {
-    return await setString(value, keyPhoneNumber)
+    await setString(value, keyPhoneNumber)
   }
-  
+
   func phoneNumber() -> String? {
-    return stringForKey(keyPhoneNumber)
+    stringForKey(keyPhoneNumber)
   }
-  
+
   func setVerificationId(_ value: String) async {
-    return await setString(value, keyVerificationId)
+    await setString(value, keyVerificationId)
   }
-  
+
   func verificationId() -> String? {
-    return stringForKey(keyVerificationId)
+    stringForKey(keyVerificationId)
   }
 }
 

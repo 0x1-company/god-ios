@@ -1,6 +1,6 @@
 import Colors
-import Contacts
 import ComposableArchitecture
+import Contacts
 import ContactsClient
 import God
 import GodClient
