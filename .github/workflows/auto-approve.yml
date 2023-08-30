@@ -2,6 +2,7 @@ name: Auto Approve
 
 on:
   pull_request:
+    types: [opened]
 
 jobs:
   auto-approve:
