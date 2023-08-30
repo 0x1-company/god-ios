@@ -2,6 +2,7 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import Lottie
 
 public struct WelcomeReducer: Reducer {
   public init() {}
@@ -88,10 +89,10 @@ public struct WelcomeView: View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
         Spacer()
-        Text("God")
-          .font(.largeTitle)
-          .bold()
-          .foregroundColor(Color.godTextSecondaryDark)
+        LottieView(animation: LottieAnimation.named("onboarding", bundle: .module))
+          .looping()
+          .resizable()
+          .padding(.horizontal, 84)
         Spacer()
         VStack(spacing: 24) {
           ZStack {
