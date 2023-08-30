@@ -4,6 +4,7 @@ import Contacts
 import God
 import GodClient
 import StringHelpers
+import Apollo
 import SwiftUI
 import UserDefaultsClient
 
@@ -21,7 +22,7 @@ public struct LastNameSettingReducer: Reducer {
     case onTask
     case lastNameChanged(String)
     case nextButtonTapped
-    case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case updateProfileResponse(TaskResult<GraphQLResult<God.UpdateUserProfileMutation.Data>>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
     case doubleCheckName(DoubleCheckNameReducer.Action)

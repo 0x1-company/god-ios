@@ -1,65 +1,48 @@
 import ComposableArchitecture
-import FirebaseAuthClient
-import ProfileClient
 import SwiftUI
+import God
+import GodClient
+import Colors
+import Apollo
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     var username = ""
-    var isAvailableUsername = false
+    var isDisabled = true
     public init() {}
   }
 
   public enum Action: Equatable {
     case usernameChanged(String)
-    case isAvailableUsernameUpdated(Bool)
     case nextButtonTapped
+    case updateUsernameResponse(TaskResult<GraphQLResult<God.UpdateUsernameMutation.Data>>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
       case nextScreen
     }
   }
-
-  @Dependency(\.profileClient) var profileClient
-  @Dependency(\.firebaseAuth.currentUser) var currentUser
+  
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case let .usernameChanged(username):
-        enum CancelID { case effect }
         state.username = username
-        return .run { [username = state.username] send in
-          try await send(
-            .isAvailableUsernameUpdated(
-              profileClient.isAvailableUsername(username)
-            )
-          )
-        } catch: { error, _ in
-          print(error)
-        }
-        .cancellable(id: CancelID.effect, cancelInFlight: true)
-
-      case let .isAvailableUsernameUpdated(isAvailableUsername):
-        state.isAvailableUsername = isAvailableUsername
+        state.isDisabled = username.count < 4 || username.count > 30
         return .none
 
       case .nextButtonTapped:
-        guard let uid = currentUser()?.uid else {
-          return .none
-        }
-        return .run { [username = state.username] send in
-          try await profileClient.setUserProfile(
-            uid: uid,
-            field: .init(username: username)
-          )
-          await send(.delegate(.nextScreen))
-        } catch: { error, _ in
-          print(error)
-        }
+        return .none
+        
+      case let .updateUsernameResponse(.success(result)):
+        return .none
+
+      case .updateUsernameResponse(.failure):
+        return .none
 
       case .delegate:
         return .none
@@ -71,22 +54,12 @@ public struct UsernameSettingReducer: Reducer {
 public struct UsernameSettingView: View {
   let store: StoreOf<UsernameSettingReducer>
 
-  struct ViewState: Equatable {
-    var username: String
-    var isDisabled: Bool
-
-    init(state: UsernameSettingReducer.State) {
-      username = state.username
-      isDisabled = !state.isAvailableUsername
-    }
-  }
-
   public init(store: StoreOf<UsernameSettingReducer>) {
     self.store = store
   }
 
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
         Text("Choose a username")
@@ -117,7 +90,7 @@ public struct UsernameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .background(Color(0xFFED_6C43))
+      .background(Color.godService)
     }
   }
 }

@@ -6,6 +6,7 @@ import GodClient
 import PhoneNumberClient
 import SwiftUI
 import UserDefaultsClient
+import Apollo
 
 public struct OneTimeCodeReducer: Reducer {
   public struct State: Equatable {
@@ -24,7 +25,7 @@ public struct OneTimeCodeReducer: Reducer {
     case changeOneTimeCode(String)
     case verifyResponse(TaskResult<String?>)
     case signInResponse(TaskResult<AuthDataResult?>)
-    case createUserResponse(TaskResult<God.CreateUserMutation.Data>)
+    case createUserResponse(TaskResult<GraphQLResult<God.CreateUserMutation.Data>>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
 
