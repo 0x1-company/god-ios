@@ -18,8 +18,11 @@ public struct GodClient: Sendable {
 
 extension GodClient {
   public struct GodServerError: Error {
-    let message: String
-    let extensions: [String : Any]
+    public let message: String
+    public let extensions: [String : Any]
+    public var code: GodServerErrorCode? {
+      return extensions["code"] as? GodServerErrorCode
+    }
     
     public init(
       message: String,
@@ -27,6 +30,13 @@ extension GodClient {
     ) {
       self.message = message
       self.extensions = extensions
+    }
+    
+    public enum GodServerErrorCode: String {
+      case badUserInput = "BAD_USER_INPUT"
+      case forbidden = "FORBIDDEN"
+      case unauthenticated = "UNAUTHENTICATED"
+      case `internal` = "INTERNAL"
     }
   }
 }

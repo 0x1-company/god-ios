@@ -22,15 +22,12 @@ public extension ApolloClient {
         case let .success(response):
           if let data = response.data {
             continuation.yield(data)
+            return
           }
-          /// エラー周りをどうするか考える
-          if let errors = response.errors {
-            errors.forEach { error in
-              logger.error("""
-              message: \(error.message ?? "")
-              localizedDescription: \(error.localizedDescription)
-              """)
-            }
+          if let error = response.errors?.last {
+            continuation.finish(throwing: GodClient.GodServerError(error: error))
+          } else {
+            continuation.finish(throwing: nil)
           }
         case let .failure(error):
           continuation.finish(throwing: error)
@@ -59,7 +56,7 @@ public extension ApolloClient {
               continuation.resume(returning: data)
             }
             if let error = response.errors?.last {
-              continuation.resume(throwing: error)
+              continuation.resume(throwing: GodClient.GodServerError(error: error))
             }
           case let .failure(error):
             continuation.resume(throwing: error)
@@ -67,5 +64,14 @@ public extension ApolloClient {
         }
       )
     }
+  }
+}
+
+public extension GodClient.GodServerError {
+  init(error: GraphQLError) {
+    self.init(
+      message: error.message ?? "",
+      extensions: error.extensions ?? [:]
+    )
   }
 }
