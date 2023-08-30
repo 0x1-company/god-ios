@@ -1,3 +1,4 @@
+import Apollo
 import Colors
 import ComposableArchitecture
 import Contacts
@@ -7,7 +8,6 @@ import GodClient
 import StringHelpers
 import SwiftUI
 import UserDefaultsClient
-import Apollo
 
 public struct FirstNameSettingReducer: Reducer {
   public init() {}

@@ -1,10 +1,10 @@
+import Apollo
 import Colors
 import ComposableArchitecture
 import Contacts
 import God
 import GodClient
 import StringHelpers
-import Apollo
 import SwiftUI
 import UserDefaultsClient
 

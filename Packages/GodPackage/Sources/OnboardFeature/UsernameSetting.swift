@@ -1,9 +1,9 @@
+import Apollo
+import Colors
 import ComposableArchitecture
-import SwiftUI
 import God
 import GodClient
-import Colors
-import Apollo
+import SwiftUI
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
@@ -24,7 +24,7 @@ public struct UsernameSettingReducer: Reducer {
       case nextScreen
     }
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -37,7 +37,7 @@ public struct UsernameSettingReducer: Reducer {
 
       case .nextButtonTapped:
         return .none
-        
+
       case let .updateUsernameResponse(.success(result)):
         return .none
 
