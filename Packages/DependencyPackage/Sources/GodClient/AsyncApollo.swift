@@ -24,7 +24,7 @@ public extension ApolloClient {
             continuation.yield(data)
           }
           if let error = response.errors?.last {
-            continuation.finish(throwing: GodClient.GodServerError(error: error))
+            continuation.finish(throwing: GodServerError(error: error))
           } else {
             continuation.finish(throwing: nil)
           }
@@ -55,7 +55,7 @@ public extension ApolloClient {
               continuation.resume(returning: data)
             }
             if let error = response.errors?.last {
-              continuation.resume(throwing: GodClient.GodServerError(error: error))
+              continuation.resume(throwing: GodServerError(error: error))
             }
           case let .failure(error):
             continuation.resume(throwing: error)
@@ -66,7 +66,7 @@ public extension ApolloClient {
   }
 }
 
-public extension GodClient.GodServerError {
+public extension GodServerError {
   init(error: GraphQLError) {
     self.init(
       message: error.message ?? "",
