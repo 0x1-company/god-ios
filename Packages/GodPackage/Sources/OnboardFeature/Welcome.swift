@@ -90,6 +90,7 @@ public struct WelcomeView: View {
       VStack {
         Spacer()
         LottieView(animation: LottieAnimation.named("onboarding", bundle: .module))
+          .looping()
           .resizable()
           .padding(.horizontal, 84)
         Spacer()
