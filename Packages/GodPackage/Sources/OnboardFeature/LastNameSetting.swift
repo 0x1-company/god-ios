@@ -152,7 +152,7 @@ public struct LastNameSettingView: View {
           )
         )
       }
-      .alert(store: store.scope(state: \.alert, action: LastNameSettingReducer.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: LastNameSettingReducer.Action.alert))
     }
   }
 }
