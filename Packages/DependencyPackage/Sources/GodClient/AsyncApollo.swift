@@ -46,7 +46,7 @@ public extension ApolloClient {
     mutation: Mutation,
     publishResultToStore: Bool = true,
     queue: DispatchQueue = .main
-  ) async throws -> GraphQLResult<Mutation.Data> {
+  ) async throws -> Mutation.Data {
     try await withCheckedThrowingContinuation { continuation in
       perform(
         mutation: mutation,
@@ -55,7 +55,12 @@ public extension ApolloClient {
         resultHandler: { result in
           switch result {
           case let .success(response):
-            continuation.resume(returning: response)
+            if let data = response.data {
+              continuation.resume(returning: data)
+            }
+            if let error = response.errors?.last {
+              continuation.resume(throwing: error)
+            }
           case let .failure(error):
             continuation.resume(throwing: error)
           }
