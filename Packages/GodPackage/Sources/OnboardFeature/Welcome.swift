@@ -1,8 +1,8 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import Lottie
+import SwiftUI
 
 public struct WelcomeReducer: Reducer {
   public init() {}
