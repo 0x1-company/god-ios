@@ -1,3 +1,4 @@
+import Apollo
 import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthClient
@@ -6,7 +7,6 @@ import GodClient
 import PhoneNumberClient
 import SwiftUI
 import UserDefaultsClient
-import Apollo
 
 public struct OneTimeCodeReducer: Reducer {
   public struct State: Equatable {

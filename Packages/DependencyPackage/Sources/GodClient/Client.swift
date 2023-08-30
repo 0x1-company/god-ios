@@ -1,5 +1,5 @@
-import God
 import Apollo
+import God
 
 public struct GodClient: Sendable {
   public var updateUsername: @Sendable (God.UpdateUsernameInput) async throws -> GraphQLResult<God.UpdateUsernameMutation.Data>
