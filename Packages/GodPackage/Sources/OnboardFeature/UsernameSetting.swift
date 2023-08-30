@@ -3,6 +3,7 @@ import SwiftUI
 import God
 import GodClient
 import Colors
+import Apollo
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
@@ -16,7 +17,7 @@ public struct UsernameSettingReducer: Reducer {
   public enum Action: Equatable {
     case usernameChanged(String)
     case nextButtonTapped
-    case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation>)
+    case updateUsernameResponse(TaskResult<GraphQLResult<God.UpdateUsernameMutation.Data>>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -37,7 +38,7 @@ public struct UsernameSettingReducer: Reducer {
       case .nextButtonTapped:
         return .none
         
-      case let .updateUsernameResponse(.success(mutation)):
+      case let .updateUsernameResponse(.success(result)):
         return .none
 
       case .updateUsernameResponse(.failure):
