@@ -40,7 +40,6 @@ public extension God {
       case "School": return God.Objects.School
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem
-      case "Item": return God.Objects.Item
       case "LocalizableString": return God.Objects.LocalizableString
       default: return nil
       }

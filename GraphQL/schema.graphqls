@@ -99,6 +99,16 @@ type Friend {
   userId: String!
 }
 
+type FriendConnection {
+  edges: [FriendEdge!]!
+  pageInfo: PageInfo!
+}
+
+type FriendEdge {
+  cursor: String!
+  node: Friend!
+}
+
 enum FriendStatus {
   APPROVED
   CANCELED
@@ -140,15 +150,10 @@ type InboxActivityEdge {
   node: InboxActivity!
 }
 
-type Item {
-  """説明"""
-  description: LocalizableString
-
-  """アイテムID"""
-  id: ID!
-
-  """タイトル"""
-  title: LocalizableString!
+enum ItemType {
+  GET_YOUR_NAME_ON_RANDOM_POLL
+  PUT_YOUR_NAME_IN_YOUR_CRUSHS_POLL
+  UNSPECIFIED
 }
 
 type LocalizableString {
@@ -186,6 +191,12 @@ type Mutation {
 
   """既読にする"""
   readActivity(activityId: String!): Boolean!
+
+  """フロックをリセットする"""
+  resetUserBlock: Boolean!
+
+  """リセットする"""
+  resetUserHide: Boolean!
   revealFullName(input: RevealFullNameInput!): String!
   revealFullNameByPurchase(input: RevealFullNameInput!): String!
 
@@ -247,13 +258,13 @@ type Query {
   currentUser: User!
 
   """list all friend requests"""
-  friendRequests: [Friend!]!
+  friendRequests(after: String, first: Int!): FriendConnection!
 
   """list all friends"""
-  friends: [Friend!]!
+  friends(after: String, first: Int!): UserConnection!
 
   """list all friends of friends"""
-  friendsOfFriends: [User!]!
+  friendsOfFriends(after: String, first: Int!): UserConnection!
   getFirebaseUser(phoneNumber: String!): String!
 
   """activityを一覧で取得する"""
@@ -263,13 +274,7 @@ type Query {
   listInboxActivities(after: String, first: Int!): InboxActivityConnection!
 
   """持っているアイテム一覧"""
-  listUserItems(
-    after: String
-
-    """nullなら指定なし、true/falseなら絞り込む"""
-    consumed: Boolean
-    first: Int!
-  ): UserItemConnection!
+  listUserItems(after: String, first: Int!): UserItemConnection!
 
   """get poll"""
   poll: Poll!
@@ -278,9 +283,9 @@ type Query {
   question(id: String!): Question!
 
   """get schools"""
-  schools: [School!]!
+  schools(after: String, first: Int!): SchoolConnection!
 
-  """get store"""
+  """ストアのすべての商品を取得する"""
   store: Store!
 
   """投票数が多い順に質問を最大5個まで取得する"""
@@ -290,7 +295,7 @@ type Query {
   user(where: UserWhere!): User!
 
   """get users by schoolId"""
-  usersBySchoolId(schoolId: String!): [User!]!
+  usersBySchoolId(after: String, first: Int!, schoolId: String!): UserConnection!
 
   """get me"""
   verifyToken: String!
@@ -329,6 +334,16 @@ type School {
   usersCount: Int!
 }
 
+type SchoolConnection {
+  edges: [SchoolEdge!]!
+  pageInfo: PageInfo!
+}
+
+type SchoolEdge {
+  cursor: String!
+  node: School!
+}
+
 type Store {
   """商品一覧"""
   items: [StoreItem!]!
@@ -337,16 +352,22 @@ type Store {
 type StoreItem {
   """価格(コイン)"""
   coinAmount: Int!
+
+  """説明"""
+  description: LocalizableString
   id: ID!
 
-  """item"""
-  item: Item!
+  """アイテムの種類"""
+  itemType: ItemType!
 
-  """アイテムID"""
-  itemId: String!
+  """数"""
+  quantity: Int!
 
   """ステータス"""
   status: StoreItemStatus!
+
+  """タイトル"""
+  title: LocalizableString!
 }
 
 enum StoreItemStatus {
@@ -417,6 +438,16 @@ type UserBlock {
   userId: String!
 }
 
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UserEdge {
+  cursor: String!
+  node: User!
+}
+
 type UserHide {
   hiddenUserId: String!
   id: ID!
@@ -424,12 +455,11 @@ type UserHide {
 }
 
 type UserItem {
-  consumed: Boolean!
-  consumedAt: Date
   createdAt: Date!
   id: String!
-  item: UserItem!
-  itemId: String!
+
+  """アイテムの種類"""
+  itemType: ItemType!
   updatedAt: Date!
 }
 

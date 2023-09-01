@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Store"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Store { store { __typename items { __typename id coinAmount itemId status item { __typename title { __typename ja } description { __typename ja } } } } }"#
+        #"query Store { store { __typename items { __typename id coinAmount status status quantity itemType title { __typename ja } description { __typename ja } } } }"#
       ))
 
     public init() {}
@@ -22,7 +22,7 @@ public extension God {
         .field("store", Store.self),
       ] }
 
-      /// get store
+      /// ストアのすべての商品を取得する
       public var store: Store { __data["store"] }
 
       /// Store
@@ -53,73 +53,59 @@ public extension God {
             .field("__typename", String.self),
             .field("id", God.ID.self),
             .field("coinAmount", Int.self),
-            .field("itemId", String.self),
             .field("status", GraphQLEnum<God.StoreItemStatus>.self),
-            .field("item", Item.self),
+            .field("quantity", Int.self),
+            .field("itemType", GraphQLEnum<God.ItemType>.self),
+            .field("title", Title.self),
+            .field("description", Description?.self),
           ] }
 
           public var id: God.ID { __data["id"] }
           /// 価格(コイン)
           public var coinAmount: Int { __data["coinAmount"] }
-          /// アイテムID
-          public var itemId: String { __data["itemId"] }
           /// ステータス
           public var status: GraphQLEnum<God.StoreItemStatus> { __data["status"] }
-          /// item
-          public var item: Item { __data["item"] }
+          /// 数
+          public var quantity: Int { __data["quantity"] }
+          /// アイテムの種類
+          public var itemType: GraphQLEnum<God.ItemType> { __data["itemType"] }
+          /// タイトル
+          public var title: Title { __data["title"] }
+          /// 説明
+          public var description: Description? { __data["description"] }
 
-          /// Store.Item.Item
+          /// Store.Item.Title
           ///
-          /// Parent Type: `Item`
-          public struct Item: God.SelectionSet {
+          /// Parent Type: `LocalizableString`
+          public struct Title: God.SelectionSet {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
-            public static var __parentType: ApolloAPI.ParentType { God.Objects.Item }
+            public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
-              .field("title", Title.self),
-              .field("description", Description?.self),
+              .field("ja", String.self),
             ] }
 
-            /// タイトル
-            public var title: Title { __data["title"] }
-            /// 説明
-            public var description: Description? { __data["description"] }
+            /// 日本語
+            public var ja: String { __data["ja"] }
+          }
 
-            /// Store.Item.Item.Title
-            ///
-            /// Parent Type: `LocalizableString`
-            public struct Title: God.SelectionSet {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
+          /// Store.Item.Description
+          ///
+          /// Parent Type: `LocalizableString`
+          public struct Description: God.SelectionSet {
+            public let __data: DataDict
+            public init(_dataDict: DataDict) { __data = _dataDict }
 
-              public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
-              public static var __selections: [ApolloAPI.Selection] { [
-                .field("__typename", String.self),
-                .field("ja", String.self),
-              ] }
+            public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
+            public static var __selections: [ApolloAPI.Selection] { [
+              .field("__typename", String.self),
+              .field("ja", String.self),
+            ] }
 
-              /// 日本語
-              public var ja: String { __data["ja"] }
-            }
-
-            /// Store.Item.Item.Description
-            ///
-            /// Parent Type: `LocalizableString`
-            public struct Description: God.SelectionSet {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
-              public static var __selections: [ApolloAPI.Selection] { [
-                .field("__typename", String.self),
-                .field("ja", String.self),
-              ] }
-
-              /// 日本語
-              public var ja: String { __data["ja"] }
-            }
+            /// 日本語
+            public var ja: String { __data["ja"] }
           }
         }
       }
