@@ -6,7 +6,8 @@ extension PhoneNumberClient: DependencyKey {
     let phoneNumberKit = PhoneNumberKit()
     return Self(
       parse: phoneNumberKit.parse(_:withRegion:ignoreType:),
-      format: phoneNumberKit.format(_:toType:withPrefix:)
+      format: phoneNumberKit.format(_:toType:withPrefix:),
+      isValidPhoneNumber: { phoneNumberKit.isValidPhoneNumber($0, withRegion: "JP", ignoreType: true) }
     )
   }()
 }

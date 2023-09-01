@@ -16,6 +16,7 @@ public struct FirstNameSettingReducer: Reducer {
     var doubleCheckName = DoubleCheckNameReducer.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     var firstName = ""
+    var isImport = false
     public init() {}
   }
 
@@ -51,13 +52,16 @@ public struct FirstNameSettingReducer: Reducer {
         guard
           case .authorized = contactsClient.authorizationStatus(.contacts),
           let number = userDefaults.phoneNumber(),
-          let contact = try? contactsClient.findByPhoneNumber(number: number).first
+          let contact = try? contactsClient.findByPhoneNumber(number: number).first,
+          let transformedFirstName = try? transformToHiragana(for: contact.phoneticGivenName)
         else { return .none }
-        state.firstName = contact.phoneticGivenName
+        state.firstName = transformedFirstName
+        state.isImport = true
         return .none
 
       case let .firstNameChanged(firstName):
         state.firstName = firstName
+        state.isImport = false
         return .none
 
       case .nextButtonTapped:
@@ -106,6 +110,7 @@ extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
 
 public struct FirstNameSettingView: View {
   let store: StoreOf<FirstNameSettingReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<FirstNameSettingReducer>) {
     self.store = store
@@ -114,10 +119,12 @@ public struct FirstNameSettingView: View {
   struct ViewState: Equatable {
     let firstName: String
     let isDisabled: Bool
+    let isImport: Bool
 
     init(state: FirstNameSettingReducer.State) {
       firstName = state.firstName
       isDisabled = state.firstName.isEmpty
+      isImport = state.isImport
     }
   }
 
@@ -127,7 +134,7 @@ public struct FirstNameSettingView: View {
         Spacer()
         Text("What's your first name?")
           .bold()
-          .foregroundColor(.white)
+          .foregroundColor(.godWhite)
         TextField(
           "First Name",
           text: viewStore.binding(
@@ -136,8 +143,14 @@ public struct FirstNameSettingView: View {
           )
         )
         .font(.title)
-        .foregroundColor(.white)
+        .foregroundColor(.godWhite)
         .multilineTextAlignment(.center)
+        .focused($focus)
+
+        if viewStore.isImport {
+          Text("Imported from Contacts")
+            .foregroundColor(.godWhite)
+        }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
           viewStore.send(.nextButtonTapped)
@@ -157,6 +170,9 @@ public struct FirstNameSettingView: View {
         )
       }
       .alert(store: store.scope(state: \.$alert, action: FirstNameSettingReducer.Action.alert))
+      .onAppear {
+        focus = true
+      }
     }
   }
 }

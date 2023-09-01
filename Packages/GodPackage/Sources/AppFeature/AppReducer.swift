@@ -5,6 +5,7 @@ import FirebaseAuthClient
 import FirestoreClient
 import ForceUpdateFeature
 import God
+import LaunchFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
@@ -21,7 +22,7 @@ public struct AppReducer: Reducer {
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
-    var view = View.State.onboard()
+    var view = View.State.launch()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
@@ -98,6 +99,7 @@ public struct AppReducer: Reducer {
 
   public struct View: Reducer {
     public enum State: Equatable {
+      case launch(LaunchReducer.State = .init())
       case onboard(OnboardReducer.State = .init())
       case navigation(RootNavigationReducer.State = .init())
       case forceUpdate(ForceUpdateReducer.State = .init())
@@ -105,6 +107,7 @@ public struct AppReducer: Reducer {
     }
 
     public enum Action: Equatable {
+      case launch(LaunchReducer.Action)
       case onboard(OnboardReducer.Action)
       case navigation(RootNavigationReducer.Action)
       case forceUpdate(ForceUpdateReducer.Action)
@@ -112,6 +115,7 @@ public struct AppReducer: Reducer {
     }
 
     public var body: some Reducer<State, Action> {
+      Scope(state: /State.launch, action: /Action.launch, child: LaunchReducer.init)
       Scope(state: /State.onboard, action: /Action.onboard, child: OnboardReducer.init)
       Scope(state: /State.navigation, action: /Action.navigation, child: RootNavigationReducer.init)
       Scope(state: /State.forceUpdate, action: /Action.forceUpdate, child: ForceUpdateReducer.init)
@@ -130,6 +134,12 @@ public struct AppView: View {
   public var body: some View {
     SwitchStore(store.scope(state: \.view, action: AppReducer.Action.view)) { initialState in
       switch initialState {
+      case .launch:
+        CaseLet(
+          /AppReducer.View.State.launch,
+          action: AppReducer.View.Action.launch,
+          then: LaunchView.init(store:)
+        )
       case .onboard:
         CaseLet(
           /AppReducer.View.State.onboard,
