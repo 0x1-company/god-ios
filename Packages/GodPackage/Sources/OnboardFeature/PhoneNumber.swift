@@ -94,9 +94,20 @@ public struct PhoneNumberView: View {
   public init(store: StoreOf<PhoneNumberReducer>) {
     self.store = store
   }
+  
+  struct ViewState: Equatable {
+    var phoneNumber: String
+    var isDisabled: Bool
+    var isLoading: Bool
+    init(state: PhoneNumberReducer.State) {
+      self.phoneNumber = state.phoneNumber
+      self.isDisabled = state.isActivityIndicatorVisible
+      self.isLoading = !state.isValidPhoneNumber
+    }
+  }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       ZStack {
         Color.godService
           .ignoresSafeArea()
@@ -124,15 +135,15 @@ public struct PhoneNumberView: View {
           Spacer()
 
           NextButton(
-            isLoading: viewStore.isActivityIndicatorVisible,
-            isDisabled: !viewStore.isValidPhoneNumber
+            isLoading: viewStore.isLoading,
+            isDisabled: viewStore.isDisabled
           ) {
             viewStore.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .foregroundColor(Color.white)
+        .foregroundColor(Color.godWhite)
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
