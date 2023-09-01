@@ -90,6 +90,7 @@ public struct PhoneNumberReducer: Reducer {
 
 public struct PhoneNumberView: View {
   let store: StoreOf<PhoneNumberReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<PhoneNumberReducer>) {
     self.store = store
@@ -101,8 +102,8 @@ public struct PhoneNumberView: View {
     var isLoading: Bool
     init(state: PhoneNumberReducer.State) {
       self.phoneNumber = state.phoneNumber
-      self.isDisabled = state.isActivityIndicatorVisible
-      self.isLoading = !state.isValidPhoneNumber
+      self.isLoading = state.isActivityIndicatorVisible
+      self.isDisabled = !state.isValidPhoneNumber
     }
   }
 
@@ -128,6 +129,7 @@ public struct PhoneNumberView: View {
           .font(.title)
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
+          .focused($focus)
 
           Text("Remember - never sign up\nwith another person's phone number.")
             .multilineTextAlignment(.center)
@@ -147,6 +149,9 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
+      .onAppear {
+        focus = true
+      }
     }
   }
 }
