@@ -12,7 +12,6 @@ let package = Package(
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
     .library(name: "ApolloClientHelpers", targets: ["ApolloClientHelpers"]),
-    .library(name: "AsyncApollo", targets: ["AsyncApollo"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
@@ -41,9 +40,6 @@ let package = Package(
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
     ]),
-    .target(name: "AsyncApollo", dependencies: [
-      .product(name: "Apollo", package: "apollo-ios"),
-    ]),
     .target(name: "Constants"),
     .target(name: "FirebaseAuthClient", dependencies: [
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
@@ -64,6 +60,7 @@ let package = Package(
     .target(name: "GodClient", dependencies: [
       "God",
       .product(name: "Apollo", package: "apollo-ios"),
+      .product(name: "ApolloAPI", package: "apollo-ios"),
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),

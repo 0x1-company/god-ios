@@ -1,5 +1,4 @@
 import Apollo
-import AsyncApollo
 import Dependencies
 import Foundation
 import God
