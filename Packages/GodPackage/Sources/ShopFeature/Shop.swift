@@ -7,13 +7,13 @@ public struct ShopReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var storeItems: [God.StoreQuery.Data.Store.Item] = []
+    var items: [God.StoreQuery.Data.Store.Item] = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
-    case responseStore(TaskResult<God.StoreQuery.Data>)
+    case storeResponse(TaskResult<God.StoreQuery.Data>)
     case closeButtonTapped
   }
 
@@ -24,21 +24,25 @@ public struct ShopReducer: Reducer {
     Reduce { state, action in
       switch action {
       case .onTask:
-        enum CancelID { case effect }
+        enum Cancel { case id }
         return .run { send in
           for try await data in godClient.store() {
-            await send(.responseStore(.success(data)), animation: .default)
+            await send(.storeResponse(.success(data)))
           }
         } catch: { error, send in
-          await send(.responseStore(.failure(error)), animation: .default)
+          await send(.storeResponse(.failure(error)))
         }
-        .cancellable(id: CancelID.effect)
+        .cancellable(id: Cancel.id)
 
-      case let .responseStore(.success(data)):
-        state.storeItems = data.store.items
+      case let .storeResponse(.success(data)):
+        state.items = data.store.items
+        return .none
+        
+      case let .storeResponse(.failure(error as GodServerError)):
+        print(error.message)
         return .none
 
-      case let .responseStore(.failure(error)):
+      case let .storeResponse(.failure(error)):
         print(error)
         return .none
 
@@ -74,11 +78,11 @@ public struct ShopView: View {
           .foregroundColor(Color.gray)
 
         VStack {
-          ForEach(viewStore.storeItems, id: \.self) { storeItem in
+          ForEach(viewStore.items, id: \.self) { item in
             ShopItemView(
-              name: storeItem.item.title.ja,
-              description: nil,
-              amount: storeItem.coinAmount
+              name: item.title.ja,
+              description: item.description?.ja,
+              amount: item.coinAmount
             )
           }
         }
