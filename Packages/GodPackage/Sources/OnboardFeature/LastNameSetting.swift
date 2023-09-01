@@ -15,6 +15,7 @@ public struct LastNameSettingReducer: Reducer {
     var doubleCheckName = DoubleCheckNameReducer.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     var lastName = ""
+    var isImport = false
     public init() {}
   }
 
@@ -50,13 +51,16 @@ public struct LastNameSettingReducer: Reducer {
         guard
           case .authorized = contactsClient.authorizationStatus(.contacts),
           let number = userDefaults.phoneNumber(),
-          let contact = try? contactsClient.findByPhoneNumber(number: number).first
+          let contact = try? contactsClient.findByPhoneNumber(number: number).first,
+          let transformedLastName = try? transformToHiragana(for: contact.phoneticFamilyName)
         else { return .none }
-        state.lastName = contact.phoneticFamilyName
+        state.lastName = transformedLastName
+        state.isImport = true
         return .none
 
       case let .lastNameChanged(lastName):
         state.lastName = lastName
+        state.isImport = false
         return .none
 
       case .nextButtonTapped:
@@ -109,9 +113,21 @@ public struct LastNameSettingView: View {
   public init(store: StoreOf<LastNameSettingReducer>) {
     self.store = store
   }
+  
+  struct ViewState: Equatable {
+    let firstName: String
+    let isDisabled: Bool
+    let isImport: Bool
+
+    init(state: LastNameSettingReducer.State) {
+      firstName = state.lastName
+      isDisabled = state.lastName.isEmpty
+      isImport = state.isImport
+    }
+  }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
         Spacer()
         Text("What's your last name?")
@@ -127,17 +143,13 @@ public struct LastNameSettingView: View {
         .font(.title)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
+        if viewStore.isImport {
+          Text("Imported from Contacts")
+            .foregroundColor(.godWhite)
+        }
         Spacer()
-        Button {
+        NextButton(isDisabled: viewStore.isDisabled) {
           viewStore.send(.nextButtonTapped)
-        } label: {
-          Text("Next")
-            .bold()
-            .frame(height: 54)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
-            .background(Color.white)
-            .clipShape(Capsule())
         }
       }
       .padding(.horizontal, 24)

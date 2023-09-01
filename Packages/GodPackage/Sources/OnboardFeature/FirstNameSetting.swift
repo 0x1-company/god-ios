@@ -16,6 +16,7 @@ public struct FirstNameSettingReducer: Reducer {
     var doubleCheckName = DoubleCheckNameReducer.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     var firstName = ""
+    var isImport = falsessss
     public init() {}
   }
 
@@ -51,13 +52,16 @@ public struct FirstNameSettingReducer: Reducer {
         guard
           case .authorized = contactsClient.authorizationStatus(.contacts),
           let number = userDefaults.phoneNumber(),
-          let contact = try? contactsClient.findByPhoneNumber(number: number).first
+          let contact = try? contactsClient.findByPhoneNumber(number: number).first,
+          let transformedFirstName = try? transformToHiragana(for: contact.phoneticGivenName)
         else { return .none }
-        state.firstName = contact.phoneticGivenName
+        state.firstName = transformedFirstName
+        state.isImport = true
         return .none
 
       case let .firstNameChanged(firstName):
         state.firstName = firstName
+        state.isimport = false
         return .none
 
       case .nextButtonTapped:
@@ -114,10 +118,12 @@ public struct FirstNameSettingView: View {
   struct ViewState: Equatable {
     let firstName: String
     let isDisabled: Bool
+    let isImport: Bool
 
     init(state: FirstNameSettingReducer.State) {
       firstName = state.firstName
       isDisabled = state.firstName.isEmpty
+      isImport = state.isImport
     }
   }
 
@@ -127,7 +133,7 @@ public struct FirstNameSettingView: View {
         Spacer()
         Text("What's your first name?")
           .bold()
-          .foregroundColor(.white)
+          .foregroundColor(.godWhite)
         TextField(
           "First Name",
           text: viewStore.binding(
@@ -136,8 +142,12 @@ public struct FirstNameSettingView: View {
           )
         )
         .font(.title)
-        .foregroundColor(.white)
+        .foregroundColor(.godWhite)
         .multilineTextAlignment(.center)
+        if viewStore.isImport {
+          Text("Imported from Contacts")
+            .foregroundColor(.godWhite)
+        }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
           viewStore.send(.nextButtonTapped)
