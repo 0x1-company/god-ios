@@ -9,6 +9,7 @@ import UserDefaultsClient
 public struct PhoneNumberReducer: Reducer {
   public struct State: Equatable {
     var phoneNumber = ""
+    var isValidPhoneNumber = false
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
@@ -37,25 +38,25 @@ public struct PhoneNumberReducer: Reducer {
     switch action {
     case .nextButtonTapped:
       return .run { [state] send in
-        async let next: Void = send(.delegate(.nextScreen), animation: .default)
-        async let save: Void = userDefaults.setPhoneNumber(state.phoneNumber)
+        await userDefaults.setPhoneNumber(state.phoneNumber)
         let format = try phoneNumberClient.parseFormat(state.phoneNumber)
-        async let verify: Void = send(
+        await send(
           .verifyResponse(
             TaskResult {
               try await verifyPhoneNumber(format)
             }
           )
         )
-        _ = await (next, save, verify)
       }
     case let .changePhoneNumber(number):
       state.phoneNumber = number
+      state.isValidPhoneNumber = phoneNumberClient.isValidPhoneNumber(number)
       return .none
 
     case let .verifyResponse(.success(id)):
-      return .run { _ in
+      return .run { send in
         await userDefaults.setVerificationId(id ?? "")
+        await send(.delegate(.nextScreen), animation: .default)
       }
 
     case let .verifyResponse(.failure(error)):
@@ -119,7 +120,7 @@ public struct PhoneNumberView: View {
 
           NextButton(
             isLoading: false,
-            isDisabled: false
+            isDisabled: !viewStore.isValidPhoneNumber
           ) {
             viewStore.send(.nextButtonTapped)
           }
