@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Store"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Store { store { __typename items { __typename id coinAmount status status quantity itemType title { __typename ja } description { __typename ja } } } }"#
+        #"query Store { store { __typename items { __typename id coinAmount description { __typename ja } title { __typename ja } } } }"#
       ))
 
     public init() {}
@@ -53,31 +53,22 @@ public extension God {
             .field("__typename", String.self),
             .field("id", God.ID.self),
             .field("coinAmount", Int.self),
-            .field("status", GraphQLEnum<God.StoreItemStatus>.self),
-            .field("quantity", Int.self),
-            .field("itemType", GraphQLEnum<God.ItemType>.self),
-            .field("title", Title.self),
             .field("description", Description?.self),
+            .field("title", Title.self),
           ] }
 
           public var id: God.ID { __data["id"] }
           /// 価格(コイン)
           public var coinAmount: Int { __data["coinAmount"] }
-          /// ステータス
-          public var status: GraphQLEnum<God.StoreItemStatus> { __data["status"] }
-          /// 数
-          public var quantity: Int { __data["quantity"] }
-          /// アイテムの種類
-          public var itemType: GraphQLEnum<God.ItemType> { __data["itemType"] }
-          /// タイトル
-          public var title: Title { __data["title"] }
           /// 説明
           public var description: Description? { __data["description"] }
+          /// タイトル
+          public var title: Title { __data["title"] }
 
-          /// Store.Item.Title
+          /// Store.Item.Description
           ///
           /// Parent Type: `LocalizableString`
-          public struct Title: God.SelectionSet {
+          public struct Description: God.SelectionSet {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -91,10 +82,10 @@ public extension God {
             public var ja: String { __data["ja"] }
           }
 
-          /// Store.Item.Description
+          /// Store.Item.Title
           ///
           /// Parent Type: `LocalizableString`
-          public struct Description: God.SelectionSet {
+          public struct Title: God.SelectionSet {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
