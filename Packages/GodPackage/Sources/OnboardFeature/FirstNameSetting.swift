@@ -16,7 +16,7 @@ public struct FirstNameSettingReducer: Reducer {
     var doubleCheckName = DoubleCheckNameReducer.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     var firstName = ""
-    var isImport = falsessss
+    var isImport = false
     public init() {}
   }
 
