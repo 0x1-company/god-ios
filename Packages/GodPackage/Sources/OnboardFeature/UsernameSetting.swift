@@ -89,7 +89,7 @@ public struct UsernameSettingView: View {
             send: UsernameSettingReducer.Action.usernameChanged
           )
         )
-        .textInputAutocapitalization(.none)
+        .textInputAutocapitalization(.never)
         .textContentType(.username)
         .font(.title)
         .foregroundColor(.white)
