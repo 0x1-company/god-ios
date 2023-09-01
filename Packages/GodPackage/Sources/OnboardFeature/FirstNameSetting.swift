@@ -61,7 +61,7 @@ public struct FirstNameSettingReducer: Reducer {
 
       case let .firstNameChanged(firstName):
         state.firstName = firstName
-        state.isimport = false
+        state.isImport = false
         return .none
 
       case .nextButtonTapped:
