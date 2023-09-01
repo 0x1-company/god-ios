@@ -18,7 +18,7 @@ public struct UsernameSettingReducer: Reducer {
   public enum Action: Equatable {
     case usernameChanged(String)
     case nextButtonTapped
-    case updateUsernameResponse(TaskResult<GraphQLResult<God.UpdateUsernameMutation.Data>>)
+    case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -40,23 +40,16 @@ public struct UsernameSettingReducer: Reducer {
         state.isActivityIndicatorVisible = true
         return .none
 
-      case let .updateUsernameResponse(.success(result)):
+      case .updateUsernameResponse(.success):
         state.isActivityIndicatorVisible = false
-        if let data = result.data {
-          print(data)
-          return .run { send in
-            await send(.delegate(.nextScreen))
-          }
+        return .run { send in
+          await send(.delegate(.nextScreen))
         }
-        if let errors = result.errors {
-          /// error handling
-          print(errors)
-          return .none
-        }
-        return .none
-
       case .updateUsernameResponse(.failure):
         state.isActivityIndicatorVisible = false
+        return .none
+        
+      case let .updateUsernameResponse(.failure(error as GodServerError)):
         return .none
 
       case .delegate:
@@ -68,7 +61,6 @@ public struct UsernameSettingReducer: Reducer {
 
 public struct UsernameSettingView: View {
   let store: StoreOf<UsernameSettingReducer>
-  @FocusState var focus: Bool
 
   public init(store: StoreOf<UsernameSettingReducer>) {
     self.store = store
@@ -94,7 +86,6 @@ public struct UsernameSettingView: View {
         .font(.title)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
-        .focused($focus)
 
         Spacer()
 
@@ -108,9 +99,6 @@ public struct UsernameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color.godService)
-      .onAppear {
-        focus = true
-      }
     }
   }
 }
