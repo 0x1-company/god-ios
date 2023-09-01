@@ -23,14 +23,10 @@ public extension ApolloClient {
           if let data = response.data {
             continuation.yield(data)
           }
-          /// エラー周りをどうするか考える
-          if let errors = response.errors {
-            errors.forEach { error in
-              logger.error("""
-              message: \(error.message ?? "")
-              localizedDescription: \(error.localizedDescription)
-              """)
-            }
+          if let error = response.errors?.last {
+            continuation.finish(throwing: GodServerError(error: error))
+          } else {
+            continuation.finish(throwing: nil)
           }
         case let .failure(error):
           continuation.finish(throwing: error)
@@ -46,7 +42,7 @@ public extension ApolloClient {
     mutation: Mutation,
     publishResultToStore: Bool = true,
     queue: DispatchQueue = .main
-  ) async throws -> GraphQLResult<Mutation.Data> {
+  ) async throws -> Mutation.Data {
     try await withCheckedThrowingContinuation { continuation in
       perform(
         mutation: mutation,
@@ -55,12 +51,26 @@ public extension ApolloClient {
         resultHandler: { result in
           switch result {
           case let .success(response):
-            continuation.resume(returning: response)
+            if let data = response.data {
+              continuation.resume(returning: data)
+            }
+            if let error = response.errors?.last {
+              continuation.resume(throwing: GodServerError(error: error))
+            }
           case let .failure(error):
             continuation.resume(throwing: error)
           }
         }
       )
     }
+  }
+}
+
+public extension GodServerError {
+  init(error: GraphQLError) {
+    self.init(
+      message: error.message ?? "",
+      extensions: error.extensions ?? [:]
+    )
   }
 }
