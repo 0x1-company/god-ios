@@ -109,6 +109,7 @@ extension AlertState where Action == LastNameSettingReducer.Action.Alert {
 
 public struct LastNameSettingView: View {
   let store: StoreOf<LastNameSettingReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<LastNameSettingReducer>) {
     self.store = store
@@ -143,6 +144,8 @@ public struct LastNameSettingView: View {
         .font(.title)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
+        .focused($focus)
+        
         if viewStore.isImport {
           Text("Imported from Contacts")
             .foregroundColor(.godWhite)
@@ -165,6 +168,9 @@ public struct LastNameSettingView: View {
         )
       }
       .alert(store: store.scope(state: \.$alert, action: LastNameSettingReducer.Action.alert))
+      .onAppear {
+        focus = true
+      }
     }
   }
 }

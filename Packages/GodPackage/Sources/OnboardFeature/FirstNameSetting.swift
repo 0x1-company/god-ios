@@ -110,6 +110,7 @@ extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
 
 public struct FirstNameSettingView: View {
   let store: StoreOf<FirstNameSettingReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<FirstNameSettingReducer>) {
     self.store = store
@@ -144,6 +145,8 @@ public struct FirstNameSettingView: View {
         .font(.title)
         .foregroundColor(.godWhite)
         .multilineTextAlignment(.center)
+        .focused($focus)
+        
         if viewStore.isImport {
           Text("Imported from Contacts")
             .foregroundColor(.godWhite)
@@ -167,6 +170,9 @@ public struct FirstNameSettingView: View {
         )
       }
       .alert(store: store.scope(state: \.$alert, action: FirstNameSettingReducer.Action.alert))
+      .onAppear {
+        focus = true
+      }
     }
   }
 }
