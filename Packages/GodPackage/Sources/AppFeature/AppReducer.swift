@@ -5,12 +5,12 @@ import FirebaseAuthClient
 import FirestoreClient
 import ForceUpdateFeature
 import God
+import LaunchFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
 import SwiftUI
 import TcaHelpers
-import LaunchFeature
 
 public struct AppReducer: Reducer {
   public init() {}
@@ -137,8 +137,8 @@ public struct AppView: View {
       case .launch:
         CaseLet(
           /AppReducer.View.State.launch,
-           action: AppReducer.View.Action.launch,
-           then: LaunchView.init(store:)
+          action: AppReducer.View.Action.launch,
+          then: LaunchView.init(store:)
         )
       case .onboard:
         CaseLet(

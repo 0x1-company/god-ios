@@ -146,7 +146,7 @@ public struct FirstNameSettingView: View {
         .foregroundColor(.godWhite)
         .multilineTextAlignment(.center)
         .focused($focus)
-        
+
         if viewStore.isImport {
           Text("Imported from Contacts")
             .foregroundColor(.godWhite)

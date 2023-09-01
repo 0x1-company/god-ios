@@ -95,15 +95,15 @@ public struct PhoneNumberView: View {
   public init(store: StoreOf<PhoneNumberReducer>) {
     self.store = store
   }
-  
+
   struct ViewState: Equatable {
     var phoneNumber: String
     var isDisabled: Bool
     var isLoading: Bool
     init(state: PhoneNumberReducer.State) {
-      self.phoneNumber = state.phoneNumber
-      self.isLoading = state.isActivityIndicatorVisible
-      self.isDisabled = !state.isValidPhoneNumber
+      phoneNumber = state.phoneNumber
+      isLoading = state.isActivityIndicatorVisible
+      isDisabled = !state.isValidPhoneNumber
     }
   }
 
