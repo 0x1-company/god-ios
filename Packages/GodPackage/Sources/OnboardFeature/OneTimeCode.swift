@@ -171,6 +171,7 @@ public struct OneTimeCodeReducer: Reducer {
 
 public struct OneTimeCodeView: View {
   let store: StoreOf<OneTimeCodeReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<OneTimeCodeReducer>) {
     self.store = store
@@ -200,6 +201,7 @@ public struct OneTimeCodeView: View {
           .font(.title)
           .textContentType(.oneTimeCode)
           .keyboardType(.numberPad)
+          .focused($focus)
 
           Spacer()
 
@@ -220,6 +222,9 @@ public struct OneTimeCodeView: View {
         .multilineTextAlignment(.center)
       }
       .alert(store: store.scope(state: \.$alert, action: OneTimeCodeReducer.Action.alert))
+      .onAppear {
+        focus = true
+      }
     }
   }
 }

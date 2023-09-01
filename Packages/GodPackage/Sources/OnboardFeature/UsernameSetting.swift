@@ -68,6 +68,7 @@ public struct UsernameSettingReducer: Reducer {
 
 public struct UsernameSettingView: View {
   let store: StoreOf<UsernameSettingReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<UsernameSettingReducer>) {
     self.store = store
@@ -93,6 +94,7 @@ public struct UsernameSettingView: View {
         .font(.title)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
+        .focused($focus)
 
         Spacer()
 
@@ -106,6 +108,9 @@ public struct UsernameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color.godService)
+      .onAppear {
+        focus = true
+      }
     }
   }
 }

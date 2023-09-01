@@ -9,6 +9,8 @@ import UserDefaultsClient
 public struct PhoneNumberReducer: Reducer {
   public struct State: Equatable {
     var phoneNumber = ""
+    var isValidPhoneNumber = false
+    var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
@@ -36,29 +38,33 @@ public struct PhoneNumberReducer: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .nextButtonTapped:
+      guard phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
+      else { return .none }
+      state.isActivityIndicatorVisible = true
       return .run { [state] send in
-        async let next: Void = send(.delegate(.nextScreen), animation: .default)
-        async let save: Void = userDefaults.setPhoneNumber(state.phoneNumber)
+        await userDefaults.setPhoneNumber(state.phoneNumber)
         let format = try phoneNumberClient.parseFormat(state.phoneNumber)
-        async let verify: Void = send(
+        await send(
           .verifyResponse(
             TaskResult {
               try await verifyPhoneNumber(format)
             }
           )
         )
-        _ = await (next, save, verify)
       }
     case let .changePhoneNumber(number):
       state.phoneNumber = number
+      state.isValidPhoneNumber = phoneNumberClient.isValidPhoneNumber(number)
       return .none
 
     case let .verifyResponse(.success(id)):
-      return .run { _ in
+      state.isActivityIndicatorVisible = false
+      return .run { send in
         await userDefaults.setVerificationId(id ?? "")
+        await send(.delegate(.nextScreen), animation: .default)
       }
-
     case let .verifyResponse(.failure(error)):
+      state.isActivityIndicatorVisible = false
       state.alert = AlertState {
         TextState("Error")
       } actions: {
@@ -84,13 +90,25 @@ public struct PhoneNumberReducer: Reducer {
 
 public struct PhoneNumberView: View {
   let store: StoreOf<PhoneNumberReducer>
+  @FocusState var focus: Bool
 
   public init(store: StoreOf<PhoneNumberReducer>) {
     self.store = store
   }
+  
+  struct ViewState: Equatable {
+    var phoneNumber: String
+    var isDisabled: Bool
+    var isLoading: Bool
+    init(state: PhoneNumberReducer.State) {
+      self.phoneNumber = state.phoneNumber
+      self.isLoading = state.isActivityIndicatorVisible
+      self.isDisabled = !state.isValidPhoneNumber
+    }
+  }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       ZStack {
         Color.godService
           .ignoresSafeArea()
@@ -111,6 +129,7 @@ public struct PhoneNumberView: View {
           .font(.title)
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
+          .focused($focus)
 
           Text("Remember - never sign up\nwith another person's phone number.")
             .multilineTextAlignment(.center)
@@ -118,18 +137,21 @@ public struct PhoneNumberView: View {
           Spacer()
 
           NextButton(
-            isLoading: false,
-            isDisabled: false
+            isLoading: viewStore.isLoading,
+            isDisabled: viewStore.isDisabled
           ) {
             viewStore.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .foregroundColor(Color.white)
+        .foregroundColor(Color.godWhite)
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
+      .onAppear {
+        focus = true
+      }
     }
   }
 }

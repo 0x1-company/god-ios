@@ -17,7 +17,7 @@ extension FirebaseAuthClient: DependencyKey {
     canHandleNotification: { Auth.auth().canHandleNotification($0) },
     setAPNSToken: { Auth.auth().setAPNSToken($0, type: $1) },
     verifyPhoneNumber: { phoneNumber in
-      assert(phoneNumber.first != "+", "Need to PhoneNumberClient.parseFormat")
+      assert(phoneNumber.first == "+", "Need to PhoneNumberClient.parseFormat")
       return try await withCheckedThrowingContinuation { continuation in
         PhoneAuthProvider.provider()
           .verifyPhoneNumber(phoneNumber, uiDelegate: nil) { verificationID, error in

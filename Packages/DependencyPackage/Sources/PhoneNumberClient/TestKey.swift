@@ -11,6 +11,7 @@ public extension DependencyValues {
 extension PhoneNumberClient: TestDependencyKey {
   public static let testValue = Self(
     parse: unimplemented("\(Self.self).parse"),
-    format: unimplemented("\(Self.self).format")
+    format: unimplemented("\(Self.self).format"),
+    isValidPhoneNumber: unimplemented("\(Self.self).isValidPhoneNumber")
   )
 }
