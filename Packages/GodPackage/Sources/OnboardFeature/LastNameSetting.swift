@@ -114,7 +114,7 @@ public struct LastNameSettingView: View {
   public init(store: StoreOf<LastNameSettingReducer>) {
     self.store = store
   }
-  
+
   struct ViewState: Equatable {
     let lastName: String
     let isDisabled: Bool
@@ -145,7 +145,7 @@ public struct LastNameSettingView: View {
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
         .focused($focus)
-        
+
         if viewStore.isImport {
           Text("Imported from Contacts")
             .foregroundColor(.godWhite)
