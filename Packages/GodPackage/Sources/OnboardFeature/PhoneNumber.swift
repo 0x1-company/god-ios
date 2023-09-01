@@ -10,6 +10,7 @@ public struct PhoneNumberReducer: Reducer {
   public struct State: Equatable {
     var phoneNumber = ""
     var isValidPhoneNumber = false
+    var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
@@ -37,6 +38,9 @@ public struct PhoneNumberReducer: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .nextButtonTapped:
+      guard phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
+      else { return .none }
+      state.isActivityIndicatorVisible = true
       return .run { [state] send in
         await userDefaults.setPhoneNumber(state.phoneNumber)
         let format = try phoneNumberClient.parseFormat(state.phoneNumber)
@@ -54,12 +58,13 @@ public struct PhoneNumberReducer: Reducer {
       return .none
 
     case let .verifyResponse(.success(id)):
+      state.isActivityIndicatorVisible = false
       return .run { send in
         await userDefaults.setVerificationId(id ?? "")
         await send(.delegate(.nextScreen), animation: .default)
       }
-
     case let .verifyResponse(.failure(error)):
+      state.isActivityIndicatorVisible = false
       state.alert = AlertState {
         TextState("Error")
       } actions: {
@@ -119,7 +124,7 @@ public struct PhoneNumberView: View {
           Spacer()
 
           NextButton(
-            isLoading: false,
+            isLoading: viewStore.isActivityIndicatorVisible,
             isDisabled: !viewStore.isValidPhoneNumber
           ) {
             viewStore.send(.nextButtonTapped)
