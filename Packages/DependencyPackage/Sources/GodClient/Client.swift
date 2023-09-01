@@ -18,14 +18,14 @@ public struct GodClient: Sendable {
 
 public struct GodServerError: Error {
   public let message: String
-  public let extensions: [String : Any]
+  public let extensions: [String: Any]
   public var code: GodServerErrorCode? {
-    return extensions["code"] as? GodServerErrorCode
+    extensions["code"] as? GodServerErrorCode
   }
 
   public init(
     message: String,
-    extensions: [String : Any]
+    extensions: [String: Any]
   ) {
     self.message = message
     self.extensions = extensions

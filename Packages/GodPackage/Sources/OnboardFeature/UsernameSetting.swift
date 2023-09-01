@@ -48,7 +48,7 @@ public struct UsernameSettingReducer: Reducer {
       case .updateUsernameResponse(.failure):
         state.isActivityIndicatorVisible = false
         return .none
-        
+
       case let .updateUsernameResponse(.failure(error as GodServerError)):
         return .none
 
