@@ -115,12 +115,12 @@ public struct LastNameSettingView: View {
   }
   
   struct ViewState: Equatable {
-    let firstName: String
+    let lastName: String
     let isDisabled: Bool
     let isImport: Bool
 
     init(state: LastNameSettingReducer.State) {
-      firstName = state.lastName
+      lastName = state.lastName
       isDisabled = state.lastName.isEmpty
       isImport = state.isImport
     }
