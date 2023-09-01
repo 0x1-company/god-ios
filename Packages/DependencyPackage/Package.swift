@@ -63,7 +63,7 @@ let package = Package(
     ]),
     .target(name: "GodClient", dependencies: [
       "God",
-      "AsyncApollo",
+      .product(name: "Apollo", package: "apollo-ios"),
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
