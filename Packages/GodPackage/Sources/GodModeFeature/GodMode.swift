@@ -1,3 +1,5 @@
+import ButtonStyles
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -44,15 +46,22 @@ public struct GodModeView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 24) {
-        Text("Recurring billing. Cancel anytime.\nYour payment will be charged to iTunes Account, and your subscription will auto-renew for ¥960/week until you cancel in iTunes Store settings. By tapping Unlock, you agree to our Terms and the auto-renewal.")
-          .font(.caption)
-          .padding(.horizontal, 24)
-          .foregroundColor(Color.gray)
-          .multilineTextAlignment(.center)
+        VStack(spacing: 0) {
+          Text("定期課金。いつでもキャンセルできます。")
+          Text("お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週[金額]円で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。")
+        }
+        .font(.caption)
+        .padding(.horizontal, 24)
+        .foregroundColor(Color.gray)
+        .multilineTextAlignment(.center)
 
         VStack(spacing: 16) {
-          Text("See who likes you")
-          Text("with GOD MODE")
+          Image("see-who-likes-you", bundle: .module)
+            .resizable()
+            .scaledToFit()
+            .padding(.horizontal, 60)
+          
+          GodModeFunctions()
 
           Text("¥960/week")
 
@@ -68,6 +77,7 @@ public struct GodModeView: View {
               .clipShape(Capsule())
               .padding(.horizontal, 60)
           }
+          .buttonStyle(HoldDownButtonStyle())
 
           Button {
             store.send(.maybeLaterButtonTapped)
@@ -75,6 +85,7 @@ public struct GodModeView: View {
             Text("Maybe Later")
               .foregroundColor(Color.gray)
           }
+          .buttonStyle(HoldDownButtonStyle())
         }
         .foregroundColor(Color.white)
         .padding(.vertical, 24)
@@ -88,6 +99,7 @@ public struct GodModeView: View {
 
         Spacer()
       }
+      .background(Color.godBlack)
     }
   }
 }
