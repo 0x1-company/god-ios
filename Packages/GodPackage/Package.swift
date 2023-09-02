@@ -58,6 +58,7 @@ let package = Package(
       "MaintenanceFeature",
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "TcaHelpers", package: "DependencyPackage"),
+      .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "FirestoreClient", package: "DependencyPackage"),
       .product(name: "FirebaseCoreClient", package: "DependencyPackage"),
     ]),
