@@ -87,6 +87,7 @@ let package = Package(
       "GodModeFeature",
       "ShareScreenshotFeature",
       .product(name: "ColorHex", package: "UIComponentPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),

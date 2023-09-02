@@ -1,25 +1,41 @@
 import ColorHex
+import ButtonStyles
 import ComposableArchitecture
 import LabeledButton
 import SwiftUI
+import GodModeFeature
 
 public struct InboxReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var godMode: GodModeReducer.State?
+
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case seeWhoLikesYouButtonTapped
+    case godMode(PresentationAction<GodModeReducer.Action>)
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
+        
+      case .seeWhoLikesYouButtonTapped:
+        state.godMode = .init()
+        return .none
+
+      case .godMode:
+        return .none
       }
+    }
+    .ifLet(\.$godMode, action: /Action.godMode) {
+      GodModeReducer()
     }
   }
 }
@@ -35,7 +51,7 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(0 ..< 100) { _ in
+          ForEach(0 ..< 10) { _ in
             HStack(spacing: 0) {
               LabeledContent {
                 Text("16h")
@@ -64,19 +80,33 @@ public struct InboxView: View {
 
         ZStack(alignment: .top) {
           Color.white.blur(radius: 1.0)
-
-          LabeledButton("See who likes you", systemImage: "lock.fill", action: {})
-            .bold()
-            .foregroundColor(.white)
-            .background(Color.black)
-            .clipShape(Capsule())
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
+          
+          Button {
+            viewStore.send(.seeWhoLikesYouButtonTapped)
+          } label: {
+            Label("See who likes you", systemImage: "lock.fill")
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
+              .bold()
+              .foregroundColor(.white)
+              .background(Color.black)
+              .clipShape(Capsule())
+              .padding(.horizontal, 16)
+              .padding(.top, 8)
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
         .ignoresSafeArea()
         .frame(height: 64)
       }
       .task { await viewStore.send(.onTask).finish() }
+      .fullScreenCover(
+        store: store.scope(
+          state: \.$godMode,
+          action: InboxReducer.Action.godMode
+        ),
+        content: GodModeView.init(store:)
+      )
     }
   }
 }
