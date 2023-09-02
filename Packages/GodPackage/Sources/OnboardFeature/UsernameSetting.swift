@@ -40,13 +40,20 @@ public struct UsernameSettingReducer: Reducer {
 
       case .nextButtonTapped:
         state.isActivityIndicatorVisible = true
-        return .none
-
+        let input = God.UpdateUsernameInput(username: state.username)
+        return .run { send in
+          await send(
+            .updateUsernameResponse(
+              TaskResult {
+                try await godClient.updateUsername(input)
+              }
+            )
+          )
+        }
       case .updateUsernameResponse(.success):
         state.isActivityIndicatorVisible = false
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
+        return .send(.delegate(.nextScreen), animation: .default)
+
       case let .updateUsernameResponse(.failure(error as GodServerError)):
         state.isActivityIndicatorVisible = false
         print(error)
