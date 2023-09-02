@@ -57,13 +57,13 @@ public struct AppReducer: Reducer {
       case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
         state.account.onboardCongrats = true
         return .none
-        
+
       case .appDelegate(.delegate(.didFinishLaunching)):
         return .run { send in
           try await mainQueue.sleep(for: .seconds(3))
           await send(.overlayHidden, animation: .default)
         }
-        
+
       case .overlayHidden:
         state.account.overlayHidden = true
         return .none
