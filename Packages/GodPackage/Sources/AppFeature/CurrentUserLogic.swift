@@ -4,8 +4,6 @@ import GodClient
 import os
 
 public struct CurrentUserLogic: Reducer {
-  private let logger = Logger(subsystem: "jp.godapp", category: "CurrentUserLogic")
-
   @Dependency(\.godClient.currentUser) var currentUser
 
   public func reduce(
@@ -29,11 +27,6 @@ public struct CurrentUserLogic: Reducer {
       return .none
 
     case let .currentUserResponse(.failure(error)):
-      logger.error("""
-      function: \(#function)
-      line: \(#line)
-      description: \(error.localizedDescription)
-      """)
       state.account.currentUser = nil
       return .none
 
