@@ -80,7 +80,7 @@ public struct OnboardPathLogic: Reducer {
       case .addFriends(.delegate(.nextScreen)):
         state.path.append(.howItWorks())
         return .none
-        
+
       case .howItWorks(.delegate(.start)):
         // オンボーディングすべて終わり
         return .none

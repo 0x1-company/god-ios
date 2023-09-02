@@ -1,7 +1,7 @@
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
-import ButtonStyles
 
 public struct HowItWorksReducer: Reducer {
   public init() {}
@@ -13,7 +13,7 @@ public struct HowItWorksReducer: Reducer {
   public enum Action: Equatable {
     case startButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case start
     }
@@ -24,7 +24,7 @@ public struct HowItWorksReducer: Reducer {
       switch action {
       case .startButtonTapped:
         return .send(.delegate(.start), animation: .default)
-        
+
       case .delegate:
         return .none
       }
