@@ -80,6 +80,7 @@ let package = Package(
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "InboxFeature", dependencies: [
