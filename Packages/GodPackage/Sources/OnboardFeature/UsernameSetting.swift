@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import StringHelpers
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
@@ -11,6 +12,7 @@ public struct UsernameSettingReducer: Reducer {
   public struct State: Equatable {
     var username = ""
     var isDisabled = true
+    var isValidUsername = false
     var isActivityIndicatorVisible = false
     public init() {}
   }
@@ -33,23 +35,32 @@ public struct UsernameSettingReducer: Reducer {
       switch action {
       case let .usernameChanged(username):
         state.username = username
-        state.isDisabled = username.count < 4 || username.count > 30
+        state.isValidUsername = validateUsername(for: username)
         return .none
 
       case .nextButtonTapped:
         state.isActivityIndicatorVisible = true
-        return .none
-
+        let input = God.UpdateUsernameInput(username: state.username)
+        return .run { send in
+          await send(
+            .updateUsernameResponse(
+              TaskResult {
+                try await godClient.updateUsername(input)
+              }
+            )
+          )
+        }
       case .updateUsernameResponse(.success):
         state.isActivityIndicatorVisible = false
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
-      case .updateUsernameResponse(.failure):
-        state.isActivityIndicatorVisible = false
-        return .none
+        return .send(.delegate(.nextScreen), animation: .default)
 
       case let .updateUsernameResponse(.failure(error as GodServerError)):
+        state.isActivityIndicatorVisible = false
+        print(error)
+        return .none
+
+      case .updateUsernameResponse(.failure):
+        state.isActivityIndicatorVisible = false
         return .none
 
       case .delegate:
@@ -65,9 +76,20 @@ public struct UsernameSettingView: View {
   public init(store: StoreOf<UsernameSettingReducer>) {
     self.store = store
   }
+  
+  struct ViewState: Equatable {
+    let username: String
+    let isLoading: Bool
+    let isDisabled: Bool
+    init(state: UsernameSettingReducer.State) {
+      username = state.username
+      isLoading = state.isActivityIndicatorVisible
+      isDisabled = !state.isValidUsername
+    }
+  }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack {
         Spacer()
         Text("Choose a username")
@@ -90,7 +112,7 @@ public struct UsernameSettingView: View {
         Spacer()
 
         NextButton(
-          isLoading: false,
+          isLoading: viewStore.isLoading,
           isDisabled: viewStore.isDisabled
         ) {
           viewStore.send(.nextButtonTapped)

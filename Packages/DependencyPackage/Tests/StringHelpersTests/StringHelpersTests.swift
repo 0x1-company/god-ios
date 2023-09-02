@@ -24,4 +24,18 @@ final class StringHelpersTests: XCTestCase {
     XCTAssertFalse(validateKatakana(for: "ともき"))
     XCTAssertFalse(validateKatakana(for: "Tomoki"))
   }
+  
+  func testValidateUsername() {
+    XCTAssertTrue(validateUsername(for: "tomokisun"))
+    XCTAssertTrue(validateUsername(for: "tomoki_sun"))
+    XCTAssertTrue(validateUsername(for: "tomoki._.sun"))
+    XCTAssertTrue(validateUsername(for: "tomoki.sun"))
+    
+    XCTAssertFalse(validateUsername(for: "tomoki-sun"))
+    XCTAssertFalse(validateUsername(for: ".tomokisun"))
+    XCTAssertFalse(validateUsername(for: "tomokisun."))
+    XCTAssertFalse(validateUsername(for: "tomoki..sun"))
+    XCTAssertFalse(validateUsername(for: "@tomokisun"))
+    XCTAssertFalse(validateUsername(for: "tom"))
+  }
 }
