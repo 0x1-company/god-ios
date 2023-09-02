@@ -51,32 +51,17 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(0 ..< 10) { _ in
-            HStack(spacing: 0) {
-              LabeledContent {
-                Text("16h")
-              } label: {
-                Label {
-                  Text("From a boy")
-                } icon: {
-                  Image(systemName: "flame.fill")
-                    .font(.largeTitle)
-                }
-              }
-              .padding(.horizontal, 16)
-            }
-            .listRowSeparator(.hidden)
-            .frame(height: 72)
-            .background(
-              Color.white
-            )
-            .cornerRadius(8)
-            .compositingGroup()
-            .shadow(color: Color.black.opacity(0.1), radius: 10)
+          ForEach(0 ..< 4) { _ in
+            InboxCard(title: "From a Boy", action: {})
           }
+          
+          InboxCard(title: "From God Team", action: {})
+
+          Spacer()
+            .listRowSeparator(.hidden)
+            .frame(height: 80)
         }
         .listStyle(.plain)
-        .background(Color(0xFFFA_FAFA))
 
         ZStack(alignment: .top) {
           Color.white.blur(radius: 1.0)
