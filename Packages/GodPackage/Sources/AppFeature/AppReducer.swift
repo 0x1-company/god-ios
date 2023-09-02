@@ -1,4 +1,3 @@
-import Build
 import ComposableArchitecture
 import Constants
 import FirebaseAuthClient
@@ -22,7 +21,7 @@ public struct AppReducer: Reducer {
 
     var appDelegate = AppDelegateReducer.State()
     var sceneDelegate = SceneDelegateReducer.State()
-    var view = View.State.launch()
+    var view = View.State.onboard()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
@@ -34,6 +33,8 @@ public struct AppReducer: Reducer {
       var currentUser: God.CurrentUserQuery.Data.CurrentUser?
       var isForceUpdate = false
       var isMaintenance = false
+      var onboardCongrats = false
+      var overlayHidden = false
     }
   }
 
@@ -45,16 +46,35 @@ public struct AppReducer: Reducer {
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
+    case overlayHidden
   }
 
-  @Dependency(\.build) var build
-  @Dependency(\.openURL) var openURL
-  @Dependency(\.firestore) var firestore
-  @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.mainQueue) var mainQueue
 
   public var body: some Reducer<State, Action> {
+    Reduce { state, action in
+      switch action {
+      case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
+        state.account.onboardCongrats = true
+        return .none
+        
+      case .appDelegate(.delegate(.didFinishLaunching)):
+        return .run { send in
+          try await mainQueue.sleep(for: .seconds(3))
+          await send(.overlayHidden, animation: .default)
+        }
+        
+      case .overlayHidden:
+        state.account.overlayHidden = true
+        return .none
+
+      default:
+        return .none
+      }
+    }
     core
       .onChange(of: \.account) { account, state, _ in
+        print(".onChange(of:): \(account)")
         if account.isForceUpdate {
           state.view = .forceUpdate()
           return .none
@@ -69,6 +89,10 @@ public struct AppReducer: Reducer {
         }
         guard let currentUser = account.currentUser else {
           state.view = .onboard()
+          return .none
+        }
+        if account.onboardCongrats {
+          state.view = .navigation()
           return .none
         }
         if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username == nil {
@@ -132,38 +156,46 @@ public struct AppView: View {
   }
 
   public var body: some View {
-    SwitchStore(store.scope(state: \.view, action: AppReducer.Action.view)) { initialState in
-      switch initialState {
-      case .launch:
-        CaseLet(
-          /AppReducer.View.State.launch,
-          action: AppReducer.View.Action.launch,
-          then: LaunchView.init(store:)
-        )
-      case .onboard:
-        CaseLet(
-          /AppReducer.View.State.onboard,
-          action: AppReducer.View.Action.onboard,
-          then: OnboardView.init(store:)
-        )
-      case .navigation:
-        CaseLet(
-          /AppReducer.View.State.navigation,
-          action: AppReducer.View.Action.navigation,
-          then: RootNavigationView.init(store:)
-        )
-      case .forceUpdate:
-        CaseLet(
-          /AppReducer.View.State.forceUpdate,
-          action: AppReducer.View.Action.forceUpdate,
-          then: ForceUpdateView.init(store:)
-        )
-      case .maintenance:
-        CaseLet(
-          /AppReducer.View.State.maintenance,
-          action: AppReducer.View.Action.maintenance,
-          then: MaintenanceView.init(store:)
-        )
+    WithViewStore(store, observe: { $0 }) { viewStore in
+      SwitchStore(store.scope(state: \.view, action: AppReducer.Action.view)) { initialState in
+        switch initialState {
+        case .launch:
+          CaseLet(
+            /AppReducer.View.State.launch,
+            action: AppReducer.View.Action.launch,
+            then: LaunchView.init(store:)
+          )
+        case .onboard:
+          CaseLet(
+            /AppReducer.View.State.onboard,
+            action: AppReducer.View.Action.onboard,
+            then: OnboardView.init(store:)
+          )
+        case .navigation:
+          CaseLet(
+            /AppReducer.View.State.navigation,
+            action: AppReducer.View.Action.navigation,
+            then: RootNavigationView.init(store:)
+          )
+        case .forceUpdate:
+          CaseLet(
+            /AppReducer.View.State.forceUpdate,
+            action: AppReducer.View.Action.forceUpdate,
+            then: ForceUpdateView.init(store:)
+          )
+        case .maintenance:
+          CaseLet(
+            /AppReducer.View.State.maintenance,
+            action: AppReducer.View.Action.maintenance,
+            then: MaintenanceView.init(store:)
+          )
+        }
+      }
+      .overlay {
+        if !viewStore.account.overlayHidden {
+          Color.black
+            .ignoresSafeArea()
+        }
       }
     }
   }
