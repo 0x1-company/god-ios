@@ -1,4 +1,5 @@
 import ColorHex
+import ButtonStyles
 import ComposableArchitecture
 import LabeledButton
 import SwiftUI
@@ -64,14 +65,20 @@ public struct InboxView: View {
 
         ZStack(alignment: .top) {
           Color.white.blur(radius: 1.0)
-
-          LabeledButton("See who likes you", systemImage: "lock.fill", action: {})
-            .bold()
-            .foregroundColor(.white)
-            .background(Color.black)
-            .clipShape(Capsule())
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
+          
+          Button {
+          } label: {
+            Label("See who likes you", systemImage: "lock.fill")
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
+              .bold()
+              .foregroundColor(.white)
+              .background(Color.black)
+              .clipShape(Capsule())
+              .padding(.horizontal, 16)
+              .padding(.top, 8)
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
         .ignoresSafeArea()
         .frame(height: 64)
