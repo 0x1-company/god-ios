@@ -1,9 +1,9 @@
-import ColorHex
 import ButtonStyles
+import ColorHex
 import ComposableArchitecture
+import GodModeFeature
 import LabeledButton
 import SwiftUI
-import GodModeFeature
 
 public struct InboxReducer: Reducer {
   public init() {}
@@ -25,7 +25,7 @@ public struct InboxReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .seeWhoLikesYouButtonTapped:
         state.godMode = .init()
         return .none
@@ -80,7 +80,7 @@ public struct InboxView: View {
 
         ZStack(alignment: .top) {
           Color.white.blur(radius: 1.0)
-          
+
           Button {
             viewStore.send(.seeWhoLikesYouButtonTapped)
           } label: {
