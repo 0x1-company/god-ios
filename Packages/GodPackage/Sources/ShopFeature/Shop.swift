@@ -37,7 +37,7 @@ public struct ShopReducer: Reducer {
       case let .storeResponse(.success(data)):
         state.items = data.store.items
         return .none
-        
+
       case let .storeResponse(.failure(error as GodServerError)):
         print(error.message)
         return .none
