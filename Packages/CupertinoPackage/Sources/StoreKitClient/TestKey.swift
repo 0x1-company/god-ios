@@ -1,8 +1,8 @@
 import Dependencies
 import XCTestDynamicOverlay
 
-extension DependencyValues {
-  public var store: StoreKitClient {
+public extension DependencyValues {
+  var store: StoreKitClient {
     get { self[StoreKitClient.self] }
     set { self[StoreKitClient.self] = newValue }
   }
