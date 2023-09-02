@@ -3,8 +3,8 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import SwiftUI
 import StringHelpers
+import SwiftUI
 
 public struct UsernameSettingReducer: Reducer {
   public init() {}
@@ -76,7 +76,7 @@ public struct UsernameSettingView: View {
   public init(store: StoreOf<UsernameSettingReducer>) {
     self.store = store
   }
-  
+
   struct ViewState: Equatable {
     let username: String
     let isLoading: Bool
