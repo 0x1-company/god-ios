@@ -3,15 +3,11 @@ query Store {
     items {
       id
       coinAmount
-      itemId
-      status
-      item {
-        title {
-          ja
-        }
-        description {
-          ja
-        }
+    	description {
+        ja
+      }
+      title {
+        ja
       }
     }
   }
