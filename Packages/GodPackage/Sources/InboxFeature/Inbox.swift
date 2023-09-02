@@ -10,14 +10,17 @@ public struct InboxReducer: Reducer {
 
   public struct State: Equatable {
     @PresentationState var godMode: GodModeReducer.State?
+    @PresentationState var fromGodTeam: FromGodTeamReducer.State?
 
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case godMode(PresentationAction<GodModeReducer.Action>)
+    case fromGodTeam(PresentationAction<FromGodTeamReducer.Action>)
   }
 
   public var body: some Reducer<State, Action> {
@@ -25,17 +28,24 @@ public struct InboxReducer: Reducer {
       switch action {
       case .onTask:
         return .none
+        
+      case .fromGodTeamButtonTapped:
+        state.fromGodTeam = .init()
+        return .none
 
       case .seeWhoLikesYouButtonTapped:
         state.godMode = .init()
         return .none
 
-      case .godMode:
+      default:
         return .none
       }
     }
     .ifLet(\.$godMode, action: /Action.godMode) {
       GodModeReducer()
+    }
+    .ifLet(\.$fromGodTeam, action: /Action.fromGodTeam) {
+      FromGodTeamReducer()
     }
   }
 }
@@ -51,32 +61,19 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(0 ..< 10) { _ in
-            HStack(spacing: 0) {
-              LabeledContent {
-                Text("16h")
-              } label: {
-                Label {
-                  Text("From a boy")
-                } icon: {
-                  Image(systemName: "flame.fill")
-                    .font(.largeTitle)
-                }
-              }
-              .padding(.horizontal, 16)
-            }
-            .listRowSeparator(.hidden)
-            .frame(height: 72)
-            .background(
-              Color.white
-            )
-            .cornerRadius(8)
-            .compositingGroup()
-            .shadow(color: Color.black.opacity(0.1), radius: 10)
+          ForEach(0 ..< 4) { _ in
+            InboxCard(title: "From a Boy", action: {})
           }
+          
+          InboxCard(title: "From God Team") {
+            viewStore.send(.fromGodTeamButtonTapped)
+          }
+
+          Spacer()
+            .listRowSeparator(.hidden)
+            .frame(height: 80)
         }
         .listStyle(.plain)
-        .background(Color(0xFFFA_FAFA))
 
         ZStack(alignment: .top) {
           Color.white.blur(radius: 1.0)
@@ -106,6 +103,13 @@ public struct InboxView: View {
           action: InboxReducer.Action.godMode
         ),
         content: GodModeView.init(store:)
+      )
+      .fullScreenCover(
+        store: store.scope(
+          state: \.$fromGodTeam,
+          action: InboxReducer.Action.fromGodTeam
+        ),
+        content: FromGodTeamView.init(store:)
       )
     }
   }
