@@ -28,7 +28,7 @@ public struct InboxReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .fromGodTeamButtonTapped:
         state.fromGodTeam = .init()
         return .none
@@ -64,7 +64,7 @@ public struct InboxView: View {
           ForEach(0 ..< 4) { _ in
             InboxCard(title: "From a Boy", action: {})
           }
-          
+
           InboxCard(title: "From God Team") {
             viewStore.send(.fromGodTeamButtonTapped)
           }

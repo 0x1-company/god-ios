@@ -12,7 +12,7 @@ public struct FromGodTeamReducer: Reducer {
   public enum Action: Equatable {
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
@@ -39,7 +39,7 @@ public struct FromGodTeamView: View {
       Text("God")
 
       Text("From the God team")
-      
+
       Spacer()
 
       HStack {
