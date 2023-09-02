@@ -1,6 +1,7 @@
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import ButtonStyles
 
 public struct HowItWorksReducer: Reducer {
   public init() {}
@@ -11,12 +12,20 @@ public struct HowItWorksReducer: Reducer {
 
   public enum Action: Equatable {
     case startButtonTapped
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case start
+    }
   }
 
   public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .startButtonTapped:
+        return .send(.delegate(.start), animation: .default)
+        
+      case .delegate:
         return .none
       }
     }
@@ -33,6 +42,7 @@ public struct HowItWorksView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
+        Spacer()
         Button {
           viewStore.send(.startButtonTapped)
         } label: {
@@ -40,12 +50,13 @@ public struct HowItWorksView: View {
             .bold()
             .frame(height: 54)
             .frame(maxWidth: .infinity)
+            .foregroundColor(Color.white)
+            .background(Color.godService)
+            .clipShape(Capsule())
         }
-        .foregroundColor(Color.white)
-        .background(Color.godService)
-        .clipShape(Capsule())
+        .buttonStyle(HoldDownButtonStyle())
       }
-      .padding(.horizontal, 16)
+      .padding(.all, 16)
     }
   }
 }
