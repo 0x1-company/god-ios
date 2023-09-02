@@ -13,7 +13,7 @@ public struct GodModeReducer: Reducer {
     case maybeLaterButtonTapped
     case continueButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
@@ -21,12 +21,12 @@ public struct GodModeReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .maybeLaterButtonTapped:
         return .run { _ in
           await dismiss()
         }
-        
+
       case .continueButtonTapped:
         return .none
       }
