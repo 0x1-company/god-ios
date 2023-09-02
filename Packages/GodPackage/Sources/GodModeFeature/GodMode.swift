@@ -10,12 +10,24 @@ public struct GodModeReducer: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case maybeLaterButtonTapped
+    case continueButtonTapped
   }
+  
+  @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
     Reduce { _, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case .maybeLaterButtonTapped:
+        return .run { _ in
+          await dismiss()
+        }
+        
+      case .continueButtonTapped:
         return .none
       }
     }
@@ -44,7 +56,9 @@ public struct GodModeView: View {
 
           Text("¥960/week")
 
-          Button(action: {}) {
+          Button {
+            store.send(.continueButtonTapped)
+          } label: {
             Text("Continue")
               .bold()
               .frame(height: 56)
@@ -52,10 +66,12 @@ public struct GodModeView: View {
               .foregroundColor(Color.white)
               .background(Color.orange.gradient)
               .clipShape(Capsule())
+              .padding(.horizontal, 60)
           }
-          .padding(.horizontal, 60)
 
-          Button(action: {}) {
+          Button {
+            store.send(.maybeLaterButtonTapped)
+          } label: {
             Text("Maybe Later")
               .foregroundColor(Color.gray)
           }
