@@ -60,7 +60,7 @@ public struct GodModeView: View {
             .resizable()
             .scaledToFit()
             .padding(.horizontal, 60)
-          
+
           GodModeFunctions()
 
           Text("¥960/week")
