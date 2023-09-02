@@ -36,7 +36,7 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(0 ..< 100) { _ in
+          ForEach(0 ..< 10) { _ in
             HStack(spacing: 0) {
               LabeledContent {
                 Text("16h")
