@@ -8,6 +8,7 @@ public struct ActivityDetailReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var destination: Destination.State?
     public init() {}
   }
 
@@ -15,24 +16,43 @@ public struct ActivityDetailReducer: Reducer {
     case onTask
     case seeWhoSentItButtonTapped
     case closeButtonTapped
+    case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
 
       case .seeWhoSentItButtonTapped:
+        state.destination = .reveal()
         return .none
 
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
+      case .destination:
+        return .none
       }
+    }
+  }
+  
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case reveal(RevealReducer.State = .init())
+    }
+    public enum Action: Equatable {
+      case reveal(RevealReducer.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.reveal, action: /Action.reveal, child: RevealReducer.init)
     }
   }
 }
@@ -92,6 +112,15 @@ public struct ActivityDetailView: View {
       }
       .background(.black)
       .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /ActivityDetailReducer.Destination.State.reveal,
+        action: ActivityDetailReducer.Destination.Action.reveal,
+        content: { store in
+          RevealView(store: store)
+            .presentationDetents([.fraction(0.4)])
+        }
+      )
     }
   }
 }
