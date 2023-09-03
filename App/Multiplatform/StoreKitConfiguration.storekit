@@ -4,12 +4,26 @@
 
   ],
   "products" : [
-
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "6464167666",
+      "localizations" : [
+        {
+          "description" : "フルネームを閲覧することができます",
+          "displayName" : "フルネームを見る",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "jp.godapp.ios.staging.reveal_poll",
+      "referenceName" : "Reveal Poll",
+      "type" : "Consumable"
+    }
   ],
   "settings" : {
     "_applicationInternalID" : "6457261598",
     "_developerTeamID" : "Q7NP395GC3",
-    "_lastSynchronizedDate" : 715414083.82367802
+    "_lastSynchronizedDate" : 715434434.25576699
   },
   "subscriptionGroups" : [
     {
