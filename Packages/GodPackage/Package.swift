@@ -58,6 +58,7 @@ let package = Package(
       "MaintenanceFeature",
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "TcaHelpers", package: "DependencyPackage"),
+      .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "FirestoreClient", package: "DependencyPackage"),
       .product(name: "FirebaseCoreClient", package: "DependencyPackage"),
     ]),
@@ -78,6 +79,7 @@ let package = Package(
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [

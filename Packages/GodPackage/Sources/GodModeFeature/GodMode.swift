@@ -2,34 +2,103 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import StoreKit
+import StoreKitClient
 
 public struct GodModeReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    var product: Product
+    public init(product: Product) {
+      self.product = product
+    }
   }
 
   public enum Action: Equatable {
     case onTask
     case maybeLaterButtonTapped
     case continueButtonTapped
+    case purchaseError(Product.PurchaseError)
+    case verificationResponse(VerificationResult<StoreKit.Transaction>)
+    case pendingResponse
+    case userCancelledResponse
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case activated
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.store) var storeClient
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
-
       case .maybeLaterButtonTapped:
         return .run { _ in
           await dismiss()
         }
-
       case .continueButtonTapped:
+        enum Cancel { case id }
+        return .run { [state] send in
+          let result = try await storeClient.purchase(state.product)
+          switch result {
+          case let .success(verificationResult):
+            await send(.verificationResponse(verificationResult))
+          case .pending:
+            await send(.pendingResponse)
+          case .userCancelled:
+            await send(.userCancelledResponse)
+          @unknown default:
+            fatalError()
+          }
+        } catch: { error, send in
+          guard let purchaseError = error as? Product.PurchaseError
+          else { return }
+          await send(.purchaseError(purchaseError))
+        }
+        .cancellable(id: Cancel.id)
+      case let .purchaseError(error):
+        switch error {
+        case .invalidQuantity:
+          return .none
+        case .productUnavailable:
+          return .none
+        case .purchaseNotAllowed:
+          return .none
+        case .ineligibleForOffer:
+          return .none
+        case .invalidOfferIdentifier:
+          return .none
+        case .invalidOfferPrice:
+          return .none
+        case .invalidOfferSignature:
+          return .none
+        case .missingOfferParameters:
+          return .none
+        @unknown default:
+          return .none
+        }
+      case let .verificationResponse(.verified(transaction)):
+        /// transaction.idをserverに送って課金処理を行う
+        return .run { send in
+          await transaction.finish()
+          await send(.delegate(.activated), animation: .default)
+          await dismiss()
+        }
+      case let .verificationResponse(.unverified(transaction, error)):
+        print(transaction)
+        print(error)
+        return .none
+      case .pendingResponse:
+        return .none
+      case .userCancelledResponse:
+        return .none
+      case .delegate:
         return .none
       }
     }
@@ -42,9 +111,17 @@ public struct GodModeView: View {
   public init(store: StoreOf<GodModeReducer>) {
     self.store = store
   }
+  
+  struct ViewState: Equatable {
+    let displayPrice: String
+    
+    init(state: GodModeReducer.State) {
+      displayPrice = state.product.displayPrice
+    }
+  }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { _ in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack(spacing: 24) {
         VStack(spacing: 0) {
           Text("定期課金。いつでもキャンセルできます。")
@@ -63,7 +140,7 @@ public struct GodModeView: View {
 
           GodModeFunctions()
 
-          Text("¥960/week")
+          Text("\(viewStore.displayPrice)/week")
 
           Button {
             store.send(.continueButtonTapped)
@@ -104,13 +181,15 @@ public struct GodModeView: View {
   }
 }
 
-struct GodModeViewPreviews: PreviewProvider {
-  static var previews: some View {
-    GodModeView(
-      store: .init(
-        initialState: GodModeReducer.State(),
-        reducer: { GodModeReducer() }
-      )
-    )
-  }
-}
+//struct GodModeViewPreviews: PreviewProvider {
+//  static var previews: some View {
+//    GodModeView(
+//      store: .init(
+//        initialState: GodModeReducer.State(
+//          product: Product.
+//        ),
+//        reducer: { GodModeReducer() }
+//      )
+//    )
+//  }
+//}

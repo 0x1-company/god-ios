@@ -13,6 +13,7 @@
 		B783E1042A12000A002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1032A12000A002E782F /* App.swift */; };
 		B78862D52A68FD050023B1FB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B78862D42A68FD050023B1FB /* AppFeature */; };
 		B7DE59AF2A959B1D001D8C19 /* ApolloClientHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = B7DE59AE2A959B1D001D8C19 /* ApolloClientHelpers */; };
+		B7E273BF2AA3D079005DC4BD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E273BE2AA3D079005DC4BD /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +39,7 @@
 		B783E16F2A121FCD002E782F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Production/Info.plist; sourceTree = "<group>"; };
 		B783E1742A137F38002E782F /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = App.entitlements; path = Production/App.entitlements; sourceTree = "<group>"; };
 		B7CCF99F2A7AF46D00B64CFE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Production/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B7E273BE2AA3D079005DC4BD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7E273BF2AA3D079005DC4BD /* StoreKit.framework in Frameworks */,
 				B7DE59AF2A959B1D001D8C19 /* ApolloClientHelpers in Frameworks */,
 				B78862D52A68FD050023B1FB /* AppFeature in Frameworks */,
 			);
@@ -94,6 +97,7 @@
 		B783E1052A120032002E782F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B7E273BE2AA3D079005DC4BD /* StoreKit.framework */,
 				B783E1252A120081002E782F /* WidgetKit.framework */,
 				B783E1272A120081002E782F /* SwiftUI.framework */,
 			);
