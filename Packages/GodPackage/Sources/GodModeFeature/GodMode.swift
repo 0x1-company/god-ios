@@ -19,22 +19,76 @@ public struct GodModeReducer: Reducer {
     case onTask
     case maybeLaterButtonTapped
     case continueButtonTapped
+    case purchaseError(Product.PurchaseError)
+    case verificationResponse(VerificationResult<StoreKit.Transaction>)
+    case pendingResponse
+    case userCancelledResponse
   }
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.store) var storeClient
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
         return .none
-
       case .maybeLaterButtonTapped:
         return .run { _ in
           await dismiss()
         }
       case .continueButtonTapped:
+        enum Cancel { case id }
+        return .run { [state] send in
+          let result = try await storeClient.purchase(state.product)
+          switch result {
+          case let .success(verificationResult):
+            await send(.verificationResponse(verificationResult))
+          case .pending:
+            await send(.pendingResponse)
+          case .userCancelled:
+            await send(.userCancelledResponse)
+          @unknown default:
+            fatalError()
+          }
+        } catch: { error, send in
+          guard let purchaseError = error as? Product.PurchaseError
+          else { return }
+          await send(.purchaseError(purchaseError))
+        }
+        .cancellable(id: Cancel.id)
+      case let .purchaseError(error):
+        switch error {
+        case .invalidQuantity:
+          return .none
+        case .productUnavailable:
+          return .none
+        case .purchaseNotAllowed:
+          return .none
+        case .ineligibleForOffer:
+          return .none
+        case .invalidOfferIdentifier:
+          return .none
+        case .invalidOfferPrice:
+          return .none
+        case .invalidOfferSignature:
+          return .none
+        case .missingOfferParameters:
+          return .none
+        @unknown default:
+          return .none
+        }
+      case let .verificationResponse(.verified(transaction)):
+        return .run { _ in
+          await transaction.finish()
+        }
+      case let .verificationResponse(.unverified(transaction, error)):
+        print(transaction)
+        print(error)
+        return .none
+      case .pendingResponse:
+        return .none
+      case .userCancelledResponse:
         return .none
       }
     }
