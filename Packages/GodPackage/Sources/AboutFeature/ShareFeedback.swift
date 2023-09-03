@@ -6,7 +6,6 @@ public struct ShareFeedbackReducer: Reducer {
   public init() {}
 
     public struct State: Equatable {
-        var urlToOpen: URL?
         public init() {}
     }
 
@@ -67,8 +66,6 @@ public struct ShareFeedback: View {
     self.store = store
   }
 
-    @Environment(\.dismiss) private var dismiss
-    
     public var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(alignment: .center, spacing: 28) {
