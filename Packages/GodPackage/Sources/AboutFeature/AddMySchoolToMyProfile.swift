@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ShareFeedbackHalfModalReducer: Reducer {
+public struct AddMySchoolToMyProfileReducer: Reducer {
   public init() {}
 
     public struct State: Equatable {
@@ -51,24 +51,23 @@ public struct ShareFeedbackHalfModalReducer: Reducer {
     }
 }
 
-public struct ShareFeedbackHalfModalView: View {
-  let store: StoreOf<ShareFeedbackHalfModalReducer>
+public struct AddMySchoolToMyProfileView: View {
+  let store: StoreOf<AddMySchoolToMyProfileReducer>
 
-  public init(store: StoreOf<ShareFeedbackHalfModalReducer>) {
+  public init(store: StoreOf<AddMySchoolToMyProfileReducer>) {
     self.store = store
   }
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.openURL) private var openURL
 
     public var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(alignment: .center, spacing: 28) {
                 VStack(alignment: .center, spacing: 12) {
-                    Text("Email us")
+                    Text("Add my school to my profile")
                         .font(.title3)
                         .bold()
-                    Text("If you need help with the app or want to share feedback, send us an email and we'll get back to you right away.")
+                    Text("For help with this, send us an email and we’ll get back to you right away.")
                         .font(.body)
                         .foregroundColor(.godTextSecondaryLight)
                         .lineLimit(3)

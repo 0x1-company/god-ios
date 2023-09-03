@@ -44,7 +44,7 @@ public struct AboutReducer: Reducer {
         return .none
 
       case .shareFeedbackButtonTapped:
-          state.destination = .shareFeedbackHalfModal()
+          state.destination = .shareFeedback()
           return .none
 
       case .getHelpButtonTapped:
@@ -57,6 +57,7 @@ public struct AboutReducer: Reducer {
       case let .confirmationDialog(.presented(action)):
         switch action {
         case .addMySchoolToMyProfile:
+            state.destination = .addMySchoolToMyProfile()
           return .none
         case .changeMyGrade:
           return .none
@@ -85,17 +86,22 @@ public struct AboutReducer: Reducer {
   }
     public struct Destination: Reducer {
       public enum State: Equatable {
-        case shareFeedbackHalfModal(ShareFeedbackHalfModalReducer.State = .init())
+        case shareFeedback(ShareFeedbackReducer.State = .init())
+          case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.State = .init())
       }
 
       public enum Action: Equatable {
-        case shareFeedbackHalfModal(ShareFeedbackHalfModalReducer.Action)
+        case shareFeedback(ShareFeedbackReducer.Action)
+          case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.Action)
       }
 
       public var body: some Reducer<State, Action> {
-        Scope(state: /State.shareFeedbackHalfModal, action: /Action.shareFeedbackHalfModal) {
-            ShareFeedbackHalfModalReducer()
+        Scope(state: /State.shareFeedback, action: /Action.shareFeedback) {
+            ShareFeedbackReducer()
         }
+          Scope(state: /State.addMySchoolToMyProfile, action: /Action.addMySchoolToMyProfile) {
+              AddMySchoolToMyProfileReducer()
+          }
       }
     }
 }
@@ -169,13 +175,21 @@ public struct AboutView: View {
       ) { store in
           SwitchStore(store) {
               switch $0 {
-              case .shareFeedbackHalfModal:
+              case .shareFeedback:
                   CaseLet(
-                    /AboutReducer.Destination.State.shareFeedbackHalfModal,
-                    action: AboutReducer.Destination.Action.shareFeedbackHalfModal
+                    /AboutReducer.Destination.State.shareFeedback,
+                    action: AboutReducer.Destination.Action.shareFeedback
                   ) { store in
-                      ShareFeedbackHalfModalView(store: store)
-                          .presentationDetents([.height(320)])
+                      ShareFeedback(store: store)
+                          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
+                  }
+              case .addMySchoolToMyProfile:
+                  CaseLet(
+                    /AboutReducer.Destination.State.addMySchoolToMyProfile,
+                    action: AboutReducer.Destination.Action.addMySchoolToMyProfile
+                  ) { store in
+                      AddMySchoolToMyProfileView(store: store)
+                          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
                   }
               }
           }
