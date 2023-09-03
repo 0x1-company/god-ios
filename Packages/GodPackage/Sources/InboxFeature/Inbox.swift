@@ -11,9 +11,7 @@ public struct InboxReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var godMode: GodModeReducer.State?
-    @PresentationState var fromGodTeam: FromGodTeamReducer.State?
-    @PresentationState var activatedGodMode: ActivatedGodModeReducer.State?
+    @PresentationState var destination: Destination.State?
     
     var products: [Product] = []
 
@@ -25,9 +23,7 @@ public struct InboxReducer: Reducer {
     case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
-    case godMode(PresentationAction<GodModeReducer.Action>)
-    case fromGodTeam(PresentationAction<FromGodTeamReducer.Action>)
-    case activatedGodMode(PresentationAction<ActivatedGodModeReducer.Action>)
+    case destination(PresentationAction<Destination.Action>)
   }
   
   @Dependency(\.store) var storeClient
@@ -47,14 +43,14 @@ public struct InboxReducer: Reducer {
           )
         }
       case .fromGodTeamButtonTapped:
-        state.fromGodTeam = .init()
+        state.destination = .fromGodTeam(.init())
         return .none
 
       case .seeWhoLikesYouButtonTapped:
         let id = storeClient.godModeDefault()
         guard let product = state.products.first(where: { $0.id == id })
         else { return .none }
-        state.godMode = .init(product: product)
+        state.destination = .godMode(.init(product: product))
         return .none
 
       case let .productsResponse(.success(products)):
@@ -65,23 +61,34 @@ public struct InboxReducer: Reducer {
         print(error)
         return .none
         
-      case .godMode(.presented(.delegate(.activated))):
-        // display to ACTIVATED GOD MODE
-        state.activatedGodMode = .init()
+      case .destination(.presented(.godMode(.delegate(.activated)))):
+        state.destination = .activatedGodMode()
         return .none
 
       default:
         return .none
       }
     }
-    .ifLet(\.$godMode, action: /Action.godMode) {
-      GodModeReducer()
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
     }
-    .ifLet(\.$fromGodTeam, action: /Action.fromGodTeam) {
-      FromGodTeamReducer()
+  }
+  
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case godMode(GodModeReducer.State)
+      case fromGodTeam(FromGodTeamReducer.State)
+      case activatedGodMode(ActivatedGodModeReducer.State = .init())
     }
-    .ifLet(\.$activatedGodMode, action: /Action.activatedGodMode) {
-      ActivatedGodModeReducer()
+    public enum Action: Equatable {
+      case godMode(GodModeReducer.Action)
+      case fromGodTeam(FromGodTeamReducer.Action)
+      case activatedGodMode(ActivatedGodModeReducer.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeReducer.init)
+      Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamReducer.init)
+      Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeReducer.init)
     }
   }
 }
@@ -136,24 +143,21 @@ public struct InboxView: View {
       }
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(
-        store: store.scope(
-          state: \.$godMode,
-          action: InboxReducer.Action.godMode
-        ),
+        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        state: /InboxReducer.Destination.State.godMode,
+        action: InboxReducer.Destination.Action.godMode,
         content: GodModeView.init(store:)
       )
       .fullScreenCover(
-        store: store.scope(
-          state: \.$fromGodTeam,
-          action: InboxReducer.Action.fromGodTeam
-        ),
+        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        state: /InboxReducer.Destination.State.fromGodTeam,
+        action: InboxReducer.Destination.Action.fromGodTeam,
         content: FromGodTeamView.init(store:)
       )
       .sheet(
-        store: store.scope(
-          state: \.$activatedGodMode,
-          action: InboxReducer.Action.activatedGodMode
-        )
+        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        state: /InboxReducer.Destination.State.activatedGodMode,
+        action: InboxReducer.Destination.Action.activatedGodMode
       ) { store in
         ActivatedGodModeView(store: store)
           .presentationDetents([.medium])
