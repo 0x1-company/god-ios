@@ -10,4 +10,6 @@ public extension Color {
   static let godTextSecondaryLight = Color("text-secondary-light", bundle: .module)
   static let godWhite = Color("white", bundle: .module)
   static let godBackgroundWhite = Color("background-white", bundle: .module)
+  static let godBlue = Color("blue", bundle: .module)
+  static let godPurple = Color("purple", bundle: .module)
 }
