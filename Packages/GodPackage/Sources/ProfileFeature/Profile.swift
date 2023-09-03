@@ -15,6 +15,7 @@ public struct ProfileLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case editProfileButtonTapped
+    case shareProfileButtonTapped
     case shopButtonTapped
     case destination(PresentationAction<Destination.Action>)
   }
@@ -27,6 +28,9 @@ public struct ProfileLogic: Reducer {
 
       case .editProfileButtonTapped:
         state.destination = .profileEdit()
+        return .none
+        
+      case .shareProfileButtonTapped:
         return .none
         
       case .shopButtonTapped:
@@ -175,7 +179,9 @@ public struct ProfileView: View {
 
   private var shareButtonAndCoinsSection: some View {
     HStack(spacing: 16) {
-      Button(action: {}) {
+      Button {
+        store.send(.shareProfileButtonTapped)
+      } label: {
         HStack(spacing: 8) {
           Text("Share Profile")
             .bold()
@@ -189,8 +195,10 @@ public struct ProfileView: View {
         RoundedRectangle(cornerRadius: 52 / 2)
           .stroke(Color.secondary, lineWidth: 1)
       )
-
-      Button(action: {}) {
+      
+      Button {
+        store.send(.shopButtonTapped)
+      } label: {
         Text("Shop")
           .bold()
           .foregroundColor(.secondary)
