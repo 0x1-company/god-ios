@@ -1,8 +1,8 @@
 import Colors
 import ComposableArchitecture
 import Constants
-import SwiftUI
 import HowItWorksFeature
+import SwiftUI
 
 public struct AboutReducer: Reducer {
   public init() {}
