@@ -19,7 +19,6 @@ let package = Package(
     .library(name: "God", targets: ["God"]),
     .library(name: "GodClient", targets: ["GodClient"]),
     .library(name: "PhoneNumberClient", targets: ["PhoneNumberClient"]),
-    .library(name: "ProfileClient", targets: ["ProfileClient"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
   ],
@@ -65,11 +64,6 @@ let package = Package(
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ]),
-    .target(name: "ProfileClient", dependencies: [
-      .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
-      .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "StringHelpers"),

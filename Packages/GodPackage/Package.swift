@@ -126,7 +126,6 @@ let package = Package(
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
-      .product(name: "ProfileClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
