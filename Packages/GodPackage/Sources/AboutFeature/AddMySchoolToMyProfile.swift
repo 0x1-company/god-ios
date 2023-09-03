@@ -117,7 +117,7 @@ public struct AddMySchoolToMyProfileView: View {
                 }
                 .padding(.horizontal, 56)
                 Button(action: {
-                    dismiss()
+                  viewStore.send(.closeButtonTapped)
                 }, label: {
                     Text("Close")
                         .font(.body)
