@@ -120,6 +120,7 @@ public struct AppReducer: Reducer {
     FirestoreLogic()
     CoreLogic()
     CurrentUserLogic()
+    StoreLogic()
   }
 
   public struct View: Reducer {
