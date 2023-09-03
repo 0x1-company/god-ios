@@ -2,6 +2,7 @@ import Colors
 import ComposableArchitecture
 import ProfileEditFeature
 import SwiftUI
+import ShopFeature
 
 public struct ProfileLogic: Reducer {
   public init() {}
@@ -14,6 +15,7 @@ public struct ProfileLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case editProfileButtonTapped
+    case shopButtonTapped
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -25,6 +27,14 @@ public struct ProfileLogic: Reducer {
 
       case .editProfileButtonTapped:
         state.destination = .profileEdit()
+        return .none
+        
+      case .shopButtonTapped:
+        state.destination = .shop()
+        return .none
+        
+      case .destination(.dismiss):
+        state.destination = nil
         return .none
 
       case .destination:
@@ -39,15 +49,20 @@ public struct ProfileLogic: Reducer {
   public struct Destination: Reducer {
     public enum State: Equatable {
       case profileEdit(ProfileEditLogic.State = .init())
+      case shop(ShopLogic.State = .init())
     }
 
     public enum Action: Equatable {
       case profileEdit(ProfileEditLogic.Action)
+      case shop(ShopLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profileEdit, action: /Action.profileEdit) {
         ProfileEditLogic()
+      }
+      Scope(state: /State.shop, action: /Action.shop) {
+        ShopLogic()
       }
     }
   }
@@ -146,6 +161,15 @@ public struct ProfileView: View {
           ProfileEditView(store: store)
         }
       }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /ProfileLogic.Destination.State.shop,
+        action: ProfileLogic.Destination.Action.shop
+      ) { store in
+        NavigationStack {
+          ShopView(store: store)
+        }
+      }
     }
   }
 
@@ -167,7 +191,7 @@ public struct ProfileView: View {
       )
 
       Button(action: {}) {
-        Text("Edit Profile")
+        Text("Shop")
           .bold()
           .foregroundColor(.secondary)
           .frame(height: 52)
