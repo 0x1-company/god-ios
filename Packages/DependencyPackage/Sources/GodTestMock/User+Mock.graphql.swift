@@ -11,6 +11,7 @@ public class User: MockObject {
 
   public struct MockFields {
     @Field<String>("firstName") public var firstName
+    @Field<Int>("friendsCount") public var friendsCount
     @Field<GraphQLEnum<God.Gender>>("gender") public var gender
     @Field<Int>("generation") public var generation
     @Field<God.ID>("id") public var id
@@ -18,22 +19,26 @@ public class User: MockObject {
     @Field<School>("school") public var school
     @Field<String>("schoolId") public var schoolId
     @Field<String>("username") public var username
+    @Field<Wallet>("wallet") public var wallet
   }
 }
 
 public extension Mock where O == User {
   convenience init(
     firstName: String? = nil,
+    friendsCount: Int? = nil,
     gender: GraphQLEnum<God.Gender>? = nil,
     generation: Int? = nil,
     id: God.ID? = nil,
     lastName: String? = nil,
     school: Mock<School>? = nil,
     schoolId: String? = nil,
-    username: String? = nil
+    username: String? = nil,
+    wallet: Mock<Wallet>? = nil
   ) {
     self.init()
     _setScalar(firstName, for: \.firstName)
+    _setScalar(friendsCount, for: \.friendsCount)
     _setScalar(gender, for: \.gender)
     _setScalar(generation, for: \.generation)
     _setScalar(id, for: \.id)
@@ -41,5 +46,6 @@ public extension Mock where O == User {
     _setEntity(school, for: \.school)
     _setScalar(schoolId, for: \.schoolId)
     _setScalar(username, for: \.username)
+    _setEntity(wallet, for: \.wallet)
   }
 }

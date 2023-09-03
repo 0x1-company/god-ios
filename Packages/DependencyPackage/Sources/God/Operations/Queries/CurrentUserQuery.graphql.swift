@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "CurrentUser"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentUser { currentUser { __typename id firstName lastName username generation gender schoolId school { __typename id name shortName } } }"#
+        #"query CurrentUser { currentUser { __typename id firstName lastName username generation gender friendsCount schoolId school { __typename id name shortName } wallet { __typename coinBalance } } }"#
       ))
 
     public init() {}
@@ -41,8 +41,10 @@ public extension God {
           .field("username", String?.self),
           .field("generation", Int?.self),
           .field("gender", GraphQLEnum<God.Gender>.self),
+          .field("friendsCount", Int?.self),
           .field("schoolId", String?.self),
           .field("school", School?.self),
+          .field("wallet", Wallet?.self),
         ] }
 
         /// user id
@@ -57,9 +59,13 @@ public extension God {
         public var generation: Int? { __data["generation"] }
         /// gender
         public var gender: GraphQLEnum<God.Gender> { __data["gender"] }
+        /// friends count
+        public var friendsCount: Int? { __data["friendsCount"] }
         public var schoolId: String? { __data["schoolId"] }
         /// school to which the user belongs
         public var school: School? { __data["school"] }
+        /// wallet
+        public var wallet: Wallet? { __data["wallet"] }
 
         /// CurrentUser.School
         ///
@@ -81,6 +87,23 @@ public extension God {
           public var name: String { __data["name"] }
           /// 学校名（略称）
           public var shortName: String { __data["shortName"] }
+        }
+
+        /// CurrentUser.Wallet
+        ///
+        /// Parent Type: `Wallet`
+        public struct Wallet: God.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { God.Objects.Wallet }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("coinBalance", Int.self),
+          ] }
+
+          /// コイン枚数
+          public var coinBalance: Int { __data["coinBalance"] }
         }
       }
     }

@@ -75,7 +75,7 @@ struct ProfileExternalViewPreviews: PreviewProvider {
   static var previews: some View {
     ProfileExternalView(
       store: .init(
-        initialState: ProfileExternalLogic.State(),
+        initialState: ProfileExternalLogic.State(userId: ""),
         reducer: { ProfileExternalLogic() }
       )
     )

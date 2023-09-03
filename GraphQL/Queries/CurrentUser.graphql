@@ -6,11 +6,15 @@ query CurrentUser {
     username
     generation
     gender
+    friendsCount
     schoolId
     school {
       id
       name
       shortName
     }
+    wallet {
+      coinBalance
+		}
   }
 }
