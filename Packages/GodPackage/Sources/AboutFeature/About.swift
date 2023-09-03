@@ -76,6 +76,9 @@ public struct AboutReducer: Reducer {
         }
       case .confirmationDialog:
         return .none
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
       case .destination:
           return .none
       }
