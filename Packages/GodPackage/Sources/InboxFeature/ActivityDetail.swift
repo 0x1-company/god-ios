@@ -43,14 +43,16 @@ public struct ActivityDetailReducer: Reducer {
       }
     }
   }
-  
+
   public struct Destination: Reducer {
     public enum State: Equatable {
       case reveal(RevealReducer.State = .init())
     }
+
     public enum Action: Equatable {
       case reveal(RevealReducer.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.reveal, action: /Action.reveal, child: RevealReducer.init)
     }
