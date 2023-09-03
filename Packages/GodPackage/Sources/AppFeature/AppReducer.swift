@@ -195,7 +195,7 @@ public struct AppView: View {
       }
       .overlay {
         if !viewStore.account.overlayHidden {
-          Color.black
+          Color.godBlack
             .ignoresSafeArea()
         }
       }
