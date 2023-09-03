@@ -9,11 +9,11 @@ import StringHelpers
 import SwiftUI
 import UserDefaultsClient
 
-public struct FirstNameSettingReducer: Reducer {
+public struct FirstNameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var doubleCheckName = DoubleCheckNameReducer.State()
+    var doubleCheckName = DoubleCheckNameLogic.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     var firstName = ""
     var isImport = false
@@ -27,7 +27,7 @@ public struct FirstNameSettingReducer: Reducer {
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    case doubleCheckName(DoubleCheckNameReducer.Action)
+    case doubleCheckName(DoubleCheckNameLogic.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
@@ -44,7 +44,7 @@ public struct FirstNameSettingReducer: Reducer {
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
-      DoubleCheckNameReducer()
+      DoubleCheckNameLogic()
     }
     Reduce { state, action in
       switch action {
@@ -94,7 +94,7 @@ public struct FirstNameSettingReducer: Reducer {
   }
 }
 
-extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
+extension AlertState where Action == FirstNameSettingLogic.Action.Alert {
   static func hiraganaValidateError() -> Self {
     Self {
       TextState("title")
@@ -109,10 +109,10 @@ extension AlertState where Action == FirstNameSettingReducer.Action.Alert {
 }
 
 public struct FirstNameSettingView: View {
-  let store: StoreOf<FirstNameSettingReducer>
+  let store: StoreOf<FirstNameSettingLogic>
   @FocusState var focus: Bool
 
-  public init(store: StoreOf<FirstNameSettingReducer>) {
+  public init(store: StoreOf<FirstNameSettingLogic>) {
     self.store = store
   }
 
@@ -121,7 +121,7 @@ public struct FirstNameSettingView: View {
     let isDisabled: Bool
     let isImport: Bool
 
-    init(state: FirstNameSettingReducer.State) {
+    init(state: FirstNameSettingLogic.State) {
       firstName = state.firstName
       isDisabled = state.firstName.isEmpty
       isImport = state.isImport
@@ -139,7 +139,7 @@ public struct FirstNameSettingView: View {
           "First Name",
           text: viewStore.binding(
             get: \.firstName,
-            send: FirstNameSettingReducer.Action.firstNameChanged
+            send: FirstNameSettingLogic.Action.firstNameChanged
           )
         )
         .font(.title)
@@ -165,11 +165,11 @@ public struct FirstNameSettingView: View {
         DoubleCheckNameView(
           store: store.scope(
             state: \.doubleCheckName,
-            action: FirstNameSettingReducer.Action.doubleCheckName
+            action: FirstNameSettingLogic.Action.doubleCheckName
           )
         )
       }
-      .alert(store: store.scope(state: \.$alert, action: FirstNameSettingReducer.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: FirstNameSettingLogic.Action.alert))
       .onAppear {
         focus = true
       }
@@ -182,8 +182,8 @@ struct FirstNameSettingViewPreviews: PreviewProvider {
     NavigationStack {
       FirstNameSettingView(
         store: .init(
-          initialState: FirstNameSettingReducer.State(),
-          reducer: { FirstNameSettingReducer() }
+          initialState: FirstNameSettingLogic.State(),
+          reducer: { FirstNameSettingLogic() }
         )
       )
     }

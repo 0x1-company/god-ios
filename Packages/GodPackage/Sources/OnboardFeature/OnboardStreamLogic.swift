@@ -6,9 +6,9 @@ public struct OnboardStreamLogic: Reducer {
   @Dependency(\.godClient.currentUser) var currentUser
 
   public func reduce(
-    into state: inout OnboardReducer.State,
-    action: OnboardReducer.Action
-  ) -> Effect<OnboardReducer.Action> {
+    into state: inout OnboardLogic.State,
+    action: OnboardLogic.Action
+  ) -> Effect<OnboardLogic.Action> {
     switch action {
     case .onTask:
       return .run { send in

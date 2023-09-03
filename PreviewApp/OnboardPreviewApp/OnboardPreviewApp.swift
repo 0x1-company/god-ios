@@ -7,8 +7,8 @@ struct MyApp: App {
     WindowGroup {
       OnboardView(
         store: .init(
-          initialState: OnboardReducer.State(),
-          reducer: { OnboardReducer()._printChanges() }
+          initialState: OnboardLogic.State(),
+          reducer: { OnboardLogic()._printChanges() }
         )
       )
     }

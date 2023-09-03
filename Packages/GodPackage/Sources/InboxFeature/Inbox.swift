@@ -7,7 +7,7 @@ import StoreKit
 import StoreKitClient
 import SwiftUI
 
-public struct InboxReducer: Reducer {
+public struct InboxLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -81,32 +81,32 @@ public struct InboxReducer: Reducer {
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case godMode(GodModeReducer.State)
-      case fromGodTeam(FromGodTeamReducer.State)
-      case activityDetail(ActivityDetailReducer.State = .init())
-      case activatedGodMode(ActivatedGodModeReducer.State = .init())
+      case godMode(GodModeLogic.State)
+      case fromGodTeam(FromGodTeamLogic.State)
+      case activityDetail(ActivityDetailLogic.State = .init())
+      case activatedGodMode(ActivatedGodModeLogic.State = .init())
     }
 
     public enum Action: Equatable {
-      case godMode(GodModeReducer.Action)
-      case fromGodTeam(FromGodTeamReducer.Action)
-      case activityDetail(ActivityDetailReducer.Action)
-      case activatedGodMode(ActivatedGodModeReducer.Action)
+      case godMode(GodModeLogic.Action)
+      case fromGodTeam(FromGodTeamLogic.Action)
+      case activityDetail(ActivityDetailLogic.Action)
+      case activatedGodMode(ActivatedGodModeLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeReducer.init)
-      Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamReducer.init)
-      Scope(state: /State.activityDetail, action: /Action.activityDetail, child: ActivityDetailReducer.init)
-      Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeReducer.init)
+      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
+      Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamLogic.init)
+      Scope(state: /State.activityDetail, action: /Action.activityDetail, child: ActivityDetailLogic.init)
+      Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeLogic.init)
     }
   }
 }
 
 public struct InboxView: View {
-  let store: StoreOf<InboxReducer>
+  let store: StoreOf<InboxLogic>
 
-  public init(store: StoreOf<InboxReducer>) {
+  public init(store: StoreOf<InboxLogic>) {
     self.store = store
   }
 
@@ -156,26 +156,26 @@ public struct InboxView: View {
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxReducer.Destination.State.godMode,
-        action: InboxReducer.Destination.Action.godMode,
+        state: /InboxLogic.Destination.State.godMode,
+        action: InboxLogic.Destination.Action.godMode,
         content: GodModeView.init(store:)
       )
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxReducer.Destination.State.fromGodTeam,
-        action: InboxReducer.Destination.Action.fromGodTeam,
+        state: /InboxLogic.Destination.State.fromGodTeam,
+        action: InboxLogic.Destination.Action.fromGodTeam,
         content: FromGodTeamView.init(store:)
       )
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxReducer.Destination.State.activityDetail,
-        action: InboxReducer.Destination.Action.activityDetail,
+        state: /InboxLogic.Destination.State.activityDetail,
+        action: InboxLogic.Destination.Action.activityDetail,
         content: ActivityDetailView.init(store:)
       )
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxReducer.Destination.State.activatedGodMode,
-        action: InboxReducer.Destination.Action.activatedGodMode
+        state: /InboxLogic.Destination.State.activatedGodMode,
+        action: InboxLogic.Destination.Action.activatedGodMode
       ) { store in
         ActivatedGodModeView(store: store)
           .presentationDetents([.medium])
@@ -188,8 +188,8 @@ struct InboxViewPreviews: PreviewProvider {
   static var previews: some View {
     InboxView(
       store: .init(
-        initialState: InboxReducer.State(),
-        reducer: { InboxReducer() }
+        initialState: InboxLogic.State(),
+        reducer: { InboxLogic() }
       )
     )
   }

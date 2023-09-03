@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct GenderHelpReducer: Reducer {
+public struct GenderHelpLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -38,9 +38,9 @@ public struct GenderHelpReducer: Reducer {
 }
 
 public struct GenderHelpView: View {
-  let store: StoreOf<GenderHelpReducer>
+  let store: StoreOf<GenderHelpLogic>
 
-  public init(store: StoreOf<GenderHelpReducer>) {
+  public init(store: StoreOf<GenderHelpLogic>) {
     self.store = store
   }
 
@@ -83,8 +83,8 @@ struct GenderHelpViewPreviews: PreviewProvider {
   static var previews: some View {
     GenderHelpView(
       store: .init(
-        initialState: GenderHelpReducer.State(),
-        reducer: { GenderHelpReducer() }
+        initialState: GenderHelpLogic.State(),
+        reducer: { GenderHelpLogic() }
       )
     )
   }

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FromSchoolReducer: Reducer {
+public struct FromSchoolLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -37,9 +37,9 @@ public struct FromSchoolReducer: Reducer {
 }
 
 public struct FromSchoolView: View {
-  let store: StoreOf<FromSchoolReducer>
+  let store: StoreOf<FromSchoolLogic>
 
-  public init(store: StoreOf<FromSchoolReducer>) {
+  public init(store: StoreOf<FromSchoolLogic>) {
     self.store = store
   }
 
@@ -70,8 +70,8 @@ struct FromSchoolViewPreviews: PreviewProvider {
     NavigationStack {
       FromSchoolView(
         store: .init(
-          initialState: FromSchoolReducer.State(),
-          reducer: { FromSchoolReducer() }
+          initialState: FromSchoolLogic.State(),
+          reducer: { FromSchoolLogic() }
         )
       )
     }

@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct MaintenanceReducer: Reducer {
+public struct MaintenanceLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -24,9 +24,9 @@ public struct MaintenanceReducer: Reducer {
 }
 
 public struct MaintenanceView: View {
-  let store: StoreOf<MaintenanceReducer>
+  let store: StoreOf<MaintenanceLogic>
 
-  public init(store: StoreOf<MaintenanceReducer>) {
+  public init(store: StoreOf<MaintenanceLogic>) {
     self.store = store
   }
 
@@ -51,8 +51,8 @@ struct MaintenanceViewPreviews: PreviewProvider {
   static var previews: some View {
     MaintenanceView(
       store: .init(
-        initialState: MaintenanceReducer.State(),
-        reducer: { MaintenanceReducer() }
+        initialState: MaintenanceLogic.State(),
+        reducer: { MaintenanceLogic() }
       )
     )
   }

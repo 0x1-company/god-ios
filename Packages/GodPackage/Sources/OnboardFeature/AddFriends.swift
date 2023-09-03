@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct AddFriendsReducer: Reducer {
+public struct AddFriendsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -37,9 +37,9 @@ public struct AddFriendsReducer: Reducer {
 }
 
 public struct AddFriendsView: View {
-  let store: StoreOf<AddFriendsReducer>
+  let store: StoreOf<AddFriendsLogic>
 
-  public init(store: StoreOf<AddFriendsReducer>) {
+  public init(store: StoreOf<AddFriendsLogic>) {
     self.store = store
   }
 
@@ -92,8 +92,8 @@ struct AddFriendsViewPreviews: PreviewProvider {
     NavigationStack {
       AddFriendsView(
         store: .init(
-          initialState: AddFriendsReducer.State(),
-          reducer: { AddFriendsReducer() }
+          initialState: AddFriendsLogic.State(),
+          reducer: { AddFriendsLogic() }
         )
       )
     }

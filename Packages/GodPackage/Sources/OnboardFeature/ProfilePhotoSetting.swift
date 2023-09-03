@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct ProfilePhotoSettingReducer: Reducer {
+public struct ProfilePhotoSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -40,9 +40,9 @@ public struct ProfilePhotoSettingReducer: Reducer {
 }
 
 public struct ProfilePhotoSettingView: View {
-  let store: StoreOf<ProfilePhotoSettingReducer>
+  let store: StoreOf<ProfilePhotoSettingLogic>
 
-  public init(store: StoreOf<ProfilePhotoSettingReducer>) {
+  public init(store: StoreOf<ProfilePhotoSettingLogic>) {
     self.store = store
   }
 
@@ -107,8 +107,8 @@ struct ProfilePhotoSettingViewPreviews: PreviewProvider {
   static var previews: some View {
     ProfilePhotoSettingView(
       store: .init(
-        initialState: ProfilePhotoSettingReducer.State(),
-        reducer: { ProfilePhotoSettingReducer() }
+        initialState: ProfilePhotoSettingLogic.State(),
+        reducer: { ProfilePhotoSettingLogic() }
       )
     )
   }

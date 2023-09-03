@@ -3,11 +3,11 @@ import ComposableArchitecture
 import RoundedCorner
 import SwiftUI
 
-public struct SchoolSettingReducer: Reducer {
+public struct SchoolSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var schoolHelp: SchoolHelpSheetReducer.State?
+    @PresentationState var schoolHelp: SchoolHelpSheetLogic.State?
     public init() {}
   }
 
@@ -15,7 +15,7 @@ public struct SchoolSettingReducer: Reducer {
     case onTask
     case infoButtonTapped
     case schoolButtonTapped
-    case schoolHelp(PresentationAction<SchoolHelpSheetReducer.Action>)
+    case schoolHelp(PresentationAction<SchoolHelpSheetLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -40,15 +40,15 @@ public struct SchoolSettingReducer: Reducer {
       }
     }
     .ifLet(\.$schoolHelp, action: /Action.schoolHelp) {
-      SchoolHelpSheetReducer()
+      SchoolHelpSheetLogic()
     }
   }
 }
 
 public struct SchoolSettingView: View {
-  let store: StoreOf<SchoolSettingReducer>
+  let store: StoreOf<SchoolSettingLogic>
 
-  public init(store: StoreOf<SchoolSettingReducer>) {
+  public init(store: StoreOf<SchoolSettingLogic>) {
     self.store = store
   }
 
@@ -111,7 +111,7 @@ public struct SchoolSettingView: View {
       .sheet(
         store: store.scope(
           state: \.$schoolHelp,
-          action: SchoolSettingReducer.Action.schoolHelp
+          action: SchoolSettingLogic.Action.schoolHelp
         )
       ) { store in
         SchoolHelpSheetView(store: store)
@@ -127,8 +127,8 @@ struct SchoolSettingViewPreviews: PreviewProvider {
     NavigationStack {
       SchoolSettingView(
         store: .init(
-          initialState: SchoolSettingReducer.State(),
-          reducer: { SchoolSettingReducer() }
+          initialState: SchoolSettingLogic.State(),
+          reducer: { SchoolSettingLogic() }
         )
       )
     }

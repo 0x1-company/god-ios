@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct SchoolHelpSheetReducer: Reducer {
+public struct SchoolHelpSheetLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -33,9 +33,9 @@ public struct SchoolHelpSheetReducer: Reducer {
 }
 
 public struct SchoolHelpSheetView: View {
-  let store: StoreOf<SchoolHelpSheetReducer>
+  let store: StoreOf<SchoolHelpSheetLogic>
 
-  public init(store: StoreOf<SchoolHelpSheetReducer>) {
+  public init(store: StoreOf<SchoolHelpSheetLogic>) {
     self.store = store
   }
 
@@ -75,8 +75,8 @@ struct SchoolHelpSheetViewPreviews: PreviewProvider {
   static var previews: some View {
     SchoolHelpSheetView(
       store: .init(
-        initialState: SchoolHelpSheetReducer.State(),
-        reducer: { SchoolHelpSheetReducer() }
+        initialState: SchoolHelpSheetLogic.State(),
+        reducer: { SchoolHelpSheetLogic() }
       )
     )
   }

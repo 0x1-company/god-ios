@@ -9,8 +9,8 @@ struct CashOutPreviewAppApp: App {
       NavigationStack {
         CashOutView(
           store: .init(
-            initialState: CashOutReducer.State(),
-            reducer: { CashOutReducer()._printChanges() }
+            initialState: CashOutLogic.State(),
+            reducer: { CashOutLogic()._printChanges() }
           )
         )
       }

@@ -2,7 +2,7 @@ import ComposableArchitecture
 import Lottie
 import SwiftUI
 
-public struct CashOutReducer: Reducer {
+public struct CashOutLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -24,9 +24,9 @@ public struct CashOutReducer: Reducer {
 }
 
 public struct CashOutView: View {
-  let store: StoreOf<CashOutReducer>
+  let store: StoreOf<CashOutLogic>
 
-  public init(store: StoreOf<CashOutReducer>) {
+  public init(store: StoreOf<CashOutLogic>) {
     self.store = store
   }
 
@@ -79,8 +79,8 @@ struct CashOutViewPreviews: PreviewProvider {
   static var previews: some View {
     CashOutView(
       store: .init(
-        initialState: CashOutReducer.State(),
-        reducer: { CashOutReducer() }
+        initialState: CashOutLogic.State(),
+        reducer: { CashOutLogic() }
       )
     )
   }

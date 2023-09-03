@@ -4,7 +4,7 @@ import ComposableArchitecture
 import Lottie
 import SwiftUI
 
-public struct WelcomeReducer: Reducer {
+public struct WelcomeLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -67,21 +67,21 @@ public struct WelcomeReducer: Reducer {
 }
 
 public struct WelcomeView: View {
-  let store: StoreOf<WelcomeReducer>
+  let store: StoreOf<WelcomeLogic>
 
   struct ViewState: Equatable {
     let ages: [String]
     let ageText: String
     let selection: String
 
-    init(state: WelcomeReducer.State) {
+    init(state: WelcomeLogic.State) {
       ages = state.ages
       ageText = state.selection == "- -" ? "Enter your age" : state.selection
       selection = state.selection
     }
   }
 
-  public init(store: StoreOf<WelcomeReducer>) {
+  public init(store: StoreOf<WelcomeLogic>) {
     self.store = store
   }
 
@@ -127,7 +127,7 @@ public struct WelcomeView: View {
             "",
             selection: viewStore.binding(
               get: \.selection,
-              send: WelcomeReducer.Action.ageChanged
+              send: WelcomeLogic.Action.ageChanged
             )
             .animation(.default)
           ) {
@@ -140,7 +140,7 @@ public struct WelcomeView: View {
         }
       }
       .background(Color.godBlack)
-      .alert(store: store.scope(state: \.$alert, action: WelcomeReducer.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: WelcomeLogic.Action.alert))
       .toolbar {
         Button("Log In") {}
           .foregroundColor(Color.white)
@@ -154,8 +154,8 @@ struct WelcomeViewPreviews: PreviewProvider {
     NavigationStack {
       WelcomeView(
         store: .init(
-          initialState: WelcomeReducer.State(),
-          reducer: { WelcomeReducer() }
+          initialState: WelcomeLogic.State(),
+          reducer: { WelcomeLogic() }
         )
       )
     }

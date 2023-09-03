@@ -4,7 +4,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct ActivityDetailReducer: Reducer {
+public struct ActivityDetailLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -46,23 +46,23 @@ public struct ActivityDetailReducer: Reducer {
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case reveal(RevealReducer.State = .init())
+      case reveal(RevealLogic.State = .init())
     }
 
     public enum Action: Equatable {
-      case reveal(RevealReducer.Action)
+      case reveal(RevealLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.reveal, action: /Action.reveal, child: RevealReducer.init)
+      Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
     }
   }
 }
 
 public struct ActivityDetailView: View {
-  let store: StoreOf<ActivityDetailReducer>
+  let store: StoreOf<ActivityDetailLogic>
 
-  public init(store: StoreOf<ActivityDetailReducer>) {
+  public init(store: StoreOf<ActivityDetailLogic>) {
     self.store = store
   }
 
@@ -116,8 +116,8 @@ public struct ActivityDetailView: View {
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ActivityDetailReducer.Destination.State.reveal,
-        action: ActivityDetailReducer.Destination.Action.reveal,
+        state: /ActivityDetailLogic.Destination.State.reveal,
+        action: ActivityDetailLogic.Destination.Action.reveal,
         content: { store in
           RevealView(store: store)
             .presentationDetents([.fraction(0.4)])
@@ -131,8 +131,8 @@ struct ActivityDetailViewPreviews: PreviewProvider {
   static var previews: some View {
     ActivityDetailView(
       store: .init(
-        initialState: ActivityDetailReducer.State(),
-        reducer: { ActivityDetailReducer() }
+        initialState: ActivityDetailLogic.State(),
+        reducer: { ActivityDetailLogic() }
       )
     )
   }

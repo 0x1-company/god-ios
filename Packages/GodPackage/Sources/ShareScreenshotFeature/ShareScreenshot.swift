@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ShareScreenshotReducer: Reducer {
+public struct ShareScreenshotLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -31,9 +31,9 @@ public struct ShareScreenshotReducer: Reducer {
 }
 
 public struct ShareScreenshotView: View {
-  let store: StoreOf<ShareScreenshotReducer>
+  let store: StoreOf<ShareScreenshotLogic>
 
-  public init(store: StoreOf<ShareScreenshotReducer>) {
+  public init(store: StoreOf<ShareScreenshotLogic>) {
     self.store = store
   }
 
@@ -100,8 +100,8 @@ struct ShareScreenshotViewPreviews: PreviewProvider {
       .sheet(isPresented: .constant(true)) {
         ShareScreenshotView(
           store: .init(
-            initialState: ShareScreenshotReducer.State(),
-            reducer: { ShareScreenshotReducer() }
+            initialState: ShareScreenshotLogic.State(),
+            reducer: { ShareScreenshotLogic() }
           )
         )
         .presentationDetents([.fraction(0.3)])

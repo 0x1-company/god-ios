@@ -3,7 +3,7 @@ import FirebaseAuthClient
 import FirebaseCoreClient
 import UIKit
 
-public struct AppDelegateReducer: Reducer {
+public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
   public enum Action: Equatable {
     case didFinishLaunching

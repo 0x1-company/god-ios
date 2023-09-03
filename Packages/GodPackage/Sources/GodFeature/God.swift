@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct GodReducer: Reducer {
+public struct GodLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -23,9 +23,9 @@ public struct GodReducer: Reducer {
 }
 
 public struct GodView: View {
-  let store: StoreOf<GodReducer>
+  let store: StoreOf<GodLogic>
 
-  public init(store: StoreOf<GodReducer>) {
+  public init(store: StoreOf<GodLogic>) {
     self.store = store
   }
 
@@ -45,8 +45,8 @@ struct GodViewPreviews: PreviewProvider {
   static var previews: some View {
     GodView(
       store: .init(
-        initialState: GodReducer.State(),
-        reducer: { GodReducer() }
+        initialState: GodLogic.State(),
+        reducer: { GodLogic() }
       )
     )
   }

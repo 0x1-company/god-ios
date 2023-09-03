@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct AddMySchoolToMyProfileReducer: Reducer {
+public struct AddMySchoolToMyProfileLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -59,9 +59,9 @@ public struct AddMySchoolToMyProfileReducer: Reducer {
 }
 
 public struct AddMySchoolToMyProfileView: View {
-  let store: StoreOf<AddMySchoolToMyProfileReducer>
+  let store: StoreOf<AddMySchoolToMyProfileLogic>
 
-  public init(store: StoreOf<AddMySchoolToMyProfileReducer>) {
+  public init(store: StoreOf<AddMySchoolToMyProfileLogic>) {
     self.store = store
   }
 

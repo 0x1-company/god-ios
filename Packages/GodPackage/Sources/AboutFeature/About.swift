@@ -4,7 +4,7 @@ import Constants
 import HowItWorksFeature
 import SwiftUI
 
-public struct AboutReducer: Reducer {
+public struct AboutLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -97,35 +97,35 @@ public struct AboutReducer: Reducer {
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case shareFeedback(ShareFeedbackReducer.State = .init())
-      case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.State = .init())
-      case howItWorks(HowItWorksReducer.State = .init())
+      case shareFeedback(ShareFeedbackLogic.State = .init())
+      case addMySchoolToMyProfile(AddMySchoolToMyProfileLogic.State = .init())
+      case howItWorks(HowItWorksLogic.State = .init())
     }
 
     public enum Action: Equatable {
-      case shareFeedback(ShareFeedbackReducer.Action)
-      case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.Action)
-      case howItWorks(HowItWorksReducer.Action)
+      case shareFeedback(ShareFeedbackLogic.Action)
+      case addMySchoolToMyProfile(AddMySchoolToMyProfileLogic.Action)
+      case howItWorks(HowItWorksLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.shareFeedback, action: /Action.shareFeedback) {
-        ShareFeedbackReducer()
+        ShareFeedbackLogic()
       }
       Scope(state: /State.addMySchoolToMyProfile, action: /Action.addMySchoolToMyProfile) {
-        AddMySchoolToMyProfileReducer()
+        AddMySchoolToMyProfileLogic()
       }
       Scope(state: /State.howItWorks, action: /Action.howItWorks) {
-        HowItWorksReducer()
+        HowItWorksLogic()
       }
     }
   }
 }
 
 public struct AboutView: View {
-  let store: StoreOf<AboutReducer>
+  let store: StoreOf<AboutLogic>
 
-  public init(store: StoreOf<AboutReducer>) {
+  public init(store: StoreOf<AboutLogic>) {
     self.store = store
   }
 
@@ -183,31 +183,31 @@ public struct AboutView: View {
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutReducer.Destination.State.shareFeedback,
-        action: AboutReducer.Destination.Action.shareFeedback
+        state: /AboutLogic.Destination.State.shareFeedback,
+        action: AboutLogic.Destination.Action.shareFeedback
       ) { store in
         ShareFeedback(store: store)
           .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
       }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutReducer.Destination.State.addMySchoolToMyProfile,
-        action: AboutReducer.Destination.Action.addMySchoolToMyProfile
+        state: /AboutLogic.Destination.State.addMySchoolToMyProfile,
+        action: AboutLogic.Destination.Action.addMySchoolToMyProfile
       ) { store in
         AddMySchoolToMyProfileView(store: store)
           .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutReducer.Destination.State.howItWorks,
-        action: AboutReducer.Destination.Action.howItWorks,
+        state: /AboutLogic.Destination.State.howItWorks,
+        action: AboutLogic.Destination.Action.howItWorks,
         content: HowItWorksView.init(store:)
       )
     }
   }
 }
 
-extension ConfirmationDialogState where Action == AboutReducer.Action.ConfirmationDialog {
+extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
   static let faq = Self {
     TextState("Get Help")
   } actions: {
@@ -247,8 +247,8 @@ struct AboutViewPreviews: PreviewProvider {
   static var previews: some View {
     AboutView(
       store: .init(
-        initialState: AboutReducer.State(),
-        reducer: { AboutReducer() }
+        initialState: AboutLogic.State(),
+        reducer: { AboutLogic() }
       )
     )
   }

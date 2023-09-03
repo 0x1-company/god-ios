@@ -6,11 +6,11 @@ import LabeledButton
 import ManageAccountFeature
 import SwiftUI
 
-public struct ProfileEditReducer: Reducer {
+public struct ProfileEditLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var manageAccount: ManageAccountReducer.State?
+    @PresentationState var manageAccount: ManageAccountLogic.State?
     public init() {}
   }
 
@@ -19,7 +19,7 @@ public struct ProfileEditReducer: Reducer {
     case manageAccountButtonTapped
     case logoutButtonTapped
     case closeButtonTapped
-    case manageAccount(PresentationAction<ManageAccountReducer.Action>)
+    case manageAccount(PresentationAction<ManageAccountLogic.Action>)
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -50,15 +50,15 @@ public struct ProfileEditReducer: Reducer {
       }
     }
     .ifLet(\.$manageAccount, action: /Action.manageAccount) {
-      ManageAccountReducer()
+      ManageAccountLogic()
     }
   }
 }
 
 public struct ProfileEditView: View {
-  let store: StoreOf<ProfileEditReducer>
+  let store: StoreOf<ProfileEditLogic>
 
-  public init(store: StoreOf<ProfileEditReducer>) {
+  public init(store: StoreOf<ProfileEditLogic>) {
     self.store = store
   }
 
@@ -175,7 +175,7 @@ public struct ProfileEditView: View {
       .sheet(
         store: store.scope(
           state: \.$manageAccount,
-          action: ProfileEditReducer.Action.manageAccount
+          action: ProfileEditLogic.Action.manageAccount
         ),
         content: { store in
           NavigationStack {
@@ -282,8 +282,8 @@ struct ProfileEditViewPreviews: PreviewProvider {
     NavigationStack {
       ProfileEditView(
         store: .init(
-          initialState: ProfileEditReducer.State(),
-          reducer: { ProfileEditReducer() }
+          initialState: ProfileEditLogic.State(),
+          reducer: { ProfileEditLogic() }
         )
       )
     }

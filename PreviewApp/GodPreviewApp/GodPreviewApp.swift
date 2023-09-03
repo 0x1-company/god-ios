@@ -8,8 +8,8 @@ struct GodPreviewAppApp: App {
     WindowGroup {
       VoteView(
         store: .init(
-          initialState: VoteReducer.State(),
-          reducer: { VoteReducer() }._printChanges()
+          initialState: VoteLogic.State(),
+          reducer: { VoteLogic() }._printChanges()
         )
       )
     }

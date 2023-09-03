@@ -8,7 +8,7 @@ import PhoneNumberClient
 import SwiftUI
 import UserDefaultsClient
 
-public struct OneTimeCodeReducer: Reducer {
+public struct OneTimeCodeLogic: Reducer {
   public struct State: Equatable {
     var phoneNumber = ""
     var oneTimeCode = ""
@@ -170,10 +170,10 @@ public struct OneTimeCodeReducer: Reducer {
 }
 
 public struct OneTimeCodeView: View {
-  let store: StoreOf<OneTimeCodeReducer>
+  let store: StoreOf<OneTimeCodeLogic>
   @FocusState var focus: Bool
 
-  public init(store: StoreOf<OneTimeCodeReducer>) {
+  public init(store: StoreOf<OneTimeCodeLogic>) {
     self.store = store
   }
 
@@ -195,7 +195,7 @@ public struct OneTimeCodeView: View {
             "Code",
             text: viewStore.binding(
               get: \.oneTimeCode,
-              send: OneTimeCodeReducer.Action.changeOneTimeCode
+              send: OneTimeCodeLogic.Action.changeOneTimeCode
             )
           )
           .font(.title)
@@ -221,7 +221,7 @@ public struct OneTimeCodeView: View {
         .foregroundColor(Color.white)
         .multilineTextAlignment(.center)
       }
-      .alert(store: store.scope(state: \.$alert, action: OneTimeCodeReducer.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: OneTimeCodeLogic.Action.alert))
       .onAppear {
         focus = true
       }
@@ -233,8 +233,8 @@ struct OneTimeCodeViewPreviews: PreviewProvider {
   static var previews: some View {
     OneTimeCodeView(
       store: .init(
-        initialState: OneTimeCodeReducer.State(),
-        reducer: { OneTimeCodeReducer() }
+        initialState: OneTimeCodeLogic.State(),
+        reducer: { OneTimeCodeLogic() }
       )
     )
   }

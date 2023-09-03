@@ -9,9 +9,9 @@ public struct OnboardPathLogic: Reducer {
   }
 
   public func reduce(
-    into state: inout OnboardReducer.State,
-    action: OnboardReducer.Action
-  ) -> Effect<OnboardReducer.Action> {
+    into state: inout OnboardLogic.State,
+    action: OnboardLogic.Action
+  ) -> Effect<OnboardLogic.Action> {
     switch action {
     case let .pathInsert(value):
       state.path.append(value)

@@ -6,7 +6,7 @@ import PhoneNumberKit
 import SwiftUI
 import UserDefaultsClient
 
-public struct PhoneNumberReducer: Reducer {
+public struct PhoneNumberLogic: Reducer {
   public struct State: Equatable {
     var phoneNumber = ""
     var isValidPhoneNumber = false
@@ -89,10 +89,10 @@ public struct PhoneNumberReducer: Reducer {
 }
 
 public struct PhoneNumberView: View {
-  let store: StoreOf<PhoneNumberReducer>
+  let store: StoreOf<PhoneNumberLogic>
   @FocusState var focus: Bool
 
-  public init(store: StoreOf<PhoneNumberReducer>) {
+  public init(store: StoreOf<PhoneNumberLogic>) {
     self.store = store
   }
 
@@ -100,7 +100,7 @@ public struct PhoneNumberView: View {
     var phoneNumber: String
     var isDisabled: Bool
     var isLoading: Bool
-    init(state: PhoneNumberReducer.State) {
+    init(state: PhoneNumberLogic.State) {
       phoneNumber = state.phoneNumber
       isLoading = state.isActivityIndicatorVisible
       isDisabled = !state.isValidPhoneNumber
@@ -123,7 +123,7 @@ public struct PhoneNumberView: View {
             "Phone Number",
             text: viewStore.binding(
               get: \.phoneNumber,
-              send: PhoneNumberReducer.Action.changePhoneNumber
+              send: PhoneNumberLogic.Action.changePhoneNumber
             )
           )
           .font(.title)
@@ -160,8 +160,8 @@ struct PhoneNumberViewPreviews: PreviewProvider {
   static var previews: some View {
     PhoneNumberView(
       store: .init(
-        initialState: PhoneNumberReducer.State(),
-        reducer: { PhoneNumberReducer() }
+        initialState: PhoneNumberLogic.State(),
+        reducer: { PhoneNumberLogic() }
       )
     )
   }

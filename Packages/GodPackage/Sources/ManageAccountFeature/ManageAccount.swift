@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ManageAccountReducer: Reducer {
+public struct ManageAccountLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -27,9 +27,9 @@ public struct ManageAccountReducer: Reducer {
 }
 
 public struct ManageAccountView: View {
-  let store: StoreOf<ManageAccountReducer>
+  let store: StoreOf<ManageAccountLogic>
 
-  public init(store: StoreOf<ManageAccountReducer>) {
+  public init(store: StoreOf<ManageAccountLogic>) {
     self.store = store
   }
 
@@ -86,8 +86,8 @@ struct ManageAccountViewPreviews: PreviewProvider {
   static var previews: some View {
     ManageAccountView(
       store: .init(
-        initialState: ManageAccountReducer.State(),
-        reducer: { ManageAccountReducer() }
+        initialState: ManageAccountLogic.State(),
+        reducer: { ManageAccountLogic() }
       )
     )
   }

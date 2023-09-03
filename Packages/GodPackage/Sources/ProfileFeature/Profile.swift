@@ -3,7 +3,7 @@ import ComposableArchitecture
 import ProfileEditFeature
 import SwiftUI
 
-public struct ProfileReducer: Reducer {
+public struct ProfileLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -38,25 +38,25 @@ public struct ProfileReducer: Reducer {
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case profileEdit(ProfileEditReducer.State = .init())
+      case profileEdit(ProfileEditLogic.State = .init())
     }
 
     public enum Action: Equatable {
-      case profileEdit(ProfileEditReducer.Action)
+      case profileEdit(ProfileEditLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profileEdit, action: /Action.profileEdit) {
-        ProfileEditReducer()
+        ProfileEditLogic()
       }
     }
   }
 }
 
 public struct ProfileView: View {
-  let store: StoreOf<ProfileReducer>
+  let store: StoreOf<ProfileLogic>
 
-  public init(store: StoreOf<ProfileReducer>) {
+  public init(store: StoreOf<ProfileLogic>) {
     self.store = store
   }
 
@@ -139,8 +139,8 @@ public struct ProfileView: View {
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ProfileReducer.Destination.State.profileEdit,
-        action: ProfileReducer.Destination.Action.profileEdit
+        state: /ProfileLogic.Destination.State.profileEdit,
+        action: ProfileLogic.Destination.Action.profileEdit
       ) { store in
         NavigationStack {
           ProfileEditView(store: store)
@@ -272,8 +272,8 @@ struct ProfileViewPreviews: PreviewProvider {
   static var previews: some View {
     ProfileView(
       store: .init(
-        initialState: ProfileReducer.State(),
-        reducer: { ProfileReducer() }
+        initialState: ProfileLogic.State(),
+        reducer: { ProfileLogic() }
       )
     )
   }
