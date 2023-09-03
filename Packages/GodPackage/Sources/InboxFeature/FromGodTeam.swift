@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct FromGodTeamReducer: Reducer {
+public struct FromGodTeamLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -28,9 +28,9 @@ public struct FromGodTeamReducer: Reducer {
 }
 
 public struct FromGodTeamView: View {
-  let store: StoreOf<FromGodTeamReducer>
+  let store: StoreOf<FromGodTeamLogic>
 
-  public init(store: StoreOf<FromGodTeamReducer>) {
+  public init(store: StoreOf<FromGodTeamLogic>) {
     self.store = store
   }
 
@@ -82,8 +82,8 @@ struct FromGodTeamViewPreviews: PreviewProvider {
   static var previews: some View {
     FromGodTeamView(
       store: .init(
-        initialState: FromGodTeamReducer.State(),
-        reducer: { FromGodTeamReducer() }
+        initialState: FromGodTeamLogic.State(),
+        reducer: { FromGodTeamLogic() }
       )
     )
   }

@@ -3,18 +3,18 @@ import ComposableArchitecture
 import God
 import SwiftUI
 
-public struct GenderSettingReducer: Reducer {
+public struct GenderSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var help: GenderHelpReducer.State?
+    @PresentationState var help: GenderHelpLogic.State?
     public init() {}
   }
 
   public enum Action: Equatable {
     case infoButtonTapped
     case genderButtonTapped(God.Gender)
-    case help(PresentationAction<GenderHelpReducer.Action>)
+    case help(PresentationAction<GenderHelpLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -42,15 +42,15 @@ public struct GenderSettingReducer: Reducer {
       }
     }
     .ifLet(\.$help, action: /Action.help) {
-      GenderHelpReducer()
+      GenderHelpLogic()
     }
   }
 }
 
 public struct GenderSettingView: View {
-  let store: StoreOf<GenderSettingReducer>
+  let store: StoreOf<GenderSettingLogic>
 
-  public init(store: StoreOf<GenderSettingReducer>) {
+  public init(store: StoreOf<GenderSettingLogic>) {
     self.store = store
   }
 
@@ -91,7 +91,7 @@ public struct GenderSettingView: View {
       .sheet(
         store: store.scope(
           state: \.$help,
-          action: GenderSettingReducer.Action.help
+          action: GenderSettingLogic.Action.help
         )
       ) { store in
         GenderHelpView(store: store)
@@ -107,8 +107,8 @@ struct GenderSettingViewPreviews: PreviewProvider {
     NavigationStack {
       GenderSettingView(
         store: .init(
-          initialState: GenderSettingReducer.State(),
-          reducer: { GenderSettingReducer() }
+          initialState: GenderSettingLogic.State(),
+          reducer: { GenderSettingLogic() }
         )
       )
     }

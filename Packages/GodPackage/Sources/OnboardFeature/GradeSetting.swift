@@ -3,11 +3,11 @@ import ComposableArchitecture
 import RoundedCorner
 import SwiftUI
 
-public struct GradeSettingReducer: Reducer {
+public struct GradeSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var gradeHelp: GradeHelpSheetReducer.State?
+    @PresentationState var gradeHelp: GradeHelpSheetLogic.State?
     public init() {}
   }
 
@@ -15,7 +15,7 @@ public struct GradeSettingReducer: Reducer {
     case onTask
     case infoButtonTapped
     case generationButtonTapped(Int?)
-    case gradeHelp(PresentationAction<GradeHelpSheetReducer.Action>)
+    case gradeHelp(PresentationAction<GradeHelpSheetLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -44,15 +44,15 @@ public struct GradeSettingReducer: Reducer {
       }
     }
     .ifLet(\.$gradeHelp, action: /Action.gradeHelp) {
-      GradeHelpSheetReducer()
+      GradeHelpSheetLogic()
     }
   }
 }
 
 public struct GradeSettingView: View {
-  let store: StoreOf<GradeSettingReducer>
+  let store: StoreOf<GradeSettingLogic>
 
-  public init(store: StoreOf<GradeSettingReducer>) {
+  public init(store: StoreOf<GradeSettingLogic>) {
     self.store = store
   }
 
@@ -117,7 +117,7 @@ public struct GradeSettingView: View {
       .sheet(
         store: store.scope(
           state: \.$gradeHelp,
-          action: GradeSettingReducer.Action.gradeHelp
+          action: GradeSettingLogic.Action.gradeHelp
         )
       ) { store in
         GradeHelpSheetView(store: store)
@@ -161,8 +161,8 @@ struct GradeSettingViewPreviews: PreviewProvider {
     NavigationStack {
       GradeSettingView(
         store: .init(
-          initialState: GradeSettingReducer.State(),
-          reducer: { GradeSettingReducer() }
+          initialState: GradeSettingLogic.State(),
+          reducer: { GradeSettingLogic() }
         )
       )
     }

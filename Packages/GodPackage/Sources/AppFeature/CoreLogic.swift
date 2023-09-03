@@ -10,9 +10,9 @@ public struct CoreLogic: Reducer {
   @Dependency(\.firebaseAuth) var firebaseAuth
 
   public func reduce(
-    into state: inout AppReducer.State,
-    action: AppReducer.Action
-  ) -> Effect<AppReducer.Action> {
+    into state: inout AppLogic.State,
+    action: AppLogic.Action
+  ) -> Effect<AppLogic.Action> {
     switch action {
     case let .appDelegate(.configurationForConnecting(.some(shortcutItem))):
       let type = shortcutItem.type

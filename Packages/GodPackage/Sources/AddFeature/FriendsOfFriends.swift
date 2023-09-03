@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FriendsOfFriendsReducer: Reducer {
+public struct FriendsOfFriendsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -37,9 +37,9 @@ public struct FriendsOfFriendsReducer: Reducer {
 }
 
 public struct FriendsOfFriendsView: View {
-  let store: StoreOf<FriendsOfFriendsReducer>
+  let store: StoreOf<FriendsOfFriendsLogic>
 
-  public init(store: StoreOf<FriendsOfFriendsReducer>) {
+  public init(store: StoreOf<FriendsOfFriendsLogic>) {
     self.store = store
   }
 
@@ -70,8 +70,8 @@ struct FriendsOfFriendsViewPreviews: PreviewProvider {
     NavigationStack {
       FriendsOfFriendsView(
         store: .init(
-          initialState: FriendsOfFriendsReducer.State(),
-          reducer: { FriendsOfFriendsReducer() }
+          initialState: FriendsOfFriendsLogic.State(),
+          reducer: { FriendsOfFriendsLogic() }
         )
       )
     }

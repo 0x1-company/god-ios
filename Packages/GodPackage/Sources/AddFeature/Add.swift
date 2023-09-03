@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct AddReducer: Reducer {
+public struct AddLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -41,30 +41,30 @@ public struct AddReducer: Reducer {
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case friendsOfFriends(FriendsOfFriendsReducer.State = .init())
-      case fromSchool(FromSchoolReducer.State = .init())
+      case friendsOfFriends(FriendsOfFriendsLogic.State = .init())
+      case fromSchool(FromSchoolLogic.State = .init())
     }
 
     public enum Action: Equatable {
-      case friendsOfFriends(FriendsOfFriendsReducer.Action)
-      case fromSchool(FromSchoolReducer.Action)
+      case friendsOfFriends(FriendsOfFriendsLogic.Action)
+      case fromSchool(FromSchoolLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.friendsOfFriends, action: /Action.friendsOfFriends) {
-        FriendsOfFriendsReducer()
+        FriendsOfFriendsLogic()
       }
       Scope(state: /State.fromSchool, action: /Action.fromSchool) {
-        FromSchoolReducer()
+        FromSchoolLogic()
       }
     }
   }
 }
 
 public struct AddView: View {
-  let store: StoreOf<AddReducer>
+  let store: StoreOf<AddLogic>
 
-  public init(store: StoreOf<AddReducer>) {
+  public init(store: StoreOf<AddLogic>) {
     self.store = store
   }
 
@@ -107,8 +107,8 @@ public struct AddView: View {
           switch $0 {
           case .friendsOfFriends:
             CaseLet(
-              /AddReducer.Destination.State.friendsOfFriends,
-              action: AddReducer.Destination.Action.friendsOfFriends
+              /AddLogic.Destination.State.friendsOfFriends,
+              action: AddLogic.Destination.Action.friendsOfFriends
             ) { store in
               NavigationStack {
                 FriendsOfFriendsView(store: store)
@@ -116,8 +116,8 @@ public struct AddView: View {
             }
           case .fromSchool:
             CaseLet(
-              /AddReducer.Destination.State.fromSchool,
-              action: AddReducer.Destination.Action.fromSchool
+              /AddLogic.Destination.State.fromSchool,
+              action: AddLogic.Destination.Action.fromSchool
             ) { store in
               NavigationStack {
                 FromSchoolView(store: store)
@@ -134,8 +134,8 @@ struct AddViewPreviews: PreviewProvider {
   static var previews: some View {
     AddView(
       store: .init(
-        initialState: AddReducer.State(),
-        reducer: { AddReducer() }
+        initialState: AddLogic.State(),
+        reducer: { AddLogic() }
       )
     )
   }

@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct HowItWorksReducer: Reducer {
+public struct HowItWorksLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -33,9 +33,9 @@ public struct HowItWorksReducer: Reducer {
 }
 
 public struct HowItWorksView: View {
-  let store: StoreOf<HowItWorksReducer>
+  let store: StoreOf<HowItWorksLogic>
 
-  public init(store: StoreOf<HowItWorksReducer>) {
+  public init(store: StoreOf<HowItWorksLogic>) {
     self.store = store
   }
 
@@ -65,8 +65,8 @@ struct HowItWorksViewPreviews: PreviewProvider {
   static var previews: some View {
     HowItWorksView(
       store: .init(
-        initialState: HowItWorksReducer.State(),
-        reducer: { HowItWorksReducer() }
+        initialState: HowItWorksLogic.State(),
+        reducer: { HowItWorksLogic() }
       )
     )
   }

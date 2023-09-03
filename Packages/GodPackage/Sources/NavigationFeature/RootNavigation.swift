@@ -8,7 +8,7 @@ import PollFeature
 import ProfileFeature
 import SwiftUI
 
-public struct RootNavigationReducer: Reducer {
+public struct RootNavigationLogic: Reducer {
   public init() {}
 
   public enum Tab: Equatable {
@@ -21,41 +21,41 @@ public struct RootNavigationReducer: Reducer {
   }
 
   public struct State: Equatable {
-    var add = AddReducer.State()
-    var activity = ActivityReducer.State()
-    var inbox = InboxReducer.State()
-    var poll = PollReducer.State()
-    var profile = ProfileReducer.State()
-    var about = AboutReducer.State()
+    var add = AddLogic.State()
+    var activity = ActivityLogic.State()
+    var inbox = InboxLogic.State()
+    var poll = PollLogic.State()
+    var profile = ProfileLogic.State()
+    var about = AboutLogic.State()
     @BindingState var selectedTab = Tab.poll
     public init() {}
   }
 
   public enum Action: Equatable, BindableAction {
-    case add(AddReducer.Action)
-    case activity(ActivityReducer.Action)
-    case inbox(InboxReducer.Action)
-    case poll(PollReducer.Action)
-    case profile(ProfileReducer.Action)
-    case about(AboutReducer.Action)
+    case add(AddLogic.Action)
+    case activity(ActivityLogic.Action)
+    case inbox(InboxLogic.Action)
+    case poll(PollLogic.Action)
+    case profile(ProfileLogic.Action)
+    case about(AboutLogic.Action)
     case binding(BindingAction<State>)
   }
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.add, action: /Action.add, child: AddReducer.init)
-    Scope(state: \.activity, action: /Action.activity, child: ActivityReducer.init)
-    Scope(state: \.inbox, action: /Action.inbox, child: InboxReducer.init)
-    Scope(state: \.poll, action: /Action.poll, child: PollReducer.init)
-    Scope(state: \.profile, action: /Action.profile, child: ProfileReducer.init)
-    Scope(state: \.about, action: /Action.about, child: AboutReducer.init)
+    Scope(state: \.add, action: /Action.add, child: AddLogic.init)
+    Scope(state: \.activity, action: /Action.activity, child: ActivityLogic.init)
+    Scope(state: \.inbox, action: /Action.inbox, child: InboxLogic.init)
+    Scope(state: \.poll, action: /Action.poll, child: PollLogic.init)
+    Scope(state: \.profile, action: /Action.profile, child: ProfileLogic.init)
+    Scope(state: \.about, action: /Action.about, child: AboutLogic.init)
   }
 }
 
 public struct RootNavigationView: View {
-  let store: StoreOf<RootNavigationReducer>
+  let store: StoreOf<RootNavigationLogic>
 
-  public init(store: StoreOf<RootNavigationReducer>) {
+  public init(store: StoreOf<RootNavigationLogic>) {
     self.store = store
   }
 
@@ -65,50 +65,50 @@ public struct RootNavigationView: View {
         AddView(
           store: store.scope(
             state: \.add,
-            action: RootNavigationReducer.Action.add
+            action: RootNavigationLogic.Action.add
           )
         )
-        .tag(RootNavigationReducer.Tab.add)
+        .tag(RootNavigationLogic.Tab.add)
 
         ActivityView(
           store: store.scope(
             state: \.activity,
-            action: RootNavigationReducer.Action.activity
+            action: RootNavigationLogic.Action.activity
           )
         )
-        .tag(RootNavigationReducer.Tab.activity)
+        .tag(RootNavigationLogic.Tab.activity)
 
         InboxView(
           store: store.scope(
             state: \.inbox,
-            action: RootNavigationReducer.Action.inbox
+            action: RootNavigationLogic.Action.inbox
           )
         )
-        .tag(RootNavigationReducer.Tab.inbox)
+        .tag(RootNavigationLogic.Tab.inbox)
 
         PollView(
           store: store.scope(
             state: \.poll,
-            action: RootNavigationReducer.Action.poll
+            action: RootNavigationLogic.Action.poll
           )
         )
-        .tag(RootNavigationReducer.Tab.poll)
+        .tag(RootNavigationLogic.Tab.poll)
 
         ProfileView(
           store: store.scope(
             state: \.profile,
-            action: RootNavigationReducer.Action.profile
+            action: RootNavigationLogic.Action.profile
           )
         )
-        .tag(RootNavigationReducer.Tab.profile)
+        .tag(RootNavigationLogic.Tab.profile)
 
         AboutView(
           store: store.scope(
             state: \.about,
-            action: RootNavigationReducer.Action.about
+            action: RootNavigationLogic.Action.about
           )
         )
-        .tag(RootNavigationReducer.Tab.about)
+        .tag(RootNavigationLogic.Tab.about)
       }
       .ignoresSafeArea()
       .tabViewStyle(.page(indexDisplayMode: .never))
@@ -120,8 +120,8 @@ struct RootNavigationViewPreviews: PreviewProvider {
   static var previews: some View {
     RootNavigationView(
       store: .init(
-        initialState: RootNavigationReducer.State(),
-        reducer: { RootNavigationReducer() }
+        initialState: RootNavigationLogic.State(),
+        reducer: { RootNavigationLogic() }
       )
     )
   }

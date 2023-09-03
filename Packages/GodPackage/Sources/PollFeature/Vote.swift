@@ -15,7 +15,7 @@ let mock = [
   "Satoya Hatanaka",
 ]
 
-public struct VoteReducer: Reducer {
+public struct VoteLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -76,9 +76,9 @@ public struct VoteReducer: Reducer {
 }
 
 public struct VoteView: View {
-  let store: StoreOf<VoteReducer>
+  let store: StoreOf<VoteLogic>
 
-  public init(store: StoreOf<VoteReducer>) {
+  public init(store: StoreOf<VoteLogic>) {
     self.store = store
   }
 
@@ -146,8 +146,8 @@ struct VoteViewPreviews: PreviewProvider {
   static var previews: some View {
     VoteView(
       store: .init(
-        initialState: VoteReducer.State(),
-        reducer: { VoteReducer() }
+        initialState: VoteLogic.State(),
+        reducer: { VoteLogic() }
       )
     )
   }

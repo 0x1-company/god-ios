@@ -5,9 +5,9 @@ public struct AuthLogic: Reducer {
   @Dependency(\.firebaseAuth.addStateDidChangeListener) var addStateDidChangeListener
 
   public func reduce(
-    into state: inout AppReducer.State,
-    action: AppReducer.Action
-  ) -> Effect<AppReducer.Action> {
+    into state: inout AppLogic.State,
+    action: AppLogic.Action
+  ) -> Effect<AppLogic.Action> {
     switch action {
     case .appDelegate(.delegate(.didFinishLaunching)):
       enum CancelID { case effect }

@@ -37,9 +37,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
   static let shared = AppDelegate()
   let store = Store(
-    initialState: AppReducer.State(),
+    initialState: AppLogic.State(),
     reducer: {
-      AppReducer()
+      AppLogic()
         ._printChanges()
         .transformDependency(\.self) {
           $0.godClient = .live(apolloClient: ApolloClient(build: $0.build))

@@ -7,9 +7,9 @@ public struct FirestoreLogic: Reducer {
   @Dependency(\.build.bundleShortVersion) var bundleShortVersion
 
   public func reduce(
-    into state: inout AppReducer.State,
-    action: AppReducer.Action
-  ) -> Effect<AppReducer.Action> {
+    into state: inout AppLogic.State,
+    action: AppLogic.Action
+  ) -> Effect<AppLogic.Action> {
     switch action {
     case .appDelegate(.delegate(.didFinishLaunching)):
       enum CancelID { case effect }

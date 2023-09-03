@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ActivityReducer: Reducer {
+public struct ActivityLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -23,9 +23,9 @@ public struct ActivityReducer: Reducer {
 }
 
 public struct ActivityView: View {
-  let store: StoreOf<ActivityReducer>
+  let store: StoreOf<ActivityLogic>
 
-  public init(store: StoreOf<ActivityReducer>) {
+  public init(store: StoreOf<ActivityLogic>) {
     self.store = store
   }
 
@@ -64,8 +64,8 @@ struct ActivityViewPreviews: PreviewProvider {
   static var previews: some View {
     ActivityView(
       store: .init(
-        initialState: ActivityReducer.State(),
-        reducer: { ActivityReducer() }
+        initialState: ActivityLogic.State(),
+        reducer: { ActivityLogic() }
       )
     )
   }

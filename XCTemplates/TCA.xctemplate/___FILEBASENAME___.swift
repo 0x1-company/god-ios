@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ___VARIABLE_productName:identifier___Reducer: Reducer {
+public struct ___VARIABLE_productName:identifier___Logic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -23,9 +23,9 @@ public struct ___VARIABLE_productName:identifier___Reducer: Reducer {
 }
 
 public struct ___VARIABLE_productName:identifier___View: View {
-  let store: StoreOf<___VARIABLE_productName: identifier___Reducer>
+  let store: StoreOf<___VARIABLE_productName: identifier___Logic>
 
-  public init(store: StoreOf<___VARIABLE_productName: identifier___Reducer>) {
+  public init(store: StoreOf<___VARIABLE_productName: identifier___Logic>) {
     self.store = store
   }
 
@@ -45,8 +45,8 @@ struct ___VARIABLE_productName:identifier___ViewPreviews: PreviewProvider {
   static var previews: some View {
     ___VARIABLE_productName: identifier___View(
       store: .init(
-        initialState: ___VARIABLE_productName: identifier___Reducer.State(),
-        reducer: { ___VARIABLE_productName: identifier___Reducer() }
+        initialState: ___VARIABLE_productName: identifier___Logic.State(),
+        reducer: { ___VARIABLE_productName: identifier___Logic() }
       )
     )
   }

@@ -5,7 +5,7 @@ import StoreKit
 import StoreKitClient
 import SwiftUI
 
-public struct GodModeReducer: Reducer {
+public struct GodModeLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -106,16 +106,16 @@ public struct GodModeReducer: Reducer {
 }
 
 public struct GodModeView: View {
-  let store: StoreOf<GodModeReducer>
+  let store: StoreOf<GodModeLogic>
 
-  public init(store: StoreOf<GodModeReducer>) {
+  public init(store: StoreOf<GodModeLogic>) {
     self.store = store
   }
 
   struct ViewState: Equatable {
     let displayPrice: String
 
-    init(state: GodModeReducer.State) {
+    init(state: GodModeLogic.State) {
       displayPrice = state.product.displayPrice
     }
   }
@@ -185,10 +185,10 @@ public struct GodModeView: View {
 //  static var previews: some View {
 //    GodModeView(
 //      store: .init(
-//        initialState: GodModeReducer.State(
+//        initialState: GodModeLogic.State(
 //          product: Product.
 //        ),
-//        reducer: { GodModeReducer() }
+//        reducer: { GodModeLogic() }
 //      )
 //    )
 //  }

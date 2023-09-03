@@ -1,21 +1,21 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct PollReducer: Reducer {
+public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var vote = VoteReducer.State()
+    var vote = VoteLogic.State()
     public init() {}
   }
 
   public enum Action: Equatable {
-    case vote(VoteReducer.Action)
+    case vote(VoteLogic.Action)
   }
 
   public var body: some Reducer<State, Action> {
     Scope(state: \.vote, action: /Action.vote) {
-      VoteReducer()
+      VoteLogic()
     }
     Reduce { _, action in
       switch action {
@@ -27,9 +27,9 @@ public struct PollReducer: Reducer {
 }
 
 public struct PollView: View {
-  let store: StoreOf<PollReducer>
+  let store: StoreOf<PollLogic>
 
-  public init(store: StoreOf<PollReducer>) {
+  public init(store: StoreOf<PollLogic>) {
     self.store = store
   }
 
@@ -39,7 +39,7 @@ public struct PollView: View {
         VoteView(
           store: store.scope(
             state: \.vote,
-            action: PollReducer.Action.vote
+            action: PollLogic.Action.vote
           )
         )
         Text("2 of 12")
@@ -53,8 +53,8 @@ struct PollViewPreviews: PreviewProvider {
   static var previews: some View {
     PollView(
       store: .init(
-        initialState: PollReducer.State(),
-        reducer: { PollReducer() }
+        initialState: PollLogic.State(),
+        reducer: { PollLogic() }
       )
     )
   }

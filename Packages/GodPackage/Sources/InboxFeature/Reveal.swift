@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct RevealReducer: Reducer {
+public struct RevealLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -28,9 +28,9 @@ public struct RevealReducer: Reducer {
 }
 
 public struct RevealView: View {
-  let store: StoreOf<RevealReducer>
+  let store: StoreOf<RevealLogic>
 
-  public init(store: StoreOf<RevealReducer>) {
+  public init(store: StoreOf<RevealLogic>) {
     self.store = store
   }
 
@@ -76,8 +76,8 @@ struct RevealViewPreviews: PreviewProvider {
   static var previews: some View {
     RevealView(
       store: .init(
-        initialState: RevealReducer.State(),
-        reducer: { RevealReducer() }
+        initialState: RevealLogic.State(),
+        reducer: { RevealLogic() }
       )
     )
   }

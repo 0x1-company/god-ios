@@ -3,7 +3,7 @@ import God
 import GodClient
 import SwiftUI
 
-public struct ShopReducer: Reducer {
+public struct ShopLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -56,9 +56,9 @@ public struct ShopReducer: Reducer {
 }
 
 public struct ShopView: View {
-  let store: StoreOf<ShopReducer>
+  let store: StoreOf<ShopLogic>
 
-  public init(store: StoreOf<ShopReducer>) {
+  public init(store: StoreOf<ShopLogic>) {
     self.store = store
   }
 
@@ -120,8 +120,8 @@ struct ShopViewPreviews: PreviewProvider {
         NavigationStack {
           ShopView(
             store: .init(
-              initialState: ShopReducer.State(),
-              reducer: { ShopReducer() }
+              initialState: ShopLogic.State(),
+              reducer: { ShopLogic() }
             )
           )
         }

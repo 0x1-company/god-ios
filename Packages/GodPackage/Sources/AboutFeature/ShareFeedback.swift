@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct ShareFeedbackReducer: Reducer {
+public struct ShareFeedbackLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -60,9 +60,9 @@ public struct ShareFeedbackReducer: Reducer {
 
 public struct ShareFeedback: View {
   static let heightForPresentationDetents: CGFloat = 320
-  let store: StoreOf<ShareFeedbackReducer>
+  let store: StoreOf<ShareFeedbackLogic>
 
-  public init(store: StoreOf<ShareFeedbackReducer>) {
+  public init(store: StoreOf<ShareFeedbackLogic>) {
     self.store = store
   }
 

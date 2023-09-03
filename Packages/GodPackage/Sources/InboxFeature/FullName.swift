@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct FullNameReducer: Reducer {
+public struct FullNameLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -33,9 +33,9 @@ public struct FullNameReducer: Reducer {
 }
 
 public struct FullNameView: View {
-  let store: StoreOf<FullNameReducer>
+  let store: StoreOf<FullNameLogic>
 
-  public init(store: StoreOf<FullNameReducer>) {
+  public init(store: StoreOf<FullNameLogic>) {
     self.store = store
   }
 
@@ -75,8 +75,8 @@ struct FullNameViewPreviews: PreviewProvider {
   static var previews: some View {
     FullNameView(
       store: .init(
-        initialState: FullNameReducer.State(),
-        reducer: { FullNameReducer() }
+        initialState: FullNameLogic.State(),
+        reducer: { FullNameLogic() }
       )
     )
   }

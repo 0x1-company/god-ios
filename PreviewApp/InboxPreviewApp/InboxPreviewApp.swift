@@ -7,8 +7,8 @@ struct InboxPreviewAppApp: App {
     WindowGroup {
       InboxView(
         store: .init(
-          initialState: InboxReducer.State(),
-          reducer: { InboxReducer() }._printChanges()
+          initialState: InboxLogic.State(),
+          reducer: { InboxLogic() }._printChanges()
         )
       )
     }

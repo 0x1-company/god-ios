@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 
-public struct LaunchReducer: Reducer {
+public struct LaunchLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -24,9 +24,9 @@ public struct LaunchReducer: Reducer {
 }
 
 public struct LaunchView: View {
-  let store: StoreOf<LaunchReducer>
+  let store: StoreOf<LaunchLogic>
 
-  public init(store: StoreOf<LaunchReducer>) {
+  public init(store: StoreOf<LaunchLogic>) {
     self.store = store
   }
 

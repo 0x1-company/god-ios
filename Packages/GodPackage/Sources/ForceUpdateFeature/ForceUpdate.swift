@@ -3,7 +3,7 @@ import ComposableArchitecture
 import Constants
 import SwiftUI
 
-public struct ForceUpdateReducer: Reducer {
+public struct ForceUpdateLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -29,9 +29,9 @@ public struct ForceUpdateReducer: Reducer {
 }
 
 public struct ForceUpdateView: View {
-  let store: StoreOf<ForceUpdateReducer>
+  let store: StoreOf<ForceUpdateLogic>
 
-  public init(store: StoreOf<ForceUpdateReducer>) {
+  public init(store: StoreOf<ForceUpdateLogic>) {
     self.store = store
   }
 
@@ -68,8 +68,8 @@ struct ForceUpdateViewPreviews: PreviewProvider {
   static var previews: some View {
     ForceUpdateView(
       store: .init(
-        initialState: ForceUpdateReducer.State(),
-        reducer: { ForceUpdateReducer() }
+        initialState: ForceUpdateLogic.State(),
+        reducer: { ForceUpdateLogic() }
       )
     )
   }

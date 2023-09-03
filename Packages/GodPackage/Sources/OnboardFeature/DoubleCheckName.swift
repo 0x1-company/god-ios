@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct DoubleCheckNameReducer: Reducer {
+public struct DoubleCheckNameLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -45,9 +45,9 @@ public struct DoubleCheckNameReducer: Reducer {
 }
 
 public struct DoubleCheckNameView: View {
-  let store: StoreOf<DoubleCheckNameReducer>
+  let store: StoreOf<DoubleCheckNameLogic>
 
-  public init(store: StoreOf<DoubleCheckNameReducer>) {
+  public init(store: StoreOf<DoubleCheckNameLogic>) {
     self.store = store
   }
 
@@ -73,8 +73,8 @@ struct DoubleCheckNameViewPreviews: PreviewProvider {
   static var previews: some View {
     DoubleCheckNameView(
       store: .init(
-        initialState: DoubleCheckNameReducer.State(),
-        reducer: { DoubleCheckNameReducer() }
+        initialState: DoubleCheckNameLogic.State(),
+        reducer: { DoubleCheckNameLogic() }
       )
     )
   }

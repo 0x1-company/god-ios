@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ProfileShareReducer: Reducer {
+public struct ProfileShareLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -37,9 +37,9 @@ public struct ProfileShareReducer: Reducer {
 }
 
 public struct ProfileShareView: View {
-  let store: StoreOf<ProfileShareReducer>
+  let store: StoreOf<ProfileShareLogic>
 
-  public init(store: StoreOf<ProfileShareReducer>) {
+  public init(store: StoreOf<ProfileShareLogic>) {
     self.store = store
   }
 
@@ -92,8 +92,8 @@ struct ProfileShareViewPreviews: PreviewProvider {
       ) {
         ProfileShareView(
           store: .init(
-            initialState: ProfileShareReducer.State(),
-            reducer: { ProfileShareReducer() }
+            initialState: ProfileShareLogic.State(),
+            reducer: { ProfileShareLogic() }
           )
         )
         .presentationDetents([.fraction(0.3)])

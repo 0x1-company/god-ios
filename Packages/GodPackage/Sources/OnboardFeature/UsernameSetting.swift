@@ -6,7 +6,7 @@ import GodClient
 import StringHelpers
 import SwiftUI
 
-public struct UsernameSettingReducer: Reducer {
+public struct UsernameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -71,9 +71,9 @@ public struct UsernameSettingReducer: Reducer {
 }
 
 public struct UsernameSettingView: View {
-  let store: StoreOf<UsernameSettingReducer>
+  let store: StoreOf<UsernameSettingLogic>
 
-  public init(store: StoreOf<UsernameSettingReducer>) {
+  public init(store: StoreOf<UsernameSettingLogic>) {
     self.store = store
   }
 
@@ -81,7 +81,7 @@ public struct UsernameSettingView: View {
     let username: String
     let isLoading: Bool
     let isDisabled: Bool
-    init(state: UsernameSettingReducer.State) {
+    init(state: UsernameSettingLogic.State) {
       username = state.username
       isLoading = state.isActivityIndicatorVisible
       isDisabled = !state.isValidUsername
@@ -100,7 +100,7 @@ public struct UsernameSettingView: View {
           "Username",
           text: viewStore.binding(
             get: \.username,
-            send: UsernameSettingReducer.Action.usernameChanged
+            send: UsernameSettingLogic.Action.usernameChanged
           )
         )
         .textInputAutocapitalization(.never)
@@ -130,8 +130,8 @@ struct UsernameSettingViewPreviews: PreviewProvider {
     NavigationStack {
       UsernameSettingView(
         store: .init(
-          initialState: UsernameSettingReducer.State(),
-          reducer: { UsernameSettingReducer() }
+          initialState: UsernameSettingLogic.State(),
+          reducer: { UsernameSettingLogic() }
         )
       )
     }

@@ -5,7 +5,7 @@ import Contacts
 import ContactsClient
 import SwiftUI
 
-public struct FindFriendReducer: Reducer {
+public struct FindFriendLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -40,9 +40,9 @@ public struct FindFriendReducer: Reducer {
 }
 
 public struct FindFriendView: View {
-  let store: StoreOf<FindFriendReducer>
+  let store: StoreOf<FindFriendLogic>
 
-  public init(store: StoreOf<FindFriendReducer>) {
+  public init(store: StoreOf<FindFriendLogic>) {
     self.store = store
   }
 
@@ -87,8 +87,8 @@ struct FindFriendViewPreviews: PreviewProvider {
   static var previews: some View {
     FindFriendView(
       store: .init(
-        initialState: FindFriendReducer.State(),
-        reducer: { FindFriendReducer() }
+        initialState: FindFriendLogic.State(),
+        reducer: { FindFriendLogic() }
       )
     )
   }
