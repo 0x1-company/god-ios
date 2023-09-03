@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct RootNavigationReducer: Reducer {
   public init() {}
-  
+
   public enum Tab: Equatable {
     case add
     case activity
