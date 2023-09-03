@@ -13,6 +13,7 @@ public struct InboxReducer: Reducer {
   public struct State: Equatable {
     @PresentationState var godMode: GodModeReducer.State?
     @PresentationState var fromGodTeam: FromGodTeamReducer.State?
+    @PresentationState var activatedGodMode: ActivatedGodModeReducer.State?
     
     var products: [Product] = []
 
@@ -26,6 +27,7 @@ public struct InboxReducer: Reducer {
     case productsResponse(TaskResult<[Product]>)
     case godMode(PresentationAction<GodModeReducer.Action>)
     case fromGodTeam(PresentationAction<FromGodTeamReducer.Action>)
+    case activatedGodMode(PresentationAction<ActivatedGodModeReducer.Action>)
   }
   
   @Dependency(\.store) var storeClient
@@ -62,6 +64,11 @@ public struct InboxReducer: Reducer {
       case let .productsResponse(.failure(error)):
         print(error)
         return .none
+        
+      case .godMode(.presented(.delegate(.activated))):
+        // display to ACTIVATED GOD MODE
+        state.activatedGodMode = .init()
+        return .none
 
       default:
         return .none
@@ -72,6 +79,9 @@ public struct InboxReducer: Reducer {
     }
     .ifLet(\.$fromGodTeam, action: /Action.fromGodTeam) {
       FromGodTeamReducer()
+    }
+    .ifLet(\.$activatedGodMode, action: /Action.activatedGodMode) {
+      ActivatedGodModeReducer()
     }
   }
 }
@@ -139,6 +149,15 @@ public struct InboxView: View {
         ),
         content: FromGodTeamView.init(store:)
       )
+      .sheet(
+        store: store.scope(
+          state: \.$activatedGodMode,
+          action: InboxReducer.Action.activatedGodMode
+        )
+      ) { store in
+        ActivatedGodModeView(store: store)
+          .presentationDetents([.medium])
+      }
     }
   }
 }

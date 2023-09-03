@@ -23,6 +23,11 @@ public struct GodModeReducer: Reducer {
     case verificationResponse(VerificationResult<StoreKit.Transaction>)
     case pendingResponse
     case userCancelledResponse
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case activated
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -80,8 +85,10 @@ public struct GodModeReducer: Reducer {
         }
       case let .verificationResponse(.verified(transaction)):
         /// transaction.idをserverに送って課金処理を行う
-        return .run { _ in
+        return .run { send in
           await transaction.finish()
+          await send(.delegate(.activated), animation: .default)
+          await dismiss()
         }
       case let .verificationResponse(.unverified(transaction, error)):
         print(transaction)
@@ -90,6 +97,8 @@ public struct GodModeReducer: Reducer {
       case .pendingResponse:
         return .none
       case .userCancelledResponse:
+        return .none
+      case .delegate:
         return .none
       }
     }
