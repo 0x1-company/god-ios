@@ -79,6 +79,7 @@ public struct GodModeReducer: Reducer {
           return .none
         }
       case let .verificationResponse(.verified(transaction)):
+        /// transaction.idをserverに送って課金処理を行う
         return .run { _ in
           await transaction.finish()
         }
