@@ -3,6 +3,7 @@ import SwiftUI
 
 public extension Color {
   static let godSeparator = Color(uiColor: UIColor.separator)
+  static let godGray = Color("gray", bundle: .module)
   static let godBlack = Color("black", bundle: .module)
   static let godService = Color("service", bundle: .module)
   static let godTextPrimary = Color("text-primary", bundle: .module)

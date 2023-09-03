@@ -20,6 +20,7 @@ public struct InboxReducer: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case activityButtonTapped
     case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
@@ -42,6 +43,10 @@ public struct InboxReducer: Reducer {
             )
           )
         }
+      case .activityButtonTapped:
+        state.destination = .activityDetail()
+        return .none
+
       case .fromGodTeamButtonTapped:
         state.destination = .fromGodTeam(.init())
         return .none
@@ -78,18 +83,21 @@ public struct InboxReducer: Reducer {
     public enum State: Equatable {
       case godMode(GodModeReducer.State)
       case fromGodTeam(FromGodTeamReducer.State)
+      case activityDetail(ActivityDetailReducer.State = .init())
       case activatedGodMode(ActivatedGodModeReducer.State = .init())
     }
 
     public enum Action: Equatable {
       case godMode(GodModeReducer.Action)
       case fromGodTeam(FromGodTeamReducer.Action)
+      case activityDetail(ActivityDetailReducer.Action)
       case activatedGodMode(ActivatedGodModeReducer.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.godMode, action: /Action.godMode, child: GodModeReducer.init)
       Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamReducer.init)
+      Scope(state: /State.activityDetail, action: /Action.activityDetail, child: ActivityDetailReducer.init)
       Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeReducer.init)
     }
   }
@@ -107,11 +115,13 @@ public struct InboxView: View {
       ZStack(alignment: .bottom) {
         List {
           ForEach(0 ..< 4) { _ in
-            InboxCard(title: "From a Boy", action: {})
+            InboxCard(title: "From a someone") {
+              viewStore.send(.activityButtonTapped, transaction: .animationDisable)
+            }
           }
 
           InboxCard(title: "From God Team") {
-            viewStore.send(.fromGodTeamButtonTapped)
+            viewStore.send(.fromGodTeamButtonTapped, transaction: .animationDisable)
           }
 
           Spacer()
@@ -155,6 +165,12 @@ public struct InboxView: View {
         state: /InboxReducer.Destination.State.fromGodTeam,
         action: InboxReducer.Destination.Action.fromGodTeam,
         content: FromGodTeamView.init(store:)
+      )
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        state: /InboxReducer.Destination.State.activityDetail,
+        action: InboxReducer.Destination.Action.activityDetail,
+        content: ActivityDetailView.init(store:)
       )
       .sheet(
         store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
