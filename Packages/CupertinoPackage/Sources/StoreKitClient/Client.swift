@@ -7,8 +7,8 @@ public struct StoreKitClient {
   public var purchase: @Sendable (Product) async throws -> Product.PurchaseResult
 }
 
-extension StoreKitClient {
-  public func purchase(product: Product) async throws -> Transaction {
+public extension StoreKitClient {
+  func purchase(product: Product) async throws -> Transaction {
     let result = try await product.purchase()
     switch result {
     case let .success(.verified(transaction)):
@@ -25,8 +25,8 @@ extension StoreKitClient {
   }
 }
 
-extension StoreKitClient {
-  public enum PurchaseError: Error {
+public extension StoreKitClient {
+  enum PurchaseError: Error {
     case userCancelled
     case pending
   }

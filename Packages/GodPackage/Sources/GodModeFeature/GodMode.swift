@@ -1,9 +1,9 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import StoreKit
 import StoreKitClient
+import SwiftUI
 
 public struct GodModeReducer: Reducer {
   public init() {}
@@ -24,7 +24,7 @@ public struct GodModeReducer: Reducer {
     case pendingResponse
     case userCancelledResponse
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case activated
     }
@@ -111,10 +111,10 @@ public struct GodModeView: View {
   public init(store: StoreOf<GodModeReducer>) {
     self.store = store
   }
-  
+
   struct ViewState: Equatable {
     let displayPrice: String
-    
+
     init(state: GodModeReducer.State) {
       displayPrice = state.product.displayPrice
     }
@@ -181,7 +181,7 @@ public struct GodModeView: View {
   }
 }
 
-//struct GodModeViewPreviews: PreviewProvider {
+// struct GodModeViewPreviews: PreviewProvider {
 //  static var previews: some View {
 //    GodModeView(
 //      store: .init(
@@ -192,4 +192,4 @@ public struct GodModeView: View {
 //      )
 //    )
 //  }
-//}
+// }

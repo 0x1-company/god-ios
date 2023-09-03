@@ -11,7 +11,7 @@ public struct StoreLogic: Reducer {
     switch action {
     case .appDelegate(.delegate(.didFinishLaunching)):
       enum Cancel { case id }
-      return .run(priority: .background) { send in
+      return .run(priority: .background) { _ in
         for await result in storeClient.transactionUpdates() {
           guard case let .verified(transaction) = result
           else { continue }
