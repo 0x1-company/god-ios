@@ -155,25 +155,25 @@ public struct InboxView: View {
       }
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxReducer.Destination.State.godMode,
         action: InboxReducer.Destination.Action.godMode,
         content: GodModeView.init(store:)
       )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxReducer.Destination.State.fromGodTeam,
         action: InboxReducer.Destination.Action.fromGodTeam,
         content: FromGodTeamView.init(store:)
       )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxReducer.Destination.State.activityDetail,
         action: InboxReducer.Destination.Action.activityDetail,
         content: ActivityDetailView.init(store:)
       )
       .sheet(
-        store: store.scope(state: \.$destination, action: InboxReducer.Action.destination),
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxReducer.Destination.State.activatedGodMode,
         action: InboxReducer.Destination.Action.activatedGodMode
       ) { store in
