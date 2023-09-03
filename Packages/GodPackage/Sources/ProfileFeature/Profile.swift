@@ -106,64 +106,11 @@ public struct ProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 16) {
-              Color.green
-                .frame(width: 90, height: 90)
-                .clipShape(Circle())
-
-              VStack(alignment: .leading, spacing: 16) {
-                HStack(spacing: 16) {
-                  Text("2 ")
-                    .bold()
-                    .foregroundColor(.primary)
-                    +
-                    Text("friends")
-                    .foregroundColor(.secondary)
-
-                  Text("7 ")
-                    .bold()
-                    .foregroundColor(.primary)
-                    +
-                    Text("flames")
-                    .foregroundColor(.secondary)
-                }
-
-                Button("Edit Profile") {
-                  viewStore.send(.editProfileButtonTapped)
-                }
-                .bold()
-                .foregroundColor(.secondary)
-                .frame(width: 120, height: 32)
-                .overlay(
-                  RoundedRectangle(cornerRadius: 32 / 2)
-                    .stroke(Color.secondary, lineWidth: 1)
-                )
-              }
+          if let user = viewStore.currentUser {
+            ProfileSection(user: user) {
+              viewStore.send(.editProfileButtonTapped)
             }
-            VStack(alignment: .leading, spacing: 4) {
-              Text("Tomoki Tsukiyama")
-                .bold()
-
-              Text("@tomokisun")
-            }
-            HStack(spacing: 16) {
-              HStack(spacing: 4) {
-                Image(systemName: "house.fill")
-                Text("LVAA")
-              }
-              HStack(spacing: 4) {
-                Image(systemName: "graduationcap.fill")
-                Text("9th Grade")
-              }
-            }
-            .foregroundColor(.secondary)
           }
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .padding(.horizontal, 16)
-          .padding(.bottom, 16)
-          .background(Color.godWhite)
-
           Divider()
 
           shareButtonAndCoinsSection
