@@ -1,6 +1,6 @@
 import ButtonStyles
-import ComposableArchitecture
 import Colors
+import ComposableArchitecture
 import SwiftUI
 
 public struct FullNameReducer: Reducer {
@@ -14,7 +14,7 @@ public struct FullNameReducer: Reducer {
     case onTask
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
