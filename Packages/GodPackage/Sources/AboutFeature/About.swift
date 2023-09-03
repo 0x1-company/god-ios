@@ -1,14 +1,14 @@
+import Colors
 import ComposableArchitecture
 import Constants
 import SwiftUI
-import Colors
 
 public struct AboutReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
-      @PresentationState var destination: Destination.State?
+    @PresentationState var destination: Destination.State?
     var isShareFeedbackHalfModalPresented: Bool = false
     public init() {}
   }
@@ -44,8 +44,8 @@ public struct AboutReducer: Reducer {
         return .none
 
       case .shareFeedbackButtonTapped:
-          state.destination = .shareFeedback()
-          return .none
+        state.destination = .shareFeedback()
+        return .none
 
       case .getHelpButtonTapped:
         state.confirmationDialog = .faq
@@ -57,7 +57,7 @@ public struct AboutReducer: Reducer {
       case let .confirmationDialog(.presented(action)):
         switch action {
         case .addMySchoolToMyProfile:
-            state.destination = .addMySchoolToMyProfile()
+          state.destination = .addMySchoolToMyProfile()
           return .none
         case .changeMyGrade:
           return .none
@@ -80,33 +80,34 @@ public struct AboutReducer: Reducer {
         state.destination = nil
         return .none
       case .destination:
-          return .none
+        return .none
       }
     }
     .ifLet(\.$destination, action: /Action.destination) {
-        Destination()
+      Destination()
     }
   }
-    public struct Destination: Reducer {
-      public enum State: Equatable {
-        case shareFeedback(ShareFeedbackReducer.State = .init())
-          case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.State = .init())
-      }
 
-      public enum Action: Equatable {
-        case shareFeedback(ShareFeedbackReducer.Action)
-          case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.Action)
-      }
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case shareFeedback(ShareFeedbackReducer.State = .init())
+      case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.State = .init())
+    }
 
-      public var body: some Reducer<State, Action> {
-        Scope(state: /State.shareFeedback, action: /Action.shareFeedback) {
-            ShareFeedbackReducer()
-        }
-          Scope(state: /State.addMySchoolToMyProfile, action: /Action.addMySchoolToMyProfile) {
-              AddMySchoolToMyProfileReducer()
-          }
+    public enum Action: Equatable {
+      case shareFeedback(ShareFeedbackReducer.Action)
+      case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.Action)
+    }
+
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.shareFeedback, action: /Action.shareFeedback) {
+        ShareFeedbackReducer()
+      }
+      Scope(state: /State.addMySchoolToMyProfile, action: /Action.addMySchoolToMyProfile) {
+        AddMySchoolToMyProfileReducer()
       }
     }
+  }
 }
 
 public struct AboutView: View {
@@ -142,11 +143,11 @@ public struct AboutView: View {
         Spacer()
 
         HStack(spacing: 16) {
-            Link(destination: Constants.instagramURL) {
-                Image("instagram", bundle: .module)
-                    .resizable()
-                    .frame(width: 62, height: 62)
-            }
+          Link(destination: Constants.instagramURL) {
+            Image("instagram", bundle: .module)
+              .resizable()
+              .frame(width: 62, height: 62)
+          }
           Link(destination: Constants.xURL) {
             Image("x", bundle: .module)
               .resizable()
@@ -176,26 +177,26 @@ public struct AboutView: View {
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) })
       ) { store in
-          SwitchStore(store) {
-              switch $0 {
-              case .shareFeedback:
-                  CaseLet(
-                    /AboutReducer.Destination.State.shareFeedback,
-                    action: AboutReducer.Destination.Action.shareFeedback
-                  ) { store in
-                      ShareFeedback(store: store)
-                          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
-                  }
-              case .addMySchoolToMyProfile:
-                  CaseLet(
-                    /AboutReducer.Destination.State.addMySchoolToMyProfile,
-                    action: AboutReducer.Destination.Action.addMySchoolToMyProfile
-                  ) { store in
-                      AddMySchoolToMyProfileView(store: store)
-                          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
-                  }
-              }
+        SwitchStore(store) {
+          switch $0 {
+          case .shareFeedback:
+            CaseLet(
+              /AboutReducer.Destination.State.shareFeedback,
+              action: AboutReducer.Destination.Action.shareFeedback
+            ) { store in
+              ShareFeedback(store: store)
+                .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
+            }
+          case .addMySchoolToMyProfile:
+            CaseLet(
+              /AboutReducer.Destination.State.addMySchoolToMyProfile,
+              action: AboutReducer.Destination.Action.addMySchoolToMyProfile
+            ) { store in
+              AddMySchoolToMyProfileView(store: store)
+                .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
+            }
           }
+        }
       }
     }
   }
