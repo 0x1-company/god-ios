@@ -79,6 +79,7 @@ let package = Package(
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [

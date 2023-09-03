@@ -41,6 +41,7 @@
 		B783E1752A137F3E002E782F /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = App.entitlements; path = Staging/App.entitlements; sourceTree = "<group>"; };
 		B7CCF9A12A7AF47600B64CFE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Staging/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7E273BC2AA3D06D005DC4BD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		B7E273C02AA45A33005DC4BD /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = StoreKitConfiguration.storekit; path = "/Users/tomoki_sun/development/0x1company/god-ios/App/Multiplatform/StoreKitConfiguration.storekit"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +84,7 @@
 				B783E0F92A11FFD0002E782F /* Assets.xcassets */,
 				B783E16E2A121FC6002E782F /* Info.plist */,
 				B7CCF9A12A7AF47600B64CFE /* GoogleService-Info.plist */,
+				B7E273C02AA45A33005DC4BD /* StoreKitConfiguration.storekit */,
 				B783E0FB2A11FFD0002E782F /* Preview Content */,
 			);
 			path = Multiplatform;

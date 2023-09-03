@@ -4,6 +4,8 @@ import ComposableArchitecture
 import GodModeFeature
 import LabeledButton
 import SwiftUI
+import StoreKit
+import StoreKitClient
 
 public struct InboxReducer: Reducer {
   public init() {}
@@ -11,6 +13,8 @@ public struct InboxReducer: Reducer {
   public struct State: Equatable {
     @PresentationState var godMode: GodModeReducer.State?
     @PresentationState var fromGodTeam: FromGodTeamReducer.State?
+    
+    var products: [Product] = []
 
     public init() {}
   }
@@ -19,22 +23,44 @@ public struct InboxReducer: Reducer {
     case onTask
     case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
+    case productsResponse(TaskResult<[Product]>)
     case godMode(PresentationAction<GodModeReducer.Action>)
     case fromGodTeam(PresentationAction<FromGodTeamReducer.Action>)
   }
+  
+  @Dependency(\.store) var storeClient
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        return .none
-
+        let id = storeClient.godModeDefault()
+        return .run { send in
+          await send(
+            .productsResponse(
+              TaskResult {
+                try await storeClient.products([id])
+              }
+            )
+          )
+        }
       case .fromGodTeamButtonTapped:
         state.fromGodTeam = .init()
         return .none
 
       case .seeWhoLikesYouButtonTapped:
-        state.godMode = .init()
+        let id = storeClient.godModeDefault()
+        guard let product = state.products.first(where: { $0.id == id })
+        else { return .none }
+        state.godMode = .init(product: product)
+        return .none
+
+      case let .productsResponse(.success(products)):
+        state.products = products
+        return .none
+
+      case let .productsResponse(.failure(error)):
+        print(error)
         return .none
 
       default:
@@ -74,27 +100,29 @@ public struct InboxView: View {
             .frame(height: 80)
         }
         .listStyle(.plain)
+        
+        if !viewStore.products.isEmpty {
+          ZStack(alignment: .top) {
+            Color.white.blur(radius: 1.0)
 
-        ZStack(alignment: .top) {
-          Color.white.blur(radius: 1.0)
-
-          Button {
-            viewStore.send(.seeWhoLikesYouButtonTapped)
-          } label: {
-            Label("See who likes you", systemImage: "lock.fill")
-              .frame(height: 50)
-              .frame(maxWidth: .infinity)
-              .bold()
-              .foregroundColor(.white)
-              .background(Color.black)
-              .clipShape(Capsule())
-              .padding(.horizontal, 16)
-              .padding(.top, 8)
+            Button {
+              viewStore.send(.seeWhoLikesYouButtonTapped)
+            } label: {
+              Label("See who likes you", systemImage: "lock.fill")
+                .frame(height: 50)
+                .frame(maxWidth: .infinity)
+                .bold()
+                .foregroundColor(.white)
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+            }
+            .buttonStyle(HoldDownButtonStyle())
           }
-          .buttonStyle(HoldDownButtonStyle())
+          .ignoresSafeArea()
+          .frame(height: 64)
         }
-        .ignoresSafeArea()
-        .frame(height: 64)
       }
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(

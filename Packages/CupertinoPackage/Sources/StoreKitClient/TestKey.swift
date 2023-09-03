@@ -10,6 +10,7 @@ public extension DependencyValues {
 
 extension StoreKitClient: TestDependencyKey {
   public static let testValue = Self(
+    godModeDefault: unimplemented("\(Self.self).godModeDefault"),
     addPayment: unimplemented("\(Self.self).addPayment"),
     appStoreReceiptURL: unimplemented("\(Self.self).appStoreReceiptURL", placeholder: nil),
     isAuthorizedForPayments: unimplemented(

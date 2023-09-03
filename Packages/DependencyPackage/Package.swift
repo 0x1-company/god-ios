@@ -61,6 +61,7 @@ let package = Package(
       "God",
       .product(name: "Apollo", package: "apollo-ios"),
       .product(name: "ApolloAPI", package: "apollo-ios"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PhoneNumberClient", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),

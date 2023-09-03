@@ -2,12 +2,17 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import StoreKit
+import StoreKitClient
 
 public struct GodModeReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    var product: Product
+    public init(product: Product) {
+      self.product = product
+    }
   }
 
   public enum Action: Equatable {
@@ -17,6 +22,7 @@ public struct GodModeReducer: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.store) var storeClient
 
   public var body: some Reducer<State, Action> {
     Reduce { _, action in
@@ -28,7 +34,6 @@ public struct GodModeReducer: Reducer {
         return .run { _ in
           await dismiss()
         }
-
       case .continueButtonTapped:
         return .none
       }
@@ -42,9 +47,17 @@ public struct GodModeView: View {
   public init(store: StoreOf<GodModeReducer>) {
     self.store = store
   }
+  
+  struct ViewState: Equatable {
+    let displayPrice: String
+    
+    init(state: GodModeReducer.State) {
+      displayPrice = state.product.displayPrice
+    }
+  }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { _ in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack(spacing: 24) {
         VStack(spacing: 0) {
           Text("定期課金。いつでもキャンセルできます。")
@@ -63,7 +76,7 @@ public struct GodModeView: View {
 
           GodModeFunctions()
 
-          Text("¥960/week")
+          Text("\(viewStore.displayPrice)/week")
 
           Button {
             store.send(.continueButtonTapped)
@@ -104,13 +117,15 @@ public struct GodModeView: View {
   }
 }
 
-struct GodModeViewPreviews: PreviewProvider {
-  static var previews: some View {
-    GodModeView(
-      store: .init(
-        initialState: GodModeReducer.State(),
-        reducer: { GodModeReducer() }
-      )
-    )
-  }
-}
+//struct GodModeViewPreviews: PreviewProvider {
+//  static var previews: some View {
+//    GodModeView(
+//      store: .init(
+//        initialState: GodModeReducer.State(
+//          product: Product.
+//        ),
+//        reducer: { GodModeReducer() }
+//      )
+//    )
+//  }
+//}

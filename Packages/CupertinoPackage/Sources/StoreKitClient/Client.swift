@@ -1,6 +1,7 @@
 import StoreKit
 
 public struct StoreKitClient {
+  public var godModeDefault: @Sendable () -> String
   public var addPayment: @Sendable (SKPayment) async -> Void
   public var appStoreReceiptURL: @Sendable () -> URL?
   public var isAuthorizedForPayments: @Sendable () -> Bool
