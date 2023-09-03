@@ -16,7 +16,7 @@ public struct ActivityDetailReducer: Reducer {
     case seeWhoSentItButtonTapped
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
@@ -24,10 +24,10 @@ public struct ActivityDetailReducer: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .seeWhoSentItButtonTapped:
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -54,14 +54,14 @@ public struct ActivityDetailView: View {
             Image("other", bundle: .module)
               .resizable()
               .frame(width: 80, height: 80)
-            
+
             Text("From someone\nin 11th grade")
           }
-          
+
           VStack(spacing: 20) {
             Text("Double texts with no shame")
               .bold()
-            
+
             Text("godapp.jp")
               .bold()
           }
