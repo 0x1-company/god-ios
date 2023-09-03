@@ -2,6 +2,7 @@ import Colors
 import ComposableArchitecture
 import Constants
 import SwiftUI
+import HowItWorksFeature
 
 public struct AboutReducer: Reducer {
   public init() {}
@@ -9,7 +10,6 @@ public struct AboutReducer: Reducer {
   public struct State: Equatable {
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
     @PresentationState var destination: Destination.State?
-    var isShareFeedbackHalfModalPresented: Bool = false
     public init() {}
   }
 
@@ -38,6 +38,7 @@ public struct AboutReducer: Reducer {
     Reduce { state, action in
       switch action {
       case .howItWorksButtonTapped:
+        state.destination = .howItWorks()
         return .none
 
       case .faqButtonTapped:
@@ -74,7 +75,13 @@ public struct AboutReducer: Reducer {
         case .somethingElse:
           return .none
         }
+      case .confirmationDialog(.dismiss):
+        state.confirmationDialog = nil
+        return .none
       case .confirmationDialog:
+        return .none
+      case .destination(.presented(.howItWorks(.delegate(.start)))):
+        state.destination = nil
         return .none
       case .destination(.dismiss):
         state.destination = nil
@@ -92,11 +99,13 @@ public struct AboutReducer: Reducer {
     public enum State: Equatable {
       case shareFeedback(ShareFeedbackReducer.State = .init())
       case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.State = .init())
+      case howItWorks(HowItWorksReducer.State = .init())
     }
 
     public enum Action: Equatable {
       case shareFeedback(ShareFeedbackReducer.Action)
       case addMySchoolToMyProfile(AddMySchoolToMyProfileReducer.Action)
+      case howItWorks(HowItWorksReducer.Action)
     }
 
     public var body: some Reducer<State, Action> {
@@ -105,6 +114,9 @@ public struct AboutReducer: Reducer {
       }
       Scope(state: /State.addMySchoolToMyProfile, action: /Action.addMySchoolToMyProfile) {
         AddMySchoolToMyProfileReducer()
+      }
+      Scope(state: /State.howItWorks, action: /Action.howItWorks) {
+        HowItWorksReducer()
       }
     }
   }
@@ -168,36 +180,29 @@ public struct AboutView: View {
         }
         .foregroundColor(.secondary)
       }
-      .confirmationDialog(
-        store: store.scope(
-          state: \.$confirmationDialog,
-          action: { .confirmationDialog($0) }
-        )
-      )
+      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) })
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /AboutReducer.Destination.State.shareFeedback,
+        action: AboutReducer.Destination.Action.shareFeedback
       ) { store in
-        SwitchStore(store) {
-          switch $0 {
-          case .shareFeedback:
-            CaseLet(
-              /AboutReducer.Destination.State.shareFeedback,
-              action: AboutReducer.Destination.Action.shareFeedback
-            ) { store in
-              ShareFeedback(store: store)
-                .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
-            }
-          case .addMySchoolToMyProfile:
-            CaseLet(
-              /AboutReducer.Destination.State.addMySchoolToMyProfile,
-              action: AboutReducer.Destination.Action.addMySchoolToMyProfile
-            ) { store in
-              AddMySchoolToMyProfileView(store: store)
-                .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
-            }
-          }
-        }
+        ShareFeedback(store: store)
+          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
       }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /AboutReducer.Destination.State.addMySchoolToMyProfile,
+        action: AboutReducer.Destination.Action.addMySchoolToMyProfile
+      ) { store in
+        AddMySchoolToMyProfileView(store: store)
+          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
+      }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /AboutReducer.Destination.State.howItWorks,
+        action: AboutReducer.Destination.Action.howItWorks,
+        content: HowItWorksView.init(store:)
+      )
     }
   }
 }
