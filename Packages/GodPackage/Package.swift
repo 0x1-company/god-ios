@@ -93,6 +93,7 @@ let package = Package(
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
+      .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "LaunchFeature", dependencies: [
