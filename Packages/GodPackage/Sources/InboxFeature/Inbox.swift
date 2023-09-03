@@ -3,16 +3,16 @@ import ColorHex
 import ComposableArchitecture
 import GodModeFeature
 import LabeledButton
-import SwiftUI
 import StoreKit
 import StoreKitClient
+import SwiftUI
 
 public struct InboxReducer: Reducer {
   public init() {}
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
-    
+
     var products: [Product] = []
 
     public init() {}
@@ -25,7 +25,7 @@ public struct InboxReducer: Reducer {
     case productsResponse(TaskResult<[Product]>)
     case destination(PresentationAction<Destination.Action>)
   }
-  
+
   @Dependency(\.store) var storeClient
 
   public var body: some Reducer<State, Action> {
@@ -60,7 +60,7 @@ public struct InboxReducer: Reducer {
       case let .productsResponse(.failure(error)):
         print(error)
         return .none
-        
+
       case .destination(.presented(.godMode(.delegate(.activated)))):
         state.destination = .activatedGodMode()
         return .none
@@ -73,18 +73,20 @@ public struct InboxReducer: Reducer {
       Destination()
     }
   }
-  
+
   public struct Destination: Reducer {
     public enum State: Equatable {
       case godMode(GodModeReducer.State)
       case fromGodTeam(FromGodTeamReducer.State)
       case activatedGodMode(ActivatedGodModeReducer.State = .init())
     }
+
     public enum Action: Equatable {
       case godMode(GodModeReducer.Action)
       case fromGodTeam(FromGodTeamReducer.Action)
       case activatedGodMode(ActivatedGodModeReducer.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.godMode, action: /Action.godMode, child: GodModeReducer.init)
       Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamReducer.init)
@@ -117,7 +119,7 @@ public struct InboxView: View {
             .frame(height: 80)
         }
         .listStyle(.plain)
-        
+
         if !viewStore.products.isEmpty {
           ZStack(alignment: .top) {
             Color.white.blur(radius: 1.0)

@@ -8,9 +8,9 @@ import LaunchFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
+import StoreKit
 import SwiftUI
 import TcaHelpers
-import StoreKit
 
 public struct AppReducer: Reducer {
   public init() {}
