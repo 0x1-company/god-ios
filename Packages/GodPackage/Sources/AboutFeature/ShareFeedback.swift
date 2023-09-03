@@ -1,3 +1,4 @@
+import Colors
 import ComposableArchitecture
 import SwiftUI
 
@@ -5,16 +6,18 @@ public struct ShareFeedbackReducer: Reducer {
   public init() {}
 
     public struct State: Equatable {
-        var urlToOpen: URL?
         public init() {}
     }
 
     public enum Action: Equatable {
-      case shareByEmailTapped
-      case shareByGmailTapped
-      case copyTextTapped
+      case shareByEmailButtonTapped
+      case shareByGmailButtonTapped
+      case copyTextButtonTapped
+      case closeButtonTapped
     }
 
+    @Dependency(\.dismiss) var dismiss
+    @Dependency(\.openURL) var openURL
 
     // TODO: メールあれこれ
     private static let supportEmailAddress = "support@god.com"
@@ -28,24 +31,28 @@ public struct ShareFeedbackReducer: Reducer {
     public var body: some Reducer<State, Action> {
         Reduce { _, action in
           switch action {
-          case .shareByEmailTapped:
+          case .shareByEmailButtonTapped:
               let urlString = "mailto:\(Self.supportEmailAddress)?subject=\(Self.supportEmailSubject)&body=\(Self.emailTemplateText)"
-
-              if let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) {
-                  UIApplication.shared.open(url)
-              } else {
-
+              guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+              else { return .none }
+              return .run { _ in
+                await openURL(url)
               }
               return .none
-          case .shareByGmailTapped:
+          case .shareByGmailButtonTapped:
               let urlString = "googlegmail:///co?to=\(Self.supportEmailAddress)&subject=\(Self.supportEmailSubject)&body=\(Self.emailTemplateText)"
-              if let url = URL(string: urlString) {
-                  UIApplication.shared.open(url)
+              guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+              else { return .none }
+              return .run { _ in
+                await openURL(url)
               }
-              return .none
-          case .copyTextTapped:
+          case .copyTextButtonTapped:
               UIPasteboard.general.string = Self.emailTemplateText
               return .none
+          case .closeButtonTapped:
+            return .run { _ in
+              await dismiss()
+            }
           }
         }
     }
@@ -59,8 +66,6 @@ public struct ShareFeedback: View {
     self.store = store
   }
 
-    @Environment(\.dismiss) private var dismiss
-    
     public var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(alignment: .center, spacing: 28) {
@@ -76,7 +81,7 @@ public struct ShareFeedback: View {
                 .padding(.horizontal, 60)
                 HStack(alignment: .center) {
                     Button(action: {
-                        viewStore.send(.shareByEmailTapped)
+                        viewStore.send(.shareByEmailButtonTapped)
                     }) {
                         VStack(alignment: .center, spacing: 8) {
                             RoundedRectangle(cornerRadius: 8)
@@ -88,7 +93,7 @@ public struct ShareFeedback: View {
                     }
                     Spacer()
                     Button(action: {
-                        viewStore.send(.shareByGmailTapped)
+                        viewStore.send(.shareByGmailButtonTapped)
                     }) {
                         VStack(alignment: .center, spacing: 8) {
                             RoundedRectangle(cornerRadius: 8)
@@ -100,7 +105,7 @@ public struct ShareFeedback: View {
                     }
                     Spacer()
                     Button(action: {
-                        viewStore.send(.copyTextTapped)
+                        viewStore.send(.copyTextButtonTapped)
                     }) {
                         VStack(alignment: .center, spacing: 8) {
                             RoundedRectangle(cornerRadius: 8)
@@ -113,7 +118,7 @@ public struct ShareFeedback: View {
                 }
                 .padding(.horizontal, 56)
                 Button(action: {
-                    dismiss()
+                  viewStore.send(.closeButtonTapped)
                 }, label: {
                     Text("Close")
                         .font(.body)
