@@ -111,7 +111,7 @@ public struct RootNavigationView: View {
         .tag(RootNavigationReducer.Tab.about)
       }
       .ignoresSafeArea()
-      .tabViewStyle(.page)
+      .tabViewStyle(.page(indexDisplayMode: .never))
     }
   }
 }
