@@ -29,6 +29,7 @@ public struct ProfileExternalLogic: Reducer {
       switch action {
       case .onTask:
         enum Cancel { case id }
+        state.user = .loading
         let userWhere = God.UserWhere(id: .init(stringLiteral: state.userId))
         return .run { send in
           for try await data in godClient.user(userWhere) {

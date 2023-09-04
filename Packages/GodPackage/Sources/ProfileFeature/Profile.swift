@@ -32,6 +32,7 @@ public struct ProfileLogic: Reducer {
       switch action {
       case .onTask:
         enum Cancel { case id }
+        state.user = .loading
         return .run { send in
           for try await data in godClient.currentUser() {
             await send(.currentUserResponse(.success(data)))
