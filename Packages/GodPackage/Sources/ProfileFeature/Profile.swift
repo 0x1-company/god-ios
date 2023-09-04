@@ -127,10 +127,12 @@ public struct ProfileView: View {
 
           Divider()
 
-          topFlamesSection
+          TopStarsSection()
             .padding(.bottom, 16)
-          friendsSection
-        }.background(Color.godBackgroundWhite)
+
+          FriendsSection()
+        }
+        .background(Color.godBackgroundWhite)
       }
       .listStyle(.plain)
       .navigationTitle("Profile")
@@ -155,91 +157,6 @@ public struct ProfileView: View {
         }
       }
     }
-  }
-
-  private static let mockTopFlames: [(rank: Int, questionText: String)] = [
-    (1, "Would give them your last hair tie and they’d actually give it back"),
-    (2, "Always late but worth the wait"),
-    (3, "Never saw a line they didn’t want to cut in front of"),
-  ]
-
-  private var topFlamesSection: some View {
-    VStack(alignment: .leading, spacing: 0) {
-      Text("Top Flames")
-        .font(.headline)
-        .bold()
-        .frame(height: 32)
-        .padding(.horizontal, 16)
-      Divider()
-      // TODO: ForEach
-      ForEach(Self.mockTopFlames, id: \.rank) { flame in
-        HStack(alignment: .center, spacing: 12) {
-          RoundedRectangle(cornerRadius: 4)
-            .fill(Color.blue)
-            .frame(width: 60, height: 60)
-            .overlay(
-              Circle()
-                .fill(Color.red)
-                .frame(width: 20, height: 20),
-              alignment: .bottomLeading
-            )
-
-          Text(flame.questionText)
-            .font(.body)
-            .multilineTextAlignment(.leading)
-            .lineLimit(2)
-        }
-        .frame(height: 84)
-        .padding(.horizontal, 16)
-        Divider()
-      }
-    }.background(Color.godWhite)
-  }
-
-  private static let mockFriends: [String] = [
-    "Satoya Hatanaka",
-    "Tomoki Tsukiyama",
-    "Kota Hibino",
-  ]
-  private var friendsSection: some View {
-    VStack(alignment: .leading, spacing: 0) {
-      Divider()
-      Text("Friends")
-        .font(.headline)
-        .bold()
-        .frame(height: 32)
-        .padding(.horizontal, 16)
-      Divider()
-      // TODO: ForEach
-      ForEach(Self.mockFriends, id: \.self) { friendName in
-        HStack(alignment: .center, spacing: 12) {
-          Circle()
-            .fill(Color.blue)
-            .frame(width: 48, height: 48)
-
-          Text(friendName)
-            .font(.body)
-
-          Spacer()
-
-          Button(action: {}, label: {
-            Text("ADDED")
-              .font(.body)
-              .bold()
-              .foregroundColor(Color.godTextSecondaryLight)
-              .frame(height: 32)
-              .padding(.horizontal, 12)
-              .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                  .stroke(Color.godTextSecondaryLight, lineWidth: 1)
-              )
-          })
-        }
-        .frame(height: 84)
-        .padding(.horizontal, 16)
-        Divider()
-      }
-    }.background(Color.godWhite)
   }
 }
 
