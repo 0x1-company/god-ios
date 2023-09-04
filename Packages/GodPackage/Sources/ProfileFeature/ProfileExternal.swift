@@ -61,8 +61,18 @@ public struct ProfileExternalView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("ProfileExternal")
+      ScrollView {
+        LazyVStack(alignment: .leading, spacing: 0) {
+          if let user = viewStore.user {
+            ProfileSection(
+              user: user.fragments.profileSectionFragment,
+              editProfile: nil
+            )
+          }
+          Divider()
+          
+          TopStarsSection()
+        }
       }
       .navigationTitle("Profile")
       .navigationBarTitleDisplayMode(.inline)
