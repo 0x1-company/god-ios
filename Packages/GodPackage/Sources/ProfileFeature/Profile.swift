@@ -116,7 +116,14 @@ public struct ProfileView: View {
           }
           Divider()
 
-          shareButtonAndCoinsSection
+          ShareShopSection(
+            shareAction: {
+              viewStore.send(.shareProfileButtonTapped)
+            },
+            shopAction: {
+              viewStore.send(.shopButtonTapped)
+            }
+          )
 
           Divider()
 
@@ -148,43 +155,6 @@ public struct ProfileView: View {
         }
       }
     }
-  }
-
-  private var shareButtonAndCoinsSection: some View {
-    HStack(spacing: 16) {
-      Button {
-        store.send(.shareProfileButtonTapped)
-      } label: {
-        HStack(spacing: 8) {
-          Text("Share Profile")
-            .bold()
-          Image(systemName: "square.and.arrow.up")
-        }
-        .foregroundColor(.secondary)
-        .frame(height: 52)
-        .frame(maxWidth: .infinity)
-      }
-      .overlay(
-        RoundedRectangle(cornerRadius: 52 / 2)
-          .stroke(Color.secondary, lineWidth: 1)
-      )
-      
-      Button {
-        store.send(.shopButtonTapped)
-      } label: {
-        Text("Shop")
-          .bold()
-          .foregroundColor(.secondary)
-          .frame(height: 52)
-          .frame(maxWidth: .infinity)
-      }
-      .overlay(
-        RoundedRectangle(cornerRadius: 52 / 2)
-          .stroke(Color.secondary, lineWidth: 1)
-      )
-    }
-    .frame(height: 84)
-    .padding(.horizontal, 16)
   }
 
   private static let mockTopFlames: [(rank: Int, questionText: String)] = [
