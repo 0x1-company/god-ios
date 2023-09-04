@@ -22,7 +22,7 @@ public struct AppLogic: Reducer {
 
     var appDelegate = AppDelegateLogic.State()
     var sceneDelegate = SceneDelegateLogic.State()
-    var view = View.State.navigation()
+    var view = View.State.launch()
 
     var quickActionURLs: [String: URL] = [
       "talk-to-founder": Constants.founderURL,
