@@ -1,10 +1,10 @@
 import Colors
 import ComposableArchitecture
-import ProfileEditFeature
 import God
 import GodClient
-import SwiftUI
+import ProfileEditFeature
 import ShopFeature
+import SwiftUI
 
 public struct ProfileLogic: Reducer {
   public init() {}
@@ -23,7 +23,7 @@ public struct ProfileLogic: Reducer {
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -43,14 +43,14 @@ public struct ProfileLogic: Reducer {
       case .editProfileButtonTapped:
         state.destination = .profileEdit()
         return .none
-        
+
       case .shareProfileButtonTapped:
         return .none
-        
+
       case .shopButtonTapped:
         state.destination = .shop()
         return .none
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
@@ -59,7 +59,7 @@ public struct ProfileLogic: Reducer {
         print(error)
         state.currentUser = nil
         return .none
-        
+
       case .destination(.dismiss):
         state.destination = nil
         return .none

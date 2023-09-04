@@ -9,9 +9,9 @@ public struct TopStarsSection: View {
         .bold()
         .frame(height: 32)
         .padding(.horizontal, 16)
-      
+
       Divider()
-      
+
       //      ForEach(Self.mockTopFlames, id: \.rank) { flame in
       //        HStack(alignment: .center, spacing: 12) {
       //          RoundedRectangle(cornerRadius: 4)

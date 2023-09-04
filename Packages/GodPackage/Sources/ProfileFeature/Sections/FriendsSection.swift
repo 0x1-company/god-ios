@@ -11,7 +11,7 @@ public struct FriendsSection: View {
         .bold()
         .frame(height: 32)
         .padding(.horizontal, 16)
-      
+
       Divider()
 
 //      ForEach(Self.mockFriends, id: \.self) { friendName in
