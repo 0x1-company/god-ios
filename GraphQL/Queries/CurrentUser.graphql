@@ -1,3 +1,5 @@
+# import '../fragments/ProfileSectionFragment.graphql'
+
 query CurrentUser {
   currentUser {
     id
@@ -6,11 +8,16 @@ query CurrentUser {
     username
     generation
     gender
+    friendsCount
     schoolId
     school {
       id
       name
       shortName
     }
+    wallet {
+      coinBalance
+		}
+    ...ProfileSectionFragment
   }
 }

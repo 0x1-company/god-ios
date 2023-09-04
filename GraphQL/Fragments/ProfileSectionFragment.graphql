@@ -1,0 +1,14 @@
+fragment ProfileSectionFragment on User {
+  id
+  firstName
+  lastName
+  username
+  generation
+  friendsCount
+  schoolId
+  school {
+    id
+    name
+    shortName
+  }
+}
