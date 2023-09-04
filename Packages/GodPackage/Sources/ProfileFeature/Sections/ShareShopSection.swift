@@ -5,7 +5,7 @@ import SwiftUI
 public struct ShareShopSection: View {
   let shareAction: () -> Void
   let shopAction: () -> Void
-  
+
   public init(
     shareAction: @escaping () -> Void,
     shopAction: @escaping () -> Void
@@ -13,7 +13,7 @@ public struct ShareShopSection: View {
     self.shareAction = shareAction
     self.shopAction = shopAction
   }
-  
+
   public var body: some View {
     HStack(spacing: 16) {
       Button(action: shareAction) {

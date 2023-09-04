@@ -6,19 +6,19 @@ import SwiftUI
 public struct ProfileSection: View {
   let user: God.ProfileSectionFragment
   let editProfile: (() -> Void)?
-  
+
   var friendsCount: Int {
-    return user.friendsCount ?? 0
+    user.friendsCount ?? 0
   }
-  
+
   var fullName: String {
-    return "\(user.lastName) \(user.firstName)"
+    "\(user.lastName) \(user.firstName)"
   }
-  
+
   var username: String {
-    return "@\(user.username ?? "")"
+    "@\(user.username ?? "")"
   }
-  
+
   public init(
     user: God.ProfileSectionFragment,
     editProfile: (() -> Void)?

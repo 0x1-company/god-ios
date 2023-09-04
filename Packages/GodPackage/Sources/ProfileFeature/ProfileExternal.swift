@@ -37,7 +37,7 @@ public struct ProfileExternalLogic: Reducer {
           await send(.userResponse(.failure(error)))
         }
         .cancellable(id: Cancel.id)
-        
+
       case let .userResponse(.success(data)):
         state.user = data.user
         return .none
@@ -70,7 +70,7 @@ public struct ProfileExternalView: View {
             )
           }
           Divider()
-          
+
           TopStarsSection()
         }
       }
