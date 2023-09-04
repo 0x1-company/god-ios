@@ -1,3 +1,4 @@
+import AsyncValue
 import Colors
 import ComposableArchitecture
 import God
@@ -11,7 +12,7 @@ public struct ProfileLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
-    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    var user = AsyncValue<God.CurrentUserQuery.Data.CurrentUser>.none
     public init() {}
   }
 
@@ -52,12 +53,12 @@ public struct ProfileLogic: Reducer {
         return .none
 
       case let .currentUserResponse(.success(data)):
-        state.currentUser = data.currentUser
+        state.user = .some(data.currentUser)
         return .none
 
       case let .currentUserResponse(.failure(error)):
         print(error)
-        state.currentUser = nil
+        state.user = .none
         return .none
 
       case .destination(.dismiss):
@@ -106,7 +107,7 @@ public struct ProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          if let user = viewStore.currentUser {
+          if case let .some(user) = viewStore.user {
             ProfileSection(
               user: user.fragments.profileSectionFragment,
               editProfile: {
