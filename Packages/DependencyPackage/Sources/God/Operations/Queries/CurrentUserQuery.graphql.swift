@@ -8,7 +8,8 @@ public extension God {
     public static let operationName: String = "CurrentUser"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentUser { currentUser { __typename id firstName lastName username generation gender friendsCount schoolId school { __typename id name shortName } wallet { __typename coinBalance } } }"#
+        #"query CurrentUser { currentUser { __typename id firstName lastName username generation gender friendsCount schoolId school { __typename id name shortName } wallet { __typename coinBalance } ...ProfileSection } }"#,
+        fragments: [ProfileSection.self]
       ))
 
     public init() {}
@@ -45,6 +46,7 @@ public extension God {
           .field("schoolId", String?.self),
           .field("school", School?.self),
           .field("wallet", Wallet?.self),
+          .fragment(ProfileSection.self),
         ] }
 
         /// user id
@@ -66,6 +68,13 @@ public extension God {
         public var school: School? { __data["school"] }
         /// wallet
         public var wallet: Wallet? { __data["wallet"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var profileSection: ProfileSection { _toFragment() }
+        }
 
         /// CurrentUser.School
         ///
