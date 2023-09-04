@@ -15,7 +15,7 @@ jobs:
     name: GraphQL Schema
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/cache@v3
         with:
           path: BuildTools/ApolloTool/.build
