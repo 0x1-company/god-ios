@@ -3,7 +3,7 @@ import God
 import SwiftUI
 
 public struct ProfileSection: View {
-  let user: God.CurrentUserQuery.Data.CurrentUser
+  let user: God.ProfileSectionFragment
   let editProfile: () -> Void
   
   var friendsCount: Int {
@@ -19,7 +19,7 @@ public struct ProfileSection: View {
   }
   
   public init(
-    user: God.CurrentUserQuery.Data.CurrentUser,
+    user: God.ProfileSectionFragment,
     editProfile: @escaping () -> Void
   ) {
     self.user = user

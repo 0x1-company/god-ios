@@ -1,4 +1,4 @@
-# import '../fragments/ProfileSection.graphql'
+# import '../fragments/ProfileSectionFragment.graphql'
 
 query CurrentUser {
   currentUser {
@@ -18,6 +18,6 @@ query CurrentUser {
     wallet {
       coinBalance
 		}
-    ...ProfileSection
+    ...ProfileSectionFragment
   }
 }

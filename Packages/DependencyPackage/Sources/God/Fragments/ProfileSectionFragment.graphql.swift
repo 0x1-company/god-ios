@@ -4,9 +4,9 @@
 @_exported import ApolloAPI
 
 public extension God {
-  struct ProfileSection: God.SelectionSet, Fragment {
+  struct ProfileSectionFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment ProfileSection on User { __typename id firstName lastName username generation friendsCount schoolId school { __typename id name shortName } }"#
+      #"fragment ProfileSectionFragment on User { __typename id firstName lastName username generation friendsCount schoolId school { __typename id name shortName } }"#
     }
 
     public let __data: DataDict

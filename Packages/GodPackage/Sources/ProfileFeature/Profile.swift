@@ -107,9 +107,12 @@ public struct ProfileView: View {
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
           if let user = viewStore.currentUser {
-            ProfileSection(user: user) {
-              viewStore.send(.editProfileButtonTapped)
-            }
+            ProfileSection(
+              user: user.fragments.profileSectionFragment,
+              editProfile: {
+                store.send(.editProfileButtonTapped)
+              }
+            )
           }
           Divider()
 

@@ -1,4 +1,4 @@
-fragment ProfileSection on User {
+fragment ProfileSectionFragment on User {
   id
   firstName
   lastName
