@@ -1,3 +1,4 @@
+import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
@@ -8,7 +9,7 @@ public struct ProfileExternalLogic: Reducer {
 
   public struct State: Equatable {
     var userId: String
-    var user: God.UserQuery.Data.User?
+    var user = AsyncValue<God.UserQuery.Data.User>.none
 
     public init(userId: String) {
       self.userId = userId
@@ -28,6 +29,7 @@ public struct ProfileExternalLogic: Reducer {
       switch action {
       case .onTask:
         enum Cancel { case id }
+        state.user = .loading
         let userWhere = God.UserWhere(id: .init(stringLiteral: state.userId))
         return .run { send in
           for try await data in godClient.user(userWhere) {
@@ -39,11 +41,11 @@ public struct ProfileExternalLogic: Reducer {
         .cancellable(id: Cancel.id)
 
       case let .userResponse(.success(data)):
-        state.user = data.user
+        state.user = .some(data.user)
         return .none
 
       case .userResponse(.failure):
-        state.user = nil
+        state.user = .none
         return .run { _ in
           await dismiss()
         }
@@ -63,7 +65,7 @@ public struct ProfileExternalView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          if let user = viewStore.user {
+          if case let .some(user) = viewStore.user {
             ProfileSection(
               user: user.fragments.profileSectionFragment,
               editProfile: nil

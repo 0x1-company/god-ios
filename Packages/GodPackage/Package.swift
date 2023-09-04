@@ -147,6 +147,7 @@ let package = Package(
       "ShopFeature",
       "ProfileEditFeature",
       "ProfileShareFeature",
+      .product(name: "AsyncValue", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
