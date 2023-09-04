@@ -86,6 +86,9 @@ public struct LastNameSettingLogic: Reducer {
           )
           _ = await (next, update)
         }
+      case .alert(.dismiss):
+        state.alert = nil
+        return .none
       default:
         return .none
       }
