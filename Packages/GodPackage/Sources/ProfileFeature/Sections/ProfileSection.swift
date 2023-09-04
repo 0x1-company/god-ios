@@ -1,10 +1,11 @@
+import ButtonStyles
 import Colors
 import God
 import SwiftUI
 
 public struct ProfileSection: View {
   let user: God.ProfileSectionFragment
-  let editProfile: () -> Void
+  let editProfile: (() -> Void)?
   
   var friendsCount: Int {
     return user.friendsCount ?? 0
@@ -20,7 +21,7 @@ public struct ProfileSection: View {
   
   public init(
     user: God.ProfileSectionFragment,
-    editProfile: @escaping () -> Void
+    editProfile: (() -> Void)?
   ) {
     self.user = user
     self.editProfile = editProfile
@@ -39,26 +40,28 @@ public struct ProfileSection: View {
               .bold()
               .foregroundColor(.primary)
               +
-              Text("friends")
+              Text(" friends")
               .foregroundColor(.secondary)
 
-            Text("7 ")
+            Text("7")
               .bold()
               .foregroundColor(.primary)
               +
-              Text("stars")
+              Text(" stars")
               .foregroundColor(.secondary)
           }
-          
-          Button(action: editProfile) {
-            Text("Edit Profile")
-              .bold()
-              .foregroundColor(.secondary)
-              .frame(width: 120, height: 32)
-              .overlay(
-                RoundedRectangle(cornerRadius: 32 / 2)
-                  .stroke(Color.secondary, lineWidth: 1)
-              )
+          if let editProfile {
+            Button(action: editProfile) {
+              Text("EDIT PROFILE")
+                .bold()
+                .foregroundColor(.secondary)
+                .frame(width: 120, height: 32)
+                .overlay(
+                  RoundedRectangle(cornerRadius: 32 / 2)
+                    .stroke(Color.secondary, lineWidth: 1)
+                )
+            }
+            .buttonStyle(HoldDownButtonStyle())
           }
         }
       }
@@ -68,17 +71,19 @@ public struct ProfileSection: View {
 
         Text(username)
       }
-      HStack(spacing: 16) {
-        HStack(spacing: 4) {
-          Image(systemName: "house.fill")
-          Text(user.school?.shortName ?? "")
+      if let school = user.school {
+        HStack(spacing: 16) {
+          HStack(spacing: 4) {
+            Image(systemName: "house.fill")
+            Text(school.shortName)
+          }
+          HStack(spacing: 4) {
+            Image(systemName: "graduationcap.fill")
+            Text("9th Grade")
+          }
         }
-        HStack(spacing: 4) {
-          Image(systemName: "graduationcap.fill")
-          Text("9th Grade")
-        }
+        .foregroundColor(.secondary)
       }
-      .foregroundColor(.secondary)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(.horizontal, 16)
