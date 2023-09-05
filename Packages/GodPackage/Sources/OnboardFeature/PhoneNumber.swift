@@ -110,10 +110,10 @@ public struct PhoneNumberView: View {
             .font(.title3)
 
           TextField("Phone Number", text: viewStore.$phoneNumber)
-          .font(.title)
-          .textContentType(.telephoneNumber)
-          .keyboardType(.phonePad)
-          .focused($focus)
+            .font(.title)
+            .textContentType(.telephoneNumber)
+            .keyboardType(.phonePad)
+            .focused($focus)
 
           Text("Remember - never sign up\nwith another person's phone number.")
             .multilineTextAlignment(.center)

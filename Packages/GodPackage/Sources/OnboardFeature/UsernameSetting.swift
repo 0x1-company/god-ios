@@ -45,7 +45,7 @@ public struct UsernameSettingLogic: Reducer {
             )
           )
         }
-        
+
       case .binding:
         state.isDisabled = !validateUsername(for: state.username)
         return .none
@@ -85,11 +85,11 @@ public struct UsernameSettingView: View {
           .foregroundColor(.white)
 
         TextField("Username", text: viewStore.$username)
-        .textInputAutocapitalization(.never)
-        .textContentType(.username)
-        .font(.title)
-        .foregroundColor(.white)
-        .multilineTextAlignment(.center)
+          .textInputAutocapitalization(.never)
+          .textContentType(.username)
+          .font(.title)
+          .foregroundColor(.white)
+          .multilineTextAlignment(.center)
 
         Spacer()
 

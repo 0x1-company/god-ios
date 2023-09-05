@@ -128,10 +128,10 @@ public struct LastNameSettingView: View {
           .foregroundColor(.white)
 
         TextField("Last Name", text: viewStore.$lastName)
-        .font(.title)
-        .foregroundColor(.white)
-        .multilineTextAlignment(.center)
-        .focused($focus)
+          .font(.title)
+          .foregroundColor(.white)
+          .multilineTextAlignment(.center)
+          .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts")
