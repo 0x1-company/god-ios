@@ -145,7 +145,7 @@ public struct AppView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       SwitchStore(store.scope(state: \.view, action: AppLogic.Action.view)) { initialState in
         switch initialState {
         case .launch:
