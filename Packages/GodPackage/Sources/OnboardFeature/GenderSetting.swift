@@ -66,15 +66,15 @@ public struct GenderSettingView: View {
             .foregroundColor(Color.white)
 
           HStack(spacing: 24) {
-            GenderChoiceView("Boy") {
+            GenderChoiceView(gender: .male) {
               viewStore.send(.genderButtonTapped(.male))
             }
-            GenderChoiceView("Girl") {
+            GenderChoiceView(gender: .female) {
               viewStore.send(.genderButtonTapped(.female))
             }
           }
           HStack(spacing: 24) {
-            GenderChoiceView("Non-binary") {
+            GenderChoiceView(gender: .other) {
               viewStore.send(.genderButtonTapped(.other))
             }
           }
