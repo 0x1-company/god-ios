@@ -1,4 +1,3 @@
-import AnimationDisableTransaction
 import ButtonStyles
 import Colors
 import ComposableArchitecture
@@ -94,7 +93,7 @@ public struct ActivityDetailView: View {
         .foregroundColor(.godWhite)
         .multilineTextAlignment(.center)
         .onTapGesture {
-          viewStore.send(.closeButtonTapped, transaction: .animationDisable)
+          viewStore.send(.closeButtonTapped)
         }
 
         Button {
