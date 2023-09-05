@@ -8,16 +8,16 @@ import UserDefaultsClient
 
 public struct PhoneNumberLogic: Reducer {
   public struct State: Equatable {
-    var phoneNumber = ""
-    var isValidPhoneNumber = false
+    @BindingState var phoneNumber = ""
+    var isDisabled = true
     var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
     case nextButtonTapped
-    case changePhoneNumber(String)
+    case binding(BindingAction<State>)
     case verifyResponse(TaskResult<String?>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
@@ -35,55 +35,56 @@ public struct PhoneNumberLogic: Reducer {
   @Dependency(\.phoneNumberClient) var phoneNumberClient
   @Dependency(\.firebaseAuth.verifyPhoneNumber) var verifyPhoneNumber
 
-  public func reduce(into state: inout State, action: Action) -> Effect<Action> {
-    switch action {
-    case .nextButtonTapped:
-      guard phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
-      else { return .none }
-      state.isActivityIndicatorVisible = true
-      return .run { [state] send in
-        await userDefaults.setPhoneNumber(state.phoneNumber)
-        let format = try phoneNumberClient.parseFormat(state.phoneNumber)
-        await send(
-          .verifyResponse(
-            TaskResult {
-              try await verifyPhoneNumber(format)
-            }
+  public var body: some Reducer<State, Action> {
+    BindingReducer()
+    Reduce { state, action in
+      switch action {
+      case .nextButtonTapped:
+        guard phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
+        else { return .none }
+        state.isActivityIndicatorVisible = true
+        return .run { [state] send in
+          await userDefaults.setPhoneNumber(state.phoneNumber)
+          let format = try phoneNumberClient.parseFormat(state.phoneNumber)
+          await send(
+            .verifyResponse(
+              TaskResult {
+                try await verifyPhoneNumber(format)
+              }
+            )
           )
-        )
-      }
-    case let .changePhoneNumber(number):
-      state.phoneNumber = number
-      state.isValidPhoneNumber = phoneNumberClient.isValidPhoneNumber(number)
-      return .none
-
-    case let .verifyResponse(.success(id)):
-      state.isActivityIndicatorVisible = false
-      return .run { send in
-        await userDefaults.setVerificationId(id ?? "")
-        await send(.delegate(.nextScreen), animation: .default)
-      }
-    case let .verifyResponse(.failure(error)):
-      state.isActivityIndicatorVisible = false
-      state.alert = AlertState {
-        TextState("Error")
-      } actions: {
-        ButtonState(action: .send(.confirmOkay, animation: .default)) {
-          TextState("OK")
         }
-      } message: {
-        TextState(error.localizedDescription)
+      case .binding:
+        state.isDisabled = !phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
+        return .none
+      case let .verifyResponse(.success(id)):
+        state.isActivityIndicatorVisible = false
+        return .run { send in
+          await userDefaults.setVerificationId(id ?? "")
+          await send(.delegate(.nextScreen), animation: .default)
+        }
+      case let .verifyResponse(.failure(error)):
+        state.isActivityIndicatorVisible = false
+        state.alert = AlertState {
+          TextState("Error")
+        } actions: {
+          ButtonState(action: .send(.confirmOkay, animation: .default)) {
+            TextState("OK")
+          }
+        } message: {
+          TextState(error.localizedDescription)
+        }
+        return .none
+
+      case .alert(.presented(.confirmOkay)):
+        return .none
+
+      case .alert:
+        return .none
+
+      case .delegate:
+        return .none
       }
-      return .none
-
-    case .alert(.presented(.confirmOkay)):
-      return .none
-
-    case .alert:
-      return .none
-
-    case .delegate:
-      return .none
     }
   }
 }
@@ -96,19 +97,8 @@ public struct PhoneNumberView: View {
     self.store = store
   }
 
-  struct ViewState: Equatable {
-    var phoneNumber: String
-    var isDisabled: Bool
-    var isLoading: Bool
-    init(state: PhoneNumberLogic.State) {
-      phoneNumber = state.phoneNumber
-      isLoading = state.isActivityIndicatorVisible
-      isDisabled = !state.isValidPhoneNumber
-    }
-  }
-
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
         Color.godService
           .ignoresSafeArea()
@@ -119,13 +109,7 @@ public struct PhoneNumberView: View {
             .bold()
             .font(.title3)
 
-          TextField(
-            "Phone Number",
-            text: viewStore.binding(
-              get: \.phoneNumber,
-              send: PhoneNumberLogic.Action.changePhoneNumber
-            )
-          )
+          TextField("Phone Number", text: viewStore.$phoneNumber)
           .font(.title)
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
@@ -137,7 +121,7 @@ public struct PhoneNumberView: View {
           Spacer()
 
           NextButton(
-            isLoading: viewStore.isLoading,
+            isLoading: viewStore.isActivityIndicatorVisible,
             isDisabled: viewStore.isDisabled
           ) {
             viewStore.send(.nextButtonTapped)
