@@ -12,7 +12,7 @@ public struct FirestoreLogic: Reducer {
   ) -> Effect<AppLogic.Action> {
     switch action {
     case .appDelegate(.delegate(.didFinishLaunching)):
-      enum CancelID { case effect }
+      enum Cancel { case id }
       return .run { send in
         for try await config in try await firestore.config() {
           await send(.configResponse(.success(config)), animation: .default)
@@ -20,7 +20,7 @@ public struct FirestoreLogic: Reducer {
       } catch: { error, send in
         await send(.configResponse(.failure(error)), animation: .default)
       }
-      .cancellable(id: CancelID.effect)
+      .cancellable(id: Cancel.id)
 
     case let .configResponse(.success(config)):
       let shortVersion = bundleShortVersion()

@@ -10,7 +10,7 @@ public struct AuthLogic: Reducer {
   ) -> Effect<AppLogic.Action> {
     switch action {
     case .appDelegate(.delegate(.didFinishLaunching)):
-      enum CancelID { case effect }
+      enum Cancel { case id }
       return .run { send in
         for await user in addStateDidChangeListener() {
           await send(.authUserResponse(.success(user)))
@@ -18,7 +18,7 @@ public struct AuthLogic: Reducer {
       } catch: { error, send in
         await send(.authUserResponse(.failure(error)))
       }
-      .cancellable(id: CancelID.effect)
+      .cancellable(id: Cancel.id)
 
     case let .authUserResponse(.success(authUser)):
       state.account.authUser = authUser
