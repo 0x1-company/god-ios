@@ -92,10 +92,7 @@ let package = Package(
       "RevealFeature",
       "GodModeFeature",
       "ShareScreenshotFeature",
-      .product(name: "Colors", package: "UIComponentPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "LaunchFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
@@ -156,6 +153,7 @@ let package = Package(
     .target(name: "RevealFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [
