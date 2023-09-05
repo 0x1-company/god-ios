@@ -178,7 +178,7 @@ public struct InboxView: View {
         action: InboxLogic.Destination.Action.activatedGodMode
       ) { store in
         ActivatedGodModeView(store: store)
-          .presentationDetents([.medium])
+          .presentationDetents([.fraction(0.4)])
       }
     }
   }
