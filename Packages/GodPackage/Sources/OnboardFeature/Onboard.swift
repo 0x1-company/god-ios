@@ -29,8 +29,6 @@ public struct OnboardLogic: Reducer {
     case onTask
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
 
-    case genderChanged(God.Gender)
-
     public enum Alert: Equatable {
       case confirmOkay
     }

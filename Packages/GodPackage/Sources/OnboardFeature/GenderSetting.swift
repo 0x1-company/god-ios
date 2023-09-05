@@ -1,6 +1,7 @@
 import Colors
 import ComposableArchitecture
 import God
+import GodClient
 import SwiftUI
 
 public struct GenderSettingLogic: Reducer {
@@ -14,13 +15,16 @@ public struct GenderSettingLogic: Reducer {
   public enum Action: Equatable {
     case infoButtonTapped
     case genderButtonTapped(God.Gender)
+    case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case help(PresentationAction<GenderHelpLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextScreen(God.Gender)
+      case nextScreen
     }
   }
+  
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -30,10 +34,27 @@ public struct GenderSettingLogic: Reducer {
         return .none
 
       case let .genderButtonTapped(gender):
+        let input = God.UpdateUserProfileInput(gender: .init(gender))
         return .run { send in
-          await send(.delegate(.nextScreen(gender)))
+          await send(
+            .updateUserProfileResponse(
+              TaskResult {
+                try await godClient.updateUserProfile(input)
+              }
+            )
+          )
         }
+      case .updateUserProfileResponse(.success):
+        return .send(.delegate(.nextScreen))
 
+      case let .updateUserProfileResponse(.failure(error)):
+        print(error)
+        return .none
+
+      case .help(.dismiss):
+        state.help = nil
+        return .none
+        
       case .help:
         return .none
 
@@ -66,15 +87,15 @@ public struct GenderSettingView: View {
             .foregroundColor(Color.white)
 
           HStack(spacing: 24) {
-            GenderChoiceView("Boy") {
+            GenderChoiceView(gender: .male) {
               viewStore.send(.genderButtonTapped(.male))
             }
-            GenderChoiceView("Girl") {
+            GenderChoiceView(gender: .female) {
               viewStore.send(.genderButtonTapped(.female))
             }
           }
           HStack(spacing: 24) {
-            GenderChoiceView("Non-binary") {
+            GenderChoiceView(gender: .other) {
               viewStore.send(.genderButtonTapped(.other))
             }
           }
