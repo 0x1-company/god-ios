@@ -10,16 +10,15 @@ public struct UsernameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var username = ""
+    @BindingState var username = ""
     var isDisabled = true
-    var isValidUsername = false
     var isActivityIndicatorVisible = false
     public init() {}
   }
 
-  public enum Action: Equatable {
-    case usernameChanged(String)
+  public enum Action: Equatable, BindableAction {
     case nextButtonTapped
+    case binding(BindingAction<State>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case delegate(Delegate)
 
@@ -31,13 +30,9 @@ public struct UsernameSettingLogic: Reducer {
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Reduce { state, action in
       switch action {
-      case let .usernameChanged(username):
-        state.username = username
-        state.isValidUsername = validateUsername(for: username)
-        return .none
-
       case .nextButtonTapped:
         state.isActivityIndicatorVisible = true
         let input = God.UpdateUsernameInput(username: state.username)
@@ -50,6 +45,10 @@ public struct UsernameSettingLogic: Reducer {
             )
           )
         }
+        
+      case .binding:
+        state.isDisabled = !validateUsername(for: state.username)
+        return .none
       case .updateUsernameResponse(.success):
         state.isActivityIndicatorVisible = false
         return .send(.delegate(.nextScreen), animation: .default)
@@ -77,32 +76,15 @@ public struct UsernameSettingView: View {
     self.store = store
   }
 
-  struct ViewState: Equatable {
-    let username: String
-    let isLoading: Bool
-    let isDisabled: Bool
-    init(state: UsernameSettingLogic.State) {
-      username = state.username
-      isLoading = state.isActivityIndicatorVisible
-      isDisabled = !state.isValidUsername
-    }
-  }
-
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
         Text("Choose a username")
           .bold()
           .foregroundColor(.white)
 
-        TextField(
-          "Username",
-          text: viewStore.binding(
-            get: \.username,
-            send: UsernameSettingLogic.Action.usernameChanged
-          )
-        )
+        TextField("Username", text: viewStore.$username)
         .textInputAutocapitalization(.never)
         .textContentType(.username)
         .font(.title)
@@ -112,7 +94,7 @@ public struct UsernameSettingView: View {
         Spacer()
 
         NextButton(
-          isLoading: viewStore.isLoading,
+          isLoading: viewStore.isActivityIndicatorVisible,
           isDisabled: viewStore.isDisabled
         ) {
           viewStore.send(.nextButtonTapped)
