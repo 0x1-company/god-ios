@@ -1,9 +1,9 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import StoreKit
 import StoreKitClient
+import SwiftUI
 
 public struct RevealLogic: Reducer {
   public init() {}
@@ -21,7 +21,7 @@ public struct RevealLogic: Reducer {
     case pendingResponse
     case userCancelledResponse
   }
-  
+
   @Dependency(\.store) var storeClient
 
   public var body: some ReducerOf<Self> {
@@ -55,7 +55,7 @@ public struct RevealLogic: Reducer {
           await send(.purchaseError(purchaseError))
         }
         .cancellable(id: Cancel.id)
-        
+
       case let .purchaseError(error):
         switch error {
         case .invalidQuantity:
@@ -80,7 +80,7 @@ public struct RevealLogic: Reducer {
       case let .verificationResponse(.verified(transaction)):
         state.isActivityIndicatorVisible = false
         /// transaction.idをserverに送って課金処理を行う
-        return .run { send in
+        return .run { _ in
           await transaction.finish()
         }
       case let .verificationResponse(.unverified(transaction, error)):
