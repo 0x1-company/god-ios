@@ -23,7 +23,7 @@ public struct GenderSettingLogic: Reducer {
       case nextScreen
     }
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -54,7 +54,7 @@ public struct GenderSettingLogic: Reducer {
       case .help(.dismiss):
         state.help = nil
         return .none
-        
+
       case .help:
         return .none
 
