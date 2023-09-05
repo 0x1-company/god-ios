@@ -14,7 +14,7 @@ public struct ActivatedGodModeLogic: Reducer {
     case onTask
     case okayButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
