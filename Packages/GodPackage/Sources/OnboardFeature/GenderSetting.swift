@@ -15,11 +15,12 @@ public struct GenderSettingLogic: Reducer {
   public enum Action: Equatable {
     case infoButtonTapped
     case genderButtonTapped(God.Gender)
+    case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case help(PresentationAction<GenderHelpLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case nextScreen(God.Gender)
+      case nextScreen
     }
   }
   
@@ -33,9 +34,22 @@ public struct GenderSettingLogic: Reducer {
         return .none
 
       case let .genderButtonTapped(gender):
+        let input = God.UpdateUserProfileInput(gender: .init(gender))
         return .run { send in
-          await send(.delegate(.nextScreen(gender)))
+          await send(
+            .updateUserProfileResponse(
+              TaskResult {
+                try await godClient.updateUserProfile(input)
+              }
+            )
+          )
         }
+      case .updateUserProfileResponse(.success):
+        return .send(.delegate(.nextScreen))
+
+      case let .updateUserProfileResponse(.failure(error)):
+        print(error)
+        return .none
 
       case .help(.dismiss):
         state.help = nil

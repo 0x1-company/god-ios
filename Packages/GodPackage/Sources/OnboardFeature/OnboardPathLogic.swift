@@ -69,9 +69,9 @@ public struct OnboardPathLogic: Reducer {
         state.path.append(.genderSetting())
         return .none
 
-      case let .genderSetting(.delegate(.nextScreen(gender))):
+      case .genderSetting(.delegate(.nextScreen)):
         state.path.append(.profilePhotoSetting())
-        return .send(.genderChanged(gender))
+        return .none
 
       case .profilePhotoSetting(.delegate(.nextScreen)):
         state.path.append(.addFriends())
