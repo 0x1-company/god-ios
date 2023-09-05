@@ -15,16 +15,17 @@ public struct FirstNameSettingLogic: Reducer {
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameLogic.State()
     @PresentationState var alert: AlertState<Action.Alert>?
-    var firstName = ""
+    @BindingState var firstName = ""
+    var isDisabled = true
     var isImport = false
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
     case onTask
-    case firstNameChanged(String)
     case nextButtonTapped
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case binding(BindingAction<State>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
     case doubleCheckName(DoubleCheckNameLogic.Action)
@@ -43,6 +44,7 @@ public struct FirstNameSettingLogic: Reducer {
   @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameLogic()
     }
@@ -57,11 +59,6 @@ public struct FirstNameSettingLogic: Reducer {
         else { return .none }
         state.firstName = transformedFirstName
         state.isImport = true
-        return .none
-
-      case let .firstNameChanged(firstName):
-        state.firstName = firstName
-        state.isImport = false
         return .none
 
       case .nextButtonTapped:
@@ -87,9 +84,15 @@ public struct FirstNameSettingLogic: Reducer {
           )
           _ = await (next, update)
         }
-      case .alert(.dismiss):
+      case .binding:
+        state.isImport = false
+        state.isDisabled = state.firstName.isEmpty
+        return .none
+
+      case .alert(.presented(.confirmOkay)):
         state.alert = nil
         return .none
+
       default:
         return .none
       }
@@ -119,36 +122,18 @@ public struct FirstNameSettingView: View {
     self.store = store
   }
 
-  struct ViewState: Equatable {
-    let firstName: String
-    let isDisabled: Bool
-    let isImport: Bool
-
-    init(state: FirstNameSettingLogic.State) {
-      firstName = state.firstName
-      isDisabled = state.firstName.isEmpty
-      isImport = state.isImport
-    }
-  }
-
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
         Text("What's your first name?")
           .bold()
           .foregroundColor(.godWhite)
-        TextField(
-          "First Name",
-          text: viewStore.binding(
-            get: \.firstName,
-            send: FirstNameSettingLogic.Action.firstNameChanged
-          )
-        )
-        .font(.title)
-        .foregroundColor(.godWhite)
-        .multilineTextAlignment(.center)
-        .focused($focus)
+        TextField("First Name", text: viewStore.$firstName)
+          .font(.title)
+          .foregroundColor(.godWhite)
+          .multilineTextAlignment(.center)
+          .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts")

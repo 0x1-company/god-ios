@@ -14,15 +14,16 @@ public struct LastNameSettingLogic: Reducer {
   public struct State: Equatable {
     var doubleCheckName = DoubleCheckNameLogic.State()
     @PresentationState var alert: AlertState<Action.Alert>?
-    var lastName = ""
+    @BindingState var lastName = ""
+    var isDisabled = true
     var isImport = false
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
     case onTask
-    case lastNameChanged(String)
     case nextButtonTapped
+    case binding(BindingAction<State>)
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
@@ -42,6 +43,7 @@ public struct LastNameSettingLogic: Reducer {
   @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameLogic()
     }
@@ -56,11 +58,6 @@ public struct LastNameSettingLogic: Reducer {
         else { return .none }
         state.lastName = transformedLastName
         state.isImport = true
-        return .none
-
-      case let .lastNameChanged(lastName):
-        state.lastName = lastName
-        state.isImport = false
         return .none
 
       case .nextButtonTapped:
@@ -86,6 +83,10 @@ public struct LastNameSettingLogic: Reducer {
           )
           _ = await (next, update)
         }
+      case .binding:
+        state.isDisabled = !state.lastName.isEmpty
+        state.isImport = false
+        return .none
       case .alert(.dismiss):
         state.alert = nil
         return .none
@@ -118,32 +119,15 @@ public struct LastNameSettingView: View {
     self.store = store
   }
 
-  struct ViewState: Equatable {
-    let lastName: String
-    let isDisabled: Bool
-    let isImport: Bool
-
-    init(state: LastNameSettingLogic.State) {
-      lastName = state.lastName
-      isDisabled = state.lastName.isEmpty
-      isImport = state.isImport
-    }
-  }
-
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
         Text("What's your last name?")
           .bold()
           .foregroundColor(.white)
-        TextField(
-          "Last Name",
-          text: viewStore.binding(
-            get: \.lastName,
-            send: LastNameSettingLogic.Action.lastNameChanged
-          )
-        )
+
+        TextField("Last Name", text: viewStore.$lastName)
         .font(.title)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)

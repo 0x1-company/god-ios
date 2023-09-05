@@ -9,7 +9,8 @@ public struct WelcomeLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
-    var selection = "- -"
+    @BindingState var selection = "- -"
+    var ageText = "Enter your age"
     let ages: [String] = {
       var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
@@ -19,10 +20,10 @@ public struct WelcomeLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
     case loginButtonTapped
     case getStartedButtonTapped
-    case ageChanged(String)
+    case binding(BindingAction<State>)
     case alert(PresentationAction<Alert>)
 
     public enum Alert: Equatable {
@@ -31,15 +32,16 @@ public struct WelcomeLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Reduce { state, action in
       switch action {
       case .loginButtonTapped:
         return .none
       case .getStartedButtonTapped:
         return .none
-      case let .ageChanged(selection):
-        state.selection = selection
-        if Array(0 ... 12).map(String.init).contains(selection) {
+      case .binding:
+        state.ageText = state.selection == "- -" ? "Enter your age" : state.selection
+        if Array(0 ... 12).map(String.init).contains(state.selection) {
           state.alert = .init(
             title: {
               TextState("Sorry")
@@ -69,24 +71,12 @@ public struct WelcomeLogic: Reducer {
 public struct WelcomeView: View {
   let store: StoreOf<WelcomeLogic>
 
-  struct ViewState: Equatable {
-    let ages: [String]
-    let ageText: String
-    let selection: String
-
-    init(state: WelcomeLogic.State) {
-      ages = state.ages
-      ageText = state.selection == "- -" ? "Enter your age" : state.selection
-      selection = state.selection
-    }
-  }
-
   public init(store: StoreOf<WelcomeLogic>) {
     self.store = store
   }
 
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
         LottieView(animation: LottieAnimation.named("onboarding", bundle: .module))
@@ -123,14 +113,7 @@ public struct WelcomeView: View {
             .foregroundColor(Color.godService)
             .bold()
 
-          Picker(
-            "",
-            selection: viewStore.binding(
-              get: \.selection,
-              send: WelcomeLogic.Action.ageChanged
-            )
-            .animation(.default)
-          ) {
+          Picker("", selection: viewStore.$selection) {
             ForEach(viewStore.ages, id: \.self) { value in
               Text(value).tag(value)
             }

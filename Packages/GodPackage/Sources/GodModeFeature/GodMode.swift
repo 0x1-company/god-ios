@@ -112,16 +112,8 @@ public struct GodModeView: View {
     self.store = store
   }
 
-  struct ViewState: Equatable {
-    let displayPrice: String
-
-    init(state: GodModeLogic.State) {
-      displayPrice = state.product.displayPrice
-    }
-  }
-
   public var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 24) {
         VStack(spacing: 0) {
           Text("定期課金。いつでもキャンセルできます。")
@@ -140,7 +132,7 @@ public struct GodModeView: View {
 
           GodModeFunctions()
 
-          Text("\(viewStore.displayPrice)/week")
+          Text("\(viewStore.product.displayPrice)/week")
 
           Button {
             store.send(.continueButtonTapped)
