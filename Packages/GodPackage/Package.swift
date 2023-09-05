@@ -29,6 +29,7 @@ let package = Package(
     .library(name: "ProfileEditFeature", targets: ["ProfileEditFeature"]),
     .library(name: "ProfileFeature", targets: ["ProfileFeature"]),
     .library(name: "ProfileShareFeature", targets: ["ProfileShareFeature"]),
+    .library(name: "RevealFeature", targets: ["RevealFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
     .library(name: "ShopFeature", targets: ["ShopFeature"]),
   ],
@@ -88,6 +89,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "InboxFeature", dependencies: [
+      "RevealFeature",
       "GodModeFeature",
       "ShareScreenshotFeature",
       .product(name: "Colors", package: "UIComponentPackage"),
@@ -149,6 +151,11 @@ let package = Package(
       .product(name: "AsyncValue", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "RevealFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [
