@@ -2,6 +2,7 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import RevealFeature
 
 public struct ActivityDetailLogic: Reducer {
   public init() {}

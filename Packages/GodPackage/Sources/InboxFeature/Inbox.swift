@@ -32,7 +32,7 @@ public struct InboxLogic: Reducer {
     Reduce { state, action in
       switch action {
       case .onTask:
-        let id = storeClient.godModeDefault()
+        let id = storeClient.godModeId()
         return .run { send in
           await send(
             .productsResponse(
@@ -51,7 +51,7 @@ public struct InboxLogic: Reducer {
         return .none
 
       case .seeWhoLikesYouButtonTapped:
-        let id = storeClient.godModeDefault()
+        let id = storeClient.godModeId()
         guard let product = state.products.first(where: { $0.id == id })
         else { return .none }
         state.destination = .godMode(.init(product: product))

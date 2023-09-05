@@ -10,7 +10,8 @@ public extension DependencyValues {
 
 extension StoreKitClient: TestDependencyKey {
   public static let testValue = Self(
-    godModeDefault: unimplemented("\(Self.self).godModeDefault"),
+    godModeId: unimplemented("\(Self.self).godModeId"),
+    revealId: unimplemented("\(Self.self).revealId"),
     transactionUpdates: unimplemented("\(Self.self).transactionUpdates"),
     products: unimplemented("\(Self.self).products"),
     purchase: unimplemented("\(Self.self).purchase")
