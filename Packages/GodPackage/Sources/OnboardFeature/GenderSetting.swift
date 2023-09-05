@@ -1,6 +1,7 @@
 import Colors
 import ComposableArchitecture
 import God
+import GodClient
 import SwiftUI
 
 public struct GenderSettingLogic: Reducer {
@@ -21,6 +22,8 @@ public struct GenderSettingLogic: Reducer {
       case nextScreen(God.Gender)
     }
   }
+  
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -34,6 +37,10 @@ public struct GenderSettingLogic: Reducer {
           await send(.delegate(.nextScreen(gender)))
         }
 
+      case .help(.dismiss):
+        state.help = nil
+        return .none
+        
       case .help:
         return .none
 
