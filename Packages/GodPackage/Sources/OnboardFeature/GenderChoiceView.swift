@@ -5,7 +5,7 @@ import SwiftUI
 public struct GenderChoiceView: View {
   let gender: God.Gender
   let action: () -> Void
-  
+
   var textGender: String {
     switch gender {
     case .female:
@@ -16,7 +16,7 @@ public struct GenderChoiceView: View {
       return "その他"
     }
   }
-  
+
   var imageNameGender: String {
     switch gender {
     case .female:
