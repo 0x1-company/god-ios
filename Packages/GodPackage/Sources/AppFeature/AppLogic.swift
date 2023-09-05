@@ -35,7 +35,6 @@ public struct AppLogic: Reducer {
       var isForceUpdate = false
       var isMaintenance = false
       var onboardCongrats = false
-      var overlayHidden = false
     }
   }
 
@@ -47,7 +46,6 @@ public struct AppLogic: Reducer {
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
-    case overlayHidden
   }
 
   @Dependency(\.mainQueue) var mainQueue
@@ -58,17 +56,6 @@ public struct AppLogic: Reducer {
       case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
         state.account.onboardCongrats = true
         return .none
-
-      case .appDelegate(.delegate(.didFinishLaunching)):
-        return .run { send in
-          try await mainQueue.sleep(for: .seconds(3))
-          await send(.overlayHidden, animation: .default)
-        }
-
-      case .overlayHidden:
-        state.account.overlayHidden = true
-        return .none
-
       default:
         return .none
       }
@@ -191,12 +178,6 @@ public struct AppView: View {
             action: AppLogic.View.Action.maintenance,
             then: MaintenanceView.init(store:)
           )
-        }
-      }
-      .overlay {
-        if !viewStore.account.overlayHidden {
-          Color.godBlack
-            .ignoresSafeArea()
         }
       }
     }
