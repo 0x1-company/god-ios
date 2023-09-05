@@ -14,6 +14,7 @@ graph TD;
     GodFeature-->PollFeature;
     GodFeature-->CashOutFeature;
     GodFeature-->PlayAgainFeature;
+    InboxFeature-->RevealFeature;
     InboxFeature-->GodModeFeature;
     InboxFeature-->ShareScreenshotFeature;
     NavigationFeature-->AboutFeature;
