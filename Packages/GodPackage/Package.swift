@@ -90,6 +90,7 @@ let package = Package(
     .target(name: "InboxFeature", dependencies: [
       "GodModeFeature",
       "ShareScreenshotFeature",
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
