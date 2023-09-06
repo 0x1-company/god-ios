@@ -28,7 +28,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.14.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.6.7"),
-    .package(url: "https://github.com/apollographql/apollo-ios", from: "1.4.0"),
+    .package(url: "https://github.com/apollographql/apollo-ios", from: "1.5.0"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
