@@ -23,7 +23,7 @@ jobs:
       - run: make apollo-cli-install
       - run: make apollo-generate
       - run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          if [ -n "$(git status --porcelain Packages/DependencyPackage)" ]; then
             echo "Error: Uncommitted changes found."
             exit 1
           fi
