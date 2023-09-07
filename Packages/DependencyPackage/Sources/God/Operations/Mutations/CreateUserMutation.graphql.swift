@@ -28,7 +28,7 @@ public extension God {
         .field("createUser", CreateUser.self, arguments: ["input": .variable("input")]),
       ] }
 
-      /// create a user
+      /// ユーザー作成
       public var createUser: CreateUser { __data["createUser"] }
 
       /// CreateUser

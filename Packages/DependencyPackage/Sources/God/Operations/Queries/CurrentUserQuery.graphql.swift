@@ -23,7 +23,7 @@ public extension God {
         .field("currentUser", CurrentUser.self),
       ] }
 
-      /// get current user
+      /// ログイン中ユーザーを取得
       public var currentUser: CurrentUser { __data["currentUser"] }
 
       /// CurrentUser
@@ -61,10 +61,10 @@ public extension God {
         public var generation: Int? { __data["generation"] }
         /// gender
         public var gender: GraphQLEnum<God.Gender> { __data["gender"] }
-        /// friends count
+        /// フレンド数
         public var friendsCount: Int? { __data["friendsCount"] }
         public var schoolId: String? { __data["schoolId"] }
-        /// school to which the user belongs
+        /// 所属している学校
         public var school: School? { __data["school"] }
         /// wallet
         public var wallet: Wallet? { __data["wallet"] }

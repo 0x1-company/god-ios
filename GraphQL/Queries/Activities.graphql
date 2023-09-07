@@ -1,0 +1,26 @@
+query Activities($after: String) {
+  listActivities(first: 20, after: $after) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        createdAt
+        question {
+          id
+          text {
+            ja
+          }
+        }
+        user {
+          displayName {
+            ja
+          }
+        }
+      }
+    }
+  }
+}
