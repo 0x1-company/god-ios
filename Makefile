@@ -14,6 +14,9 @@ install-template: # Install template
 	@swift build -c release --package-path ./BuildTools/XCTemplateInstallerTool --product XCTemplateInstaller
 	./BuildTools/XCTemplateInstallerTool/.build/release/XCTemplateInstaller --xctemplate-path XCTemplates/TCA.xctemplate
 
+gql-schema:
+	@cp ../godapp.jp/apps/god-server/schema.gql ./GraphQL/schema.graphqls
+
 apollo-cli-install:
 	@swift package --package-path ./BuildTools/ApolloTool --allow-writing-to-package-directory apollo-cli-install
 
