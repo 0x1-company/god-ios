@@ -1,8 +1,9 @@
+# import '../fragments/NextPaginationFragment'
+
 query Activities($after: String) {
   listActivities(first: 20, after: $after) {
     pageInfo {
-      hasNextPage
-      endCursor
+      ...NextPaginationFragment
     }
     edges {
       cursor

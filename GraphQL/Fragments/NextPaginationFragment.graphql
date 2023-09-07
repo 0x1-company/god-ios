@@ -1,0 +1,4 @@
+fragment NextPaginationFragment on PageInfo {
+  hasNextPage
+  endCursor
+}

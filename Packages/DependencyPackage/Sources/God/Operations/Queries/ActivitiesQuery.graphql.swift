@@ -8,7 +8,8 @@ public extension God {
     public static let operationName: String = "Activities"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Activities($after: String) { listActivities(first: 20, after: $after) { __typename pageInfo { __typename hasNextPage endCursor } edges { __typename cursor node { __typename id createdAt question { __typename id text { __typename ja } } user { __typename displayName { __typename ja } } } } } }"#
+        #"query Activities($after: String) { listActivities(first: 20, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id text { __typename ja } } user { __typename displayName { __typename ja } } } } } }"#,
+        fragments: [NextPaginationFragment.self]
       ))
 
     public var after: GraphQLNullable<String>
@@ -61,14 +62,20 @@ public extension God {
           public static var __parentType: ApolloAPI.ParentType { God.Objects.PageInfo }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
-            .field("hasNextPage", Bool.self),
-            .field("endCursor", String?.self),
+            .fragment(NextPaginationFragment.self),
           ] }
 
           /// 次のページがあるかどうか
           public var hasNextPage: Bool { __data["hasNextPage"] }
           /// 最後のedgeのカーソル
           public var endCursor: String? { __data["endCursor"] }
+
+          public struct Fragments: FragmentContainer {
+            public let __data: DataDict
+            public init(_dataDict: DataDict) { __data = _dataDict }
+
+            public var nextPaginationFragment: NextPaginationFragment { _toFragment() }
+          }
         }
 
         /// ListActivities.Edge
