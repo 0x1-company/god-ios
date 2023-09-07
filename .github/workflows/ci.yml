@@ -33,4 +33,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: make bootstrap
-      - run: xcodebuild test -workspace .github/package.xcworkspace -scheme StringHelpersTests -destination platform=${{ env.PLATFORM_IOS }}
+      - run: xcodebuild test -workspace .github/package.xcworkspace -scheme StringHelpersTests -destination platform="${{ env.PLATFORM_IOS }}"
