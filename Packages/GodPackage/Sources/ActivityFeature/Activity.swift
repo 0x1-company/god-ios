@@ -17,7 +17,7 @@ public struct ActivityLogic: Reducer {
     case onTask
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
   }
-  
+
   @Dependency(\.godClient.activities) var activitiesStream
 
   public var body: some Reducer<State, Action> {
