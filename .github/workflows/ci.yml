@@ -25,7 +25,7 @@ jobs:
         with:
           path: SourcePackages
           key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
-      - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
+      - run: xcodebuild -workspace God.xcworkspace -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
       - run: xcodebuild -workspace God.xcworkspace -scheme "App (Staging project)" build -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
 
   test:
