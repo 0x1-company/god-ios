@@ -37,4 +37,4 @@ jobs:
         with:
           path: SourcePackages
           key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
-      - run: xcodebuild test -workspace God.xcworkspace -scheme StringHelpersTests -destination platform="${{ env.PLATFORM_IOS }}"
+      - run: xcodebuild test -workspace God.xcworkspace -scheme StringHelpersTests -destination platform="${{ env.PLATFORM_IOS }}" -clonedSourcePackagesDirPath SourcePackages
