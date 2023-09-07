@@ -28,7 +28,7 @@ public extension God {
         .field("createUserBlock", CreateUserBlock?.self, arguments: ["input": .variable("input")]),
       ] }
 
-      /// block a user
+      /// ブロックする
       public var createUserBlock: CreateUserBlock? { __data["createUserBlock"] }
 
       /// CreateUserBlock

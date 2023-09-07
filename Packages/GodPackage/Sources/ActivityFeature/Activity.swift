@@ -1,21 +1,48 @@
+import AsyncValue
 import ComposableArchitecture
+import God
+import GodClient
 import SwiftUI
 
 public struct ActivityLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var pagination = AsyncValue<God.NextPaginationFragment>.none
+    var edges: [God.ActivitiesQuery.Data.ListActivities.Edge] = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
   }
+  
+  @Dependency(\.godClient.activities) var activitiesStream
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .onTask:
+        enum Cancel { case id }
+        state.pagination = .loading
+        return .run { send in
+          for try await data in activitiesStream(nil) {
+            await send(.activitiesResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.activitiesResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.id)
+
+      case let .activitiesResponse(.success(data)):
+        state.edges = data.listActivities.edges
+        state.pagination = .some(data.listActivities.pageInfo.fragments.nextPaginationFragment)
+        return .none
+
+      case .activitiesResponse(.failure):
+        state.edges = []
+        state.pagination = .none
         return .none
       }
     }
@@ -32,7 +59,7 @@ public struct ActivityView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
-        ForEach(0 ..< 100, id: \.self) { _ in
+        ForEach(viewStore.edges, id: \.cursor) { edge in
           HStack(alignment: .top, spacing: 16) {
             Color.red
               .frame(width: 44, height: 44)
@@ -40,12 +67,11 @@ public struct ActivityView: View {
 
             VStack(alignment: .leading, spacing: 4) {
               HStack(spacing: 0) {
-                Text("Satoya Hatanaka")
+                Text(edge.node.user.displayName.ja)
                   .bold()
-                Text(" received")
               }
-              Text("Harvard would be lucky to have them as a student")
-              Text("From a boy in 9th grade")
+              Text(edge.node.question.text.ja)
+              Text("3年生の女子より")
                 .foregroundColor(.secondary)
             }
 

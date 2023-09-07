@@ -28,7 +28,7 @@ public extension God {
         .field("updateUsername", UpdateUsername.self, arguments: ["input": .variable("input")]),
       ] }
 
-      /// update a username
+      /// Usernameのアップデート
       public var updateUsername: UpdateUsername { __data["updateUsername"] }
 
       /// UpdateUsername

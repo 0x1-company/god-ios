@@ -28,6 +28,7 @@ public extension God {
         .field("createUserHide", CreateUserHide.self, arguments: ["input": .variable("input")]),
       ] }
 
+      /// 非表示にする
       public var createUserHide: CreateUserHide { __data["createUserHide"] }
 
       /// CreateUserHide

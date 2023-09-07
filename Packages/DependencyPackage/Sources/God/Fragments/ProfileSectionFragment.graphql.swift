@@ -35,10 +35,10 @@ public extension God {
     public var username: String? { __data["username"] }
     /// 年代
     public var generation: Int? { __data["generation"] }
-    /// friends count
+    /// フレンド数
     public var friendsCount: Int? { __data["friendsCount"] }
     public var schoolId: String? { __data["schoolId"] }
-    /// school to which the user belongs
+    /// 所属している学校
     public var school: School? { __data["school"] }
 
     /// School

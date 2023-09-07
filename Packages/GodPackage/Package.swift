@@ -46,6 +46,8 @@ let package = Package(
       .product(name: "Constants", package: "DependencyPackage"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
+      .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "AsyncValue", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AddFeature", dependencies: [

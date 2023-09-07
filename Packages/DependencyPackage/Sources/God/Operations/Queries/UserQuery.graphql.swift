@@ -29,7 +29,7 @@ public extension God {
         .field("user", User.self, arguments: ["where": .variable("where")]),
       ] }
 
-      /// get user
+      /// ユーザーを取得
       public var user: User { __data["user"] }
 
       /// User
@@ -60,11 +60,11 @@ public extension God {
         /// username
         public var username: String? { __data["username"] }
         public var schoolId: String? { __data["schoolId"] }
-        /// school to which the user belongs
+        /// 所属している学校
         public var school: School? { __data["school"] }
         /// 年代
         public var generation: Int? { __data["generation"] }
-        /// friends count
+        /// フレンド数
         public var friendsCount: Int? { __data["friendsCount"] }
 
         public struct Fragments: FragmentContainer {

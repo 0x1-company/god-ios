@@ -9,6 +9,7 @@ type Activity {
   id: ID!
   question: Question!
   questionId: String!
+  user: User!
 
   """アクティビティの対象"""
   userId: String!
@@ -30,11 +31,32 @@ input ApproveFriendRequestInput {
 }
 
 type Choice {
-  """その選択肢に対応するユーザID"""
-  id: ID!
-
   """表示する名前"""
   text: String!
+
+  """その選択肢に対応するユーザID"""
+  userId: ID!
+}
+
+type ChoiceGroup {
+  """選択肢の一覧"""
+  choices: [Choice!]!
+
+  """改ざん検知用のハッシュ"""
+  signature: Signature!
+}
+
+input ChoiceGroupInput {
+  choices: [ChoiceInput!]!
+  signature: SignatureInput!
+}
+
+input ChoiceInput {
+  """表示する名前"""
+  text: String!
+
+  """その選択肢に対応するユーザID"""
+  userId: ID!
 }
 
 input ContactInput {
@@ -71,6 +93,8 @@ input CreateUserInput {
 }
 
 input CreateVoteInput {
+  """実際に投票するときに使った選択肢"""
+  choiceGroup: ChoiceGroupInput!
   pollQuestionId: String!
 
   """投票された人のID"""
@@ -171,39 +195,40 @@ type Mutation {
     contacts: [ContactInput!]!
   ): Boolean!
 
-  """create a firebase registration token"""
+  """FirebaseのRegistrationTokenを作成する"""
   createFirebaseRegistrationToken(input: CreateFirebaseRegistrationTokenInput!): FirebaseRegistrationToken!
-  createFirebaseUser(phoneNumber: String!): String!
 
   """フレンドリクエスト送信"""
   createFriendRequest(input: CreateFriendRequestInput!): Friend!
 
-  """create a user"""
+  """ユーザー作成"""
   createUser(input: CreateUserInput!): User!
 
-  """block a user"""
+  """ブロックする"""
   createUserBlock(input: CreateUserBlockInput!): UserBlock
+
+  """非表示にする"""
   createUserHide(input: CreateUserHideInput!): UserHide!
 
   """投票する"""
   createVote(input: CreateVoteInput!): Vote!
   purchase(input: PurchaseInput!): Boolean!
 
-  """既読にする"""
+  """Activityを既読にする"""
   readActivity(activityId: String!): Boolean!
 
-  """フロックをリセットする"""
+  """ブロックをリセットする"""
   resetUserBlock: Boolean!
 
-  """リセットする"""
+  """非表示をリセットする"""
   resetUserHide: Boolean!
   revealFullName(input: RevealFullNameInput!): String!
   revealFullNameByPurchase(input: RevealFullNameInput!): String!
 
-  """update a user profile"""
+  """ユーザープロフィールのアップデート"""
   updateUserProfile(input: UpdateUserProfileInput!): User!
 
-  """update a username"""
+  """Usernameのアップデート"""
   updateUsername(input: UpdateUsernameInput!): User!
 }
 
@@ -235,7 +260,7 @@ type Poll {
 
 type PollQuestion {
   """選択肢"""
-  choices: [Choice!]!
+  choiceGroups: [ChoiceGroup!]!
 
   """ID"""
   id: ID!
@@ -251,38 +276,37 @@ input PurchaseInput {
 
   """Store Item ID. item IDじゃないので注意"""
   storeItemId: String!
+
+  """対象ユーザ"""
+  targetUserId: String
 }
 
 type Query {
-  """get current user"""
+  """ログイン中ユーザーを取得"""
   currentUser: User!
 
-  """list all friend requests"""
+  """フレンドリクエスト一覧"""
   friendRequests(after: String, first: Int!): FriendConnection!
 
-  """list all friends"""
+  """フレンドの一覧"""
   friends(after: String, first: Int!): UserConnection!
 
-  """list all friends of friends"""
+  """フレンドのフレンド一覧"""
   friendsOfFriends(after: String, first: Int!): UserConnection!
-  getFirebaseUser(phoneNumber: String!): String!
 
-  """activityを一覧で取得する"""
+  """フレンドのActivityを一覧で取得する"""
   listActivities(after: String, first: Int!): ActivityConnection!
 
-  """自分に対するactivityを一覧で取得する"""
+  """自分に対するActivityを一覧で取得する"""
   listInboxActivities(after: String, first: Int!): InboxActivityConnection!
 
   """持っているアイテム一覧"""
   listUserItems(after: String, first: Int!): UserItemConnection!
 
-  """get poll"""
+  """Pollを取得"""
   poll: Poll!
 
-  """get question"""
-  question(id: String!): Question!
-
-  """get schools"""
+  """スクール一覧"""
   schools(after: String, first: Int!): SchoolConnection!
 
   """ストアのすべての商品を取得する"""
@@ -291,14 +315,11 @@ type Query {
   """投票数が多い順に質問を最大5個まで取得する"""
   topFlames(first: Float!, username: String!): [Question!]!
 
-  """get user"""
+  """ユーザーを取得"""
   user(where: UserWhere!): User!
 
-  """get users by schoolId"""
+  """指定した学校に所属しているユーザー一覧"""
   usersBySchoolId(after: String, first: Int!, schoolId: String!): UserConnection!
-
-  """get me"""
-  verifyToken: String!
 
   """ユーザー名で指定したユーザーが投票された質問を最大5個まで降順で取得する"""
   votedQuestions(
@@ -330,7 +351,7 @@ type School {
   """学校名（略称）"""
   shortName: String!
 
-  """get users of school count"""
+  """スクールに所属しているユーザー数"""
   usersCount: Int!
 }
 
@@ -342,6 +363,14 @@ type SchoolConnection {
 type SchoolEdge {
   cursor: String!
   node: School!
+}
+
+type Signature {
+  digest: String!
+}
+
+input SignatureInput {
+  digest: String!
 }
 
 type Store {
@@ -397,13 +426,16 @@ input UpdateUsernameInput {
 }
 
 type User {
+  """表示名"""
+  displayName: LocalizableString!
+
   """firebase uid"""
   firebaseUid: String!
 
   """first name"""
   firstName: String!
 
-  """friends count"""
+  """フレンド数"""
   friendsCount: Int
 
   """gender"""
@@ -418,10 +450,10 @@ type User {
   """last name"""
   lastName: String!
 
-  """mutual friends count"""
+  """共通のフレンド数"""
   mutualFriendsCount: Int
 
-  """school to which the user belongs"""
+  """所属している学校"""
   school: School
   schoolId: String
 

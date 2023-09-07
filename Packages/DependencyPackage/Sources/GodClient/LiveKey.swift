@@ -45,6 +45,10 @@ public extension GodClient {
       store: {
         let query = God.StoreQuery()
         return apolloClient.watch(query: query)
+      },
+      activities: {
+        let query = God.ActivitiesQuery(after: $0 ?? .null)
+        return apolloClient.watch(query: query)
       }
     )
   }
