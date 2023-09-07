@@ -27,3 +27,10 @@ jobs:
           key: ${{ runner.os }}-xcworkspace-${{ hashFiles('God.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - run: xcodebuild -resolvePackageDependencies -scheme "App (Staging project)" -clonedSourcePackagesDirPath SourcePackages
       - run: xcodebuild -workspace God.xcworkspace -scheme "App (Staging project)" build -sdk iphonesimulator -clonedSourcePackagesDirPath SourcePackages
+
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make bootstrap
+      - run: xcodebuild test -workspace .github/package.xcworkspace -scheme StringHelpersTests -destination platform=${{ env.PLATFORM_IOS }}
