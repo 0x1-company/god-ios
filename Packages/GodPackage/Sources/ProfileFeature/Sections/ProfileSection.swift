@@ -11,10 +11,6 @@ public struct ProfileSection: View {
     user.friendsCount ?? 0
   }
 
-  var fullName: String {
-    "\(user.lastName) \(user.firstName)"
-  }
-
   var username: String {
     "@\(user.username ?? "")"
   }
@@ -66,7 +62,7 @@ public struct ProfileSection: View {
         }
       }
       VStack(alignment: .leading, spacing: 4) {
-        Text(fullName)
+        Text(user.displayName.ja)
           .bold()
 
         Text(username)

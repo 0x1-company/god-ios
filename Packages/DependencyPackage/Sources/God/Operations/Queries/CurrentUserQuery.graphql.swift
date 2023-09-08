@@ -68,6 +68,8 @@ public extension God {
         public var school: School? { __data["school"] }
         /// wallet
         public var wallet: Wallet? { __data["wallet"] }
+        /// 表示名
+        public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
