@@ -9,19 +9,22 @@ public struct InvitationsLeftLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var contacts: [CNContact] = []
+    var invitations: IdentifiedArrayOf<InvitationCardLogic.State> = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
     case contactResponse(TaskResult<CNContact>)
+    case invitations(id: InvitationCardLogic.State.ID, action: InvitationCardLogic.Action)
   }
 
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
 
-  enum Cancel { case id }
+  enum Cancel {
+    case enumerateContacts
+  }
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -40,18 +43,33 @@ public struct InvitationsLeftLogic: Reducer {
         } catch: { error, send in
           await send(.contactResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.enumerateContacts)
 
       case let .contactResponse(.success(contact)):
-        if state.contacts.first(where: { $0.identifier == contact.identifier }) == nil {
-          state.contacts.append(contact)
+        if state.invitations.count >= 10 {
+          Task.cancel(id: Cancel.enumerateContacts)
+          return .none
         }
+        state.invitations.insert(
+          InvitationCardLogic.State(
+            id: contact.identifier,
+            familyName: contact.familyName,
+            givenName: contact.givenName
+          ),
+          at: 0
+        )
         return .none
 
       case let .contactResponse(.failure(error)):
         print(error)
         return .none
+        
+      case .invitations:
+        return .none
       }
+    }
+    .forEach(\.invitations, action: /Action.invitations) {
+      InvitationCardLogic()
     }
   }
 }
@@ -66,49 +84,13 @@ public struct InvitationsLeftView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
-        HStack {
-          Text("INVITATIONS LEFT")
-            .bold()
-            .frame(maxWidth: .infinity, alignment: .leading)
-          Text("10/10")
-        }
-        .frame(height: 34)
-        .padding(.horizontal, 16)
-        .foregroundColor(.secondary)
-        .background(Color(uiColor: .quaternarySystemFill))
+        FriendHeader(title: "INVITATIONS LEFT")
 
-        Divider()
-
-        ForEach(viewStore.contacts, id: \.identifier) { contact in
-          HStack(spacing: 16) {
-            Color.red
-              .frame(width: 42, height: 42)
-              .clipShape(Circle())
-
-            VStack(alignment: .leading, spacing: 4) {
-              Text("\(contact.familyName) \(contact.givenName)")
-              Text("29 friends on God")
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Button {} label: {
-              Text("INVITE")
-                .bold()
-                .frame(width: 84, height: 34)
-                .foregroundColor(.godService)
-                .overlay(
-                  RoundedRectangle(cornerRadius: 34 / 2)
-                    .stroke(Color.godService, lineWidth: 1)
-                )
-            }
-            .buttonStyle(HoldDownButtonStyle())
-          }
-          .frame(height: 76)
-          .padding(.horizontal, 16)
-        }
+        ForEachStore(
+          store.scope(state: \.invitations, action: InvitationsLeftLogic.Action.invitations),
+          content: InvitationCardView.init(store:)
+        )
       }
-      .navigationTitle("InvitationsLeft")
-      .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
     }
   }

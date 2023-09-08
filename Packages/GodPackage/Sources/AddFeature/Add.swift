@@ -14,20 +14,27 @@ public struct AddLogic: Reducer {
     @BindingState var searchQuery = ""
 
     var invitationsLeft = InvitationsLeftLogic.State()
+    var friendRequests = FriendRequestsLogic.State()
+    
+    var friendsOfFriends: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case refreshable
     case contactsReEnableButtonTapped
     case seeMoreFriendsOfFriendsButtonTapped
     case seeMoreFromSchoolButtonTapped
     case binding(BindingAction<State>)
     case destination(PresentationAction<Destination.Action>)
     case invitationsLeft(InvitationsLeftLogic.Action)
+    case friendRequests(FriendRequestsLogic.Action)
+    case friendsOfFriends(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
 
   @Dependency(\.openURL) var openURL
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.application.openSettingsURLString) var openSettingsURLString
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
@@ -36,11 +43,18 @@ public struct AddLogic: Reducer {
     Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
       InvitationsLeftLogic()
     }
+    Scope(state: \.friendRequests, action: /Action.friendRequests) {
+      FriendRequestsLogic()
+    }
     Reduce { state, action in
       switch action {
       case .onTask:
         return .none
-
+        
+      case .refreshable:
+        return .run { _ in
+          try await mainQueue.sleep(for: .seconds(3))
+        }
       case .contactsReEnableButtonTapped:
         return .run { _ in
           let settingsURLString = await openSettingsURLString()
@@ -64,6 +78,12 @@ public struct AddLogic: Reducer {
 
       case .invitationsLeft:
         return .none
+        
+      case .friendRequests:
+        return .none
+        
+      case .friendsOfFriends:
+        return .none
       }
     }
     Reduce { state, _ in
@@ -72,6 +92,9 @@ public struct AddLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+    .forEach(\.friendsOfFriends, action: /Action.friendsOfFriends) {
+      FriendRequestCardLogic()
     }
   }
 
@@ -106,21 +129,55 @@ public struct AddView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollView {
-        VStack(spacing: 0) {
-          if viewStore.contactsReEnableCardVisible {
-            ContactsReEnableCard {
-              viewStore.send(.contactsReEnableButtonTapped)
+      VStack(spacing: 0) {
+        if viewStore.contactsReEnableCardVisible {
+          ContactsReEnableCard {
+            viewStore.send(.contactsReEnableButtonTapped)
+          }
+        }
+        SearchField(text: viewStore.$searchQuery)
+        Divider()
+        
+        ScrollView {
+          LazyVStack(spacing: 0) {
+            InvitationsLeftView(
+              store: store.scope(
+                state: \.invitationsLeft,
+                action: AddLogic.Action.invitationsLeft
+              )
+            )
+            FriendRequestsView(
+              store: store.scope(
+                state: \.friendRequests,
+                action: AddLogic.Action.friendRequests
+              )
+            )
+            VStack(spacing: 0) {
+              FriendHeader(title: "FRIENDS OF FRIENDS")
+              ForEachStore(
+                store.scope(state: \.friendsOfFriends, action: AddLogic.Action.friendsOfFriends),
+                content: FriendRequestCardView.init(store:)
+              )
+              Button("See 19 more") {
+                viewStore.send(.seeMoreFriendsOfFriendsButtonTapped)
+              }
+              .buttonStyle(SeeMoreButtonStyle())
+            }
+            VStack(spacing: 0) {
+              FriendHeader(title: "FROM SCHOOL")
+              ForEachStore(
+                store.scope(state: \.friendsOfFriends, action: AddLogic.Action.friendsOfFriends),
+                content: FriendRequestCardView.init(store:)
+              )
+              Button("See 471 more") {
+                viewStore.send(.seeMoreFromSchoolButtonTapped)
+              }
+              .buttonStyle(SeeMoreButtonStyle())
             }
           }
-          SearchField(text: viewStore.$searchQuery)
-          Divider()
-
-          InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
         }
+        .refreshable { await viewStore.send(.refreshable).finish() }
       }
-      .navigationTitle("Add")
-      .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) })
