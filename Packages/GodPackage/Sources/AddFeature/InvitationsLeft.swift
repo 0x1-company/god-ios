@@ -21,7 +21,9 @@ public struct InvitationsLeftLogic: Reducer {
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
 
-  enum Cancel { case id }
+  enum Cancel {
+    case enumerateContacts
+  }
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -40,9 +42,13 @@ public struct InvitationsLeftLogic: Reducer {
         } catch: { error, send in
           await send(.contactResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.enumerateContacts)
 
       case let .contactResponse(.success(contact)):
+        if state.contacts.count >= 10 {
+          Task.cancel(id: Cancel.enumerateContacts)
+          return .none
+        }
         if state.contacts.first(where: { $0.identifier == contact.identifier }) == nil {
           state.contacts.append(contact)
         }
@@ -107,8 +113,6 @@ public struct InvitationsLeftView: View {
           .padding(.horizontal, 16)
         }
       }
-      .navigationTitle("InvitationsLeft")
-      .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
     }
   }
