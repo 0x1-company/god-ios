@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "how-it-works-boy.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
