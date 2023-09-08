@@ -1,3 +1,4 @@
+import ButtonStyles
 import SwiftUI
 
 struct IconButton: View {
@@ -29,9 +30,10 @@ struct IconButton: View {
             .clipped()
         }
         .padding(.horizontal, 16)
+        .background(Color.white)
+        .clipShape(Capsule())
+        .shadow(color: .black.opacity(0.1), radius: 10)
     }
-    .background(Color.white)
-    .clipShape(Capsule())
-    .shadow(color: .black.opacity(0.1), radius: 10)
+    .buttonStyle(HoldDownButtonStyle())
   }
 }

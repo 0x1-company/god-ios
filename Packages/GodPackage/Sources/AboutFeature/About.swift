@@ -133,7 +133,7 @@ public struct AboutView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 32) {
         VStack(alignment: .center, spacing: 24) {
-          IconButton("How It Works", name: "") {
+          IconButton("How It Works", name: "woman-teacher") {
             viewStore.send(.howItWorksButtonTapped)
           }
           IconButton("FAQ", name: "clipboard") {
