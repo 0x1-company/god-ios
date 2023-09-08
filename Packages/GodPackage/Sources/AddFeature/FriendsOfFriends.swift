@@ -6,6 +6,7 @@ public struct FriendsOfFriendsLogic: Reducer {
 
   public struct State: Equatable {
     @BindingState var searchable = ""
+    var requests: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
 
@@ -13,6 +14,7 @@ public struct FriendsOfFriendsLogic: Reducer {
     case onTask
     case closeButtonTapped
     case binding(BindingAction<State>)
+    case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -31,7 +33,13 @@ public struct FriendsOfFriendsLogic: Reducer {
 
       case .binding:
         return .none
+        
+      case .requests:
+        return .none
       }
+    }
+    .forEach(\.requests, action: /Action.requests) {
+      FriendRequestCardLogic()
     }
   }
 }
@@ -45,9 +53,10 @@ public struct FriendsOfFriendsView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List(0 ..< 100) { _ in
-        FriendAddCard()
-      }
+      ForEachStore(
+        store.scope(state: \.requests, action: FriendsOfFriendsLogic.Action.requests),
+        content: FriendRequestCardView.init(store:)
+      )
       .listStyle(.plain)
       .navigationTitle("Friends of Friends")
       .navigationBarTitleDisplayMode(.inline)

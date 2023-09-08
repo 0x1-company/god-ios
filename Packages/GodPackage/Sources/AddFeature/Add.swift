@@ -15,6 +15,8 @@ public struct AddLogic: Reducer {
 
     var invitationsLeft = InvitationsLeftLogic.State()
     var friendRequests = FriendRequestsLogic.State()
+    
+    var friendsOfFriends: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
 
@@ -28,6 +30,7 @@ public struct AddLogic: Reducer {
     case destination(PresentationAction<Destination.Action>)
     case invitationsLeft(InvitationsLeftLogic.Action)
     case friendRequests(FriendRequestsLogic.Action)
+    case friendsOfFriends(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
 
   @Dependency(\.openURL) var openURL
@@ -78,6 +81,9 @@ public struct AddLogic: Reducer {
         
       case .friendRequests:
         return .none
+        
+      case .friendsOfFriends:
+        return .none
       }
     }
     Reduce { state, _ in
@@ -86,6 +92,9 @@ public struct AddLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+    .forEach(\.friendsOfFriends, action: /Action.friendsOfFriends) {
+      FriendRequestCardLogic()
     }
   }
 
@@ -143,6 +152,28 @@ public struct AddView: View {
                 action: AddLogic.Action.friendRequests
               )
             )
+            VStack(spacing: 0) {
+              FriendHeader(title: "FRIENDS OF FRIENDS")
+              ForEachStore(
+                store.scope(state: \.friendsOfFriends, action: AddLogic.Action.friendsOfFriends),
+                content: FriendRequestCardView.init(store:)
+              )
+              Button("See 19 more") {
+                viewStore.send(.seeMoreFriendsOfFriendsButtonTapped)
+              }
+              .buttonStyle(SeeMoreButtonStyle())
+            }
+            VStack(spacing: 0) {
+              FriendHeader(title: "FROM SCHOOL")
+              ForEachStore(
+                store.scope(state: \.friendsOfFriends, action: AddLogic.Action.friendsOfFriends),
+                content: FriendRequestCardView.init(store:)
+              )
+              Button("See 471 more") {
+                viewStore.send(.seeMoreFriendsOfFriendsButtonTapped)
+              }
+              .buttonStyle(SeeMoreButtonStyle())
+            }
           }
         }
         .refreshable { await viewStore.send(.refreshable).finish() }
