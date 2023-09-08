@@ -38,9 +38,9 @@ public extension God {
       case "UserHide": return God.Objects.UserHide
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
+      case "LocalizableString": return God.Objects.LocalizableString
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem
-      case "LocalizableString": return God.Objects.LocalizableString
       case "ActivityConnection": return God.Objects.ActivityConnection
       case "PageInfo": return God.Objects.PageInfo
       case "ActivityEdge": return God.Objects.ActivityEdge

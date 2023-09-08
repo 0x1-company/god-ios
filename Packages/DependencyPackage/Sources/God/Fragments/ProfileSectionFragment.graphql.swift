@@ -6,7 +6,7 @@
 public extension God {
   struct ProfileSectionFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment ProfileSectionFragment on User { __typename id firstName lastName username generation friendsCount schoolId school { __typename id name shortName } }"#
+      #"fragment ProfileSectionFragment on User { __typename id displayName { __typename ja } username generation friendsCount schoolId school { __typename id name shortName } }"#
     }
 
     public let __data: DataDict
@@ -16,8 +16,7 @@ public extension God {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("id", God.ID.self),
-      .field("firstName", String.self),
-      .field("lastName", String.self),
+      .field("displayName", DisplayName.self),
       .field("username", String?.self),
       .field("generation", Int?.self),
       .field("friendsCount", Int?.self),
@@ -27,10 +26,8 @@ public extension God {
 
     /// user id
     public var id: God.ID { __data["id"] }
-    /// first name
-    public var firstName: String { __data["firstName"] }
-    /// last name
-    public var lastName: String { __data["lastName"] }
+    /// 表示名
+    public var displayName: DisplayName { __data["displayName"] }
     /// username
     public var username: String? { __data["username"] }
     /// 年代
@@ -40,6 +37,23 @@ public extension God {
     public var schoolId: String? { __data["schoolId"] }
     /// 所属している学校
     public var school: School? { __data["school"] }
+
+    /// DisplayName
+    ///
+    /// Parent Type: `LocalizableString`
+    public struct DisplayName: God.SelectionSet {
+      public let __data: DataDict
+      public init(_dataDict: DataDict) { __data = _dataDict }
+
+      public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
+      public static var __selections: [ApolloAPI.Selection] { [
+        .field("__typename", String.self),
+        .field("ja", String.self),
+      ] }
+
+      /// 日本語
+      public var ja: String { __data["ja"] }
+    }
 
     /// School
     ///

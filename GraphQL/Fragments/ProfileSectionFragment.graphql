@@ -1,7 +1,8 @@
 fragment ProfileSectionFragment on User {
   id
-  firstName
-  lastName
+  displayName {
+    ja
+  }
   username
   generation
   friendsCount

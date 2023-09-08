@@ -9,4 +9,9 @@ public enum Constants {
   public static let xURL = URL(string: "https://twitter.com/godappteam")!
   public static let instagramURL = URL(string: "https://instagram.com/godappteam")!
   public static let tiktokURL = URL(string: "https://tiktok.com/godappteam")!
+
+  public static let quickActionURLs: [String: URL] = [
+    "talk-to-founder": Self.founderURL,
+    "talk-to-developer": Self.developerURL,
+  ]
 }

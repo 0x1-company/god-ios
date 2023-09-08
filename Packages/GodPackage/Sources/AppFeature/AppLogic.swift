@@ -24,11 +24,6 @@ public struct AppLogic: Reducer {
     var sceneDelegate = SceneDelegateLogic.State()
     var view = View.State.onboard()
 
-    var quickActionURLs: [String: URL] = [
-      "talk-to-founder": Constants.founderURL,
-      "talk-to-developer": Constants.developerURL,
-    ]
-
     public struct Account: Equatable {
       var authUser: FirebaseAuthClient.User?
       var currentUser: God.CurrentUserQuery.Data.CurrentUser?
@@ -105,9 +100,9 @@ public struct AppLogic: Reducer {
     }
     AuthLogic()
     FirestoreLogic()
-    CoreLogic()
     CurrentUserLogic()
     StoreLogic()
+    QuickActionLogic()
   }
 
   public struct View: Reducer {

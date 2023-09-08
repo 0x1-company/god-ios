@@ -1,14 +1,9 @@
-import Build
+import Constants
 import ComposableArchitecture
-import FirebaseAuthClient
-import FirestoreClient
 
-public struct CoreLogic: Reducer {
-  @Dependency(\.build) var build
+public struct QuickActionLogic: Reducer {
   @Dependency(\.openURL) var openURL
-  @Dependency(\.firestore) var firestore
-  @Dependency(\.firebaseAuth) var firebaseAuth
-
+  
   public func reduce(
     into state: inout AppLogic.State,
     action: AppLogic.Action
@@ -27,9 +22,8 @@ public struct CoreLogic: Reducer {
       }
 
     case let .quickAction(key):
-      guard let url = state.quickActionURLs[key] else {
-        return .none
-      }
+      guard let url = Constants.quickActionURLs[key]
+      else { return .none }
       return .run { _ in
         await openURL(url)
       }

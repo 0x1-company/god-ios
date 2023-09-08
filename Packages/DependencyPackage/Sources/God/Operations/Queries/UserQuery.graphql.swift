@@ -62,6 +62,8 @@ public extension God {
         public var schoolId: String? { __data["schoolId"] }
         /// 所属している学校
         public var school: School? { __data["school"] }
+        /// 表示名
+        public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
         /// 年代
         public var generation: Int? { __data["generation"] }
         /// フレンド数
