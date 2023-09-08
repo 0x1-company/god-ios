@@ -7,11 +7,13 @@ public struct FriendRequestsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var requests: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
 
   public var body: some ReducerOf<Self> {
@@ -19,7 +21,13 @@ public struct FriendRequestsLogic: Reducer {
       switch action {
       case .onTask:
         return .none
+        
+      case .requests:
+        return .none
       }
+    }
+    .forEach(\.requests, action: /Action.requests) {
+      FriendRequestCardLogic()
     }
   }
 }
@@ -36,11 +44,9 @@ public struct FriendRequestsView: View {
       VStack(spacing: 0) {
         FriendHeader(title: "FRIEND REQUESTS")
 
-        FriendRequestCardView(
-          store: .init(
-            initialState: FriendRequestCardLogic.State(),
-            reducer: { FriendRequestCardLogic() }
-          )
+        ForEachStore(
+          store.scope(state: \.requests, action: FriendRequestsLogic.Action.requests),
+          content: FriendRequestCardView.init(store:)
         )
       }
       .task { await viewStore.send(.onTask).finish() }

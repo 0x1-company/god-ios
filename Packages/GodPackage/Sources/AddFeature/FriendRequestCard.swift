@@ -6,7 +6,8 @@ import SwiftUI
 public struct FriendRequestCardLogic: Reducer {
   public init() {}
 
-  public struct State: Equatable {
+  public struct State: Equatable, Identifiable {
+    public var id = UUID()
     public init() {}
   }
 
