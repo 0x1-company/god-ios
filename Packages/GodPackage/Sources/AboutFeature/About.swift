@@ -33,7 +33,7 @@ public struct AboutLogic: Reducer {
       case somethingElse
     }
   }
-  
+
   @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
@@ -45,7 +45,7 @@ public struct AboutLogic: Reducer {
 
       case .faqButtonTapped:
         return .run { _ in
-          await self.openURL(Constants.faqURL)
+          await openURL(Constants.faqURL)
         }
       case .shareFeedbackButtonTapped:
         state.destination = .shareFeedback()
@@ -57,7 +57,7 @@ public struct AboutLogic: Reducer {
 
       case .safetyCenterButtonTapped:
         return .run { _ in
-          await self.openURL(Constants.safetyCenterURL)
+          await openURL(Constants.safetyCenterURL)
         }
 
       case let .confirmationDialog(.presented(action)):
