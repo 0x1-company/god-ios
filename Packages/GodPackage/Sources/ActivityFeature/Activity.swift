@@ -2,8 +2,8 @@ import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
-import SwiftUI
 import ProfileFeature
+import SwiftUI
 
 public struct ActivityLogic: Reducer {
   public init() {}
@@ -24,7 +24,7 @@ public struct ActivityLogic: Reducer {
   }
 
   @Dependency(\.godClient.activities) var activitiesStream
-  
+
   enum Cancel { case activities }
 
   public var body: some Reducer<State, Action> {
@@ -40,7 +40,7 @@ public struct ActivityLogic: Reducer {
           await send(.activitiesResponse(.failure(error)))
         }
         .cancellable(id: Cancel.activities)
-        
+
       case .refreshable:
         Task.cancel(id: Cancel.activities)
         return .send(.onTask)
@@ -54,7 +54,7 @@ public struct ActivityLogic: Reducer {
         state.edges = []
         state.pagination = .none
         return .none
-        
+
       case let .activityButtonTapped(edge):
         state.destination = .profile(
           ProfileExternalLogic.State(
@@ -62,11 +62,11 @@ public struct ActivityLogic: Reducer {
           )
         )
         return .none
-        
+
       case .destination(.dismiss):
         state.destination = nil
         return .none
-        
+
       case .destination:
         return .none
       }
@@ -75,14 +75,16 @@ public struct ActivityLogic: Reducer {
       Destination()
     }
   }
-  
+
   public struct Destination: Reducer {
     public enum State: Equatable {
       case profile(ProfileExternalLogic.State)
     }
+
     public enum Action: Equatable {
       case profile(ProfileExternalLogic.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profile, action: /Action.profile) {
         ProfileExternalLogic()
