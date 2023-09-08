@@ -19,6 +19,7 @@ public struct AddLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case refreshable
     case contactsReEnableButtonTapped
     case seeMoreFriendsOfFriendsButtonTapped
     case seeMoreFromSchoolButtonTapped
@@ -28,6 +29,7 @@ public struct AddLogic: Reducer {
   }
 
   @Dependency(\.openURL) var openURL
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.application.openSettingsURLString) var openSettingsURLString
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
@@ -40,7 +42,11 @@ public struct AddLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-
+        
+      case .refreshable:
+        return .run { _ in
+          try await mainQueue.sleep(for: .seconds(3))
+        }
       case .contactsReEnableButtonTapped:
         return .run { _ in
           let settingsURLString = await openSettingsURLString()
@@ -106,21 +112,27 @@ public struct AddView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollView {
-        VStack(spacing: 0) {
-          if viewStore.contactsReEnableCardVisible {
-            ContactsReEnableCard {
-              viewStore.send(.contactsReEnableButtonTapped)
-            }
+      VStack(spacing: 0) {
+        if viewStore.contactsReEnableCardVisible {
+          ContactsReEnableCard {
+            viewStore.send(.contactsReEnableButtonTapped)
           }
-          SearchField(text: viewStore.$searchQuery)
-          Divider()
-
-          InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
         }
+        SearchField(text: viewStore.$searchQuery)
+        Divider()
+        
+        ScrollView {
+          LazyVStack(spacing: 0) {
+            InvitationsLeftView(
+              store: store.scope(
+                state: \.invitationsLeft,
+                action: AddLogic.Action.invitationsLeft
+              )
+            )
+          }
+        }
+        .refreshable { await viewStore.send(.refreshable).finish() }
       }
-      .navigationTitle("Add")
-      .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) })
