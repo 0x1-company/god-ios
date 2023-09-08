@@ -3,7 +3,7 @@ import Contacts
 public struct ContactsClient {
   public var authorizationStatus: (CNEntityType) -> CNAuthorizationStatus
   public var requestAccess: (CNEntityType) async throws -> Bool
-  public var enumerateContacts: @Sendable (CNContactFetchRequest) async throws -> (CNContact, UnsafeMutablePointer<ObjCBool>)
+  public var enumerateContacts: @Sendable (CNContactFetchRequest) -> AsyncThrowingStream<(CNContact, UnsafeMutablePointer<ObjCBool>), Error>
   public var unifiedContacts: @Sendable (NSPredicate, [CNKeyDescriptor]) throws -> [CNContact]
 }
 

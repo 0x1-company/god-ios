@@ -1,27 +1,53 @@
+import Colors
 import ComposableArchitecture
+import Contacts
+import ContactsClient
 import SwiftUI
+import UIApplicationClient
 
 public struct AddLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
+    var contactsReEnableCardVisible = false
+    @BindingState var searchQuery = ""
+    
+    var invitationsLeft = InvitationsLeftLogic.State()
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
     case onTask
+    case contactsReEnableButtonTapped
     case seeMoreFriendsOfFriendsButtonTapped
     case seeMoreFromSchoolButtonTapped
+    case binding(BindingAction<State>)
     case destination(PresentationAction<Destination.Action>)
+    case invitationsLeft(InvitationsLeftLogic.Action)
   }
+  
+  @Dependency(\.openURL) var openURL
+  @Dependency(\.application.openSettingsURLString) var openSettingsURLString
+  @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
+    Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
+      InvitationsLeftLogic()
+    }
     Reduce { state, action in
       switch action {
       case .onTask:
         return .none
-
+        
+      case .contactsReEnableButtonTapped:
+        return .run { _ in
+          let settingsURLString = await self.openSettingsURLString()
+          guard let url = URL(string: settingsURLString)
+          else { return }
+          await openURL(url)
+        }
       case .seeMoreFriendsOfFriendsButtonTapped:
         state.destination = .friendsOfFriends()
         return .none
@@ -29,10 +55,20 @@ public struct AddLogic: Reducer {
       case .seeMoreFromSchoolButtonTapped:
         state.destination = .fromSchool()
         return .none
+        
+      case .binding:
+        return .none
 
       case .destination:
         return .none
+
+      case .invitationsLeft:
+        return .none
       }
+    }
+    Reduce { state, action in
+      state.contactsReEnableCardVisible = contactsAuthorizationStatus(.contacts) != .authorized
+      return .none
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
@@ -70,33 +106,19 @@ public struct AddView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        TextField("Search...", text: .constant(""))
-          .listRowSeparator(.hidden)
-
-        Section("FRIENDS OF FRIENDS") {
-          ForEach(0 ..< 3, id: \.self) { _ in
-            FriendAddCard()
+      ScrollView {
+        VStack(spacing: 0) {
+          if viewStore.contactsReEnableCardVisible {
+            ContactsReEnableCard {
+              viewStore.send(.contactsReEnableButtonTapped)
+            }
           }
-
-          Button("See 19 more") {
-            viewStore.send(.seeMoreFriendsOfFriendsButtonTapped)
-          }
-          .buttonStyle(SeeMoreButtonStyle())
-        }
-
-        Section("FROM SCHOOL") {
-          ForEach(0 ..< 3, id: \.self) { _ in
-            FriendAddCard()
-          }
-
-          Button("See 471 more") {
-            viewStore.send(.seeMoreFromSchoolButtonTapped)
-          }
-          .buttonStyle(SeeMoreButtonStyle())
+          SearchField(text: viewStore.$searchQuery)
+          Divider()
+          
+          InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
         }
       }
-      .listStyle(.grouped)
       .navigationTitle("Add")
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
