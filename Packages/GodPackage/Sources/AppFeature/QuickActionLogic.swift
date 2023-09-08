@@ -1,9 +1,9 @@
-import Constants
 import ComposableArchitecture
+import Constants
 
 public struct QuickActionLogic: Reducer {
   @Dependency(\.openURL) var openURL
-  
+
   public func reduce(
     into state: inout AppLogic.State,
     action: AppLogic.Action
