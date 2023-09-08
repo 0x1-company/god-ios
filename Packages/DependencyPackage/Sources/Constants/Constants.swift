@@ -19,7 +19,7 @@ public enum Constants {
   public static let tiktokURL = URL(string: "https://tiktok.com/\(Self.godappteam)")!
   
   public static let docsURL = URL(string: "https://docs.godapp.jp")!
-  public static let faqURL = URL(string: "\(Self.docsURL)/faq")
+  public static let faqURL = URL(string: "\(Self.docsURL)/faq")!
   public static let safetyCenterURL = URL(string: "\(Self.docsURL)/safety-center")!
   public static let privacyPolicyURL = URL(string: "\(Self.docsURL)/privacy-policy")!
   public static let termsOfUseURL = URL(string: "\(Self.docsURL)/terms-of-use")!
