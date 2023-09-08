@@ -22,10 +22,10 @@ public struct FriendRequestCardLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .addButtonTapped:
         return .none
-        
+
       case .hideButtonTapped:
         return .none
       }
@@ -56,16 +56,14 @@ public struct FriendRequestCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
 
         HStack(spacing: 0) {
-          Button {
-          } label: {
+          Button {} label: {
             Text("HIDE")
               .frame(width: 80, height: 33)
               .foregroundColor(.secondary)
           }
           .buttonStyle(HoldDownButtonStyle())
 
-          Button {
-          } label: {
+          Button {} label: {
             Text("ADD")
               .frame(width: 80, height: 33)
               .foregroundColor(Color.white)

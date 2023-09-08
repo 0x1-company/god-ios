@@ -33,7 +33,7 @@ public struct FriendsOfFriendsLogic: Reducer {
 
       case .binding:
         return .none
-        
+
       case .requests:
         return .none
       }

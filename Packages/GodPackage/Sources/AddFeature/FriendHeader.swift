@@ -2,11 +2,11 @@ import SwiftUI
 
 public struct FriendHeader: View {
   var title: LocalizedStringKey
-  
+
   public var body: some View {
     VStack(spacing: 0) {
       Divider()
-      
+
       HStack {
         Text(title)
           .bold()
