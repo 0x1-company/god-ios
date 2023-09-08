@@ -6,14 +6,14 @@ on:
     branches:
       - main
     paths:
-      - App
-      - Packages
-      - PreviewApp
+      - App/**/*
+      - Packages/**/*
+      - PreviewApp/**/*
   pull_request:
     paths:
-      - App
-      - Packages
-      - PreviewApp
+      - App/**/*
+      - Packages/**/*
+      - PreviewApp/**/*
 
 env:
   PLATFORM_IOS: iOS Simulator,name=iPhone 14 Pro,OS=16.2
