@@ -14,6 +14,7 @@ public class Activity: MockObject {
     @Field<God.ID>("id") public var id
     @Field<Question>("question") public var question
     @Field<User>("user") public var user
+    @Field<String>("userId") public var userId
   }
 }
 
@@ -22,12 +23,14 @@ public extension Mock where O == Activity {
     createdAt: God.Date? = nil,
     id: God.ID? = nil,
     question: Mock<Question>? = nil,
-    user: Mock<User>? = nil
+    user: Mock<User>? = nil,
+    userId: String? = nil
   ) {
     self.init()
     _setScalar(createdAt, for: \.createdAt)
     _setScalar(id, for: \.id)
     _setEntity(question, for: \.question)
     _setEntity(user, for: \.user)
+    _setScalar(userId, for: \.userId)
   }
 }
