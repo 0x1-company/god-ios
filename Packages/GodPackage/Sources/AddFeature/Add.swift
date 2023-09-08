@@ -11,14 +11,16 @@ public struct AddLogic: Reducer {
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
     var contactsReEnableCardVisible = false
+    @BindingState var searchQuery = ""
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
     case onTask
     case contactsReEnableButtonTapped
     case seeMoreFriendsOfFriendsButtonTapped
     case seeMoreFromSchoolButtonTapped
+    case binding(BindingAction<State>)
     case destination(PresentationAction<Destination.Action>)
   }
   
@@ -27,6 +29,7 @@ public struct AddLogic: Reducer {
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Reduce { state, action in
       switch action {
       case .onTask:
@@ -45,6 +48,9 @@ public struct AddLogic: Reducer {
 
       case .seeMoreFromSchoolButtonTapped:
         state.destination = .fromSchool()
+        return .none
+        
+      case .binding:
         return .none
 
       case .destination:
@@ -98,6 +104,8 @@ public struct AddView: View {
               viewStore.send(.contactsReEnableButtonTapped)
             }
           }
+          SearchField(text: viewStore.$searchQuery)
+          Divider()
         }
       }
       .navigationTitle("Add")
