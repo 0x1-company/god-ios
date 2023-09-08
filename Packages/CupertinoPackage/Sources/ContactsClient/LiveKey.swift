@@ -8,13 +8,14 @@ extension ContactsClient: DependencyKey {
       authorizationStatus: CNContactStore.authorizationStatus(for:),
       requestAccess: store.requestAccess(for:),
       enumerateContacts: { request in
-        try await withCheckedThrowingContinuation { continuation in
+        AsyncThrowingStream { continuation in
           do {
             try store.enumerateContacts(with: request) { contact, pointer in
-              continuation.resume(with: .success((contact, pointer)))
+              continuation.yield((contact, pointer))
             }
+            continuation.finish()
           } catch {
-            continuation.resume(throwing: error)
+            continuation.finish(throwing: error)
           }
         }
       },

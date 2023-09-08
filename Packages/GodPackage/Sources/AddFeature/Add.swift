@@ -12,6 +12,8 @@ public struct AddLogic: Reducer {
     @PresentationState var destination: Destination.State?
     var contactsReEnableCardVisible = false
     @BindingState var searchQuery = ""
+    
+    var invitationsLeft = InvitationsLeftLogic.State()
     public init() {}
   }
 
@@ -22,6 +24,7 @@ public struct AddLogic: Reducer {
     case seeMoreFromSchoolButtonTapped
     case binding(BindingAction<State>)
     case destination(PresentationAction<Destination.Action>)
+    case invitationsLeft(InvitationsLeftLogic.Action)
   }
   
   @Dependency(\.openURL) var openURL
@@ -30,6 +33,9 @@ public struct AddLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
+    Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
+      InvitationsLeftLogic()
+    }
     Reduce { state, action in
       switch action {
       case .onTask:
@@ -54,6 +60,9 @@ public struct AddLogic: Reducer {
         return .none
 
       case .destination:
+        return .none
+
+      case .invitationsLeft:
         return .none
       }
     }
@@ -106,6 +115,8 @@ public struct AddView: View {
           }
           SearchField(text: viewStore.$searchQuery)
           Divider()
+          
+          InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
         }
       }
       .navigationTitle("Add")
