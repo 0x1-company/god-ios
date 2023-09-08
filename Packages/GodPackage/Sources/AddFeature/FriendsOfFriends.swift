@@ -5,7 +5,7 @@ public struct FriendsOfFriendsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @BindingState var searchable = ""
+    @BindingState var searchQuery = ""
     var requests: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
@@ -53,15 +53,21 @@ public struct FriendsOfFriendsView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ForEachStore(
-        store.scope(state: \.requests, action: FriendsOfFriendsLogic.Action.requests),
-        content: FriendRequestCardView.init(store:)
-      )
-      .listStyle(.plain)
+      VStack(spacing: 0) {
+        SearchField(text: viewStore.$searchQuery)
+        Divider()
+        ScrollView {
+          LazyVStack(spacing: 0) {
+            ForEachStore(
+              store.scope(state: \.requests, action: FriendsOfFriendsLogic.Action.requests),
+              content: FriendRequestCardView.init(store:)
+            )
+          }
+        }
+      }
       .navigationTitle("Friends of Friends")
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
-      .searchable(text: viewStore.$searchable)
       .toolbar {
         Button {
           viewStore.send(.closeButtonTapped)

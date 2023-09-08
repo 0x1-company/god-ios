@@ -170,7 +170,7 @@ public struct AddView: View {
                 content: FriendRequestCardView.init(store:)
               )
               Button("See 471 more") {
-                viewStore.send(.seeMoreFriendsOfFriendsButtonTapped)
+                viewStore.send(.seeMoreFromSchoolButtonTapped)
               }
               .buttonStyle(SeeMoreButtonStyle())
             }
