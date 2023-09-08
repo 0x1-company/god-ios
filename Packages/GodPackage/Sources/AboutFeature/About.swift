@@ -33,6 +33,8 @@ public struct AboutLogic: Reducer {
       case somethingElse
     }
   }
+  
+  @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -42,18 +44,21 @@ public struct AboutLogic: Reducer {
         return .none
 
       case .faqButtonTapped:
-        return .none
-
+        return .run { _ in
+          await self.openURL(Constants.faqURL)
+        }
       case .shareFeedbackButtonTapped:
         state.destination = .shareFeedback()
         return .none
 
       case .getHelpButtonTapped:
-        state.confirmationDialog = .faq
+        state.confirmationDialog = .getHelp
         return .none
 
       case .safetyCenterButtonTapped:
-        return .none
+        return .run { _ in
+          await self.openURL(Constants.safetyCenterURL)
+        }
 
       case let .confirmationDialog(.presented(action)):
         switch action {
@@ -133,7 +138,7 @@ public struct AboutView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 32) {
         VStack(alignment: .center, spacing: 24) {
-          IconButton("How It Works", name: "") {
+          IconButton("How It Works", name: "woman-teacher") {
             viewStore.send(.howItWorksButtonTapped)
           }
           IconButton("FAQ", name: "clipboard") {
@@ -208,7 +213,7 @@ public struct AboutView: View {
 }
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
-  static let faq = Self {
+  static let getHelp = Self {
     TextState("Get Help")
   } actions: {
     ButtonState(action: .addMySchoolToMyProfile) {

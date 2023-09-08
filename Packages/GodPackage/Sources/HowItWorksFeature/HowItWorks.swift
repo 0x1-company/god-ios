@@ -2,6 +2,7 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import Lottie
 
 public struct HowItWorksLogic: Reducer {
   public init() {}
@@ -41,7 +42,14 @@ public struct HowItWorksView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack {
+      VStack(spacing: 100) {
+        LottieView(animation: LottieAnimation.named("onboarding", bundle: .module))
+          .looping()
+          .resizable()
+          .frame(height: 100)
+        Image("how-it-works-boy", bundle: .module)
+          .resizable()
+          .scaledToFit()
         Spacer()
         Button {
           viewStore.send(.startButtonTapped)
