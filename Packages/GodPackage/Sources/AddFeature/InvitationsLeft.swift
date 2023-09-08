@@ -17,10 +17,10 @@ public struct InvitationsLeftLogic: Reducer {
     case onTask
     case contactResponse(TaskResult<CNContact>)
   }
-  
+
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
-  
+
   enum Cancel { case id }
 
   public var body: some ReducerOf<Self> {
@@ -31,7 +31,7 @@ public struct InvitationsLeftLogic: Reducer {
         else { return .none }
         let request = CNContactFetchRequest(keysToFetch: [
           CNContactGivenNameKey as CNKeyDescriptor,
-          CNContactFamilyNameKey as CNKeyDescriptor
+          CNContactFamilyNameKey as CNKeyDescriptor,
         ])
         return .run(priority: .background) { send in
           for try await (contact, _) in enumerateContacts(request) {
@@ -41,7 +41,7 @@ public struct InvitationsLeftLogic: Reducer {
           await send(.contactResponse(.failure(error)))
         }
         .cancellable(id: Cancel.id)
-        
+
       case let .contactResponse(.success(contact)):
         if state.contacts.first(where: { $0.identifier == contact.identifier }) == nil {
           state.contacts.append(contact)
@@ -76,23 +76,22 @@ public struct InvitationsLeftView: View {
         .padding(.horizontal, 16)
         .foregroundColor(.secondary)
         .background(Color(uiColor: .quaternarySystemFill))
-        
+
         Divider()
-        
+
         ForEach(viewStore.contacts, id: \.identifier) { contact in
           HStack(spacing: 16) {
             Color.red
               .frame(width: 42, height: 42)
               .clipShape(Circle())
-            
+
             VStack(alignment: .leading, spacing: 4) {
               Text("\(contact.familyName) \(contact.givenName)")
               Text("29 friends on God")
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Button {
-            } label: {
+
+            Button {} label: {
               Text("INVITE")
                 .bold()
                 .frame(width: 84, height: 34)

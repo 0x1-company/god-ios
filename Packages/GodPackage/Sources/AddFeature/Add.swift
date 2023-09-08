@@ -12,7 +12,7 @@ public struct AddLogic: Reducer {
     @PresentationState var destination: Destination.State?
     var contactsReEnableCardVisible = false
     @BindingState var searchQuery = ""
-    
+
     var invitationsLeft = InvitationsLeftLogic.State()
     public init() {}
   }
@@ -26,7 +26,7 @@ public struct AddLogic: Reducer {
     case destination(PresentationAction<Destination.Action>)
     case invitationsLeft(InvitationsLeftLogic.Action)
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.application.openSettingsURLString) var openSettingsURLString
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
@@ -40,10 +40,10 @@ public struct AddLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .contactsReEnableButtonTapped:
         return .run { _ in
-          let settingsURLString = await self.openSettingsURLString()
+          let settingsURLString = await openSettingsURLString()
           guard let url = URL(string: settingsURLString)
           else { return }
           await openURL(url)
@@ -55,7 +55,7 @@ public struct AddLogic: Reducer {
       case .seeMoreFromSchoolButtonTapped:
         state.destination = .fromSchool()
         return .none
-        
+
       case .binding:
         return .none
 
@@ -66,7 +66,7 @@ public struct AddLogic: Reducer {
         return .none
       }
     }
-    Reduce { state, action in
+    Reduce { state, _ in
       state.contactsReEnableCardVisible = contactsAuthorizationStatus(.contacts) != .authorized
       return .none
     }
@@ -115,7 +115,7 @@ public struct AddView: View {
           }
           SearchField(text: viewStore.$searchQuery)
           Divider()
-          
+
           InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
         }
       }
