@@ -15,16 +15,18 @@ public struct ActivityLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case refreshable
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
   }
 
   @Dependency(\.godClient.activities) var activitiesStream
+  
+  enum Cancel { case activities }
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
         state.pagination = .loading
         return .run { send in
           for try await data in activitiesStream(nil) {
@@ -33,7 +35,11 @@ public struct ActivityLogic: Reducer {
         } catch: { error, send in
           await send(.activitiesResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.activities)
+        
+      case .refreshable:
+        Task.cancel(id: Cancel.activities)
+        return .send(.onTask)
 
       case let .activitiesResponse(.success(data)):
         state.edges = data.listActivities.edges
@@ -82,6 +88,7 @@ public struct ActivityView: View {
       }
       .listStyle(.plain)
       .task { await viewStore.send(.onTask).finish() }
+      .refreshable { await viewStore.send(.refreshable).finish() }
     }
   }
 }
