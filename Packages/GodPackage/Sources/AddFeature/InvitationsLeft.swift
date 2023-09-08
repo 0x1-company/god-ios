@@ -9,13 +9,14 @@ public struct InvitationsLeftLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var contacts: [CNContact] = []
+    var invitations: IdentifiedArrayOf<InvitationCardLogic.State> = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
     case contactResponse(TaskResult<CNContact>)
+    case invitations(id: InvitationCardLogic.State.ID, action: InvitationCardLogic.Action)
   }
 
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
@@ -45,19 +46,30 @@ public struct InvitationsLeftLogic: Reducer {
         .cancellable(id: Cancel.enumerateContacts)
 
       case let .contactResponse(.success(contact)):
-        if state.contacts.count >= 10 {
+        if state.invitations.count >= 10 {
           Task.cancel(id: Cancel.enumerateContacts)
           return .none
         }
-        if state.contacts.first(where: { $0.identifier == contact.identifier }) == nil {
-          state.contacts.append(contact)
-        }
+        state.invitations.insert(
+          InvitationCardLogic.State(
+            id: contact.identifier,
+            familyName: contact.familyName,
+            givenName: contact.givenName
+          ),
+          at: 0
+        )
         return .none
 
       case let .contactResponse(.failure(error)):
         print(error)
         return .none
+        
+      case .invitations:
+        return .none
       }
+    }
+    .forEach(\.invitations, action: /Action.invitations) {
+      InvitationCardLogic()
     }
   }
 }
@@ -74,33 +86,10 @@ public struct InvitationsLeftView: View {
       VStack(spacing: 0) {
         FriendHeader(title: "INVITATIONS LEFT")
 
-        ForEach(viewStore.contacts, id: \.identifier) { contact in
-          HStack(spacing: 16) {
-            Color.red
-              .frame(width: 42, height: 42)
-              .clipShape(Circle())
-
-            VStack(alignment: .leading, spacing: 4) {
-              Text("\(contact.familyName) \(contact.givenName)")
-              Text("29 friends on God")
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Button {} label: {
-              Text("INVITE")
-                .bold()
-                .frame(width: 84, height: 34)
-                .foregroundColor(.godService)
-                .overlay(
-                  RoundedRectangle(cornerRadius: 34 / 2)
-                    .stroke(Color.godService, lineWidth: 1)
-                )
-            }
-            .buttonStyle(HoldDownButtonStyle())
-          }
-          .frame(height: 76)
-          .padding(.horizontal, 16)
-        }
+        ForEachStore(
+          store.scope(state: \.invitations, action: InvitationsLeftLogic.Action.invitations),
+          content: InvitationCardView.init(store:)
+        )
       }
       .task { await viewStore.send(.onTask).finish() }
     }
