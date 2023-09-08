@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Activities"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Activities($after: String) { listActivities(first: 20, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id text { __typename ja } } user { __typename displayName { __typename ja } } } } } }"#,
+        #"query Activities($after: String) { listActivities(first: 20, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id text { __typename ja } } userId user { __typename displayName { __typename ja } } } } } }"#,
         fragments: [NextPaginationFragment.self]
       ))
 
@@ -108,6 +108,7 @@ public extension God {
               .field("id", God.ID.self),
               .field("createdAt", God.Date.self),
               .field("question", Question.self),
+              .field("userId", String.self),
               .field("user", User.self),
             ] }
 
@@ -115,6 +116,8 @@ public extension God {
             public var id: God.ID { __data["id"] }
             public var createdAt: God.Date { __data["createdAt"] }
             public var question: Question { __data["question"] }
+            /// アクティビティの対象
+            public var userId: String { __data["userId"] }
             public var user: User { __data["user"] }
 
             /// ListActivities.Edge.Node.Question

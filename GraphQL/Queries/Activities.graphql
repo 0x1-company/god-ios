@@ -16,6 +16,7 @@ query Activities($after: String) {
             ja
           }
         }
+        userId
         user {
           displayName {
             ja

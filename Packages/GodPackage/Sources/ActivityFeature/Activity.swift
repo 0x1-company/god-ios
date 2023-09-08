@@ -3,6 +3,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import ProfileFeature
 
 public struct ActivityLogic: Reducer {
   public init() {}
@@ -10,21 +11,26 @@ public struct ActivityLogic: Reducer {
   public struct State: Equatable {
     var pagination = AsyncValue<God.NextPaginationFragment>.none
     var edges: [God.ActivitiesQuery.Data.ListActivities.Edge] = []
+    @PresentationState var destination: Destination.State?
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case refreshable
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
+    case activityButtonTapped(God.ActivitiesQuery.Data.ListActivities.Edge)
+    case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.godClient.activities) var activitiesStream
+  
+  enum Cancel { case activities }
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
         state.pagination = .loading
         return .run { send in
           for try await data in activitiesStream(nil) {
@@ -33,7 +39,11 @@ public struct ActivityLogic: Reducer {
         } catch: { error, send in
           await send(.activitiesResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.activities)
+        
+      case .refreshable:
+        Task.cancel(id: Cancel.activities)
+        return .send(.onTask)
 
       case let .activitiesResponse(.success(data)):
         state.edges = data.listActivities.edges
@@ -44,6 +54,38 @@ public struct ActivityLogic: Reducer {
         state.edges = []
         state.pagination = .none
         return .none
+        
+      case let .activityButtonTapped(edge):
+        state.destination = .profile(
+          ProfileExternalLogic.State(
+            userId: edge.node.userId
+          )
+        )
+        return .none
+        
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
+        
+      case .destination:
+        return .none
+      }
+    }
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
+    }
+  }
+  
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case profile(ProfileExternalLogic.State)
+    }
+    public enum Action: Equatable {
+      case profile(ProfileExternalLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.profile, action: /Action.profile) {
+        ProfileExternalLogic()
       }
     }
   }
@@ -78,10 +120,23 @@ public struct ActivityView: View {
             Text("3d")
               .foregroundColor(.secondary)
           }
+          .onTapGesture {
+            viewStore.send(.activityButtonTapped(edge))
+          }
         }
       }
       .listStyle(.plain)
       .task { await viewStore.send(.onTask).finish() }
+      .refreshable { await viewStore.send(.refreshable).finish() }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /ActivityLogic.Destination.State.profile,
+        action: ActivityLogic.Destination.Action.profile
+      ) { store in
+        NavigationStack {
+          ProfileExternalView(store: store)
+        }
+      }
     }
   }
 }
