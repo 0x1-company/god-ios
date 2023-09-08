@@ -63,7 +63,7 @@ public struct InvitationsLeftLogic: Reducer {
       case let .contactResponse(.failure(error)):
         print(error)
         return .none
-        
+
       case .invitations:
         return .none
       }

@@ -15,7 +15,7 @@ public struct AddLogic: Reducer {
 
     var invitationsLeft = InvitationsLeftLogic.State()
     var friendRequests = FriendRequestsLogic.State()
-    
+
     var friendsOfFriends: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
@@ -50,7 +50,7 @@ public struct AddLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .refreshable:
         return .run { _ in
           try await mainQueue.sleep(for: .seconds(3))
@@ -78,10 +78,10 @@ public struct AddLogic: Reducer {
 
       case .invitationsLeft:
         return .none
-        
+
       case .friendRequests:
         return .none
-        
+
       case .friendsOfFriends:
         return .none
       }
@@ -137,7 +137,7 @@ public struct AddView: View {
         }
         SearchField(text: viewStore.$searchQuery)
         Divider()
-        
+
         ScrollView {
           LazyVStack(spacing: 0) {
             InvitationsLeftView(

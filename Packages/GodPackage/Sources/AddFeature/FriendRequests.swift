@@ -21,7 +21,7 @@ public struct FriendRequestsLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .requests:
         return .none
       }
