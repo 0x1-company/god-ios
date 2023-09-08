@@ -51,6 +51,10 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AddFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "ContactsClient", package: "CupertinoPackage"),
+      .product(name: "UIApplicationClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
