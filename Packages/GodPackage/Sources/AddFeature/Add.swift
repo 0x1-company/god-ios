@@ -14,6 +14,7 @@ public struct AddLogic: Reducer {
     @BindingState var searchQuery = ""
 
     var invitationsLeft = InvitationsLeftLogic.State()
+    var friendRequests = FriendRequestsLogic.State()
     public init() {}
   }
 
@@ -26,6 +27,7 @@ public struct AddLogic: Reducer {
     case binding(BindingAction<State>)
     case destination(PresentationAction<Destination.Action>)
     case invitationsLeft(InvitationsLeftLogic.Action)
+    case friendRequests(FriendRequestsLogic.Action)
   }
 
   @Dependency(\.openURL) var openURL
@@ -37,6 +39,9 @@ public struct AddLogic: Reducer {
     BindingReducer()
     Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
       InvitationsLeftLogic()
+    }
+    Scope(state: \.friendRequests, action: /Action.friendRequests) {
+      FriendRequestsLogic()
     }
     Reduce { state, action in
       switch action {
@@ -69,6 +74,9 @@ public struct AddLogic: Reducer {
         return .none
 
       case .invitationsLeft:
+        return .none
+        
+      case .friendRequests:
         return .none
       }
     }
@@ -127,6 +135,12 @@ public struct AddView: View {
               store: store.scope(
                 state: \.invitationsLeft,
                 action: AddLogic.Action.invitationsLeft
+              )
+            )
+            FriendRequestsView(
+              store: store.scope(
+                state: \.friendRequests,
+                action: AddLogic.Action.friendRequests
               )
             )
           }

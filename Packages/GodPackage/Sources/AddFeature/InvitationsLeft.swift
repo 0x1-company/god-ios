@@ -72,18 +72,7 @@ public struct InvitationsLeftView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
-        HStack {
-          Text("INVITATIONS LEFT")
-            .bold()
-            .frame(maxWidth: .infinity, alignment: .leading)
-          Text("10/10")
-        }
-        .frame(height: 34)
-        .padding(.horizontal, 16)
-        .foregroundColor(.secondary)
-        .background(Color(uiColor: .quaternarySystemFill))
-
-        Divider()
+        FriendHeader(title: "INVITATIONS LEFT")
 
         ForEach(viewStore.contacts, id: \.identifier) { contact in
           HStack(spacing: 16) {
