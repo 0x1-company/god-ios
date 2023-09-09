@@ -1,4 +1,5 @@
 import AsyncValue
+import UserDefaultsClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import FirestoreClient
@@ -39,6 +40,7 @@ public struct AppLogic: Reducer {
   }
 
   @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
     core
@@ -58,7 +60,7 @@ public struct AppLogic: Reducer {
         guard case let .success(user) = authUser else {
           return .none
         }
-        let onboardCompleted = true
+        let onboardCompleted = userDefaults.onboardCompleted()
         if user != nil && onboardCompleted {
           state.view = .navigation()
         } else {
