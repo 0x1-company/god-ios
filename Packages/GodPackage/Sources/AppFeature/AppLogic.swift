@@ -1,3 +1,4 @@
+import AsyncValue
 import ComposableArchitecture
 import Constants
 import FirebaseAuthClient
@@ -27,8 +28,8 @@ public struct AppLogic: Reducer {
     public struct Account: Equatable {
       var authUser: FirebaseAuthClient.User?
       var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-      var isForceUpdate = false
-      var isMaintenance = false
+      var isForceUpdate = AsyncValue<Bool>.none
+      var isMaintenance = AsyncValue<Bool>.none
       var onboardCongrats = false
     }
   }
@@ -58,11 +59,11 @@ public struct AppLogic: Reducer {
     core
       .onChange(of: \.account) { account, state, _ in
         print(".onChange(of:): \(account)")
-        if account.isForceUpdate {
+        if case .success(true) = account.isForceUpdate {
           state.view = .forceUpdate()
           return .none
         }
-        if account.isMaintenance {
+        if case .success(true) = account.isMaintenance {
           state.view = .maintenance()
           return .none
         }

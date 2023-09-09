@@ -24,8 +24,8 @@ public struct FirestoreLogic: Reducer {
 
     case let .configResponse(.success(config)):
       let shortVersion = bundleShortVersion()
-      state.account.isForceUpdate = config.isForceUpdate(shortVersion)
-      state.account.isMaintenance = config.isMaintenance
+      state.account.isForceUpdate = .success(config.isForceUpdate(shortVersion))
+      state.account.isMaintenance = .success(config.isMaintenance)
       return .none
 
     default:
