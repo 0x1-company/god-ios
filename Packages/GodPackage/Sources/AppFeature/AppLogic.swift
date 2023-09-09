@@ -1,15 +1,12 @@
 import AsyncValue
 import ComposableArchitecture
-import Constants
 import FirebaseAuthClient
 import FirestoreClient
 import ForceUpdateFeature
-import God
 import LaunchFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
-import StoreKit
 import SwiftUI
 import TcaHelpers
 
@@ -27,7 +24,6 @@ public struct AppLogic: Reducer {
 
     public struct Account: Equatable {
       var authUser: FirebaseAuthClient.User?
-      var currentUser: God.CurrentUserQuery.Data.CurrentUser?
       var isForceUpdate = AsyncValue<Bool>.none
       var isMaintenance = AsyncValue<Bool>.none
     }
@@ -40,7 +36,6 @@ public struct AppLogic: Reducer {
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
-    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
   }
 
   @Dependency(\.mainQueue) var mainQueue
@@ -58,14 +53,6 @@ public struct AppLogic: Reducer {
           return .none
         }
         if account.authUser == nil {
-          state.view = .onboard()
-          return .none
-        }
-        guard let currentUser = account.currentUser else {
-          state.view = .onboard()
-          return .none
-        }
-        if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username == nil {
           state.view = .onboard()
           return .none
         }
@@ -87,7 +74,6 @@ public struct AppLogic: Reducer {
     }
     AuthLogic()
     FirestoreLogic()
-    CurrentUserLogic()
     StoreLogic()
     QuickActionLogic()
   }
