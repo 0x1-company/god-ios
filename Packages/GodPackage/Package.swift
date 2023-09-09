@@ -120,11 +120,9 @@ let package = Package(
       "AddFeature",
       "GodFeature",
       "InboxFeature",
-      "ProfileFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
-      .product(name: "God", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
