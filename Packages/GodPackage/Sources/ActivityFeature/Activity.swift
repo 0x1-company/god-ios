@@ -47,7 +47,7 @@ public struct ActivityLogic: Reducer {
 
       case let .activitiesResponse(.success(data)):
         state.edges = data.listActivities.edges
-        state.pagination = .some(data.listActivities.pageInfo.fragments.nextPaginationFragment)
+        state.pagination = .success(data.listActivities.pageInfo.fragments.nextPaginationFragment)
         return .none
 
       case .activitiesResponse(.failure):

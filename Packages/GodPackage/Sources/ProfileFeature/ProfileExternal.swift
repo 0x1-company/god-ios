@@ -41,7 +41,7 @@ public struct ProfileExternalLogic: Reducer {
         .cancellable(id: Cancel.id)
 
       case let .userResponse(.success(data)):
-        state.user = .some(data.user)
+        state.user = .success(data.user)
         return .none
 
       case .userResponse(.failure):
@@ -65,7 +65,7 @@ public struct ProfileExternalView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          if case let .some(user) = viewStore.user {
+          if case let .success(user) = viewStore.user {
             ProfileSection(
               user: user.fragments.profileSectionFragment,
               editProfile: nil
