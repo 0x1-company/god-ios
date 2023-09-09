@@ -84,8 +84,8 @@ public struct LastNameSettingLogic: Reducer {
           _ = await (next, update)
         }
       case .binding:
-        state.isDisabled = !state.lastName.isEmpty
         state.isImport = false
+        state.isDisabled = state.lastName.isEmpty
         return .none
       case .alert(.dismiss):
         state.alert = nil
