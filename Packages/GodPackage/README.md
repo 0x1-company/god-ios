@@ -23,7 +23,6 @@ graph TD;
     NavigationFeature-->AddFeature;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
-    NavigationFeature-->ProfileFeature;
     OnboardFeature-->HowItWorksFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ShopFeature;
