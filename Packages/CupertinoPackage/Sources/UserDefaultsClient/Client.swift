@@ -40,11 +40,11 @@ public extension UserDefaultsClient {
   func verificationId() -> String? {
     stringForKey(keyVerificationId)
   }
-  
+
   func setOnboardCompleted(_ value: Bool) async {
     await setBool(value, keyOnboardCompleted)
   }
-  
+
   func onboardCompleted() -> Bool {
     boolForKey(keyOnboardCompleted)
   }

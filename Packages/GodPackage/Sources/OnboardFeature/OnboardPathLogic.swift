@@ -1,6 +1,6 @@
-import UserDefaultsClient
 import ComposableArchitecture
 import ContactsClient
+import UserDefaultsClient
 
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.userDefaults) var userDefaults

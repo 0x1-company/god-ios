@@ -4,8 +4,8 @@ import ComposableArchitecture
 import FirebaseAuthClient
 import LabeledButton
 import ManageAccountFeature
-import UserDefaultsClient
 import SwiftUI
+import UserDefaultsClient
 
 public struct ProfileEditLogic: Reducer {
   public init() {}

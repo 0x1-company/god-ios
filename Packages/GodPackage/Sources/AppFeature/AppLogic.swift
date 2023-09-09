@@ -1,5 +1,4 @@
 import AsyncValue
-import UserDefaultsClient
 import ComposableArchitecture
 import FirebaseAuthClient
 import FirestoreClient
@@ -10,6 +9,7 @@ import NavigationFeature
 import OnboardFeature
 import SwiftUI
 import TcaHelpers
+import UserDefaultsClient
 
 public struct AppLogic: Reducer {
   public init() {}
@@ -61,7 +61,7 @@ public struct AppLogic: Reducer {
           return .none
         }
         let onboardCompleted = userDefaults.onboardCompleted()
-        if user != nil && onboardCompleted {
+        if user != nil, onboardCompleted {
           state.view = .navigation()
         } else {
           state.view = .onboard()

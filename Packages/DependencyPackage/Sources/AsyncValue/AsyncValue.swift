@@ -7,7 +7,7 @@ public enum AsyncValue<T: Equatable>: Equatable {
   public var isLoading: Bool {
     self == .loading
   }
-  
+
   public static func == (lhs: AsyncValue<T>, rhs: AsyncValue<T>) -> Bool {
     switch (lhs, rhs) {
     case (.none, .none):
