@@ -19,13 +19,13 @@ public struct AuthLogic: Reducer {
         await send(.authUserResponse(.failure(error)))
       }
       .cancellable(id: Cancel.id)
-
-    case let .authUserResponse(.success(authUser)):
-      state.account.authUser = authUser
+      
+    case let .authUserResponse(.success(user)):
+      state.account.authUser = .success(user)
       return .none
 
-    case .authUserResponse(.failure):
-      state.account.authUser = nil
+    case let .authUserResponse(.failure(error)):
+      state.account.authUser = .failure(error)
       return .none
 
     default:

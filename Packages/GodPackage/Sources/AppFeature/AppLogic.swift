@@ -23,7 +23,7 @@ public struct AppLogic: Reducer {
     var view = View.State.onboard()
 
     public struct Account: Equatable {
-      var authUser: FirebaseAuthClient.User?
+      var authUser = AsyncValue<FirebaseAuthClient.User?>.none
       var isForceUpdate = AsyncValue<Bool>.none
       var isMaintenance = AsyncValue<Bool>.none
     }
@@ -43,17 +43,12 @@ public struct AppLogic: Reducer {
   public var body: some Reducer<State, Action> {
     core
       .onChange(of: \.account) { account, state, _ in
-        print(".onChange(of:): \(account)")
         if case .success(true) = account.isForceUpdate {
           state.view = .forceUpdate()
           return .none
         }
         if case .success(true) = account.isMaintenance {
           state.view = .maintenance()
-          return .none
-        }
-        if account.authUser == nil {
-          state.view = .onboard()
           return .none
         }
         state.view = .navigation()
