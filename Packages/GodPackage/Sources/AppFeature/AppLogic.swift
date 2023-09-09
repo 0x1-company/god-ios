@@ -1,14 +1,13 @@
+import AsyncValue
+import UserDefaultsClient
 import ComposableArchitecture
-import Constants
 import FirebaseAuthClient
 import FirestoreClient
 import ForceUpdateFeature
-import God
 import LaunchFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
-import StoreKit
 import SwiftUI
 import TcaHelpers
 
@@ -25,11 +24,9 @@ public struct AppLogic: Reducer {
     var view = View.State.onboard()
 
     public struct Account: Equatable {
-      var authUser: FirebaseAuthClient.User?
-      var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-      var isForceUpdate = false
-      var isMaintenance = false
-      var onboardCongrats = false
+      var authUser = AsyncValue<FirebaseAuthClient.User?>.none
+      var isForceUpdate = AsyncValue<Bool>.none
+      var isMaintenance = AsyncValue<Bool>.none
     }
   }
 
@@ -40,51 +37,46 @@ public struct AppLogic: Reducer {
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
-    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
   }
 
   @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
+    core
+      .onChange(of: \.account.isForceUpdate) { isForceUpdate, state, _ in
+        if case .success(true) = isForceUpdate {
+          state.view = .forceUpdate()
+        }
+        return .none
+      }
+      .onChange(of: \.account.isMaintenance) { isMaintenance, state, _ in
+        if case .success(true) = isMaintenance {
+          state.view = .maintenance()
+        }
+        return .none
+      }
+      .onChange(of: \.account.authUser) { authUser, state, _ in
+        guard case let .success(user) = authUser else {
+          return .none
+        }
+        let onboardCompleted = userDefaults.onboardCompleted()
+        if user != nil && onboardCompleted {
+          state.view = .navigation()
+        } else {
+          state.view = .onboard()
+        }
+        return .none
+      }
     Reduce { state, action in
       switch action {
       case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
-        state.account.onboardCongrats = true
+        state.view = .navigation()
         return .none
       default:
         return .none
       }
     }
-    core
-      .onChange(of: \.account) { account, state, _ in
-        print(".onChange(of:): \(account)")
-        if account.isForceUpdate {
-          state.view = .forceUpdate()
-          return .none
-        }
-        if account.isMaintenance {
-          state.view = .maintenance()
-          return .none
-        }
-        if account.authUser == nil {
-          state.view = .onboard()
-          return .none
-        }
-        guard let currentUser = account.currentUser else {
-          state.view = .onboard()
-          return .none
-        }
-        if account.onboardCongrats {
-          state.view = .navigation()
-          return .none
-        }
-        if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username == nil {
-          state.view = .onboard()
-          return .none
-        }
-        state.view = .navigation()
-        return .none
-      }
   }
 
   @ReducerBuilder<State, Action>
@@ -100,7 +92,6 @@ public struct AppLogic: Reducer {
     }
     AuthLogic()
     FirestoreLogic()
-    CurrentUserLogic()
     StoreLogic()
     QuickActionLogic()
   }

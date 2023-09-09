@@ -54,7 +54,7 @@ public struct ProfileLogic: Reducer {
         return .none
 
       case let .currentUserResponse(.success(data)):
-        state.user = .some(data.currentUser)
+        state.user = .success(data.currentUser)
         return .none
 
       case let .currentUserResponse(.failure(error)):
@@ -108,7 +108,7 @@ public struct ProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          if case let .some(user) = viewStore.user {
+          if case let .success(user) = viewStore.user {
             ProfileSection(
               user: user.fragments.profileSectionFragment,
               editProfile: {

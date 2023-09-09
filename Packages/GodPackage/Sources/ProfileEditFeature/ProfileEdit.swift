@@ -4,6 +4,7 @@ import ComposableArchitecture
 import FirebaseAuthClient
 import LabeledButton
 import ManageAccountFeature
+import UserDefaultsClient
 import SwiftUI
 
 public struct ProfileEditLogic: Reducer {
@@ -23,6 +24,7 @@ public struct ProfileEditLogic: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
 
   public var body: some Reducer<State, Action> {
@@ -37,6 +39,7 @@ public struct ProfileEditLogic: Reducer {
 
       case .logoutButtonTapped:
         return .run { _ in
+          await userDefaults.setOnboardCompleted(false)
           try signOut()
         }
 

@@ -1,7 +1,9 @@
+import UserDefaultsClient
 import ComposableArchitecture
 import ContactsClient
 
 public struct OnboardPathLogic: Reducer {
+  @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
 
   func skipFindFriend() -> Bool {
@@ -83,8 +85,9 @@ public struct OnboardPathLogic: Reducer {
 
       case .howItWorks(.delegate(.start)):
         // オンボーディングすべて終わり
-        return .none
-
+        return .run { _ in
+          await userDefaults.setOnboardCompleted(true)
+        }
       default:
         return .none
       }

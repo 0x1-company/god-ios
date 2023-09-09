@@ -40,10 +40,19 @@ public extension UserDefaultsClient {
   func verificationId() -> String? {
     stringForKey(keyVerificationId)
   }
+  
+  func setOnboardCompleted(_ value: Bool) async {
+    await setBool(value, keyOnboardCompleted)
+  }
+  
+  func onboardCompleted() -> Bool {
+    boolForKey(keyOnboardCompleted)
+  }
 }
 
 private let keyPhoneNumber = "PHONE_NUMBER"
 private let keyVerificationId = "VERIFICATION_ID"
+private let keyOnboardCompleted = "ONBOARD_COMPLETED"
 
 private let decoder = JSONDecoder()
 private let encoder = JSONEncoder()
