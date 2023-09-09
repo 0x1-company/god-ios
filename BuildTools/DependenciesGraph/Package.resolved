@@ -5,17 +5,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
-        "version" : "1.2.2"
+        "revision" : "8f4d2753f0e4778c76d5f05ad16c74f707390531",
+        "version" : "1.2.3"
       }
     },
     {
       "identity" : "swift-dependencies-graph",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tomokisun/swift-dependencies-graph",
+      "location" : "https://github.com/Ryu0118/swift-dependencies-graph",
       "state" : {
-        "branch" : "include-product",
-        "revision" : "2c52c2c16459e7e03a4e7c317908c9e059c94a2c"
+        "revision" : "e8c8f87060acd5d90b62bfd403cf0f2149cc320b",
+        "version" : "0.1.0"
       }
     }
   ],
