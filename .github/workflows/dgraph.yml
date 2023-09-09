@@ -25,6 +25,7 @@ jobs:
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/CupertinoPackage
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/DependencyPackage
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/GodPackage
+      - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --include-product ./Packages/GodPackage
       - run: ./BuildTools/DependenciesGraph/.build/release/dgraph --add-to-readme ./Packages/UIComponentPackage
       - continue-on-error: true
         uses: peter-evans/create-pull-request@v5
