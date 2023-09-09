@@ -30,7 +30,6 @@ public struct AppLogic: Reducer {
       var currentUser: God.CurrentUserQuery.Data.CurrentUser?
       var isForceUpdate = AsyncValue<Bool>.none
       var isMaintenance = AsyncValue<Bool>.none
-      var onboardCongrats = false
     }
   }
 
@@ -47,15 +46,6 @@ public struct AppLogic: Reducer {
   @Dependency(\.mainQueue) var mainQueue
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
-      switch action {
-      case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
-        state.account.onboardCongrats = true
-        return .none
-      default:
-        return .none
-      }
-    }
     core
       .onChange(of: \.account) { account, state, _ in
         print(".onChange(of:): \(account)")
@@ -73,10 +63,6 @@ public struct AppLogic: Reducer {
         }
         guard let currentUser = account.currentUser else {
           state.view = .onboard()
-          return .none
-        }
-        if account.onboardCongrats {
-          state.view = .navigation()
           return .none
         }
         if currentUser.firstName.isEmpty || currentUser.lastName.isEmpty || currentUser.username == nil {
