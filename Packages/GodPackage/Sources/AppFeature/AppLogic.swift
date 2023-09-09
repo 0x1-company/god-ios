@@ -42,16 +42,28 @@ public struct AppLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     core
-      .onChange(of: \.account) { account, state, _ in
-        if case .success(true) = account.isForceUpdate {
+      .onChange(of: \.account.isForceUpdate) { isForceUpdate, state, _ in
+        if case .success(true) = isForceUpdate {
           state.view = .forceUpdate()
-          return .none
         }
-        if case .success(true) = account.isMaintenance {
+        return .none
+      }
+      .onChange(of: \.account.isMaintenance) { isMaintenance, state, _ in
+        if case .success(true) = isMaintenance {
           state.view = .maintenance()
+        }
+        return .none
+      }
+      .onChange(of: \.account.authUser) { authUser, state, _ in
+        guard case let .success(user) = authUser else {
           return .none
         }
-        state.view = .navigation()
+        let onboardCompleted = true
+        if user != nil && onboardCompleted {
+          state.view = .navigation()
+        } else {
+          state.view = .onboard()
+        }
         return .none
       }
   }
