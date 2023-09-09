@@ -12,10 +12,10 @@
     {
       "identity" : "swift-dependencies-graph",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Ryu0118/swift-dependencies-graph",
+      "location" : "https://github.com/tomokisun/swift-dependencies-graph",
       "state" : {
-        "revision" : "d371eb57b95f1f895aa23f8e514485da87bd97cc",
-        "version" : "0.0.2"
+        "branch" : "include-product",
+        "revision" : "2c52c2c16459e7e03a4e7c317908c9e059c94a2c"
       }
     }
   ],
