@@ -142,6 +142,7 @@ let package = Package(
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
+      .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
