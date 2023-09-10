@@ -2,9 +2,15 @@ name: Check
 
 on:
   pull_request:
+    paths:
+      - '**.graphql'
+      - '**.graphqls'
   push:
     branches:
       - main
+    paths:
+      - '**.graphql'
+      - '**.graphqls'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
