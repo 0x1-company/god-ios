@@ -37,6 +37,7 @@ graph TD;
     InboxFeature-->RevealFeature;
     InboxFeature-->GodModeFeature;
     InboxFeature-->ShareScreenshotFeature;
+    InboxFeature-->NotificationCenterClient;
     InboxFeature-->AnimationDisableTransaction;
     LaunchFeature-->Colors;
     LaunchFeature-->ComposableArchitecture;
