@@ -2,11 +2,11 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import NotificationCenterClient
+import Photos
+import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
 import SwiftUI
-import Photos
-import PhotosClient
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
