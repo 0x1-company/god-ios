@@ -43,7 +43,7 @@ public struct InboxLogic: Reducer {
           )
         }
       case .activityButtonTapped:
-        state.destination = .activityDetail()
+        state.destination = .inboxDetail()
         return .none
 
       case .fromGodTeamButtonTapped:
@@ -82,21 +82,21 @@ public struct InboxLogic: Reducer {
     public enum State: Equatable {
       case godMode(GodModeLogic.State)
       case fromGodTeam(FromGodTeamLogic.State)
-      case activityDetail(ActivityDetailLogic.State = .init())
+      case inboxDetail(InboxDetailLogic.State = .init())
       case activatedGodMode(ActivatedGodModeLogic.State = .init())
     }
 
     public enum Action: Equatable {
       case godMode(GodModeLogic.Action)
       case fromGodTeam(FromGodTeamLogic.Action)
-      case activityDetail(ActivityDetailLogic.Action)
+      case inboxDetail(InboxDetailLogic.Action)
       case activatedGodMode(ActivatedGodModeLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
       Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamLogic.init)
-      Scope(state: /State.activityDetail, action: /Action.activityDetail, child: ActivityDetailLogic.init)
+      Scope(state: /State.inboxDetail, action: /Action.inboxDetail, child: InboxDetailLogic.init)
       Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeLogic.init)
     }
   }
@@ -167,9 +167,9 @@ public struct InboxView: View {
       )
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxLogic.Destination.State.activityDetail,
-        action: InboxLogic.Destination.Action.activityDetail,
-        content: ActivityDetailView.init(store:)
+        state: /InboxLogic.Destination.State.inboxDetail,
+        action: InboxLogic.Destination.Action.inboxDetail,
+        content: InboxDetailView.init(store:)
       )
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),

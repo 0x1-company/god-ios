@@ -5,7 +5,7 @@ import RevealFeature
 import SwiftUI
 import NotificationCenterClient
 
-public struct ActivityDetailLogic: Reducer {
+public struct InboxDetailLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -68,10 +68,10 @@ public struct ActivityDetailLogic: Reducer {
   }
 }
 
-public struct ActivityDetailView: View {
-  let store: StoreOf<ActivityDetailLogic>
+public struct InboxDetailView: View {
+  let store: StoreOf<InboxDetailLogic>
 
-  public init(store: StoreOf<ActivityDetailLogic>) {
+  public init(store: StoreOf<InboxDetailLogic>) {
     self.store = store
   }
 
@@ -125,8 +125,8 @@ public struct ActivityDetailView: View {
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ActivityDetailLogic.Destination.State.reveal,
-        action: ActivityDetailLogic.Destination.Action.reveal,
+        state: /InboxDetailLogic.Destination.State.reveal,
+        action: InboxDetailLogic.Destination.Action.reveal,
         content: { store in
           RevealView(store: store)
             .presentationDetents([.fraction(0.4)])
@@ -136,12 +136,12 @@ public struct ActivityDetailView: View {
   }
 }
 
-struct ActivityDetailViewPreviews: PreviewProvider {
+struct InboxDetailViewPreviews: PreviewProvider {
   static var previews: some View {
-    ActivityDetailView(
+    InboxDetailView(
       store: .init(
-        initialState: ActivityDetailLogic.State(),
-        reducer: { ActivityDetailLogic() }
+        initialState: InboxDetailLogic.State(),
+        reducer: { InboxDetailLogic() }
       )
     )
   }
