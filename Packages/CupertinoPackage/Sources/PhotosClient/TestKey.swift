@@ -10,6 +10,9 @@ public extension DependencyValues {
 
 extension PhotosClient: TestDependencyKey {
   public static let testValue = Self(
-    requestImage: unimplemented("\(Self.self).requestImage", placeholder: .finished)
+    requestAuthorization: unimplemented("\(Self.self).requestAuthorization"),
+    authorizationStatus: unimplemented("\(Self.self).authorizationStatus"),
+    requestImage: unimplemented("\(Self.self).requestImage", placeholder: .finished),
+    performChanges: unimplemented("\(Self.self).performChanges")
   )
 }
