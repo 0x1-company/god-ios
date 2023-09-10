@@ -1,8 +1,8 @@
 import AsyncValue
 import ComposableArchitecture
-import SwiftUI
 import Photos
 import PhotosClient
+import SwiftUI
 
 public struct ShareScreenshotLogic: Reducer {
   public init() {}
@@ -22,7 +22,7 @@ public struct ShareScreenshotLogic: Reducer {
     case messagesButtonTapped
     case imageResponse(UIImage?)
   }
-  
+
   @Dependency(\.photos.requestImage) var requestImage
 
   public var body: some Reducer<State, Action> {
@@ -46,7 +46,7 @@ public struct ShareScreenshotLogic: Reducer {
 
       case .messagesButtonTapped:
         return .none
-        
+
       case let .imageResponse(image):
         state.image = .success(image)
         return .none

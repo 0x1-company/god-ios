@@ -1,6 +1,6 @@
+import Dependencies
 import Photos
 import UIKit
-import Dependencies
 
 extension PhotosClient: DependencyKey {
   public static let liveValue = Self(
