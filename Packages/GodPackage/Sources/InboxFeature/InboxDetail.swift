@@ -5,6 +5,8 @@ import NotificationCenterClient
 import RevealFeature
 import ShareScreenshotFeature
 import SwiftUI
+import Photos
+import PhotosClient
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
@@ -23,6 +25,7 @@ public struct InboxDetailLogic: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.photos) var photos
   @Dependency(\.notificationCenter) var notificationCenter
 
   public var body: some ReducerOf<Self> {
@@ -30,6 +33,7 @@ public struct InboxDetailLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
+          _ = await photos.requestAuthorization(.readWrite)
           for await _ in await notificationCenter.userDidTakeScreenshotNotification() {
             await send(.userDidTakeScreenshotNotification)
           }
@@ -50,7 +54,16 @@ public struct InboxDetailLogic: Reducer {
         return .none
 
       case .userDidTakeScreenshotNotification:
-        state.destination = .shareScreenshot()
+        guard case .authorized = photos.authorizationStatus(.readWrite)
+        else { return .none }
+        let options = PHFetchOptions()
+        options.fetchLimit = 1
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        guard let asset = photos.fetchAssets(options).first
+        else { return .none }
+        state.destination = .shareScreenshot(
+          ShareScreenshotLogic.State(asset: asset)
+        )
         return .none
       }
     }
@@ -59,7 +72,7 @@ public struct InboxDetailLogic: Reducer {
   public struct Destination: Reducer {
     public enum State: Equatable {
       case reveal(RevealLogic.State = .init())
-      case shareScreenshot(ShareScreenshotLogic.State = .init())
+      case shareScreenshot(ShareScreenshotLogic.State)
     }
 
     public enum Action: Equatable {

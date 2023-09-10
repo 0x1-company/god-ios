@@ -1,22 +1,43 @@
+import AsyncValue
 import ComposableArchitecture
 import SwiftUI
+import Photos
+import PhotosClient
 
 public struct ShareScreenshotLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    var asset: PHAsset
+    var image = AsyncValue<UIImage?>.none
+    public init(asset: PHAsset) {
+      self.asset = asset
+    }
   }
 
   public enum Action: Equatable {
+    case onTask
     case lineButtonTapped
     case instagramButtonTapped
     case messagesButtonTapped
+    case imageResponse(UIImage?)
   }
+  
+  @Dependency(\.photos.requestImage) var requestImage
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
+      case .onTask:
+        let asset = state.asset
+        let size = CGSize(width: 91, height: 184)
+        let contentMode = PHImageContentMode.aspectFit
+        state.image = .loading
+        return .run { send in
+          for await (image, _) in await requestImage(asset, size, contentMode, nil) {
+            await send(.imageResponse(image))
+          }
+        }
       case .lineButtonTapped:
         return .none
 
@@ -24,6 +45,10 @@ public struct ShareScreenshotLogic: Reducer {
         return .none
 
       case .messagesButtonTapped:
+        return .none
+        
+      case let .imageResponse(image):
+        state.image = .success(image)
         return .none
       }
     }
@@ -40,10 +65,19 @@ public struct ShareScreenshotView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack(alignment: .top, spacing: 20) {
-        Color.red
-          .frame(width: 91, height: 184)
-          .cornerRadius(16)
-          .padding(.top, 12)
+        Group {
+          if case let .success(.some(image)) = viewStore.image {
+            Image(uiImage: image)
+              .resizable()
+              .scaledToFit()
+          }
+          if case .loading = viewStore.image {
+            ProgressView()
+          }
+        }
+        .frame(width: 91, height: 184)
+        .cornerRadius(16)
+        .padding(.top, 12)
 
         VStack(spacing: 36) {
           Text("Share Screenshot")
@@ -90,22 +124,7 @@ public struct ShareScreenshotView: View {
         }
       }
       .padding(.top, 24)
+      .task { await viewStore.send(.onTask).finish() }
     }
-  }
-}
-
-struct ShareScreenshotViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("a")
-      .sheet(isPresented: .constant(true)) {
-        ShareScreenshotView(
-          store: .init(
-            initialState: ShareScreenshotLogic.State(),
-            reducer: { ShareScreenshotLogic() }
-          )
-        )
-        .presentationDetents([.fraction(0.3)])
-        .presentationDragIndicator(.visible)
-      }
   }
 }
