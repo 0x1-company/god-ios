@@ -1,10 +1,10 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import RevealFeature
-import SwiftUI
 import NotificationCenterClient
+import RevealFeature
 import ShareScreenshotFeature
+import SwiftUI
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
@@ -48,7 +48,7 @@ public struct InboxDetailLogic: Reducer {
 
       case .destination:
         return .none
-        
+
       case .userDidTakeScreenshotNotification:
         state.destination = .shareScreenshot()
         return .none
