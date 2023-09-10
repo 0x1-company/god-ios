@@ -137,7 +137,6 @@ let package = Package(
     ]),
     .target(name: "PollFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
-      .product(name: "ColorHex", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
