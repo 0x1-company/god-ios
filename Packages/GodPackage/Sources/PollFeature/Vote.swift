@@ -40,7 +40,7 @@ public struct VoteLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         state.choices = mock.shuffled().prefix(4).map { $0 }

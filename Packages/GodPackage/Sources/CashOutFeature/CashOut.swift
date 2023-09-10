@@ -14,7 +14,7 @@ public struct CashOutLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .cashOutButtonTapped:
         return .none

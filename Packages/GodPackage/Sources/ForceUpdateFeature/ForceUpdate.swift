@@ -17,7 +17,7 @@ public struct ForceUpdateLogic: Reducer {
   @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .updateButtonTapped:
         return .run { _ in

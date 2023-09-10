@@ -27,7 +27,7 @@ public struct GenderSettingLogic: Reducer {
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .infoButtonTapped:
         state.help = .init()

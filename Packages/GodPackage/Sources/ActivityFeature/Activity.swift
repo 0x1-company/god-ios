@@ -28,7 +28,7 @@ public struct ActivityLogic: Reducer {
   enum Cancel { case activities }
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         state.pagination = .loading

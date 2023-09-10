@@ -23,8 +23,8 @@ public struct GradeSettingLogic: Reducer {
     }
   }
 
-  public var body: some ReducerOf<Self> {
-    Reduce { state, action in
+  public var body: some Reducer<State, Action> {
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .none

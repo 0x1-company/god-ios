@@ -29,7 +29,7 @@ public struct ShareFeedbackLogic: Reducer {
   """
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .shareByEmailButtonTapped:
         let urlString = "mailto:\(Self.supportEmailAddress)?subject=\(Self.supportEmailSubject)&body=\(Self.emailTemplateText)"

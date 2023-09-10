@@ -47,7 +47,7 @@ public struct LastNameSettingLogic: Reducer {
     Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
       DoubleCheckNameLogic()
     }
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         guard

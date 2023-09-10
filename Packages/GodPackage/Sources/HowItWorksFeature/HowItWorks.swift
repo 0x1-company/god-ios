@@ -21,7 +21,7 @@ public struct HowItWorksLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .startButtonTapped:
         return .send(.delegate(.start), animation: .default)

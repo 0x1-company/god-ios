@@ -13,7 +13,7 @@ public struct GodLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
         return .none

@@ -28,7 +28,7 @@ public struct ProfileEditLogic: Reducer {
   @Dependency(\.firebaseAuth.signOut) var signOut
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .restorePurchasesButtonTapped:
         return .none

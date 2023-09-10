@@ -37,7 +37,7 @@ public struct PhoneNumberLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .nextButtonTapped:
         guard phoneNumberClient.isValidPhoneNumber(state.phoneNumber)

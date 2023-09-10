@@ -15,7 +15,7 @@ public struct ManageAccountLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .closeButtonTapped:
         return .run { _ in

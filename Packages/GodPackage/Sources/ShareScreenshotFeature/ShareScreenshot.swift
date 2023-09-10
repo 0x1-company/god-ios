@@ -26,7 +26,7 @@ public struct ShareScreenshotLogic: Reducer {
   @Dependency(\.photos.requestImage) var requestImage
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         let asset = state.asset

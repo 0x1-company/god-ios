@@ -46,7 +46,7 @@ public struct AddLogic: Reducer {
     Scope(state: \.friendRequests, action: /Action.friendRequests) {
       FriendRequestsLogic()
     }
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .none
@@ -86,7 +86,7 @@ public struct AddLogic: Reducer {
         return .none
       }
     }
-    Reduce { state, _ in
+    Reduce<State, Action> { state, _ in
       state.contactsReEnableCardVisible = contactsAuthorizationStatus(.contacts) != .authorized
       return .none
     }

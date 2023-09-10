@@ -17,7 +17,7 @@ public struct PollLogic: Reducer {
     Scope(state: \.vote, action: /Action.vote) {
       VoteLogic()
     }
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .vote:
         return .none
