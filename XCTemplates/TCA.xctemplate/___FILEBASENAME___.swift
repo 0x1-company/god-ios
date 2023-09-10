@@ -12,7 +12,7 @@ public struct ___VARIABLE_productName:identifier___Logic: Reducer {
     case onTask
   }
 
-  public var body: some ReducerOf<Self> {
+  public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:

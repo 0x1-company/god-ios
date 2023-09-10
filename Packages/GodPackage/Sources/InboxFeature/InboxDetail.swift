@@ -28,7 +28,7 @@ public struct InboxDetailLogic: Reducer {
   @Dependency(\.photos) var photos
   @Dependency(\.notificationCenter) var notificationCenter
 
-  public var body: some ReducerOf<Self> {
+  public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:

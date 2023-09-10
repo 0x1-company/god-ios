@@ -93,7 +93,7 @@ public struct OnboardLogic: Reducer {
       case howItWorks(HowItWorksLogic.Action)
     }
 
-    public var body: some ReducerOf<Self> {
+    public var body: some Reducer<State, Action> {
       Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingLogic.init)
       Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingLogic.init)
       Scope(state: /State.findFriend, action: /Action.findFriend, child: FindFriendLogic.init)

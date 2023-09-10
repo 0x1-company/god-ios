@@ -26,7 +26,7 @@ public struct InvitationsLeftLogic: Reducer {
     case enumerateContacts
   }
 
-  public var body: some ReducerOf<Self> {
+  public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
