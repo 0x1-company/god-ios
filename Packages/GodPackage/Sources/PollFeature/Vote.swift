@@ -1,4 +1,4 @@
-import ColorHex
+import Colors
 import ComposableArchitecture
 import LabeledButton
 import SwiftUI
@@ -84,60 +84,52 @@ public struct VoteView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ZStack {
-        Color(0xFF58_C150)
-          .ignoresSafeArea()
-
-        VStack {
-          Spacer()
-          Text("Your ideal study buddy")
-            .font(.title2)
-            .foregroundColor(.white)
-          Spacer()
-          LazyVGrid(
-            columns: Array(repeating: GridItem(spacing: 16), count: 2),
-            spacing: 16
-          ) {
-            ForEach(viewStore.choices, id: \.self) { choice in
-              AnswerButton(
-                choice,
-                progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
-              ) {
-                viewStore.send(.answerButtonTapped)
-              }
-              .disabled(viewStore.isAnswered)
-            }
-          }
-
-          ZStack {
-            if viewStore.isAnswered {
-              Button("Tap to continue") {
-                viewStore.send(.continueButtonTapped)
-              }
-            } else {
-              HStack(spacing: 0) {
-                LabeledButton("Shuffle", systemImage: "shuffle") {
-                  viewStore.send(.shuffleButtonTapped)
-                }
-                LabeledButton("Skip", systemImage: "forward.fill") {
-                  viewStore.send(.skipButtonTapped)
-                }
-              }
-            }
-          }
-          .frame(height: 50)
-          .animation(.default, value: viewStore.isAnswered)
+      VStack(spacing: 0) {
+        Spacer()
+        Text("Your ideal study buddy")
+          .font(.title2)
           .foregroundColor(.white)
-          .padding(.vertical, 64)
+        Spacer()
+        LazyVGrid(
+          columns: Array(repeating: GridItem(spacing: 16), count: 2),
+          spacing: 16
+        ) {
+          ForEach(viewStore.choices, id: \.self) { choice in
+            AnswerButton(
+              choice,
+              progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
+            ) {
+              viewStore.send(.answerButtonTapped)
+            }
+            .disabled(viewStore.isAnswered)
+          }
         }
-        .padding(.horizontal, 36)
+        
+        ZStack {
+          if viewStore.isAnswered {
+            Text("Tap to continue")
+          } else {
+            HStack(spacing: 0) {
+              LabeledButton("Shuffle", systemImage: "shuffle") {
+                viewStore.send(.shuffleButtonTapped)
+              }
+              LabeledButton("Skip", systemImage: "forward.fill") {
+                viewStore.send(.skipButtonTapped)
+              }
+            }
+          }
+        }
+        .frame(height: 50)
+        .animation(.default, value: viewStore.isAnswered)
+        .foregroundColor(.white)
+        .padding(.vertical, 64)
       }
-      .alert(
-        store: store.scope(
-          state: \.$alert,
-          action: { .alert($0) }
-        )
-      )
+      .padding(.horizontal, 36)
+      .background(Color.godGreen)
+      .alert(store: store.scope(state: \.$alert,action: { .alert($0) }))
+      .onTapGesture {
+        viewStore.send(.continueButtonTapped)
+      }
     }
   }
 }
