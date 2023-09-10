@@ -16,7 +16,7 @@ public enum Constants {
   public static let godappteam = "godappteam"
   public static let xURL = URL(string: "https://twitter.com/\(Self.godappteam)")!
   public static let instagramURL = URL(string: "https://instagram.com/\(Self.godappteam)")!
-  public static let tiktokURL = URL(string: "https://tiktok.com/\(Self.godappteam)")!
+  public static let tiktokURL = URL(string: "https://tiktok.com/@\(Self.godappteam)")!
 
   public static let docsURL = URL(string: "https://docs.godapp.jp")!
   public static let faqURL = URL(string: "\(Self.docsURL)/faq")!
