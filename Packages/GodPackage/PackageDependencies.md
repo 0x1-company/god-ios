@@ -79,6 +79,8 @@ graph TD;
     RevealFeature-->ButtonStyles;
     RevealFeature-->StoreKitClient;
     RevealFeature-->ComposableArchitecture;
+    ShareScreenshotFeature-->AsyncValue;
+    ShareScreenshotFeature-->PhotosClient;
     ShareScreenshotFeature-->ComposableArchitecture;
     ShopFeature-->GodClient;
     ShopFeature-->ComposableArchitecture;
