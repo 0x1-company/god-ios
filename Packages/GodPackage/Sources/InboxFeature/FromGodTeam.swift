@@ -16,7 +16,7 @@ public struct FromGodTeamLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .closeButtonTapped:
         return .run { _ in

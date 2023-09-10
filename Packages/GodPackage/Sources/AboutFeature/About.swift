@@ -37,7 +37,7 @@ public struct AboutLogic: Reducer {
   @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .howItWorksButtonTapped:
         state.destination = .howItWorks()

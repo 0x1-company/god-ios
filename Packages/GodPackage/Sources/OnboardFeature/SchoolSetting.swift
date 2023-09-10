@@ -24,7 +24,7 @@ public struct SchoolSettingLogic: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .none

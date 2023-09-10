@@ -47,7 +47,7 @@ public struct OnboardLogic: Reducer {
     Scope(state: \.welcome, action: /Action.welcome) {
       WelcomeLogic()
     }
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .welcome(.getStartedButtonTapped):
         state.path.append(.gradeSetting())

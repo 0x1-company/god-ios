@@ -27,7 +27,7 @@ public struct InvitationsLeftLogic: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         guard case .authorized = authorizationStatus(.contacts)

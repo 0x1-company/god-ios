@@ -29,7 +29,7 @@ public struct InboxLogic: Reducer {
   @Dependency(\.store) var storeClient
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         let id = storeClient.godModeId()

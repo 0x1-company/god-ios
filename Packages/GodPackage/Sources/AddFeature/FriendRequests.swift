@@ -17,7 +17,7 @@ public struct FriendRequestsLogic: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
         return .none

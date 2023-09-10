@@ -21,7 +21,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .skipButtonTapped:
         return .send(.delegate(.nextScreen))

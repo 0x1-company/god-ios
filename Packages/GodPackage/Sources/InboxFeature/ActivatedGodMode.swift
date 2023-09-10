@@ -18,7 +18,7 @@ public struct ActivatedGodModeLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
         return .none

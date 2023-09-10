@@ -25,7 +25,7 @@ public struct ProfileExternalLogic: Reducer {
   @Dependency(\.godClient) var godClient
 
   public var body: some ReducerOf<Self> {
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         enum Cancel { case id }

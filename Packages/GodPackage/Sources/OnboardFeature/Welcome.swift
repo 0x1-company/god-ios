@@ -33,7 +33,7 @@ public struct WelcomeLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Reduce { state, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .loginButtonTapped:
         return .none

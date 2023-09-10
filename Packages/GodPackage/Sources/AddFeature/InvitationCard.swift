@@ -23,7 +23,7 @@ public struct InvitationCardLogic: Reducer {
   }
 
   public var body: some ReducerOf<Self> {
-    Reduce { _, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .inviteButtonTapped:
         return .none
