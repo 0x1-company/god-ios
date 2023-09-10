@@ -110,7 +110,7 @@ public struct VoteView: View {
             .disabled(viewStore.isAnswered)
           }
         }
-        
+
         ZStack {
           if viewStore.isAnswered {
             Text("Tap to continue")
@@ -133,7 +133,7 @@ public struct VoteView: View {
       .padding(.horizontal, 36)
       .background(Color.godGreen)
       .task { await viewStore.send(.onTask).finish() }
-      .alert(store: store.scope(state: \.$alert,action: { .alert($0) }))
+      .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
       .onTapGesture {
         viewStore.send(.continueButtonTapped)
       }
