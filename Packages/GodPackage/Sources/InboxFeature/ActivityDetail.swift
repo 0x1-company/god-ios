@@ -3,6 +3,7 @@ import Colors
 import ComposableArchitecture
 import RevealFeature
 import SwiftUI
+import NotificationCenterClient
 
 public struct ActivityDetailLogic: Reducer {
   public init() {}
@@ -17,16 +18,21 @@ public struct ActivityDetailLogic: Reducer {
     case seeWhoSentItButtonTapped
     case closeButtonTapped
     case destination(PresentationAction<Destination.Action>)
+    case userDidTakeScreenshotNotification
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.notificationCenter) var notificationCenter
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        return .none
-
+        return .run { send in
+          for await _ in await notificationCenter.userDidTakeScreenshotNotification() {
+            await send(.userDidTakeScreenshotNotification)
+          }
+        }
       case .seeWhoSentItButtonTapped:
         state.destination = .reveal()
         return .none
@@ -39,6 +45,9 @@ public struct ActivityDetailLogic: Reducer {
         state.destination = nil
         return .none
       case .destination:
+        return .none
+        
+      case .userDidTakeScreenshotNotification:
         return .none
       }
     }
