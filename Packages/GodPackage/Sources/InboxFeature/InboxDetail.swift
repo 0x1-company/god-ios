@@ -3,8 +3,10 @@ import Colors
 import ComposableArchitecture
 import RevealFeature
 import SwiftUI
+import NotificationCenterClient
+import ShareScreenshotFeature
 
-public struct ActivityDetailLogic: Reducer {
+public struct InboxDetailLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -17,16 +19,21 @@ public struct ActivityDetailLogic: Reducer {
     case seeWhoSentItButtonTapped
     case closeButtonTapped
     case destination(PresentationAction<Destination.Action>)
+    case userDidTakeScreenshotNotification
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.notificationCenter) var notificationCenter
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        return .none
-
+        return .run { send in
+          for await _ in await notificationCenter.userDidTakeScreenshotNotification() {
+            await send(.userDidTakeScreenshotNotification)
+          }
+        }
       case .seeWhoSentItButtonTapped:
         state.destination = .reveal()
         return .none
@@ -38,7 +45,12 @@ public struct ActivityDetailLogic: Reducer {
       case .destination(.dismiss):
         state.destination = nil
         return .none
+
       case .destination:
+        return .none
+        
+      case .userDidTakeScreenshotNotification:
+        state.destination = .shareScreenshot()
         return .none
       }
     }
@@ -47,22 +59,29 @@ public struct ActivityDetailLogic: Reducer {
   public struct Destination: Reducer {
     public enum State: Equatable {
       case reveal(RevealLogic.State = .init())
+      case shareScreenshot(ShareScreenshotLogic.State = .init())
     }
 
     public enum Action: Equatable {
       case reveal(RevealLogic.Action)
+      case shareScreenshot(ShareScreenshotLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
+      Scope(state: /State.reveal, action: /Action.reveal) {
+        RevealLogic()
+      }
+      Scope(state: /State.shareScreenshot, action: /Action.shareScreenshot) {
+        ShareScreenshotLogic()
+      }
     }
   }
 }
 
-public struct ActivityDetailView: View {
-  let store: StoreOf<ActivityDetailLogic>
+public struct InboxDetailView: View {
+  let store: StoreOf<InboxDetailLogic>
 
-  public init(store: StoreOf<ActivityDetailLogic>) {
+  public init(store: StoreOf<InboxDetailLogic>) {
     self.store = store
   }
 
@@ -116,23 +135,31 @@ public struct ActivityDetailView: View {
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ActivityDetailLogic.Destination.State.reveal,
-        action: ActivityDetailLogic.Destination.Action.reveal,
-        content: { store in
-          RevealView(store: store)
-            .presentationDetents([.fraction(0.4)])
-        }
-      )
+        state: /InboxDetailLogic.Destination.State.reveal,
+        action: InboxDetailLogic.Destination.Action.reveal
+      ) { store in
+        RevealView(store: store)
+          .presentationDetents([.fraction(0.4)])
+      }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /InboxDetailLogic.Destination.State.shareScreenshot,
+        action: InboxDetailLogic.Destination.Action.shareScreenshot
+      ) { store in
+        ShareScreenshotView(store: store)
+          .presentationDetents([.fraction(0.3)])
+          .presentationDragIndicator(.visible)
+      }
     }
   }
 }
 
-struct ActivityDetailViewPreviews: PreviewProvider {
+struct InboxDetailViewPreviews: PreviewProvider {
   static var previews: some View {
-    ActivityDetailView(
+    InboxDetailView(
       store: .init(
-        initialState: ActivityDetailLogic.State(),
-        reducer: { ActivityDetailLogic() }
+        initialState: InboxDetailLogic.State(),
+        reducer: { InboxDetailLogic() }
       )
     )
   }

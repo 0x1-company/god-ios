@@ -12,6 +12,7 @@ let package = Package(
   products: [
     .library(name: "Build", targets: ["Build"]),
     .library(name: "ContactsClient", targets: ["ContactsClient"]),
+    .library(name: "NotificationCenterClient", targets: ["NotificationCenterClient"]),
     .library(name: "StoreKitClient", targets: ["StoreKitClient"]),
     .library(name: "UIApplicationClient", targets: ["UIApplicationClient"]),
     .library(name: "UIPasteboardClient", targets: ["UIPasteboardClient"]),
@@ -26,6 +27,9 @@ let package = Package(
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "ContactsClient", dependencies: [
+      .product(name: "Dependencies", package: "swift-dependencies"),
+    ]),
+    .target(name: "NotificationCenterClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "StoreKitClient", dependencies: [
