@@ -51,6 +51,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    guard Bundle.main.bundleIdentifier == "jp.godapp.ios.staging"
+    else { fatalError() }
     store.send(.appDelegate(.didFinishLaunching))
 
     return true
