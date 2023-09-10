@@ -12,7 +12,8 @@ extension PhotosClient: TestDependencyKey {
   public static let testValue = Self(
     requestAuthorization: unimplemented("\(Self.self).requestAuthorization"),
     authorizationStatus: unimplemented("\(Self.self).authorizationStatus"),
-    requestImage: unimplemented("\(Self.self).requestImage", placeholder: .finished),
+    fetchAssets: unimplemented("\(Self.self).fetchAssets"),
+    requestImage: unimplemented("\(Self.self).requestImage"),
     performChanges: unimplemented("\(Self.self).performChanges")
   )
 }

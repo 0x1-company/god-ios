@@ -163,6 +163,8 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [
+      .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "PhotosClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShopFeature", dependencies: [
