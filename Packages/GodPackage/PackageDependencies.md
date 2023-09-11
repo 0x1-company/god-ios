@@ -29,6 +29,7 @@ graph TD;
     GodModeFeature-->Colors;
     GodModeFeature-->ButtonStyles;
     GodModeFeature-->StoreKitClient;
+    GodModeFeature-->StoreKitHelpers;
     GodModeFeature-->ComposableArchitecture;
     HowItWorksFeature-->Lottie;
     HowItWorksFeature-->Colors;
