@@ -153,6 +153,14 @@ public struct InboxView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /InboxLogic.Destination.State.activatedGodMode,
+        action: InboxLogic.Destination.Action.activatedGodMode
+      ) { store in
+        ActivatedGodModeView(store: store)
+          .presentationDetents([.fraction(0.4)])
+      }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxLogic.Destination.State.godMode,
@@ -171,14 +179,6 @@ public struct InboxView: View {
         action: InboxLogic.Destination.Action.inboxDetail,
         content: InboxDetailView.init(store:)
       )
-      .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxLogic.Destination.State.activatedGodMode,
-        action: InboxLogic.Destination.Action.activatedGodMode
-      ) { store in
-        ActivatedGodModeView(store: store)
-          .presentationDetents([.fraction(0.4)])
-      }
     }
   }
 }
