@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import StoreKitClient
+import StoreKitHelpers
 
 public struct StoreLogic: Reducer {
   @Dependency(\.store) var storeClient
@@ -13,8 +14,7 @@ public struct StoreLogic: Reducer {
       enum Cancel { case id }
       return .run(priority: .background) { _ in
         for await result in storeClient.transactionUpdates() {
-          guard case let .verified(transaction) = result
-          else { continue }
+          let transaction = try checkVerified(result)
 //          if transaction.revocationDate != nil {
 //            // 払い戻しされてるので特典削除
 //          }
