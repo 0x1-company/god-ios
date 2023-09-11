@@ -85,6 +85,7 @@ let package = Package(
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
+      .product(name: "StoreKitHelpers", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [

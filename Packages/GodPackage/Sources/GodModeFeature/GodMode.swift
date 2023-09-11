@@ -3,6 +3,7 @@ import Colors
 import ComposableArchitecture
 import StoreKit
 import StoreKitClient
+import StoreKitHelpers
 import SwiftUI
 
 public struct GodModeLogic: Reducer {
@@ -19,10 +20,7 @@ public struct GodModeLogic: Reducer {
     case onTask
     case maybeLaterButtonTapped
     case continueButtonTapped
-    case purchaseError(Product.PurchaseError)
-    case verificationResponse(VerificationResult<StoreKit.Transaction>)
-    case pendingResponse
-    case userCancelledResponse
+    case purchaseResponse(TaskResult<StoreKit.Transaction>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -48,55 +46,34 @@ public struct GodModeLogic: Reducer {
           let result = try await storeClient.purchase(state.product)
           switch result {
           case let .success(verificationResult):
-            await send(.verificationResponse(verificationResult))
+            await send(.purchaseResponse(TaskResult {
+              try checkVerified(verificationResult)
+            }))
           case .pending:
-            await send(.pendingResponse)
+            await send(.purchaseResponse(.failure(InAppPurchaseError.pending)))
           case .userCancelled:
-            await send(.userCancelledResponse)
+            await send(.purchaseResponse(.failure(InAppPurchaseError.userCancelled)))
           @unknown default:
             fatalError()
           }
         } catch: { error, send in
-          guard let purchaseError = error as? Product.PurchaseError
-          else { return }
-          await send(.purchaseError(purchaseError))
+          await send(.purchaseResponse(.failure(error)))
         }
         .cancellable(id: Cancel.id)
-      case let .purchaseError(error):
-        switch error {
-        case .invalidQuantity:
-          return .none
-        case .productUnavailable:
-          return .none
-        case .purchaseNotAllowed:
-          return .none
-        case .ineligibleForOffer:
-          return .none
-        case .invalidOfferIdentifier:
-          return .none
-        case .invalidOfferPrice:
-          return .none
-        case .invalidOfferSignature:
-          return .none
-        case .missingOfferParameters:
-          return .none
-        @unknown default:
-          return .none
-        }
-      case let .verificationResponse(.verified(transaction)):
-        /// transaction.idをserverに送って課金処理を行う
+      case let .purchaseResponse(.success(transaction)):
+        // transaction.idをserverに送って課金処理を行う
         return .run { send in
           await transaction.finish()
           await send(.delegate(.activated), animation: .default)
           await dismiss()
         }
-      case let .verificationResponse(.unverified(transaction, error)):
-        print(transaction)
+      case let .purchaseResponse(.failure(error as VerificationResult<StoreKit.Transaction>.VerificationError)):
         print(error)
         return .none
-      case .pendingResponse:
+      case let .purchaseResponse(.failure(error as InAppPurchaseError)):
+        print(error)
         return .none
-      case .userCancelledResponse:
+      case .purchaseResponse(.failure):
         return .none
       case .delegate:
         return .none
