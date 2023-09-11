@@ -64,8 +64,9 @@ public struct GodModeLogic: Reducer {
         // transaction.idをserverに送って課金処理を行う
         return .run { send in
           await transaction.finish()
-          await send(.delegate(.activated), animation: .default)
-          await dismiss()
+          async let sendActivated: Void = send(.delegate(.activated), animation: .default)
+          async let sendDismiss: Void = dismiss()
+          _ = await (sendActivated, sendDismiss)
         }
       case let .purchaseResponse(.failure(error as VerificationResult<StoreKit.Transaction>.VerificationError)):
         print(error)
