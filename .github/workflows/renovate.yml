@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: xcodebuild -workspace God.xcworkspace -resolvePackageDependencies -scheme "App (Staging project)"
-      - run: xcodebuild -workspace .github/package.xcworkspace -resolvePackageDependencies -scheme AppFeature
       - run: swift build -c release --package-path ./BuildTools/ApolloTool
       - run: swift build -c release --package-path ./BuildTools/DependenciesGraph --product dgraph
       - run: swift build -c release --package-path ./BuildTools/SwiftFormatTool --product swiftformat
