@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B7008E6E2A8027F600C36803 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7CCF9A12A7AF47600B64CFE /* GoogleService-Info.plist */; };
+		B751B11F2AB03A7D00A09F8E /* StoreKitConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = B751B11E2AB03A7D00A09F8E /* StoreKitConfiguration.storekit */; };
 		B783E0FA2A11FFD0002E782F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0F92A11FFD0002E782F /* Assets.xcassets */; };
 		B783E0FD2A11FFD0002E782F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0FC2A11FFD0002E782F /* Preview Assets.xcassets */; };
 		B783E1022A120003002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1012A120003002E782F /* App.swift */; };
@@ -30,7 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B748AC5A2A439285009D3722 /* App.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = App.xctestplan; path = ../App.xctestplan; sourceTree = "<group>"; };
+		B751B11E2AB03A7D00A09F8E /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = StoreKitConfiguration.storekit; path = Development/StoreKitConfiguration.storekit; sourceTree = "<group>"; };
 		B783E0F32A11FFD0002E782F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B783E0F92A11FFD0002E782F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B783E0FC2A11FFD0002E782F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -60,7 +61,6 @@
 		B783E0A92A11FF7D002E782F = {
 			isa = PBXGroup;
 			children = (
-				B748AC5A2A439285009D3722 /* App.xctestplan */,
 				B783E0F42A11FFD0002E782F /* Multiplatform */,
 				B783E13D2A1200A1002E782F /* Frameworks */,
 				B783E0B32A11FF7D002E782F /* Products */,
@@ -83,6 +83,7 @@
 				B783E0F92A11FFD0002E782F /* Assets.xcassets */,
 				B783E16E2A121FC6002E782F /* Info.plist */,
 				B7CCF9A12A7AF47600B64CFE /* GoogleService-Info.plist */,
+				B751B11E2AB03A7D00A09F8E /* StoreKitConfiguration.storekit */,
 				B783E0FB2A11FFD0002E782F /* Preview Content */,
 			);
 			path = Multiplatform;
@@ -147,7 +148,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B783E0AD2A11FF7D002E782F /* Build configuration list for PBXProject "Staging" */;
+			buildConfigurationList = B783E0AD2A11FF7D002E782F /* Build configuration list for PBXProject "Development" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -172,6 +173,7 @@
 			files = (
 				B783E0FD2A11FFD0002E782F /* Preview Assets.xcassets in Resources */,
 				B783E0FA2A11FFD0002E782F /* Assets.xcassets in Resources */,
+				B751B11F2AB03A7D00A09F8E /* StoreKitConfiguration.storekit in Resources */,
 				B7008E6E2A8027F600C36803 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,7 +376,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B783E0AD2A11FF7D002E782F /* Build configuration list for PBXProject "Staging" */ = {
+		B783E0AD2A11FF7D002E782F /* Build configuration list for PBXProject "Development" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B783E0BE2A11FF7D002E782F /* Debug */,
