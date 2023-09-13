@@ -1,3 +1,4 @@
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import LabeledButton
@@ -116,13 +117,14 @@ public struct VoteView: View {
             Text("Tap to continue")
           } else {
             HStack(spacing: 0) {
-              LabeledButton("シャッフル", systemImage: "shuffle") {
+              LabeledButton("Shuffle", systemImage: "shuffle") {
                 viewStore.send(.shuffleButtonTapped)
               }
-              LabeledButton("スキップ", systemImage: "forward.fill") {
+              LabeledButton("Skip", systemImage: "forward.fill") {
                 viewStore.send(.skipButtonTapped)
               }
             }
+            .buttonStyle(HoldDownButtonStyle())
           }
         }
         .frame(height: 50)
