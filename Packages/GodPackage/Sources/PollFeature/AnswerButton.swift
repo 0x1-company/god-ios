@@ -81,7 +81,7 @@ public struct AnswerButton: View {
       let player = try engine?.makePlayer(with: pattern)
       try player?.start(atTime: CHHapticTimeImmediate)
     } catch {
-      print("Failed to play pattern: (error.localizedDescription).")
+      print("Failed to play pattern: \(error.localizedDescription).")
     }
   }
 
@@ -92,7 +92,7 @@ public struct AnswerButton: View {
       engine = try CHHapticEngine()
       try engine?.start()
     } catch {
-      print("Error creating the engine: (error.localizedDescription)")
+      print("Error creating the engine: \(error.localizedDescription)")
     }
 
     engine?.resetHandler = {
@@ -100,7 +100,7 @@ public struct AnswerButton: View {
       do {
         try engine?.start()
       } catch {
-        fatalError("Failed to restart the engine: (error)")
+        fatalError("Failed to restart the engine: \(error)")
       }
     }
   }
