@@ -56,10 +56,12 @@ public struct AppLogic: Reducer {
         }
         return .none
       }
-      .onChange(of: \.account.authUser) { authUser, state, _ in
-        guard case let .success(user) = authUser else {
-          return .none
-        }
+      .onChange(of: \.account) { account, state, _ in
+        guard
+          case .success(false) = account.isForceUpdate,
+          case .success(false) = account.isMaintenance,
+          case let .success(user) = account.authUser
+        else { return .none }
         let onboardCompleted = userDefaults.onboardCompleted()
         if user != nil, onboardCompleted {
           state.view = .navigation()
