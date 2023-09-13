@@ -133,40 +133,38 @@ public struct AppView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { _ in
-      SwitchStore(store.scope(state: \.view, action: AppLogic.Action.view)) { initialState in
-        switch initialState {
-        case .launch:
-          CaseLet(
-            /AppLogic.View.State.launch,
-            action: AppLogic.View.Action.launch,
-            then: LaunchView.init(store:)
-          )
-        case .onboard:
-          CaseLet(
-            /AppLogic.View.State.onboard,
-            action: AppLogic.View.Action.onboard,
-            then: OnboardView.init(store:)
-          )
-        case .navigation:
-          CaseLet(
-            /AppLogic.View.State.navigation,
-            action: AppLogic.View.Action.navigation,
-            then: RootNavigationView.init(store:)
-          )
-        case .forceUpdate:
-          CaseLet(
-            /AppLogic.View.State.forceUpdate,
-            action: AppLogic.View.Action.forceUpdate,
-            then: ForceUpdateView.init(store:)
-          )
-        case .maintenance:
-          CaseLet(
-            /AppLogic.View.State.maintenance,
-            action: AppLogic.View.Action.maintenance,
-            then: MaintenanceView.init(store:)
-          )
-        }
+    SwitchStore(store.scope(state: \.view, action: AppLogic.Action.view)) { initialState in
+      switch initialState {
+      case .launch:
+        CaseLet(
+          /AppLogic.View.State.launch,
+          action: AppLogic.View.Action.launch,
+          then: LaunchView.init(store:)
+        )
+      case .onboard:
+        CaseLet(
+          /AppLogic.View.State.onboard,
+          action: AppLogic.View.Action.onboard,
+          then: OnboardView.init(store:)
+        )
+      case .navigation:
+        CaseLet(
+          /AppLogic.View.State.navigation,
+          action: AppLogic.View.Action.navigation,
+          then: RootNavigationView.init(store:)
+        )
+      case .forceUpdate:
+        CaseLet(
+          /AppLogic.View.State.forceUpdate,
+          action: AppLogic.View.Action.forceUpdate,
+          then: ForceUpdateView.init(store:)
+        )
+      case .maintenance:
+        CaseLet(
+          /AppLogic.View.State.maintenance,
+          action: AppLogic.View.Action.maintenance,
+          then: MaintenanceView.init(store:)
+        )
       }
     }
   }
