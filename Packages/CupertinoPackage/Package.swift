@@ -12,6 +12,7 @@ let package = Package(
   products: [
     .library(name: "Build", targets: ["Build"]),
     .library(name: "ContactsClient", targets: ["ContactsClient"]),
+    .library(name: "FeedbackGeneratorClient", targets: ["FeedbackGeneratorClient"]),
     .library(name: "NotificationCenterClient", targets: ["NotificationCenterClient"]),
     .library(name: "PhotosClient", targets: ["PhotosClient"]),
     .library(name: "StoreKitClient", targets: ["StoreKitClient"]),
@@ -28,6 +29,9 @@ let package = Package(
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "ContactsClient", dependencies: [
+      .product(name: "Dependencies", package: "swift-dependencies"),
+    ]),
+    .target(name: "FeedbackGeneratorClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "NotificationCenterClient", dependencies: [
