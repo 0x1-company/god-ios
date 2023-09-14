@@ -66,7 +66,10 @@ public struct AppLogic: Reducer {
         if user != nil, onboardCompleted {
           state.view = .navigation()
         } else {
-          state.view = .onboard()
+          if case .onboard = state.view {
+          } else {
+            state.view = .onboard()
+          }
         }
         return .none
       }
