@@ -89,7 +89,7 @@ public struct VoteView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         Spacer()
-        Image("books", bundle: .module)
+        Image(.books)
           .resizable()
           .scaledToFit()
           .frame(height: 140)

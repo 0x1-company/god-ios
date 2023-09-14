@@ -47,7 +47,7 @@ public struct HowItWorksView: View {
           .looping()
           .resizable()
           .frame(height: 100)
-        Image("how-it-works-boy", bundle: .module)
+        Image(.howItWorksBoy)
           .resizable()
           .scaledToFit()
         Spacer()

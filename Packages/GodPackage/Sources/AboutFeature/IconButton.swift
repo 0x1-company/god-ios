@@ -3,16 +3,16 @@ import SwiftUI
 
 struct IconButton: View {
   let title: LocalizedStringKey
-  let name: String
+  let image: ImageResource
   let action: () -> Void
 
   init(
     _ title: LocalizedStringKey,
-    name: String,
+    image: ImageResource,
     action: @escaping () -> Void
   ) {
     self.title = title
-    self.name = name
+    self.image = image
     self.action = action
   }
 
@@ -23,7 +23,7 @@ struct IconButton: View {
         .frame(maxWidth: .infinity)
         .foregroundColor(Color.black)
         .overlay(alignment: .leading) {
-          Image(name, bundle: .module)
+          Image(image)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 32, height: 32)

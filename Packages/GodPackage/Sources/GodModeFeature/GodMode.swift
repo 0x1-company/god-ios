@@ -103,7 +103,7 @@ public struct GodModeView: View {
         .multilineTextAlignment(.center)
 
         VStack(spacing: 16) {
-          Image("see-who-likes-you", bundle: .module)
+          Image(.seeWhoLikesYou)
             .resizable()
             .scaledToFit()
             .padding(.horizontal, 60)
