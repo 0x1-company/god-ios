@@ -21,7 +21,7 @@
         }
       }
     },
-    "🥺Don't remove the God App!" : {
+    "🥺 Don't remove the God App!" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -91,7 +91,7 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "あなたのカメラはプロフィール写真の撮影に使用されます。"
           }
         }
@@ -127,7 +127,7 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "あなたのフォトライブラリは、プロフィール写真を選択するために使用されます。"
           }
         }
