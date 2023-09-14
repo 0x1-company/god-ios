@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "GodPackage",
+  defaultLocalization: "en",
   platforms: [
     .iOS(.v16),
   ],
