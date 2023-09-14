@@ -41,7 +41,7 @@ public struct ActivatedGodModeView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 20) {
-        Image("activated-god-mode", bundle: .module)
+        Image(.activatedGodMode)
           .resizable()
           .scaledToFit()
           .padding(.horizontal, 60)

@@ -42,7 +42,7 @@ public struct GradeHelpSheetView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 12) {
-        Image("school", bundle: .module)
+        Image(.school)
           .resizable()
           .aspectRatio(contentMode: .fit)
           .frame(width: 64, height: 64)

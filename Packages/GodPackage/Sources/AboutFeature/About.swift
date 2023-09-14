@@ -138,19 +138,19 @@ public struct AboutView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 32) {
         VStack(alignment: .center, spacing: 24) {
-          IconButton("How It Works", name: "woman-teacher") {
+          IconButton("How It Works", image: .womanTeacher) {
             viewStore.send(.howItWorksButtonTapped)
           }
-          IconButton("FAQ", name: "clipboard") {
+          IconButton("FAQ", image: .clipboard) {
             viewStore.send(.faqButtonTapped)
           }
-          IconButton("Share Feedback", name: "megaphone") {
+          IconButton("Share Feedback", image: .megaphone) {
             viewStore.send(.shareFeedbackButtonTapped)
           }
-          IconButton("Get Help", name: "rescue-workers-helmet") {
+          IconButton("Get Help", image: .rescueWorkersHelmet) {
             viewStore.send(.getHelpButtonTapped)
           }
-          IconButton("Safety Center", name: "shield") {
+          IconButton("Safety Center", image: .shield) {
             viewStore.send(.safetyCenterButtonTapped)
           }
         }
@@ -161,18 +161,18 @@ public struct AboutView: View {
 
         HStack(spacing: 16) {
           Link(destination: Constants.instagramURL) {
-            Image("instagram", bundle: .module)
+            Image(.instagram)
               .resizable()
               .frame(width: 62, height: 62)
           }
           Link(destination: Constants.xURL) {
-            Image("x", bundle: .module)
+            Image(.x)
               .resizable()
               .frame(width: 62, height: 62)
               .clipShape(Circle())
           }
           Link(destination: Constants.tiktokURL) {
-            Image("tiktok", bundle: .module)
+            Image(.tiktok)
               .resizable()
               .frame(width: 62, height: 62)
           }

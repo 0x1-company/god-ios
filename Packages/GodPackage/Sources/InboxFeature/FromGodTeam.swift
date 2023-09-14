@@ -43,7 +43,7 @@ public struct FromGodTeamView: View {
       Spacer()
 
       HStack {
-        Image("girl", bundle: .module)
+        Image(.girl)
           .resizable()
           .frame(width: 30, height: 30)
         Text("A girl in 9th grade\npicked you")

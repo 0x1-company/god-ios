@@ -105,7 +105,7 @@ public struct InboxDetailView: View {
           Spacer()
 
           VStack(spacing: 20) {
-            Image("other", bundle: .module)
+            Image(.other)
               .resizable()
               .frame(width: 80, height: 80)
 
