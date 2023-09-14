@@ -11,9 +11,6 @@ public struct OnboardLogic: Reducer {
   public struct State: Equatable {
     var welcome = WelcomeLogic.State()
     var path = StackState<Path.State>()
-
-    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-
     var generation: Int?
     var schoolId: String?
 
@@ -27,7 +24,6 @@ public struct OnboardLogic: Reducer {
     case pathInsert(Path.State)
 
     case onTask
-    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data.CurrentUser>)
 
     public enum Alert: Equatable {
       case confirmOkay
@@ -38,12 +34,6 @@ public struct OnboardLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     OnboardPathLogic()
-    OnboardStreamLogic()
-    core
-  }
-
-  @ReducerBuilder<State, Action>
-  var core: some Reducer<State, Action> {
     Scope(state: \.welcome, action: /Action.welcome) {
       WelcomeLogic()
     }
