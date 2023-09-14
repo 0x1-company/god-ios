@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Add my school to my profile" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールに学校を追加"
+          }
+        }
+      }
     },
     "Cancel" : {
       "localizations" : {
@@ -15,13 +22,34 @@
       }
     },
     "Change my gender" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "性別を変更"
+          }
+        }
+      }
     },
     "Change my grade" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学年を変更"
+          }
+        }
+      }
     },
     "Change my name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前を変更"
+          }
+        }
+      }
     },
     "Close" : {
       "localizations" : {
@@ -54,7 +82,14 @@
       }
     },
     "Email us" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールでのお問い合わせ"
+          }
+        }
+      }
     },
     "FAQ" : {
       "localizations" : {
@@ -67,10 +102,24 @@
       }
     },
     "For help with this, send us an email and we’ll get back to you right away." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この件に関するお問い合わせは、電子メールをお送りください。"
+          }
+        }
+      }
     },
     "Get Help" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘルプ"
+          }
+        }
+      }
     },
     "Gmail" : {
       "localizations" : {
@@ -93,10 +142,24 @@
       }
     },
     "How It Works" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godの使い方"
+          }
+        }
+      }
     },
     "If you need help with the app or want to share feedback, send us an email and we'll get back to you right away." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godに関するヘルプが必要な場合、またはフィードバックを共有したい場合は、メールをお送りください。"
+          }
+        }
+      }
     },
     "Mail" : {
       "localizations" : {
@@ -109,7 +172,14 @@
       }
     },
     "Purchases & God Mode" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリ内課金や神モード"
+          }
+        }
+      }
     },
     "Report a bug" : {
       "localizations" : {
@@ -142,7 +212,14 @@
       }
     },
     "Something else" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "Terms / Privacy" : {
       "localizations" : {
