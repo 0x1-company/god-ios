@@ -1,0 +1,70 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "1 mutual friend" : {
+
+    },
+    "10/10" : {
+
+    },
+    "29 friends on God" : {
+
+    },
+    "ADD" : {
+
+    },
+    "Contacts are disabled" : {
+
+    },
+    "FRIEND REQUESTS" : {
+
+    },
+    "Friends of Friends" : {
+
+    },
+    "FRIENDS OF FRIENDS" : {
+
+    },
+    "FROM SCHOOL" : {
+
+    },
+    "HIDE" : {
+
+    },
+    "INVITATIONS LEFT" : {
+
+    },
+    "INVITE" : {
+
+    },
+    "Kevin Ding" : {
+
+    },
+    "Search..." : {
+
+    },
+    "See 19 more" : {
+
+    },
+    "See 471 more" : {
+
+    },
+    "Tap to re-enable" : {
+
+    },
+    "Tomoki Tsukiyama" : {
+
+    }
+  },
+  "version" : "1.0"
+}
