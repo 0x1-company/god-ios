@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSContactsUsageDescription</key>
-	<string>NSContactsUsageDescription</string>
+	<string>Your contacts are used to find friends and uploaded to a server.</string>
 	<key>endpointURL</key>
 	<string>https://god-server-dip5kutcuq-an.a.run.app/graphql</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -40,9 +40,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>NSCameraUsageDescription</string>
+	<string>Your camera are used to take profile picture.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>NSPhotoLibraryUsageDescription</string>
+	<string>Your Photo Library are used to select profile picture.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -52,25 +52,25 @@
 	<array>
 		<dict>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>もしアプリについて話したいならこちら</string>
+			<string>If you want to talk about product discuss</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>👋社長と話す！</string>
+			<string>👋 Talk to CEO!</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>talk-to-founder</string>
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>もし開発について話したいならこちら</string>
+			<string>If you want to talk about development discuss</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>👨🏻‍💻エンジニアと話す！</string>
+			<string>👨🏻‍💻 Talk to Developer</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>talk-to-developer</string>
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>もう1度チャンスをください</string>
+			<string>Give it a secound chance!</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>🥺Godを消さないで</string>
+			<string>🥺Don&apos;t remove the God App!</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>/</string>
 		</dict>
