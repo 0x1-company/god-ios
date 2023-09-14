@@ -4,11 +4,15 @@
     "Add my school to my profile" : {
 
     },
-    "Add my schoolto my profile" : {
-
-    },
     "Cancel" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
     },
     "Change my gender" : {
 
@@ -20,19 +24,47 @@
 
     },
     "Close" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
+      }
     },
     "Copy" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コピー"
+          }
+        }
+      }
     },
     "Delete my account" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント削除"
+          }
+        }
+      }
     },
     "Email us" : {
 
     },
     "FAQ" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "よくある質問"
+          }
+        }
+      }
     },
     "For help with this, send us an email and we’ll get back to you right away." : {
 
@@ -41,10 +73,24 @@
 
     },
     "Gmail" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gmail"
+          }
+        }
+      }
     },
     "God" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "God"
+          }
+        }
+      }
     },
     "How It Works" : {
 
@@ -53,25 +99,60 @@
 
     },
     "Mail" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メール"
+          }
+        }
+      }
     },
     "Purchases & God Mode" : {
 
     },
     "Report a bug" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バグ報告"
+          }
+        }
+      }
     },
     "Safety Center" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セーフティーセンター"
+          }
+        }
+      }
     },
     "Share Feedback" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フィードバック"
+          }
+        }
+      }
     },
     "Something else" : {
 
     },
     "Terms / Privacy" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "利用規約 / プライバシーポリシー"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
