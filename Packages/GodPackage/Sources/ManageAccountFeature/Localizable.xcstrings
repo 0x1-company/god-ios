@@ -1,0 +1,36 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "add friends" : {
+
+    },
+    "Close" : {
+
+    },
+    "Delete Account" : {
+
+    },
+    "Hide Top Flames" : {
+
+    },
+    "Manage Account" : {
+
+    },
+    "Reduce Notifications" : {
+
+    },
+    "Reset Block List" : {
+
+    },
+    "Reset Hide List" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Take a Break from Gas" : {
+
+    }
+  },
+  "version" : "1.0"
+}

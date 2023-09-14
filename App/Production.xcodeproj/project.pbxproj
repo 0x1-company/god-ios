@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		B7008E6F2A8027FA00C36803 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7CCF99F2A7AF46D00B64CFE /* GoogleService-Info.plist */; };
+		B778133F2AB3024C00EA37AE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B778133E2AB3024C00EA37AE /* Localizable.xcstrings */; };
 		B783E0E82A11FFBE002E782F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0E72A11FFBE002E782F /* Assets.xcassets */; };
 		B783E0EB2A11FFBE002E782F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0EA2A11FFBE002E782F /* Preview Assets.xcassets */; };
 		B783E1042A12000A002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1032A12000A002E782F /* App.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B778133E2AB3024C00EA37AE /* Localizable.xcstrings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B783E0E12A11FFBE002E782F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B783E0E72A11FFBE002E782F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B783E0EA2A11FFBE002E782F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				B783E1032A12000A002E782F /* App.swift */,
 				B783E1742A137F38002E782F /* App.entitlements */,
 				B783E0E72A11FFBE002E782F /* Assets.xcassets */,
+				B778133E2AB3024C00EA37AE /* Localizable.xcstrings */,
 				B783E16F2A121FCD002E782F /* Info.plist */,
 				B7CCF99F2A7AF46D00B64CFE /* GoogleService-Info.plist */,
 				B783E0E92A11FFBE002E782F /* Preview Content */,
@@ -146,7 +149,7 @@
 				};
 			};
 			buildConfigurationList = B783E0C72A11FF87002E782F /* Build configuration list for PBXProject "Production" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -171,6 +174,7 @@
 			files = (
 				B783E0EB2A11FFBE002E782F /* Preview Assets.xcassets in Resources */,
 				B783E0E82A11FFBE002E782F /* Assets.xcassets in Resources */,
+				B778133F2AB3024C00EA37AE /* Localizable.xcstrings in Resources */,
 				B7008E6F2A8027FA00C36803 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

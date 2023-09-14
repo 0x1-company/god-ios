@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.9
 // Leave blank. This is only here so that Xcode doesn't display it.
 import PackageDescription
 
