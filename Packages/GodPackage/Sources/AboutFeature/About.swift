@@ -217,7 +217,7 @@ extension ConfirmationDialogState where Action == AboutLogic.Action.Confirmation
     TextState("Get Help")
   } actions: {
     ButtonState(action: .addMySchoolToMyProfile) {
-      TextState("Add my schoolto my profile")
+      TextState("Add my school to my profile")
     }
     ButtonState(action: .changeMyGrade) {
       TextState("Change my grade")
