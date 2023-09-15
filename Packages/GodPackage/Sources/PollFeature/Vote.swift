@@ -1,6 +1,7 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import FeedbackGeneratorClient
 import LabeledButton
 import SwiftUI
 
@@ -39,6 +40,8 @@ public struct VoteLogic: Reducer {
       case confirmOkay
     }
   }
+  
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -53,15 +56,18 @@ public struct VoteLogic: Reducer {
 
       case .shuffleButtonTapped:
         state.choices = mock.shuffled().prefix(4).map { $0 }
-        return .none
-
+        return .run { _ in
+          await feedbackGenerator.mediumImpact()
+        }
       case .skipButtonTapped:
-        return .none
-
+        return .run { _ in
+          await feedbackGenerator.mediumImpact()
+        }
       case .continueButtonTapped:
         state.isAnswered = false
-        return .none
-
+        return .run { _ in
+          await feedbackGenerator.mediumImpact()
+        }
       case .alert:
         state.alert = AlertState {
           TextState("Woah, slow down!🐎")
