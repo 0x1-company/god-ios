@@ -40,7 +40,7 @@ public struct VoteLogic: Reducer {
       case confirmOkay
     }
   }
-  
+
   @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
