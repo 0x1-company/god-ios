@@ -13,13 +13,13 @@ extension FeedbackGeneratorClient: TestDependencyKey {
 
   public static let testValue = Self(
     prepare: unimplemented("\(Self.self).prepare"),
-    selectionChanged: unimplemented("\(Self.self).selectionChanged")
+    mediumImpact: unimplemented("\(Self.self).mediumImpact")
   )
 }
 
 public extension FeedbackGeneratorClient {
   static let noop = Self(
     prepare: {},
-    selectionChanged: {}
+    mediumImpact: {}
   )
 }

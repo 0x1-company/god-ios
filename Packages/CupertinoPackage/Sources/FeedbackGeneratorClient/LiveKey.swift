@@ -8,7 +8,7 @@ extension FeedbackGeneratorClient: DependencyKey {
     hoge.impactOccurred()
     return Self(
       prepare: { await generator.prepare() },
-      selectionChanged: { await generator.selectionChanged() }
+      mediumImpact: { await hoge.impactOccurred() }
     )
   }()
 }
