@@ -67,6 +67,7 @@ graph TD;
     PollFeature-->Colors;
     PollFeature-->ButtonStyles;
     PollFeature-->LabeledButton;
+    PollFeature-->FeedbackGeneratorClient;
     PollFeature-->ComposableArchitecture;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileEditFeature-->UserDefaultsClient;
