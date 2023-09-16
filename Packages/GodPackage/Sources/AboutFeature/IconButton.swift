@@ -19,6 +19,7 @@ struct IconButton: View {
   var body: some View {
     Button(action: action) {
       Text(title)
+        .font(.headline)
         .frame(height: 54)
         .frame(maxWidth: .infinity)
         .foregroundColor(Color.black)
