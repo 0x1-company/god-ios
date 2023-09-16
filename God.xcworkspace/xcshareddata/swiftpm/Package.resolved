@@ -253,6 +253,15 @@
       }
     },
     {
+      "identity" : "swiftuimessage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/edonv/SwiftUIMessage",
+      "state" : {
+        "revision" : "151f35575cedab0fe183f2de529c1bdd3eff780f",
+        "version" : "0.0.3"
+      }
+    },
+    {
       "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
