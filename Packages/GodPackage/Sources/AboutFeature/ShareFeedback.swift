@@ -78,9 +78,9 @@ public struct ShareFeedback: View {
               bundle: .module
             )
           )
-            .font(.body)
-            .foregroundColor(.godTextSecondaryLight)
-            .lineLimit(3)
+          .font(.body)
+          .foregroundColor(.godTextSecondaryLight)
+          .lineLimit(3)
         }
         .padding(.horizontal, 60)
         HStack(alignment: .center) {
