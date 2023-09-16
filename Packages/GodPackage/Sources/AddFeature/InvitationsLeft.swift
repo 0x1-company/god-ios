@@ -3,9 +3,9 @@ import Colors
 import ComposableArchitecture
 import Contacts
 import ContactsClient
+import CupertinoMessageFeature
 import SwiftUI
 import SwiftUIMessage
-import CupertinoMessageFeature
 
 public struct InvitationsLeftLogic: Reducer {
   public init() {}
@@ -73,7 +73,7 @@ public struct InvitationsLeftLogic: Reducer {
       case let .contactResponse(.failure(error)):
         print(error)
         return .none
-        
+
       case .inviteButtonTapped:
         guard MessageComposeView.canSendText()
         else { return .none }
@@ -81,12 +81,12 @@ public struct InvitationsLeftLogic: Reducer {
           recipient: "+1-111-111-1112",
           body: """
           https://godapp.jp/add/tomokisun
-          
+
           Get this app
           """
         )
         return .none
-        
+
       case .message(.dismiss):
         state.message = nil
         return .none
