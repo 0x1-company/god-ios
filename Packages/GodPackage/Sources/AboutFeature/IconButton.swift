@@ -2,12 +2,12 @@ import ButtonStyles
 import SwiftUI
 
 struct IconButton: View {
-  let title: LocalizedStringKey
+  let title: String
   let image: ImageResource
   let action: () -> Void
 
   init(
-    _ title: LocalizedStringKey,
+    _ title: String,
     image: ImageResource,
     action: @escaping () -> Void
   ) {

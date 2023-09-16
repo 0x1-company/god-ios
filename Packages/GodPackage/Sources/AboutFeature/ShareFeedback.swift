@@ -38,7 +38,6 @@ public struct ShareFeedbackLogic: Reducer {
         return .run { _ in
           await openURL(url)
         }
-        return .none
       case .shareByGmailButtonTapped:
         let urlString = "googlegmail:///co?to=\(Self.supportEmailAddress)&subject=\(Self.supportEmailSubject)&body=\(Self.emailTemplateText)"
         guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
@@ -70,10 +69,15 @@ public struct ShareFeedback: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(alignment: .center, spacing: 28) {
         VStack(alignment: .center, spacing: 12) {
-          Text("Email us")
+          Text(String(localized: "Email us", bundle: .module))
             .font(.title3)
             .bold()
-          Text("If you need help with the app or want to share feedback, send us an email and we'll get back to you right away.")
+          Text(
+            String(
+              localized: "If you need help with the app or want to share feedback, send us an email and we'll get back to you right away.",
+              bundle: .module
+            )
+          )
             .font(.body)
             .foregroundColor(.godTextSecondaryLight)
             .lineLimit(3)
@@ -87,7 +91,7 @@ public struct ShareFeedback: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue)
                 .frame(width: 60, height: 60)
-              Text("Mail")
+              Text(String(localized: "Mail", bundle: .module))
                 .foregroundColor(.godBlack)
             }
           }
@@ -99,7 +103,7 @@ public struct ShareFeedback: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue)
                 .frame(width: 60, height: 60)
-              Text("Gmail")
+              Text(String(localized: "Gmail", bundle: .module))
                 .foregroundColor(.godBlack)
             }
           }
@@ -111,7 +115,7 @@ public struct ShareFeedback: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue)
                 .frame(width: 60, height: 60)
-              Text("Copy")
+              Text(String(localized: "Copy", bundle: .module))
                 .foregroundColor(.godBlack)
             }
           }
@@ -120,7 +124,7 @@ public struct ShareFeedback: View {
         Button(action: {
           viewStore.send(.closeButtonTapped)
         }, label: {
-          Text("Close")
+          Text(String(localized: "Close", bundle: .module))
             .font(.body)
             .foregroundColor(.godBlack)
             .frame(height: 48)
