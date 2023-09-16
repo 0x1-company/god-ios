@@ -4,19 +4,29 @@ import ComposableArchitecture
 import Contacts
 import ContactsClient
 import SwiftUI
+import SwiftUIMessage
+import CupertinoMessageFeature
 
 public struct InvitationsLeftLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var invitations: IdentifiedArrayOf<InvitationCardLogic.State> = []
+    var invitations: IdentifiedArrayOf<InviteCard> = []
+    @PresentationState var message: CupertinoMessageLogic.State?
     public init() {}
+
+    public struct InviteCard: Equatable, Identifiable {
+      public var id: String
+      public var familyName: String
+      public var givenName: String
+    }
   }
 
   public enum Action: Equatable {
     case onTask
     case contactResponse(TaskResult<CNContact>)
-    case invitations(id: InvitationCardLogic.State.ID, action: InvitationCardLogic.Action)
+    case inviteButtonTapped
+    case message(PresentationAction<CupertinoMessageLogic.Action>)
   }
 
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
@@ -51,7 +61,7 @@ public struct InvitationsLeftLogic: Reducer {
           return .none
         }
         state.invitations.insert(
-          InvitationCardLogic.State(
+          State.InviteCard(
             id: contact.identifier,
             familyName: contact.familyName,
             givenName: contact.givenName
@@ -63,13 +73,30 @@ public struct InvitationsLeftLogic: Reducer {
       case let .contactResponse(.failure(error)):
         print(error)
         return .none
+        
+      case .inviteButtonTapped:
+        guard MessageComposeView.canSendText()
+        else { return .none }
+        state.message = .init(
+          recipient: "+1-111-111-1112",
+          body: """
+          https://godapp.jp/add/tomokisun
+          
+          Get this app
+          """
+        )
+        return .none
+        
+      case .message(.dismiss):
+        state.message = nil
+        return .none
 
-      case .invitations:
+      case .message:
         return .none
       }
     }
-    .forEach(\.invitations, action: /Action.invitations) {
-      InvitationCardLogic()
+    .ifLet(\.$message, action: /Action.message) {
+      CupertinoMessageLogic()
     }
   }
 }
@@ -86,13 +113,21 @@ public struct InvitationsLeftView: View {
       VStack(spacing: 0) {
         FriendHeader(title: "INVITATIONS LEFT")
 
-        ForEachStore(
-          store.scope(state: \.invitations, action: InvitationsLeftLogic.Action.invitations),
-          content: InvitationCardView.init(store:)
-        )
+        ForEach(viewStore.invitations) { state in
+          InvitationCardView(
+            familyName: state.familyName,
+            givenName: state.givenName
+          ) {
+            viewStore.send(.inviteButtonTapped)
+          }
+        }
       }
       .task { await viewStore.send(.onTask).finish() }
     }
+    .sheet(
+      store: store.scope(state: \.$message, action: { .message($0) }),
+      content: CupertinoMessageView.init
+    )
   }
 }
 
