@@ -52,9 +52,9 @@ public struct AddFriendsView: View {
             .clipShape(Circle())
 
           VStack(alignment: .leading) {
-            Text("Kevin Ding")
+            Text("Kevin Ding", bundle: .module)
 
-            Text("1 mutual friend")
+            Text("1 mutual friend", bundle: .module)
               .foregroundColor(Color.godTextSecondaryLight)
           }
 

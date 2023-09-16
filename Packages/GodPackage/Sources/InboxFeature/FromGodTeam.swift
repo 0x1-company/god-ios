@@ -36,9 +36,9 @@ public struct FromGodTeamView: View {
 
   public var body: some View {
     VStack(spacing: 24) {
-      Text("God")
+      Text("God", bundle: .module)
 
-      Text("From the God team")
+      Text("From the God team", bundle: .module)
 
       Spacer()
 
@@ -46,7 +46,7 @@ public struct FromGodTeamView: View {
         Image(.girl)
           .resizable()
           .frame(width: 30, height: 30)
-        Text("A girl in 9th grade\npicked you")
+        Text("A girl in 9th grade\npicked you", bundle: .module)
       }
       .bold()
       .frame(height: 48)
@@ -57,15 +57,15 @@ public struct FromGodTeamView: View {
       .font(.caption)
       .cornerRadius(8)
 
-      Text("This is your inbox")
+      Text("This is your inbox", bundle: .module)
         .font(.title3)
         .bold()
 
-      Text("When people pick you\nyou will get a message here.")
+      Text("When people pick you\nyou will get a message here.", bundle: .module)
 
       Spacer()
 
-      Text("Tap anywhere to close")
+      Text("Tap anywhere to close", bundle: .module)
     }
     .padding(.vertical, 40)
     .foregroundColor(Color.godWhite)

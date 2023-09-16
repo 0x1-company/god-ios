@@ -80,7 +80,7 @@ public struct ShareScreenshotView: View {
         .padding(.top, 12)
 
         VStack(spacing: 36) {
-          Text("Share Screenshot")
+          Text("Share Screenshot", bundle: .module)
             .font(.title3)
             .bold()
 
@@ -92,7 +92,7 @@ public struct ShareScreenshotView: View {
                 Color.red
                   .frame(width: 50, height: 50)
                   .clipShape(Circle())
-                Text("Instagram")
+                Text("Instagram", bundle: .module)
               }
             }
 
@@ -103,7 +103,7 @@ public struct ShareScreenshotView: View {
                 Color.green
                   .frame(width: 50, height: 50)
                   .clipShape(Circle())
-                Text("LINE")
+                Text("LINE", bundle: .module)
               }
             }
 
@@ -114,7 +114,7 @@ public struct ShareScreenshotView: View {
                 Color.green
                   .frame(width: 50, height: 50)
                   .clipShape(Circle())
-                Text("Messages")
+                Text("Messages", bundle: .module)
               }
             }
           }

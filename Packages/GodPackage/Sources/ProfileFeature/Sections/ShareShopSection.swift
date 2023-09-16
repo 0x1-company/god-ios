@@ -18,7 +18,7 @@ public struct ShareShopSection: View {
     HStack(spacing: 16) {
       Button(action: shareAction) {
         HStack(spacing: 8) {
-          Text("Share Profile")
+          Text("Share Profile", bundle: .module)
             .bold()
           Image(systemName: "square.and.arrow.up")
         }
@@ -32,7 +32,7 @@ public struct ShareShopSection: View {
       }
 
       Button(action: shopAction) {
-        Text("Shop")
+        Text("Shop", bundle: .module)
           .bold()
           .foregroundColor(.secondary)
           .frame(height: 52)

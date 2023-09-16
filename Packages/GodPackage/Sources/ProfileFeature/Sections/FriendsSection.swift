@@ -6,7 +6,7 @@ public struct FriendsSection: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       Divider()
-      Text("Friends")
+      Text("Friends", bundle: .module)
         .font(.headline)
         .bold()
         .frame(height: 32)

@@ -54,7 +54,7 @@ public struct HowItWorksView: View {
         Button {
           viewStore.send(.startButtonTapped)
         } label: {
-          Text("Start")
+          Text("Start", bundle: .module)
             .bold()
             .frame(height: 54)
             .frame(maxWidth: .infinity)

@@ -51,14 +51,14 @@ public struct FindFriendView: View {
       VStack(spacing: 28) {
         Spacer()
 
-        Text("God uses your contacts\nto find friends")
+        Text("God uses your contacts\nto find friends", bundle: .module)
           .bold()
           .foregroundColor(Color.godWhite)
 
         Button {
           viewStore.send(.findButtonTapped)
         } label: {
-          Text("Find My Friends")
+          Text("Find My Friends", bundle: .module)
             .bold()
             .font(.title3)
             .frame(height: 54)
@@ -73,7 +73,7 @@ public struct FindFriendView: View {
 
         Spacer()
 
-        Text("God cares intensely about your privacy.\nWeb will never text or spam your contacts.")
+        Text("God cares intensely about your privacy.\nWeb will never text or spam your contacts.", bundle: .module)
           .foregroundColor(Color.godWhite)
       }
       .multilineTextAlignment(.center)

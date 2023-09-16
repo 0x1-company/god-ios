@@ -66,7 +66,7 @@ public struct GradeSettingView: View {
             viewStore.send(.generationButtonTapped(nil))
           }
           Divider()
-          Text("HIGH SCHOOL")
+          Text("HIGH SCHOOL", bundle: .module)
             .frame(height: 33)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)

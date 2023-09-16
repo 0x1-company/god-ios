@@ -109,14 +109,14 @@ public struct InboxDetailView: View {
               .resizable()
               .frame(width: 80, height: 80)
 
-            Text("From someone\nin 11th grade")
+            Text("From someone\nin 11th grade", bundle: .module)
           }
 
           VStack(spacing: 20) {
-            Text("Double texts with no shame")
+            Text("Double texts with no shame", bundle: .module)
               .bold()
 
-            Text("godapp.jp")
+            Text("godapp.jp", bundle: .module)
               .bold()
           }
           Spacer()

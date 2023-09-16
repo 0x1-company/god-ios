@@ -87,7 +87,7 @@ public struct WelcomeView: View {
         VStack(spacing: 24) {
           ZStack {
             if viewStore.selection == "- -" {
-              Text("By entering your age you agree to our Terms and Privacy Policy")
+              Text("By entering your age you agree to our Terms and Privacy Policy", bundle: .module)
                 .frame(height: 54)
                 .foregroundColor(Color.godTextSecondaryDark)
                 .multilineTextAlignment(.center)
@@ -96,7 +96,7 @@ public struct WelcomeView: View {
               Button {
                 viewStore.send(.getStartedButtonTapped)
               } label: {
-                Text("Get Started")
+                Text("Get Started", bundle: .module)
                   .bold()
                   .frame(height: 54)
                   .frame(maxWidth: .infinity)

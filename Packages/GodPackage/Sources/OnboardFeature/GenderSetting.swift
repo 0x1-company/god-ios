@@ -82,7 +82,7 @@ public struct GenderSettingView: View {
           .ignoresSafeArea()
 
         VStack(spacing: 24) {
-          Text("What's your gender?")
+          Text("What's your gender?", bundle: .module)
             .bold()
             .foregroundColor(Color.white)
 

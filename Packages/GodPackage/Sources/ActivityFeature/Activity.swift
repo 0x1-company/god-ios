@@ -115,11 +115,11 @@ public struct ActivityView: View {
                   .bold()
               }
               Text(edge.node.question.text.ja)
-              Text("3年生の女子より")
+              Text("3年生の女子より", bundle: .module)
                 .foregroundColor(.secondary)
             }
 
-            Text("3d")
+            Text("3d", bundle: .module)
               .foregroundColor(.secondary)
           }
           .onTapGesture {

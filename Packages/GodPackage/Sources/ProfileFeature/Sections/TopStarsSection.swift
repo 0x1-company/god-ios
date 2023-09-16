@@ -4,7 +4,7 @@ import SwiftUI
 public struct TopStarsSection: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {
-      Text("Top Stars")
+      Text("Top Stars", bundle: .module)
         .font(.headline)
         .bold()
         .frame(height: 32)

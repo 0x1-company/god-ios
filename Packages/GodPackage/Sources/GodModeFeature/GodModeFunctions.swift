@@ -8,7 +8,7 @@ public struct GodModeFunctions: View {
           .resizable()
           .scaledToFit()
 
-        Text("Reveal 2 Names Per Week")
+        Text("Reveal 2 Names Per Week", bundle: .module)
       }
       .padding(.horizontal, 100)
 
@@ -17,7 +17,7 @@ public struct GodModeFunctions: View {
           .resizable()
           .scaledToFit()
 
-        Text("Reveal 2 Names Per Week")
+        Text("Reveal 2 Names Per Week", bundle: .module)
       }
       .padding(.horizontal, 100)
 
@@ -26,7 +26,7 @@ public struct GodModeFunctions: View {
           .resizable()
           .scaledToFit()
 
-        Text("Get Double Coins on Polls")
+        Text("Get Double Coins on Polls", bundle: .module)
       }
       .padding(.horizontal, 100)
 
@@ -35,7 +35,7 @@ public struct GodModeFunctions: View {
           .resizable()
           .scaledToFit()
 
-        Text("Secret Crush Alerts")
+        Text("Secret Crush Alerts", bundle: .module)
       }
       .padding(.horizontal, 100)
     }

@@ -138,19 +138,19 @@ public struct AboutView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 32) {
         VStack(alignment: .center, spacing: 24) {
-          IconButton(String(localized: "How It Works", bundle: .module), image: .womanTeacher) {
+          IconButton("How It Works", image: .womanTeacher) {
             viewStore.send(.howItWorksButtonTapped)
           }
-          IconButton(String(localized: "FAQ", bundle: .module), image: .clipboard) {
+          IconButton("FAQ", image: .clipboard) {
             viewStore.send(.faqButtonTapped)
           }
-          IconButton(String(localized: "Share Feedback", bundle: .module), image: .megaphone) {
+          IconButton("Share Feedback", image: .megaphone) {
             viewStore.send(.shareFeedbackButtonTapped)
           }
-          IconButton(String(localized: "Get Help", bundle: .module), image: .rescueWorkersHelmet) {
+          IconButton("Get Help", image: .rescueWorkersHelmet) {
             viewStore.send(.getHelpButtonTapped)
           }
-          IconButton(String(localized: "Safety Center", bundle: .module), image: .shield) {
+          IconButton("Safety Center", image: .shield) {
             viewStore.send(.safetyCenterButtonTapped)
           }
         }
@@ -180,8 +180,8 @@ public struct AboutView: View {
         .aspectRatio(contentMode: .fit)
 
         VStack(spacing: 0) {
-          Text(String(localized: "God", bundle: .module))
-          Text(String(localized: "Terms / Privacy", bundle: .module))
+          Text("God", bundle: .module)
+          Text("Terms / Privacy", bundle: .module)
         }
         .foregroundColor(.secondary)
       }
@@ -214,37 +214,37 @@ public struct AboutView: View {
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
   static let getHelp = Self {
-    TextState(String(localized: "Get Help", bundle: .module))
+    TextState("Get Help", bundle: .module)
   } actions: {
     ButtonState(action: .addMySchoolToMyProfile) {
-      TextState(String(localized: "Add my school to my profile", bundle: .module))
+      TextState("Add my school to my profile", bundle: .module)
     }
     ButtonState(action: .changeMyGrade) {
-      TextState(String(localized: "Change my grade", bundle: .module))
+      TextState("Change my grade", bundle: .module)
     }
     ButtonState(action: .changeMyName) {
-      TextState(String(localized: "Change my name", bundle: .module))
+      TextState("Change my name", bundle: .module)
     }
     ButtonState(action: .changeMyGender) {
-      TextState(String(localized: "Change my gender", bundle: .module))
+      TextState("Change my gender", bundle: .module)
     }
     ButtonState(action: .deleteMyAccount) {
-      TextState(String(localized: "Delete my account", bundle: .module))
+      TextState("Delete my account", bundle: .module)
     }
     ButtonState(action: .purchasesAndGodMode) {
-      TextState(String(localized: "Purchases & God Mode", bundle: .module))
+      TextState("Purchases & God Mode", bundle: .module)
     }
     ButtonState(action: .reportBug) {
-      TextState(String(localized: "Report a bug", bundle: .module))
+      TextState("Report a bug", bundle: .module)
     }
     ButtonState(action: .somethingElse) {
-      TextState(String(localized: "Something else", bundle: .module))
+      TextState("Something else", bundle: .module)
     }
     ButtonState(role: .cancel) {
-      TextState(String(localized: "Cancel", bundle: .module))
+      TextState("Cancel", bundle: .module)
     }
   } message: {
-    TextState(String(localized: "Get Help", bundle: .module))
+    TextState("Get Help", bundle: .module)
   }
 }
 

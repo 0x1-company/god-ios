@@ -11,7 +11,7 @@ public struct FriendHeader: View {
         Text(title)
           .bold()
           .frame(maxWidth: .infinity, alignment: .leading)
-        Text("10/10")
+        Text("10/10", bundle: .module)
       }
       .frame(height: 34)
       .padding(.horizontal, 16)

@@ -99,7 +99,7 @@ public struct VoteView: View {
           .resizable()
           .scaledToFit()
           .frame(height: 140)
-        Text("理想の勉強仲間")
+        Text("理想の勉強仲間", bundle: .module)
           .font(.title2)
           .foregroundColor(.white)
         Spacer()
@@ -120,7 +120,7 @@ public struct VoteView: View {
 
         ZStack {
           if viewStore.isAnswered {
-            Text("Tap to continue")
+            Text("Tap to continue", bundle: .module)
           } else {
             HStack(spacing: 0) {
               LabeledButton("Shuffle", systemImage: "shuffle") {

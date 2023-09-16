@@ -32,7 +32,7 @@ public struct GodView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
-        Text("God")
+        Text("God", bundle: .module)
       }
       .navigationTitle("God")
       .navigationBarTitleDisplayMode(.inline)
