@@ -32,26 +32,26 @@ public struct PlayAgainView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 44) {
-        Text("Play Again")
+        Text("Play Again", bundle: .module)
           .bold()
           .font(.largeTitle)
 
         Image(.locked)
           .rotationEffect(Angle(degrees: -10.0))
 
-        Text("New Polls in 54:36")
+        Text("New Polls in 54:36", bundle: .module)
           .bold()
 
-        Text("OR")
+        Text("OR", bundle: .module)
           .foregroundColor(.secondary)
 
-        Text("Skip the wait")
+        Text("Skip the wait", bundle: .module)
           .foregroundColor(.secondary)
 
         Button {
           viewStore.send(.inviteFriendButtonTapped)
         } label: {
-          Text("Invite a friend")
+          Text("Invite a friend", bundle: .module)
             .bold()
             .font(.title2)
             .frame(height: 54)

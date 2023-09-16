@@ -65,16 +65,16 @@ public struct ShopView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
-        Text("YOUR BALANCE")
+        Text("YOUR BALANCE", bundle: .module)
           .foregroundColor(Color.gray)
         HStack {
-          Text("68")
+          Text("68", bundle: .module)
         }
         .foregroundColor(Color.yellow)
 
-        Text("Boost Your Name in Polls")
+        Text("Boost Your Name in Polls", bundle: .module)
           .foregroundColor(Color.white)
-        Text("Use coins to get featured in polls")
+        Text("Use coins to get featured in polls", bundle: .module)
           .foregroundColor(Color.gray)
 
         VStack {
@@ -90,9 +90,9 @@ public struct ShopView: View {
 
         Spacer()
 
-        Text("How do I get more coins?")
+        Text("How do I get more coins?", bundle: .module)
           .foregroundColor(Color.white)
-        Text("Answer polls about your friends to win coins.")
+        Text("Answer polls about your friends to win coins.", bundle: .module)
           .foregroundColor(Color.gray)
       }
       .background(Color.black.gradient)

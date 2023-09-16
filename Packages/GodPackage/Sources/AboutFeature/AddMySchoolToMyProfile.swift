@@ -69,10 +69,10 @@ public struct AddMySchoolToMyProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(alignment: .center, spacing: 28) {
         VStack(alignment: .center, spacing: 12) {
-          Text("Add my school to my profile")
+          Text("Add my school to my profile", bundle: .module)
             .font(.title3)
             .bold()
-          Text("For help with this, send us an email and we’ll get back to you right away.")
+          Text("For help with this, send us an email and we’ll get back to you right away.", bundle: .module)
             .font(.body)
             .foregroundColor(.godTextSecondaryLight)
             .lineLimit(3)
@@ -86,7 +86,7 @@ public struct AddMySchoolToMyProfileView: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue)
                 .frame(width: 60, height: 60)
-              Text("Mail")
+              Text("Mail", bundle: .module)
                 .foregroundColor(.godBlack)
             }
           }
@@ -98,7 +98,7 @@ public struct AddMySchoolToMyProfileView: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue)
                 .frame(width: 60, height: 60)
-              Text("Gmail")
+              Text("Gmail", bundle: .module)
                 .foregroundColor(.godBlack)
             }
           }
@@ -110,7 +110,7 @@ public struct AddMySchoolToMyProfileView: View {
               RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue)
                 .frame(width: 60, height: 60)
-              Text("Copy")
+              Text("Copy", bundle: .module)
                 .foregroundColor(.godBlack)
             }
           }
@@ -119,7 +119,7 @@ public struct AddMySchoolToMyProfileView: View {
         Button(action: {
           viewStore.send(.closeButtonTapped)
         }, label: {
-          Text("Close")
+          Text("Close", bundle: .module)
             .font(.body)
             .foregroundColor(.godBlack)
             .frame(height: 48)

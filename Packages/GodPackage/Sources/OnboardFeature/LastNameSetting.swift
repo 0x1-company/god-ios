@@ -123,7 +123,7 @@ public struct LastNameSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
-        Text("What's your last name?")
+        Text("What's your last name?", bundle: .module)
           .bold()
           .foregroundColor(.white)
 
@@ -134,7 +134,7 @@ public struct LastNameSettingView: View {
           .focused($focus)
 
         if viewStore.isImport {
-          Text("Imported from Contacts")
+          Text("Imported from Contacts", bundle: .module)
             .foregroundColor(.godWhite)
         }
         Spacer()

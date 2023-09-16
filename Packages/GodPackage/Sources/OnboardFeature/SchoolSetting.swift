@@ -67,21 +67,21 @@ public struct SchoolSettingView: View {
                 .clipShape(Circle())
 
               VStack(alignment: .leading) {
-                Text("Manhattan Early College School")
+                Text("Manhattan Early College School", bundle: .module)
                   .bold()
                   .lineLimit(1)
 
-                Text("New York, NY")
+                Text("New York, NY", bundle: .module)
                   .foregroundColor(Color.godTextSecondaryLight)
               }
               .font(.footnote)
               .frame(maxWidth: .infinity)
 
               VStack(spacing: 0) {
-                Text("164")
+                Text("164", bundle: .module)
                   .bold()
                   .foregroundColor(Color.godService)
-                Text("MEMBERS")
+                Text("MEMBERS", bundle: .module)
                   .foregroundColor(Color.godTextSecondaryLight)
               }
               .font(.footnote)

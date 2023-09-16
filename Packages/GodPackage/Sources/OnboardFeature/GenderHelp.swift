@@ -53,15 +53,15 @@ public struct GenderHelpView: View {
           .frame(width: 64, height: 64)
           .cornerRadius(12)
 
-        Text("Adding your gender\nhelps create your polls")
+        Text("Adding your gender\nhelps create your polls", bundle: .module)
           .bold()
 
-        Text("See who likes you on God")
+        Text("See who likes you on God", bundle: .module)
 
         Button {
           viewStore.send(.okayButtonTapped)
         } label: {
-          Text("OK")
+          Text("OK", bundle: .module)
             .frame(height: 56)
             .frame(maxWidth: .infinity)
         }

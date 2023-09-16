@@ -42,7 +42,7 @@ public struct PollView: View {
             action: PollLogic.Action.vote
           )
         )
-        Text("1 of 12")
+        Text("1 of 12", bundle: .module)
           .foregroundColor(Color.white)
       }
     }

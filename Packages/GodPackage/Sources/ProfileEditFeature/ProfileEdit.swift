@@ -88,7 +88,7 @@ public struct ProfileEditView: View {
           userSettingsSection
 
           VStack(alignment: .leading, spacing: 8) {
-            Text("SCHOOL")
+            Text("SCHOOL", bundle: .module)
               .font(.caption)
               .bold()
               .foregroundColor(.godTextSecondaryLight)
@@ -99,7 +99,7 @@ public struct ProfileEditView: View {
                   .foregroundColor(.godTextSecondaryLight)
                   .font(.body)
 
-                Text("Las Vegas Academy of Arts")
+                Text("Las Vegas Academy of Arts", bundle: .module)
                   .font(.body)
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
@@ -117,13 +117,13 @@ public struct ProfileEditView: View {
                   .foregroundColor(.godTextSecondaryLight)
                   .font(.body)
 
-                Text("9th Grade")
+                Text("9th Grade", bundle: .module)
                   .font(.body)
                   .foregroundColor(.godBlack)
 
                 Spacer()
 
-                Text("Class of 2026")
+                Text("Class of 2026", bundle: .module)
                   .font(.caption)
                   .foregroundColor(.godTextSecondaryLight)
 
@@ -142,7 +142,7 @@ public struct ProfileEditView: View {
           }
 
           VStack(alignment: .leading, spacing: 8) {
-            Text("ACCOUNT SETTING")
+            Text("ACCOUNT SETTING", bundle: .module)
               .font(.caption)
               .bold()
               .foregroundColor(.godTextSecondaryLight)
@@ -158,7 +158,7 @@ public struct ProfileEditView: View {
               viewStore.send(.logoutButtonTapped)
             }
 
-            Text("You are signed in as 19175926188")
+            Text("You are signed in as 19175926188", bundle: .module)
               .foregroundColor(.secondary)
               .font(.caption2)
           }

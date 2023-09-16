@@ -48,23 +48,23 @@ public struct FriendRequestCardView: View {
           .clipShape(Circle())
 
         VStack(alignment: .leading) {
-          Text("Tomoki Tsukiyama")
+          Text("Tomoki Tsukiyama", bundle: .module)
 
-          Text("1 mutual friend")
+          Text("1 mutual friend", bundle: .module)
             .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
         HStack(spacing: 0) {
           Button {} label: {
-            Text("HIDE")
+            Text("HIDE", bundle: .module)
               .frame(width: 80, height: 33)
               .foregroundColor(.secondary)
           }
           .buttonStyle(HoldDownButtonStyle())
 
           Button {} label: {
-            Text("ADD")
+            Text("ADD", bundle: .module)
               .frame(width: 80, height: 33)
               .foregroundColor(Color.white)
               .background(Color.godService)

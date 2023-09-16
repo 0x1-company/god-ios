@@ -45,20 +45,20 @@ struct FullScreenCoverViewPreviews: PreviewProvider {
           .frame(width: 64, height: 64)
           .clipShape(Circle())
 
-        Text("Share Profile on Instagram")
+        Text("Share Profile on Instagram", bundle: .module)
           .font(.title2)
           .bold()
 
         VStack(spacing: 0) {
-          Text("Step 1")
+          Text("Step 1", bundle: .module)
             .font(.title3)
             .bold()
 
-          Text("Copy your Gas link")
+          Text("Copy your Gas link", bundle: .module)
             .font(.title3)
         }
 
-        Text("gasapp.co/@tomokisun")
+        Text("gasapp.co/@tomokisun", bundle: .module)
           .frame(height: 56)
           .frame(maxWidth: .infinity)
           .foregroundColor(Color(uiColor: .darkGray))
@@ -66,7 +66,7 @@ struct FullScreenCoverViewPreviews: PreviewProvider {
           .clipShape(Capsule())
 
         Button(action: {}) {
-          Text("Copy Link")
+          Text("Copy Link", bundle: .module)
             .bold()
             .foregroundColor(.orange)
             .frame(height: 56)
@@ -78,16 +78,16 @@ struct FullScreenCoverViewPreviews: PreviewProvider {
         }
 
         VStack(spacing: 0) {
-          Text("Step 1")
+          Text("Step 1", bundle: .module)
             .font(.title3)
             .bold()
 
-          Text("Copy your Gas link")
+          Text("Copy your Gas link", bundle: .module)
             .font(.title3)
         }
 
         Button(action: {}) {
-          Text("Share")
+          Text("Share", bundle: .module)
             .bold()
             .foregroundColor(.white)
             .frame(height: 56)

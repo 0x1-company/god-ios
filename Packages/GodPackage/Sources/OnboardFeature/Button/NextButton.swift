@@ -24,7 +24,7 @@ public struct NextButton: View {
             .progressViewStyle(.circular)
             .tint(Color.black)
         } else {
-          Text("Next")
+          Text("Next", bundle: .module)
         }
       }
       .bold()

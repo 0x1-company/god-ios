@@ -51,7 +51,7 @@ public struct ProfilePhotoSettingView: View {
       VStack(spacing: 12) {
         Spacer()
 
-        Text("Add a profile photo")
+        Text("Add a profile photo", bundle: .module)
           .bold()
           .foregroundColor(Color.white)
 
@@ -59,7 +59,7 @@ public struct ProfilePhotoSettingView: View {
           .frame(width: 120, height: 120)
           .clipShape(Circle())
 
-        Text("Add a photo so your friends can find you")
+        Text("Add a photo so your friends can find you", bundle: .module)
           .foregroundColor(.secondary)
 
         Spacer()
@@ -67,7 +67,7 @@ public struct ProfilePhotoSettingView: View {
         Button {
           viewStore.send(.choosePhotoButtonTapped)
         } label: {
-          Text("Choose a photo")
+          Text("Choose a photo", bundle: .module)
             .bold()
             .frame(height: 56)
             .frame(maxWidth: .infinity)
@@ -81,7 +81,7 @@ public struct ProfilePhotoSettingView: View {
         Button {
           viewStore.send(.takePhotoButtonTapped)
         } label: {
-          Text("Take a photo")
+          Text("Take a photo", bundle: .module)
             .bold()
             .frame(height: 56)
             .frame(maxWidth: .infinity)

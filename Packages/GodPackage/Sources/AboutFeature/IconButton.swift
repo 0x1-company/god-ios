@@ -2,12 +2,12 @@ import ButtonStyles
 import SwiftUI
 
 struct IconButton: View {
-  let title: String
+  let title: LocalizedStringKey
   let image: ImageResource
   let action: () -> Void
 
   init(
-    _ title: String,
+    _ title: LocalizedStringKey,
     image: ImageResource,
     action: @escaping () -> Void
   ) {
@@ -18,7 +18,7 @@ struct IconButton: View {
 
   var body: some View {
     Button(action: action) {
-      Text(title)
+      Text(title, bundle: .module)
         .font(.headline)
         .frame(height: 54)
         .frame(maxWidth: .infinity)

@@ -33,10 +33,10 @@ public struct MaintenanceView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 24) {
-        Text("メンテナンス中")
+        Text("メンテナンス中", bundle: .module)
           .bold()
           .font(.title)
-        Text("サービス再開までしばらくお待ち下さい。")
+        Text("サービス再開までしばらくお待ち下さい。", bundle: .module)
       }
       .padding(.horizontal, 24)
       .frame(maxWidth: .infinity, maxHeight: .infinity)

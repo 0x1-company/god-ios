@@ -48,15 +48,15 @@ public struct SchoolHelpSheetView: View {
           .frame(width: 64, height: 64)
           .cornerRadius(12)
 
-        Text("Adding your school lets you\nadd classmates on God")
+        Text("Adding your school lets you\nadd classmates on God", bundle: .module)
           .bold()
 
-        Text("Choose the right school so\nyou can find your friends")
+        Text("Choose the right school so\nyou can find your friends", bundle: .module)
 
         Button {
           viewStore.send(.okayButtonTapped)
         } label: {
-          Text("OK")
+          Text("OK", bundle: .module)
             .frame(height: 56)
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)

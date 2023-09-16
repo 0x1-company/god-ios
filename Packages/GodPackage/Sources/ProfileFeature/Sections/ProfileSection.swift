@@ -36,19 +36,19 @@ public struct ProfileSection: View {
               .bold()
               .foregroundColor(.primary)
               +
-              Text(" friends")
+              Text(" friends", bundle: .module)
               .foregroundColor(.secondary)
 
-            Text("7")
+            Text("7", bundle: .module)
               .bold()
               .foregroundColor(.primary)
               +
-              Text(" stars")
+              Text(" stars", bundle: .module)
               .foregroundColor(.secondary)
           }
           if let editProfile {
             Button(action: editProfile) {
-              Text("EDIT PROFILE")
+              Text("EDIT PROFILE", bundle: .module)
                 .bold()
                 .foregroundColor(.secondary)
                 .frame(width: 120, height: 32)
@@ -75,7 +75,7 @@ public struct ProfileSection: View {
           }
           HStack(spacing: 4) {
             Image(systemName: "graduationcap.fill")
-            Text("9th Grade")
+            Text("9th Grade", bundle: .module)
           }
         }
         .foregroundColor(.secondary)

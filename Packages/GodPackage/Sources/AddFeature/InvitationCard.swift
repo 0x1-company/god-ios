@@ -47,13 +47,13 @@ public struct InvitationCardView: View {
           .clipShape(Circle())
 
         VStack(alignment: .leading, spacing: 4) {
-          Text("\(viewStore.familyName) \(viewStore.givenName)")
-          Text("29 friends on God")
+          Text("\(viewStore.familyName) \(viewStore.givenName)", bundle: .module)
+          Text("29 friends on God", bundle: .module)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
         Button {} label: {
-          Text("INVITE")
+          Text("INVITE", bundle: .module)
             .bold()
             .frame(width: 84, height: 34)
             .foregroundColor(.godService)
