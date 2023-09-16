@@ -7,11 +7,11 @@ public struct InvitationCardView: View {
   let familyName: String
   let givenName: String
   let action: () -> Void
-  
+
   var displayName: String {
-    return "\(familyName) \(givenName)"
+    "\(familyName) \(givenName)"
   }
-  
+
   public var body: some View {
     HStack(spacing: 16) {
       Color.red
@@ -22,7 +22,7 @@ public struct InvitationCardView: View {
         Text(verbatim: displayName)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
-      
+
       Button(action: action) {
         Text("INVITE", bundle: .module)
           .bold()

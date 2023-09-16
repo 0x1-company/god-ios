@@ -10,10 +10,10 @@ public struct FriendHeader: View {
       Text(title, bundle: .module)
         .bold()
         .frame(maxWidth: .infinity, alignment: .leading)
-      .frame(height: 34)
-      .padding(.horizontal, 16)
-      .foregroundColor(.secondary)
-      .background(Color(uiColor: .quaternarySystemFill))
+        .frame(height: 34)
+        .padding(.horizontal, 16)
+        .foregroundColor(.secondary)
+        .background(Color(uiColor: .quaternarySystemFill))
 
       Divider()
     }
