@@ -15,26 +15,21 @@ public struct ShopLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case storeResponse(TaskResult<God.StoreQuery.Data>)
+    case purchaseButtonTapped(id: String)
+    case purchaseResponse(TaskResult<God.PurchaseMutation.Data>)
     case closeButtonTapped
   }
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
-
+  
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
         return .run { send in
-          for try await data in godClient.store() {
-            await send(.storeResponse(.success(data)))
-          }
-        } catch: { error, send in
-          await send(.storeResponse(.failure(error)))
+          await storeRequest(send: send)
         }
-        .cancellable(id: Cancel.id)
-
       case let .storeResponse(.success(data)):
         state.items = data.store.items
         state.coinBalance = data.currentUser.wallet?.coinBalance ?? 0
@@ -44,12 +39,47 @@ public struct ShopLogic: Reducer {
         state.items = []
         state.coinBalance = 0
         return .none
-
+        
+      case let .purchaseButtonTapped(id):
+        guard let item = state.items.first(where: { $0.id == id })
+        else { return .none }
+        switch item.id {
+        case "GetYourNameOnThreeRandomPolls":
+          let input = God.PurchaseInput(
+            coinAmount: item.coinAmount,
+            storeItemId: item.id
+          )
+          return .run { send in
+            await send(.purchaseResponse(TaskResult {
+              try await godClient.purchase(input)
+            }))
+          }
+        case "PutYourNameInYourCrushsPoll":
+          return .none
+        default:
+          return .none
+        }
+      case .purchaseResponse(.success):
+        return .run { send in
+          await storeRequest(send: send)
+        }
+      case .purchaseResponse(.failure):
+        return .none
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
       }
+    }
+  }
+  
+  private func storeRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.store() {
+        await send(.storeResponse(.success(data)))
+      }
+    } catch {
+      await send(.storeResponse(.failure(error)))
     }
   }
 }
@@ -75,9 +105,10 @@ public struct ShopView: View {
             .resizable()
             .frame(width: 38, height: 38)
 
-          Text("68", bundle: .module)
+          Text(verbatim: viewStore.coinBalance.description)
             .font(.largeTitle)
             .bold()
+            .contentTransition(.numericText(countsDown: true))
         }
         .foregroundColor(Color.yellow)
         
@@ -91,6 +122,9 @@ public struct ShopView: View {
           Text("Use coins to get featured in polls", bundle: .module)
             .foregroundColor(Color.gray)
         }
+        
+        Spacer()
+          .frame(height: 18)
 
         VStack {
           ForEach(viewStore.items, id: \.self) { item in

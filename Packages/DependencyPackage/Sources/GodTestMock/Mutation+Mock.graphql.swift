@@ -15,6 +15,7 @@ public class Mutation: MockObject {
     @Field<User>("createUser") public var createUser
     @Field<UserBlock>("createUserBlock") public var createUserBlock
     @Field<UserHide>("createUserHide") public var createUserHide
+    @Field<Bool>("purchase") public var purchase
     @Field<User>("updateUserProfile") public var updateUserProfile
     @Field<User>("updateUsername") public var updateUsername
   }
@@ -27,6 +28,7 @@ public extension Mock where O == Mutation {
     createUser: Mock<User>? = nil,
     createUserBlock: Mock<UserBlock>? = nil,
     createUserHide: Mock<UserHide>? = nil,
+    purchase: Bool? = nil,
     updateUserProfile: Mock<User>? = nil,
     updateUsername: Mock<User>? = nil
   ) {
@@ -36,6 +38,7 @@ public extension Mock where O == Mutation {
     _setEntity(createUser, for: \.createUser)
     _setEntity(createUserBlock, for: \.createUserBlock)
     _setEntity(createUserHide, for: \.createUserHide)
+    _setScalar(purchase, for: \.purchase)
     _setEntity(updateUserProfile, for: \.updateUserProfile)
     _setEntity(updateUsername, for: \.updateUsername)
   }
