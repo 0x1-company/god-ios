@@ -39,6 +39,7 @@ public extension God {
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
       case "LocalizableString": return God.Objects.LocalizableString
+      case "Wallet": return God.Objects.Wallet
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem
       case "ActivityConnection": return God.Objects.ActivityConnection
@@ -46,7 +47,6 @@ public extension God {
       case "ActivityEdge": return God.Objects.ActivityEdge
       case "Activity": return God.Objects.Activity
       case "Question": return God.Objects.Question
-      case "Wallet": return God.Objects.Wallet
       default: return nil
       }
     }

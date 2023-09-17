@@ -18,4 +18,6 @@ public extension Color {
 
   static let godGreen = Color(ColorResource.green)
   static let godGreenLight = Color(ColorResource.greenLight)
+  
+  static let godYellow = Color(ColorResource.yellow)
 }

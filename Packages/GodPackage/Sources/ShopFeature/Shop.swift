@@ -7,6 +7,7 @@ public struct ShopLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var coinBalance = 0
     var items: [God.StoreQuery.Data.Store.Item] = []
     public init() {}
   }
@@ -36,14 +37,12 @@ public struct ShopLogic: Reducer {
 
       case let .storeResponse(.success(data)):
         state.items = data.store.items
+        state.coinBalance = data.currentUser.wallet?.coinBalance ?? 0
         return .none
 
-      case let .storeResponse(.failure(error as GodServerError)):
-        print(error.message)
-        return .none
-
-      case let .storeResponse(.failure(error)):
-        print(error)
+      case .storeResponse(.failure):
+        state.items = []
+        state.coinBalance = 0
         return .none
 
       case .closeButtonTapped:
@@ -64,9 +63,13 @@ public struct ShopView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack {
+      VStack(spacing: 0) {
         Text("YOUR BALANCE", bundle: .module)
           .foregroundColor(Color.gray)
+        
+        Spacer()
+          .frame(height: 18)
+        
         HStack {
           Image(.coin)
             .resizable()
@@ -77,11 +80,17 @@ public struct ShopView: View {
             .bold()
         }
         .foregroundColor(Color.yellow)
+        
+        Spacer()
+          .frame(height: 34)
 
-        Text("Boost Your Name in Polls", bundle: .module)
-          .foregroundColor(Color.white)
-        Text("Use coins to get featured in polls", bundle: .module)
-          .foregroundColor(Color.gray)
+        VStack(spacing: 8) {
+          Text("Boost Your Name in Polls", bundle: .module)
+            .foregroundColor(Color.white)
+          
+          Text("Use coins to get featured in polls", bundle: .module)
+            .foregroundColor(Color.gray)
+        }
 
         VStack {
           ForEach(viewStore.items, id: \.self) { item in
@@ -96,10 +105,12 @@ public struct ShopView: View {
 
         Spacer()
 
-        Text("How do I get more coins?", bundle: .module)
-          .foregroundColor(Color.white)
-        Text("Answer polls about your friends to win coins.", bundle: .module)
-          .foregroundColor(Color.gray)
+        VStack(spacing: 8) {
+          Text("How do I get more coins?", bundle: .module)
+            .foregroundColor(Color.white)
+          Text("Answer polls about your friends to win coins.", bundle: .module)
+            .foregroundColor(Color.gray)
+        }
       }
       .frame(maxWidth: .infinity)
       .background(Color.black)
