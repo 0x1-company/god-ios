@@ -68,7 +68,13 @@ public struct ShopView: View {
         Text("YOUR BALANCE", bundle: .module)
           .foregroundColor(Color.gray)
         HStack {
+          Image(.coin)
+            .resizable()
+            .frame(width: 38, height: 38)
+
           Text("68", bundle: .module)
+            .font(.largeTitle)
+            .bold()
         }
         .foregroundColor(Color.yellow)
 
@@ -95,7 +101,8 @@ public struct ShopView: View {
         Text("Answer polls about your friends to win coins.", bundle: .module)
           .foregroundColor(Color.gray)
       }
-      .background(Color.black.gradient)
+      .frame(maxWidth: .infinity)
+      .background(Color.black)
       .navigationTitle(Text("Shop", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
@@ -114,15 +121,12 @@ public struct ShopView: View {
 }
 
 #Preview {
-  Text("")
-    .sheet(isPresented: .constant(true)) {
-      NavigationStack {
-        ShopView(
-          store: .init(
-            initialState: ShopLogic.State(),
-            reducer: { ShopLogic() }
-          )
-        )
-      }
-    }
+  NavigationStack {
+    ShopView(
+      store: .init(
+        initialState: ShopLogic.State(),
+        reducer: { ShopLogic() }
+      )
+    )
+  }
 }
