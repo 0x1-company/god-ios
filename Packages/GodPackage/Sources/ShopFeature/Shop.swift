@@ -113,18 +113,16 @@ public struct ShopView: View {
   }
 }
 
-struct ShopViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("")
-      .sheet(isPresented: .constant(true)) {
-        NavigationStack {
-          ShopView(
-            store: .init(
-              initialState: ShopLogic.State(),
-              reducer: { ShopLogic() }
-            )
+#Preview {
+  Text("")
+    .sheet(isPresented: .constant(true)) {
+      NavigationStack {
+        ShopView(
+          store: .init(
+            initialState: ShopLogic.State(),
+            reducer: { ShopLogic() }
           )
-        }
+        )
       }
-  }
+    }
 }
