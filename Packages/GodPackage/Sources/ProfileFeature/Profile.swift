@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import ProfileEditFeature
+import ProfileShareFeature
 import ShopFeature
 import SwiftUI
 
@@ -47,6 +48,7 @@ public struct ProfileLogic: Reducer {
         return .none
 
       case .shareProfileButtonTapped:
+        state.destination = .profileShare()
         return .none
 
       case .shopButtonTapped:
@@ -79,11 +81,13 @@ public struct ProfileLogic: Reducer {
     public enum State: Equatable {
       case profileEdit(ProfileEditLogic.State = .init())
       case shop(ShopLogic.State = .init())
+      case profileShare(ProfileShareLogic.State = .init())
     }
 
     public enum Action: Equatable {
       case profileEdit(ProfileEditLogic.Action)
       case shop(ShopLogic.Action)
+      case profileShare(ProfileShareLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
@@ -92,6 +96,9 @@ public struct ProfileLogic: Reducer {
       }
       Scope(state: /State.shop, action: /Action.shop) {
         ShopLogic()
+      }
+      Scope(state: /State.profileShare, action: /Action.profileShare) {
+        ProfileShareLogic()
       }
     }
   }
@@ -158,6 +165,26 @@ public struct ProfileView: View {
           ShopView(store: store)
         }
       }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /ProfileLogic.Destination.State.profileShare,
+        action: ProfileLogic.Destination.Action.profileShare
+      ) { store in
+        ProfileShareView(store: store)
+          .presentationDetents([.height(ProfileShareView.heightForPresentationDetents)])
+          .presentationCornerRadiusIfPossible(24)
+      }
+    }
+  }
+}
+
+extension View {
+  @ViewBuilder
+  func presentationCornerRadiusIfPossible(_ cornerRadius: CGFloat) -> some View {
+    if #available(iOS 16.4, *) {
+      self.presentationCornerRadius(cornerRadius)
+    } else {
+      self
     }
   }
 }

@@ -165,6 +165,10 @@ let package = Package(
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "God", package: "DependencyPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
     .target(name: "RevealFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
