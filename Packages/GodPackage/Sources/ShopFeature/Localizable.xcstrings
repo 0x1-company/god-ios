@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "68" : {
-
-    },
     "Answer polls about your friends to win coins." : {
       "localizations" : {
         "ja" : {
@@ -37,6 +34,36 @@
         }
       }
     },
+    "Next" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Pick a friend to add\nyour name to their polls" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの名前を\n投票に加える友だちを選ぶ"
+          }
+        }
+      }
+    },
     "Shop" : {
       "localizations" : {
         "ja" : {
@@ -53,6 +80,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "コインを使うともっと友だちから注目される"
+          }
+        }
+      }
+    },
+    "You don't have enough coins" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コインが足りません"
           }
         }
       }

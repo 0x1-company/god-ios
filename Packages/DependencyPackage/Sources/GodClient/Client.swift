@@ -14,8 +14,11 @@ public struct GodClient: Sendable {
   public var approveFriendRequest: @Sendable (God.ApproveFriendRequestInput) async throws -> God.ApproveFriendRequestMutation.Data
 
   public var store: @Sendable () -> AsyncThrowingStream<God.StoreQuery.Data, Error>
+  public var purchase: @Sendable (God.PurchaseInput) async throws -> God.PurchaseMutation.Data
 
   public var activities: @Sendable (String?) -> AsyncThrowingStream<God.ActivitiesQuery.Data, Error>
+  
+  public var friends: @Sendable () -> AsyncThrowingStream<God.FriendsQuery.Data, Error>
 }
 
 public struct GodServerError: Error {

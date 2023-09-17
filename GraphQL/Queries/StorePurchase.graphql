@@ -1,0 +1,3 @@
+mutation Purchase($input: PurchaseInput!) {
+  purchase(input: $input)
+}

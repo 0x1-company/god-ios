@@ -46,8 +46,16 @@ public extension GodClient {
         let query = God.StoreQuery()
         return apolloClient.watch(query: query)
       },
+      purchase: { input in
+        let mutation = God.PurchaseMutation(input: input)
+        return try await apolloClient.perform(mutation: mutation)
+      },
       activities: {
         let query = God.ActivitiesQuery(after: $0 ?? .null)
+        return apolloClient.watch(query: query)
+      },
+      friends: {
+        let query = God.FriendsQuery(first: 100, after: .null)
         return apolloClient.watch(query: query)
       }
     )

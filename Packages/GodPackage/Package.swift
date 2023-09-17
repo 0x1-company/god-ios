@@ -182,7 +182,10 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShopFeature", dependencies: [
+      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "SearchField", package: "UIComponentPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
   ]

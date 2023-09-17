@@ -1,8 +1,14 @@
 query Store {
+  currentUser {
+    wallet {
+      coinBalance
+		}
+  }
   store {
     items {
       id
       coinAmount
+      itemType
     	description {
         ja
       }

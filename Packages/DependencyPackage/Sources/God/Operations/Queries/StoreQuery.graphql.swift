@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Store"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Store { store { __typename items { __typename id coinAmount description { __typename ja } title { __typename ja } } } }"#
+        #"query Store { currentUser { __typename wallet { __typename coinBalance } } store { __typename items { __typename id coinAmount itemType description { __typename ja } title { __typename ja } } } }"#
       ))
 
     public init() {}
@@ -19,11 +19,48 @@ public extension God {
 
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
+        .field("currentUser", CurrentUser.self),
         .field("store", Store.self),
       ] }
 
+      /// ログイン中ユーザーを取得
+      public var currentUser: CurrentUser { __data["currentUser"] }
       /// ストアのすべての商品を取得する
       public var store: Store { __data["store"] }
+
+      /// CurrentUser
+      ///
+      /// Parent Type: `User`
+      public struct CurrentUser: God.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .field("wallet", Wallet?.self),
+        ] }
+
+        /// wallet
+        public var wallet: Wallet? { __data["wallet"] }
+
+        /// CurrentUser.Wallet
+        ///
+        /// Parent Type: `Wallet`
+        public struct Wallet: God.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { God.Objects.Wallet }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("coinBalance", Int.self),
+          ] }
+
+          /// コイン枚数
+          public var coinBalance: Int { __data["coinBalance"] }
+        }
+      }
 
       /// Store
       ///
@@ -53,6 +90,7 @@ public extension God {
             .field("__typename", String.self),
             .field("id", God.ID.self),
             .field("coinAmount", Int.self),
+            .field("itemType", GraphQLEnum<God.ItemType>.self),
             .field("description", Description?.self),
             .field("title", Title.self),
           ] }
@@ -60,6 +98,8 @@ public extension God {
           public var id: God.ID { __data["id"] }
           /// 価格(コイン)
           public var coinAmount: Int { __data["coinAmount"] }
+          /// アイテムの種類
+          public var itemType: GraphQLEnum<God.ItemType> { __data["itemType"] }
           /// 説明
           public var description: Description? { __data["description"] }
           /// タイトル
