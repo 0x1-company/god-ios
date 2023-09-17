@@ -31,6 +31,12 @@
         }
       }
     },
+    "Insufficient funds for coin" : {
+
+    },
+    "OK" : {
+
+    },
     "Shop" : {
       "localizations" : {
         "ja" : {
@@ -50,6 +56,9 @@
           }
         }
       }
+    },
+    "You don't have enough coins" : {
+
     },
     "YOUR BALANCE" : {
       "localizations" : {

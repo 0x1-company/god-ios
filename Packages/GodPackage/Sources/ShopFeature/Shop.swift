@@ -7,6 +7,7 @@ public struct ShopLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var alert: AlertState<Action.Alert>?
     var coinBalance = 0
     var items: [God.StoreQuery.Data.Store.Item] = []
     public init() {}
@@ -18,6 +19,11 @@ public struct ShopLogic: Reducer {
     case purchaseButtonTapped(id: String)
     case purchaseResponse(TaskResult<God.PurchaseMutation.Data>)
     case closeButtonTapped
+    case alert(PresentationAction<Alert>)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -43,6 +49,12 @@ public struct ShopLogic: Reducer {
       case let .purchaseButtonTapped(id):
         guard let item = state.items.first(where: { $0.id == id })
         else { return .none }
+
+        guard state.coinBalance >= item.coinAmount else {
+          state.alert = .insufficientFundsForCoin
+          return .none
+        }
+
         switch item.id {
         case "GetYourNameOnThreeRandomPolls":
           let input = God.PurchaseInput(
@@ -69,6 +81,9 @@ public struct ShopLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+      case .alert:
+        state.alert = nil
+        return .none
       }
     }
   }
@@ -132,7 +147,9 @@ public struct ShopView: View {
               name: item.title.ja,
               description: item.description?.ja,
               amount: item.coinAmount
-            )
+            ) {
+              viewStore.send(.purchaseButtonTapped(id: item.id))
+            }
           }
         }
         .padding(.horizontal, 16)
@@ -151,6 +168,7 @@ public struct ShopView: View {
       .navigationTitle(Text("Shop", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
+      .alert(store: store.scope(state: \.$alert, action: ShopLogic.Action.alert))
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
@@ -173,5 +191,17 @@ public struct ShopView: View {
         reducer: { ShopLogic() }
       )
     )
+  }
+}
+
+extension AlertState where Action == ShopLogic.Action.Alert {
+  static let insufficientFundsForCoin = Self {
+    TextState("Insufficient funds for coin", bundle: .module)
+  } actions: {
+    ButtonState(action: .confirmOkay) {
+      TextState("OK")
+    }
+  } message: {
+    TextState("You don't have enough coins", bundle: .module)
   }
 }
