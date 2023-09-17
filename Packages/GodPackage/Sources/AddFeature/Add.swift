@@ -2,10 +2,10 @@ import Colors
 import ComposableArchitecture
 import Contacts
 import ContactsClient
-import SwiftUI
-import UIApplicationClient
 import God
 import GodClient
+import SwiftUI
+import UIApplicationClient
 
 public struct AddLogic: Reducer {
   public init() {}
@@ -17,7 +17,7 @@ public struct AddLogic: Reducer {
     var invitationsLeft = InvitationsLeftLogic.State()
     var friendRequests = FriendRequestsLogic.State()
     var friendsOfFriends = FriendsOfFriendsPanelLogic.State()
-    
+
     var searchResult: IdentifiedArrayOf<FriendRowCardLogic.State> = []
     public init() {}
   }
@@ -39,7 +39,7 @@ public struct AddLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.application.openSettingsURLString) var openSettingsURLString
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
-  
+
   enum Cancel {
     case search
   }
@@ -95,7 +95,7 @@ public struct AddLogic: Reducer {
             id: data.user.id,
             displayName: data.user.displayName.ja,
             description: "@\(username)"
-          )
+          ),
         ]
         return .none
       case .searchResponse(.failure):
