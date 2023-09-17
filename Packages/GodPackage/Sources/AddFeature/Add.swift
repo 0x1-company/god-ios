@@ -4,6 +4,8 @@ import Contacts
 import ContactsClient
 import SwiftUI
 import UIApplicationClient
+import God
+import GodClient
 
 public struct AddLogic: Reducer {
   public init() {}
@@ -15,6 +17,8 @@ public struct AddLogic: Reducer {
     var invitationsLeft = InvitationsLeftLogic.State()
     var friendRequests = FriendRequestsLogic.State()
     var friendsOfFriends = FriendsOfFriendsPanelLogic.State()
+    
+    var searchResult: IdentifiedArrayOf<FriendRowCardLogic.State> = []
     public init() {}
   }
 
@@ -22,16 +26,23 @@ public struct AddLogic: Reducer {
     case onTask
     case refreshable
     case contactsReEnableButtonTapped
+    case searchResponse(TaskResult<God.UserQuery.Data>)
     case binding(BindingAction<State>)
     case invitationsLeft(InvitationsLeftLogic.Action)
     case friendRequests(FriendRequestsLogic.Action)
     case friendsOfFriends(FriendsOfFriendsPanelLogic.Action)
+    case searchResult(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
   }
 
   @Dependency(\.openURL) var openURL
   @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.godClient) var godClient
   @Dependency(\.application.openSettingsURLString) var openSettingsURLString
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
+  
+  enum Cancel {
+    case search
+  }
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
@@ -44,7 +55,7 @@ public struct AddLogic: Reducer {
     Scope(state: \.friendsOfFriends, action: /Action.friendsOfFriends) {
       FriendsOfFriendsPanelLogic()
     }
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .none
@@ -60,6 +71,36 @@ public struct AddLogic: Reducer {
           else { return }
           await openURL(url)
         }
+      case .binding(\.$searchQuery):
+        let username = state.searchQuery.lowercased()
+        guard username.count >= 4 else {
+          state.searchResult = []
+          return .none
+        }
+        let userWhere = God.UserWhere(
+          username: .init(stringLiteral: username)
+        )
+        return .run { send in
+          for try await data in godClient.user(userWhere) {
+            await send(.searchResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.searchResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.search, cancelInFlight: true)
+      case let .searchResponse(.success(data)):
+        let username = data.user.username ?? ""
+        state.searchResult = [
+          .init(
+            id: data.user.id,
+            displayName: data.user.displayName.ja,
+            description: "@\(username)"
+          )
+        ]
+        return .none
+      case .searchResponse(.failure):
+        state.searchResult = []
+        return .none
       default:
         return .none
       }
@@ -67,6 +108,9 @@ public struct AddLogic: Reducer {
     Reduce<State, Action> { state, _ in
       state.contactsReEnableCardVisible = contactsAuthorizationStatus(.contacts) != .authorized
       return .none
+    }
+    .forEach(\.searchResult, action: /Action.searchResult) {
+      FriendRowCardLogic()
     }
   }
 }
@@ -91,11 +135,19 @@ public struct AddView: View {
 
         ScrollView {
           LazyVStack(spacing: 0) {
-            InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
-            FriendRequestsView(store: store.scope(state: \.friendRequests, action: AddLogic.Action.friendRequests))
-            FriendsOfFriendsPanelView(store: store.scope(state: \.friendsOfFriends, action: AddLogic.Action.friendsOfFriends))
-            VStack(spacing: 0) {
-              FriendHeader(title: "FROM SCHOOL")
+            if viewStore.searchResult.isEmpty {
+              InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
+              FriendRequestsView(store: store.scope(state: \.friendRequests, action: AddLogic.Action.friendRequests))
+              FriendsOfFriendsPanelView(store: store.scope(state: \.friendsOfFriends, action: AddLogic.Action.friendsOfFriends))
+              VStack(spacing: 0) {
+                FriendHeader(title: "FROM SCHOOL")
+              }
+            } else {
+              ForEachStore(
+                store.scope(state: \.searchResult, action: AddLogic.Action.searchResult)
+              ) {
+                FriendRowCardView(store: $0)
+              }
             }
           }
         }

@@ -21,7 +21,6 @@ public struct FriendRowCardLogic: Reducer {
   }
 
   public enum Action: Equatable {
-    case onTask
     case hideButtonTapped
     case addButtonTapped
   }
@@ -31,9 +30,6 @@ public struct FriendRowCardLogic: Reducer {
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
-      case .onTask:
-        return .none
-
       case .hideButtonTapped:
         return .none
 
@@ -86,7 +82,7 @@ public struct FriendRowCardView: View {
         }
         .buttonStyle(HoldDownButtonStyle())
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .frame(height: 72)
     }
   }
 }
