@@ -1,9 +1,9 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import God
 import GodClient
+import SwiftUI
 
 public struct FriendRowCardLogic: Reducer {
   public init() {}
@@ -25,7 +25,7 @@ public struct FriendRowCardLogic: Reducer {
     case hideButtonTapped
     case addButtonTapped
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -33,10 +33,10 @@ public struct FriendRowCardLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .hideButtonTapped:
         return .none
-        
+
       case .addButtonTapped:
         return .none
       }
