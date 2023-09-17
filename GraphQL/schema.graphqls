@@ -321,7 +321,7 @@ type Query {
   friendRequests(after: String, first: Int!): FriendConnection!
 
   """フレンドの一覧"""
-  friends(after: String, first: Int!): UserConnection!
+  friends: [User!]!
 
   """フレンドのフレンド一覧"""
   friendsOfFriends(after: String, first: Int!): UserConnection!
@@ -494,7 +494,7 @@ type User {
   lastName: String!
 
   """共通のフレンド数"""
-  mutualFriendsCount: Int
+  mutualFriendsCount: Int!
 
   """所属している学校"""
   school: School
