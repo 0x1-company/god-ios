@@ -49,27 +49,22 @@ public struct ShopLogic: Reducer {
       case let .purchaseButtonTapped(id):
         guard let item = state.items.first(where: { $0.id == id })
         else { return .none }
-
         guard state.coinBalance >= item.coinAmount else {
           state.alert = .insufficientFundsForCoin
           return .none
         }
-
-        switch item.id {
-        case "GetYourNameOnThreeRandomPolls":
-          let input = God.PurchaseInput(
-            coinAmount: item.coinAmount,
-            storeItemId: item.id
-          )
-          return .run { send in
-            await send(.purchaseResponse(TaskResult {
-              try await godClient.purchase(input)
-            }))
-          }
-        case "PutYourNameInYourCrushsPoll":
+        if case .putYourNameInYourCrushsPoll = item.itemType {
+          // presentation
           return .none
-        default:
-          return .none
+        }
+        let input = God.PurchaseInput(
+          coinAmount: item.coinAmount,
+          storeItemId: item.id
+        )
+        return .run { send in
+          await send(.purchaseResponse(TaskResult {
+            try await godClient.purchase(input)
+          }))
         }
       case .purchaseResponse(.success):
         return .run { send in

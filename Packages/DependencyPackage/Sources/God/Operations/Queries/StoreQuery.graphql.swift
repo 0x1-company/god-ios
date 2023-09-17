@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Store"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Store { currentUser { __typename wallet { __typename coinBalance } } store { __typename items { __typename id coinAmount description { __typename ja } title { __typename ja } } } }"#
+        #"query Store { currentUser { __typename wallet { __typename coinBalance } } store { __typename items { __typename id coinAmount itemType description { __typename ja } title { __typename ja } } } }"#
       ))
 
     public init() {}
@@ -90,6 +90,7 @@ public extension God {
             .field("__typename", String.self),
             .field("id", God.ID.self),
             .field("coinAmount", Int.self),
+            .field("itemType", GraphQLEnum<God.ItemType>.self),
             .field("description", Description?.self),
             .field("title", Title.self),
           ] }
@@ -97,6 +98,8 @@ public extension God {
           public var id: God.ID { __data["id"] }
           /// 価格(コイン)
           public var coinAmount: Int { __data["coinAmount"] }
+          /// アイテムの種類
+          public var itemType: GraphQLEnum<God.ItemType> { __data["itemType"] }
           /// 説明
           public var description: Description? { __data["description"] }
           /// タイトル

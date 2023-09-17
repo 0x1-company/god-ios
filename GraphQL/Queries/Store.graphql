@@ -8,6 +8,7 @@ query Store {
     items {
       id
       coinAmount
+      itemType
     	description {
         ja
       }
