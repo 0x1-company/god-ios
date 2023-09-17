@@ -38,6 +38,7 @@ type Choice {
   userId: ID!
 }
 
+"""1ページに対応する選択肢"""
 type ChoiceGroup {
   """選択肢の一覧"""
   choices: [Choice!]!
@@ -65,6 +66,11 @@ input ContactInput {
 
   """電話番号"""
   phoneNumber: PhoneNumberInput!
+}
+
+type CoolDown {
+  """いつまでクールダウンか"""
+  until: Date!
 }
 
 input CreateFirebaseRegistrationTokenInput {
@@ -99,6 +105,23 @@ input CreateVoteInput {
 
   """投票された人のID"""
   votedUserId: String!
+}
+
+type CurrentPoll {
+  """クールダウン情報"""
+  coolDown: CoolDown
+
+  """poll"""
+  poll: Poll
+
+  """has poll or cool down"""
+  status: CurrentPollStatus!
+}
+
+enum CurrentPollStatus {
+  ACTIVE
+  COOL_DOWN
+  UNSPECIFIED
 }
 
 """Date custom scalar type"""
@@ -153,7 +176,7 @@ type InboxActivity {
   id: ID!
 
   """イニシャル"""
-  initial: String!
+  initial: String
 
   """既読かどうか"""
   isRead: Boolean!
@@ -201,6 +224,9 @@ type Mutation {
   """フレンドリクエスト送信"""
   createFriendRequest(input: CreateFriendRequestInput!): Friend!
 
+  """Appleの課金情報を登録"""
+  createTransaction(transactionId: String!): Boolean!
+
   """ユーザー作成"""
   createUser(input: CreateUserInput!): User!
 
@@ -215,15 +241,15 @@ type Mutation {
   purchase(input: PurchaseInput!): Boolean!
 
   """Activityを既読にする"""
-  readActivity(activityId: String!): Boolean!
+  readActivity(activityId: String!): InboxActivity!
 
   """ブロックをリセットする"""
   resetUserBlock: Boolean!
 
   """非表示をリセットする"""
   resetUserHide: Boolean!
-  revealFullName(input: RevealFullNameInput!): String!
-  revealFullNameByPurchase(input: RevealFullNameInput!): String!
+  revealFullName(input: RevealFullNameInput!): LocalizableString
+  setRedis(key: String!, value: String!): String!
 
   """ユーザープロフィールのアップデート"""
   updateUserProfile(input: UpdateUserProfileInput!): User!
@@ -282,6 +308,12 @@ input PurchaseInput {
 }
 
 type Query {
+  """有効な購読情報を取得"""
+  activeSubscription: Subscription
+
+  """現在のPollを取得"""
+  currentPoll: CurrentPoll!
+
   """ログイン中ユーザーを取得"""
   currentUser: User!
 
@@ -293,6 +325,7 @@ type Query {
 
   """フレンドのフレンド一覧"""
   friendsOfFriends(after: String, first: Int!): UserConnection!
+  getRedis(key: String!): String!
 
   """フレンドのActivityを一覧で取得する"""
   listActivities(after: String, first: Int!): ActivityConnection!
@@ -303,8 +336,8 @@ type Query {
   """持っているアイテム一覧"""
   listUserItems(after: String, first: Int!): UserItemConnection!
 
-  """Pollを取得"""
-  poll: Poll!
+  """リビール可能数を取得"""
+  revealFullNameLimit: Int!
 
   """スクール一覧"""
   schools(after: String, first: Int!): SchoolConnection!
@@ -404,6 +437,13 @@ enum StoreItemStatus {
   UNSPECIFIED
 }
 
+type Subscription {
+  expireAt: Date!
+  id: ID!
+  productId: String!
+  transactionId: String!
+}
+
 input UpdateUserProfileInput {
   """名前。nullの場合は更新しない"""
   firstName: String
@@ -426,6 +466,9 @@ input UpdateUsernameInput {
 }
 
 type User {
+  """有効な購読情報を取得"""
+  activeSubscription: Subscription
+
   """表示名"""
   displayName: LocalizableString!
 
