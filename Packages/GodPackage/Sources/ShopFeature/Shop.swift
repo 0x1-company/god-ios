@@ -8,6 +8,7 @@ public struct ShopLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
+    @PresentationState var pickFriend: PickFriendToAddYourNameTheirPollLogic.State?
     var coinBalance = 0
     var items: [God.StoreQuery.Data.Store.Item] = []
     public init() {}
@@ -20,6 +21,7 @@ public struct ShopLogic: Reducer {
     case purchaseResponse(TaskResult<God.PurchaseMutation.Data>)
     case closeButtonTapped
     case alert(PresentationAction<Alert>)
+    case pickFriend(PresentationAction<PickFriendToAddYourNameTheirPollLogic.Action>)
     
     public enum Alert: Equatable {
       case confirmOkay
@@ -49,12 +51,12 @@ public struct ShopLogic: Reducer {
       case let .purchaseButtonTapped(id):
         guard let item = state.items.first(where: { $0.id == id })
         else { return .none }
-        guard state.coinBalance >= item.coinAmount else {
-          state.alert = .insufficientFundsForCoin
-          return .none
-        }
+//        guard state.coinBalance >= item.coinAmount else {
+//          state.alert = .insufficientFundsForCoin
+//          return .none
+//        }
         if case .putYourNameInYourCrushsPoll = item.itemType {
-          // presentation
+          state.pickFriend = .init()
           return .none
         }
         let input = God.PurchaseInput(
@@ -79,7 +81,17 @@ public struct ShopLogic: Reducer {
       case .alert:
         state.alert = nil
         return .none
+        
+      case .pickFriend(.dismiss):
+        state.pickFriend = nil
+        return .none
+
+      case .pickFriend:
+        return .none
       }
+    }
+    .ifLet(\.$pickFriend, action: /Action.pickFriend) {
+      PickFriendToAddYourNameTheirPollLogic()
     }
   }
   
@@ -164,6 +176,16 @@ public struct ShopView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: ShopLogic.Action.alert))
+      .fullScreenCover(
+        store: store.scope(
+          state: \.$pickFriend,
+          action: ShopLogic.Action.pickFriend
+        )
+      ) { store in
+        NavigationStack {
+          PickFriendToAddYourNameTheirPollView(store: store)
+        }
+      }
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
