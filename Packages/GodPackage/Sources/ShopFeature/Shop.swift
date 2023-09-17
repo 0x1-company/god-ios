@@ -96,7 +96,7 @@ public struct ShopView: View {
           .foregroundColor(Color.gray)
       }
       .background(Color.black.gradient)
-      .navigationTitle("Shop")
+      .navigationTitle(Text("Shop", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .toolbar {

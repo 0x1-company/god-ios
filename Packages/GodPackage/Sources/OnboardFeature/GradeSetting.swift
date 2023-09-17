@@ -100,7 +100,7 @@ public struct GradeSettingView: View {
         .multilineTextAlignment(.center)
         .cornerRadius(12, corners: [.topLeft, .topRight])
       }
-      .navigationTitle("What grade are you in?")
+      .navigationTitle(Text("What grade are you in?", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden()
       .toolbarBackground(Color.godService, for: .navigationBar)

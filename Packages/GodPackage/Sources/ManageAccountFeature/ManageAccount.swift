@@ -68,7 +68,7 @@ public struct ManageAccountView: View {
           .foregroundColor(.red)
         }
       }
-      .navigationTitle("Manage Account")
+      .navigationTitle(Text("Manage Account", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {

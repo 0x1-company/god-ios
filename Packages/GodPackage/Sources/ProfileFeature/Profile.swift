@@ -137,7 +137,7 @@ public struct ProfileView: View {
         .background(Color.godBackgroundWhite)
       }
       .listStyle(.plain)
-      .navigationTitle("Profile")
+      .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(

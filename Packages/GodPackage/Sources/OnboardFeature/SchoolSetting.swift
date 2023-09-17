@@ -95,7 +95,7 @@ public struct SchoolSettingView: View {
         .cornerRadius(12, corners: [.topLeft, .topRight])
         .edgesIgnoringSafeArea(.bottom)
       }
-      .navigationTitle("Pick your school")
+      .navigationTitle(Text("Pick your school", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
