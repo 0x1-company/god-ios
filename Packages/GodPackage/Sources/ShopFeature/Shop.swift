@@ -51,10 +51,10 @@ public struct ShopLogic: Reducer {
       case let .purchaseButtonTapped(id):
         guard let item = state.items.first(where: { $0.id == id })
         else { return .none }
-//        guard state.coinBalance >= item.coinAmount else {
-//          state.alert = .insufficientFundsForCoin
-//          return .none
-//        }
+        guard state.coinBalance >= item.coinAmount else {
+          state.alert = .insufficientFundsForCoin
+          return .none
+        }
         if case .putYourNameInYourCrushsPoll = item.itemType {
           state.pickFriend = .init()
           return .none
