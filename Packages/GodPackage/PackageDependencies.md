@@ -91,6 +91,9 @@ graph TD;
     ShareScreenshotFeature-->AsyncValue;
     ShareScreenshotFeature-->PhotosClient;
     ShareScreenshotFeature-->ComposableArchitecture;
+    ShopFeature-->Colors;
     ShopFeature-->GodClient;
+    ShopFeature-->SearchField;
+    ShopFeature-->ButtonStyles;
     ShopFeature-->ComposableArchitecture;
 ```
