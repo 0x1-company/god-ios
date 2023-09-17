@@ -39,7 +39,7 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
         let friendsOfFriends = data.friendsOfFriends.edges
           .map(\.node.fragments.friendsOfFriendsCardFragment)
           .map { data in
-            let mutualFriendsCount = data.mutualFriendsCount ?? 0
+            let mutualFriendsCount = data.mutualFriendsCount
             return FriendRowCardLogic.State(
               id: data.id,
               displayName: data.displayName.ja,
