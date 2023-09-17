@@ -1,0 +1,6 @@
+fragment FriendFragment on User {
+  id
+  displayName {
+    ja
+  }
+}

@@ -3,12 +3,15 @@ import Colors
 import ComposableArchitecture
 import SwiftUI
 import SearchField
+import God
+import GodClient
 
 public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
     @BindingState var searchQuery = ""
+    var friends: [God.FriendFragment] = []
     public init() {}
   }
 
@@ -16,18 +19,25 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
     case onTask
     case nextButtonTapped
     case closeButtonTapped
+    case friendsResponse(TaskResult<God.FriendsQuery.Data>)
     case binding(BindingAction<State>)
   }
   
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
-        
+        return .run { send in
+          for try await data in godClient.friends() {
+            await send(.friendsResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.friendsResponse(.failure(error)))
+        }
       case .nextButtonTapped:
         return .none
         
@@ -35,6 +45,14 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+      case let .friendsResponse(.success(data)):
+        state.friends = data.friends.edges.map(\.node.fragments.friendFragment)
+        return .none
+
+      case .friendsResponse(.failure):
+        state.friends = []
+        return .none
+
       case .binding:
         return .none
       }
@@ -64,9 +82,17 @@ public struct PickFriendToAddYourNameTheirPollView: View {
         SearchField(text: viewStore.$searchQuery)
         
         Divider()
-        
-        List {
-          
+
+        List(viewStore.friends, id: \.self) { friend in
+          HStack(spacing: 16) {
+            Color.red
+              .frame(width: 42, height: 42)
+              .clipShape(Circle())
+            
+            Text(friend.displayName.ja)
+              .frame(maxWidth: .infinity, alignment: .leading)
+          }
+          .frame(height: 76)
         }
       }
       .task { await viewStore.send(.onTask).finish() }

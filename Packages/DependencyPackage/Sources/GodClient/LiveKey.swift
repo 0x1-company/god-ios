@@ -53,6 +53,10 @@ public extension GodClient {
       activities: {
         let query = God.ActivitiesQuery(after: $0 ?? .null)
         return apolloClient.watch(query: query)
+      },
+      friends: {
+        let query = God.FriendsQuery(first: 100, after: .null)
+        return apolloClient.watch(query: query)
       }
     )
   }
