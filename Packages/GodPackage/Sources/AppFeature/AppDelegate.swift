@@ -2,6 +2,8 @@ import ComposableArchitecture
 import FirebaseAuthClient
 import FirebaseCoreClient
 import UIKit
+import God
+import GodClient
 
 public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
@@ -18,6 +20,7 @@ public struct AppDelegateLogic: Reducer {
 
   @Dependency(\.firebaseCore) var firebaseCore
   @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.godClient.createFirebaseRegistrationToken) var createFirebaseRegistrationToken
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
@@ -29,9 +32,12 @@ public struct AppDelegateLogic: Reducer {
     case .didRegisterForRemoteNotifications(.failure):
       return .none
 
-    case let .didRegisterForRemoteNotifications(.success(deviceToken)):
+    case let .didRegisterForRemoteNotifications(.success(tokenData)):
+      let token = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
+      let input = God.CreateFirebaseRegistrationTokenInput(token: token)
       return .run { _ in
-        firebaseAuth.setAPNSToken(deviceToken, .sandbox)
+        firebaseAuth.setAPNSToken(tokenData, .sandbox)
+        _ = try await createFirebaseRegistrationToken(input)
       }
     case .configurationForConnecting:
       return .none
