@@ -2,11 +2,11 @@ import SwiftUI
 
 public struct LabeledButton: View {
   let action: () -> Void
-  let titleKey: LocalizedStringKey
+  let titleKey: String
   let systemImage: String
 
   public init(
-    _ titleKey: LocalizedStringKey,
+    _ titleKey: String,
     systemImage: String,
     action: @escaping () -> Void
   ) {
