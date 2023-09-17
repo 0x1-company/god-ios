@@ -29,7 +29,7 @@ struct ShopItemView: View {
       Button(action: action) {
         HStack(spacing: 4) {
           Text(amount.description)
-          
+
           Image(.coin)
             .resizable()
             .frame(width: 18, height: 18)

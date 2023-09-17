@@ -1,10 +1,10 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
-import SearchField
 import God
 import GodClient
+import SearchField
+import SwiftUI
 
 public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
@@ -22,7 +22,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
     case friendsResponse(TaskResult<God.FriendsQuery.Data>)
     case binding(BindingAction<State>)
   }
-  
+
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
 
@@ -40,7 +40,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
         }
       case .nextButtonTapped:
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -78,9 +78,9 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           .frame(maxWidth: .infinity)
           .padding(.bottom, 46)
           .background(Color.godService)
-        
+
         SearchField(text: viewStore.$searchQuery)
-        
+
         Divider()
 
         List(viewStore.friends, id: \.self) { friend in
@@ -88,7 +88,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
             Color.red
               .frame(width: 42, height: 42)
               .clipShape(Circle())
-            
+
             Text(friend.displayName.ja)
               .frame(maxWidth: .infinity, alignment: .leading)
           }
@@ -106,7 +106,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           }
           .buttonStyle(HoldDownButtonStyle())
         }
-        
+
         ToolbarItem(placement: .topBarTrailing) {
           Button {
             viewStore.send(.nextButtonTapped)

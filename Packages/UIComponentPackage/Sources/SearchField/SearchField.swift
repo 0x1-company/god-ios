@@ -2,11 +2,11 @@ import SwiftUI
 
 public struct SearchField: View {
   @Binding var text: String
-  
+
   public init(text: Binding<String>) {
-    self._text = text
+    _text = text
   }
-  
+
   public var body: some View {
     HStack {
       Image(systemName: "magnifyingglass")
