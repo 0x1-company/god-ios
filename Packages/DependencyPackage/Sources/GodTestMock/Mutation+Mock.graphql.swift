@@ -11,6 +11,7 @@ public class Mutation: MockObject {
 
   public struct MockFields {
     @Field<Friend>("approveFriendRequest") public var approveFriendRequest
+    @Field<FirebaseRegistrationToken>("createFirebaseRegistrationToken") public var createFirebaseRegistrationToken
     @Field<Friend>("createFriendRequest") public var createFriendRequest
     @Field<User>("createUser") public var createUser
     @Field<UserBlock>("createUserBlock") public var createUserBlock
@@ -24,6 +25,7 @@ public class Mutation: MockObject {
 public extension Mock where O == Mutation {
   convenience init(
     approveFriendRequest: Mock<Friend>? = nil,
+    createFirebaseRegistrationToken: Mock<FirebaseRegistrationToken>? = nil,
     createFriendRequest: Mock<Friend>? = nil,
     createUser: Mock<User>? = nil,
     createUserBlock: Mock<UserBlock>? = nil,
@@ -34,6 +36,7 @@ public extension Mock where O == Mutation {
   ) {
     self.init()
     _setEntity(approveFriendRequest, for: \.approveFriendRequest)
+    _setEntity(createFirebaseRegistrationToken, for: \.createFirebaseRegistrationToken)
     _setEntity(createFriendRequest, for: \.createFriendRequest)
     _setEntity(createUser, for: \.createUser)
     _setEntity(createUserBlock, for: \.createUserBlock)
