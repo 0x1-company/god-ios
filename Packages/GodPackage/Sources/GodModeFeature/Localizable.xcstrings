@@ -5,7 +5,14 @@
 
     },
     "Continue" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入"
+          }
+        }
+      }
     },
     "Get Double Coins on Polls" : {
 

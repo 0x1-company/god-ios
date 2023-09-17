@@ -8,19 +8,54 @@
 
     },
     "Shuffle" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "シャッフル"
+          }
+        }
+      }
     },
     "Skip" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スキップ"
+          }
+        }
+      }
     },
     "Tap to continue" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップして次へ"
+          }
+        }
+      }
     },
     "Woah, slow down!🐎" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "うわぁ、ゆっくり！🐎"
+          }
+        }
+      }
     },
     "You're voting too fast" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投票が早すぎます"
+          }
+        }
+      }
     },
     "理想の勉強仲間" : {
 

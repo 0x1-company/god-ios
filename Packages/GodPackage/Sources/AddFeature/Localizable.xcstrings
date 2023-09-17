@@ -15,37 +15,100 @@
 
     },
     "ADD" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加"
+          }
+        }
+      }
     },
     "Contacts are disabled" : {
 
     },
     "FRIEND REQUESTS" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンドリクエスト"
+          }
+        }
+      }
     },
     "Friends of Friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンドのフレンド"
+          }
+        }
+      }
     },
     "FRIENDS OF FRIENDS" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンドのフレンド"
+          }
+        }
+      }
     },
     "FROM SCHOOL" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同じ学校"
+          }
+        }
+      }
     },
     "HIDE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "非表示"
+          }
+        }
+      }
     },
     "INVITATIONS LEFT" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待リスト"
+          }
+        }
+      }
     },
     "INVITE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待"
+          }
+        }
+      }
     },
     "Kevin Ding" : {
 
     },
     "Search..." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索..."
+          }
+        }
+      }
     },
     "See 19 more" : {
 
