@@ -46,11 +46,7 @@ public struct CupertinoMessageView: View {
     store: .init(
       initialState: CupertinoMessageLogic.State(
         recipient: "+1-111-111-1112",
-        body: """
-        https://godapp.jp/add/tomokisun
-
-        Get this app
-        """
+        body: "https://godapp.jp/add/tomokisun\n\nGet this app"
       ),
       reducer: { CupertinoMessageLogic() }
     )
