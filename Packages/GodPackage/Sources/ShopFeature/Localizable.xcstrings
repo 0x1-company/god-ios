@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "Answer polls about your friends to win coins." : {
       "localizations" : {
         "ja" : {
@@ -30,9 +33,6 @@
           }
         }
       }
-    },
-    "Insufficient funds for coin" : {
-
     },
     "OK" : {
       "localizations" : {
