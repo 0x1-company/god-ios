@@ -35,7 +35,14 @@
 
     },
     "OK" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "Shop" : {
       "localizations" : {
@@ -58,7 +65,14 @@
       }
     },
     "You don't have enough coins" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コインが足りません"
+          }
+        }
+      }
     },
     "YOUR BALANCE" : {
       "localizations" : {

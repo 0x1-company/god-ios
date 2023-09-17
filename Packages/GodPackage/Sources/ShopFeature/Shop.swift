@@ -196,7 +196,7 @@ public struct ShopView: View {
 
 extension AlertState where Action == ShopLogic.Action.Alert {
   static let insufficientFundsForCoin = Self {
-    TextState("Insufficient funds for coin", bundle: .module)
+    TextState("")
   } actions: {
     ButtonState(action: .confirmOkay) {
       TextState("OK")
