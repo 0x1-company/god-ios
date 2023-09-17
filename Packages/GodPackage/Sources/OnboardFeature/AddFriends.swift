@@ -70,7 +70,7 @@ public struct AddFriendsView: View {
       }
       .listStyle(.plain)
       .background(Color.godService)
-      .navigationTitle("Add Friends")
+      .navigationTitle(Text("Add Friends", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)

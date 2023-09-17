@@ -76,7 +76,7 @@ public struct ProfileExternalView: View {
           TopStarsSection()
         }
       }
-      .navigationTitle("Profile")
+      .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
     }
