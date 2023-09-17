@@ -22,7 +22,7 @@ public struct ShopLogic: Reducer {
     case closeButtonTapped
     case alert(PresentationAction<Alert>)
     case pickFriend(PresentationAction<PickFriendToAddYourNameTheirPollLogic.Action>)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -30,7 +30,7 @@ public struct ShopLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
-  
+
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
@@ -47,7 +47,7 @@ public struct ShopLogic: Reducer {
         state.items = []
         state.coinBalance = 0
         return .none
-        
+
       case let .purchaseButtonTapped(id):
         guard let item = state.items.first(where: { $0.id == id })
         else { return .none }
@@ -81,7 +81,7 @@ public struct ShopLogic: Reducer {
       case .alert:
         state.alert = nil
         return .none
-        
+
       case .pickFriend(.dismiss):
         state.pickFriend = nil
         return .none
@@ -94,7 +94,7 @@ public struct ShopLogic: Reducer {
       PickFriendToAddYourNameTheirPollLogic()
     }
   }
-  
+
   private func storeRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.store() {
@@ -118,10 +118,10 @@ public struct ShopView: View {
       VStack(spacing: 0) {
         Text("YOUR BALANCE", bundle: .module)
           .foregroundColor(Color.gray)
-        
+
         Spacer()
           .frame(height: 18)
-        
+
         HStack {
           Image(.coin)
             .resizable()
@@ -133,18 +133,18 @@ public struct ShopView: View {
             .contentTransition(.numericText(countsDown: true))
         }
         .foregroundColor(Color.yellow)
-        
+
         Spacer()
           .frame(height: 34)
 
         VStack(spacing: 8) {
           Text("Boost Your Name in Polls", bundle: .module)
             .foregroundColor(Color.white)
-          
+
           Text("Use coins to get featured in polls", bundle: .module)
             .foregroundColor(Color.gray)
         }
-        
+
         Spacer()
           .frame(height: 18)
 
