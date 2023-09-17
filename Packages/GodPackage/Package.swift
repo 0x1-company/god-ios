@@ -54,6 +54,7 @@ let package = Package(
     .target(name: "AddFeature", dependencies: [
       "CupertinoMessageFeature",
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
@@ -166,7 +167,6 @@ let package = Package(
     .target(name: "ProfileShareFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       .product(name: "Colors", package: "UIComponentPackage"),
-      .product(name: "God", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
