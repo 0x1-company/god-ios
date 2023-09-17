@@ -1,0 +1,16 @@
+# import '../fragments/NextPaginationFragment'
+# import '../fragments/FriendsOfFriendsCardFragment'
+
+query FriendsOfFriends($first:Int!, $after: String) {
+  friendsOfFriends(first: $first, after: $after) {
+    pageInfo {
+      ...NextPaginationFragment
+    }
+    edges {
+      cursor
+      node {
+        ...FriendsOfFriendsCardFragment
+      }
+    }
+  }
+}

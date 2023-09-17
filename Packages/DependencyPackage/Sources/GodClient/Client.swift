@@ -19,6 +19,8 @@ public struct GodClient: Sendable {
   public var activities: @Sendable (String?) -> AsyncThrowingStream<God.ActivitiesQuery.Data, Error>
 
   public var friends: @Sendable () -> AsyncThrowingStream<God.FriendsQuery.Data, Error>
+  public var friendsOfFriends: @Sendable () -> AsyncThrowingStream<God.FriendsOfFriendsQuery.Data, Error>
+  public var fromSchools: @Sendable (String) -> AsyncThrowingStream<God.FromSchoolsQuery.Data, Error>
 }
 
 public struct GodServerError: Error {

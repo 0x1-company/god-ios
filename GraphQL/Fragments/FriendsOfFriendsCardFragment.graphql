@@ -1,0 +1,7 @@
+fragment FriendsOfFriendsCardFragment on User {
+  id
+  mutualFriendsCount
+  displayName {
+    ja
+  }
+}

@@ -17,6 +17,7 @@ public class User: MockObject {
     @Field<Int>("generation") public var generation
     @Field<God.ID>("id") public var id
     @Field<String>("lastName") public var lastName
+    @Field<Int>("mutualFriendsCount") public var mutualFriendsCount
     @Field<School>("school") public var school
     @Field<String>("schoolId") public var schoolId
     @Field<String>("username") public var username
@@ -33,6 +34,7 @@ public extension Mock where O == User {
     generation: Int? = nil,
     id: God.ID? = nil,
     lastName: String? = nil,
+    mutualFriendsCount: Int? = nil,
     school: Mock<School>? = nil,
     schoolId: String? = nil,
     username: String? = nil,
@@ -46,6 +48,7 @@ public extension Mock where O == User {
     _setScalar(generation, for: \.generation)
     _setScalar(id, for: \.id)
     _setScalar(lastName, for: \.lastName)
+    _setScalar(mutualFriendsCount, for: \.mutualFriendsCount)
     _setEntity(school, for: \.school)
     _setScalar(schoolId, for: \.schoolId)
     _setScalar(username, for: \.username)

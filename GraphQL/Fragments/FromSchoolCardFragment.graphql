@@ -1,0 +1,7 @@
+fragment FromSchoolCardFragment on User {
+  id
+  generation
+  displayName {
+    ja
+  }
+}
