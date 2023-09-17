@@ -2,16 +2,44 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Instagram" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instagram"
+          }
+        }
+      }
     },
     "LINE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LINE"
+          }
+        }
+      }
     },
     "Messages" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
+          }
+        }
+      }
     },
     "Share Screenshot" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スクリーンショットをシェア"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

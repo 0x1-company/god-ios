@@ -8,22 +8,64 @@
 
     },
     "Answer polls about your friends to win coins." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友達に関する質問に答えてコインをゲットしよう"
+          }
+        }
+      }
     },
     "Boost Your Name in Polls" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの名前を質問にもっと表示する"
+          }
+        }
+      }
     },
     "How do I get more coins?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コインを増やすには？"
+          }
+        }
+      }
     },
     "Shop" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショップ"
+          }
+        }
+      }
     },
     "Use coins to get featured in polls" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コインを使うともっと友だちから注目される"
+          }
+        }
+      }
     },
     "YOUR BALANCE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コイン残高"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

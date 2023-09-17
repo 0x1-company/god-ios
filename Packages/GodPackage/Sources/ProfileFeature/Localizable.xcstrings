@@ -2,10 +2,24 @@
   "sourceLanguage" : "en",
   "strings" : {
     " friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド"
+          }
+        }
+      }
     },
     " stars" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スター"
+          }
+        }
+      }
     },
     "7" : {
 
@@ -20,16 +34,44 @@
 
     },
     "Profile" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール"
+          }
+        }
+      }
     },
     "Share Profile" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "シェア"
+          }
+        }
+      }
     },
     "Shop" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショップ"
+          }
+        }
+      }
     },
     "Top Stars" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トップスター"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

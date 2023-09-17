@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Invite a friend" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを招待"
+          }
+        }
+      }
     },
     "New Polls in 54:36" : {
 

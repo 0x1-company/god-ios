@@ -123,10 +123,16 @@ public struct VoteView: View {
             Text("Tap to continue", bundle: .module)
           } else {
             HStack(spacing: 0) {
-              LabeledButton("Shuffle", systemImage: "shuffle") {
+              LabeledButton(
+                String.init(localized: "Shuffle", bundle: .module),
+                systemImage: "shuffle"
+              ) {
                 viewStore.send(.shuffleButtonTapped)
               }
-              LabeledButton("Skip", systemImage: "forward.fill") {
+              LabeledButton(
+                String.init(localized: "Skip", bundle: .module),
+                systemImage: "forward.fill"
+              ) {
                 viewStore.send(.skipButtonTapped)
               }
             }

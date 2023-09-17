@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Start" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スタート"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
