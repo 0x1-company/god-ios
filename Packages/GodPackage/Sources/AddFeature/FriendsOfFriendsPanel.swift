@@ -1,7 +1,7 @@
 import ComposableArchitecture
-import SwiftUI
 import God
 import GodClient
+import SwiftUI
 
 public struct FriendsOfFriendsPanelLogic: Reducer {
   public init() {}
@@ -16,9 +16,9 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
     case friendsOfFriendsResponse(TaskResult<God.FriendsOfFriendsQuery.Data>)
     case friendsOfFriends(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
   }
-  
+
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case id
   }
@@ -52,7 +52,7 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
       case .friendsOfFriendsResponse(.failure):
         state.friendsOfFriends = []
         return .none
-        
+
       case .friendsOfFriends:
         return .none
       }
