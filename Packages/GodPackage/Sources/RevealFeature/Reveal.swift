@@ -110,7 +110,7 @@ public struct RevealView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 16) {
         VStack(spacing: 16) {
-          Text("The first letter in their name is...")
+          Text("The first letter in their name is...", bundle: .module)
             .font(.title3)
             .bold()
 
@@ -123,7 +123,7 @@ public struct RevealView: View {
           Button {
             viewStore.send(.seeFullNameButtonTapped)
           } label: {
-            Text("See Full Name")
+            Text("See Full Name", bundle: .module)
               .bold()
               .frame(height: 56)
               .frame(maxWidth: .infinity)
@@ -133,7 +133,7 @@ public struct RevealView: View {
           }
           .buttonStyle(HoldDownButtonStyle())
 
-          Text("You have 2 reveals")
+          Text("You have 2 reveals", bundle: .module)
             .foregroundColor(.godTextSecondaryLight)
         }
       }

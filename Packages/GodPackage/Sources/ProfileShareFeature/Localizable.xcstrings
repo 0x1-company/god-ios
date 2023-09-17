@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Close" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
+      }
     },
     "Copy Link" : {
 

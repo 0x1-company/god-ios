@@ -32,7 +32,7 @@ public struct ___VARIABLE_productName:identifier___View: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
-        Text("___VARIABLE_productName:identifier___")
+        Text("___VARIABLE_productName:identifier___", bundle: .module)
       }
       .navigationTitle("___VARIABLE_productName:identifier___")
       .navigationBarTitleDisplayMode(.inline)

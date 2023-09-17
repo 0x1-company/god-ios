@@ -106,9 +106,8 @@ public struct ProfileShareView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(alignment: .center, spacing: 28) {
-        Text("Share Profile")
+        Text("Share Profile", bundle: .module)
           .font(.title3)
-          .bold()
 
         HStack {
           Spacer()
@@ -137,7 +136,7 @@ public struct ProfileShareView: View {
         Button {
           viewStore.send(.closeButtonTapped)
         } label: {
-          Text("Close")
+          Text("Close", bundle: .module)
             .bold()
             .frame(height: 52)
             .frame(maxWidth: .infinity)

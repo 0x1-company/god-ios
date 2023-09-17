@@ -7,6 +7,7 @@ Only XxxFeature in GodPackage
 graph TD;
     AboutFeature-->HowItWorksFeature;
     ActivityFeature-->ProfileFeature;
+    AddFeature-->CupertinoMessageFeature;
     AppFeature-->LaunchFeature;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;

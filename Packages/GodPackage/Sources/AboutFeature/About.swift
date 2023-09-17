@@ -180,8 +180,8 @@ public struct AboutView: View {
         .aspectRatio(contentMode: .fit)
 
         VStack(spacing: 0) {
-          Text("God")
-          Text("Terms / Privacy")
+          Text("God", bundle: .module)
+          Text("Terms / Privacy", bundle: .module)
         }
         .foregroundColor(.secondary)
       }
@@ -214,37 +214,37 @@ public struct AboutView: View {
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
   static let getHelp = Self {
-    TextState("Get Help")
+    TextState("Get Help", bundle: .module)
   } actions: {
     ButtonState(action: .addMySchoolToMyProfile) {
-      TextState("Add my school to my profile")
+      TextState("Add my school to my profile", bundle: .module)
     }
     ButtonState(action: .changeMyGrade) {
-      TextState("Change my grade")
+      TextState("Change my grade", bundle: .module)
     }
     ButtonState(action: .changeMyName) {
-      TextState("Change my name")
+      TextState("Change my name", bundle: .module)
     }
     ButtonState(action: .changeMyGender) {
-      TextState("Change my gender")
+      TextState("Change my gender", bundle: .module)
     }
     ButtonState(action: .deleteMyAccount) {
-      TextState("Delete my account")
+      TextState("Delete my account", bundle: .module)
     }
     ButtonState(action: .purchasesAndGodMode) {
-      TextState("Purchases & God Mode")
+      TextState("Purchases & God Mode", bundle: .module)
     }
     ButtonState(action: .reportBug) {
-      TextState("Report a bug")
+      TextState("Report a bug", bundle: .module)
     }
     ButtonState(action: .somethingElse) {
-      TextState("Something else")
+      TextState("Something else", bundle: .module)
     }
     ButtonState(role: .cancel) {
-      TextState("Cancel")
+      TextState("Cancel", bundle: .module)
     }
   } message: {
-    TextState("Get Help")
+    TextState("Get Help", bundle: .module)
   }
 }
 

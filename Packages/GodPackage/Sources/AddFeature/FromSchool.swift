@@ -49,7 +49,7 @@ public struct FromSchoolView: View {
         FriendAddCard()
       }
       .listStyle(.plain)
-      .navigationTitle("Friends of Friends")
+      .navigationTitle(Text("From School", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .searchable(text: viewStore.$searchable)

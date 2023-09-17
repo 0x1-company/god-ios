@@ -94,8 +94,8 @@ public struct GodModeView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 24) {
         VStack(spacing: 0) {
-          Text("定期課金。いつでもキャンセルできます。")
-          Text("お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週[金額]円で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。")
+          Text("定期課金。いつでもキャンセルできます。", bundle: .module)
+          Text("お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週[金額]円で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。", bundle: .module)
         }
         .font(.caption)
         .padding(.horizontal, 24)
@@ -110,12 +110,12 @@ public struct GodModeView: View {
 
           GodModeFunctions()
 
-          Text("\(viewStore.product.displayPrice)/week")
+          Text("\(viewStore.product.displayPrice)/week", bundle: .module)
 
           Button {
             store.send(.continueButtonTapped)
           } label: {
-            Text("Continue")
+            Text("Continue", bundle: .module)
               .bold()
               .frame(height: 56)
               .frame(maxWidth: .infinity)
@@ -129,7 +129,7 @@ public struct GodModeView: View {
           Button {
             store.send(.maybeLaterButtonTapped)
           } label: {
-            Text("Maybe Later")
+            Text("Maybe Later", bundle: .module)
               .foregroundColor(Color.gray)
           }
           .buttonStyle(HoldDownButtonStyle())
@@ -150,16 +150,3 @@ public struct GodModeView: View {
     }
   }
 }
-
-// struct GodModeViewPreviews: PreviewProvider {
-//  static var previews: some View {
-//    GodModeView(
-//      store: .init(
-//        initialState: GodModeLogic.State(
-//          product: Product.
-//        ),
-//        reducer: { GodModeLogic() }
-//      )
-//    )
-//  }
-// }

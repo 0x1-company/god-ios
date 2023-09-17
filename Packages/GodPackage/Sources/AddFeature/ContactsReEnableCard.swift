@@ -10,9 +10,9 @@ public struct ContactsReEnableCard: View {
         Image(systemName: "person.crop.square.fill")
           .font(.system(size: 30))
         VStack(alignment: .leading, spacing: 4) {
-          Text("Contacts are disabled")
+          Text("Contacts are disabled", bundle: .module)
             .bold()
-          Text("Tap to re-enable")
+          Text("Tap to re-enable", bundle: .module)
             .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

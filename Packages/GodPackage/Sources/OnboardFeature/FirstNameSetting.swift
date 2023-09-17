@@ -103,13 +103,13 @@ public struct FirstNameSettingLogic: Reducer {
 extension AlertState where Action == FirstNameSettingLogic.Action.Alert {
   static func hiraganaValidateError() -> Self {
     Self {
-      TextState("title")
+      TextState("title", bundle: .module)
     } actions: {
       ButtonState(action: .confirmOkay) {
-        TextState("OK")
+        TextState("OK", bundle: .module)
       }
     } message: {
-      TextState("ひらがなのみ設定できます")
+      TextState("ひらがなのみ設定できます", bundle: .module)
     }
   }
 }
@@ -126,7 +126,7 @@ public struct FirstNameSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
-        Text("What's your first name?")
+        Text("What's your first name?", bundle: .module)
           .bold()
           .foregroundColor(.godWhite)
         TextField("First Name", text: viewStore.$firstName)
@@ -136,7 +136,7 @@ public struct FirstNameSettingView: View {
           .focused($focus)
 
         if viewStore.isImport {
-          Text("Imported from Contacts")
+          Text("Imported from Contacts", bundle: .module)
             .foregroundColor(.godWhite)
         }
         Spacer()

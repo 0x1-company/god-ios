@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
+    .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
@@ -39,6 +40,7 @@ let package = Package(
     .package(path: "../UIComponentPackage"),
     .package(path: "../DependencyPackage"),
     .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
+    .package(url: "https://github.com/edonv/SwiftUIMessage", from: "0.0.3"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
   ],
   targets: [
@@ -50,6 +52,7 @@ let package = Package(
       "ProfileFeature",
     ]),
     .target(name: "AddFeature", dependencies: [
+      "CupertinoMessageFeature",
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
@@ -72,6 +75,10 @@ let package = Package(
       .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ], resources: [.copy("coin.json")]),
+    .target(name: "CupertinoMessageFeature", dependencies: [
+      .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "ForceUpdateFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "Constants", package: "DependencyPackage"),

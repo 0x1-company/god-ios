@@ -105,7 +105,7 @@ public struct PhoneNumberView: View {
 
         VStack(spacing: 12) {
           Spacer()
-          Text("Enter your phone Number")
+          Text("Enter your phone Number", bundle: .module)
             .bold()
             .font(.title3)
 
@@ -115,7 +115,7 @@ public struct PhoneNumberView: View {
             .keyboardType(.phonePad)
             .focused($focus)
 
-          Text("Remember - never sign up\nwith another person's phone number.")
+          Text("Remember - never sign up\nwith another person's phone number.", bundle: .module)
             .multilineTextAlignment(.center)
 
           Spacer()

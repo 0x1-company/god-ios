@@ -80,7 +80,7 @@ public struct UsernameSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
         Spacer()
-        Text("Choose a username")
+        Text("Choose a username", bundle: .module)
           .bold()
           .foregroundColor(.white)
 

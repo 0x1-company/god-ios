@@ -11,13 +11,34 @@
 
     },
     "Add a photo so your friends can find you" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちがあなたを見つけられるように写真を追加する"
+          }
+        }
+      }
     },
     "Add a profile photo" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール写真を追加する"
+          }
+        }
+      }
     },
     "Add Friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを追加する"
+          }
+        }
+      }
     },
     "Adding your gender\nhelps create your polls" : {
 

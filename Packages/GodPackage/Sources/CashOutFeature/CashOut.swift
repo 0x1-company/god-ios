@@ -35,18 +35,18 @@ public struct CashOutView: View {
       ZStack {
         VStack(spacing: 88) {
           VStack(spacing: 100) {
-            Text("Congrats")
+            Text("Congrats", bundle: .module)
               .bold()
               .font(.largeTitle)
 
-            Text("You earned 9 coins")
+            Text("You earned 9 coins", bundle: .module)
               .bold()
           }
 
           Button {
             viewStore.send(.cashOutButtonTapped)
           } label: {
-            Text("Cash Out")
+            Text("Cash Out", bundle: .module)
               .bold()
               .font(.title2)
               .frame(height: 54)

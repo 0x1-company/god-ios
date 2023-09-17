@@ -5,7 +5,14 @@
 
     },
     "See Full Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フルネームを見る"
+          }
+        }
+      }
     },
     "The first letter in their name is..." : {
 

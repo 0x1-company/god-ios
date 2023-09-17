@@ -52,9 +52,9 @@ public struct AddFriendsView: View {
             .clipShape(Circle())
 
           VStack(alignment: .leading) {
-            Text("Kevin Ding")
+            Text("Kevin Ding", bundle: .module)
 
-            Text("1 mutual friend")
+            Text("1 mutual friend", bundle: .module)
               .foregroundColor(Color.godTextSecondaryLight)
           }
 
@@ -70,7 +70,7 @@ public struct AddFriendsView: View {
       }
       .listStyle(.plain)
       .background(Color.godService)
-      .navigationTitle("Add Friends")
+      .navigationTitle(Text("Add Friends", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)

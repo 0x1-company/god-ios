@@ -65,7 +65,7 @@ public struct FriendsOfFriendsView: View {
           }
         }
       }
-      .navigationTitle("Friends of Friends")
+      .navigationTitle(Text("Friends of Friends", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .toolbar {

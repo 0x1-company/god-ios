@@ -47,14 +47,14 @@ public struct ActivatedGodModeView: View {
           .padding(.horizontal, 60)
           .padding(.top, 20)
 
-        Text("Tap a message in your inbox to reveal the sender")
+        Text("Tap a message in your inbox to reveal the sender", bundle: .module)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
 
         Button {
           viewStore.send(.okayButtonTapped)
         } label: {
-          Text("OK")
+          Text("OK", bundle: .module)
             .frame(height: 50)
             .frame(maxWidth: .infinity)
             .bold()

@@ -50,13 +50,13 @@ public struct FullNameView: View {
               .stroke(Color.white, lineWidth: 8)
           )
 
-        Text("Tomoki Tsukiyama")
+        Text("Tomoki Tsukiyama", bundle: .module)
           .bold()
 
         Button {
           viewStore.send(.closeButtonTapped)
         } label: {
-          Text("Close")
+          Text("Close", bundle: .module)
             .frame(height: 56)
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)

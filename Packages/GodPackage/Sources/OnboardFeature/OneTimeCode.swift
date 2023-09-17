@@ -185,11 +185,11 @@ public struct OneTimeCodeView: View {
 
         VStack(spacing: 12) {
           Spacer()
-          Text("We sent you a code to verify\nyour number")
+          Text("We sent you a code to verify\nyour number", bundle: .module)
             .bold()
             .font(.title3)
 
-          Text("Sent to +81 80-2332-3620")
+          Text("Sent to +81 80-2332-3620", bundle: .module)
 
           TextField(
             "Code",

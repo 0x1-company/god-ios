@@ -9,7 +9,7 @@ public struct InboxCard: View {
     Button(action: action) {
       HStack(spacing: 0) {
         LabeledContent {
-          Text("16h")
+          Text("16h", bundle: .module)
         } label: {
           Label {
             Text(title)
