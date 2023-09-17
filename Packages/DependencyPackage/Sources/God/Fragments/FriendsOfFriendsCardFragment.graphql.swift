@@ -16,14 +16,14 @@ public extension God {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("id", God.ID.self),
-      .field("mutualFriendsCount", Int?.self),
+      .field("mutualFriendsCount", Int.self),
       .field("displayName", DisplayName.self),
     ] }
 
     /// user id
     public var id: God.ID { __data["id"] }
     /// 共通のフレンド数
-    public var mutualFriendsCount: Int? { __data["mutualFriendsCount"] }
+    public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
     /// 表示名
     public var displayName: DisplayName { __data["displayName"] }
 

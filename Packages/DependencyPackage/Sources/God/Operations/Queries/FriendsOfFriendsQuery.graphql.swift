@@ -119,7 +119,7 @@ public extension God {
             /// user id
             public var id: God.ID { __data["id"] }
             /// 共通のフレンド数
-            public var mutualFriendsCount: Int? { __data["mutualFriendsCount"] }
+            public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
             /// 表示名
             public var displayName: FriendsOfFriendsCardFragment.DisplayName { __data["displayName"] }
 

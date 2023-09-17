@@ -1,16 +1,7 @@
 # import '../fragments/FriendCardFragment'
-# import '../fragments/NextPaginationFragment'
 
-query Friends($first: Int!, $after: String) {
-  friends(first: $first, after: $after) {
-    pageInfo {
-      ...NextPaginationFragment
-    }
-    edges {
-      cursor
-      node {
-        ...FriendFragment
-      }
-    }
+query Friends {
+  friends {
+    ...FriendFragment
   }
 }

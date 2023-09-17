@@ -46,7 +46,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
           await dismiss()
         }
       case let .friendsResponse(.success(data)):
-        state.friends = data.friends.edges.map(\.node.fragments.friendFragment)
+        state.friends = data.friends.map(\.fragments.friendFragment)
         return .none
 
       case .friendsResponse(.failure):
