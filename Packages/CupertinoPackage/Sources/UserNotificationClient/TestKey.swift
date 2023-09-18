@@ -2,8 +2,8 @@ import Dependencies
 import UserNotifications
 import XCTestDynamicOverlay
 
-extension DependencyValues {
-  public var userNotifications: UserNotificationClient {
+public extension DependencyValues {
+  var userNotifications: UserNotificationClient {
     get { self[UserNotificationClient.self] }
     set { self[UserNotificationClient.self] = newValue }
   }
@@ -18,8 +18,8 @@ extension UserNotificationClient: TestDependencyKey {
   )
 }
 
-extension UserNotificationClient {
-  public static let noop = Self(
+public extension UserNotificationClient {
+  static let noop = Self(
     notificationSettings: { UNAuthorizationStatus.notDetermined },
     requestAuthorization: { _ in false }
   )
