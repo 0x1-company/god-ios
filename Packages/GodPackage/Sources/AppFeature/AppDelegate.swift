@@ -33,7 +33,7 @@ public struct AppDelegateLogic: Reducer {
 
         _ = try await requestAuthorization([.alert, .sound, .badge])
         await registerForRemoteNotifications()
-        
+
         send(.delegate(.didFinishLaunching), animation: .default)
       }
     case .didRegisterForRemoteNotifications(.failure):
@@ -44,9 +44,9 @@ public struct AppDelegateLogic: Reducer {
       let input = God.CreateFirebaseRegistrationTokenInput(token: token)
       return .run { _ in
         #if DEBUG
-        firebaseAuth.setAPNSToken(tokenData, .sandbox)
+          firebaseAuth.setAPNSToken(tokenData, .sandbox)
         #else
-        firebaseAuth.setAPNSToken(tokenData, .prod)
+          firebaseAuth.setAPNSToken(tokenData, .prod)
         #endif
         _ = try await createFirebaseRegistrationToken(input)
       }
