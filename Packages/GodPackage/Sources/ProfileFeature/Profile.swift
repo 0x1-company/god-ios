@@ -13,7 +13,7 @@ public struct ProfileLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
-    var user = AsyncValue<God.CurrentUserQuery.Data.CurrentUser>.none
+    var profile = AsyncValue<God.ProfileQuery.Data>.none
     public init() {}
   }
 
@@ -22,26 +22,29 @@ public struct ProfileLogic: Reducer {
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
-    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case profileResponse(TaskResult<God.ProfileQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case profile
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
-        state.user = .loading
+        state.profile = .loading
         return .run { send in
-          for try await data in godClient.currentUser() {
-            await send(.currentUserResponse(.success(data)))
+          for try await data in godClient.profile() {
+            await send(.profileResponse(.success(data)))
           }
         } catch: { error, send in
-          await send(.currentUserResponse(.failure(error)))
+          await send(.profileResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.profile)
 
       case .editProfileButtonTapped:
         state.destination = .profileEdit()
@@ -54,14 +57,12 @@ public struct ProfileLogic: Reducer {
       case .shopButtonTapped:
         state.destination = .shop()
         return .none
-
-      case let .currentUserResponse(.success(data)):
-        state.user = .success(data.currentUser)
+        
+      case let .profileResponse(.success(data)):
+        state.profile = .success(data)
         return .none
-
-      case let .currentUserResponse(.failure(error)):
-        print(error)
-        state.user = .none
+      case .profileResponse(.failure):
+        state.profile = .none
         return .none
 
       case .destination(.dismiss):
@@ -115,13 +116,10 @@ public struct ProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          if case let .success(user) = viewStore.user {
-            ProfileSection(
-              user: user.fragments.profileSectionFragment,
-              editProfile: {
-                store.send(.editProfileButtonTapped)
-              }
-            )
+          if case let .success(data) = viewStore.profile {
+            ProfileSection(user: data.currentUser.fragments.profileSectionFragment) {
+              viewStore.send(.editProfileButtonTapped)
+            }
           }
           Divider()
 
@@ -139,7 +137,9 @@ public struct ProfileView: View {
           TopStarsSection()
             .padding(.bottom, 16)
 
-          FriendsSection()
+          if case let .success(data) = viewStore.profile, !data.friends.isEmpty {
+            FriendsSection(friends: data.friends.map(\.fragments.friendFragment))
+          }
         }
         .background(Color.godBackgroundWhite)
       }
