@@ -21,7 +21,8 @@ public struct AppDelegateLogic: Reducer {
 
   @Dependency(\.firebaseCore) var firebaseCore
   @Dependency(\.firebaseAuth) var firebaseAuth
-  @Dependency(\.userNotifications.requestAuthorization) var requestAuthorization
+  @Dependency(\.application) var application
+  @Dependency(\.userNotifications) var userNotifications
   @Dependency(\.godClient.createFirebaseRegistrationToken) var createFirebaseRegistrationToken
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
@@ -29,7 +30,20 @@ public struct AppDelegateLogic: Reducer {
     case .didFinishLaunching:
       return .run { @MainActor send in
         firebaseCore.configure()
-        _ = try await requestAuthorization([.alert, .sound, .badge])
+
+        let authorizationStatus = await userNotifications.notificationSettings()
+        switch authorizationStatus {
+        case .authorized:
+          _ = try await userNotifications.requestAuthorization([.alert, .sound, .badge])
+        case .notDetermined, .provisional:
+          _ = try await userNotifications.requestAuthorization(.provisional)
+        default:
+          return
+        }
+
+        await application.registerForRemoteNotifications()
+        
+        
         send(.delegate(.didFinishLaunching))
       }
     case .didRegisterForRemoteNotifications(.failure):
@@ -39,7 +53,11 @@ public struct AppDelegateLogic: Reducer {
       let token = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
       let input = God.CreateFirebaseRegistrationTokenInput(token: token)
       return .run { _ in
+        #if DEBUG
         firebaseAuth.setAPNSToken(tokenData, .sandbox)
+        #else
+        firebaseAuth.setAPNSToken(tokenData, .prod)
+        #endif
         _ = try await createFirebaseRegistrationToken(input)
       }
     case .configurationForConnecting:

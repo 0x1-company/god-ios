@@ -5,6 +5,7 @@ import UIKit
 extension UIApplicationClient: DependencyKey {
   public static let liveValue = Self(
     openSettingsURLString: { await UIApplication.openSettingsURLString },
-    openNotificationSettingsURLString: { await UIApplication.openNotificationSettingsURLString }
+    openNotificationSettingsURLString: { await UIApplication.openNotificationSettingsURLString },
+    registerForRemoteNotifications: { await UIApplication.shared.registerForRemoteNotifications() }
   )
 }
