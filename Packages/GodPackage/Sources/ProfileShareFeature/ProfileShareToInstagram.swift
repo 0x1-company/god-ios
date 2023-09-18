@@ -67,7 +67,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .shareButtonTapped:
         return .send(.delegate(.nextPage))
           .transaction(.animationDisable)
