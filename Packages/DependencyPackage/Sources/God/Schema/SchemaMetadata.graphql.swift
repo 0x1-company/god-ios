@@ -32,6 +32,7 @@ public extension God {
     public static func objectType(forTypename typename: String) -> Object? {
       switch typename {
       case "Mutation": return God.Objects.Mutation
+      case "FirebaseRegistrationToken": return God.Objects.FirebaseRegistrationToken
       case "Friend": return God.Objects.Friend
       case "User": return God.Objects.User
       case "UserBlock": return God.Objects.UserBlock
