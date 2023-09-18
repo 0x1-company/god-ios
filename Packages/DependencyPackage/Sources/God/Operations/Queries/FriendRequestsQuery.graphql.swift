@@ -76,6 +76,8 @@ public extension God {
             ] }
 
             public var id: God.ID { __data["id"] }
+            /// ユーザー情報
+            public var user: FriendRequestCardFragment.User { __data["user"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict

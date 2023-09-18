@@ -1,3 +1,9 @@
 fragment FriendRequestCardFragment on Friend {
   id
+  user {
+    displayName {
+      ja
+    }
+    mutualFriendsCount
+  }
 }
