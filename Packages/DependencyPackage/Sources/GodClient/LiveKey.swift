@@ -66,6 +66,10 @@ public extension GodClient {
         let query = God.FromSchoolsQuery(schoolId: schoolId, first: 100, after: .null)
         return apolloClient.watch(query: query)
       },
+      friendRequests: {
+        let query = God.FriendRequestsQuery(first: 100)
+        return apolloClient.watch(query: query)
+      },
       createFirebaseRegistrationToken: { input in
         let mutation = God.CreateFirebaseRegistrationTokenMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
