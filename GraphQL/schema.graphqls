@@ -60,6 +60,15 @@ input ChoiceInput {
   userId: ID!
 }
 
+input CompletePollInput {
+  pollId: String!
+}
+
+type CompletePollResponse {
+  """獲得コイン枚数"""
+  earnedCoinAmount: Int!
+}
+
 input ContactInput {
   """ニックネームもしくはフルネーム、表示用の名前"""
   name: String!
@@ -212,9 +221,12 @@ type Mutation {
   """フレンドリクエスト承認"""
   approveFriendRequest(input: ApproveFriendRequestInput!): Friend!
 
+  """pollのcomplete処理を行い、コインを付与する"""
+  completePoll(input: CompletePollInput!): CompletePollResponse!
+
   """連絡先を保存する"""
   createContacts(
-    """連絡先一覧。長さは500までにクライアント側で分割してから送る"""
+    """連絡先一覧。長さは100までにクライアント側で分割してから送る"""
     contacts: [ContactInput!]!
   ): Boolean!
 
@@ -486,6 +498,9 @@ type User {
 
   """年代"""
   generation: Int
+
+  """学年をテキストで返す"""
+  grade: String
 
   """user id"""
   id: ID!
