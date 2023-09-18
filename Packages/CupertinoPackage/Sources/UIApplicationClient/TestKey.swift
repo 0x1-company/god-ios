@@ -13,13 +13,15 @@ extension UIApplicationClient: TestDependencyKey {
 
   public static let testValue = Self(
     openSettingsURLString: unimplemented("\(Self.self).openSettingsURLString"),
-    openNotificationSettingsURLString: unimplemented("\(Self.self).openNotificationSettingsURLString")
+    openNotificationSettingsURLString: unimplemented("\(Self.self).openNotificationSettingsURLString"),
+    registerForRemoteNotifications: unimplemented("\(Self.self).registerForRemoteNotifications")
   )
 }
 
 public extension UIApplicationClient {
   static let noop = Self(
     openSettingsURLString: { "settings://god/settings" },
-    openNotificationSettingsURLString: { "" }
+    openNotificationSettingsURLString: { "" },
+    registerForRemoteNotifications: {}
   )
 }
