@@ -1,9 +1,9 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import God
 import GodClient
+import SwiftUI
 
 public struct FriendRequestsLogic: Reducer {
   public init() {}
@@ -18,9 +18,9 @@ public struct FriendRequestsLogic: Reducer {
     case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
-  
+
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case friendRequests
   }
@@ -37,12 +37,12 @@ public struct FriendRequestsLogic: Reducer {
           await send(.friendRequestResponse(.failure(error)))
         }
         .cancellable(id: Cancel.friendRequests)
-        
+
       case let .friendRequestResponse(.success(data)):
         let requests = data.friendRequests.edges
           .map(\.node.fragments.friendRequestCardFragment)
           .map { data in
-            return FriendRequestCardLogic.State(
+            FriendRequestCardLogic.State(
               friendId: data.id,
               userId: data.user.id,
               displayName: data.user.displayName.ja,
