@@ -1,0 +1,11 @@
+# import '../fragments/FriendCardFragment'
+# import '../fragments/ProfileSectionFragment.graphql'
+
+query Profile {
+  currentUser {
+    ...ProfileSectionFragment
+  }
+  friends {
+    ...FriendFragment
+  }
+}
