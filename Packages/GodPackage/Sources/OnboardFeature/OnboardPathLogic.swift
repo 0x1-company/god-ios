@@ -6,7 +6,7 @@ public struct OnboardPathLogic: Reducer {
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
 
-  func skipFindFriend() -> Bool {
+  var isFindFriendSkip: Bool {
     authorizationStatus(.contacts) != .notDetermined
   }
 
@@ -26,7 +26,7 @@ public struct OnboardPathLogic: Reducer {
 
         if generation != nil {
           state.path.append(.schoolSetting())
-        } else if skipFindFriend() {
+        } else if isFindFriendSkip {
           state.path.append(.phoneNumber())
         } else {
           state.path.append(.findFriend())
@@ -36,7 +36,7 @@ public struct OnboardPathLogic: Reducer {
       case let .schoolSetting(.delegate(.nextScreen(schoolId))):
         state.schoolId = schoolId
 
-        if skipFindFriend() {
+        if isFindFriendSkip {
           state.path.append(.phoneNumber())
         } else {
           state.path.append(.findFriend())
