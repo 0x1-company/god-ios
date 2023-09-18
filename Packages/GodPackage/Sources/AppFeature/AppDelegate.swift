@@ -21,8 +21,8 @@ public struct AppDelegateLogic: Reducer {
 
   @Dependency(\.firebaseCore) var firebaseCore
   @Dependency(\.firebaseAuth) var firebaseAuth
-  @Dependency(\.application) var application
-  @Dependency(\.userNotifications) var userNotifications
+  @Dependency(\.userNotifications.requestAuthorization) var requestAuthorization
+  @Dependency(\.application.registerForRemoteNotifications) var registerForRemoteNotifications
   @Dependency(\.godClient.createFirebaseRegistrationToken) var createFirebaseRegistrationToken
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
@@ -31,20 +31,10 @@ public struct AppDelegateLogic: Reducer {
       return .run { @MainActor send in
         firebaseCore.configure()
 
-        let authorizationStatus = await userNotifications.notificationSettings()
-        switch authorizationStatus {
-        case .authorized:
-          _ = try await userNotifications.requestAuthorization([.alert, .sound, .badge])
-        case .notDetermined, .provisional:
-          _ = try await userNotifications.requestAuthorization(.provisional)
-        default:
-          return
-        }
-
-        await application.registerForRemoteNotifications()
+        _ = try await requestAuthorization([.alert, .sound, .badge])
+        await registerForRemoteNotifications()
         
-        
-        send(.delegate(.didFinishLaunching))
+        send(.delegate(.didFinishLaunching), animation: .default)
       }
     case .didRegisterForRemoteNotifications(.failure):
       return .none
