@@ -2,6 +2,8 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import God
+import GodClient
 
 public struct FriendRequestsLogic: Reducer {
   public init() {}
@@ -13,13 +15,44 @@ public struct FriendRequestsLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
+  }
+  
+  @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case friendRequests
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .run { send in
+          for try await data in godClient.friendRequests() {
+            await send(.friendRequestResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.friendRequestResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.friendRequests)
+        
+      case let .friendRequestResponse(.success(data)):
+        let requests = data.friendRequests.edges
+          .map(\.node.fragments.friendRequestCardFragment)
+          .map { data in
+            return FriendRequestCardLogic.State(
+              friendId: data.id,
+              userId: data.user.id,
+              displayName: data.user.displayName.ja,
+              description: "\(data.user.mutualFriendsCount) mutual friend"
+            )
+          }
+        state.requests = .init(uniqueElements: requests)
+        return .none
+      case .friendRequestResponse(.failure):
+        state.requests = []
         return .none
 
       case .requests:

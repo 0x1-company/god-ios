@@ -13,6 +13,7 @@ public class Friend: MockObject {
     @Field<String>("friendUserId") public var friendUserId
     @Field<God.ID>("id") public var id
     @Field<GraphQLEnum<God.FriendStatus>>("status") public var status
+    @Field<User>("user") public var user
     @Field<String>("userId") public var userId
   }
 }
@@ -22,12 +23,14 @@ public extension Mock where O == Friend {
     friendUserId: String? = nil,
     id: God.ID? = nil,
     status: GraphQLEnum<God.FriendStatus>? = nil,
+    user: Mock<User>? = nil,
     userId: String? = nil
   ) {
     self.init()
     _setScalar(friendUserId, for: \.friendUserId)
     _setScalar(id, for: \.id)
     _setScalar(status, for: \.status)
+    _setEntity(user, for: \.user)
     _setScalar(userId, for: \.userId)
   }
 }

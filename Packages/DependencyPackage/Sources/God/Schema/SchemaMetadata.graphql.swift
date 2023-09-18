@@ -50,6 +50,8 @@ public extension God {
       case "ActivityEdge": return God.Objects.ActivityEdge
       case "Activity": return God.Objects.Activity
       case "Question": return God.Objects.Question
+      case "FriendConnection": return God.Objects.FriendConnection
+      case "FriendEdge": return God.Objects.FriendEdge
       default: return nil
       }
     }

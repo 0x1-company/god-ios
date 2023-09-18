@@ -146,12 +146,18 @@ type FirebaseRegistrationToken {
 
 type Friend {
   createdAt: Date!
+
+  """フレンドのユーザー情報"""
+  friendUser: User!
   friendUserId: String!
   id: ID!
 
   """フレンド状態"""
   status: FriendStatus!
   updatedAt: Date!
+
+  """ユーザー情報"""
+  user: User!
   userId: String!
 }
 

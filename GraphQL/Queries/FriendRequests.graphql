@@ -1,0 +1,11 @@
+# import '../fragments/FriendRequestCardFragment.graphql'
+
+query FriendRequests($first: Int!){
+  friendRequests(first: $first) {
+    edges {
+      node {
+        ...FriendRequestCardFragment
+      }
+    }
+  }
+}

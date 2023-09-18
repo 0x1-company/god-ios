@@ -6,7 +6,7 @@ public struct FriendsOfFriendsLogic: Reducer {
 
   public struct State: Equatable {
     @BindingState var searchQuery = ""
-    var requests: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
+    var requests: IdentifiedArrayOf<FriendRowCardLogic.State> = []
     public init() {}
   }
 
@@ -14,7 +14,7 @@ public struct FriendsOfFriendsLogic: Reducer {
     case onTask
     case closeButtonTapped
     case binding(BindingAction<State>)
-    case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
+    case requests(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -39,7 +39,7 @@ public struct FriendsOfFriendsLogic: Reducer {
       }
     }
     .forEach(\.requests, action: /Action.requests) {
-      FriendRequestCardLogic()
+      FriendRowCardLogic()
     }
   }
 }
@@ -60,7 +60,7 @@ public struct FriendsOfFriendsView: View {
           LazyVStack(spacing: 0) {
             ForEachStore(
               store.scope(state: \.requests, action: FriendsOfFriendsLogic.Action.requests),
-              content: FriendRequestCardView.init(store:)
+              content: FriendRowCardView.init(store:)
             )
           }
         }
