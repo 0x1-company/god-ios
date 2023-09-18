@@ -19,10 +19,11 @@ public struct ProfileShareToInstagramLogic: Reducer {
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case copyLinkButtonTapped
     case closeButtonTapped
+    case shareButtonTapped
     case delegate(Delegate)
 
     public enum Delegate {
-      case shareButtonTapped
+      case nextPage
     }
   }
 
@@ -66,6 +67,10 @@ public struct ProfileShareToInstagramLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+        
+      case .shareButtonTapped:
+        return .send(.delegate(.nextPage))
+          .transaction(.animationDisable)
 
       case .delegate:
         return .none
@@ -140,9 +145,7 @@ public struct ProfileShareToInstagramView: View {
           }.font(.title2)
 
           Button(action: {
-            var transaction = Transaction()
-            transaction.disablesAnimations = true
-            viewStore.send(.delegate(.shareButtonTapped), transaction: transaction)
+            viewStore.send(.shareButtonTapped)
           }) {
             Text("Share")
               .font(.subheadline)

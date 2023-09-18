@@ -29,7 +29,7 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
           await dismiss()
         }
       case let .page(pageAction):
-        if case .profileShareToInstagram(.delegate(.shareButtonTapped)) = pageAction {
+        if case .profileShareToInstagram(.delegate(.nextPage)) = pageAction {
           state.currentPage = .howToShareOnInstagram()
         }
         return .none
