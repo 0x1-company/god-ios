@@ -20,6 +20,7 @@ let package = Package(
     .library(name: "UIApplicationClient", targets: ["UIApplicationClient"]),
     .library(name: "UIPasteboardClient", targets: ["UIPasteboardClient"]),
     .library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
+    .library(name: "UserNotificationClient", targets: ["UserNotificationClient"]),
     .library(name: "WidgetClient", targets: ["WidgetClient"]),
   ],
   dependencies: [
@@ -51,6 +52,9 @@ let package = Package(
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "UserDefaultsClient", dependencies: [
+      .product(name: "Dependencies", package: "swift-dependencies"),
+    ]),
+    .target(name: "UserNotificationClient", dependencies: [
       .product(name: "Dependencies", package: "swift-dependencies"),
     ]),
     .target(name: "WidgetClient", dependencies: [
