@@ -68,6 +68,8 @@ public extension God {
         public var generation: Int? { __data["generation"] }
         /// フレンド数
         public var friendsCount: Int? { __data["friendsCount"] }
+        /// 学年をテキストで返す
+        public var grade: String? { __data["grade"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict

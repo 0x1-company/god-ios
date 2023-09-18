@@ -70,6 +70,8 @@ public extension God {
         public var wallet: Wallet? { __data["wallet"] }
         /// 表示名
         public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
+        /// 学年をテキストで返す
+        public var grade: String? { __data["grade"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict

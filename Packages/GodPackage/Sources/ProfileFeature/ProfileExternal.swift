@@ -67,8 +67,11 @@ public struct ProfileExternalView: View {
         LazyVStack(alignment: .leading, spacing: 0) {
           if case let .success(user) = viewStore.user {
             ProfileSection(
-              user: user.fragments.profileSectionFragment,
-              editProfile: nil
+              friendsCount: user.friendsCount ?? 0,
+              username: user.username ?? "",
+              displayName: user.displayName.ja,
+              schoolShortName: user.school?.shortName,
+              grade: user.grade
             )
           }
           Divider()

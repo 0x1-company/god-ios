@@ -117,7 +117,13 @@ public struct ProfileView: View {
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
           if case let .success(data) = viewStore.profile {
-            ProfileSection(user: data.currentUser.fragments.profileSectionFragment) {
+            ProfileSection(
+              friendsCount: data.currentUser.friendsCount ?? 0,
+              username: data.currentUser.username ?? "",
+              displayName: data.currentUser.displayName.ja,
+              schoolShortName: data.currentUser.school?.shortName,
+              grade: data.currentUser.grade
+            ) {
               viewStore.send(.editProfileButtonTapped)
             }
           }
