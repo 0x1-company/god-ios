@@ -1,0 +1,3 @@
+fragment FriendRequestCardFragment on Friend {
+  id
+}
