@@ -105,9 +105,9 @@ public struct FriendRequestCardView: View {
           Button {
             viewStore.send(.approveButtonTapped)
           } label: {
-            Text("ADD", bundle: .module)
+            Text("APPROVE", bundle: .module)
               .foregroundStyle(Color.white)
-              .frame(width: 80, height: 34)
+              .frame(width: 120, height: 34)
               .background(Color.godService)
               .clipShape(Capsule())
           }

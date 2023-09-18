@@ -9,14 +9,14 @@ public struct FriendRequestsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var requests: IdentifiedArrayOf<FriendRowCardLogic.State> = []
+    var requests: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
     case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
-    case requests(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
   
   @Dependency(\.godClient) var godClient
@@ -42,8 +42,9 @@ public struct FriendRequestsLogic: Reducer {
         let requests = data.friendRequests.edges
           .map(\.node.fragments.friendRequestCardFragment)
           .map { data in
-            return FriendRowCardLogic.State(
-              id: data.id,
+            return FriendRequestCardLogic.State(
+              friendId: data.id,
+              userId: data.user.id,
               displayName: data.user.displayName.ja,
               description: "\(data.user.mutualFriendsCount) mutual friend"
             )
@@ -59,7 +60,7 @@ public struct FriendRequestsLogic: Reducer {
       }
     }
     .forEach(\.requests, action: /Action.requests) {
-      FriendRowCardLogic()
+      FriendRequestCardLogic()
     }
   }
 }
@@ -78,7 +79,7 @@ public struct FriendRequestsView: View {
 
         ForEachStore(
           store.scope(state: \.requests, action: FriendRequestsLogic.Action.requests),
-          content: FriendRowCardView.init(store:)
+          content: FriendRequestCardView.init(store:)
         )
       }
       .task { await viewStore.send(.onTask).finish() }

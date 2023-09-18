@@ -6,7 +6,7 @@
 public extension God {
   struct FriendRequestCardFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment FriendRequestCardFragment on Friend { __typename id user { __typename displayName { __typename ja } mutualFriendsCount } }"#
+      #"fragment FriendRequestCardFragment on Friend { __typename id user { __typename id mutualFriendsCount displayName { __typename ja } } }"#
     }
 
     public let __data: DataDict
@@ -33,14 +33,17 @@ public extension God {
       public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("displayName", DisplayName.self),
+        .field("id", God.ID.self),
         .field("mutualFriendsCount", Int.self),
+        .field("displayName", DisplayName.self),
       ] }
 
-      /// 表示名
-      public var displayName: DisplayName { __data["displayName"] }
+      /// user id
+      public var id: God.ID { __data["id"] }
       /// 共通のフレンド数
       public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
+      /// 表示名
+      public var displayName: DisplayName { __data["displayName"] }
 
       /// User.DisplayName
       ///
