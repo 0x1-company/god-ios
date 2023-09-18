@@ -1,4 +1,4 @@
-import ComposableArchitecture
+import Dependencies
 import UserNotifications
 
 public struct UserNotificationClient {
