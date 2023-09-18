@@ -1,9 +1,9 @@
 import ComposableArchitecture
 import FirebaseAuthClient
 import FirebaseCoreClient
-import UIKit
 import God
 import GodClient
+import UIKit
 import UserNotificationClient
 
 public struct AppDelegateLogic: Reducer {
