@@ -95,7 +95,8 @@ public struct OnboardPathLogic: Reducer {
               try await godClient.updateUserProfile(input)
             }))
           },
-          .run { [input = state.contacts] send in
+          .run { [contacts = state.contacts] send in
+            let input = Array(contacts.prefix(100))
             await send(.createContactsResponse(TaskResult {
               try await godClient.createContacts(input)
             }))
