@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Contacts
 import ContactsClient
 import UserDefaultsClient
 import God
@@ -7,10 +8,26 @@ import GodClient
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
+  @Dependency(\.contacts.enumerateContacts) var enumerateContacts
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
 
   var isFindFriendSkip: Bool {
     authorizationStatus(.contacts) != .notDetermined
+  }
+
+  private func contactsRequest(send: Send<Action>) async {
+    do {
+      let request = CNContactFetchRequest(keysToFetch: [
+        CNContactGivenNameKey as CNKeyDescriptor,
+        CNContactFamilyNameKey as CNKeyDescriptor,
+        CNContactPhoneNumbersKey as CNKeyDescriptor,
+      ])
+      for try await (contact, _) in enumerateContacts(request) {
+        await send(.contactResponse(.success(contact)))
+      }
+    } catch {
+      await send(.contactResponse(.failure(error)))
+    }
   }
 
   public func reduce(
@@ -29,11 +46,15 @@ public struct OnboardPathLogic: Reducer {
 
         if generation != nil {
           state.path.append(.schoolSetting())
+          return .none
+          
         } else if isFindFriendSkip {
           state.path.append(.phoneNumber())
-        } else {
-          state.path.append(.findFriend())
+          return .run(priority: .background) { send in
+            await contactsRequest(send: send)
+          }
         }
+        state.path.append(.findFriend())
         return .none
 
       case let .schoolSetting(.delegate(.nextScreen(schoolId))):
@@ -41,14 +62,18 @@ public struct OnboardPathLogic: Reducer {
 
         if isFindFriendSkip {
           state.path.append(.phoneNumber())
-        } else {
-          state.path.append(.findFriend())
+          return .run(priority: .background) { send in
+            await contactsRequest(send: send)
+          }
         }
+        state.path.append(.findFriend())
         return .none
 
       case .findFriend(.delegate(.nextScreen)):
         state.path.append(.phoneNumber())
-        return .none
+        return .run(priority: .background) { send in
+          await contactsRequest(send: send)
+        }
 
       case .phoneNumber(.delegate(.nextScreen)):
         state.path.append(.oneTimeCode())
@@ -60,15 +85,19 @@ public struct OnboardPathLogic: Reducer {
         if state.generation == nil && state.schoolId == nil {
           return .none
         }
-
-        let input = God.UpdateUserProfileInput(
-          generation: state.generation ?? .null,
-          schoolId: state.schoolId ?? .null
-        )
         return .merge(
-          .run { send in
+          .run { [state] send in
+            let input = God.UpdateUserProfileInput(
+              generation: state.generation ?? .null,
+              schoolId: state.schoolId ?? .null
+            )
             await send(.updateUserProfileResponse(TaskResult {
               try await godClient.updateUserProfile(input)
+            }))
+          },
+          .run { [input = state.contacts] send in
+            await send(.createContactsResponse(TaskResult {
+              try await godClient.createContacts(input)
             }))
           }
         )

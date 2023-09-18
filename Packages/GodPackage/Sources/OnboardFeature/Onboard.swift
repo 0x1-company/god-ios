@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Contacts
 import ContactsClient
 import FirebaseAuth
 import God
@@ -13,6 +14,7 @@ public struct OnboardLogic: Reducer {
     var path = StackState<Path.State>()
     var generation: Int?
     var schoolId: String?
+    var contacts: [God.ContactInput] = []
 
     public init() {}
   }
@@ -23,7 +25,9 @@ public struct OnboardLogic: Reducer {
     case path(StackAction<Path.State, Path.Action>)
     case alert(PresentationAction<Alert>)
     case pathInsert(Path.State)
+    case contactResponse(TaskResult<CNContact>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case createContactsResponse(TaskResult<God.CreateContactsMutation.Data>)
 
     public enum Alert: Equatable {
       case confirmOkay
