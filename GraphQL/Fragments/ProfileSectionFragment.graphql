@@ -7,6 +7,7 @@ fragment ProfileSectionFragment on User {
   generation
   friendsCount
   schoolId
+  grade
   school {
     id
     name

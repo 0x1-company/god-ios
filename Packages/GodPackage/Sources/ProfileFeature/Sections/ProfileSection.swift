@@ -4,22 +4,26 @@ import God
 import SwiftUI
 
 public struct ProfileSection: View {
-  let user: God.ProfileSectionFragment
+  let friendsCount: Int
+  let username: String
+  let displayName: String
+  let schoolShortName: String?
+  let grade: String?
   let editProfile: (() -> Void)?
 
-  var friendsCount: Int {
-    user.friendsCount ?? 0
-  }
-
-  var username: String {
-    "@\(user.username ?? "")"
-  }
-
   public init(
-    user: God.ProfileSectionFragment,
-    editProfile: (() -> Void)?
+    friendsCount: Int,
+    username: String,
+    displayName: String,
+    schoolShortName: String?,
+    grade: String?,
+    editProfile: (() -> Void)? = nil
   ) {
-    self.user = user
+    self.friendsCount = friendsCount
+    self.username = username
+    self.displayName = displayName
+    self.schoolShortName = schoolShortName
+    self.grade = grade
     self.editProfile = editProfile
   }
 
@@ -62,28 +66,40 @@ public struct ProfileSection: View {
         }
       }
       VStack(alignment: .leading, spacing: 4) {
-        Text(user.displayName.ja)
+        Text(displayName)
           .bold()
 
-        Text(username)
+        Text(verbatim: "@\(username)")
       }
-      if let school = user.school {
-        HStack(spacing: 16) {
+      HStack(spacing: 16) {
+        if let schoolShortName {
           HStack(spacing: 4) {
             Image(systemName: "house.fill")
-            Text(school.shortName)
-          }
-          HStack(spacing: 4) {
-            Image(systemName: "graduationcap.fill")
-            Text("9th Grade", bundle: .module)
+            Text(verbatim: schoolShortName)
           }
         }
-        .foregroundColor(.secondary)
+        if let grade {
+          HStack(spacing: 4) {
+            Image(systemName: "graduationcap.fill")
+            Text(verbatim: grade)
+          }
+        }
       }
+      .foregroundColor(.secondary)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(.horizontal, 16)
     .padding(.bottom, 16)
     .background(Color.godWhite)
   }
+}
+
+#Preview {
+  ProfileSection(
+    friendsCount: 10,
+    username: "tomokisun",
+    displayName: "つきやま ともき",
+    schoolShortName: "KHS",
+    grade: "1年生"
+  )
 }

@@ -53,6 +53,8 @@ public extension God {
         /// フレンド数
         public var friendsCount: Int? { __data["friendsCount"] }
         public var schoolId: String? { __data["schoolId"] }
+        /// 学年をテキストで返す
+        public var grade: String? { __data["grade"] }
         /// 所属している学校
         public var school: ProfileSectionFragment.School? { __data["school"] }
 

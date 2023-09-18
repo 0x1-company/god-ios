@@ -15,6 +15,7 @@ public class User: MockObject {
     @Field<Int>("friendsCount") public var friendsCount
     @Field<GraphQLEnum<God.Gender>>("gender") public var gender
     @Field<Int>("generation") public var generation
+    @Field<String>("grade") public var grade
     @Field<God.ID>("id") public var id
     @Field<String>("lastName") public var lastName
     @Field<Int>("mutualFriendsCount") public var mutualFriendsCount
@@ -32,6 +33,7 @@ public extension Mock where O == User {
     friendsCount: Int? = nil,
     gender: GraphQLEnum<God.Gender>? = nil,
     generation: Int? = nil,
+    grade: String? = nil,
     id: God.ID? = nil,
     lastName: String? = nil,
     mutualFriendsCount: Int? = nil,
@@ -46,6 +48,7 @@ public extension Mock where O == User {
     _setScalar(friendsCount, for: \.friendsCount)
     _setScalar(gender, for: \.gender)
     _setScalar(generation, for: \.generation)
+    _setScalar(grade, for: \.grade)
     _setScalar(id, for: \.id)
     _setScalar(lastName, for: \.lastName)
     _setScalar(mutualFriendsCount, for: \.mutualFriendsCount)
