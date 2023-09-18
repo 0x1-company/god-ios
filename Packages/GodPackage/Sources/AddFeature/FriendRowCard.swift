@@ -12,6 +12,7 @@ public struct FriendRowCardLogic: Reducer {
     public var id: String
     var displayName: String
     var description: String
+    var friendStatus = God.FriendStatus.canceled
 
     public init(id: String, displayName: String, description: String) {
       self.id = id
@@ -21,19 +22,46 @@ public struct FriendRowCardLogic: Reducer {
   }
 
   public enum Action: Equatable {
-    case hideButtonTapped
     case addButtonTapped
+    case hideButtonTapped
+    case friendRequestResponse(TaskResult<God.CreateFriendRequestMutation.Data>)
+    case hideResponse(TaskResult<God.CreateUserHideMutation.Data>)
   }
 
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
+      case .addButtonTapped:
+        let input = God.CreateFriendRequestInput(toUserId: state.id)
+        return .run { send in
+          await send(.friendRequestResponse(TaskResult {
+            try await godClient.createFriendRequest(input)
+          }))
+        }
       case .hideButtonTapped:
+        state.friendStatus = .requested
+        let input = God.CreateUserHideInput(hiddenUserId: state.id)
+        return .run { send in
+          await send(.hideResponse(TaskResult {
+            try await godClient.createUserHide(input)
+          }))
+        }
+      case let .friendRequestResponse(.success(data)):
+        guard let status = data.createFriendRequest.status.value
+        else { return .none }
+        state.friendStatus = status
         return .none
 
-      case .addButtonTapped:
+      case .friendRequestResponse(.failure):
+        state.friendStatus = .canceled
+        return .none
+
+      case .hideResponse(.success):
+        return .none
+
+      case .hideResponse(.failure):
         return .none
       }
     }
@@ -73,11 +101,23 @@ public struct FriendRowCardView: View {
           Button {
             viewStore.send(.addButtonTapped)
           } label: {
-            Text("ADD", bundle: .module)
-              .frame(width: 80, height: 34)
-              .foregroundColor(Color.white)
-              .background(Color.orange)
-              .clipShape(Capsule())
+            Group {
+              if case .requested = viewStore.friendStatus {
+                Text("ADDED")
+                  .foregroundStyle(Color.godTextSecondaryLight)
+                  .frame(width: 80, height: 34)
+                  .overlay(
+                    RoundedRectangle(cornerRadius: 34 / 2)
+                      .stroke(Color.godTextSecondaryLight, lineWidth: 1)
+                  )
+              } else {
+                Text("ADD", bundle: .module)
+                  .foregroundStyle(Color.white)
+                  .frame(width: 80, height: 34)
+                  .background(Color.godService)
+                  .clipShape(Capsule())
+              }
+            }
           }
         }
         .buttonStyle(HoldDownButtonStyle())
