@@ -77,6 +77,10 @@ public extension GodClient {
       createFirebaseRegistrationToken: { input in
         let mutation = God.CreateFirebaseRegistrationTokenMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
+      },
+      createContacts: { contacts in
+        let mutation = God.CreateContactsMutation(contacts: contacts)
+        return try await apolloClient.perform(mutation: mutation)
       }
     )
   }
