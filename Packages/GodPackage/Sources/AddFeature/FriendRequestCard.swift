@@ -10,8 +10,9 @@ public struct FriendRequestCardLogic: Reducer {
 
   public struct State: Equatable, Identifiable {
     public var id: String {
-      return friendId
+      friendId
     }
+
     var friendId: String
     var userId: String
     var displayName: String
@@ -36,7 +37,7 @@ public struct FriendRequestCardLogic: Reducer {
     case approveResponse(TaskResult<God.ApproveFriendRequestMutation.Data>)
     case hideResponse(TaskResult<God.CreateUserHideMutation.Data>)
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -130,7 +131,7 @@ public struct FriendRequestCardView: View {
         userId: "3",
         displayName: "Tomoki Tsukiyama",
         description: "1 mutual friend"
-        
+
       ),
       reducer: { FriendRequestCardLogic() }
     )
