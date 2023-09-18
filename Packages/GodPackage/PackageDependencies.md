@@ -20,6 +20,7 @@ graph TD;
     AppFeature-->StoreKitClient;
     AppFeature-->FirestoreClient;
     AppFeature-->FirebaseCoreClient;
+    AppFeature-->UserNotificationClient;
     CashOutFeature-->Lottie;
     CashOutFeature-->ComposableArchitecture;
     CupertinoMessageFeature-->SwiftUIMessage;
