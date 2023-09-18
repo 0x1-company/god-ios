@@ -1,7 +1,7 @@
 import ButtonStyles
 import Colors
-import SwiftUI
 import God
+import SwiftUI
 
 public struct FriendsSection: View {
   let friends: [God.FriendFragment]
@@ -49,4 +49,3 @@ public struct FriendsSection: View {
     .background(Color.godWhite)
   }
 }
-

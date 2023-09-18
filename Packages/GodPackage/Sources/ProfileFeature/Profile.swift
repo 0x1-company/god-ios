@@ -27,7 +27,7 @@ public struct ProfileLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case profile
   }
@@ -57,7 +57,7 @@ public struct ProfileLogic: Reducer {
       case .shopButtonTapped:
         state.destination = .shop()
         return .none
-        
+
       case let .profileResponse(.success(data)):
         state.profile = .success(data)
         return .none
