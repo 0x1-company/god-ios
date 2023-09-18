@@ -88,6 +88,7 @@ public struct FriendRowCardView: View {
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
 
         HStack(spacing: 0) {
           Button {
@@ -123,6 +124,7 @@ public struct FriendRowCardView: View {
         .buttonStyle(HoldDownButtonStyle())
       }
       .frame(height: 72)
+      .padding(.horizontal, 16)
     }
   }
 }

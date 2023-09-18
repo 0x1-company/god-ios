@@ -92,6 +92,7 @@ public struct FriendRequestCardView: View {
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
 
         HStack(spacing: 0) {
           Button {
@@ -107,7 +108,8 @@ public struct FriendRequestCardView: View {
           } label: {
             Text("APPROVE", bundle: .module)
               .foregroundStyle(Color.white)
-              .frame(width: 120, height: 34)
+              .frame(height: 34)
+              .frame(minWidth: 80, maxWidth: 120)
               .background(Color.godService)
               .clipShape(Capsule())
           }
@@ -115,6 +117,7 @@ public struct FriendRequestCardView: View {
         .buttonStyle(HoldDownButtonStyle())
       }
       .frame(height: 72)
+      .padding(.horizontal, 16)
     }
   }
 }

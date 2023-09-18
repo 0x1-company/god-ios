@@ -27,6 +27,16 @@
     "ADDED" : {
 
     },
+    "APPROVE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "承認"
+          }
+        }
+      }
+    },
     "Contacts are disabled" : {
 
     },
