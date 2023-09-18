@@ -1,8 +1,11 @@
 import ComposableArchitecture
 import ContactsClient
 import UserDefaultsClient
+import God
+import GodClient
 
 public struct OnboardPathLogic: Reducer {
+  @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
 
@@ -53,8 +56,22 @@ public struct OnboardPathLogic: Reducer {
 
       case .oneTimeCode(.delegate(.nextScreen)):
         state.path.append(.firstNameSetting())
-        return .none
+        
+        if state.generation == nil && state.schoolId == nil {
+          return .none
+        }
 
+        let input = God.UpdateUserProfileInput(
+          generation: state.generation ?? .null,
+          schoolId: state.schoolId ?? .null
+        )
+        return .merge(
+          .run { send in
+            await send(.updateUserProfileResponse(TaskResult {
+              try await godClient.updateUserProfile(input)
+            }))
+          }
+        )
       case .oneTimeCode(.delegate(.popToRoot)):
         state.path.removeAll()
         return .none

@@ -18,12 +18,12 @@ public struct OnboardLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onTask
     case welcome(WelcomeLogic.Action)
     case path(StackAction<Path.State, Path.Action>)
     case alert(PresentationAction<Alert>)
     case pathInsert(Path.State)
-
-    case onTask
+    case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
 
     public enum Alert: Equatable {
       case confirmOkay
