@@ -4,7 +4,8 @@ import God
 import PhoneNumberDependencies
 
 public struct OnboardContactLogic: Reducer {
-  @Dependency(\.phoneNumberClient) var phoneNumberClient
+  @Dependency(\.phoneNumberParse) var phoneNumberParse
+  @Dependency(\.phoneNumberFormat) var phoneNumberFormat
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
 
@@ -20,17 +21,19 @@ public struct OnboardContactLogic: Reducer {
     case let .contactResponse(.success(contact)):
       guard
         let number = contact.phoneNumbers.first?.value.stringValue,
-        let format = try? phoneNumberClient.parseFormat(number)
+        let phoneNumber = try? phoneNumberParse(number)
       else {
         return .none
       }
+      let countryCode = String(phoneNumber.countryCode)
+      let format = phoneNumberFormat(phoneNumber)
       
       state.contacts.append(
         God.ContactInput(
           name: contact.familyName + contact.givenName,
           phoneNumber: God.PhoneNumberInput(
-            countryCode: "+81",
-            numbers: format.replacing("+81", with: "")
+            countryCode: countryCode,
+            numbers: format.replacing(countryCode, with: "")
           )
         )
       )

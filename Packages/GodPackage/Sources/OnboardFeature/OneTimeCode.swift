@@ -40,10 +40,11 @@ public struct OneTimeCodeLogic: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
-  @Dependency(\.userDefaults) var userDefaults
-  @Dependency(\.phoneNumberClient) var phoneNumberClient
-  @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.godClient) var godClient
+  @Dependency(\.userDefaults) var userDefaults
+  @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.phoneNumberParse) var phoneNumberParse
+  @Dependency(\.phoneNumberFormat) var phoneNumberFormat
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
@@ -59,7 +60,8 @@ public struct OneTimeCodeLogic: Reducer {
     case .resendButtonTapped:
       state.oneTimeCode = ""
       return .run { [state] send in
-        let format = try phoneNumberClient.parseFormat(state.phoneNumber)
+        let phoneNumber = try phoneNumberParse(state.phoneNumber)
+        let format = phoneNumberFormat(phoneNumber)
         await send(
           .verifyResponse(
             TaskResult {
@@ -118,7 +120,8 @@ public struct OneTimeCodeLogic: Reducer {
         }
       }
       return .run { send in
-        let format = try phoneNumberClient.parseFormat(number)
+        let parseNumber = try phoneNumberParse(number)
+        let format = phoneNumberFormat(parseNumber)
         let phoneNumber = God.PhoneNumberInput(
           countryCode: "+81",
           numbers: format.replacing("+81", with: "")
