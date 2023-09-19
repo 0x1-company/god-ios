@@ -132,9 +132,7 @@ public struct WelcomeView: View {
       .background(Color.godBlack)
       .alert(store: store.scope(state: \.$alert, action: WelcomeLogic.Action.alert))
       .toolbar {
-        Button {
-          
-        } label: {
+        Button {} label: {
           Text("Log In", bundle: .module)
             .foregroundColor(Color.white)
         }

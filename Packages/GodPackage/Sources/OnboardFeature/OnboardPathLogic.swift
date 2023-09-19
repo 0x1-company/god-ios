@@ -1,9 +1,9 @@
 import ComposableArchitecture
 import Contacts
 import ContactsClient
-import UserDefaultsClient
 import God
 import GodClient
+import UserDefaultsClient
 
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.godClient) var godClient
@@ -47,7 +47,7 @@ public struct OnboardPathLogic: Reducer {
         if generation != nil {
           state.path.append(.schoolSetting())
           return .none
-          
+
         } else if isFindFriendSkip {
           state.path.append(.phoneNumber())
           return .run(priority: .background) { send in
@@ -81,8 +81,8 @@ public struct OnboardPathLogic: Reducer {
 
       case .oneTimeCode(.delegate(.nextScreen)):
         state.path.append(.firstNameSetting())
-        
-        if state.generation == nil && state.schoolId == nil {
+
+        if state.generation == nil, state.schoolId == nil {
           return .none
         }
         return .merge(

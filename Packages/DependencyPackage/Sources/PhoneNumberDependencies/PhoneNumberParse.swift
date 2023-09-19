@@ -17,7 +17,7 @@ public struct PhoneNumberParseEffect: Sendable {
   public func callAsFunction(_ numberString: String) throws -> PhoneNumber {
     try callAsFunction(numberString, withRegion: PhoneNumberKit.defaultRegionCode(), ignoreType: false)
   }
-  
+
   public func callAsFunction(_ numberString: String, ignoreType: Bool) throws -> PhoneNumber {
     try callAsFunction(numberString, withRegion: PhoneNumberKit.defaultRegionCode(), ignoreType: ignoreType)
   }
