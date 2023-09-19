@@ -22,12 +22,19 @@ public struct GodLogic: Reducer {
 
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case currentPoll
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          await currentPollRequest(send: send)
+        }
+        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .coolDown:
         let dateFormatter = DateFormatter()
@@ -37,7 +44,6 @@ public struct GodLogic: Reducer {
           let until = dateFormatter.date(from: coolDown.until) else {
           return .none
         }
-        
         state.child = .playAgain(.init(until: until))
         return .none
         
@@ -45,9 +51,8 @@ public struct GodLogic: Reducer {
         guard let poll = data.currentPoll.poll else { return .none }
         state.child = .poll(.init(poll: poll))
         return .none
-        
-      case let .currentPollResponse(.success(data)):
-        print(data)
+
+      case .currentPollResponse(.success):
         return .none
         
       case .currentPollResponse(.failure):
@@ -56,6 +61,16 @@ public struct GodLogic: Reducer {
       case .child:
         return .none
       }
+    }
+  }
+  
+  func currentPollRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentPoll() {
+        await send(.currentPollResponse(.success(data)))
+      }
+    } catch {
+      await send(.currentPollResponse(.failure(error)))
     }
   }
 
