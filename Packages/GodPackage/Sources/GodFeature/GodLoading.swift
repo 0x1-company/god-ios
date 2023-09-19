@@ -34,7 +34,7 @@ public struct GodLoadingView: View {
     LottieView(animation: LottieAnimation.named("Loading", bundle: .module))
       .looping()
       .resizable()
-      .padding(.horizontal, 120)
+      .padding(.horizontal, 100)
   }
 }
 
