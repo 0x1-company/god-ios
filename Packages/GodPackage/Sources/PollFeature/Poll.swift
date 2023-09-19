@@ -1,11 +1,17 @@
 import ComposableArchitecture
+import God
 import SwiftUI
 
 public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    var poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
+    public init(
+      poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
+    ) {
+      self.poll = poll
+    }
   }
 
   public enum Action: Equatable {
@@ -39,13 +45,4 @@ public struct PollView: View {
       .task { await viewStore.send(.onTask).finish() }
     }
   }
-}
-
-#Preview {
-  PollView(
-    store: .init(
-      initialState: PollLogic.State(),
-      reducer: { PollLogic() }
-    )
-  )
 }
