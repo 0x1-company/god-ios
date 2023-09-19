@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import ContactsClient
 import God
-import PhoneNumberClient
+import PhoneNumberDependencies
 
 public struct OnboardContactLogic: Reducer {
   @Dependency(\.phoneNumberClient) var phoneNumberClient

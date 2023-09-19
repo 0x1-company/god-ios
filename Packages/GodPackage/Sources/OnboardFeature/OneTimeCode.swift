@@ -4,7 +4,7 @@ import FirebaseAuth
 import FirebaseAuthClient
 import God
 import GodClient
-import PhoneNumberClient
+import PhoneNumberDependencies
 import SwiftUI
 import UserDefaultsClient
 

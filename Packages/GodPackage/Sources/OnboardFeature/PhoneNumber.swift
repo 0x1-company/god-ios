@@ -1,7 +1,7 @@
 import Colors
 import ComposableArchitecture
 import FirebaseAuthClient
-import PhoneNumberClient
+import PhoneNumberDependencies
 import PhoneNumberKit
 import SwiftUI
 import UserDefaultsClient
