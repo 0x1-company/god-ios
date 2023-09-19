@@ -20,14 +20,14 @@ let mock = [
 
 public struct PollLogic: Reducer {
   public init() {}
-  
+
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
     var choices: [String] = []
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case onTask
     case answerButtonTapped
@@ -35,25 +35,25 @@ public struct PollLogic: Reducer {
     case skipButtonTapped
     case continueButtonTapped
     case alert(PresentationAction<Alert>)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
   }
-  
+
   @Dependency(\.feedbackGenerator) var feedbackGenerator
-  
+
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         state.choices = mock.shuffled().prefix(4).map { $0 }
         return .none
-        
+
       case .answerButtonTapped:
         state.isAnswered = true
         return .none
-        
+
       case .shuffleButtonTapped:
         state.choices = mock.shuffled().prefix(4).map { $0 }
         return .run { _ in
@@ -86,11 +86,11 @@ public struct PollLogic: Reducer {
 
 public struct PollView: View {
   let store: StoreOf<PollLogic>
-  
+
   public init(store: StoreOf<PollLogic>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
@@ -117,7 +117,7 @@ public struct PollView: View {
             .disabled(viewStore.isAnswered)
           }
         }
-        
+
         ZStack {
           if viewStore.isAnswered {
             Text("Tap to continue", bundle: .module)
