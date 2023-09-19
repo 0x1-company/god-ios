@@ -129,11 +129,11 @@ public struct GradeSettingView: View {
 
   @ViewBuilder
   func selectButton(
-    _ title: String,
+    _ title: LocalizedStringKey,
     action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
-      Text(title)
+      Text(title, bundle: .module)
         .bold()
         .frame(height: 65)
         .frame(maxWidth: .infinity)
@@ -142,13 +142,13 @@ public struct GradeSettingView: View {
 
   @ViewBuilder
   func gradeButton(
-    _ title: String,
-    year: String,
+    _ title: LocalizedStringKey,
+    year: LocalizedStringKey,
     action: @escaping () -> Void
   ) -> some View {
     selectButton(title, action: action)
       .overlay(alignment: .trailing) {
-        Text(year)
+        Text(year, bundle: .module)
           .font(.footnote)
           .padding(.horizontal, 24)
           .foregroundColor(.secondary)

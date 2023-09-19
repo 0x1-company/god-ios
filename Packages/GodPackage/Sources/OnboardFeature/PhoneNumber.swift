@@ -1,7 +1,7 @@
 import Colors
 import ComposableArchitecture
 import FirebaseAuthClient
-import PhoneNumberClient
+import PhoneNumberDependencies
 import PhoneNumberKit
 import SwiftUI
 import UserDefaultsClient
@@ -32,7 +32,9 @@ public struct PhoneNumberLogic: Reducer {
   }
 
   @Dependency(\.userDefaults) var userDefaults
-  @Dependency(\.phoneNumberClient) var phoneNumberClient
+  @Dependency(\.phoneNumberParse) var phoneNumberParse
+  @Dependency(\.phoneNumberFormat) var phoneNumberFormat
+  @Dependency(\.isValidPhoneNumber) var isValidPhoneNumber
   @Dependency(\.firebaseAuth.verifyPhoneNumber) var verifyPhoneNumber
 
   public var body: some Reducer<State, Action> {
@@ -40,12 +42,14 @@ public struct PhoneNumberLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .nextButtonTapped:
-        guard phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
+        guard
+          isValidPhoneNumber(state.phoneNumber),
+          let parse = try? phoneNumberParse(state.phoneNumber, withRegion: "JP", ignoreType: true)
         else { return .none }
         state.isActivityIndicatorVisible = true
+        let format = phoneNumberFormat(parse)
         return .run { [state] send in
           await userDefaults.setPhoneNumber(state.phoneNumber)
-          let format = try phoneNumberClient.parseFormat(state.phoneNumber)
           await send(
             .verifyResponse(
               TaskResult {
@@ -55,7 +59,7 @@ public struct PhoneNumberLogic: Reducer {
           )
         }
       case .binding:
-        state.isDisabled = !phoneNumberClient.isValidPhoneNumber(state.phoneNumber)
+        state.isDisabled = !isValidPhoneNumber(state.phoneNumber)
         return .none
       case let .verifyResponse(.success(id)):
         state.isActivityIndicatorVisible = false

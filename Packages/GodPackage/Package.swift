@@ -141,8 +141,8 @@ let package = Package(
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
-      .product(name: "PhoneNumberClient", package: "DependencyPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
+      .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
     ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
