@@ -17,7 +17,7 @@ public struct PlayAgainLogic: Reducer {
     case timerTick
     case inviteFriendButtonTapped
   }
-  
+
   @Dependency(\.date.now) var now
   @Dependency(\.continuousClock) var clock
   @Dependency(\.calendar) var calendar
@@ -29,7 +29,7 @@ public struct PlayAgainLogic: Reducer {
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
-              await self.startTimer(send: send)
+              await startTimer(send: send)
             }
           }
         }
@@ -45,9 +45,9 @@ public struct PlayAgainLogic: Reducer {
       }
     }
   }
-  
+
   private func startTimer(send: Send<Action>) async {
-    for await _ in self.clock.timer(interval: .seconds(1)) {
+    for await _ in clock.timer(interval: .seconds(1)) {
       await send(.timerTick)
     }
   }

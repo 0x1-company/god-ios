@@ -6,7 +6,6 @@ import GodFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
-import GodFeature
 
 public struct RootNavigationLogic: Reducer {
   public init() {}

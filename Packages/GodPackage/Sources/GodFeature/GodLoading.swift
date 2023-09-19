@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import SwiftUI
 import Lottie
+import SwiftUI
 
 public struct GodLoadingLogic: Reducer {
   public init() {}
