@@ -32,5 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo xcode-select -s /Applications/Xcode_15.0.app
+      - uses: irgaly/xcode-cache@v1
+        with:
+          key: xcode-cache-deriveddata-${{ github.workflow }}-${{ github.sha }}
+          restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-
       - run: make bootstrap
       - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator
