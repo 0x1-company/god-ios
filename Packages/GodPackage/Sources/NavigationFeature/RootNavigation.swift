@@ -4,9 +4,9 @@ import AddFeature
 import ComposableArchitecture
 import GodFeature
 import InboxFeature
-import PollFeature
 import ProfileFeature
 import SwiftUI
+import GodFeature
 
 public struct RootNavigationLogic: Reducer {
   public init() {}
@@ -15,7 +15,7 @@ public struct RootNavigationLogic: Reducer {
     case add
     case activity
     case inbox
-    case poll
+    case god
     case profile
     case about
   }
@@ -24,10 +24,10 @@ public struct RootNavigationLogic: Reducer {
     var add = AddLogic.State()
     var activity = ActivityLogic.State()
     var inbox = InboxLogic.State()
-    var poll = PollLogic.State()
+    var god = GodLogic.State()
     var profile = ProfileLogic.State()
     var about = AboutLogic.State()
-    @BindingState var selectedTab = Tab.poll
+    @BindingState var selectedTab = Tab.god
     public init() {}
   }
 
@@ -35,7 +35,7 @@ public struct RootNavigationLogic: Reducer {
     case add(AddLogic.Action)
     case activity(ActivityLogic.Action)
     case inbox(InboxLogic.Action)
-    case poll(PollLogic.Action)
+    case god(GodLogic.Action)
     case profile(ProfileLogic.Action)
     case about(AboutLogic.Action)
     case binding(BindingAction<State>)
@@ -46,7 +46,7 @@ public struct RootNavigationLogic: Reducer {
     Scope(state: \.add, action: /Action.add, child: AddLogic.init)
     Scope(state: \.activity, action: /Action.activity, child: ActivityLogic.init)
     Scope(state: \.inbox, action: /Action.inbox, child: InboxLogic.init)
-    Scope(state: \.poll, action: /Action.poll, child: PollLogic.init)
+    Scope(state: \.god, action: /Action.god, child: GodLogic.init)
     Scope(state: \.profile, action: /Action.profile, child: ProfileLogic.init)
     Scope(state: \.about, action: /Action.about, child: AboutLogic.init)
   }
@@ -86,13 +86,13 @@ public struct RootNavigationView: View {
         )
         .tag(RootNavigationLogic.Tab.inbox)
 
-        PollView(
+        GodView(
           store: store.scope(
-            state: \.poll,
-            action: RootNavigationLogic.Action.poll
+            state: \.god,
+            action: RootNavigationLogic.Action.god
           )
         )
-        .tag(RootNavigationLogic.Tab.poll)
+        .tag(RootNavigationLogic.Tab.god)
 
         ProfileView(
           store: store.scope(

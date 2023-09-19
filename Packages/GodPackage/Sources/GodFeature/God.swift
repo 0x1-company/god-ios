@@ -1,15 +1,22 @@
 import ComposableArchitecture
 import SwiftUI
+import God
+import GodClient
+import PlayAgainFeature
+import CashOutFeature
+import PollFeature
 
 public struct GodLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var child = Child.State.loading()
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
+    case child(Child.Action)
   }
 
   public var body: some Reducer<State, Action> {
@@ -17,6 +24,38 @@ public struct GodLogic: Reducer {
       switch action {
       case .onTask:
         return .none
+
+      case .child:
+        return .none
+      }
+    }
+  }
+  
+  public struct Child: Reducer {
+    public enum State: Equatable {
+      case poll(PollLogic.State)
+      case cashOut(CashOutLogic.State)
+      case playAgain(PlayAgainLogic.State)
+      case loading(GodLoadingLogic.State = .init())
+    }
+    public enum Action: Equatable {
+      case poll(PollLogic.Action)
+      case cashOut(CashOutLogic.Action)
+      case playAgain(PlayAgainLogic.Action)
+      case loading(GodLoadingLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.poll, action: /Action.poll) {
+        PollLogic()
+      }
+      Scope(state: /State.cashOut, action: /Action.cashOut) {
+        CashOutLogic()
+      }
+      Scope(state: /State.playAgain, action: /Action.playAgain) {
+        PlayAgainLogic()
+      }
+      Scope(state: /State.loading, action: /Action.loading) {
+        GodLoadingLogic()
       }
     }
   }
@@ -30,13 +69,33 @@ public struct GodView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("God", bundle: .module)
+    SwitchStore(store.scope(state: \.child, action: GodLogic.Action.child)) { initialState in
+      switch initialState {
+      case .poll:
+        CaseLet(
+          /GodLogic.Child.State.poll,
+           action: GodLogic.Child.Action.poll,
+           then: PollView.init(store:)
+        )
+      case .cashOut:
+        CaseLet(
+          /GodLogic.Child.State.cashOut,
+           action: GodLogic.Child.Action.cashOut,
+           then: CashOutView.init(store:)
+        )
+      case .playAgain:
+        CaseLet(
+          /GodLogic.Child.State.playAgain,
+           action: GodLogic.Child.Action.playAgain,
+           then: PlayAgainView.init(store:)
+        )
+      case .loading:
+        CaseLet(
+          /GodLogic.Child.State.loading,
+           action: GodLogic.Child.Action.loading,
+           then: GodLoadingView.init(store:)
+        )
       }
-      .navigationTitle("God")
-      .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
