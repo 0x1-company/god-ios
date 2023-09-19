@@ -5,19 +5,50 @@ public struct PlayAgainLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    var countdown = "00:00"
+    var until: Date
+    public init(until: Date) {
+      self.until = until
+    }
   }
 
   public enum Action: Equatable {
+    case onTask
+    case timerTick
     case inviteFriendButtonTapped
   }
+  
+  @Dependency(\.date.now) var now
+  @Dependency(\.continuousClock) var clock
+  @Dependency(\.calendar) var calendar
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await self.startTimer(send: send)
+            }
+          }
+        }
+      case .timerTick:
+        let difference = calendar.dateComponents([.minute, .second], from: now, to: state.until)
+        let minute = difference.minute ?? 0
+        let second = difference.second ?? 0
+        state.countdown = "\(minute):\(second)"
+        return .none
+
       case .inviteFriendButtonTapped:
         return .none
       }
+    }
+  }
+  
+  private func startTimer(send: Send<Action>) async {
+    for await _ in self.clock.timer(interval: .seconds(1)) {
+      await send(.timerTick)
     }
   }
 }
@@ -39,7 +70,7 @@ public struct PlayAgainView: View {
         Image(.locked)
           .rotationEffect(Angle(degrees: -10.0))
 
-        Text("New Polls in 54:36", bundle: .module)
+        Text("New Polls in \(viewStore.countdown)", bundle: .module)
           .bold()
 
         Text("OR", bundle: .module)
@@ -63,17 +94,18 @@ public struct PlayAgainView: View {
         .shadow(color: .black.opacity(0.2), radius: 25)
         .padding(.horizontal, 65)
       }
+      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
 
-struct PlayAgainViewPreviews: PreviewProvider {
-  static var previews: some View {
-    PlayAgainView(
-      store: .init(
-        initialState: PlayAgainLogic.State(),
-        reducer: { PlayAgainLogic() }
-      )
+#Preview {
+  PlayAgainView(
+    store: .init(
+      initialState: PlayAgainLogic.State(
+        until: Date.now.addingTimeInterval(3600)
+      ),
+      reducer: { PlayAgainLogic() }
     )
-  }
+  )
 }
