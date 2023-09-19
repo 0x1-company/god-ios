@@ -28,6 +28,8 @@ public struct OnboardContactLogic: Reducer {
       let countryCode = "+" + String(phoneNumber.countryCode)
       let format = phoneNumberFormat(phoneNumber)
       
+      guard countryCode == "+81" else { return .none }
+      
       state.contacts.append(
         God.ContactInput(
           name: "\(contact.familyName) \(contact.givenName)",
