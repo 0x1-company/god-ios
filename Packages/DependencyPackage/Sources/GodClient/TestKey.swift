@@ -23,6 +23,7 @@ extension GodClient: TestDependencyKey {
     store: unimplemented("\(Self.self).store"),
     purchase: unimplemented("\(Self.self).purchase"),
     activities: unimplemented("\(Self.self).activities"),
+    currentPoll: unimplemented("\(Self.self).currentPoll"),
     friends: unimplemented("\(Self.self).friends"),
     friendsOfFriends: unimplemented("\(Self.self).friendsOfFriends"),
     fromSchools: unimplemented("\(Self.self).fromSchools"),

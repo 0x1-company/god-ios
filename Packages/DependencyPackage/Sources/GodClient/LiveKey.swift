@@ -58,6 +58,10 @@ public extension GodClient {
         let query = God.ActivitiesQuery(after: $0 ?? .null)
         return apolloClient.watch(query: query)
       },
+      currentPoll: {
+        let query = God.CurrentPollQuery()
+        return apolloClient.watch(query: query)
+      },
       friends: {
         let query = God.FriendsQuery()
         return apolloClient.watch(query: query)
