@@ -7,6 +7,8 @@ public struct PollLogic: Reducer {
 
   public struct State: Equatable {
     var poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
+    var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State> = []
+    
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     ) {
@@ -16,14 +18,21 @@ public struct PollLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .none
+        
+      case .pollQuestions:
+        return .none
       }
+    }
+    .forEach(\.pollQuestions, action: /Action.pollQuestions) {
+      PollQuestionLogic()
     }
   }
 }
@@ -37,11 +46,13 @@ public struct PollView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        Text("Poll", bundle: .module)
+      ScrollView {
+        ForEachStore(
+          store.scope(state: \.pollQuestions, action: PollLogic.Action.pollQuestions),
+          content: PollQuestionView.init
+        )
       }
-      .navigationTitle("Poll")
-      .navigationBarTitleDisplayMode(.inline)
+      .scrollDisabled(true)
       .task { await viewStore.send(.onTask).finish() }
     }
   }

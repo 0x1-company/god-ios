@@ -21,11 +21,15 @@ let mock = [
 public struct PollQuestionLogic: Reducer {
   public init() {}
 
-  public struct State: Equatable {
+  public struct State: Equatable, Identifiable {
+    public var id: String
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
     var choices: [String] = []
-    public init() {}
+
+    public init(id: String) {
+      self.id = id
+    }
   }
 
   public enum Action: Equatable {
@@ -158,7 +162,9 @@ public struct PollQuestionView: View {
 #Preview {
   PollQuestionView(
     store: .init(
-      initialState: PollQuestionLogic.State(),
+      initialState: PollQuestionLogic.State(
+        id: ""
+      ),
       reducer: { PollQuestionLogic() }
     )
   )
