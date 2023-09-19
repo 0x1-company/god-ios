@@ -47,7 +47,14 @@
 
     },
     "By entering your age you agree to our Terms and Privacy Policy" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年齢を選択すると利用規約とプライバシーポリシーに同意したものとみなされます。"
+          }
+        }
+      }
     },
     "Choose a photo" : {
 
@@ -58,14 +65,61 @@
     "Choose the right school so\nyou can find your friends" : {
 
     },
+    "CLASS OF\n2023" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卒業予定\n2023"
+          }
+        }
+      }
+    },
+    "CLASS OF\n2024" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卒業予定\n2024"
+          }
+        }
+      }
+    },
+    "CLASS OF\n2025" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卒業予定\n2025"
+          }
+        }
+      }
+    },
     "Code" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認コード"
+          }
+        }
+      }
     },
     "Continue Anyway" : {
 
     },
     "Double check your name" : {
 
+    },
+    "Enter your age" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年齢を選択"
+          }
+        }
+      }
     },
     "Enter your phone Number" : {
 
@@ -74,25 +128,107 @@
 
     },
     "Find My Friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを探す"
+          }
+        }
+      }
+    },
+    "Finished High School" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卒業済み"
+          }
+        }
+      }
     },
     "First Name" : {
 
     },
     "Get Started" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめる"
+          }
+        }
+      }
     },
     "God cares intensely about your privacy.\nWeb will never text or spam your contacts." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godはあなたのプライバシーを非常に大切にします。\nあなたの連絡先にメールやスパムを送ることは決してありません。"
+          }
+        }
+      }
     },
     "God uses your contacts\nto find friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godは連絡先から友だちを見つけます"
+          }
+        }
+      }
+    },
+    "Grade 10" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1年生"
+          }
+        }
+      }
+    },
+    "Grade 11" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2年生"
+          }
+        }
+      }
+    },
+    "Grade 12" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3年生"
+          }
+        }
+      }
     },
     "HIGH SCHOOL" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高校"
+          }
+        }
+      }
     },
     "Imported from Contacts" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先からインポート"
+          }
+        }
+      }
     },
     "Kevin Ding" : {
 
@@ -101,7 +237,14 @@
 
     },
     "Log In" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン"
+          }
+        }
+      }
     },
     "Manhattan Early College School" : {
 
@@ -113,19 +256,57 @@
 
     },
     "Next" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次へ"
+          }
+        }
+      }
+    },
+    "Not in High School" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高校に在籍していない"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "Phone Number" : {
 
     },
     "Pick your school" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの高校を選択"
+          }
+        }
+      }
     },
     "Prefer not to say" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言いたくない場合"
+          }
+        }
+      }
     },
     "Remember - never sign up\nwith another person's phone number." : {
 
@@ -134,16 +315,27 @@
 
     },
     "See who likes you on God" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godであなたを好きな友だちを見つける"
+          }
+        }
+      }
     },
     "Sent to +81 80-2332-3620" : {
 
     },
     "Skip" : {
-
-    },
-    "Sorry" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スキップ"
+          }
+        }
+      }
     },
     "Take a photo" : {
 
@@ -155,25 +347,60 @@
 
     },
     "We sent you a code to verify\nyour number" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電話番号を確認するためにコードを送りました。\nあなたの電話番号は"
+          }
+        }
+      }
     },
     "We will show schools on\nthe next page" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の画面で学校を選択する"
+          }
+        }
+      }
     },
     "What grade are you in?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたは何年生ですか？"
+          }
+        }
+      }
     },
     "What's your first name?" : {
 
     },
     "What's your gender?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの性別は？"
+          }
+        }
+      }
     },
     "What's your last name?" : {
 
     },
     "You must be at least 13 years old to sign up." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godは13歳を超えてからご利用頂けます。"
+          }
+        }
+      }
     },
     "Your friends may see you as the name in their contacts" : {
 

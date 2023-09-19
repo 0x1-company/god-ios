@@ -25,12 +25,12 @@ public struct OnboardContactLogic: Reducer {
       else {
         return .none
       }
-      let countryCode = String(phoneNumber.countryCode)
+      let countryCode = "+" + String(phoneNumber.countryCode)
       let format = phoneNumberFormat(phoneNumber)
       
       state.contacts.append(
         God.ContactInput(
-          name: contact.familyName + contact.givenName,
+          name: "\(contact.familyName) \(contact.givenName)",
           phoneNumber: God.PhoneNumberInput(
             countryCode: countryCode,
             numbers: format.replacing(countryCode, with: "")

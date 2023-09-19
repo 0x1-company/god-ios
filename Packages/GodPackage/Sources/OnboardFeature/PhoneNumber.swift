@@ -42,13 +42,14 @@ public struct PhoneNumberLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .nextButtonTapped:
-        guard isValidPhoneNumber(state.phoneNumber)
+        guard
+          isValidPhoneNumber(state.phoneNumber),
+          let parse = try? phoneNumberParse(state.phoneNumber, withRegion: "JP", ignoreType: true)
         else { return .none }
         state.isActivityIndicatorVisible = true
+        let format = phoneNumberFormat(parse)
         return .run { [state] send in
           await userDefaults.setPhoneNumber(state.phoneNumber)
-          let parse = try phoneNumberParse(state.phoneNumber)
-          let format = phoneNumberFormat(parse)
           await send(
             .verifyResponse(
               TaskResult {

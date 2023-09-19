@@ -38,6 +38,7 @@ public struct OnboardLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     OnboardPathLogic()
+    OnboardContactLogic()
     Scope(state: \.welcome, action: /Action.welcome) {
       WelcomeLogic()
     }

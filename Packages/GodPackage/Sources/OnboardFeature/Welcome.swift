@@ -1,3 +1,4 @@
+import AsyncValue
 import ButtonStyles
 import Colors
 import ComposableArchitecture
@@ -10,7 +11,7 @@ public struct WelcomeLogic: Reducer {
   public struct State: Equatable {
     @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var selection = "- -"
-    var ageText = "Enter your age"
+    var age = AsyncValue<String>.none
     let ages: [String] = {
       var numbers = Array(0 ... 100).map(String.init)
       numbers.insert("- -", at: 13)
@@ -40,19 +41,19 @@ public struct WelcomeLogic: Reducer {
       case .getStartedButtonTapped:
         return .none
       case .binding:
-        state.ageText = state.selection == "- -" ? "Enter your age" : state.selection
+        state.age = state.selection == "- -" ? .none : .success(state.selection)
         if Array(0 ... 12).map(String.init).contains(state.selection) {
           state.alert = .init(
             title: {
-              TextState("Sorry")
+              TextState("")
             },
             actions: {
               ButtonState(action: .send(.confirmOkay, animation: .default)) {
-                TextState("OK")
+                TextState("OK", bundle: .module)
               }
             },
             message: {
-              TextState("You must be at least 13 years old to sign up.")
+              TextState("You must be at least 13 years old to sign up.", bundle: .module)
             }
           )
         }
@@ -86,7 +87,7 @@ public struct WelcomeView: View {
         Spacer()
         VStack(spacing: 24) {
           ZStack {
-            if viewStore.selection == "- -" {
+            if case .none = viewStore.age {
               Text("By entering your age you agree to our Terms and Privacy Policy", bundle: .module)
                 .frame(height: 54)
                 .foregroundColor(Color.godTextSecondaryDark)
@@ -109,9 +110,15 @@ public struct WelcomeView: View {
             }
           }
 
-          Text(viewStore.ageText)
-            .foregroundColor(Color.godService)
-            .bold()
+          Group {
+            if case let .success(age) = viewStore.age {
+              Text(verbatim: age)
+            } else {
+              Text("Enter your age", bundle: .module)
+            }
+          }
+          .foregroundColor(Color.godService)
+          .bold()
 
           Picker("", selection: viewStore.$selection) {
             ForEach(viewStore.ages, id: \.self) { value in
@@ -125,8 +132,12 @@ public struct WelcomeView: View {
       .background(Color.godBlack)
       .alert(store: store.scope(state: \.$alert, action: WelcomeLogic.Action.alert))
       .toolbar {
-        Button("Log In") {}
-          .foregroundColor(Color.white)
+        Button {
+          
+        } label: {
+          Text("Log In", bundle: .module)
+            .foregroundColor(Color.white)
+        }
       }
     }
   }

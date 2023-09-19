@@ -60,7 +60,7 @@ public struct OneTimeCodeLogic: Reducer {
     case .resendButtonTapped:
       state.oneTimeCode = ""
       return .run { [state] send in
-        let phoneNumber = try phoneNumberParse(state.phoneNumber)
+        let phoneNumber = try phoneNumberParse(state.phoneNumber, withRegion: "JP", ignoreType: true)
         let format = phoneNumberFormat(phoneNumber)
         await send(
           .verifyResponse(
@@ -120,7 +120,7 @@ public struct OneTimeCodeLogic: Reducer {
         }
       }
       return .run { send in
-        let parseNumber = try phoneNumberParse(number)
+        let parseNumber = try phoneNumberParse(number, withRegion: "JP", ignoreType: true)
         let format = phoneNumberFormat(parseNumber)
         let phoneNumber = God.PhoneNumberInput(
           countryCode: "+81",
