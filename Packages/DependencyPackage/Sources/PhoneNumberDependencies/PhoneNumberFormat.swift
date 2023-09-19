@@ -9,7 +9,7 @@ public extension DependencyValues {
 
   private enum PhoneNumberFormatKey: DependencyKey {
     typealias Value = @Sendable (PhoneNumber) -> String
-    
+
     static let liveValue: Value = { phoneNumber in
       let phoneNumberKit = PhoneNumberKit()
       return phoneNumberKit.format(phoneNumber, toType: .e164)

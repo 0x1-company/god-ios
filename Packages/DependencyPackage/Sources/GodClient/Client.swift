@@ -25,7 +25,7 @@ public struct GodClient: Sendable {
   public var friendRequests: @Sendable () -> AsyncThrowingStream<God.FriendRequestsQuery.Data, Error>
 
   public var createFirebaseRegistrationToken: @Sendable (God.CreateFirebaseRegistrationTokenInput) async throws -> God.CreateFirebaseRegistrationTokenMutation.Data
-  
+
   public var createContacts: @Sendable ([God.ContactInput]) async throws -> God.CreateContactsMutation.Data
 }
 
