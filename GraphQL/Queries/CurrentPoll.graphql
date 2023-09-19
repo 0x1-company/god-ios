@@ -1,0 +1,27 @@
+query CurrentPoll {
+  currentPoll {
+    status
+    coolDown {
+      until
+    }
+    poll {
+      id
+      pollQuestions {
+        id
+        question {
+          id
+          id
+        }
+        choiceGroups {
+          signature {
+            digest
+          }
+          choices {
+            userId
+            text
+          }
+        }
+      }
+    }
+  }
+}
