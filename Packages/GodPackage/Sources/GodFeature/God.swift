@@ -16,13 +16,25 @@ public struct GodLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case presentPoll
     case child(Child.Action)
   }
+  
+  @Dependency(\.mainQueue) var mainQueue
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .run { send in
+          try await mainQueue.sleep(for: .seconds(5))
+          await send(.presentPoll)
+        }
+        
+      case .presentPoll:
+        state.child = .poll(
+          .init()
+        )
         return .none
 
       case .child:
@@ -97,6 +109,7 @@ public struct GodView: View {
         )
       }
     }
+    .task { await store.send(.onTask).finish() }
   }
 }
 
