@@ -10,6 +10,7 @@ public class Query: MockObject {
   public typealias MockValueCollectionType = Array<Mock<Query>>
 
   public struct MockFields {
+    @Field<CurrentPoll>("currentPoll") public var currentPoll
     @Field<User>("currentUser") public var currentUser
     @Field<FriendConnection>("friendRequests") public var friendRequests
     @Field<[User]>("friends") public var friends
@@ -23,6 +24,7 @@ public class Query: MockObject {
 
 public extension Mock where O == Query {
   convenience init(
+    currentPoll: Mock<CurrentPoll>? = nil,
     currentUser: Mock<User>? = nil,
     friendRequests: Mock<FriendConnection>? = nil,
     friends: [Mock<User>]? = nil,
@@ -33,6 +35,7 @@ public extension Mock where O == Query {
     usersBySchoolId: Mock<UserConnection>? = nil
   ) {
     self.init()
+    _setEntity(currentPoll, for: \.currentPoll)
     _setEntity(currentUser, for: \.currentUser)
     _setEntity(friendRequests, for: \.friendRequests)
     _setList(friends, for: \.friends)

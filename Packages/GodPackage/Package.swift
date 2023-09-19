@@ -90,7 +90,7 @@ let package = Package(
       "PollFeature",
       "CashOutFeature",
       "PlayAgainFeature",
-    ]),
+    ], resources: [.copy("Loading.json")]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),

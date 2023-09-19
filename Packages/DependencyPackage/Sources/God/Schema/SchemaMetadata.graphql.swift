@@ -50,6 +50,13 @@ public extension God {
       case "ActivityEdge": return God.Objects.ActivityEdge
       case "Activity": return God.Objects.Activity
       case "Question": return God.Objects.Question
+      case "CurrentPoll": return God.Objects.CurrentPoll
+      case "CoolDown": return God.Objects.CoolDown
+      case "Poll": return God.Objects.Poll
+      case "PollQuestion": return God.Objects.PollQuestion
+      case "ChoiceGroup": return God.Objects.ChoiceGroup
+      case "Signature": return God.Objects.Signature
+      case "Choice": return God.Objects.Choice
       case "FriendConnection": return God.Objects.FriendConnection
       case "FriendEdge": return God.Objects.FriendEdge
       default: return nil
