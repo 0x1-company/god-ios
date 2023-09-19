@@ -18,7 +18,7 @@ let mock = [
   "たかはし ゆういち",
 ]
 
-public struct VoteLogic: Reducer {
+public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -84,84 +84,87 @@ public struct VoteLogic: Reducer {
   }
 }
 
-public struct VoteView: View {
-  let store: StoreOf<VoteLogic>
+public struct PollView: View {
+  let store: StoreOf<PollLogic>
 
-  public init(store: StoreOf<VoteLogic>) {
+  public init(store: StoreOf<PollLogic>) {
     self.store = store
   }
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 0) {
-        Spacer()
-        Image(.books)
-          .resizable()
-          .scaledToFit()
-          .frame(height: 140)
-        Text("理想の勉強仲間", bundle: .module)
-          .font(.title2)
-          .foregroundColor(.white)
-        Spacer()
-        LazyVGrid(
-          columns: Array(repeating: GridItem(spacing: 16), count: 2),
-          spacing: 16
-        ) {
-          ForEach(viewStore.choices, id: \.self) { choice in
-            AnswerButton(
-              choice,
-              progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
-            ) {
-              viewStore.send(.answerButtonTapped)
+      ZStack {
+        VStack(spacing: 0) {
+          Spacer()
+          Image(.books)
+            .resizable()
+            .scaledToFit()
+            .frame(height: 140)
+          Text("理想の勉強仲間", bundle: .module)
+            .font(.title2)
+            .foregroundColor(.white)
+          Spacer()
+          LazyVGrid(
+            columns: Array(repeating: GridItem(spacing: 16), count: 2),
+            spacing: 16
+          ) {
+            ForEach(viewStore.choices, id: \.self) { choice in
+              AnswerButton(
+                choice,
+                progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
+              ) {
+                viewStore.send(.answerButtonTapped)
+              }
+              .disabled(viewStore.isAnswered)
             }
-            .disabled(viewStore.isAnswered)
           }
-        }
 
-        ZStack {
-          if viewStore.isAnswered {
-            Text("Tap to continue", bundle: .module)
-          } else {
-            HStack(spacing: 0) {
-              LabeledButton(
-                String(localized: "Shuffle", bundle: .module),
-                systemImage: "shuffle"
-              ) {
-                viewStore.send(.shuffleButtonTapped)
+          ZStack {
+            if viewStore.isAnswered {
+              Text("Tap to continue", bundle: .module)
+            } else {
+              HStack(spacing: 0) {
+                LabeledButton(
+                  String(localized: "Shuffle", bundle: .module),
+                  systemImage: "shuffle"
+                ) {
+                  viewStore.send(.shuffleButtonTapped)
+                }
+                LabeledButton(
+                  String(localized: "Skip", bundle: .module),
+                  systemImage: "forward.fill"
+                ) {
+                  viewStore.send(.skipButtonTapped)
+                }
               }
-              LabeledButton(
-                String(localized: "Skip", bundle: .module),
-                systemImage: "forward.fill"
-              ) {
-                viewStore.send(.skipButtonTapped)
-              }
+              .buttonStyle(HoldDownButtonStyle())
             }
-            .buttonStyle(HoldDownButtonStyle())
           }
+          .frame(height: 50)
+          .animation(.default, value: viewStore.isAnswered)
+          .foregroundColor(.white)
+          .padding(.vertical, 64)
         }
-        .frame(height: 50)
-        .animation(.default, value: viewStore.isAnswered)
-        .foregroundColor(.white)
-        .padding(.vertical, 64)
+        .padding(.horizontal, 36)
+        .background(Color.godGreen)
+        .onTapGesture {
+          viewStore.send(.continueButtonTapped)
+        }
+        
+        Text("1 of 12", bundle: .module)
+          .foregroundColor(Color.white)
       }
-      .padding(.horizontal, 36)
-      .background(Color.godGreen)
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
-      .onTapGesture {
-        viewStore.send(.continueButtonTapped)
-      }
     }
   }
 }
 
-struct VoteViewPreviews: PreviewProvider {
-  static var previews: some View {
-    VoteView(
-      store: .init(
-        initialState: VoteLogic.State(),
-        reducer: { VoteLogic() }
-      )
+#Preview {
+  PollView(
+    store: .init(
+      initialState: PollLogic.State(),
+      reducer: { PollLogic() }
     )
-  }
+  )
 }
