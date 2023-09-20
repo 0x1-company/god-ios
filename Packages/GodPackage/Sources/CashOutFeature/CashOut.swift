@@ -12,7 +12,7 @@ public struct CashOutLogic: Reducer {
   public enum Action: Equatable {
     case cashOutButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case finish
     }

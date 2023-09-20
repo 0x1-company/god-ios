@@ -2,9 +2,9 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import FeedbackGeneratorClient
+import God
 import LabeledButton
 import SwiftUI
-import God
 
 public struct PollQuestionLogic: Reducer {
   public init() {}
@@ -19,8 +19,9 @@ public struct PollQuestionLogic: Reducer {
     public var id: String {
       pollQuestion.id
     }
+
     var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
-    
+
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
     var choices: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup.Choice] = []
@@ -28,7 +29,7 @@ public struct PollQuestionLogic: Reducer {
 
     public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
       self.pollQuestion = pollQuestion
-      self.choices = pollQuestion.choiceGroups[currentStep.rawValue].choices
+      choices = pollQuestion.choiceGroups[currentStep.rawValue].choices
     }
   }
 
@@ -44,7 +45,7 @@ public struct PollQuestionLogic: Reducer {
     public enum Alert: Equatable {
       case confirmOkay
     }
-    
+
     public enum Delegate: Equatable {
       case nextPollQuestion
     }
@@ -114,11 +115,11 @@ public struct PollQuestionView: View {
           .resizable()
           .scaledToFit()
           .frame(height: 140)
-        
+
         Text(verbatim: viewStore.pollQuestion.question.text.ja)
           .font(.title2)
           .foregroundColor(.white)
-        
+
         Spacer()
 
         LazyVGrid(
