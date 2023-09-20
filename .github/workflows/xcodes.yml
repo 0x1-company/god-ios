@@ -1,0 +1,10 @@
+name: Xcodes
+
+on:
+  pull_request:
+
+jobs:
+  ls:
+    runs-on: macos-13
+    steps:
+      - run: ls /Applications
