@@ -17,6 +17,7 @@ let package = Package(
     .library(name: "FullScreenActionView", targets: ["FullScreenActionView"]),
     .library(name: "FullScreenCoverView", targets: ["FullScreenCoverView"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
+    .library(name: "NameImage", targets: ["NameImage"]),
     .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
     .library(name: "SearchField", targets: ["SearchField"]),
   ],
@@ -30,6 +31,7 @@ let package = Package(
     .target(name: "FullScreenActionView"),
     .target(name: "FullScreenCoverView"),
     .target(name: "LabeledButton"),
+    .target(name: "NameImage", dependencies: ["Colors"]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
   ]
