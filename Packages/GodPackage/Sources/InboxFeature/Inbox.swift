@@ -14,10 +14,17 @@ public struct InboxLogic: Reducer {
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
 
-    var inboxes: [InboxCard.State] = []
+    var inboxes: [InboxCardState] = []
     var products: [Product] = []
 
     public init() {}
+    
+    public struct InboxCardState: Equatable, Identifiable {
+      public let id: String
+      let gender: String
+      let createdAt: Date
+      let isRead: Bool
+    }
   }
 
   public enum Action: Equatable {
@@ -88,10 +95,11 @@ public struct InboxLogic: Reducer {
         state.inboxes = inboxes.compactMap {
           guard let createdAt = TimeInterval($0.createdAt)
           else { return nil }
-          return InboxCard.State(
+          return State.InboxCardState(
             id: $0.id,
             gender: "",
-            createdAt: Date(timeIntervalSince1970: createdAt / 1000.0)
+            createdAt: Date(timeIntervalSince1970: createdAt / 1000.0),
+            isRead: $0.isRead
           )
         }
         return .none
@@ -141,9 +149,13 @@ public struct InboxView: View {
       ZStack(alignment: .bottom) {
         List {
           ForEach(viewStore.inboxes) { state in
-            InboxCard(state: state) {
+            InboxCard(
+              gender: state.gender,
+              createdAt: state.createdAt,
+              isRead: state.isRead
+            ) {
               viewStore.send(.activityButtonTapped, transaction: .animationDisable)
-            }
+              }
           }
 
           FromGodTeamCard {
