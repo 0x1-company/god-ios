@@ -16,7 +16,7 @@ public struct ShareShopSection: View {
     self.shareAction = shareAction
     self.shopAction = shopAction
   }
-
+  
   public var body: some View {
     HStack(spacing: 16) {
       Button(action: shareAction) {
@@ -35,9 +35,18 @@ public struct ShareShopSection: View {
       }
 
       Button(action: shopAction) {
-        HStack(spacing: 0) {
-          Text(String(format: "%05d", coinBalance))
+        HStack(spacing: 8) {
+          Text(coinBalance.description)
             .bold()
+            .font(.title2)
+          
+          Text("SHOP")
+            .bold()
+            .font(.caption)
+            .frame(width: 57, height: 26)
+            .foregroundStyle(Color.white)
+            .background(Color.godYellow.gradient)
+            .clipShape(Capsule())
         }
         .frame(height: 52)
         .frame(maxWidth: .infinity)
