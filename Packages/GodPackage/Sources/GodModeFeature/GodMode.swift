@@ -32,7 +32,7 @@ public struct GodModeLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.store) var storeClient
-  
+
   enum Cancel { case id }
 
   public var body: some Reducer<State, Action> {
