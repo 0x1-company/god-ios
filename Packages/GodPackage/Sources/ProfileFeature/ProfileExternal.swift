@@ -18,6 +18,7 @@ public struct ProfileExternalLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case closeButtonTapped
     case userResponse(TaskResult<God.UserQuery.Data>)
   }
 
@@ -49,6 +50,10 @@ public struct ProfileExternalLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+      case .closeButtonTapped:
+        return .run { _ in
+          await dismiss()
+        }
       }
     }
   }
@@ -73,6 +78,9 @@ public struct ProfileExternalView: View {
               schoolShortName: user.school?.shortName,
               grade: user.grade
             )
+          } else if case .loading = viewStore.user {
+            ProgressView()
+              .progressViewStyle(.circular)
           }
           Divider()
 
@@ -82,6 +90,16 @@ public struct ProfileExternalView: View {
       .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
+      .toolbar {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button {
+            viewStore.send(.closeButtonTapped)
+          } label: {
+            Image(systemName: "xmark")
+              .foregroundStyle(Color.secondary)
+          }
+        }
+      }
     }
   }
 }

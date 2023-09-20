@@ -22,6 +22,7 @@ public struct ProfileLogic: Reducer {
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
+    case friendButtonTapped(userId: String)
     case profileResponse(TaskResult<God.ProfileQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
@@ -56,6 +57,10 @@ public struct ProfileLogic: Reducer {
       case .shopButtonTapped:
         state.destination = .shop()
         return .none
+        
+      case let .friendButtonTapped(userId):
+        state.destination = .external(.init(userId: userId))
+        return .none
 
       case let .profileResponse(.success(data)):
         state.profile = data
@@ -82,12 +87,14 @@ public struct ProfileLogic: Reducer {
       case profileEdit(ProfileEditLogic.State = .init())
       case shop(ShopLogic.State = .init())
       case profileShare(ProfileShareLogic.State = .init())
+      case external(ProfileExternalLogic.State)
     }
 
     public enum Action: Equatable {
       case profileEdit(ProfileEditLogic.Action)
       case shop(ShopLogic.Action)
       case profileShare(ProfileShareLogic.Action)
+      case external(ProfileExternalLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
@@ -99,6 +106,9 @@ public struct ProfileLogic: Reducer {
       }
       Scope(state: /State.profileShare, action: /Action.profileShare) {
         ProfileShareLogic()
+      }
+      Scope(state: /State.external, action: /Action.external) {
+        ProfileExternalLogic()
       }
     }
   }
@@ -145,7 +155,9 @@ public struct ProfileView: View {
             .padding(.bottom, 16)
 
           if let data = viewStore.profile, !data.friends.isEmpty {
-            FriendsSection(friends: data.friends.map(\.fragments.friendFragment))
+            FriendsSection(friends: data.friends.map(\.fragments.friendFragment)) { state in
+              viewStore.send(.friendButtonTapped(userId: state.id))
+            }
           }
         }
         .background(Color.godBackgroundWhite)
@@ -180,6 +192,15 @@ public struct ProfileView: View {
         ProfileShareView(store: store)
           .presentationDetents([.height(ProfileShareView.heightForPresentationDetents)])
           .presentationCornerRadiusIfPossible(24)
+      }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /ProfileLogic.Destination.State.external,
+        action: ProfileLogic.Destination.Action.external
+      ) { store in
+        NavigationStack {
+          ProfileExternalView(store: store)
+        }
       }
     }
   }

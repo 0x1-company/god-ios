@@ -6,6 +6,7 @@ import SwiftUI
 
 public struct FriendsSection: View {
   let friends: [God.FriendFragment]
+  let action: (God.FriendFragment) -> Void
 
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -45,6 +46,9 @@ public struct FriendsSection: View {
         }
         .frame(height: 84)
         .padding(.horizontal, 16)
+        .onTapGesture {
+          action(state)
+        }
         Divider()
       }
     }
