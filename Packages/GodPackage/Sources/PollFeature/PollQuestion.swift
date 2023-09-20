@@ -24,7 +24,7 @@ public struct PollQuestionLogic: Reducer {
       self.pollQuestion = pollQuestion
       currentChoiceGroup = pollQuestion.choiceGroups[currentStep.rawValue]
     }
-    
+
     public enum Step: Int {
       case first
       case second

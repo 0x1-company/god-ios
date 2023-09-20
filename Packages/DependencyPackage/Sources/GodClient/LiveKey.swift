@@ -66,7 +66,7 @@ public extension GodClient {
         let mutation = God.CreateVoteMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
       },
-      completePoll: {input in
+      completePoll: { input in
         let mutation = God.CompletePollMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
       },

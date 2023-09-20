@@ -34,7 +34,7 @@ public struct PollLogic: Reducer {
       case finish(earnedCoinAmount: Int)
     }
   }
-  
+
   @Dependency(\.godClient.createVote) var createVote
   @Dependency(\.godClient.completePoll) var completePoll
 
@@ -43,7 +43,7 @@ public struct PollLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case let .pollQuestions(_, .delegate(.vote(input))):
         return .run { send in
           await send(.createVoteResponse(TaskResult {
@@ -54,7 +54,7 @@ public struct PollLogic: Reducer {
       case let .pollQuestions(id, .delegate(.nextPollQuestion)):
         guard let index = state.pollQuestions.index(id: id) else { return .none }
         let afterIndex = state.pollQuestions.index(after: index)
-        
+
         guard afterIndex < state.pollQuestions.count else {
           return .run { [pollId = state.pollId] send in
             await completePollRequest(pollId: pollId, send: send)
@@ -67,18 +67,18 @@ public struct PollLogic: Reducer {
 
       case .pollQuestions:
         return .none
-        
+
       case let .createVoteResponse(.success(data)):
         print(data)
         return .none
 
       case .createVoteResponse(.failure):
         return .none
-        
+
       case let .completePollResponse(.success(data)):
         let earnedCoinAmount = data.completePoll.earnedCoinAmount
         return .send(.delegate(.finish(earnedCoinAmount: earnedCoinAmount)), animation: .default)
-        
+
       case .completePollResponse(.failure):
         return .none
 
@@ -90,7 +90,7 @@ public struct PollLogic: Reducer {
       PollQuestionLogic()
     }
   }
-  
+
   func completePollRequest(pollId: String, send: Send<Action>) async {
     let input = God.CompletePollInput(pollId: pollId)
     await send(.completePollResponse(TaskResult {
@@ -130,7 +130,7 @@ public struct PollView: View {
           }
         }
         .ignoresSafeArea()
-        
+
         Text("\(viewStore.currentPosition) of 12")
           .foregroundStyle(.white)
       }
