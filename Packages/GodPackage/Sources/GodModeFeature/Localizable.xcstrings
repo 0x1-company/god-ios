@@ -6,7 +6,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "週%@"
+            "value" : "%@/週"
           }
         }
       }
@@ -32,7 +32,14 @@
       }
     },
     "Get Unlimited Hints" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前を1文字だけ無制限に見れる"
+          }
+        }
+      }
     },
     "Maybe Later" : {
       "localizations" : {
@@ -65,14 +72,21 @@
       }
     },
     "Secret Crush Alerts" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "シークレットアラート"
+          }
+        }
+      }
     },
     "Your payment will be charged to iTunes Account, and your subscription will auto-renew for %@/week until you cancel in iTunes Store settings. By tapping Unlock, you agree to our Terms and the auto-renewal." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週%@で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。"
+            "value" : "お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は%@/週で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。"
           }
         }
       }
