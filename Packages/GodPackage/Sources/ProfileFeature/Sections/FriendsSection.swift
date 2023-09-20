@@ -1,8 +1,8 @@
 import ButtonStyles
 import Colors
 import God
-import SwiftUI
 import NameImage
+import SwiftUI
 
 public struct FriendsSection: View {
   let friends: [God.FriendFragment]

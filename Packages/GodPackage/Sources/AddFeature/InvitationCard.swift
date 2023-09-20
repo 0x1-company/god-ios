@@ -1,8 +1,8 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import NameImage
+import SwiftUI
 
 public struct InvitationCardView: View {
   let familyName: String
