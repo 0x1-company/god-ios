@@ -7,6 +7,7 @@ import NameImage
 public struct InvitationCardView: View {
   let familyName: String
   let givenName: String
+  let imageData: Data?
   let action: () -> Void
 
   var displayName: String {
@@ -15,7 +16,14 @@ public struct InvitationCardView: View {
 
   public var body: some View {
     HStack(spacing: 16) {
-      NameImage(familyName: familyName, givenName: givenName)
+      if let imageData, let image = UIImage(data: imageData) {
+        Image(uiImage: image)
+          .resizable()
+          .frame(width: 42, height: 42)
+          .clipShape(Circle())
+      } else {
+        NameImage(familyName: familyName, givenName: givenName)
+      }
 
       VStack(alignment: .leading, spacing: 4) {
         Text(verbatim: displayName)
