@@ -1,11 +1,11 @@
 import AnimationDisableTransaction
 import ButtonStyles
 import ComposableArchitecture
+import God
+import GodClient
 import GodModeFeature
 import StoreKit
 import StoreKitClient
-import God
-import GodClient
 import SwiftUI
 
 public struct InboxLogic: Reducer {
@@ -82,7 +82,7 @@ public struct InboxLogic: Reducer {
       case .destination(.presented(.godMode(.delegate(.activated)))):
         state.destination = .activatedGodMode()
         return .none
-        
+
       case let .inboxActivitiesResponse(.success(data)):
         let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
         state.inboxes = inboxes.compactMap {

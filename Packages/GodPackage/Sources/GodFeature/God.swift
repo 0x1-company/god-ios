@@ -75,7 +75,7 @@ public struct GodLogic: Reducer {
       }
     }
   }
-  
+
   func updateChild(state: inout State, child: Child.State) {
     switch (state.child, child) {
     case (.loading, .loading):

@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct FromGodTeamCard: View {
   let action: () -> Void
-  
+
   public var body: some View {
     Button(action: action) {
       HStack(spacing: 0) {

@@ -4,7 +4,7 @@ import SwiftUI
 public struct InboxCard: View {
   let state: State
   let action: () -> Void
-  
+
   public struct State: Equatable, Identifiable {
     public let id: String
     let gender: String
