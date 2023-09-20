@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import God
 import SwiftUI
-import SwiftUIIntrospect
 
 public struct PollLogic: Reducer {
   public init() {}
