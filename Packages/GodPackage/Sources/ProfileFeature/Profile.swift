@@ -125,7 +125,7 @@ public struct ProfileView: View {
             ) {
               viewStore.send(.editProfileButtonTapped)
             }
-            
+
             Divider()
 
             ShareShopSection(

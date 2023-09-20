@@ -16,7 +16,7 @@ public struct ShareShopSection: View {
     self.shareAction = shareAction
     self.shopAction = shopAction
   }
-  
+
   public var body: some View {
     HStack(spacing: 16) {
       Button(action: shareAction) {
@@ -39,7 +39,7 @@ public struct ShareShopSection: View {
           Text(coinBalance.description)
             .bold()
             .font(.title2)
-          
+
           Text("SHOP")
             .bold()
             .font(.caption)
