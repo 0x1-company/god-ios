@@ -81,6 +81,10 @@ public extension God {
 
         /// user id
         public var id: God.ID { __data["id"] }
+        /// first name
+        public var firstName: String { __data["firstName"] }
+        /// last name
+        public var lastName: String { __data["lastName"] }
         /// 表示名
         public var displayName: FriendFragment.DisplayName { __data["displayName"] }
 

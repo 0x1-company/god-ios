@@ -6,7 +6,7 @@
 public extension God {
   struct FriendFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment FriendFragment on User { __typename id displayName { __typename ja } }"#
+      #"fragment FriendFragment on User { __typename id firstName lastName displayName { __typename ja } }"#
     }
 
     public let __data: DataDict
@@ -16,11 +16,17 @@ public extension God {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("id", God.ID.self),
+      .field("firstName", String.self),
+      .field("lastName", String.self),
       .field("displayName", DisplayName.self),
     ] }
 
     /// user id
     public var id: God.ID { __data["id"] }
+    /// first name
+    public var firstName: String { __data["firstName"] }
+    /// last name
+    public var lastName: String { __data["lastName"] }
     /// 表示名
     public var displayName: DisplayName { __data["displayName"] }
 

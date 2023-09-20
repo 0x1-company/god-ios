@@ -2,6 +2,7 @@ import ButtonStyles
 import Colors
 import God
 import SwiftUI
+import NameImage
 
 public struct FriendsSection: View {
   let friends: [God.FriendFragment]
@@ -19,9 +20,10 @@ public struct FriendsSection: View {
 
       ForEach(friends, id: \.self) { state in
         HStack(alignment: .center, spacing: 12) {
-          Circle()
-            .fill(Color.blue)
-            .frame(width: 48, height: 48)
+          NameImage(
+            familyName: state.lastName,
+            givenName: state.firstName
+          )
 
           Text(state.displayName.ja)
             .frame(maxWidth: .infinity, alignment: .leading)
