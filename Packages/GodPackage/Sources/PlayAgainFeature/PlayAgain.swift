@@ -29,6 +29,9 @@ public struct PlayAgainLogic: Reducer {
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
+              await send(.timerTick)
+            }
+            group.addTask {
               await startTimer(send: send)
             }
           }
