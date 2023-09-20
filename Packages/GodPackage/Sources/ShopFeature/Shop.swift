@@ -228,7 +228,7 @@ extension AlertState where Action == ShopLogic.Action.Alert {
   } message: {
     TextState("You don't have enough coins", bundle: .module)
   }
-  
+
   static let purchaseThreeRandomPolls = Self {
     TextState("Success", bundle: .module)
   } actions: {
