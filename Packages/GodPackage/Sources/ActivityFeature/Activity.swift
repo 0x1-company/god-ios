@@ -118,6 +118,7 @@ public struct ActivityView: View {
               Text("3年生の女子より", bundle: .module)
                 .foregroundColor(.secondary)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("3d", bundle: .module)
               .foregroundColor(.secondary)
