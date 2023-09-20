@@ -57,7 +57,7 @@ public struct ProfileLogic: Reducer {
       case .shopButtonTapped:
         state.destination = .shop()
         return .none
-        
+
       case let .friendButtonTapped(userId):
         state.destination = .external(.init(userId: userId))
         return .none
