@@ -70,6 +70,7 @@ graph TD;
     OnboardFeature-->PhoneNumberDependencies;
     PlayAgainFeature-->ComposableArchitecture;
     PollFeature-->Colors;
+    PollFeature-->GodClient;
     PollFeature-->ButtonStyles;
     PollFeature-->LabeledButton;
     PollFeature-->FeedbackGeneratorClient;
