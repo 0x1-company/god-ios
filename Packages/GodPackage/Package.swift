@@ -93,6 +93,7 @@ let package = Package(
     ], resources: [.copy("Loading.json")]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "StoreKitHelpers", package: "DependencyPackage"),

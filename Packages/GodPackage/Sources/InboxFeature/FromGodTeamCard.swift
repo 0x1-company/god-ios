@@ -1,24 +1,17 @@
 import ButtonStyles
 import SwiftUI
 
-public struct InboxCard: View {
-  let state: State
+public struct FromGodTeamCard: View {
   let action: () -> Void
   
-  public struct State: Equatable, Identifiable {
-    public let id: String
-    let gender: String
-    let createdAt: Date
-  }
-
   public var body: some View {
     Button(action: action) {
       HStack(spacing: 0) {
         LabeledContent {
-          Text(state.createdAt, style: .relative)
+          Text(Date.now, style: .relative)
         } label: {
           Label {
-            Text("From a \(state.gender)", bundle: .module)
+            Text("From God Team")
           } icon: {
             Image(systemName: "flame.fill")
               .font(.largeTitle)
@@ -35,4 +28,8 @@ public struct InboxCard: View {
     .listRowSeparator(.hidden)
     .buttonStyle(HoldDownButtonStyle())
   }
+}
+
+#Preview {
+  FromGodTeamCard(action: {})
 }

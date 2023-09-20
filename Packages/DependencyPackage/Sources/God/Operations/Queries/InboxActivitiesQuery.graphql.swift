@@ -8,7 +8,8 @@ public extension God {
     public static let operationName: String = "InboxActivities"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query InboxActivities($first: Int!, $after: String) { listInboxActivities(first: $first, after: $after) { __typename pageInfo { __typename hasNextPage } edges { __typename cursor node { __typename id initial isRead createdAt question { __typename text { __typename ja } } } } } }"#
+        #"query InboxActivities($first: Int!, $after: String) { listInboxActivities(first: $first, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename ...InboxFragment } } } }"#,
+        fragments: [NextPaginationFragment.self, InboxFragment.self]
       ))
 
     public var first: Int
@@ -69,11 +70,20 @@ public extension God {
           public static var __parentType: ApolloAPI.ParentType { God.Objects.PageInfo }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
-            .field("hasNextPage", Bool.self),
+            .fragment(NextPaginationFragment.self),
           ] }
 
           /// 次のページがあるかどうか
           public var hasNextPage: Bool { __data["hasNextPage"] }
+          /// 最後のedgeのカーソル
+          public var endCursor: String? { __data["endCursor"] }
+
+          public struct Fragments: FragmentContainer {
+            public let __data: DataDict
+            public init(_dataDict: DataDict) { __data = _dataDict }
+
+            public var nextPaginationFragment: NextPaginationFragment { _toFragment() }
+          }
         }
 
         /// ListInboxActivities.Edge
@@ -103,11 +113,7 @@ public extension God {
             public static var __parentType: ApolloAPI.ParentType { God.Objects.InboxActivity }
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
-              .field("id", God.ID.self),
-              .field("initial", String?.self),
-              .field("isRead", Bool.self),
-              .field("createdAt", God.Date.self),
-              .field("question", Question.self),
+              .fragment(InboxFragment.self),
             ] }
 
             /// ID
@@ -117,40 +123,13 @@ public extension God {
             /// 既読かどうか
             public var isRead: Bool { __data["isRead"] }
             public var createdAt: God.Date { __data["createdAt"] }
-            public var question: Question { __data["question"] }
+            public var question: InboxFragment.Question { __data["question"] }
 
-            /// ListInboxActivities.Edge.Node.Question
-            ///
-            /// Parent Type: `Question`
-            public struct Question: God.SelectionSet {
+            public struct Fragments: FragmentContainer {
               public let __data: DataDict
               public init(_dataDict: DataDict) { __data = _dataDict }
 
-              public static var __parentType: ApolloAPI.ParentType { God.Objects.Question }
-              public static var __selections: [ApolloAPI.Selection] { [
-                .field("__typename", String.self),
-                .field("text", Text.self),
-              ] }
-
-              /// text
-              public var text: Text { __data["text"] }
-
-              /// ListInboxActivities.Edge.Node.Question.Text
-              ///
-              /// Parent Type: `LocalizableString`
-              public struct Text: God.SelectionSet {
-                public let __data: DataDict
-                public init(_dataDict: DataDict) { __data = _dataDict }
-
-                public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
-                public static var __selections: [ApolloAPI.Selection] { [
-                  .field("__typename", String.self),
-                  .field("ja", String.self),
-                ] }
-
-                /// 日本語
-                public var ja: String { __data["ja"] }
-              }
+              public var inboxFragment: InboxFragment { _toFragment() }
             }
           }
         }
