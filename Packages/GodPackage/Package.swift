@@ -170,10 +170,11 @@ let package = Package(
       .product(name: "AsyncValue", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "RevealFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),

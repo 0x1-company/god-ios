@@ -1,4 +1,5 @@
 import AnimationDisableTransaction
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import God
@@ -91,26 +92,28 @@ public struct ProfileShareToInstagramView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(alignment: .center, spacing: 24) {
         VStack(alignment: .center, spacing: 16) {
-          Image("instagram", bundle: .module)
+          Image(ImageResource.instagram)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 60, height: 60)
             .clipShape(Circle())
-          Text("Share Profile on\nInstagram")
+
+          Text("Share Profile on\nInstagram", bundle: .module)
             .font(.title)
             .bold()
             .foregroundColor(.godBlack)
             .lineSpacing(-2)
             .lineLimit(2)
-            .multilineTextAlignment(.leading)
+            .multilineTextAlignment(.center)
         }
 
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 0) {
-            Text("Step1")
+            Text("Step1", bundle: .module)
               .bold()
-            Text("Copy your god link")
-          }.font(.title2)
+            Text("Copy your god link", bundle: .module)
+          }
+          .font(.title2)
 
           Text(viewStore.state.profileLinkString ?? "")
             .font(.body)
@@ -120,10 +123,10 @@ public struct ProfileShareToInstagramView: View {
             .background(Color(red: 243 / 255, green: 243 / 255, blue: 243 / 255))
             .cornerRadius(26)
 
-          Button(action: {
+          Button {
             viewStore.send(.copyLinkButtonTapped)
-          }) {
-            Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link")
+          } label: {
+            Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
               .font(.subheadline)
               .bold()
               .foregroundColor(.godService)
@@ -135,19 +138,21 @@ public struct ProfileShareToInstagramView: View {
                   .stroke(Color.godService, lineWidth: 0.5)
               )
           }
+          .buttonStyle(HoldDownButtonStyle())
         }
 
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 0) {
-            Text("Step2")
+            Text("Step2", bundle: .module)
               .bold()
-            Text("Post on your story")
-          }.font(.title2)
+            Text("Post on your story", bundle: .module)
+          }
+          .font(.title2)
 
-          Button(action: {
+          Button {
             viewStore.send(.shareButtonTapped)
-          }) {
-            Text("Share")
+          } label: {
+            Text("Share", bundle: .module)
               .font(.subheadline)
               .bold()
               .foregroundColor(.godWhite)
@@ -156,6 +161,7 @@ public struct ProfileShareToInstagramView: View {
               .background(Color(red: 247 / 255, green: 108 / 255, blue: 67 / 255))
               .cornerRadius(26)
           }
+          .buttonStyle(HoldDownButtonStyle())
         }
       }
       .padding(20)
