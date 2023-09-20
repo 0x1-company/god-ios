@@ -13,7 +13,7 @@ public struct ProfileLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
-    var profile = AsyncValue<God.ProfileQuery.Data>.none
+    var profile: God.ProfileQuery.Data?
     public init() {}
   }
 
@@ -36,7 +36,6 @@ public struct ProfileLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        state.profile = .loading
         return .run { send in
           for try await data in godClient.profile() {
             await send(.profileResponse(.success(data)))
@@ -59,10 +58,10 @@ public struct ProfileLogic: Reducer {
         return .none
 
       case let .profileResponse(.success(data)):
-        state.profile = .success(data)
+        state.profile = data
         return .none
       case .profileResponse(.failure):
-        state.profile = .none
+        state.profile = nil
         return .none
 
       case .destination(.dismiss):
@@ -116,7 +115,7 @@ public struct ProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
-          if case let .success(data) = viewStore.profile {
+          if let data = viewStore.profile {
             ProfileSection(
               friendsCount: data.currentUser.friendsCount ?? 0,
               username: data.currentUser.username ?? "",
@@ -143,7 +142,7 @@ public struct ProfileView: View {
           TopStarsSection()
             .padding(.bottom, 16)
 
-          if case let .success(data) = viewStore.profile, !data.friends.isEmpty {
+          if let data = viewStore.profile, !data.friends.isEmpty {
             FriendsSection(friends: data.friends.map(\.fragments.friendFragment))
           }
         }
