@@ -149,6 +149,7 @@ let package = Package(
     ]),
     .target(name: "PollFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
