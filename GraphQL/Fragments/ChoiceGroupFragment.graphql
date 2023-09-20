@@ -1,0 +1,9 @@
+fragment ChoiceGroupFragment on ChoiceGroup {
+  signature {
+    digest
+  }
+  choices {
+    userId
+    text
+  }
+}

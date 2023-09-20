@@ -11,12 +11,20 @@ public struct CashOutLogic: Reducer {
 
   public enum Action: Equatable {
     case cashOutButtonTapped
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case finish
+    }
   }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .cashOutButtonTapped:
+        return .send(.delegate(.finish), animation: .default)
+
+      case .delegate:
         return .none
       }
     }

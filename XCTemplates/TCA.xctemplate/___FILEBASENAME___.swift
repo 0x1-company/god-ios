@@ -41,13 +41,11 @@ public struct ___VARIABLE_productName:identifier___View: View {
   }
 }
 
-struct ___VARIABLE_productName:identifier___ViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ___VARIABLE_productName: identifier___View(
-      store: .init(
-        initialState: ___VARIABLE_productName: identifier___Logic.State(),
-        reducer: { ___VARIABLE_productName: identifier___Logic() }
-      )
+#Preview {
+  ___VARIABLE_productName: identifier___View(
+    store: .init(
+      initialState: ___VARIABLE_productName: identifier___Logic.State(),
+      reducer: { ___VARIABLE_productName: identifier___Logic() }
     )
-  }
+  )
 }

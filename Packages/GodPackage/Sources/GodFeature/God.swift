@@ -16,30 +16,72 @@ public struct GodLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case presentPoll
+    case currentPollResponse(TaskResult<God.CurrentPollQuery.Data>)
     case child(Child.Action)
   }
 
   @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case currentPoll
+  }
 
   public var body: some Reducer<State, Action> {
+    Scope(state: \.child, action: /Action.child, child: Child.init)
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .run { send in
-          try await mainQueue.sleep(for: .seconds(5))
-          await send(.presentPoll)
+          try await mainQueue.sleep(for: .seconds(2))
+          await currentPollRequest(send: send)
         }
+        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
-      case .presentPoll:
-        state.child = .poll(
-          .init()
-        )
+      case let .currentPollResponse(.success(data)) where data.currentPoll.status == .coolDown:
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        guard
+          let coolDown = data.currentPoll.coolDown,
+          let until = dateFormatter.date(from: coolDown.until) else {
+          return .none
+        }
+        state.child = .playAgain(.init(until: until))
+        return .none
+        
+      case let .currentPollResponse(.success(data)) where data.currentPoll.status == .active:
+        guard let poll = data.currentPoll.poll else { return .none }
+        state.child = .poll(.init(poll: poll))
+        return .none
+
+      case .currentPollResponse(.success):
+        return .none
+        
+      case .currentPollResponse(.failure):
+        return .none
+        
+      case .child(.poll(.delegate(.finish))):
+        state.child = .cashOut(.init())
+        return .none
+        
+      case .child(.cashOut(.delegate(.finish))):
+        let until = Date.now.addingTimeInterval(3600)
+        state.child = .playAgain(.init(until: until))
         return .none
 
       case .child:
         return .none
       }
+    }
+  }
+  
+  func currentPollRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentPoll() {
+        await send(.currentPollResponse(.success(data)))
+      }
+    } catch {
+      await send(.currentPollResponse(.failure(error)))
     }
   }
 

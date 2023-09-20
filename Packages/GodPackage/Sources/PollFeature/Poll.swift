@@ -1,85 +1,59 @@
-import ButtonStyles
-import Colors
 import ComposableArchitecture
-import FeedbackGeneratorClient
-import LabeledButton
+import God
 import SwiftUI
-
-let mock = [
-  "つきやま ともき",
-  "はたなか さとや",
-  "すずき みさき",
-  "さとう だいすけ",
-  "わたなべ りこ",
-  "こばやし たくや",
-  "なかむら ちえこ",
-  "きむら まさや",
-  "まつもと あみ",
-  "たかはし ゆういち",
-]
 
 public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var alert: AlertState<Action.Alert>?
-    var isAnswered = false
-    var choices: [String] = []
-    public init() {}
+    var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
+    var currentId: String
+    
+    public init(
+      poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
+    ) {
+      pollQuestions = .init(
+        uniqueElements: poll.pollQuestions.map(PollQuestionLogic.State.init)
+      )
+      currentId = pollQuestions[0].id
+    }
   }
 
   public enum Action: Equatable {
     case onTask
-    case answerButtonTapped
-    case shuffleButtonTapped
-    case skipButtonTapped
-    case continueButtonTapped
-    case alert(PresentationAction<Alert>)
-
-    public enum Alert: Equatable {
-      case confirmOkay
+    case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case finish
     }
   }
-
-  @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        state.choices = mock.shuffled().prefix(4).map { $0 }
         return .none
-
-      case .answerButtonTapped:
-        state.isAnswered = true
+        
+      case let .pollQuestions(id, .delegate(.nextPollQuestion)):
+        guard let index = state.pollQuestions.index(id: id) else { return .none }
+        let afterIndex = state.pollQuestions.index(after: index)
+        guard afterIndex < state.pollQuestions.count else {
+          return .send(.delegate(.finish), animation: .default)
+        }
+        let element = state.pollQuestions.elements[afterIndex]
+        state.currentId = element.id
         return .none
-
-      case .shuffleButtonTapped:
-        state.choices = mock.shuffled().prefix(4).map { $0 }
-        return .run { _ in
-          await feedbackGenerator.mediumImpact()
-        }
-      case .skipButtonTapped:
-        return .run { _ in
-          await feedbackGenerator.mediumImpact()
-        }
-      case .continueButtonTapped:
-        state.isAnswered = false
-        return .run { _ in
-          await feedbackGenerator.mediumImpact()
-        }
-      case .alert:
-        state.alert = AlertState {
-          TextState("Woah, slow down!🐎")
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK")
-          }
-        } message: {
-          TextState("You're voting too fast")
-        }
+        
+      case .pollQuestions:
+        return .none
+        
+      case .delegate:
         return .none
       }
+    }
+    .forEach(\.pollQuestions, action: /Action.pollQuestions) {
+      PollQuestionLogic()
     }
   }
 }
@@ -93,73 +67,26 @@ public struct PollView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 0) {
-        Spacer()
-        Image(.books)
-          .resizable()
-          .scaledToFit()
-          .frame(height: 140)
-        Text("理想の勉強仲間", bundle: .module)
-          .font(.title2)
-          .foregroundColor(.white)
-        Spacer()
-        LazyVGrid(
-          columns: Array(repeating: GridItem(spacing: 16), count: 2),
-          spacing: 16
-        ) {
-          ForEach(viewStore.choices, id: \.self) { choice in
-            AnswerButton(
-              choice,
-              progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
-            ) {
-              viewStore.send(.answerButtonTapped)
-            }
-            .disabled(viewStore.isAnswered)
-          }
-        }
-
-        ZStack {
-          if viewStore.isAnswered {
-            Text("Tap to continue", bundle: .module)
-          } else {
-            HStack(spacing: 0) {
-              LabeledButton(
-                String(localized: "Shuffle", bundle: .module),
-                systemImage: "shuffle"
-              ) {
-                viewStore.send(.shuffleButtonTapped)
-              }
-              LabeledButton(
-                String(localized: "Skip", bundle: .module),
-                systemImage: "forward.fill"
-              ) {
-                viewStore.send(.skipButtonTapped)
+      ScrollViewReader { proxy in
+        ScrollView(showsIndicators: false) {
+          LazyVStack(spacing: 0) {
+            ForEachStore(
+              store.scope(state: \.pollQuestions, action: PollLogic.Action.pollQuestions)
+            ) { store in
+              WithViewStore(store, observe: \.id) { id in
+                PollQuestionView(store: store)
+                  .id(id.state)
               }
             }
-            .buttonStyle(HoldDownButtonStyle())
           }
         }
-        .frame(height: 50)
-        .animation(.default, value: viewStore.isAnswered)
-        .foregroundColor(.white)
-        .padding(.vertical, 64)
+        .scrollDisabled(true)
+        .onChange(of: viewStore.currentId) { newValue in
+          proxy.scrollTo(newValue)
+        }
       }
-      .padding(.horizontal, 36)
-      .background(Color.godGreen)
+      .ignoresSafeArea()
       .task { await viewStore.send(.onTask).finish() }
-      .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
-      .onTapGesture {
-        viewStore.send(.continueButtonTapped)
-      }
     }
   }
-}
-
-#Preview {
-  PollView(
-    store: .init(
-      initialState: PollLogic.State(),
-      reducer: { PollLogic() }
-    )
-  )
 }
