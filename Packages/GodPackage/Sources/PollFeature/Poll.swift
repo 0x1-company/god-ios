@@ -8,6 +8,7 @@ public struct PollLogic: Reducer {
   public struct State: Equatable {
     var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
     var currentId: String
+    var currentPosition = 1
 
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
@@ -43,6 +44,7 @@ public struct PollLogic: Reducer {
         }
         let element = state.pollQuestions.elements[afterIndex]
         state.currentId = element.id
+        state.currentPosition = afterIndex + 1
         return .none
 
       case .pollQuestions:
@@ -67,25 +69,32 @@ public struct PollView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollViewReader { proxy in
-        ScrollView(showsIndicators: false) {
-          LazyVStack(spacing: 0) {
-            ForEachStore(
-              store.scope(state: \.pollQuestions, action: PollLogic.Action.pollQuestions)
-            ) { store in
-              WithViewStore(store, observe: \.id) { id in
-                PollQuestionView(store: store)
-                  .id(id.state)
+      ZStack(alignment: .top) {
+        ScrollViewReader { proxy in
+          ScrollView(showsIndicators: false) {
+            LazyVStack(spacing: 0) {
+              ForEachStore(
+                store.scope(state: \.pollQuestions, action: PollLogic.Action.pollQuestions)
+              ) { store in
+                WithViewStore(store, observe: \.id) { id in
+                  PollQuestionView(store: store)
+                    .id(id.state)
+                }
               }
             }
           }
+          .scrollDisabled(true)
+          .onChange(of: viewStore.currentId) { newValue in
+            withAnimation {
+              proxy.scrollTo(newValue)
+            }
+          }
         }
-        .scrollDisabled(true)
-        .onChange(of: viewStore.currentId) { newValue in
-          proxy.scrollTo(newValue)
-        }
+        .ignoresSafeArea()
+        
+        Text("\(viewStore.currentPosition) of 12")
+          .foregroundStyle(.white)
       }
-      .ignoresSafeArea()
       .task { await viewStore.send(.onTask).finish() }
     }
   }

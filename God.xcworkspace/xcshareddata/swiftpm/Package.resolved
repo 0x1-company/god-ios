@@ -244,15 +244,6 @@
       }
     },
     {
-      "identity" : "swiftui-introspect",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/siteline/swiftui-introspect",
-      "state" : {
-        "revision" : "3ba734dd20faada0e3234b68e78db97005315f0e",
-        "version" : "1.0.0"
-      }
-    },
-    {
       "identity" : "swiftui-navigation",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swiftui-navigation",

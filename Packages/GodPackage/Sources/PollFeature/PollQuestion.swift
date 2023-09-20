@@ -79,7 +79,7 @@ public struct PollQuestionLogic: Reducer {
         state.isAnswered = false
         return .run { send in
           await feedbackGenerator.mediumImpact()
-          await send(.delegate(.nextPollQuestion), animation: .default)
+          await send(.delegate(.nextPollQuestion))
         }
       case .alert:
         state.alert = AlertState {
