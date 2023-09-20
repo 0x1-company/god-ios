@@ -18,6 +18,7 @@ public struct GodClient: Sendable {
   public var purchase: @Sendable (God.PurchaseInput) async throws -> God.PurchaseMutation.Data
 
   public var activities: @Sendable (String?) -> AsyncThrowingStream<God.ActivitiesQuery.Data, Error>
+  public var inboxActivities: @Sendable () -> AsyncThrowingStream<God.InboxActivitiesQuery.Data, Error>
 
   public var currentPoll: @Sendable () -> AsyncThrowingStream<God.CurrentPollQuery.Data, Error>
   public var createVote: @Sendable (God.CreateVoteInput) async throws -> God.CreateVoteMutation.Data
