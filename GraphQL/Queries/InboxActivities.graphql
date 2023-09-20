@@ -1,0 +1,21 @@
+query InboxActivities($first: Int!, $after: String){
+  listInboxActivities(first:$first, after:$after) {
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        initial
+        isRead
+        createdAt
+        question {
+          text {
+            ja
+          }
+        }
+      }
+    }
+  }
+}
