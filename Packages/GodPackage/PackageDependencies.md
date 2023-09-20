@@ -32,6 +32,7 @@ graph TD;
     GodFeature-->CashOutFeature;
     GodFeature-->PlayAgainFeature;
     GodModeFeature-->Colors;
+    GodModeFeature-->GodClient;
     GodModeFeature-->ButtonStyles;
     GodModeFeature-->StoreKitClient;
     GodModeFeature-->StoreKitHelpers;
