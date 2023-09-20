@@ -4,11 +4,15 @@
     "" : {
 
     },
-    "16h" : {
-
-    },
     "A girl in 9th grade\npicked you" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2年生の女子が\nあなたを選びました"
+          }
+        }
+      }
     },
     "Close" : {
       "localizations" : {
@@ -23,20 +27,61 @@
     "Double texts with no shame" : {
 
     },
+    "From a %@" : {
+
+    },
+    "From God Team" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "God運営より"
+          }
+        }
+      }
+    },
     "From someone\nin 11th grade" : {
 
     },
     "From the God team" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "God運営より"
+          }
+        }
+      }
     },
     "God" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "God"
+          }
+        }
+      }
     },
     "godapp.jp" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "godapp.jp"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "See who likes you" : {
 
@@ -48,16 +93,37 @@
 
     },
     "Tap anywhere to close" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どこでもタップして閉じる"
+          }
+        }
+      }
     },
     "This is your inbox" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受信トレイ"
+          }
+        }
+      }
     },
     "Tomoki Tsukiyama" : {
 
     },
     "When people pick you\nyou will get a message here." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたが選ばれると\nここにメッセージが届きます。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

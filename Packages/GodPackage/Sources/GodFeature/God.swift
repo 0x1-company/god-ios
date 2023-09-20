@@ -46,12 +46,12 @@ public struct GodLogic: Reducer {
           return .none
         }
         let until = Date(timeIntervalSince1970: untilTimeInterval / 1000.0)
-        state.child = .playAgain(.init(until: until))
+        updateChild(state: &state, child: .playAgain(.init(until: until)))
         return .none
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .active:
         guard let poll = data.currentPoll.poll else { return .none }
-        state.child = .poll(.init(poll: poll))
+        updateChild(state: &state, child: .poll(.init(poll: poll)))
         return .none
 
       case .currentPollResponse(.success):
@@ -61,9 +61,7 @@ public struct GodLogic: Reducer {
         return .none
 
       case let .child(.poll(.delegate(.finish(earnedCoinAmount)))):
-        state.child = .cashOut(
-          .init(earnedCoinAmount: earnedCoinAmount)
-        )
+        updateChild(state: &state, child: .cashOut(.init(earnedCoinAmount: earnedCoinAmount)))
         return .none
 
       case .child(.cashOut(.delegate(.finish))):
@@ -75,6 +73,21 @@ public struct GodLogic: Reducer {
       case .child:
         return .none
       }
+    }
+  }
+  
+  func updateChild(state: inout State, child: Child.State) {
+    switch (state.child, child) {
+    case (.loading, .loading):
+      break
+    case (.poll, .poll):
+      break
+    case (.cashOut, .cashOut):
+      break
+    case (.playAgain, .playAgain):
+      break
+    default:
+      state.child = child
     }
   }
 

@@ -48,10 +48,13 @@ public extension God {
       case "Wallet": return God.Objects.Wallet
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem
+      case "InboxActivityConnection": return God.Objects.InboxActivityConnection
+      case "InboxActivityEdge": return God.Objects.InboxActivityEdge
+      case "InboxActivity": return God.Objects.InboxActivity
+      case "Question": return God.Objects.Question
       case "ActivityConnection": return God.Objects.ActivityConnection
       case "ActivityEdge": return God.Objects.ActivityEdge
       case "Activity": return God.Objects.Activity
-      case "Question": return God.Objects.Question
       case "CurrentPoll": return God.Objects.CurrentPoll
       case "CoolDown": return God.Objects.CoolDown
       case "Poll": return God.Objects.Poll

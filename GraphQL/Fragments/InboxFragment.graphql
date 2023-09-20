@@ -1,0 +1,11 @@
+fragment InboxFragment on InboxActivity {
+  id
+  initial
+  isRead
+  createdAt
+  question {
+    text {
+      ja
+    }
+  }
+}

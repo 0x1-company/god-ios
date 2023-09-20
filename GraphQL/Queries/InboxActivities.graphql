@@ -1,0 +1,16 @@
+# import '../fragments/NextPaginationFragment'
+# import '../fragments/InboxFragment'
+
+query InboxActivities($first: Int!, $after: String){
+  listInboxActivities(first:$first, after:$after) {
+    pageInfo {
+      ...NextPaginationFragment
+    }
+    edges {
+      cursor
+      node {
+        ...InboxFragment
+      }
+    }
+  }
+}

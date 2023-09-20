@@ -4,6 +4,8 @@ import ComposableArchitecture
 import GodModeFeature
 import StoreKit
 import StoreKitClient
+import God
+import GodClient
 import SwiftUI
 
 public struct InboxLogic: Reducer {
@@ -12,6 +14,7 @@ public struct InboxLogic: Reducer {
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
 
+    var inboxes: [InboxCard.State] = []
     var products: [Product] = []
 
     public init() {}
@@ -23,10 +26,12 @@ public struct InboxLogic: Reducer {
     case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
+    case inboxActivitiesResponse(TaskResult<God.InboxActivitiesQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.store) var storeClient
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -34,13 +39,22 @@ public struct InboxLogic: Reducer {
       case .onTask:
         let id = storeClient.godModeId()
         return .run { send in
-          await send(
-            .productsResponse(
-              TaskResult {
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await send(.productsResponse(TaskResult {
                 try await storeClient.products([id])
+              }))
+            }
+            group.addTask {
+              do {
+                for try await data in godClient.inboxActivities() {
+                  await send(.inboxActivitiesResponse(.success(data)))
+                }
+              } catch {
+                await send(.inboxActivitiesResponse(.failure(error)))
               }
-            )
-          )
+            }
+          }
         }
       case .activityButtonTapped:
         state.destination = .inboxDetail()
@@ -67,6 +81,19 @@ public struct InboxLogic: Reducer {
 
       case .destination(.presented(.godMode(.delegate(.activated)))):
         state.destination = .activatedGodMode()
+        return .none
+        
+      case let .inboxActivitiesResponse(.success(data)):
+        let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
+        state.inboxes = inboxes.compactMap {
+          guard let createdAt = TimeInterval($0.createdAt)
+          else { return nil }
+          return InboxCard.State(
+            id: $0.id,
+            gender: "",
+            createdAt: Date(timeIntervalSince1970: createdAt / 1000.0)
+          )
+        }
         return .none
 
       default:
@@ -113,13 +140,13 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(0 ..< 4) { _ in
-            InboxCard(title: "From a someone") {
+          ForEach(viewStore.inboxes) { state in
+            InboxCard(state: state) {
               viewStore.send(.activityButtonTapped, transaction: .animationDisable)
             }
           }
 
-          InboxCard(title: "From God Team") {
+          FromGodTeamCard {
             viewStore.send(.fromGodTeamButtonTapped, transaction: .animationDisable)
           }
 
