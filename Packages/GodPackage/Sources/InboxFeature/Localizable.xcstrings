@@ -28,7 +28,14 @@
 
     },
     "From a %@" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@より"
+          }
+        }
+      }
     },
     "From God Team" : {
       "localizations" : {

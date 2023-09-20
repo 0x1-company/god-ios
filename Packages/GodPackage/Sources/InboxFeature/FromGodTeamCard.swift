@@ -11,10 +11,12 @@ public struct FromGodTeamCard: View {
           Text(Date.now, style: .relative)
         } label: {
           Label {
-            Text("From God Team")
+            Text("From God Team", bundle: .module)
           } icon: {
-            Image(systemName: "flame.fill")
-              .font(.largeTitle)
+            Image(ImageResource.godTeamIcon)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 40)
           }
         }
         .padding(.horizontal, 16)
