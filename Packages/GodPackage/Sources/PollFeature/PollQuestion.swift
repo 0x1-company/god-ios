@@ -34,7 +34,7 @@ public struct PollQuestionLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case answerButtonTapped
+    case voteButtonTapped(votedUserId: String)
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
@@ -46,6 +46,7 @@ public struct PollQuestionLogic: Reducer {
     }
 
     public enum Delegate: Equatable {
+      case vote(God.CreateVoteInput)
       case nextPollQuestion
     }
   }
@@ -58,9 +59,21 @@ public struct PollQuestionLogic: Reducer {
       case .onTask:
         return .none
 
-      case .answerButtonTapped:
+      case let .voteButtonTapped(votedUserId):
         state.isAnswered = true
-        return .none
+        let input = God.CreateVoteInput(
+          choiceGroup: God.ChoiceGroupInput(
+            choices: state.currentChoiceGroup.choices.map {
+              God.ChoiceInput(text: $0.text, userId: $0.userId)
+            },
+            signature: God.SignatureInput(
+              digest: state.currentChoiceGroup.signature.digest
+            )
+          ),
+          pollQuestionId: state.pollQuestion.id,
+          votedUserId: votedUserId
+        )
+        return .send(.delegate(.vote(input)))
 
       case .shuffleButtonTapped:
         guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
@@ -132,7 +145,7 @@ public struct PollQuestionView: View {
               choice.text,
               progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
             ) {
-              viewStore.send(.answerButtonTapped)
+              viewStore.send(.voteButtonTapped(votedUserId: choice.userId))
             }
             .disabled(viewStore.isAnswered)
           }

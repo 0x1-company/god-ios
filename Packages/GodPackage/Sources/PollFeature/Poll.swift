@@ -43,6 +43,13 @@ public struct PollLogic: Reducer {
       switch action {
       case .onTask:
         return .none
+        
+      case let .pollQuestions(_, .delegate(.vote(input))):
+        return .run { send in
+          await send(.createVoteResponse(TaskResult {
+            try await createVote(input)
+          }))
+        }
 
       case let .pollQuestions(id, .delegate(.nextPollQuestion)):
         guard let index = state.pollQuestions.index(id: id) else { return .none }
