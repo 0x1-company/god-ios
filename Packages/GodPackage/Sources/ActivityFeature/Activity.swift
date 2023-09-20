@@ -2,9 +2,9 @@ import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
+import NameImage
 import ProfileFeature
 import SwiftUI
-import NameImage
 
 public struct ActivityLogic: Reducer {
   public init() {}
