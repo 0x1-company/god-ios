@@ -7,6 +7,7 @@ public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var pollId: String
     var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
     var currentId: String
     var currentPosition = 1
@@ -14,6 +15,7 @@ public struct PollLogic: Reducer {
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     ) {
+      pollId = poll.id
       pollQuestions = .init(
         uniqueElements: poll.pollQuestions.map(PollQuestionLogic.State.init)
       )
@@ -24,12 +26,17 @@ public struct PollLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
+    case createVoteResponse(TaskResult<God.CreateVoteMutation.Data>)
+    case completePollResponse(TaskResult<God.CompletePollMutation.Data>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
-      case finish
+      case finish(earnedCoinAmount: Int)
     }
   }
+  
+  @Dependency(\.godClient.createVote) var createVote
+  @Dependency(\.godClient.completePoll) var completePoll
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -42,7 +49,9 @@ public struct PollLogic: Reducer {
         let afterIndex = state.pollQuestions.index(after: index)
         
         guard afterIndex < state.pollQuestions.count else {
-          return .send(.delegate(.finish), animation: .default)
+          return .run { [pollId = state.pollId] send in
+            await completePollRequest(pollId: pollId, send: send)
+          }
         }
         let element = state.pollQuestions.elements[afterIndex]
         state.currentId = element.id
@@ -50,6 +59,20 @@ public struct PollLogic: Reducer {
         return .none
 
       case .pollQuestions:
+        return .none
+        
+      case let .createVoteResponse(.success(data)):
+        print(data)
+        return .none
+
+      case .createVoteResponse(.failure):
+        return .none
+        
+      case let .completePollResponse(.success(data)):
+        let earnedCoinAmount = data.completePoll.earnedCoinAmount
+        return .send(.delegate(.finish(earnedCoinAmount: earnedCoinAmount)), animation: .default)
+        
+      case .completePollResponse(.failure):
         return .none
 
       case .delegate:
@@ -59,6 +82,13 @@ public struct PollLogic: Reducer {
     .forEach(\.pollQuestions, action: /Action.pollQuestions) {
       PollQuestionLogic()
     }
+  }
+  
+  func completePollRequest(pollId: String, send: Send<Action>) async {
+    let input = God.CompletePollInput(pollId: pollId)
+    await send(.completePollResponse(TaskResult {
+      try await completePoll(input)
+    }))
   }
 }
 

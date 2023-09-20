@@ -61,8 +61,10 @@ public struct GodLogic: Reducer {
       case .currentPollResponse(.failure):
         return .none
 
-      case .child(.poll(.delegate(.finish))):
-        state.child = .cashOut(.init())
+      case let .child(.poll(.delegate(.finish(earnedCoinAmount)))):
+        state.child = .cashOut(
+          .init(earnedCoinAmount: earnedCoinAmount)
+        )
         return .none
 
       case .child(.cashOut(.delegate(.finish))):
