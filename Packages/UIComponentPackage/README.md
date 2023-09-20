@@ -6,4 +6,5 @@ A description of this package.
 ```mermaid
 graph TD;
     Colors-->ColorHex;
+    NameImage-->Colors;
 ```
