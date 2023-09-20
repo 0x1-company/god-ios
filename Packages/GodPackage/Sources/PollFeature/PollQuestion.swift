@@ -29,7 +29,7 @@ public struct PollQuestionLogic: Reducer {
 
     public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
       self.pollQuestion = pollQuestion
-      choices = pollQuestion.choiceGroups[currentStep.rawValue].choices
+      choices = pollQuestion.choiceGroups[currentStep.rawValue].choices.shuffled()
     }
   }
 
@@ -67,7 +67,7 @@ public struct PollQuestionLogic: Reducer {
         guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
         else { return .none }
         state.currentStep = nextStep
-        state.choices = state.pollQuestion.choiceGroups[nextStep.rawValue].choices
+        state.choices = state.pollQuestion.choiceGroups[nextStep.rawValue].choices.shuffled()
         return .run { _ in
           await feedbackGenerator.mediumImpact()
         }

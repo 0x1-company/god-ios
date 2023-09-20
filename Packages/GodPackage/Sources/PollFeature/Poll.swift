@@ -39,6 +39,7 @@ public struct PollLogic: Reducer {
       case let .pollQuestions(id, .delegate(.nextPollQuestion)):
         guard let index = state.pollQuestions.index(id: id) else { return .none }
         let afterIndex = state.pollQuestions.index(after: index)
+        
         guard afterIndex < state.pollQuestions.count else {
           return .send(.delegate(.finish), animation: .default)
         }
