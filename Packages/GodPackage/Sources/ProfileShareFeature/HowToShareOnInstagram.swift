@@ -101,7 +101,7 @@ public struct HowToShareOnInstagramView: View {
 
         HStack(alignment: .center, spacing: 12) {
           ForEach(viewStore.allSteps, id: \.rawValue) { step in
-            Button  {
+            Button {
               viewStore.send(.stepButtonTapped(step))
             } label: {
               Text(String(step.rawValue))
