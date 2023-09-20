@@ -4,6 +4,9 @@
 query Profile {
   currentUser {
     ...ProfileSectionFragment
+    wallet {
+      coinBalance
+    }
   }
   friends {
     ...FriendFragment

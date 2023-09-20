@@ -27,6 +27,9 @@
     "ADDED" : {
 
     },
+    "COINS" : {
+
+    },
     "EDIT PROFILE" : {
 
     },
@@ -54,6 +57,7 @@
       }
     },
     "Shop" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

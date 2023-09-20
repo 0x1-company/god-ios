@@ -3,13 +3,16 @@ import Colors
 import SwiftUI
 
 public struct ShareShopSection: View {
+  let coinBalance: Int
   let shareAction: () -> Void
   let shopAction: () -> Void
 
   public init(
+    coinBalance: Int,
     shareAction: @escaping () -> Void,
     shopAction: @escaping () -> Void
   ) {
+    self.coinBalance = coinBalance
     self.shareAction = shareAction
     self.shopAction = shopAction
   }
@@ -22,36 +25,48 @@ public struct ShareShopSection: View {
             .bold()
           Image(systemName: "square.and.arrow.up")
         }
-        .foregroundColor(.secondary)
+        .foregroundStyle(Color.godTextSecondaryLight)
         .frame(height: 52)
         .frame(maxWidth: .infinity)
         .overlay(
           RoundedRectangle(cornerRadius: 52 / 2)
-            .stroke(Color.secondary, lineWidth: 1)
+            .stroke(Color.godTextSecondaryLight, lineWidth: 1)
         )
       }
 
       Button(action: shopAction) {
-        Text("Shop", bundle: .module)
-          .bold()
-          .foregroundColor(.secondary)
-          .frame(height: 52)
-          .frame(maxWidth: .infinity)
-          .overlay(
-            RoundedRectangle(cornerRadius: 52 / 2)
-              .stroke(Color.secondary, lineWidth: 1)
-          )
+        HStack(spacing: 0) {
+          Text(String(format: "%05d", coinBalance))
+            .bold()
+        }
+        .frame(height: 52)
+        .frame(maxWidth: .infinity)
+        .overlay(
+          RoundedRectangle(cornerRadius: 52 / 2)
+            .stroke(Color.godTextSecondaryLight, lineWidth: 1)
+        )
+        .overlay(alignment: .top) {
+          Text("COINS")
+            .font(.caption)
+            .bold()
+            .padding(.horizontal, 8)
+            .foregroundStyle(Color.godTextSecondaryLight)
+            .background(Color.godBackgroundWhite)
+            .offset(y: -7)
+        }
       }
     }
     .frame(height: 84)
     .padding(.horizontal, 16)
     .buttonStyle(HoldDownButtonStyle())
+    .background(Color.godBackgroundWhite)
   }
 }
 
 struct ShareShopSectionPreviews: PreviewProvider {
   static var previews: some View {
     ShareShopSection(
+      coinBalance: 90,
       shareAction: {},
       shopAction: {}
     )
