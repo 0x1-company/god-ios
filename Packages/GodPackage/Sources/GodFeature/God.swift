@@ -22,7 +22,7 @@ public struct GodLogic: Reducer {
 
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case currentPoll
   }
@@ -43,12 +43,13 @@ public struct GodLogic: Reducer {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         guard
           let coolDown = data.currentPoll.coolDown,
-          let until = dateFormatter.date(from: coolDown.until) else {
+          let until = dateFormatter.date(from: coolDown.until)
+        else {
           return .none
         }
         state.child = .playAgain(.init(until: until))
         return .none
-        
+
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .active:
         guard let poll = data.currentPoll.poll else { return .none }
         state.child = .poll(.init(poll: poll))
@@ -56,14 +57,14 @@ public struct GodLogic: Reducer {
 
       case .currentPollResponse(.success):
         return .none
-        
+
       case .currentPollResponse(.failure):
         return .none
-        
+
       case .child(.poll(.delegate(.finish))):
         state.child = .cashOut(.init())
         return .none
-        
+
       case .child(.cashOut(.delegate(.finish))):
         let until = Date.now.addingTimeInterval(3600)
         state.child = .playAgain(.init(until: until))
@@ -74,7 +75,7 @@ public struct GodLogic: Reducer {
       }
     }
   }
-  
+
   func currentPollRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.currentPoll() {

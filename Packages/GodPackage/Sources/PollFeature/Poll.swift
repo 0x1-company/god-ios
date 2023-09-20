@@ -8,7 +8,7 @@ public struct PollLogic: Reducer {
   public struct State: Equatable {
     var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
     var currentId: String
-    
+
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     ) {
@@ -23,7 +23,7 @@ public struct PollLogic: Reducer {
     case onTask
     case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case finish
     }
@@ -34,7 +34,7 @@ public struct PollLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case let .pollQuestions(id, .delegate(.nextPollQuestion)):
         guard let index = state.pollQuestions.index(id: id) else { return .none }
         let afterIndex = state.pollQuestions.index(after: index)
@@ -44,10 +44,10 @@ public struct PollLogic: Reducer {
         let element = state.pollQuestions.elements[afterIndex]
         state.currentId = element.id
         return .none
-        
+
       case .pollQuestions:
         return .none
-        
+
       case .delegate:
         return .none
       }
