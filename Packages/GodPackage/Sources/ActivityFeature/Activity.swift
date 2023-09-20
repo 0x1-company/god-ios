@@ -4,6 +4,7 @@ import God
 import GodClient
 import ProfileFeature
 import SwiftUI
+import NameImage
 
 public struct ActivityLogic: Reducer {
   public init() {}
@@ -105,9 +106,10 @@ public struct ActivityView: View {
       List {
         ForEach(viewStore.edges, id: \.cursor) { edge in
           HStack(alignment: .top, spacing: 16) {
-            Color.red
-              .frame(width: 44, height: 44)
-              .clipShape(Circle())
+            NameImage(
+              familyName: edge.node.user.lastName,
+              givenName: edge.node.user.firstName
+            )
 
             VStack(alignment: .leading, spacing: 4) {
               HStack(spacing: 0) {

@@ -2,8 +2,23 @@ import SwiftUI
 import Colors
 
 public struct NameImage: View {
+  let familyName: String
+  let givenName: String
+  
+  var initialName: String {
+    return [familyName.first, givenName.first]
+      .compactMap { $0 }
+      .compactMap(String.init)
+      .joined()
+  }
+  
+  public init(familyName: String, givenName: String) {
+    self.familyName = familyName
+    self.givenName = givenName
+  }
+  
   public var body: some View {
-    Text("KK")
+    Text(initialName)
       .bold()
       .frame(width: 42, height: 42)
       .background(Color.godBackgroundWhite)
@@ -13,5 +28,8 @@ public struct NameImage: View {
 }
 
 #Preview {
-  NameImage()
+  NameImage(
+    familyName: "つきやま",
+    givenName: "ともき"
+  )
 }
