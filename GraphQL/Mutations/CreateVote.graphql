@@ -1,0 +1,5 @@
+mutation CreateVote($input: CreateVoteInput!) {
+  createVote(input: $input) {
+    id
+  }
+}

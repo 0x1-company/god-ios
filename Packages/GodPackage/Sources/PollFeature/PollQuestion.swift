@@ -10,26 +10,25 @@ public struct PollQuestionLogic: Reducer {
   public init() {}
 
   public struct State: Equatable, Identifiable {
-    public enum Step: Int {
-      case first
-      case second
-      case thaad
-    }
-
+    var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
     public var id: String {
       pollQuestion.id
     }
 
-    var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
-
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
-    var choices: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup.Choice] = []
+    var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup
     var currentStep = Step.first
 
     public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
       self.pollQuestion = pollQuestion
-      choices = pollQuestion.choiceGroups[currentStep.rawValue].choices.shuffled()
+      currentChoiceGroup = pollQuestion.choiceGroups[currentStep.rawValue]
+    }
+    
+    public enum Step: Int {
+      case first
+      case second
+      case thaad
     }
   }
 
@@ -66,8 +65,10 @@ public struct PollQuestionLogic: Reducer {
       case .shuffleButtonTapped:
         guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
         else { return .none }
+
         state.currentStep = nextStep
-        state.choices = state.pollQuestion.choiceGroups[nextStep.rawValue].choices.shuffled()
+        state.currentChoiceGroup = state.pollQuestion.choiceGroups[nextStep.rawValue]
+
         return .run { _ in
           await feedbackGenerator.mediumImpact()
         }
@@ -126,12 +127,12 @@ public struct PollQuestionView: View {
           columns: Array(repeating: GridItem(spacing: 16), count: 2),
           spacing: 16
         ) {
-          ForEach(viewStore.choices, id: \.self) { choice in
+          ForEach(viewStore.currentChoiceGroup.choices, id: \.self) { choice in
             AnswerButton(
               choice.text,
               progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
             ) {
-              viewStore.send(.answerButtonTapped, animation: .default)
+              viewStore.send(.answerButtonTapped)
             }
             .disabled(viewStore.isAnswered)
           }
