@@ -28,10 +28,12 @@ public struct GodLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
+    Scope(state: \.child, action: /Action.child, child: Child.init)
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .run { send in
+          try await mainQueue.sleep(for: .seconds(2))
           await currentPollRequest(send: send)
         }
         .cancellable(id: Cancel.currentPoll, cancelInFlight: true)

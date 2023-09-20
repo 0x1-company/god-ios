@@ -4,31 +4,31 @@ import ComposableArchitecture
 import FeedbackGeneratorClient
 import LabeledButton
 import SwiftUI
-
-let mock = [
-  "つきやま ともき",
-  "はたなか さとや",
-  "すずき みさき",
-  "さとう だいすけ",
-  "わたなべ りこ",
-  "こばやし たくや",
-  "なかむら ちえこ",
-  "きむら まさや",
-  "まつもと あみ",
-  "たかはし ゆういち",
-]
+import God
 
 public struct PollQuestionLogic: Reducer {
   public init() {}
 
   public struct State: Equatable, Identifiable {
-    public var id: String
+    public enum Step: Int {
+      case first
+      case second
+      case thaad
+    }
+
+    public var id: String {
+      pollQuestion.id
+    }
+    var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
+    
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
-    var choices: [String] = []
+    var choices: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup.Choice] = []
+    var currentStep = Step.first
 
-    public init(id: String) {
-      self.id = id
+    public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
+      self.pollQuestion = pollQuestion
+      self.choices = pollQuestion.choiceGroups[currentStep.rawValue].choices
     }
   }
 
@@ -51,7 +51,6 @@ public struct PollQuestionLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        state.choices = mock.shuffled().prefix(4).map { $0 }
         return .none
 
       case .answerButtonTapped:
@@ -59,7 +58,10 @@ public struct PollQuestionLogic: Reducer {
         return .none
 
       case .shuffleButtonTapped:
-        state.choices = mock.shuffled().prefix(4).map { $0 }
+        guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
+        else { return .none }
+        state.currentStep = nextStep
+        state.choices = state.pollQuestion.choiceGroups[nextStep.rawValue].choices
         return .run { _ in
           await feedbackGenerator.mediumImpact()
         }
@@ -99,21 +101,25 @@ public struct PollQuestionView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         Spacer()
+
         Image(.books)
           .resizable()
           .scaledToFit()
           .frame(height: 140)
-        Text("理想の勉強仲間", bundle: .module)
+        
+        Text(verbatim: viewStore.pollQuestion.question.text.ja)
           .font(.title2)
           .foregroundColor(.white)
+        
         Spacer()
+
         LazyVGrid(
           columns: Array(repeating: GridItem(spacing: 16), count: 2),
           spacing: 16
         ) {
           ForEach(viewStore.choices, id: \.self) { choice in
             AnswerButton(
-              choice,
+              choice.text,
               progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
             ) {
               viewStore.send(.answerButtonTapped)
@@ -152,20 +158,6 @@ public struct PollQuestionView: View {
       .background(Color.godGreen)
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
-      .onTapGesture {
-        viewStore.send(.continueButtonTapped)
-      }
     }
   }
-}
-
-#Preview {
-  PollQuestionView(
-    store: .init(
-      initialState: PollQuestionLogic.State(
-        id: ""
-      ),
-      reducer: { PollQuestionLogic() }
-    )
-  )
 }

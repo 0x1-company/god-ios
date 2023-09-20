@@ -6,13 +6,14 @@ public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
-    var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State> = []
+    var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
     
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     ) {
-      self.poll = poll
+      pollQuestions = .init(
+        uniqueElements: poll.pollQuestions.map(PollQuestionLogic.State.init)
+      )
     }
   }
 
@@ -46,13 +47,14 @@ public struct PollView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollView {
+      TabView {
         ForEachStore(
           store.scope(state: \.pollQuestions, action: PollLogic.Action.pollQuestions),
           content: PollQuestionView.init
         )
       }
-      .scrollDisabled(true)
+      .tabViewStyle(.page)
+      .ignoresSafeArea()
       .task { await viewStore.send(.onTask).finish() }
     }
   }

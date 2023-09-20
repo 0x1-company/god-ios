@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "CurrentPoll"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentPoll { currentPoll { __typename status coolDown { __typename until } poll { __typename id pollQuestions { __typename id question { __typename id id } choiceGroups { __typename signature { __typename digest } choices { __typename userId text } } } } } }"#
+        #"query CurrentPoll { currentPoll { __typename status coolDown { __typename until } poll { __typename id pollQuestions { __typename id question { __typename id text { __typename ja } } choiceGroups { __typename signature { __typename digest } choices { __typename userId text } } } } } }"#
       ))
 
     public init() {}
@@ -114,9 +114,29 @@ public extension God {
               public static var __selections: [ApolloAPI.Selection] { [
                 .field("__typename", String.self),
                 .field("id", God.ID.self),
+                .field("text", Text.self),
               ] }
 
               public var id: God.ID { __data["id"] }
+              /// text
+              public var text: Text { __data["text"] }
+
+              /// CurrentPoll.Poll.PollQuestion.Question.Text
+              ///
+              /// Parent Type: `LocalizableString`
+              public struct Text: God.SelectionSet {
+                public let __data: DataDict
+                public init(_dataDict: DataDict) { __data = _dataDict }
+
+                public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
+                public static var __selections: [ApolloAPI.Selection] { [
+                  .field("__typename", String.self),
+                  .field("ja", String.self),
+                ] }
+
+                /// 日本語
+                public var ja: String { __data["ja"] }
+              }
             }
 
             /// CurrentPoll.Poll.PollQuestion.ChoiceGroup

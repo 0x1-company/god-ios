@@ -10,7 +10,9 @@ query CurrentPoll {
         id
         question {
           id
-          id
+          text {
+            ja
+          }
         }
         choiceGroups {
           signature {
