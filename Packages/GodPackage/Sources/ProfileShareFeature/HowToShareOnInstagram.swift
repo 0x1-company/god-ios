@@ -1,3 +1,4 @@
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import God
@@ -56,10 +57,12 @@ public struct HowToShareOnInstagramLogic: Reducer {
       case .primaryButtonTapped:
         // Stepが最後の場合はInstagramへ飛ばす
         if state.currentStep == State.Step.allCases.last {
+          guard let url = URL(string: "instagram-stories://share")
+          else { return .none }
           return .run { _ in
-            if let url = URL(string: "instagram-stories://share") {
-              await openURL(url)
-            }
+            async let close = dismiss()
+            async let open = openURL(url)
+            _ = await (close, open)
           }
         }
         // 通常時は説明を次のStepへ
@@ -88,18 +91,19 @@ public struct HowToShareOnInstagramView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(alignment: .center, spacing: 24) {
-        Text("How to add the\nlink to your Story")
+        Text("How to add the\nlink to your Story", bundle: .module)
           .font(.title)
           .bold()
           .foregroundColor(.godBlack)
           .lineSpacing(-2)
           .lineLimit(2)
+          .multilineTextAlignment(.center)
 
         HStack(alignment: .center, spacing: 12) {
           ForEach(viewStore.allSteps, id: \.rawValue) { step in
-            Button(action: {
+            Button  {
               viewStore.send(.stepButtonTapped(step))
-            }) {
+            } label: {
               Text(String(step.rawValue))
                 .font(.subheadline)
                 .foregroundColor(viewStore.state.currentStep == step ? .godWhite : .godBlack)
@@ -112,6 +116,7 @@ public struct HowToShareOnInstagramView: View {
                     .stroke(Color.godBlack, lineWidth: 0.5)
                 )
             }
+            .buttonStyle(HoldDownButtonStyle())
           }
         }
 
@@ -120,16 +125,9 @@ public struct HowToShareOnInstagramView: View {
           .frame(maxWidth: .infinity)
           .frame(height: 240)
 
-        // TODO: 画像
-        //              Image(viewStore.state.currentStep.descriptionImageName, bundle: .module)
-        //                  .resizable()
-        //                  .aspectRatio(contentMode: .fit)
-        //                  .frame(maxWidth: .infinity)
-        //                  .frame(height: 240)
-
-        Button(action: {
+        Button {
           viewStore.send(.primaryButtonTapped)
-        }) {
+        } label: {
           Text(viewStore.state.currentStep.primaryButtonText)
             .font(.subheadline)
             .bold()
@@ -143,6 +141,7 @@ public struct HowToShareOnInstagramView: View {
                 .stroke(Color.godService, lineWidth: 0.5)
             )
         }
+        .buttonStyle(HoldDownButtonStyle())
       }
       .padding(20)
       .background(Color.godWhite)

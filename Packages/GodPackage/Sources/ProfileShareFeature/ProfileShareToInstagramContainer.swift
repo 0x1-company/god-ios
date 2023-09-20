@@ -22,16 +22,18 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
+    Scope(state: \.currentPage, action: /Action.page, child: Page.init)
     Reduce { state, action in
       switch action {
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
-      case let .page(pageAction):
-        if case .profileShareToInstagram(.delegate(.nextPage)) = pageAction {
-          state.currentPage = .howToShareOnInstagram()
-        }
+      case .page(.profileShareToInstagram(.delegate(.nextPage))):
+        state.currentPage = .howToShareOnInstagram()
+        return .none
+
+      case .page:
         return .none
       }
     }
@@ -67,34 +69,37 @@ public struct ShareProfileToInstagramPopupView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
         Color.godBlack.opacity(0.6)
-          .overlay(
-            Button(action: {
+          .overlay(alignment: .topTrailing) {
+            Button {
               viewStore.send(.closeButtonTapped)
-            }) {
+            } label: {
               Image(systemName: "xmark")
                 .resizable()
                 .frame(width: 16, height: 16)
                 .foregroundColor(Color.white)
-            }.offset(x: -24, y: 60),
-            alignment: .topTrailing
-          )
-
-        VStack {
-          SwitchStore(store.scope(state: \.currentPage, action: ShareProfileToInstagramPopupLogic.Action.page)) { store in
-            switch store {
-            case .profileShareToInstagram:
-              CaseLet(
-                /ShareProfileToInstagramPopupLogic.Page.State.profileShareToInstagram,
-                action: ShareProfileToInstagramPopupLogic.Page.Action.profileShareToInstagram,
-                then: ProfileShareToInstagramView.init(store:)
-              )
-            case .howToShareOnInstagram:
-              CaseLet(
-                /ShareProfileToInstagramPopupLogic.Page.State.howToShareOnInstagram,
-                action: ShareProfileToInstagramPopupLogic.Page.Action.howToShareOnInstagram,
-                then: HowToShareOnInstagramView.init(store:)
-              )
             }
+            .offset(x: -24, y: 60)
+          }
+
+        SwitchStore(
+          store.scope(
+            state: \.currentPage,
+            action: ShareProfileToInstagramPopupLogic.Action.page
+          )
+        ) { store in
+          switch store {
+          case .profileShareToInstagram:
+            CaseLet(
+              /ShareProfileToInstagramPopupLogic.Page.State.profileShareToInstagram,
+              action: ShareProfileToInstagramPopupLogic.Page.Action.profileShareToInstagram,
+              then: ProfileShareToInstagramView.init(store:)
+            )
+          case .howToShareOnInstagram:
+            CaseLet(
+              /ShareProfileToInstagramPopupLogic.Page.State.howToShareOnInstagram,
+              action: ShareProfileToInstagramPopupLogic.Page.Action.howToShareOnInstagram,
+              then: HowToShareOnInstagramView.init(store:)
+            )
           }
         }
         .padding(.horizontal, 20)
