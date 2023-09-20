@@ -6,7 +6,10 @@ public struct CashOutLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    let earnedCoinAmount: Int
+    public init(earnedCoinAmount: Int) {
+      self.earnedCoinAmount = earnedCoinAmount
+    }
   }
 
   public enum Action: Equatable {
@@ -47,7 +50,7 @@ public struct CashOutView: View {
               .bold()
               .font(.largeTitle)
 
-            Text("You earned 9 coins", bundle: .module)
+            Text("You earned \(viewStore.earnedCoinAmount) coins", bundle: .module)
               .bold()
           }
 
@@ -87,7 +90,9 @@ struct CashOutViewPreviews: PreviewProvider {
   static var previews: some View {
     CashOutView(
       store: .init(
-        initialState: CashOutLogic.State(),
+        initialState: CashOutLogic.State(
+          earnedCoinAmount: 20
+        ),
         reducer: { CashOutLogic() }
       )
     )

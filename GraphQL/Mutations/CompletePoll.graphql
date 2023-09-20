@@ -1,0 +1,5 @@
+mutation CompletePoll($input: CompletePollInput!) {
+  completePoll(input:$input) {
+    earnedCoinAmount
+  }
+}

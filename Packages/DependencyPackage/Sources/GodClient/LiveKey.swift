@@ -62,6 +62,14 @@ public extension GodClient {
         let query = God.CurrentPollQuery()
         return apolloClient.watch(query: query)
       },
+      createVote: { input in
+        let mutation = God.CreateVoteMutation(input: input)
+        return try await apolloClient.perform(mutation: mutation)
+      },
+      completePoll: {input in
+        let mutation = God.CompletePollMutation(input: input)
+        return try await apolloClient.perform(mutation: mutation)
+      },
       friends: {
         let query = God.FriendsQuery()
         return apolloClient.watch(query: query)

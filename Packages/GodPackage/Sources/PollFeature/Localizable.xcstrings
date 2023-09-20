@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld of 12" : {
+
+    },
     "OK" : {
 
     },

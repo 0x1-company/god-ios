@@ -7,7 +7,7 @@
     "Congrats" : {
 
     },
-    "You earned 9 coins" : {
+    "You earned %lld coins" : {
 
     }
   },

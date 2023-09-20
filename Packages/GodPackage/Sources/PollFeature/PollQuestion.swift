@@ -10,32 +10,31 @@ public struct PollQuestionLogic: Reducer {
   public init() {}
 
   public struct State: Equatable, Identifiable {
+    var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
+    public var id: String {
+      pollQuestion.id
+    }
+
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var isAnswered = false
+    var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup
+    var currentStep = Step.first
+
+    public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
+      self.pollQuestion = pollQuestion
+      currentChoiceGroup = pollQuestion.choiceGroups[currentStep.rawValue]
+    }
+    
     public enum Step: Int {
       case first
       case second
       case thaad
     }
-
-    public var id: String {
-      pollQuestion.id
-    }
-
-    var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
-
-    @PresentationState var alert: AlertState<Action.Alert>?
-    var isAnswered = false
-    var choices: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup.Choice] = []
-    var currentStep = Step.first
-
-    public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
-      self.pollQuestion = pollQuestion
-      choices = pollQuestion.choiceGroups[currentStep.rawValue].choices
-    }
   }
 
   public enum Action: Equatable {
     case onTask
-    case answerButtonTapped
+    case voteButtonTapped(votedUserId: String)
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
@@ -47,6 +46,7 @@ public struct PollQuestionLogic: Reducer {
     }
 
     public enum Delegate: Equatable {
+      case vote(God.CreateVoteInput)
       case nextPollQuestion
     }
   }
@@ -59,15 +59,29 @@ public struct PollQuestionLogic: Reducer {
       case .onTask:
         return .none
 
-      case .answerButtonTapped:
+      case let .voteButtonTapped(votedUserId):
         state.isAnswered = true
-        return .none
+        let input = God.CreateVoteInput(
+          choiceGroup: God.ChoiceGroupInput(
+            choices: state.currentChoiceGroup.choices.map {
+              God.ChoiceInput(text: $0.text, userId: $0.userId)
+            },
+            signature: God.SignatureInput(
+              digest: state.currentChoiceGroup.signature.digest
+            )
+          ),
+          pollQuestionId: state.pollQuestion.id,
+          votedUserId: votedUserId
+        )
+        return .send(.delegate(.vote(input)))
 
       case .shuffleButtonTapped:
         guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
         else { return .none }
+
         state.currentStep = nextStep
-        state.choices = state.pollQuestion.choiceGroups[nextStep.rawValue].choices
+        state.currentChoiceGroup = state.pollQuestion.choiceGroups[nextStep.rawValue]
+
         return .run { _ in
           await feedbackGenerator.mediumImpact()
         }
@@ -79,7 +93,7 @@ public struct PollQuestionLogic: Reducer {
         state.isAnswered = false
         return .run { send in
           await feedbackGenerator.mediumImpact()
-          await send(.delegate(.nextPollQuestion), animation: .default)
+          await send(.delegate(.nextPollQuestion))
         }
       case .alert:
         state.alert = AlertState {
@@ -126,12 +140,12 @@ public struct PollQuestionView: View {
           columns: Array(repeating: GridItem(spacing: 16), count: 2),
           spacing: 16
         ) {
-          ForEach(viewStore.choices, id: \.self) { choice in
+          ForEach(viewStore.currentChoiceGroup.choices, id: \.self) { choice in
             AnswerButton(
               choice.text,
               progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
             ) {
-              viewStore.send(.answerButtonTapped, animation: .default)
+              viewStore.send(.voteButtonTapped(votedUserId: choice.userId))
             }
             .disabled(viewStore.isAnswered)
           }

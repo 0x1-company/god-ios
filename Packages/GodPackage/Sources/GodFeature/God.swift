@@ -33,20 +33,19 @@ public struct GodLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          try await mainQueue.sleep(for: .seconds(2))
+          try await mainQueue.sleep(for: .seconds(1))
           await currentPollRequest(send: send)
         }
         .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .coolDown:
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         guard
           let coolDown = data.currentPoll.coolDown,
-          let until = dateFormatter.date(from: coolDown.until)
+          let untilTimeInterval = TimeInterval(coolDown.until)
         else {
           return .none
         }
+        let until = Date(timeIntervalSince1970: untilTimeInterval / 1000.0)
         state.child = .playAgain(.init(until: until))
         return .none
 
@@ -61,14 +60,17 @@ public struct GodLogic: Reducer {
       case .currentPollResponse(.failure):
         return .none
 
-      case .child(.poll(.delegate(.finish))):
-        state.child = .cashOut(.init())
+      case let .child(.poll(.delegate(.finish(earnedCoinAmount)))):
+        state.child = .cashOut(
+          .init(earnedCoinAmount: earnedCoinAmount)
+        )
         return .none
 
       case .child(.cashOut(.delegate(.finish))):
-        let until = Date.now.addingTimeInterval(3600)
-        state.child = .playAgain(.init(until: until))
-        return .none
+        return .run { send in
+          await currentPollRequest(send: send)
+        }
+        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
       case .child:
         return .none
