@@ -41,6 +41,7 @@ let package = Package(
     .package(path: "../DependencyPackage"),
     .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
     .package(url: "https://github.com/edonv/SwiftUIMessage", from: "0.0.3"),
+    .package(url: "https://github.com/siteline/swiftui-introspect", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
   ],
   targets: [
@@ -151,6 +152,7 @@ let package = Package(
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
+      .product(name: "SwiftUIIntrospect", package: "swiftui-introspect"),
       .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),

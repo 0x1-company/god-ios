@@ -59,6 +59,15 @@ public struct GodLogic: Reducer {
         
       case .currentPollResponse(.failure):
         return .none
+        
+      case .child(.poll(.delegate(.finish))):
+        state.child = .cashOut(.init())
+        return .none
+        
+      case .child(.cashOut(.delegate(.finish))):
+        let until = Date.now.addingTimeInterval(3600)
+        state.child = .playAgain(.init(until: until))
+        return .none
 
       case .child:
         return .none

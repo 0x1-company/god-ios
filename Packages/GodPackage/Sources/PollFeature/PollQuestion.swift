@@ -39,9 +39,14 @@ public struct PollQuestionLogic: Reducer {
     case skipButtonTapped
     case continueButtonTapped
     case alert(PresentationAction<Alert>)
+    case delegate(Delegate)
 
     public enum Alert: Equatable {
       case confirmOkay
+    }
+    
+    public enum Delegate: Equatable {
+      case nextPollQuestion
     }
   }
 
@@ -71,8 +76,9 @@ public struct PollQuestionLogic: Reducer {
         }
       case .continueButtonTapped:
         state.isAnswered = false
-        return .run { _ in
+        return .run { send in
           await feedbackGenerator.mediumImpact()
+          await send(.delegate(.nextPollQuestion), animation: .default)
         }
       case .alert:
         state.alert = AlertState {
@@ -84,6 +90,8 @@ public struct PollQuestionLogic: Reducer {
         } message: {
           TextState("You're voting too fast")
         }
+        return .none
+      case .delegate:
         return .none
       }
     }
@@ -122,7 +130,7 @@ public struct PollQuestionView: View {
               choice.text,
               progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
             ) {
-              viewStore.send(.answerButtonTapped)
+              viewStore.send(.answerButtonTapped, animation: .default)
             }
             .disabled(viewStore.isAnswered)
           }
@@ -130,7 +138,11 @@ public struct PollQuestionView: View {
 
         ZStack {
           if viewStore.isAnswered {
-            Text("Tap to continue", bundle: .module)
+            Button {
+              viewStore.send(.continueButtonTapped)
+            } label: {
+              Text("Tap to continue", bundle: .module)
+            }
           } else {
             HStack(spacing: 0) {
               LabeledButton(
@@ -158,6 +170,7 @@ public struct PollQuestionView: View {
       .background(Color.godGreen)
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+      .frame(height: UIScreen.main.bounds.height)
     }
   }
 }
