@@ -69,17 +69,24 @@ public struct ShopLogic: Reducer {
           }))
         }
       case .purchaseResponse(.success):
-        return .run { send in
-          await storeRequest(send: send)
-        }
+        state.alert = .purchaseThreeRandomPolls
+        return .none
+
       case .purchaseResponse(.failure):
         return .none
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
-      case .alert:
+
+      case .alert(.presented(.confirmOkay)):
         state.alert = nil
+        return .run { send in
+          await storeRequest(send: send)
+        }
+
+      case .alert:
         return .none
 
       case .pickFriend(.dismiss):
@@ -220,5 +227,15 @@ extension AlertState where Action == ShopLogic.Action.Alert {
     }
   } message: {
     TextState("You don't have enough coins", bundle: .module)
+  }
+  
+  static let purchaseThreeRandomPolls = Self {
+    TextState("Success", bundle: .module)
+  } actions: {
+    ButtonState(action: .confirmOkay) {
+      TextState("OK")
+    }
+  } message: {
+    TextState("Your name has been added to 3 people's polls.", bundle: .module)
   }
 }

@@ -74,6 +74,9 @@
         }
       }
     },
+    "Success" : {
+
+    },
     "Use coins to get featured in polls" : {
       "localizations" : {
         "ja" : {
@@ -103,6 +106,9 @@
           }
         }
       }
+    },
+    "Your name has been added to 3 people's polls." : {
+
     }
   },
   "version" : "1.0"
