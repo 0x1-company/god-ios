@@ -24,6 +24,8 @@ extension GodClient: TestDependencyKey {
     purchase: unimplemented("\(Self.self).purchase"),
     activities: unimplemented("\(Self.self).activities"),
     currentPoll: unimplemented("\(Self.self).currentPoll"),
+    createVote: unimplemented("\(Self.self).createVote"),
+    completePoll: unimplemented("\(Self.self).completePoll"),
     friends: unimplemented("\(Self.self).friends"),
     friendsOfFriends: unimplemented("\(Self.self).friendsOfFriends"),
     fromSchools: unimplemented("\(Self.self).fromSchools"),
