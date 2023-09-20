@@ -1,5 +1,7 @@
 fragment FriendFragment on User {
   id
+  firstName
+  lastName
   displayName {
     ja
   }

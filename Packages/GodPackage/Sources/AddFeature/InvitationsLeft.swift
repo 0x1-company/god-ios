@@ -19,6 +19,7 @@ public struct InvitationsLeftLogic: Reducer {
       public var id: String
       public var familyName: String
       public var givenName: String
+      public var imageData: Data?
     }
   }
 
@@ -45,6 +46,7 @@ public struct InvitationsLeftLogic: Reducer {
         let request = CNContactFetchRequest(keysToFetch: [
           CNContactGivenNameKey as CNKeyDescriptor,
           CNContactFamilyNameKey as CNKeyDescriptor,
+          CNContactImageDataKey as CNKeyDescriptor,
         ])
         return .run(priority: .background) { send in
           for try await (contact, _) in enumerateContacts(request) {
@@ -64,7 +66,8 @@ public struct InvitationsLeftLogic: Reducer {
           State.InviteCard(
             id: contact.identifier,
             familyName: contact.familyName,
-            givenName: contact.givenName
+            givenName: contact.givenName,
+            imageData: contact.imageData
           ),
           at: 0
         )
@@ -116,7 +119,8 @@ public struct InvitationsLeftView: View {
         ForEach(viewStore.invitations) { state in
           InvitationCardView(
             familyName: state.familyName,
-            givenName: state.givenName
+            givenName: state.givenName,
+            imageData: state.imageData
           ) {
             viewStore.send(.inviteButtonTapped)
           }

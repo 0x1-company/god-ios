@@ -18,6 +18,8 @@ query Activities($after: String) {
         }
         userId
         user {
+          firstName
+          lastName
           displayName {
             ja
           }

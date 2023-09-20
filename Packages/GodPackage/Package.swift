@@ -55,6 +55,7 @@ let package = Package(
       "CupertinoMessageFeature",
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "NameImage", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
@@ -165,6 +166,7 @@ let package = Package(
       "ShopFeature",
       "ProfileEditFeature",
       "ProfileShareFeature",
+      .product(name: "NameImage", package: "UIComponentPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
