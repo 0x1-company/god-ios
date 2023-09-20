@@ -18,7 +18,7 @@ public struct InboxLogic: Reducer {
     var products: [Product] = []
 
     public init() {}
-    
+
     public struct InboxCardState: Equatable, Identifiable {
       public let id: String
       let gender: String
@@ -155,7 +155,7 @@ public struct InboxView: View {
               isRead: state.isRead
             ) {
               viewStore.send(.activityButtonTapped, transaction: .animationDisable)
-              }
+            }
           }
 
           FromGodTeamCard {
