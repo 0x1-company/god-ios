@@ -11,6 +11,8 @@ public struct GodModeLogic: Reducer {
 
   public struct State: Equatable {
     var product: Product
+    var isActivityIndicatorVisible = false
+
     public init(product: Product) {
       self.product = product
     }
@@ -30,6 +32,8 @@ public struct GodModeLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.store) var storeClient
+  
+  enum Cancel { case id }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -41,7 +45,7 @@ public struct GodModeLogic: Reducer {
           await dismiss()
         }
       case .continueButtonTapped:
-        enum Cancel { case id }
+        state.isActivityIndicatorVisible = true
         return .run { [state] send in
           let result = try await storeClient.purchase(state.product)
           switch result {
@@ -61,6 +65,7 @@ public struct GodModeLogic: Reducer {
         }
         .cancellable(id: Cancel.id)
       case let .purchaseResponse(.success(transaction)):
+        state.isActivityIndicatorVisible = false
         // transaction.idをserverに送って課金処理を行う
         return .run { send in
           await transaction.finish()
@@ -69,12 +74,15 @@ public struct GodModeLogic: Reducer {
           _ = await (sendActivated, sendDismiss)
         }
       case let .purchaseResponse(.failure(error as VerificationResult<StoreKit.Transaction>.VerificationError)):
+        state.isActivityIndicatorVisible = false
         print(error)
         return .none
       case let .purchaseResponse(.failure(error as InAppPurchaseError)):
+        state.isActivityIndicatorVisible = false
         print(error)
         return .none
       case .purchaseResponse(.failure):
+        state.isActivityIndicatorVisible = false
         return .none
       case .delegate:
         return .none
@@ -94,8 +102,8 @@ public struct GodModeView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 24) {
         VStack(spacing: 0) {
-          Text("定期課金。いつでもキャンセルできます。", bundle: .module)
-          Text("お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週[金額]円で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。", bundle: .module)
+          Text("Recurring billing. Cancel anytime.", bundle: .module)
+          Text("Your payment will be charged to iTunes Account, and your subscription will auto-renew for \(viewStore.product.displayPrice)/week until you cancel in iTunes Store settings. By tapping Unlock, you agree to our Terms and the auto-renewal.", bundle: .module)
         }
         .font(.caption)
         .padding(.horizontal, 24)
@@ -115,14 +123,22 @@ public struct GodModeView: View {
           Button {
             store.send(.continueButtonTapped)
           } label: {
-            Text("Continue", bundle: .module)
-              .bold()
-              .frame(height: 56)
-              .frame(maxWidth: .infinity)
-              .foregroundColor(Color.white)
-              .background(Color.orange.gradient)
-              .clipShape(Capsule())
-              .padding(.horizontal, 60)
+            Group {
+              if viewStore.isActivityIndicatorVisible {
+                ProgressView()
+                  .progressViewStyle(.circular)
+              } else {
+                Text("Continue", bundle: .module)
+              }
+            }
+            .bold()
+            .frame(height: 56)
+            .frame(maxWidth: .infinity)
+            .foregroundColor(Color.white)
+            .tint(Color.white)
+            .background(Color.orange.gradient)
+            .clipShape(Capsule())
+            .padding(.horizontal, 60)
           }
           .buttonStyle(HoldDownButtonStyle())
 

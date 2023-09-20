@@ -4,7 +4,7 @@ public struct GodModeFunctions: View {
   public var body: some View {
     TabView {
       VStack {
-        Image(.reveal2NamesPerWeekBoy)
+        Image(ImageResource.reveal2NamesPerWeekBoy)
           .resizable()
           .scaledToFit()
 
@@ -13,16 +13,16 @@ public struct GodModeFunctions: View {
       .padding(.horizontal, 100)
 
       VStack {
-        Image(.reveal2NamesPerWeekBoy)
+        Image(ImageResource.getUnlimitedHints)
           .resizable()
           .scaledToFit()
 
-        Text("Reveal 2 Names Per Week", bundle: .module)
+        Text("Get Unlimited Hints", bundle: .module)
       }
       .padding(.horizontal, 100)
 
       VStack {
-        Image(.doubleCoin)
+        Image(ImageResource.doubleCoin)
           .resizable()
           .scaledToFit()
 
@@ -31,7 +31,7 @@ public struct GodModeFunctions: View {
       .padding(.horizontal, 100)
 
       VStack {
-        Image(.secretCrushAlertsBoy)
+        Image(ImageResource.secretCrushAlertsBoy)
           .resizable()
           .scaledToFit()
 

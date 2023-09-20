@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@/week" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "週%@"
+          }
+        }
+      }
     },
     "Continue" : {
       "localizations" : {
@@ -15,22 +22,60 @@
       }
     },
     "Get Double Coins on Polls" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コインを2倍ゲット"
+          }
+        }
+      }
+    },
+    "Get Unlimited Hints" : {
 
     },
     "Maybe Later" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで"
+          }
+        }
+      }
+    },
+    "Recurring billing. Cancel anytime." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "定期課金。いつでもキャンセルできます。"
+          }
+        }
+      }
     },
     "Reveal 2 Names Per Week" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1週間に2人のフルネームを見れる"
+          }
+        }
+      }
     },
     "Secret Crush Alerts" : {
 
     },
-    "お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週[金額]円で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。" : {
-
-    },
-    "定期課金。いつでもキャンセルできます。" : {
-
+    "Your payment will be charged to iTunes Account, and your subscription will auto-renew for %@/week until you cancel in iTunes Store settings. By tapping Unlock, you agree to our Terms and the auto-renewal." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お支払いはiTunesアカウントに請求され、iTunes Storeの設定でキャンセルするまで、購読は週%@で自動更新されます。ロック解除をタップすると、利用規約と自動更新に同意したことになります。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "get-unlimited-hints.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
