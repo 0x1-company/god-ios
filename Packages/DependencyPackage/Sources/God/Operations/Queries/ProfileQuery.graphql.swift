@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Profile"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Profile { currentUser { __typename ...ProfileSectionFragment } friends { __typename ...FriendFragment } }"#,
+        #"query Profile { currentUser { __typename ...ProfileSectionFragment wallet { __typename coinBalance } } friends { __typename ...FriendFragment } }"#,
         fragments: [ProfileSectionFragment.self, FriendFragment.self]
       ))
 
@@ -39,9 +39,12 @@ public extension God {
         public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
+          .field("wallet", Wallet?.self),
           .fragment(ProfileSectionFragment.self),
         ] }
 
+        /// wallet
+        public var wallet: Wallet? { __data["wallet"] }
         /// user id
         public var id: God.ID { __data["id"] }
         /// 表示名
@@ -63,6 +66,23 @@ public extension God {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var profileSectionFragment: ProfileSectionFragment { _toFragment() }
+        }
+
+        /// CurrentUser.Wallet
+        ///
+        /// Parent Type: `Wallet`
+        public struct Wallet: God.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { God.Objects.Wallet }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("coinBalance", Int.self),
+          ] }
+
+          /// コイン枚数
+          public var coinBalance: Int { __data["coinBalance"] }
         }
       }
 

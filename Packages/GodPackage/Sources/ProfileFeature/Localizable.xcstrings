@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     " friends" : {
       "localizations" : {
         "ja" : {
@@ -25,6 +28,9 @@
 
     },
     "ADDED" : {
+
+    },
+    "COINS" : {
 
     },
     "EDIT PROFILE" : {
@@ -54,6 +60,7 @@
       }
     },
     "Shop" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -62,6 +69,9 @@
           }
         }
       }
+    },
+    "SHOP" : {
+
     },
     "Top Stars" : {
       "localizations" : {

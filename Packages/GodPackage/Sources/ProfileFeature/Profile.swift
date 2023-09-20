@@ -125,17 +125,19 @@ public struct ProfileView: View {
             ) {
               viewStore.send(.editProfileButtonTapped)
             }
-          }
-          Divider()
+            
+            Divider()
 
-          ShareShopSection(
-            shareAction: {
-              viewStore.send(.shareProfileButtonTapped)
-            },
-            shopAction: {
-              viewStore.send(.shopButtonTapped)
-            }
-          )
+            ShareShopSection(
+              coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
+              shareAction: {
+                viewStore.send(.shareProfileButtonTapped)
+              },
+              shopAction: {
+                viewStore.send(.shopButtonTapped)
+              }
+            )
+          }
 
           Divider()
 
