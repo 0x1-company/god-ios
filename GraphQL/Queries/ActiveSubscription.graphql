@@ -1,0 +1,8 @@
+query ActiveSubscription {
+  activeSubscription {
+    id
+    expireAt
+    transactionId
+    productId
+  }
+}

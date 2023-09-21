@@ -1,6 +1,8 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import God
+import GodClient
 import StoreKit
 import StoreKitClient
 import SwiftUI
@@ -10,6 +12,7 @@ public struct RevealLogic: Reducer {
 
   public struct State: Equatable {
     var isActivityIndicatorVisible = false
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     public init() {}
   }
 
@@ -20,24 +23,40 @@ public struct RevealLogic: Reducer {
     case verificationResponse(VerificationResult<StoreKit.Transaction>)
     case pendingResponse
     case userCancelledResponse
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
   }
 
   @Dependency(\.store) var storeClient
+  @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case id
+    case currentUser
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+
       case .seeFullNameButtonTapped:
-        enum Cancel { case id }
+        guard let userId = state.currentUser?.id else { return .none }
+        let token = UUID(uuidString: userId)!
         state.isActivityIndicatorVisible = true
         let id = storeClient.revealId()
         return .run { send in
           let products = try await storeClient.products([id])
           guard let product = products.first(where: { $0.id == id })
           else { return }
-          let result = try await storeClient.purchase(product)
+          let result = try await storeClient.purchase(product, token)
           switch result {
           case let .success(verificationResult):
             await send(.verificationResponse(verificationResult))
@@ -93,6 +112,13 @@ public struct RevealLogic: Reducer {
         return .none
       case .userCancelledResponse:
         state.isActivityIndicatorVisible = false
+        return .none
+        
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        return .none
+        
+      case .currentUserResponse(.failure):
         return .none
       }
     }

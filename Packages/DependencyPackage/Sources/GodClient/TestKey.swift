@@ -33,6 +33,7 @@ extension GodClient: TestDependencyKey {
     friendRequests: unimplemented("\(Self.self).friendRequests"),
     createFirebaseRegistrationToken: unimplemented("\(Self.self).createFirebaseRegistrationToken"),
     createContacts: unimplemented("\(Self.self).createContacts"),
-    createTransaction: unimplemented("\(Self.self).createTransaction")
+    createTransaction: unimplemented("\(Self.self).createTransaction"),
+    activeSubscription: unimplemented("\(Self.self).activeSubscription")
   )
 }

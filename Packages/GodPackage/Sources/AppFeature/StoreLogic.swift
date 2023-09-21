@@ -1,9 +1,12 @@
 import ComposableArchitecture
 import StoreKitClient
 import StoreKitHelpers
+import God
+import GodClient
 
 public struct StoreLogic: Reducer {
   @Dependency(\.store) var storeClient
+  @Dependency(\.godClient) var godClient
 
   public func reduce(
     into state: inout AppLogic.State,
@@ -12,22 +15,29 @@ public struct StoreLogic: Reducer {
     switch action {
     case .appDelegate(.delegate(.didFinishLaunching)):
       enum Cancel { case id }
-      return .run(priority: .background) { _ in
+      return .run(priority: .background) { send in
         for await result in storeClient.transactionUpdates() {
-          let transaction = try checkVerified(result)
-//          if transaction.revocationDate != nil {
-//            // 払い戻しされてるので特典削除
-//          }
-//          if let expiretionDate = transaction.expirationDate,
-//             Date.now < expiretionDate &&
-//              !transaction.isUpgraded
-//          {
-//            // 有効なサブスクなのでproductIdに対応した特典を有効にする
-//          }
-//          await transaction.finish()
+          await send(.transaction(TaskResult {
+            try checkVerified(result)
+          }))
         }
+      } catch: { error, send in
+        await send(.transaction(.failure(error)))
       }
       .cancellable(id: Cancel.id)
+      
+    case let .transaction(.success(transaction)):
+      return .run { send in
+        _ = try await godClient.createTransaction(transaction.id.description)
+        await send(.createTransactionResponse(.success(transaction)))
+      } catch: { error, send in
+        await send(.createTransactionResponse(.failure(error)))
+      }
+      
+    case let .createTransactionResponse(.success(transaction)):
+      return .run { _ in
+        await transaction.finish()
+      }
 
     default:
       return .none

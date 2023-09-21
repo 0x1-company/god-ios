@@ -178,6 +178,7 @@ let package = Package(
     ]),
     .target(name: "RevealFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

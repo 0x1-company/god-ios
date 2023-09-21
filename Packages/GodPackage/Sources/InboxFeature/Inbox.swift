@@ -16,6 +16,7 @@ public struct InboxLogic: Reducer {
 
     var inboxes: [InboxCardState] = []
     var products: [Product] = []
+    var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
 
     public init() {}
 
@@ -34,6 +35,7 @@ public struct InboxLogic: Reducer {
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
     case inboxActivitiesResponse(TaskResult<God.InboxActivitiesQuery.Data>)
+    case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -59,6 +61,15 @@ public struct InboxLogic: Reducer {
                 }
               } catch {
                 await send(.inboxActivitiesResponse(.failure(error)))
+              }
+            }
+            group.addTask {
+              do {
+                for try await data in godClient.activeSubscription() {
+                  await send(.activeSubscriptionResponse(.success(data)))
+                }
+              } catch {
+                await send(.activeSubscriptionResponse(.failure(error)))
               }
             }
           }
@@ -102,6 +113,10 @@ public struct InboxLogic: Reducer {
             isRead: $0.isRead
           )
         }
+        return .none
+        
+      case let .activeSubscriptionResponse(.success(data)):
+        state.subscription = data.activeSubscription
         return .none
 
       default:
@@ -168,7 +183,7 @@ public struct InboxView: View {
         }
         .listStyle(.plain)
 
-        if !viewStore.products.isEmpty {
+        if !viewStore.products.isEmpty && viewStore.subscription == nil {
           ZStack(alignment: .top) {
             Color.white.blur(radius: 1.0)
             Button {

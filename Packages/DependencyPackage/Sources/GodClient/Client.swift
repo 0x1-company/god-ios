@@ -34,6 +34,7 @@ public struct GodClient: Sendable {
   public var createContacts: @Sendable ([God.ContactInput]) async throws -> God.CreateContactsMutation.Data
   
   public var createTransaction: @Sendable (String) async throws -> God.CreateTransactionMutation.Data
+  public var activeSubscription: @Sendable () -> AsyncThrowingStream<God.ActiveSubscriptionQuery.Data, Error>
 }
 
 public struct GodServerError: Error {
