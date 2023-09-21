@@ -57,13 +57,6 @@ public struct InboxDetailLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-      case .destination(.dismiss):
-        state.destination = nil
-        return .none
-
-      case .destination:
-        return .none
-
       case .userDidTakeScreenshotNotification:
         guard case .authorized = photos.authorizationStatus(.readWrite)
         else { return .none }
@@ -76,6 +69,19 @@ public struct InboxDetailLogic: Reducer {
           ShareScreenshotLogic.State(asset: asset)
         )
         return .none
+        
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
+        
+      case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
+        state.destination = .fullName(
+          .init(fulName: fullName)
+        )
+        return .none
+        
+      case .destination:
+        return .none
       }
     }
     .ifLet(\.$destination, action: /Action.destination) {
@@ -86,17 +92,22 @@ public struct InboxDetailLogic: Reducer {
   public struct Destination: Reducer {
     public enum State: Equatable {
       case reveal(RevealLogic.State)
+      case fullName(FullNameLogic.State)
       case shareScreenshot(ShareScreenshotLogic.State)
     }
 
     public enum Action: Equatable {
       case reveal(RevealLogic.Action)
+      case fullName(FullNameLogic.Action)
       case shareScreenshot(ShareScreenshotLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.reveal, action: /Action.reveal) {
         RevealLogic()
+      }
+      Scope(state: /State.fullName, action: /Action.fullName) {
+        FullNameLogic()
       }
       Scope(state: /State.shareScreenshot, action: /Action.shareScreenshot) {
         ShareScreenshotLogic()

@@ -7,14 +7,20 @@ public struct FullNameLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    let fulName: String
+
+    public init(
+      fulName: String
+    ) {
+      self.fulName = fulName
+    }
   }
 
   public enum Action: Equatable {
     case onTask
     case closeButtonTapped
   }
-
+  
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
@@ -22,7 +28,6 @@ public struct FullNameLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -41,17 +46,10 @@ public struct FullNameView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 16) {
-        Color.red
-          .frame(width: 74, height: 74)
-          .clipShape(Circle())
-          .overlay(
-            RoundedRectangle(cornerRadius: 74 / 2)
-              .stroke(Color.white, lineWidth: 8)
-          )
-
-        Text("Tomoki Tsukiyama", bundle: .module)
+      VStack(spacing: 24) {
+        Text(verbatim: viewStore.fulName)
           .bold()
+          .font(.title2)
 
         Button {
           viewStore.send(.closeButtonTapped)
@@ -62,8 +60,8 @@ public struct FullNameView: View {
             .foregroundColor(.white)
             .background(Color.godService)
             .clipShape(Capsule())
-            .padding(.horizontal, 16)
         }
+        .padding(.horizontal, 16)
         .buttonStyle(HoldDownButtonStyle())
       }
       .task { await viewStore.send(.onTask).finish() }
@@ -71,13 +69,13 @@ public struct FullNameView: View {
   }
 }
 
-struct FullNameViewPreviews: PreviewProvider {
-  static var previews: some View {
-    FullNameView(
-      store: .init(
-        initialState: FullNameLogic.State(),
-        reducer: { FullNameLogic() }
-      )
+#Preview {
+  FullNameView(
+    store: .init(
+      initialState: FullNameLogic.State(
+        fulName: "Tomoki Tsukiyama"
+      ),
+      reducer: { FullNameLogic() }
     )
-  }
+  )
 }

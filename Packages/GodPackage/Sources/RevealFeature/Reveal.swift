@@ -14,7 +14,6 @@ public struct RevealLogic: Reducer {
     var activityId: String
     var isActivityIndicatorVisible = false
     var revealFullNameLimit = 0
-    var revealFullName: String?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
 
     public init(activityId: String) {
@@ -32,6 +31,11 @@ public struct RevealLogic: Reducer {
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case revealFullNameLimitResponse(TaskResult<God.RevealFullNameLimitQuery.Data>)
     case revealFullNameResponse(TaskResult<God.RevealFullNameMutation.Data>)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case fullName(String)
+    }
   }
 
   @Dependency(\.store) var storeClient
@@ -145,10 +149,14 @@ public struct RevealLogic: Reducer {
         return .none
         
       case let .revealFullNameResponse(.success(data)):
-        state.revealFullName = data.revealFullName?.ja
-        return .none
+        guard let fullName = data.revealFullName?.ja
+        else { return .none }
+        return .send(.delegate(.fullName(fullName)), animation: .default)
         
       case .revealFullNameResponse(.failure):
+        return .none
+
+      case .delegate:
         return .none
       }
     }
