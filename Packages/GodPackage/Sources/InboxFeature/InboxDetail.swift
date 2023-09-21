@@ -181,7 +181,7 @@ public struct InboxDetailView: View {
           case .reveal:
             CaseLet(
               /InboxDetailLogic.Destination.State.reveal,
-               action: InboxDetailLogic.Destination.Action.reveal
+              action: InboxDetailLogic.Destination.Action.reveal
             ) { store in
               RevealView(store: store)
                 .presentationDetents([.fraction(0.4)])
@@ -189,7 +189,7 @@ public struct InboxDetailView: View {
           case .fullName:
             CaseLet(
               /InboxDetailLogic.Destination.State.fullName,
-               action: InboxDetailLogic.Destination.Action.fullName
+              action: InboxDetailLogic.Destination.Action.fullName
             ) { store in
               FullNameView(store: store)
                 .presentationDetents([.fraction(0.4)])
@@ -197,14 +197,14 @@ public struct InboxDetailView: View {
           case .shareScreenshot:
             CaseLet(
               /InboxDetailLogic.Destination.State.shareScreenshot,
-               action: InboxDetailLogic.Destination.Action.shareScreenshot
+              action: InboxDetailLogic.Destination.Action.shareScreenshot
             ) { store in
               ShareScreenshotView(store: store)
                 .presentationDetents([.fraction(0.3)])
                 .presentationDragIndicator(.visible)
             }
           }
-          }
+        }
       }
     }
   }

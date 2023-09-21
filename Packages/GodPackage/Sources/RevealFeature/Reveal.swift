@@ -163,7 +163,7 @@ public struct RevealLogic: Reducer {
       }
     }
   }
-  
+
   func currentUserRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.currentUser() {
@@ -173,7 +173,7 @@ public struct RevealLogic: Reducer {
       await send(.currentUserResponse(.failure(error)))
     }
   }
-  
+
   func revealFullNameLimitRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.revealFullNameLimit() {
