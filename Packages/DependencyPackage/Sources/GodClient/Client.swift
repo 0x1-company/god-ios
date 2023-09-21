@@ -32,6 +32,8 @@ public struct GodClient: Sendable {
   public var createFirebaseRegistrationToken: @Sendable (God.CreateFirebaseRegistrationTokenInput) async throws -> God.CreateFirebaseRegistrationTokenMutation.Data
 
   public var createContacts: @Sendable ([God.ContactInput]) async throws -> God.CreateContactsMutation.Data
+  
+  public var createTransaction: @Sendable (String) async throws -> God.CreateTransactionMutation.Data
 }
 
 public struct GodServerError: Error {
