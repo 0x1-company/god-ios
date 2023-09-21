@@ -42,6 +42,10 @@ public struct InboxLogic: Reducer {
 
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case readActivity
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -70,7 +74,9 @@ public struct InboxLogic: Reducer {
         )
         return .run { send in
           _ = try await godClient.readActivity(id)
+          await inboxActivitiesRequest(send: send)
         }
+        .cancellable(id: Cancel.readActivity, cancelInFlight: true)
 
       case .fromGodTeamButtonTapped:
         state.destination = .fromGodTeam(.init())
