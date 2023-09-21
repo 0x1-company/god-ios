@@ -61,7 +61,7 @@ public struct AppDelegateLogic: Reducer {
         #endif
         _ = try await createFirebaseRegistrationToken(input)
       }
-      
+
     case let .userNotifications(.willPresentNotification(_, completionHandler)):
       return .run { _ in
         completionHandler([.list, .sound, .badge, .banner])
