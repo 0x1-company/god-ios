@@ -1,8 +1,8 @@
 import Colors
 import ComposableArchitecture
-import RoundedCorner
 import God
 import GodClient
+import RoundedCorner
 import SwiftUI
 
 public struct SchoolSettingLogic: Reducer {
@@ -26,7 +26,7 @@ public struct SchoolSettingLogic: Reducer {
       case nextScreen(id: String?)
     }
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -47,7 +47,7 @@ public struct SchoolSettingLogic: Reducer {
 
       case let .schoolButtonTapped(id):
         return .send(.delegate(.nextScreen(id: id)))
-        
+
       case let .schoolsResponse(.success(data)):
         state.schools = data.schools.edges.map(\.node)
         return .none
