@@ -75,7 +75,24 @@
       }
     },
     "Success" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成功"
+          }
+        }
+      }
+    },
+    "The item was successfully purchased." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムは正常に購入されました。"
+          }
+        }
+      }
     },
     "Use coins to get featured in polls" : {
       "localizations" : {
@@ -106,9 +123,6 @@
           }
         }
       }
-    },
-    "Your name has been added to 3 people's polls." : {
-
     }
   },
   "version" : "1.0"
