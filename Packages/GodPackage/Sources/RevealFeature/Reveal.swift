@@ -28,7 +28,7 @@ public struct RevealLogic: Reducer {
 
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case id
     case currentUser
@@ -113,11 +113,11 @@ public struct RevealLogic: Reducer {
       case .userCancelledResponse:
         state.isActivityIndicatorVisible = false
         return .none
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
-        
+
       case .currentUserResponse(.failure):
         return .none
       }
