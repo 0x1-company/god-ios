@@ -1,0 +1,11 @@
+query Schools($first: Int!, $after: String) {
+  schools(first:$first, after:$after) {
+    edges {
+      node {
+        id
+        name
+        shortName
+      }
+    }
+  }
+}

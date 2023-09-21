@@ -38,6 +38,10 @@ public extension GodClient {
         let query = God.ProfileQuery()
         return apolloClient.watch(query: query)
       },
+      schools: {
+        let query = God.SchoolsQuery(first: 100, after: .null)
+        return apolloClient.watch(query: query)
+      },
       createFriendRequest: { input in
         let mutation = God.CreateFriendRequestMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
