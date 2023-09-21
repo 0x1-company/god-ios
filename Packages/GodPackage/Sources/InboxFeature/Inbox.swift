@@ -75,7 +75,10 @@ public struct InboxLogic: Reducer {
           }
         }
       case .activityButtonTapped:
-        state.destination = .inboxDetail()
+        let isInGodMode = state.subscription != nil
+        state.destination = .inboxDetail(
+          .init(isInGodMode: isInGodMode)
+        )
         return .none
 
       case .fromGodTeamButtonTapped:
@@ -132,7 +135,7 @@ public struct InboxLogic: Reducer {
     public enum State: Equatable {
       case godMode(GodModeLogic.State)
       case fromGodTeam(FromGodTeamLogic.State)
-      case inboxDetail(InboxDetailLogic.State = .init())
+      case inboxDetail(InboxDetailLogic.State)
       case activatedGodMode(ActivatedGodModeLogic.State = .init())
     }
 

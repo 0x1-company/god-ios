@@ -1,0 +1,5 @@
+mutation RevealFullName($input:RevealFullNameInput!) {
+  revealFullName(input:$input) {
+    ja
+  }
+}

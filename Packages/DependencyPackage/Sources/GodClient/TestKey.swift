@@ -34,6 +34,8 @@ extension GodClient: TestDependencyKey {
     createFirebaseRegistrationToken: unimplemented("\(Self.self).createFirebaseRegistrationToken"),
     createContacts: unimplemented("\(Self.self).createContacts"),
     createTransaction: unimplemented("\(Self.self).createTransaction"),
-    activeSubscription: unimplemented("\(Self.self).activeSubscription")
+    activeSubscription: unimplemented("\(Self.self).activeSubscription"),
+    revealFullNameLimit: unimplemented("\(Self.self).revealFullNameLimit"),
+    revealFullName: unimplemented("\(Self.self).revealFullName")
   )
 }

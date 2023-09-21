@@ -21,6 +21,7 @@ public class Mutation: MockObject {
     @Field<UserHide>("createUserHide") public var createUserHide
     @Field<Vote>("createVote") public var createVote
     @Field<Bool>("purchase") public var purchase
+    @Field<LocalizableString>("revealFullName") public var revealFullName
     @Field<User>("updateUserProfile") public var updateUserProfile
     @Field<User>("updateUsername") public var updateUsername
   }
@@ -39,6 +40,7 @@ public extension Mock where O == Mutation {
     createUserHide: Mock<UserHide>? = nil,
     createVote: Mock<Vote>? = nil,
     purchase: Bool? = nil,
+    revealFullName: Mock<LocalizableString>? = nil,
     updateUserProfile: Mock<User>? = nil,
     updateUsername: Mock<User>? = nil
   ) {
@@ -54,6 +56,7 @@ public extension Mock where O == Mutation {
     _setEntity(createUserHide, for: \.createUserHide)
     _setEntity(createVote, for: \.createVote)
     _setScalar(purchase, for: \.purchase)
+    _setEntity(revealFullName, for: \.revealFullName)
     _setEntity(updateUserProfile, for: \.updateUserProfile)
     _setEntity(updateUsername, for: \.updateUsername)
   }

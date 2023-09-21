@@ -13,7 +13,10 @@ public struct InboxDetailLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
-    public init() {}
+    let isInGodMode: Bool
+    public init(isInGodMode: Bool) {
+      self.isInGodMode = isInGodMode
+    }
   }
 
   public enum Action: Equatable {
@@ -128,21 +131,23 @@ public struct InboxDetailView: View {
         .onTapGesture {
           viewStore.send(.closeButtonTapped)
         }
-
-        Button {
-          viewStore.send(.seeWhoSentItButtonTapped)
-        } label: {
-          Label("See who sent it", systemImage: "lock.fill")
-            .frame(height: 50)
-            .frame(maxWidth: .infinity)
-            .bold()
-            .foregroundColor(.white)
-            .background(Color.godGray)
-            .clipShape(Capsule())
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
+        
+        if viewStore.isInGodMode {
+          Button {
+            viewStore.send(.seeWhoSentItButtonTapped)
+          } label: {
+            Label("See who sent it", systemImage: "lock.fill")
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
+              .bold()
+              .foregroundColor(.white)
+              .background(Color.godGray)
+              .clipShape(Capsule())
+              .padding(.horizontal, 16)
+              .padding(.top, 8)
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
-        .buttonStyle(HoldDownButtonStyle())
       }
       .background(.black)
       .task { await viewStore.send(.onTask).finish() }
@@ -167,13 +172,13 @@ public struct InboxDetailView: View {
   }
 }
 
-struct InboxDetailViewPreviews: PreviewProvider {
-  static var previews: some View {
-    InboxDetailView(
-      store: .init(
-        initialState: InboxDetailLogic.State(),
-        reducer: { InboxDetailLogic() }
-      )
+#Preview {
+  InboxDetailView(
+    store: .init(
+      initialState: InboxDetailLogic.State(
+        isInGodMode: false
+      ),
+      reducer: { InboxDetailLogic() }
     )
-  }
+  )
 }

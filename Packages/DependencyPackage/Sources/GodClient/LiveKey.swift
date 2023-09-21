@@ -105,6 +105,14 @@ public extension GodClient {
       activeSubscription: {
         let query = God.ActiveSubscriptionQuery()
         return apolloClient.watch(query: query)
+      },
+      revealFullNameLimit: {
+        let query = God.RevealFullNameLimitQuery()
+        return apolloClient.watch(query: query)
+      },
+      revealFullName: { input in
+        let mutation = God.RevealFullNameMutation(input: input)
+        return try await apolloClient.perform(mutation: mutation)
       }
     )
   }
