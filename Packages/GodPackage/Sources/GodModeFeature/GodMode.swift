@@ -62,9 +62,8 @@ public struct GodModeLogic: Reducer {
           await dismiss()
         }
       case .continueButtonTapped:
-        guard let id = state.currentUser?.id else { return .none }
-//        guard let token = UUID(uuidString: id) else { return .none }
-        let token = UUID(uuidString: id)!
+        guard let userId = state.currentUser?.id else { return .none }
+        guard let token = UUID(uuidString: userId) else { return .none }
         state.isActivityIndicatorVisible = true
         return .run { [state] send in
           let result = try await storeClient.purchase(state.product, token)
