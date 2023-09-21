@@ -22,6 +22,7 @@ public class User: MockObject {
     @Field<School>("school") public var school
     @Field<String>("schoolId") public var schoolId
     @Field<String>("username") public var username
+    @Field<Int>("votedCount") public var votedCount
     @Field<Wallet>("wallet") public var wallet
   }
 }
@@ -40,6 +41,7 @@ public extension Mock where O == User {
     school: Mock<School>? = nil,
     schoolId: String? = nil,
     username: String? = nil,
+    votedCount: Int? = nil,
     wallet: Mock<Wallet>? = nil
   ) {
     self.init()
@@ -55,6 +57,7 @@ public extension Mock where O == User {
     _setEntity(school, for: \.school)
     _setScalar(schoolId, for: \.schoolId)
     _setScalar(username, for: \.username)
+    _setScalar(votedCount, for: \.votedCount)
     _setEntity(wallet, for: \.wallet)
   }
 }

@@ -128,6 +128,7 @@ public struct ProfileView: View {
           if let data = viewStore.profile {
             ProfileSection(
               friendsCount: data.currentUser.friendsCount ?? 0,
+              votedCount: data.currentUser.votedCount,
               username: data.currentUser.username ?? "",
               displayName: data.currentUser.displayName.ja,
               schoolShortName: data.currentUser.school?.shortName,

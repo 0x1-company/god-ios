@@ -68,6 +68,8 @@ public extension God {
         public var school: School? { __data["school"] }
         /// wallet
         public var wallet: Wallet? { __data["wallet"] }
+        /// 投票された数
+        public var votedCount: Int { __data["votedCount"] }
         /// 表示名
         public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
         /// 学年をテキストで返す
