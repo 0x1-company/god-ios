@@ -30,7 +30,7 @@ public struct ShopLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case store
   }
