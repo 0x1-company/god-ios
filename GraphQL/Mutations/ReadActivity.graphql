@@ -1,0 +1,6 @@
+mutation ReadActivity($activityId: String!) {
+  readActivity(activityId:$activityId) {
+    id
+    isRead
+  }
+}
