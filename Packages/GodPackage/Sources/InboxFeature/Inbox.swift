@@ -114,7 +114,7 @@ public struct InboxLogic: Reducer {
           )
         }
         return .none
-        
+
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
         return .none
@@ -183,7 +183,7 @@ public struct InboxView: View {
         }
         .listStyle(.plain)
 
-        if !viewStore.products.isEmpty && viewStore.subscription == nil {
+        if !viewStore.products.isEmpty, viewStore.subscription == nil {
           ZStack(alignment: .top) {
             Color.white.blur(radius: 1.0)
             Button {
@@ -194,14 +194,14 @@ public struct InboxView: View {
               } icon: {
                 Image(systemName: "lock.fill")
               }
-                .frame(height: 50)
-                .frame(maxWidth: .infinity)
-                .bold()
-                .foregroundColor(.white)
-                .background(Color.black)
-                .clipShape(Capsule())
-                .padding(.horizontal, 16)
-                .padding(.top, 8)
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
+              .bold()
+              .foregroundColor(.white)
+              .background(Color.black)
+              .clipShape(Capsule())
+              .padding(.horizontal, 16)
+              .padding(.top, 8)
             }
             .buttonStyle(HoldDownButtonStyle())
           }

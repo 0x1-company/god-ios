@@ -1,8 +1,8 @@
 import ComposableArchitecture
-import StoreKitClient
-import StoreKitHelpers
 import God
 import GodClient
+import StoreKitClient
+import StoreKitHelpers
 
 public struct StoreLogic: Reducer {
   @Dependency(\.store) var storeClient
@@ -25,7 +25,7 @@ public struct StoreLogic: Reducer {
         await send(.transaction(.failure(error)))
       }
       .cancellable(id: Cancel.id)
-      
+
     case let .transaction(.success(transaction)):
       return .run { send in
         _ = try await godClient.createTransaction(transaction.id.description)
@@ -33,7 +33,7 @@ public struct StoreLogic: Reducer {
       } catch: { error, send in
         await send(.createTransactionResponse(.failure(error)))
       }
-      
+
     case let .createTransactionResponse(.success(transaction)):
       return .run { _ in
         await transaction.finish()

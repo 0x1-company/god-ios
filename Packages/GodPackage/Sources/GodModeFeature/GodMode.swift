@@ -102,17 +102,17 @@ public struct GodModeLogic: Reducer {
       case .purchaseResponse(.failure):
         state.isActivityIndicatorVisible = false
         return .none
-        
+
       case let .transactionFinish(transaction):
         return .run { send in
           await transaction.finish()
           await send(.delegate(.activated), animation: .default)
         }
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
-        
+
       case .currentUserResponse(.failure):
         return .none
       case .delegate:
