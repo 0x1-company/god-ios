@@ -1,0 +1,3 @@
+mutation CreateTransaction($transactionId: String!) {
+  createTransaction(transactionId: $transactionId)
+}
