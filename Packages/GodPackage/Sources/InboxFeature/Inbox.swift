@@ -68,7 +68,9 @@ public struct InboxLogic: Reducer {
         state.destination = .inboxDetail(
           .init(activity: activity, isInGodMode: isInGodMode)
         )
-        return .none
+        return .run { send in
+          _ = try await godClient.readActivity(id)
+        }
 
       case .fromGodTeamButtonTapped:
         state.destination = .fromGodTeam(.init())
