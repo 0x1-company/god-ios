@@ -127,7 +127,7 @@ public struct InboxDetailView: View {
           }
 
           VStack(spacing: 20) {
-            Text("Double texts with no shame", bundle: .module)
+            Text(verbatim: viewStore.activity.question.text.ja)
               .bold()
 
             Text("godapp.jp", bundle: .module)
