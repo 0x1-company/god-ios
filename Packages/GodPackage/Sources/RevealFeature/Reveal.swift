@@ -11,9 +11,15 @@ public struct RevealLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var activityId: String
     var isActivityIndicatorVisible = false
+    var revealFullNameLimit = 0
+    var revealFullName: String?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-    public init() {}
+
+    public init(activityId: String) {
+      self.activityId = activityId
+    }
   }
 
   public enum Action: Equatable {
@@ -24,6 +30,8 @@ public struct RevealLogic: Reducer {
     case pendingResponse
     case userCancelledResponse
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case revealFullNameLimitResponse(TaskResult<God.RevealFullNameLimitQuery.Data>)
+    case revealFullNameResponse(TaskResult<God.RevealFullNameMutation.Data>)
   }
 
   @Dependency(\.store) var storeClient
@@ -46,34 +54,42 @@ public struct RevealLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
-
+        
       case .seeFullNameButtonTapped:
-        guard let userId = state.currentUser?.id else { return .none }
-        let token = UUID(uuidString: userId)!
-        state.isActivityIndicatorVisible = true
-        let id = storeClient.revealId()
+        let input = God.RevealFullNameInput(activityId: state.activityId)
         return .run { send in
-          let products = try await storeClient.products([id])
-          guard let product = products.first(where: { $0.id == id })
-          else { return }
-          let result = try await storeClient.purchase(product, token)
-          switch result {
-          case let .success(verificationResult):
-            await send(.verificationResponse(verificationResult))
-          case .pending:
-            await send(.pendingResponse)
-          case .userCancelled:
-            await send(.userCancelledResponse)
-          @unknown default:
-            fatalError()
-          }
-        } catch: { error, send in
-          print(error)
-          guard let purchaseError = error as? Product.PurchaseError
-          else { return }
-          await send(.purchaseError(purchaseError))
+          await send(.revealFullNameResponse(TaskResult {
+            try await godClient.revealFullName(input)
+          }))
         }
-        .cancellable(id: Cancel.id)
+
+//      case .seeFullNameButtonTapped:
+//        guard let userId = state.currentUser?.id else { return .none }
+//        let token = UUID(uuidString: userId)!
+//        state.isActivityIndicatorVisible = true
+//        let id = storeClient.revealId()
+//        return .run { send in
+//          let products = try await storeClient.products([id])
+//          guard let product = products.first(where: { $0.id == id })
+//          else { return }
+//          let result = try await storeClient.purchase(product, token)
+//          switch result {
+//          case let .success(verificationResult):
+//            await send(.verificationResponse(verificationResult))
+//          case .pending:
+//            await send(.pendingResponse)
+//          case .userCancelled:
+//            await send(.userCancelledResponse)
+//          @unknown default:
+//            fatalError()
+//          }
+//        } catch: { error, send in
+//          print(error)
+//          guard let purchaseError = error as? Product.PurchaseError
+//          else { return }
+//          await send(.purchaseError(purchaseError))
+//        }
+//        .cancellable(id: Cancel.id)
 
       case let .purchaseError(error):
         switch error {
@@ -120,6 +136,20 @@ public struct RevealLogic: Reducer {
         
       case .currentUserResponse(.failure):
         return .none
+        
+      case let .revealFullNameLimitResponse(.success(data)):
+        state.revealFullNameLimit = data.revealFullNameLimit
+        return .none
+
+      case .revealFullNameLimitResponse(.failure):
+        return .none
+        
+      case let .revealFullNameResponse(.success(data)):
+        state.revealFullName = data.revealFullName?.ja
+        return .none
+        
+      case .revealFullNameResponse(.failure):
+        return .none
       }
     }
   }
@@ -159,7 +189,7 @@ public struct RevealView: View {
           }
           .buttonStyle(HoldDownButtonStyle())
 
-          Text("You have 2 reveals", bundle: .module)
+          Text("You have \(viewStore.revealFullNameLimit) reveals", bundle: .module)
             .foregroundColor(.godTextSecondaryLight)
         }
       }
@@ -174,7 +204,9 @@ struct RevealViewPreviews: PreviewProvider {
   static var previews: some View {
     RevealView(
       store: .init(
-        initialState: RevealLogic.State(),
+        initialState: RevealLogic.State(
+        activityId: ""
+        ),
         reducer: { RevealLogic() }
       )
     )

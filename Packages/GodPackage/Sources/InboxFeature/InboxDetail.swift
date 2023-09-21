@@ -6,15 +6,21 @@ import Photos
 import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
+import God
+import GodClient
 import SwiftUI
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var activityId: String
+
     @PresentationState var destination: Destination.State?
     let isInGodMode: Bool
-    public init(isInGodMode: Bool) {
+    
+    public init(activityId: String, isInGodMode: Bool) {
+      self.activityId = activityId
       self.isInGodMode = isInGodMode
     }
   }
@@ -42,7 +48,9 @@ public struct InboxDetailLogic: Reducer {
           }
         }
       case .seeWhoSentItButtonTapped:
-        state.destination = .reveal()
+        state.destination = .reveal(
+          .init(activityId: state.activityId)
+        )
         return .none
 
       case .closeButtonTapped:
@@ -70,11 +78,14 @@ public struct InboxDetailLogic: Reducer {
         return .none
       }
     }
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
+    }
   }
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case reveal(RevealLogic.State = .init())
+      case reveal(RevealLogic.State)
       case shareScreenshot(ShareScreenshotLogic.State)
     }
 
@@ -170,15 +181,4 @@ public struct InboxDetailView: View {
       }
     }
   }
-}
-
-#Preview {
-  InboxDetailView(
-    store: .init(
-      initialState: InboxDetailLogic.State(
-        isInGodMode: false
-      ),
-      reducer: { InboxDetailLogic() }
-    )
-  )
 }

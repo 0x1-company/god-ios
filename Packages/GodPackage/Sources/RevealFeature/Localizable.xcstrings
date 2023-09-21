@@ -17,7 +17,7 @@
     "The first letter in their name is..." : {
 
     },
-    "You have 2 reveals" : {
+    "You have %lld reveals" : {
 
     }
   },

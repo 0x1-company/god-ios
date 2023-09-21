@@ -30,7 +30,7 @@ public struct InboxLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case activityButtonTapped
+    case activityButtonTapped(id: String)
     case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
@@ -74,10 +74,10 @@ public struct InboxLogic: Reducer {
             }
           }
         }
-      case .activityButtonTapped:
+      case let .activityButtonTapped(id):
         let isInGodMode = state.subscription != nil
         state.destination = .inboxDetail(
-          .init(isInGodMode: isInGodMode)
+          .init(activityId: id, isInGodMode: isInGodMode)
         )
         return .none
 
@@ -172,7 +172,7 @@ public struct InboxView: View {
               createdAt: state.createdAt,
               isRead: state.isRead
             ) {
-              viewStore.send(.activityButtonTapped, transaction: .animationDisable)
+              viewStore.send(.activityButtonTapped(id: state.id), transaction: .animationDisable)
             }
           }
 
