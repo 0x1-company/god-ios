@@ -91,6 +91,7 @@ graph TD;
     ProfileShareFeature-->AnimationDisableTransaction;
     ProfileShareFeature-->ComposableArchitecture;
     RevealFeature-->Colors;
+    RevealFeature-->GodClient;
     RevealFeature-->ButtonStyles;
     RevealFeature-->StoreKitClient;
     RevealFeature-->ComposableArchitecture;
