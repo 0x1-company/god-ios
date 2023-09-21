@@ -1,6 +1,8 @@
 import Colors
 import ComposableArchitecture
 import RoundedCorner
+import God
+import GodClient
 import SwiftUI
 
 public struct SchoolSettingLogic: Reducer {
@@ -8,13 +10,15 @@ public struct SchoolSettingLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var schoolHelp: SchoolHelpSheetLogic.State?
+    var schools: [God.SchoolsQuery.Data.Schools.Edge.Node] = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
     case infoButtonTapped
-    case schoolButtonTapped
+    case schoolButtonTapped(id: String)
+    case schoolsResponse(TaskResult<God.SchoolsQuery.Data>)
     case schoolHelp(PresentationAction<SchoolHelpSheetLogic.Action>)
     case delegate(Delegate)
 
@@ -22,19 +26,39 @@ public struct SchoolSettingLogic: Reducer {
       case nextScreen(id: String?)
     }
   }
+  
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          for try await data in godClient.schools() {
+            await send(.schoolsResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.schoolsResponse(.failure(error)))
+        }
+
       case .infoButtonTapped:
         state.schoolHelp = .init()
         return .none
-      case .schoolButtonTapped:
-        return .send(.delegate(.nextScreen(id: nil)))
+
+      case let .schoolButtonTapped(id):
+        return .send(.delegate(.nextScreen(id: id)))
+        
+      case let .schoolsResponse(.success(data)):
+        state.schools = data.schools.edges.map(\.node)
+        return .none
+
+      case .schoolsResponse(.failure):
+        state.schools = []
+        return .none
+
       case .schoolHelp:
         return .none
+
       case .delegate:
         return .none
       }
@@ -57,31 +81,33 @@ public struct SchoolSettingView: View {
       ZStack(alignment: .center) {
         Color.godService
 
-        List(0 ..< 100, id: \.self) { _ in
+        List(viewStore.schools, id: \.self) { school in
           Button {
-            viewStore.send(.schoolButtonTapped)
+            viewStore.send(.schoolButtonTapped(id: school.id))
           } label: {
             HStack(alignment: .center, spacing: 16) {
-              Color.red
+              Image(ImageResource.school)
+                .resizable()
                 .frame(width: 40, height: 40)
-                .clipShape(Circle())
+                .scaledToFit()
 
               VStack(alignment: .leading) {
-                Text(verbatim: "Manhattan Early College School")
+                Text(school.name)
                   .bold()
                   .lineLimit(1)
 
-                Text(verbatim: "New York, NY")
+                Text(school.shortName)
                   .foregroundColor(Color.godTextSecondaryLight)
               }
               .font(.footnote)
-              .frame(maxWidth: .infinity)
+              .frame(maxWidth: .infinity, alignment: .leading)
 
               VStack(spacing: 0) {
-                Text(verbatim: "164")
+//                Text(school.usersCount.description)
+                Text(0.description)
                   .bold()
                   .foregroundColor(Color.godService)
-                Text(verbatim: "MEMBERS")
+                Text("MEMBERS")
                   .foregroundColor(Color.godTextSecondaryLight)
               }
               .font(.footnote)
@@ -95,6 +121,7 @@ public struct SchoolSettingView: View {
         .cornerRadius(12, corners: [.topLeft, .topRight])
         .edgesIgnoringSafeArea(.bottom)
       }
+      .task { await viewStore.send(.onTask).finish() }
       .navigationTitle(Text("Pick your school", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(Color.godService, for: .navigationBar)
