@@ -42,7 +42,7 @@ public struct InboxLogic: Reducer {
 
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case readActivity
   }
