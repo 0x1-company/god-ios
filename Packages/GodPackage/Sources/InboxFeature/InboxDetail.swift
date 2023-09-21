@@ -14,13 +14,13 @@ public struct InboxDetailLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var activityId: String
+    let activity: God.InboxFragment
 
     @PresentationState var destination: Destination.State?
     let isInGodMode: Bool
     
-    public init(activityId: String, isInGodMode: Bool) {
-      self.activityId = activityId
+    public init(activity: God.InboxFragment, isInGodMode: Bool) {
+      self.activity = activity
       self.isInGodMode = isInGodMode
     }
   }
@@ -49,7 +49,7 @@ public struct InboxDetailLogic: Reducer {
         }
       case .seeWhoSentItButtonTapped:
         state.destination = .reveal(
-          .init(activityId: state.activityId)
+          .init(activityId: state.activity.id)
         )
         return .none
 

@@ -15,6 +15,7 @@ public struct InboxLogic: Reducer {
     @PresentationState var destination: Destination.State?
 
     var inboxes: [InboxCardState] = []
+    var inboxActivities: [God.InboxFragment] = []
     var products: [Product] = []
     var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
 
@@ -76,8 +77,10 @@ public struct InboxLogic: Reducer {
         }
       case let .activityButtonTapped(id):
         let isInGodMode = state.subscription != nil
+        guard let activity = state.inboxActivities.first(where: { $0.id == id })
+        else { return .none }
         state.destination = .inboxDetail(
-          .init(activityId: id, isInGodMode: isInGodMode)
+          .init(activity: activity, isInGodMode: isInGodMode)
         )
         return .none
 
@@ -106,6 +109,7 @@ public struct InboxLogic: Reducer {
 
       case let .inboxActivitiesResponse(.success(data)):
         let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
+        state.inboxActivities = inboxes
         state.inboxes = inboxes.compactMap {
           guard let createdAt = TimeInterval($0.createdAt)
           else { return nil }
