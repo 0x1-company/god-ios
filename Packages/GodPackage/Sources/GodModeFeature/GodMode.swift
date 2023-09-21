@@ -1,6 +1,8 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import God
+import GodClient
 import StoreKit
 import StoreKitClient
 import StoreKitHelpers
@@ -11,6 +13,7 @@ public struct GodModeLogic: Reducer {
 
   public struct State: Equatable {
     var product: Product
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     var isActivityIndicatorVisible = false
 
     public init(product: Product) {
@@ -23,6 +26,8 @@ public struct GodModeLogic: Reducer {
     case maybeLaterButtonTapped
     case continueButtonTapped
     case purchaseResponse(TaskResult<StoreKit.Transaction>)
+    case transactionFinish(StoreKit.Transaction)
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -32,22 +37,37 @@ public struct GodModeLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.store) var storeClient
+  @Dependency(\.godClient) var godClient
 
-  enum Cancel { case id }
+  enum Cancel {
+    case id
+    case currentUser
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+
       case .maybeLaterButtonTapped:
         return .run { _ in
           await dismiss()
         }
       case .continueButtonTapped:
+        guard let id = state.currentUser?.id else { return .none }
+//        guard let token = UUID(uuidString: id) else { return .none }
+        let token = UUID(uuidString: id)!
         state.isActivityIndicatorVisible = true
         return .run { [state] send in
-          let result = try await storeClient.purchase(state.product)
+          let result = try await storeClient.purchase(state.product, token)
           switch result {
           case let .success(verificationResult):
             await send(.purchaseResponse(TaskResult {
@@ -66,12 +86,10 @@ public struct GodModeLogic: Reducer {
         .cancellable(id: Cancel.id)
       case let .purchaseResponse(.success(transaction)):
         state.isActivityIndicatorVisible = false
-        // transaction.idをserverに送って課金処理を行う
         return .run { send in
-          await transaction.finish()
-          async let sendActivated: Void = send(.delegate(.activated), animation: .default)
-          async let sendDismiss: Void = dismiss()
-          _ = await (sendActivated, sendDismiss)
+          let data = try await godClient.createTransaction(transaction.id.description)
+          guard data.createTransaction else { return }
+          await send(.transactionFinish(transaction))
         }
       case let .purchaseResponse(.failure(error as VerificationResult<StoreKit.Transaction>.VerificationError)):
         state.isActivityIndicatorVisible = false
@@ -83,6 +101,19 @@ public struct GodModeLogic: Reducer {
         return .none
       case .purchaseResponse(.failure):
         state.isActivityIndicatorVisible = false
+        return .none
+        
+      case let .transactionFinish(transaction):
+        return .run { send in
+          await transaction.finish()
+          await send(.delegate(.activated), animation: .default)
+        }
+        
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        return .none
+        
+      case .currentUserResponse(.failure):
         return .none
       case .delegate:
         return .none
@@ -163,6 +194,7 @@ public struct GodModeView: View {
         Spacer()
       }
       .background(Color.godBlack)
+      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }

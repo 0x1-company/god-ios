@@ -62,6 +62,7 @@ public extension God {
       case "ChoiceGroup": return God.Objects.ChoiceGroup
       case "Signature": return God.Objects.Signature
       case "Choice": return God.Objects.Choice
+      case "Subscription": return God.Objects.Subscription
       case "FriendConnection": return God.Objects.FriendConnection
       case "FriendEdge": return God.Objects.FriendEdge
       default: return nil

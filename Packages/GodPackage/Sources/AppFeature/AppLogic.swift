@@ -7,6 +7,7 @@ import LaunchFeature
 import MaintenanceFeature
 import NavigationFeature
 import OnboardFeature
+import StoreKit
 import SwiftUI
 import TcaHelpers
 import UserDefaultsClient
@@ -37,6 +38,8 @@ public struct AppLogic: Reducer {
     case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
+    case transaction(TaskResult<StoreKit.Transaction>)
+    case createTransactionResponse(TaskResult<StoreKit.Transaction>)
   }
 
   @Dependency(\.mainQueue) var mainQueue

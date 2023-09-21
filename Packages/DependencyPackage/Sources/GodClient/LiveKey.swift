@@ -97,6 +97,14 @@ public extension GodClient {
       createContacts: { contacts in
         let mutation = God.CreateContactsMutation(contacts: contacts)
         return try await apolloClient.perform(mutation: mutation)
+      },
+      createTransaction: {
+        let mutation = God.CreateTransactionMutation(transactionId: $0)
+        return try await apolloClient.perform(mutation: mutation)
+      },
+      activeSubscription: {
+        let query = God.ActiveSubscriptionQuery()
+        return apolloClient.watch(query: query)
       }
     )
   }

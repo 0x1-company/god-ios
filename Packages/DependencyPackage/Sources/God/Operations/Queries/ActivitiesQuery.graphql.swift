@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Activities"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Activities($after: String) { listActivities(first: 20, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id text { __typename ja } } userId user { __typename firstName lastName displayName { __typename ja } } } } } }"#,
+        #"query Activities($after: String) { listActivities(first: 100, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id text { __typename ja } } userId user { __typename firstName lastName displayName { __typename ja } } } } } }"#,
         fragments: [NextPaginationFragment.self]
       ))
 
@@ -27,7 +27,7 @@ public extension God {
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("listActivities", ListActivities.self, arguments: [
-          "first": 20,
+          "first": 100,
           "after": .variable("after")
         ]),
       ] }

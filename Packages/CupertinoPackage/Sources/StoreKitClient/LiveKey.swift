@@ -7,6 +7,8 @@ extension StoreKitClient: DependencyKey {
     revealId: { "jp.godapp.ios.staging.reveal_poll" },
     transactionUpdates: { Transaction.updates },
     products: { try await Product.products(for: $0) },
-    purchase: { try await $0.purchase() }
+    purchase: { product, token in
+      try await product.purchase(options: [.appAccountToken(token)])
+    }
   )
 }

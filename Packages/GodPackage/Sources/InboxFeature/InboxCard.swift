@@ -1,4 +1,5 @@
 import ButtonStyles
+import Colors
 import SwiftUI
 
 public struct InboxCard: View {
@@ -32,7 +33,8 @@ public struct InboxCard: View {
         .padding(.horizontal, 16)
       }
       .frame(height: 72)
-      .background(Color.white)
+      .foregroundStyle(isRead ? Color.godTextSecondaryLight : Color.primary)
+      .background(isRead ? Color.godBackgroundWhite : Color.white)
       .cornerRadius(8)
       .compositingGroup()
       .shadow(color: Color.black.opacity(0.1), radius: 10)

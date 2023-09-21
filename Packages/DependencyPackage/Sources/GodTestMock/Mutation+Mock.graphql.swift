@@ -15,6 +15,7 @@ public class Mutation: MockObject {
     @Field<Bool>("createContacts") public var createContacts
     @Field<FirebaseRegistrationToken>("createFirebaseRegistrationToken") public var createFirebaseRegistrationToken
     @Field<Friend>("createFriendRequest") public var createFriendRequest
+    @Field<Bool>("createTransaction") public var createTransaction
     @Field<User>("createUser") public var createUser
     @Field<UserBlock>("createUserBlock") public var createUserBlock
     @Field<UserHide>("createUserHide") public var createUserHide
@@ -32,6 +33,7 @@ public extension Mock where O == Mutation {
     createContacts: Bool? = nil,
     createFirebaseRegistrationToken: Mock<FirebaseRegistrationToken>? = nil,
     createFriendRequest: Mock<Friend>? = nil,
+    createTransaction: Bool? = nil,
     createUser: Mock<User>? = nil,
     createUserBlock: Mock<UserBlock>? = nil,
     createUserHide: Mock<UserHide>? = nil,
@@ -46,6 +48,7 @@ public extension Mock where O == Mutation {
     _setScalar(createContacts, for: \.createContacts)
     _setEntity(createFirebaseRegistrationToken, for: \.createFirebaseRegistrationToken)
     _setEntity(createFriendRequest, for: \.createFriendRequest)
+    _setScalar(createTransaction, for: \.createTransaction)
     _setEntity(createUser, for: \.createUser)
     _setEntity(createUserBlock, for: \.createUserBlock)
     _setEntity(createUserHide, for: \.createUserHide)
