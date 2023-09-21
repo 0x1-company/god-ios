@@ -11,6 +11,7 @@ public struct AppDelegateLogic: Reducer {
   public enum Action: Equatable {
     case didFinishLaunching
     case didRegisterForRemoteNotifications(TaskResult<Data>)
+    case userNotifications(UserNotificationClient.DelegateEvent)
     case configurationForConnecting(UIApplicationShortcutItem?)
     case delegate(Delegate)
 
@@ -21,7 +22,7 @@ public struct AppDelegateLogic: Reducer {
 
   @Dependency(\.firebaseCore) var firebaseCore
   @Dependency(\.firebaseAuth) var firebaseAuth
-  @Dependency(\.userNotifications.requestAuthorization) var requestAuthorization
+  @Dependency(\.userNotifications) var userNotifications
   @Dependency(\.application.registerForRemoteNotifications) var registerForRemoteNotifications
   @Dependency(\.godClient.createFirebaseRegistrationToken) var createFirebaseRegistrationToken
 
@@ -30,11 +31,21 @@ public struct AppDelegateLogic: Reducer {
     case .didFinishLaunching:
       return .run { @MainActor send in
         firebaseCore.configure()
-
-        _ = try await requestAuthorization([.alert, .sound, .badge])
-        await registerForRemoteNotifications()
-
-        send(.delegate(.didFinishLaunching), animation: .default)
+        await withThrowingTaskGroup(of: Void.self) { group in
+          group.addTask {
+            for await event in userNotifications.delegate() {
+              await send(.userNotifications(event))
+            }
+          }
+          group.addTask {
+            guard try await userNotifications.requestAuthorization([.alert, .sound, .badge])
+            else { return }
+            await registerForRemoteNotifications()
+          }
+          group.addTask {
+            await send(.delegate(.didFinishLaunching))
+          }
+        }
       }
     case .didRegisterForRemoteNotifications(.failure):
       return .none
@@ -50,6 +61,15 @@ public struct AppDelegateLogic: Reducer {
         #endif
         _ = try await createFirebaseRegistrationToken(input)
       }
+      
+    case let .userNotifications(.willPresentNotification(_, completionHandler)):
+      return .run { _ in
+        completionHandler([.list, .sound, .badge, .banner])
+      }
+
+    case .userNotifications:
+      return .none
+
     case .configurationForConnecting:
       return .none
 
