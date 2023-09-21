@@ -68,17 +68,17 @@ public struct RevealLogic: Reducer {
             }
           }
         }
-        
+
       case let .productsResponse(.success(products)):
         let id = storeClient.revealId()
         state.product = products.first(where: { $0.id == id })
         return .none
-        
+
       case .productsResponse(.failure):
         return .run { _ in
           await dismiss()
         }
-        
+
       case .seeFullNameButtonTapped where state.revealFullNameLimit > 0:
         let input = God.RevealFullNameInput(activityId: state.activityId)
         return .run { send in
@@ -108,7 +108,7 @@ public struct RevealLogic: Reducer {
           await send(.purchaseResponse(.failure(error)))
         }
         .cancellable(id: Cancel.id)
-        
+
       case let .purchaseResponse(.success(transaction)):
         state.isActivityIndicatorVisible = false
         return .run { send in
@@ -166,7 +166,7 @@ public struct RevealLogic: Reducer {
       await send(.revealFullNameLimitResponse(.failure(error)))
     }
   }
-  
+
   func revealFullNameRequest(send: Send<Action>, input: God.RevealFullNameInput) async {
     await send(.revealFullNameResponse(TaskResult {
       try await godClient.revealFullName(input)
