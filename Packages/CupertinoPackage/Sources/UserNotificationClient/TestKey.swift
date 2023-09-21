@@ -1,9 +1,8 @@
 import Dependencies
-import UserNotifications
 import XCTestDynamicOverlay
 
-public extension DependencyValues {
-  var userNotifications: UserNotificationClient {
+extension DependencyValues {
+  public var userNotifications: UserNotificationClient {
     get { self[UserNotificationClient.self] }
     set { self[UserNotificationClient.self] = newValue }
   }
@@ -13,14 +12,27 @@ extension UserNotificationClient: TestDependencyKey {
   public static let previewValue = Self.noop
 
   public static let testValue = Self(
-    notificationSettings: unimplemented("\(Self.self).notificationSettings", placeholder: UNAuthorizationStatus.notDetermined),
+    add: unimplemented("\(Self.self).add"),
+    delegate: unimplemented("\(Self.self).delegate", placeholder: .finished),
+    getNotificationSettings: unimplemented(
+      "\(Self.self).getNotificationSettings",
+      placeholder: Notification.Settings(authorizationStatus: .notDetermined)
+    ),
+    removeDeliveredNotificationsWithIdentifiers: unimplemented(
+      "\(Self.self).removeDeliveredNotificationsWithIdentifiers"),
+    removePendingNotificationRequestsWithIdentifiers: unimplemented(
+      "\(Self.self).removePendingNotificationRequestsWithIdentifiers"),
     requestAuthorization: unimplemented("\(Self.self).requestAuthorization")
   )
 }
 
-public extension UserNotificationClient {
-  static let noop = Self(
-    notificationSettings: { UNAuthorizationStatus.notDetermined },
+extension UserNotificationClient {
+  public static let noop = Self(
+    add: { _ in },
+    delegate: { AsyncStream { _ in } },
+    getNotificationSettings: { Notification.Settings(authorizationStatus: .notDetermined) },
+    removeDeliveredNotificationsWithIdentifiers: { _ in },
+    removePendingNotificationRequestsWithIdentifiers: { _ in },
     requestAuthorization: { _ in false }
   )
 }
