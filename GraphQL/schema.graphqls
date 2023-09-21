@@ -524,6 +524,9 @@ type User {
   """username"""
   username: String
 
+  """投票された数"""
+  votedCount: Int!
+
   """wallet"""
   wallet: Wallet
 }

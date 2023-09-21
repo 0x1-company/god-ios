@@ -17,6 +17,7 @@ public struct GodClient: Sendable {
   public var store: @Sendable () -> AsyncThrowingStream<God.StoreQuery.Data, Error>
   public var purchase: @Sendable (God.PurchaseInput) async throws -> God.PurchaseMutation.Data
 
+  public var readActivity: @Sendable (String) async throws -> God.ReadActivityMutation.Data
   public var activities: @Sendable (String?) -> AsyncThrowingStream<God.ActivitiesQuery.Data, Error>
   public var inboxActivities: @Sendable () -> AsyncThrowingStream<God.InboxActivitiesQuery.Data, Error>
 
@@ -59,5 +60,7 @@ public struct GodServerError: Error {
     case forbidden = "FORBIDDEN"
     case unauthenticated = "UNAUTHENTICATED"
     case `internal` = "INTERNAL"
+    case notInGodMode = "NOT_IN_GOD_MODE"
+    case noRevealPermission = "NO_REVEAL_PERMISSION"
   }
 }

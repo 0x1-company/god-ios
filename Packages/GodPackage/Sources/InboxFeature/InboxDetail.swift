@@ -174,21 +174,37 @@ public struct InboxDetailView: View {
       .background(.black)
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxDetailLogic.Destination.State.reveal,
-        action: InboxDetailLogic.Destination.Action.reveal
-      ) { store in
-        RevealView(store: store)
-          .presentationDetents([.fraction(0.4)])
-      }
-      .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxDetailLogic.Destination.State.shareScreenshot,
-        action: InboxDetailLogic.Destination.Action.shareScreenshot
-      ) { store in
-        ShareScreenshotView(store: store)
-          .presentationDetents([.fraction(0.3)])
-          .presentationDragIndicator(.visible)
+        store: store.scope(state: \.$destination, action: { .destination($0) })
+      ) { initialState in
+        SwitchStore(initialState) {
+          switch $0 {
+          case .reveal:
+            CaseLet(
+              /InboxDetailLogic.Destination.State.reveal,
+               action: InboxDetailLogic.Destination.Action.reveal
+            ) { store in
+              RevealView(store: store)
+                .presentationDetents([.fraction(0.4)])
+            }
+          case .fullName:
+            CaseLet(
+              /InboxDetailLogic.Destination.State.fullName,
+               action: InboxDetailLogic.Destination.Action.fullName
+            ) { store in
+              FullNameView(store: store)
+                .presentationDetents([.fraction(0.4)])
+            }
+          case .shareScreenshot:
+            CaseLet(
+              /InboxDetailLogic.Destination.State.shareScreenshot,
+               action: InboxDetailLogic.Destination.Action.shareScreenshot
+            ) { store in
+              ShareScreenshotView(store: store)
+                .presentationDetents([.fraction(0.3)])
+                .presentationDragIndicator(.visible)
+            }
+          }
+          }
       }
     }
   }

@@ -73,6 +73,7 @@ public struct ProfileExternalView: View {
           if case let .success(user) = viewStore.user {
             ProfileSection(
               friendsCount: user.friendsCount ?? 0,
+              votedCount: user.votedCount,
               username: user.username ?? "",
               displayName: user.displayName.ja,
               schoolShortName: user.school?.shortName,

@@ -5,6 +5,7 @@ import SwiftUI
 
 public struct ProfileSection: View {
   let friendsCount: Int
+  let votedCount: Int
   let username: String
   let displayName: String
   let schoolShortName: String?
@@ -13,6 +14,7 @@ public struct ProfileSection: View {
 
   public init(
     friendsCount: Int,
+    votedCount: Int,
     username: String,
     displayName: String,
     schoolShortName: String?,
@@ -20,6 +22,7 @@ public struct ProfileSection: View {
     editProfile: (() -> Void)? = nil
   ) {
     self.friendsCount = friendsCount
+    self.votedCount = votedCount
     self.username = username
     self.displayName = displayName
     self.schoolShortName = schoolShortName
@@ -43,7 +46,7 @@ public struct ProfileSection: View {
               Text(" friends", bundle: .module)
               .foregroundColor(.secondary)
 
-            Text("7", bundle: .module)
+            Text(votedCount.description)
               .bold()
               .foregroundColor(.primary)
               +
@@ -97,6 +100,7 @@ public struct ProfileSection: View {
 #Preview {
   ProfileSection(
     friendsCount: 10,
+    votedCount: 100,
     username: "tomokisun",
     displayName: "つきやま ともき",
     schoolShortName: "KHS",

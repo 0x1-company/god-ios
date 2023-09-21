@@ -54,6 +54,10 @@ public extension GodClient {
         let mutation = God.PurchaseMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
       },
+      readActivity: {
+        let mutation = God.ReadActivityMutation(activityId: $0)
+        return try await apolloClient.perform(mutation: mutation)
+      },
       activities: {
         let query = God.ActivitiesQuery(after: $0 ?? .null)
         return apolloClient.watch(query: query)

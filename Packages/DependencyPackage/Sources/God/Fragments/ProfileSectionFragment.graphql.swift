@@ -6,7 +6,7 @@
 public extension God {
   struct ProfileSectionFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment ProfileSectionFragment on User { __typename id displayName { __typename ja } username generation friendsCount schoolId grade school { __typename id name shortName } }"#
+      #"fragment ProfileSectionFragment on User { __typename id votedCount displayName { __typename ja } username generation friendsCount schoolId grade school { __typename id name shortName } }"#
     }
 
     public let __data: DataDict
@@ -16,6 +16,7 @@ public extension God {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("id", God.ID.self),
+      .field("votedCount", Int.self),
       .field("displayName", DisplayName.self),
       .field("username", String?.self),
       .field("generation", Int?.self),
@@ -27,6 +28,8 @@ public extension God {
 
     /// user id
     public var id: God.ID { __data["id"] }
+    /// 投票された数
+    public var votedCount: Int { __data["votedCount"] }
     /// 表示名
     public var displayName: DisplayName { __data["displayName"] }
     /// username

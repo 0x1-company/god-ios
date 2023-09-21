@@ -47,6 +47,8 @@ public extension God {
         public var wallet: Wallet? { __data["wallet"] }
         /// user id
         public var id: God.ID { __data["id"] }
+        /// 投票された数
+        public var votedCount: Int { __data["votedCount"] }
         /// 表示名
         public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
         /// username

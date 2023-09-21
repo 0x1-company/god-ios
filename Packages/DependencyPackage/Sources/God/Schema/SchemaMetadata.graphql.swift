@@ -33,6 +33,7 @@ public extension God {
       switch typename {
       case "Mutation": return God.Objects.Mutation
       case "FirebaseRegistrationToken": return God.Objects.FirebaseRegistrationToken
+      case "InboxActivity": return God.Objects.InboxActivity
       case "Friend": return God.Objects.Friend
       case "User": return God.Objects.User
       case "UserBlock": return God.Objects.UserBlock
@@ -50,7 +51,6 @@ public extension God {
       case "StoreItem": return God.Objects.StoreItem
       case "InboxActivityConnection": return God.Objects.InboxActivityConnection
       case "InboxActivityEdge": return God.Objects.InboxActivityEdge
-      case "InboxActivity": return God.Objects.InboxActivity
       case "Question": return God.Objects.Question
       case "ActivityConnection": return God.Objects.ActivityConnection
       case "ActivityEdge": return God.Objects.ActivityEdge

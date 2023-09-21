@@ -51,13 +51,15 @@ public struct RevealLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.currentUser() {
-            await send(.currentUserResponse(.success(data)))
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await currentUserRequest(send: send)
+            }
+            group.addTask {
+              await revealFullNameLimitRequest(send: send)
+            }
           }
-        } catch: { error, send in
-          await send(.currentUserResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
 
       case .seeFullNameButtonTapped:
         let input = God.RevealFullNameInput(activityId: state.activityId)
@@ -159,6 +161,26 @@ public struct RevealLogic: Reducer {
       case .delegate:
         return .none
       }
+    }
+  }
+  
+  func currentUserRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentUser() {
+        await send(.currentUserResponse(.success(data)))
+      }
+    } catch {
+      await send(.currentUserResponse(.failure(error)))
+    }
+  }
+  
+  func revealFullNameLimitRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.revealFullNameLimit() {
+        await send(.revealFullNameLimitResponse(.success(data)))
+      }
+    } catch {
+      await send(.revealFullNameLimitResponse(.failure(error)))
     }
   }
 }
