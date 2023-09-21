@@ -24,7 +24,7 @@ public struct StoreLogic: Reducer {
 //          {
 //            // 有効なサブスクなのでproductIdに対応した特典を有効にする
 //          }
-          await transaction.finish()
+//          await transaction.finish()
         }
       }
       .cancellable(id: Cancel.id)

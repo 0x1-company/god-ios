@@ -171,11 +171,14 @@ public struct InboxView: View {
         if !viewStore.products.isEmpty {
           ZStack(alignment: .top) {
             Color.white.blur(radius: 1.0)
-
             Button {
               viewStore.send(.seeWhoLikesYouButtonTapped)
             } label: {
-              Label("See who likes you", systemImage: "lock.fill")
+              Label {
+                Text("See who likes you", bundle: .module)
+              } icon: {
+                Image(systemName: "lock.fill")
+              }
                 .frame(height: 50)
                 .frame(maxWidth: .infinity)
                 .bold()

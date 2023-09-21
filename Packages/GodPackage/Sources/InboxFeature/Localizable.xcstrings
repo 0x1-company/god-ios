@@ -91,13 +91,34 @@
       }
     },
     "See who likes you" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "神モード"
+          }
+        }
+      }
     },
     "See who sent it" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "誰が送ったか見る"
+          }
+        }
+      }
     },
     "Tap a message in your inbox to reveal the sender" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受信トレイのメッセージをタップすると、誰か投票したか表示されます。"
+          }
+        }
+      }
     },
     "Tap anywhere to close" : {
       "localizations" : {

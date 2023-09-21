@@ -68,10 +68,8 @@ public struct GodModeLogic: Reducer {
         state.isActivityIndicatorVisible = false
         // transaction.idをserverに送って課金処理を行う
         return .run { send in
-          await transaction.finish()
-          async let sendActivated: Void = send(.delegate(.activated), animation: .default)
-          async let sendDismiss: Void = dismiss()
-          _ = await (sendActivated, sendDismiss)
+//          await transaction.finish()
+          await send(.delegate(.activated), animation: .default)
         }
       case let .purchaseResponse(.failure(error as VerificationResult<StoreKit.Transaction>.VerificationError)):
         state.isActivityIndicatorVisible = false
