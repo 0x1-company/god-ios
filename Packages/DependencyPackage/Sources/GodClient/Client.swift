@@ -59,5 +59,7 @@ public struct GodServerError: Error {
     case forbidden = "FORBIDDEN"
     case unauthenticated = "UNAUTHENTICATED"
     case `internal` = "INTERNAL"
+    case notInGodMode = "NOT_IN_GOD_MODE"
+    case noRevealPermission = "NO_REVEAL_PERMISSION"
   }
 }

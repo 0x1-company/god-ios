@@ -183,6 +183,14 @@ public struct InboxDetailView: View {
       }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
+        state: /InboxDetailLogic.Destination.State.fullName,
+        action: InboxDetailLogic.Destination.Action.fullName
+      ) { store in
+        FullNameView(store: store)
+          .presentationDetents([.fraction(0.4)])
+      }
+      .sheet(
+        store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxDetailLogic.Destination.State.shareScreenshot,
         action: InboxDetailLogic.Destination.Action.shareScreenshot
       ) { store in

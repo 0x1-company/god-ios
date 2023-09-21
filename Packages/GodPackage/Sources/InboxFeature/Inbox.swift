@@ -51,27 +51,13 @@ public struct InboxLogic: Reducer {
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
-              await send(.productsResponse(TaskResult {
-                try await storeClient.products([id])
-              }))
+              await productsRequest(send: send, ids: [id])
             }
             group.addTask {
-              do {
-                for try await data in godClient.inboxActivities() {
-                  await send(.inboxActivitiesResponse(.success(data)))
-                }
-              } catch {
-                await send(.inboxActivitiesResponse(.failure(error)))
-              }
+              await inboxActivitiesRequest(send: send)
             }
             group.addTask {
-              do {
-                for try await data in godClient.activeSubscription() {
-                  await send(.activeSubscriptionResponse(.success(data)))
-                }
-              } catch {
-                await send(.activeSubscriptionResponse(.failure(error)))
-              }
+              await activeSubscriptionRequest(send: send)
             }
           }
         }
@@ -105,7 +91,9 @@ public struct InboxLogic: Reducer {
 
       case .destination(.presented(.godMode(.delegate(.activated)))):
         state.destination = .activatedGodMode()
-        return .none
+        return .run { send in
+          await activeSubscriptionRequest(send: send)
+        }
 
       case let .inboxActivitiesResponse(.success(data)):
         let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
@@ -132,6 +120,32 @@ public struct InboxLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+  }
+
+  func productsRequest(send: Send<Action>, ids: [String]) async {
+    await send(.productsResponse(TaskResult {
+      try await storeClient.products(ids)
+    }))
+  }
+
+  func inboxActivitiesRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.inboxActivities() {
+        await send(.inboxActivitiesResponse(.success(data)))
+      }
+    } catch {
+      await send(.inboxActivitiesResponse(.failure(error)))
+    }
+  }
+
+  func activeSubscriptionRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.activeSubscription() {
+        await send(.activeSubscriptionResponse(.success(data)))
+      }
+    } catch {
+      await send(.activeSubscriptionResponse(.failure(error)))
     }
   }
 
