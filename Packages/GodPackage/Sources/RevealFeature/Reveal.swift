@@ -5,6 +5,7 @@ import God
 import GodClient
 import StoreKit
 import StoreKitClient
+import StoreKitHelpers
 import SwiftUI
 
 public struct RevealLogic: Reducer {
@@ -14,6 +15,7 @@ public struct RevealLogic: Reducer {
     var activityId: String
     var isActivityIndicatorVisible = false
     var revealFullNameLimit = 0
+    var product: StoreKit.Product?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
 
     public init(activityId: String) {
@@ -24,13 +26,12 @@ public struct RevealLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case seeFullNameButtonTapped
-    case purchaseError(Product.PurchaseError)
-    case verificationResponse(VerificationResult<StoreKit.Transaction>)
-    case pendingResponse
-    case userCancelledResponse
+    case productsResponse(TaskResult<[StoreKit.Product]>)
+    case purchaseResponse(TaskResult<StoreKit.Transaction>)
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case revealFullNameLimitResponse(TaskResult<God.RevealFullNameLimitQuery.Data>)
     case revealFullNameResponse(TaskResult<God.RevealFullNameMutation.Data>)
+    case transactionFinish(StoreKit.Transaction)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -39,6 +40,7 @@ public struct RevealLogic: Reducer {
   }
 
   @Dependency(\.store) var storeClient
+  @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
 
   enum Cancel {
@@ -50,6 +52,7 @@ public struct RevealLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        let id = storeClient.revealId()
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
@@ -58,96 +61,79 @@ public struct RevealLogic: Reducer {
             group.addTask {
               await revealFullNameLimitRequest(send: send)
             }
+            group.addTask {
+              await send(.productsResponse(TaskResult {
+                try await storeClient.products([id])
+              }))
+            }
           }
+        }
+        
+      case let .productsResponse(.success(products)):
+        let id = storeClient.revealId()
+        state.product = products.first(where: { $0.id == id })
+        return .none
+        
+      case .productsResponse(.failure):
+        return .run { _ in
+          await dismiss()
+        }
+        
+      case .seeFullNameButtonTapped where state.revealFullNameLimit > 0:
+        let input = God.RevealFullNameInput(activityId: state.activityId)
+        return .run { send in
+          await revealFullNameRequest(send: send, input: input)
         }
 
       case .seeFullNameButtonTapped:
+        guard let userId = state.currentUser?.id else { return .none }
+        guard let token = UUID(uuidString: userId) else { return .none }
+        guard let product = state.product else { return .none }
+        state.isActivityIndicatorVisible = true
+        return .run { send in
+          let result = try await storeClient.purchase(product, token)
+          switch result {
+          case let .success(verificationResult):
+            await send(.purchaseResponse(TaskResult {
+              try checkVerified(verificationResult)
+            }))
+          case .pending:
+            await send(.purchaseResponse(.failure(InAppPurchaseError.pending)))
+          case .userCancelled:
+            await send(.purchaseResponse(.failure(InAppPurchaseError.userCancelled)))
+          @unknown default:
+            fatalError()
+          }
+        } catch: { error, send in
+          await send(.purchaseResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.id)
+        
+      case let .purchaseResponse(.success(transaction)):
+        state.isActivityIndicatorVisible = false
+        return .run { send in
+          let data = try await godClient.createTransaction(transaction.id.description)
+          guard data.createTransaction else { return }
+          await send(.transactionFinish(transaction))
+        }
+
+      case .purchaseResponse(.failure):
+        state.isActivityIndicatorVisible = false
+        return .none
+
+      case let .transactionFinish(transaction):
         let input = God.RevealFullNameInput(activityId: state.activityId)
         return .run { send in
-          await send(.revealFullNameResponse(TaskResult {
-            try await godClient.revealFullName(input)
-          }))
-        }
-
-//      case .seeFullNameButtonTapped:
-//        guard let userId = state.currentUser?.id else { return .none }
-//        let token = UUID(uuidString: userId)!
-//        state.isActivityIndicatorVisible = true
-//        let id = storeClient.revealId()
-//        return .run { send in
-//          let products = try await storeClient.products([id])
-//          guard let product = products.first(where: { $0.id == id })
-//          else { return }
-//          let result = try await storeClient.purchase(product, token)
-//          switch result {
-//          case let .success(verificationResult):
-//            await send(.verificationResponse(verificationResult))
-//          case .pending:
-//            await send(.pendingResponse)
-//          case .userCancelled:
-//            await send(.userCancelledResponse)
-//          @unknown default:
-//            fatalError()
-//          }
-//        } catch: { error, send in
-//          print(error)
-//          guard let purchaseError = error as? Product.PurchaseError
-//          else { return }
-//          await send(.purchaseError(purchaseError))
-//        }
-//        .cancellable(id: Cancel.id)
-
-      case let .purchaseError(error):
-        switch error {
-        case .invalidQuantity:
-          return .none
-        case .productUnavailable:
-          return .none
-        case .purchaseNotAllowed:
-          return .none
-        case .ineligibleForOffer:
-          return .none
-        case .invalidOfferIdentifier:
-          return .none
-        case .invalidOfferPrice:
-          return .none
-        case .invalidOfferSignature:
-          return .none
-        case .missingOfferParameters:
-          return .none
-        @unknown default:
-          return .none
-        }
-      case let .verificationResponse(.verified(transaction)):
-        state.isActivityIndicatorVisible = false
-        /// transaction.idをserverに送って課金処理を行う
-        return .run { _ in
           await transaction.finish()
+          await revealFullNameRequest(send: send, input: input)
         }
-      case let .verificationResponse(.unverified(transaction, error)):
-        state.isActivityIndicatorVisible = false
-        print(transaction)
-        print(error)
-        return .none
-      case .pendingResponse:
-        state.isActivityIndicatorVisible = false
-        return .none
-      case .userCancelledResponse:
-        state.isActivityIndicatorVisible = false
-        return .none
 
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
 
-      case .currentUserResponse(.failure):
-        return .none
-
       case let .revealFullNameLimitResponse(.success(data)):
         state.revealFullNameLimit = data.revealFullNameLimit
-        return .none
-
-      case .revealFullNameLimitResponse(.failure):
         return .none
 
       case let .revealFullNameResponse(.success(data)):
@@ -155,10 +141,7 @@ public struct RevealLogic: Reducer {
         else { return .none }
         return .send(.delegate(.fullName(fullName)), animation: .default)
 
-      case .revealFullNameResponse(.failure):
-        return .none
-
-      case .delegate:
+      default:
         return .none
       }
     }
@@ -182,6 +165,12 @@ public struct RevealLogic: Reducer {
     } catch {
       await send(.revealFullNameLimitResponse(.failure(error)))
     }
+  }
+  
+  func revealFullNameRequest(send: Send<Action>, input: God.RevealFullNameInput) async {
+    await send(.revealFullNameResponse(TaskResult {
+      try await godClient.revealFullName(input)
+    }))
   }
 }
 
@@ -209,18 +198,31 @@ public struct RevealView: View {
           Button {
             viewStore.send(.seeFullNameButtonTapped)
           } label: {
-            Text("See Full Name", bundle: .module)
-              .bold()
-              .frame(height: 56)
-              .frame(maxWidth: .infinity)
-              .foregroundColor(.white)
-              .background(Color.godService)
-              .clipShape(Capsule())
+            Group {
+              if viewStore.isActivityIndicatorVisible {
+                ProgressView()
+                  .progressViewStyle(.circular)
+              } else {
+                Text("See Full Name", bundle: .module)
+              }
+            }
+            .bold()
+            .frame(height: 56)
+            .frame(maxWidth: .infinity)
+            .foregroundColor(.white)
+            .background(Color.godService)
+            .clipShape(Capsule())
           }
           .buttonStyle(HoldDownButtonStyle())
 
-          Text("You have \(viewStore.revealFullNameLimit) reveals", bundle: .module)
-            .foregroundColor(.godTextSecondaryLight)
+          Group {
+            if viewStore.revealFullNameLimit > 0 {
+              Text("You have \(viewStore.revealFullNameLimit) reveals", bundle: .module)
+            } else if let product = viewStore.product {
+              Text("\(product.displayPrice) per reveal", bundle: .module)
+            }
+          }
+          .foregroundColor(.godTextSecondaryLight)
         }
       }
       .padding(.horizontal, 16)
