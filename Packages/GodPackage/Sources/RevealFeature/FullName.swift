@@ -20,7 +20,7 @@ public struct FullNameLogic: Reducer {
     case onTask
     case closeButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
