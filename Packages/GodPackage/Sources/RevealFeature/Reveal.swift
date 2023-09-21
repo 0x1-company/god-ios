@@ -76,7 +76,7 @@ public struct RevealLogic: Reducer {
         
       case .productsResponse(.failure):
         return .run { _ in
-          dismiss()
+          await dismiss()
         }
         
       case .seeFullNameButtonTapped where state.revealFullNameLimit > 0:
