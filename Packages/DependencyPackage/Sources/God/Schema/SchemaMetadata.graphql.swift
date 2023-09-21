@@ -37,11 +37,11 @@ public extension God {
       case "User": return God.Objects.User
       case "UserBlock": return God.Objects.UserBlock
       case "CompletePollResponse": return God.Objects.CompletePollResponse
+      case "LocalizableString": return God.Objects.LocalizableString
       case "Vote": return God.Objects.Vote
       case "UserHide": return God.Objects.UserHide
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
-      case "LocalizableString": return God.Objects.LocalizableString
       case "UserConnection": return God.Objects.UserConnection
       case "PageInfo": return God.Objects.PageInfo
       case "UserEdge": return God.Objects.UserEdge

@@ -15,6 +15,7 @@ public struct InboxLogic: Reducer {
     @PresentationState var destination: Destination.State?
 
     var inboxes: [InboxCardState] = []
+    var inboxActivities: [God.InboxFragment] = []
     var products: [Product] = []
     var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
 
@@ -30,7 +31,7 @@ public struct InboxLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case activityButtonTapped
+    case activityButtonTapped(id: String)
     case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
@@ -74,8 +75,13 @@ public struct InboxLogic: Reducer {
             }
           }
         }
-      case .activityButtonTapped:
-        state.destination = .inboxDetail()
+      case let .activityButtonTapped(id):
+        let isInGodMode = state.subscription != nil
+        guard let activity = state.inboxActivities.first(where: { $0.id == id })
+        else { return .none }
+        state.destination = .inboxDetail(
+          .init(activity: activity, isInGodMode: isInGodMode)
+        )
         return .none
 
       case .fromGodTeamButtonTapped:
@@ -103,6 +109,7 @@ public struct InboxLogic: Reducer {
 
       case let .inboxActivitiesResponse(.success(data)):
         let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
+        state.inboxActivities = inboxes
         state.inboxes = inboxes.compactMap {
           guard let createdAt = TimeInterval($0.createdAt)
           else { return nil }
@@ -132,7 +139,7 @@ public struct InboxLogic: Reducer {
     public enum State: Equatable {
       case godMode(GodModeLogic.State)
       case fromGodTeam(FromGodTeamLogic.State)
-      case inboxDetail(InboxDetailLogic.State = .init())
+      case inboxDetail(InboxDetailLogic.State)
       case activatedGodMode(ActivatedGodModeLogic.State = .init())
     }
 
@@ -169,7 +176,7 @@ public struct InboxView: View {
               createdAt: state.createdAt,
               isRead: state.isRead
             ) {
-              viewStore.send(.activityButtonTapped, transaction: .animationDisable)
+              viewStore.send(.activityButtonTapped(id: state.id), transaction: .animationDisable)
             }
           }
 

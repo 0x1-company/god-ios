@@ -15,6 +15,7 @@
       }
     },
     "Close" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -23,9 +24,6 @@
           }
         }
       }
-    },
-    "Double texts with no shame" : {
-
     },
     "From a %@" : {
       "localizations" : {
@@ -139,9 +137,6 @@
           }
         }
       }
-    },
-    "Tomoki Tsukiyama" : {
-
     },
     "When people pick you\nyou will get a message here." : {
       "localizations" : {

@@ -6,14 +6,23 @@ import Photos
 import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
+import God
+import GodClient
 import SwiftUI
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    let activity: God.InboxFragment
+
     @PresentationState var destination: Destination.State?
-    public init() {}
+    let isInGodMode: Bool
+    
+    public init(activity: God.InboxFragment, isInGodMode: Bool) {
+      self.activity = activity
+      self.isInGodMode = isInGodMode
+    }
   }
 
   public enum Action: Equatable {
@@ -39,20 +48,15 @@ public struct InboxDetailLogic: Reducer {
           }
         }
       case .seeWhoSentItButtonTapped:
-        state.destination = .reveal()
+        state.destination = .reveal(
+          .init(activityId: state.activity.id)
+        )
         return .none
 
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
-      case .destination(.dismiss):
-        state.destination = nil
-        return .none
-
-      case .destination:
-        return .none
-
       case .userDidTakeScreenshotNotification:
         guard case .authorized = photos.authorizationStatus(.readWrite)
         else { return .none }
@@ -65,24 +69,45 @@ public struct InboxDetailLogic: Reducer {
           ShareScreenshotLogic.State(asset: asset)
         )
         return .none
+        
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
+        
+      case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
+        state.destination = .fullName(
+          .init(fulName: fullName)
+        )
+        return .none
+        
+      case .destination:
+        return .none
       }
+    }
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
     }
   }
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case reveal(RevealLogic.State = .init())
+      case reveal(RevealLogic.State)
+      case fullName(FullNameLogic.State)
       case shareScreenshot(ShareScreenshotLogic.State)
     }
 
     public enum Action: Equatable {
       case reveal(RevealLogic.Action)
+      case fullName(FullNameLogic.Action)
       case shareScreenshot(ShareScreenshotLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.reveal, action: /Action.reveal) {
         RevealLogic()
+      }
+      Scope(state: /State.fullName, action: /Action.fullName) {
+        FullNameLogic()
       }
       Scope(state: /State.shareScreenshot, action: /Action.shareScreenshot) {
         ShareScreenshotLogic()
@@ -113,7 +138,7 @@ public struct InboxDetailView: View {
           }
 
           VStack(spacing: 20) {
-            Text("Double texts with no shame", bundle: .module)
+            Text(verbatim: viewStore.activity.question.text.ja)
               .bold()
 
             Text("godapp.jp", bundle: .module)
@@ -128,21 +153,23 @@ public struct InboxDetailView: View {
         .onTapGesture {
           viewStore.send(.closeButtonTapped)
         }
-
-        Button {
-          viewStore.send(.seeWhoSentItButtonTapped)
-        } label: {
-          Label("See who sent it", systemImage: "lock.fill")
-            .frame(height: 50)
-            .frame(maxWidth: .infinity)
-            .bold()
-            .foregroundColor(.white)
-            .background(Color.godGray)
-            .clipShape(Capsule())
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
+        
+        if viewStore.isInGodMode {
+          Button {
+            viewStore.send(.seeWhoSentItButtonTapped)
+          } label: {
+            Label("See who sent it", systemImage: "lock.fill")
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
+              .bold()
+              .foregroundColor(.white)
+              .background(Color.godGray)
+              .clipShape(Capsule())
+              .padding(.horizontal, 16)
+              .padding(.top, 8)
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
-        .buttonStyle(HoldDownButtonStyle())
       }
       .background(.black)
       .task { await viewStore.send(.onTask).finish() }
@@ -164,16 +191,5 @@ public struct InboxDetailView: View {
           .presentationDragIndicator(.visible)
       }
     }
-  }
-}
-
-struct InboxDetailViewPreviews: PreviewProvider {
-  static var previews: some View {
-    InboxDetailView(
-      store: .init(
-        initialState: InboxDetailLogic.State(),
-        reducer: { InboxDetailLogic() }
-      )
-    )
   }
 }
