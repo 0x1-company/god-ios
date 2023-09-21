@@ -1,13 +1,13 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import God
+import GodClient
 import NotificationCenterClient
 import Photos
 import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
-import God
-import GodClient
 import SwiftUI
 
 public struct InboxDetailLogic: Reducer {
@@ -18,7 +18,7 @@ public struct InboxDetailLogic: Reducer {
 
     @PresentationState var destination: Destination.State?
     let isInGodMode: Bool
-    
+
     public init(activity: God.InboxFragment, isInGodMode: Bool) {
       self.activity = activity
       self.isInGodMode = isInGodMode
@@ -69,17 +69,17 @@ public struct InboxDetailLogic: Reducer {
           ShareScreenshotLogic.State(asset: asset)
         )
         return .none
-        
+
       case .destination(.dismiss):
         state.destination = nil
         return .none
-        
+
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = .fullName(
           .init(fulName: fullName)
         )
         return .none
-        
+
       case .destination:
         return .none
       }
@@ -153,7 +153,7 @@ public struct InboxDetailView: View {
         .onTapGesture {
           viewStore.send(.closeButtonTapped)
         }
-        
+
         if viewStore.isInGodMode {
           Button {
             viewStore.send(.seeWhoSentItButtonTapped)
