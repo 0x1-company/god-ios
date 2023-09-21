@@ -1,7 +1,7 @@
 # import '../fragments/NextPaginationFragment'
 
 query Activities($after: String) {
-  listActivities(first: 20, after: $after) {
+  listActivities(first: 100, after: $after) {
     pageInfo {
       ...NextPaginationFragment
     }

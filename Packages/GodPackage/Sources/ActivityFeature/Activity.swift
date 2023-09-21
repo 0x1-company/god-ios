@@ -18,7 +18,6 @@ public struct ActivityLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case refreshable
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
     case activityButtonTapped(God.ActivitiesQuery.Data.ListActivities.Edge)
     case destination(PresentationAction<Destination.Action>)
@@ -41,10 +40,6 @@ public struct ActivityLogic: Reducer {
           await send(.activitiesResponse(.failure(error)))
         }
         .cancellable(id: Cancel.activities)
-
-      case .refreshable:
-        Task.cancel(id: Cancel.activities)
-        return .send(.onTask)
 
       case let .activitiesResponse(.success(data)):
         state.edges = data.listActivities.edges
@@ -132,7 +127,6 @@ public struct ActivityView: View {
       }
       .listStyle(.plain)
       .task { await viewStore.send(.onTask).finish() }
-      .refreshable { await viewStore.send(.refreshable).finish() }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /ActivityLogic.Destination.State.profile,
