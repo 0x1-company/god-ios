@@ -30,6 +30,10 @@ public struct ShopLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case store
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -38,6 +42,7 @@ public struct ShopLogic: Reducer {
         return .run { send in
           await storeRequest(send: send)
         }
+        .cancellable(id: Cancel.store, cancelInFlight: true)
       case let .storeResponse(.success(data)):
         state.items = data.store.items
         state.coinBalance = data.currentUser.wallet?.coinBalance ?? 0
@@ -70,7 +75,10 @@ public struct ShopLogic: Reducer {
         }
       case .purchaseResponse(.success):
         state.alert = .purchaseThreeRandomPolls
-        return .none
+        return .run { send in
+          await storeRequest(send: send)
+        }
+        .cancellable(id: Cancel.store, cancelInFlight: true)
 
       case .purchaseResponse(.failure):
         return .none
@@ -82,9 +90,7 @@ public struct ShopLogic: Reducer {
 
       case .alert(.presented(.confirmOkay)):
         state.alert = nil
-        return .run { send in
-          await storeRequest(send: send)
-        }
+        return .none
 
       case .alert:
         return .none
@@ -105,10 +111,10 @@ public struct ShopLogic: Reducer {
   private func storeRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.store() {
-        await send(.storeResponse(.success(data)))
+        await send(.storeResponse(.success(data)), animation: .default)
       }
     } catch {
-      await send(.storeResponse(.failure(error)))
+      await send(.storeResponse(.failure(error)), animation: .default)
     }
   }
 }
