@@ -33,6 +33,7 @@ public struct AppDelegateLogic: Reducer {
         firebaseCore.configure()
         await withThrowingTaskGroup(of: Void.self) { group in
           group.addTask {
+            print("for await event in userNotifications.delegate() {")
             for await event in userNotifications.delegate() {
               await send(.userNotifications(event))
             }
@@ -52,6 +53,7 @@ public struct AppDelegateLogic: Reducer {
 
     case let .didRegisterForRemoteNotifications(.success(tokenData)):
       let token = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
+      print("didRegisterForRemoteNotifications: \(token)")
       let input = God.CreateFirebaseRegistrationTokenInput(token: token)
       return .run { _ in
         #if DEBUG
