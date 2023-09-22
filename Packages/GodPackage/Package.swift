@@ -73,6 +73,7 @@ let package = Package(
       .product(name: "FirestoreClient", package: "DependencyPackage"),
       .product(name: "FirebaseCoreClient", package: "DependencyPackage"),
       .product(name: "UserNotificationClient", package: "CupertinoPackage"),
+      .product(name: "FirebaseMessagingClient", package: "DependencyPackage"),
     ]),
     .target(name: "CashOutFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-ios"),
