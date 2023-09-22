@@ -8,7 +8,6 @@ public extension DependencyValues {
   }
 }
 
-
 extension FirebaseMessagingClient: TestDependencyKey {
   public static let testValue = Self(
     delegate: unimplemented("\(Self.self).delegate", placeholder: .finished),
