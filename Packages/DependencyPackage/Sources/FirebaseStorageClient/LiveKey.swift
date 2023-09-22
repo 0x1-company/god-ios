@@ -1,6 +1,6 @@
 import Dependencies
-import Foundation
 import FirebaseStorage
+import Foundation
 
 extension FirebaseStorageClient: DependencyKey {
   public static let liveValue: Self = {
