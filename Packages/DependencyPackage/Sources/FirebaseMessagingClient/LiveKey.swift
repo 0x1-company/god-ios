@@ -9,6 +9,9 @@ extension FirebaseMessagingClient: DependencyKey {
         Messaging.messaging().delegate = delegate
         continuation.onTermination = { _ in }
       }
+    },
+    setAPNSToken: { apnsToken in
+      Messaging.messaging().apnsToken = apnsToken
     }
   )
 }

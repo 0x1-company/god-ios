@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import FirebaseAuthClient
 import FirebaseCoreClient
+import FirebaseMessagingClient
 import God
 import GodClient
 import UIKit
@@ -25,6 +26,7 @@ public struct AppDelegateLogic: Reducer {
   @Dependency(\.userNotifications) var userNotifications
   @Dependency(\.application.registerForRemoteNotifications) var registerForRemoteNotifications
   @Dependency(\.godClient.createFirebaseRegistrationToken) var createFirebaseRegistrationToken
+  @Dependency(\.firebaseMessaging) var firebaseMessaging
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
@@ -33,9 +35,13 @@ public struct AppDelegateLogic: Reducer {
         firebaseCore.configure()
         await withThrowingTaskGroup(of: Void.self) { group in
           group.addTask {
-            print("for await event in userNotifications.delegate() {")
             for await event in userNotifications.delegate() {
               await send(.userNotifications(event))
+            }
+          }
+          group.addTask {
+            for await _ in firebaseMessaging.delegate() {
+              print("for await delegate in firebaseMessaging.delegate()")
             }
           }
           group.addTask {
@@ -61,6 +67,7 @@ public struct AppDelegateLogic: Reducer {
         #else
           firebaseAuth.setAPNSToken(tokenData, .prod)
         #endif
+        firebaseMessaging.setAPNSToken(tokenData)
         _ = try await createFirebaseRegistrationToken(input)
       }
 
