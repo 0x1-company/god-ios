@@ -1,7 +1,10 @@
+import AsyncValue
 import ButtonStyles
 import Colors
 import ComposableArchitecture
 import FirebaseAuthClient
+import God
+import GodClient
 import LabeledButton
 import ManageAccountFeature
 import SwiftUI
@@ -11,25 +14,148 @@ public struct ProfileEditLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    public struct UserProfile: Equatable {
+      var firstName: String
+      var lastName: String
+      var username: String?
+    }
+
     @PresentationState var manageAccount: ManageAccountLogic.State?
+    @PresentationState var alert: AlertState<Action.Alert>?
+    var user = AsyncValue<UserProfile>.none
+    var isUserProfileChanges: Bool {
+      if case let .success(currentUser) = user {
+        return firstName != currentUser.firstName ||
+          lastName != currentUser.lastName ||
+          username != currentUser.username
+      }
+      return false
+    }
+
+    @BindingState var firstName: String = ""
+    @BindingState var lastName: String = ""
+    @BindingState var username: String = ""
+
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action: Equatable, BindableAction {
+    case onTask
+    case cancelEditButtonTapped
+    case saveButtonTapped
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
+    case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
+    case binding(BindingAction<State>)
+
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
     case logoutButtonTapped
     case closeButtonTapped
     case manageAccount(PresentationAction<ManageAccountLogic.Action>)
+    case alert(PresentationAction<Alert>)
+
+    public enum Alert: Equatable {
+      public enum NameCanOnlyBeChangedOnce: Equatable {
+        case changeNameButtonTapped
+        case cancelButtonTapped
+      }
+
+      public enum ChangesNotSaved: Equatable {
+        case discardChangesButtonTapped
+        case cancelButtonTapped
+      }
+
+      case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
+      case changesNotSaved(ChangesNotSaved)
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
+  @Dependency(\.godClient) var godClient
+
+  private enum CancelId {
+    case currentUserRequest
+  }
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+        .cancellable(id: CancelId.currentUserRequest)
+
+      case .cancelEditButtonTapped:
+        state.alert = .changesNotSaved()
+        return .none
+
+      case .saveButtonTapped:
+        guard case let .success(currentUser) = state.user else { return .none }
+        return .merge(
+          .run { [state] send in
+            if state.username != currentUser.username {
+              let data = try await godClient.updateUsername(.init(username: state.username))
+              await send(.updateUsernameResponse(.success(data)))
+            }
+          } catch: { error, send in
+            await send(.updateUsernameResponse(.failure(error)))
+          },
+          .run { [state] send in
+            if state.firstName != currentUser.firstName ||
+              state.lastName != currentUser.lastName
+            {
+              let data = try await godClient.updateUserProfile(.init(
+                firstName: state.firstName != currentUser.firstName ? .some(state.firstName) : .null,
+                lastName: state.lastName != currentUser.lastName ? .some(state.lastName) : .null
+              ))
+              await send(.updateUserProfileResponse(.success(data)))
+            }
+          } catch: { error, send in
+            await send(.updateUserProfileResponse(.failure(error)))
+          }
+        )
+
+      case let .currentUserResponse(.success(response)):
+        let responseUser = response.currentUser
+        state.user = .success(.init(
+          firstName: responseUser.firstName,
+          lastName: responseUser.lastName,
+          username: responseUser.username
+        ))
+        state.firstName = responseUser.firstName
+        state.lastName = responseUser.lastName
+        state.username = responseUser.username ?? ""
+        return .none
+
+      case .currentUserResponse(.failure):
+        return .none
+
+      case let .updateUsernameResponse(.success(response)):
+        if let username = response.updateUsername.username {
+          state.username = username
+        }
+        return .none
+
+      case .updateUsernameResponse(.failure):
+        return .none
+
+      case let .updateUserProfileResponse(.success(response)):
+        state.firstName = response.updateUserProfile.firstName
+        state.lastName = response.updateUserProfile.lastName
+        return .none
+
+      case .updateUserProfileResponse(.failure):
+        return .none
+
       case .restorePurchasesButtonTapped:
         return .none
 
@@ -50,6 +176,22 @@ public struct ProfileEditLogic: Reducer {
 
       case .manageAccount:
         return .none
+      case .alert(.presented(.changesNotSaved(.discardChangesButtonTapped))):
+        guard case let .success(user) = state.user else {
+          assertionFailure()
+          return .none
+        }
+        state.firstName = user.firstName
+        state.lastName = user.lastName
+        state.username = user.username ?? ""
+        return .none
+      case .alert(.presented(.nameCanOnlyBeChangedOnce(.changeNameButtonTapped))):
+        // TODO: 一度しか変更できません
+        return .none
+      case .alert:
+        return .none
+      case .binding:
+        return .none
       }
     }
     .ifLet(\.$manageAccount, action: /Action.manageAccount) {
@@ -64,10 +206,6 @@ public struct ProfileEditView: View {
   public init(store: StoreOf<ProfileEditLogic>) {
     self.store = store
   }
-
-  @State private var firstName: String = "Tomoki"
-  @State private var lastName: String = "Tsukiyama"
-  @State private var username: String = "tomokisun"
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -85,7 +223,54 @@ public struct ProfileEditView: View {
                 .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
             )
 
-          userSettingsSection
+          VStack(alignment: .center, spacing: 0) {
+            GodTextField(
+              text: viewStore.$firstName,
+              fieldName: "First Name"
+            )
+
+            separator
+
+            GodTextField(
+              text: viewStore.$lastName,
+              fieldName: "Last Name"
+            )
+
+            separator
+
+            GodTextField(
+              text: viewStore.$username,
+              fieldName: "username"
+            )
+
+            separator
+
+            Button(action: {}, label: {
+              HStack(alignment: .center, spacing: 0) {
+                Text("Gender")
+                  .font(.body)
+                  .foregroundColor(.godTextSecondaryLight)
+                  .frame(width: 108, alignment: .leading)
+
+                Text("Boy")
+                  .multilineTextAlignment(.leading)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .font(.body)
+                  .foregroundColor(.godBlack)
+
+                Text(Image(systemName: "chevron.right"))
+                  .font(.body)
+                  .foregroundColor(.godTextSecondaryLight)
+              }
+              .padding(.horizontal, 12)
+              .frame(maxWidth: .infinity)
+              .frame(height: 52)
+            })
+          }
+          .overlay(
+            RoundedRectangle(cornerRadius: 16)
+              .stroke(Color.godSeparator)
+          )
 
           VStack(alignment: .leading, spacing: 8) {
             Text("SCHOOL", bundle: .module)
@@ -168,13 +353,29 @@ public struct ProfileEditView: View {
       .navigationTitle(Text("Edit Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItem(placement: .navigationBarLeading) {
-          Button("Close") {
-            viewStore.send(.closeButtonTapped)
+        if viewStore.state.isUserProfileChanges {
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button("Cancel") {
+              viewStore.send(.cancelEditButtonTapped)
+            }
+            .foregroundColor(.primary)
           }
-          .foregroundColor(.primary)
+          ToolbarItem(placement: .navigationBarTrailing) {
+            Button("Save") {
+              viewStore.send(.saveButtonTapped)
+            }
+            .foregroundColor(.primary)
+          }
+        } else {
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button("Close") {
+              viewStore.send(.closeButtonTapped)
+            }
+            .foregroundColor(.primary)
+          }
         }
       }
+      .task { await viewStore.send(.onTask).finish() }
       .sheet(
         store: store.scope(
           state: \.$manageAccount,
@@ -186,6 +387,7 @@ public struct ProfileEditView: View {
           }
         }
       )
+      .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
     }
   }
 
@@ -195,15 +397,18 @@ public struct ProfileEditView: View {
       .frame(maxWidth: .infinity)
   }
 
-  private var userSettingsSection: some View {
-    VStack(alignment: .center, spacing: 0) {
+  private struct GodTextField: View {
+    @Binding var text: String
+    var fieldName: String
+
+    var body: some View {
       HStack(alignment: .center, spacing: 0) {
-        Text("First Name")
+        Text(fieldName)
           .font(.body)
           .foregroundColor(.godTextSecondaryLight)
           .frame(width: 108, alignment: .leading)
 
-        TextField("", text: $firstName)
+        TextField("", text: $text)
           .multilineTextAlignment(.leading)
           .textFieldStyle(PlainTextFieldStyle())
           .font(.body)
@@ -212,71 +417,39 @@ public struct ProfileEditView: View {
       .padding(.horizontal, 12)
       .frame(maxWidth: .infinity)
       .frame(height: 52)
-
-      separator
-
-      HStack(alignment: .center, spacing: 0) {
-        Text("Last Name")
-          .font(.body)
-          .foregroundColor(.godTextSecondaryLight)
-          .frame(width: 108, alignment: .leading)
-
-        TextField("", text: $lastName)
-          .multilineTextAlignment(.leading)
-          .textFieldStyle(PlainTextFieldStyle())
-          .font(.body)
-          .foregroundColor(.godBlack)
-      }
-      .padding(.horizontal, 12)
-      .frame(maxWidth: .infinity)
-      .frame(height: 52)
-
-      separator
-
-      HStack(alignment: .center, spacing: 0) {
-        Text("Username")
-          .font(.body)
-          .foregroundColor(.godTextSecondaryLight)
-          .frame(width: 108, alignment: .leading)
-
-        TextField("", text: $username)
-          .multilineTextAlignment(.leading)
-          .textFieldStyle(PlainTextFieldStyle())
-          .font(.body)
-          .foregroundColor(.godBlack)
-      }
-      .padding(.horizontal, 12)
-      .frame(maxWidth: .infinity)
-      .frame(height: 52)
-
-      separator
-
-      Button(action: {}, label: {
-        HStack(alignment: .center, spacing: 0) {
-          Text("Gender")
-            .font(.body)
-            .foregroundColor(.godTextSecondaryLight)
-            .frame(width: 108, alignment: .leading)
-
-          Text("Boy")
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .font(.body)
-            .foregroundColor(.godBlack)
-
-          Text(Image(systemName: "chevron.right"))
-            .font(.body)
-            .foregroundColor(.godTextSecondaryLight)
-        }
-        .padding(.horizontal, 12)
-        .frame(maxWidth: .infinity)
-        .frame(height: 52)
-      })
     }
-    .overlay(
-      RoundedRectangle(cornerRadius: 16)
-        .stroke(Color.godSeparator)
-    )
+  }
+}
+
+private extension AlertState where Action == ProfileEditLogic.Action.Alert {
+  static func nameCanOnlyBeChangedOnce() -> Self {
+    Self {
+      TextState("ちょっと待って！")
+    } actions: {
+      ButtonState(role: .cancel, action: .nameCanOnlyBeChangedOnce(.cancelButtonTapped)) {
+        TextState("キャンセル")
+      }
+      ButtonState(role: .destructive, action: .nameCanOnlyBeChangedOnce(.changeNameButtonTapped)) {
+        TextState("名前を変更")
+      }
+    } message: {
+      TextState("名前は一度しか変更できません")
+    }
+  }
+
+  static func changesNotSaved() -> Self {
+    Self {
+      TextState("本当に大丈夫？")
+    } actions: {
+      ButtonState(role: .destructive, action: .changesNotSaved(.discardChangesButtonTapped)) {
+        TextState("変更を破棄")
+      }
+      ButtonState(role: .cancel, action: .changesNotSaved(.cancelButtonTapped)) {
+        TextState("キャンセル")
+      }
+    } message: {
+      TextState("保存していない変更があります")
+    }
   }
 }
 

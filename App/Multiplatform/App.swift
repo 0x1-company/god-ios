@@ -62,7 +62,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
   ) {
-    print("didRegisterForRemoteNotificationsWithDeviceToken")
     store.send(.appDelegate(.didRegisterForRemoteNotifications(.success(deviceToken))))
   }
 

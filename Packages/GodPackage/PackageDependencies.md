@@ -83,6 +83,8 @@ graph TD;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileEditFeature-->UserDefaultsClient;
     ProfileEditFeature-->FirebaseAuthClient;
+    ProfileEditFeature-->AsyncValue;
+    ProfileEditFeature-->GodClient;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
     ProfileFeature-->ProfileShareFeature;
