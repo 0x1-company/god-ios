@@ -1,6 +1,6 @@
+import FirebaseMessaging
 import Foundation
 import UserNotifications
-import FirebaseMessaging
 
 public struct FirebaseMessagingClient {
   public var delegate: @Sendable () -> AsyncStream<Void>

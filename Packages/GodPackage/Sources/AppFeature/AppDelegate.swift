@@ -82,7 +82,7 @@ public struct AppDelegateLogic: Reducer {
         _ = firebaseMessaging.appDidReceiveMessage(notification.request)
         completionHandler([.list, .sound, .badge, .banner])
       }
-      
+
     case let .userNotifications(.didReceiveResponse(response, completionHandler)):
       return .run { _ in
         _ = firebaseMessaging.appDidReceiveMessage(response.notification.request)
