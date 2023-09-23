@@ -22,7 +22,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
     case friendsResponse(TaskResult<God.FriendsQuery.Data>)
     case binding(BindingAction<State>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case purchase(userId: String)
     }
@@ -60,7 +60,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
       case .binding:
         return .none
-        
+
       case .delegate:
         return .none
       }
