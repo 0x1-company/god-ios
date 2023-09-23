@@ -27,13 +27,49 @@
     "ADDED" : {
 
     },
+    "Are you sure?" : {
+
+    },
+    "Block" : {
+
+    },
+    "Block User" : {
+
+    },
+    "Bullying" : {
+
+    },
+    "Cancel" : {
+
+    },
     "COINS" : {
+
+    },
+    "Does not go to my school" : {
 
     },
     "EDIT PROFILE" : {
 
     },
     "Friends" : {
+
+    },
+    "I do not like them" : {
+
+    },
+    "Inappropriate photo" : {
+
+    },
+    "May be under 13 years old" : {
+
+    },
+    "Other" : {
+
+    },
+    "Please select a reason" : {
+
+    },
+    "Pretending to be someone else" : {
 
     },
     "Profile" : {
@@ -45,6 +81,9 @@
           }
         }
       }
+    },
+    "Report User" : {
+
     },
     "Share Profile" : {
       "localizations" : {
@@ -79,6 +118,9 @@
           }
         }
       }
+    },
+    "You won't see this user again in the app." : {
+
     }
   },
   "version" : "1.0"
