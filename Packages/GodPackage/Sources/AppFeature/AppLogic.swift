@@ -27,7 +27,7 @@ public struct AppLogic: Reducer {
       var isForceUpdate = AsyncValue<Bool>.none
       var isMaintenance = AsyncValue<Bool>.none
     }
-    
+
     public init() {
       @Dependency(\.userDefaults) var userDefaults
       view = userDefaults.onboardCompleted() ? View.State.navigation() : View.State.onboard()
