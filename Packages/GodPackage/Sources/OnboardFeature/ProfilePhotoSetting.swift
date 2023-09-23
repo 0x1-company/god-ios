@@ -28,7 +28,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
       case nextScreen
     }
   }
-  
+
   @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.firebaseStorage) var firebaseStorage
 
@@ -38,10 +38,10 @@ public struct ProfilePhotoSettingLogic: Reducer {
       switch action {
       case .skipButtonTapped:
         return .send(.delegate(.nextScreen))
-        
+
       case .nextButtonTapped:
         return .send(.delegate(.nextScreen))
-        
+
       case .binding:
         guard let photoPickerItem = state.photoPickerItems.first else { return .none }
         return .run { send in
@@ -49,7 +49,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
             try await photoPickerItem.loadTransferable(type: Data.self)
           }))
         }
-        
+
       case let .loadTransferableResponse(.success(.some(data))):
         state.image = UIImage(data: data)
         guard let currentUser = firebaseAuth.currentUser() else { return .none }
@@ -61,10 +61,10 @@ public struct ProfilePhotoSettingLogic: Reducer {
 
       case .loadTransferableResponse:
         return .none
-        
+
       case .uploadResponse(.success):
         return .none
-        
+
       case .uploadResponse:
         return .none
 
@@ -109,7 +109,7 @@ public struct ProfilePhotoSettingView: View {
           .foregroundColor(.secondary)
 
         Spacer()
-        
+
         PhotosPicker(
           selection: viewStore.$photoPickerItems,
           maxSelectionCount: 1,
