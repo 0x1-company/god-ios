@@ -1,8 +1,8 @@
 import ButtonStyles
 import Colors
 import God
-import SwiftUI
 import NameImage
+import SwiftUI
 
 public struct ProfileSection: View {
   let imageURL: String
@@ -15,7 +15,7 @@ public struct ProfileSection: View {
   let schoolShortName: String?
   let grade: String?
   let editProfile: (() -> Void)?
-  
+
   public init(imageURL: String, friendsCount: Int, votedCount: Int, username: String, firstName: String, lastName: String, displayName: String, schoolShortName: String?, grade: String?, editProfile: (() -> Void)? = nil) {
     self.imageURL = imageURL
     self.friendsCount = friendsCount
@@ -101,4 +101,3 @@ public struct ProfileSection: View {
     .background(Color.godWhite)
   }
 }
-

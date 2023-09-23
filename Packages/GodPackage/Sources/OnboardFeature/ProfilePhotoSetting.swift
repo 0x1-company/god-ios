@@ -3,10 +3,10 @@ import Colors
 import ComposableArchitecture
 import FirebaseStorage
 import FirebaseStorageClient
-import PhotosUI
-import SwiftUI
 import God
 import GodClient
+import PhotosUI
+import SwiftUI
 
 public struct ProfilePhotoSettingLogic: Reducer {
   public init() {}
@@ -14,7 +14,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
   public struct State: Equatable {
     @BindingState var photoPickerItems: [PhotosPickerItem] = []
     var image: UIImage?
-    
+
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     public init() {}
   }
@@ -81,11 +81,11 @@ public struct ProfilePhotoSettingLogic: Reducer {
 
       case .uploadResponse:
         return .none
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
-        
+
       case .currentUserResponse(.failure):
         return .none
 
