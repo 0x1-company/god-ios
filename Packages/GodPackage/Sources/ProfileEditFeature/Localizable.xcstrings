@@ -13,11 +13,28 @@
     "Boy" : {
 
     },
+    "Cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
+    },
     "Class of 2026" : {
 
     },
     "Close" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
+      }
     },
     "Edit Profile" : {
 
@@ -26,7 +43,14 @@
 
     },
     "Gender" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "性別"
+          }
+        }
+      }
     },
     "Las Vegas Academy of Arts" : {
 
@@ -35,7 +59,14 @@
 
     },
     "Logout" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログアウト"
+          }
+        }
+      }
     },
     "Manage Account" : {
 
@@ -43,13 +74,41 @@
     "Restore Purchases" : {
 
     },
+    "Save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
+    },
     "SCHOOL" : {
 
     },
-    "Username" : {
+    "You are signed in as 19175926188" : {
 
     },
-    "You are signed in as 19175926188" : {
+    "キャンセル" : {
+
+    },
+    "ちょっと待って！" : {
+
+    },
+    "保存していない変更があります" : {
+
+    },
+    "名前は一度しか変更できません" : {
+
+    },
+    "名前を変更" : {
+
+    },
+    "変更を破棄" : {
+
+    },
+    "本当に大丈夫？" : {
 
     }
   },
