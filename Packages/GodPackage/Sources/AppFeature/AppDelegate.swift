@@ -42,6 +42,11 @@ public struct AppDelegateLogic: Reducer {
           group.addTask {
             for await _ in firebaseMessaging.delegate() {
               print("for await delegate in firebaseMessaging.delegate()")
+              do {
+                let token = try await firebaseMessaging.token()
+                let input = God.CreateFirebaseRegistrationTokenInput(token: token)
+                _ = try await createFirebaseRegistrationToken(input)
+              }
             }
           }
           group.addTask {
@@ -58,9 +63,6 @@ public struct AppDelegateLogic: Reducer {
       return .none
 
     case let .didRegisterForRemoteNotifications(.success(tokenData)):
-      let token = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
-      print("didRegisterForRemoteNotifications: \(token)")
-      let input = God.CreateFirebaseRegistrationTokenInput(token: token)
       return .run { _ in
         #if DEBUG
           firebaseAuth.setAPNSToken(tokenData, .sandbox)
@@ -68,12 +70,23 @@ public struct AppDelegateLogic: Reducer {
           firebaseAuth.setAPNSToken(tokenData, .prod)
         #endif
         firebaseMessaging.setAPNSToken(tokenData)
-        _ = try await createFirebaseRegistrationToken(input)
+        do {
+          let token = try await firebaseMessaging.token()
+          let input = God.CreateFirebaseRegistrationTokenInput(token: token)
+          _ = try await createFirebaseRegistrationToken(input)
+        }
       }
 
-    case let .userNotifications(.willPresentNotification(_, completionHandler)):
+    case let .userNotifications(.willPresentNotification(notification, completionHandler)):
       return .run { _ in
+        _ = firebaseMessaging.appDidReceiveMessage(notification.request)
         completionHandler([.list, .sound, .badge, .banner])
+      }
+      
+    case let .userNotifications(.didReceiveResponse(response, completionHandler)):
+      return .run { _ in
+        _ = firebaseMessaging.appDidReceiveMessage(response.notification.request)
+        completionHandler()
       }
 
     case .userNotifications:

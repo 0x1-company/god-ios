@@ -6,8 +6,8 @@ import Build
 import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthClient
+import FirebaseMessaging
 import GodClient
-import os
 import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -62,6 +62,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
   ) {
+    print("didRegisterForRemoteNotificationsWithDeviceToken")
     store.send(.appDelegate(.didRegisterForRemoteNotifications(.success(deviceToken))))
   }
 
@@ -76,6 +77,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didReceiveRemoteNotification userInfo: [AnyHashable: Any]
   ) async -> UIBackgroundFetchResult {
+    Messaging.messaging().appDidReceiveMessage(userInfo)
     let result = firebaseAuth.canHandleNotification(userInfo)
     return result ? .noData : .newData
   }
