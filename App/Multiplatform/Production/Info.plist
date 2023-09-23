@@ -106,5 +106,7 @@
 	<string>Light</string>
 	<key>endpointURL</key>
 	<string>https://api.godapp.jp/graphql</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 </dict>
 </plist>
