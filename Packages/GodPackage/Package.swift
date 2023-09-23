@@ -140,11 +140,13 @@ let package = Package(
       "HowItWorksFeature",
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
+      .product(name: "PhotosClient", package: "CupertinoPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
+      .product(name: "FirebaseStorageClient", package: "DependencyPackage"),
       .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
     ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [

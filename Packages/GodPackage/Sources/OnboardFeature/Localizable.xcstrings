@@ -53,8 +53,25 @@
         }
       }
     },
+    "Change photo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を変更する"
+          }
+        }
+      }
+    },
     "Choose a photo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フォトライブラリから選択"
+          }
+        }
+      }
     },
     "Choose a username" : {
 
@@ -327,9 +344,6 @@
           }
         }
       }
-    },
-    "Take a photo" : {
-
     },
     "title" : {
 
