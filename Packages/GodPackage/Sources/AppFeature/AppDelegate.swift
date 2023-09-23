@@ -13,6 +13,7 @@ public struct AppDelegateLogic: Reducer {
     case didFinishLaunching
     case didRegisterForRemoteNotifications(TaskResult<Data>)
     case userNotifications(UserNotificationClient.DelegateEvent)
+    case messaging(FirebaseMessagingClient.DelegateAction)
     case configurationForConnecting(UIApplicationShortcutItem?)
     case delegate(Delegate)
 
@@ -40,13 +41,8 @@ public struct AppDelegateLogic: Reducer {
             }
           }
           group.addTask {
-            for await _ in firebaseMessaging.delegate() {
-              print("for await delegate in firebaseMessaging.delegate()")
-              do {
-                let token = try await firebaseMessaging.token()
-                let input = God.CreateFirebaseRegistrationTokenInput(token: token)
-                _ = try await createFirebaseRegistrationToken(input)
-              }
+            for await event in firebaseMessaging.delegate() {
+              await send(.messaging(event))
             }
           }
           group.addTask {
@@ -70,11 +66,7 @@ public struct AppDelegateLogic: Reducer {
           firebaseAuth.setAPNSToken(tokenData, .prod)
         #endif
         firebaseMessaging.setAPNSToken(tokenData)
-        do {
-          let token = try await firebaseMessaging.token()
-          let input = God.CreateFirebaseRegistrationTokenInput(token: token)
-          _ = try await createFirebaseRegistrationToken(input)
-        }
+        await createFirebaseRegistrationTokenRequest()
       }
 
     case let .userNotifications(.willPresentNotification(notification, completionHandler)):
@@ -91,12 +83,30 @@ public struct AppDelegateLogic: Reducer {
 
     case .userNotifications:
       return .none
+      
+    case .messaging(.didReceiveRegistrationToken):
+      return .run { _ in
+        await createFirebaseRegistrationTokenRequest()
+      }
+      
+    case .messaging:
+      return .none
 
     case .configurationForConnecting:
       return .none
 
     case .delegate:
       return .none
+    }
+  }
+  
+  func createFirebaseRegistrationTokenRequest() async {
+    do {
+      let token = try await firebaseMessaging.token()
+      let input = God.CreateFirebaseRegistrationTokenInput(token: token)
+      _ = try await createFirebaseRegistrationToken(input)
+    } catch {
+      print("createFirebaseRegistrationTokenRequest: \(error)")
     }
   }
 }
