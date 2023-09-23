@@ -69,9 +69,7 @@ public struct ShopLogic: Reducer {
           storeItemId: item.id
         )
         return .run { send in
-          await send(.purchaseResponse(TaskResult {
-            try await godClient.purchase(input)
-          }))
+          await purchaseRequest(send: send, input: input)
         }
       case .purchaseResponse(.success):
         state.alert = .purchaseSuccess
@@ -98,6 +96,18 @@ public struct ShopLogic: Reducer {
       case .pickFriend(.dismiss):
         state.pickFriend = nil
         return .none
+        
+      case let .pickFriend(.presented(.delegate(.purchase(userId)))):
+        guard let item = state.items.first(where: { $0.coinAmount == 300 })
+        else { return .none }
+        let input = God.PurchaseInput(
+          coinAmount: item.coinAmount,
+          storeItemId: item.id,
+          targetUserId: .init(stringLiteral: userId)
+        )
+        return .run { send in
+          await purchaseRequest(send: send, input: input)
+        }
 
       case .pickFriend:
         return .none
@@ -116,6 +126,12 @@ public struct ShopLogic: Reducer {
     } catch {
       await send(.storeResponse(.failure(error)), animation: .default)
     }
+  }
+  
+  private func purchaseRequest(send: Send<Action>, input: God.PurchaseInput) async {
+    await send(.purchaseResponse(TaskResult {
+      try await godClient.purchase(input)
+    }))
   }
 }
 
