@@ -101,10 +101,18 @@ public struct ActivityView: View {
       List {
         ForEach(viewStore.edges, id: \.cursor) { edge in
           HStack(alignment: .top, spacing: 16) {
-            NameImage(
-              familyName: edge.node.user.lastName,
-              givenName: edge.node.user.firstName
-            )
+            AsyncImage(url: URL(string: edge.node.user.imageURL)) { image in
+              image
+                .resizable()
+                .scaledToFill()
+                .frame(width: 42, height: 42)
+                .clipShape(Circle())
+            } placeholder: {
+              NameImage(
+                familyName: edge.node.user.lastName,
+                givenName: edge.node.user.firstName
+              )
+            }
 
             VStack(alignment: .leading, spacing: 4) {
               HStack(spacing: 0) {
