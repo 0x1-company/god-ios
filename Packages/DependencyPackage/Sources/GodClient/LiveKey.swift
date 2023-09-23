@@ -38,6 +38,10 @@ public extension GodClient {
         let query = God.ProfileQuery()
         return apolloClient.watch(query: query)
       },
+      usersBySchool: { schoolId in
+        let query = God.UsersBySchoolQuery(schoolId: schoolId, first: 20)
+        return apolloClient.watch(query: query)
+      },
       schools: {
         let query = God.SchoolsQuery(first: 100, after: .null)
         return apolloClient.watch(query: query)
