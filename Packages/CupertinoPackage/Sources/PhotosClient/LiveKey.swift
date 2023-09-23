@@ -21,7 +21,6 @@ extension PhotosClient: DependencyKey {
       return assets
     },
     requestImage: { asset, targetSize, contentMode, options in
-      print("PhotosClient: requestImage")
       return AsyncStream { continuation in
         PHImageManager.default().requestImage(
           for: asset,
@@ -29,8 +28,6 @@ extension PhotosClient: DependencyKey {
           contentMode: contentMode,
           options: options,
           resultHandler: { image, metadata in
-            print("PhotosClient: \(image)")
-            print("PhotosClient: \(metadata)")
             continuation.yield((image, metadata))
           }
         )
