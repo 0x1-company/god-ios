@@ -9,8 +9,8 @@ public struct FirebaseMessagingClient {
   public var appDidReceiveMessage: @Sendable (UNNotificationRequest) -> MessagingMessageInfo
 }
 
-extension FirebaseMessagingClient {
-  public enum DelegateAction: Equatable {
+public extension FirebaseMessagingClient {
+  enum DelegateAction: Equatable {
     case didReceiveRegistrationToken(fcmToken: String?)
   }
 }
