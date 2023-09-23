@@ -18,6 +18,7 @@ query Activities($after: String) {
         }
         userId
         user {
+          imageURL
           firstName
           lastName
           displayName {

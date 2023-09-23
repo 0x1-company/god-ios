@@ -1,6 +1,7 @@
 fragment FromSchoolCardFragment on User {
   id
   generation
+  imageURL
   displayName {
     ja
   }

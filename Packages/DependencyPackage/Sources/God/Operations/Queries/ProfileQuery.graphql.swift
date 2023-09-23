@@ -115,6 +115,8 @@ public extension God {
         public var lastName: String { __data["lastName"] }
         /// 表示名
         public var displayName: FriendFragment.DisplayName { __data["displayName"] }
+        /// プロフィール画像のURL
+        public var imageURL: String { __data["imageURL"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict

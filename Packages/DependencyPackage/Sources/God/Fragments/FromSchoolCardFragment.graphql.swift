@@ -6,7 +6,7 @@
 public extension God {
   struct FromSchoolCardFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment FromSchoolCardFragment on User { __typename id generation displayName { __typename ja } }"#
+      #"fragment FromSchoolCardFragment on User { __typename id generation imageURL displayName { __typename ja } }"#
     }
 
     public let __data: DataDict
@@ -17,6 +17,7 @@ public extension God {
       .field("__typename", String.self),
       .field("id", God.ID.self),
       .field("generation", Int?.self),
+      .field("imageURL", String.self),
       .field("displayName", DisplayName.self),
     ] }
 
@@ -24,6 +25,8 @@ public extension God {
     public var id: God.ID { __data["id"] }
     /// 年代
     public var generation: Int? { __data["generation"] }
+    /// プロフィール画像のURL
+    public var imageURL: String { __data["imageURL"] }
     /// 表示名
     public var displayName: DisplayName { __data["displayName"] }
 
