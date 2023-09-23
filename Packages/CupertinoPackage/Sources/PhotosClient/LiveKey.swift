@@ -21,7 +21,7 @@ extension PhotosClient: DependencyKey {
       return assets
     },
     requestImage: { asset, targetSize, contentMode, options in
-      return AsyncStream { continuation in
+      AsyncStream { continuation in
         PHImageManager.default().requestImage(
           for: asset,
           targetSize: targetSize,
