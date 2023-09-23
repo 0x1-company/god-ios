@@ -83,12 +83,12 @@ public struct AppDelegateLogic: Reducer {
 
     case .userNotifications:
       return .none
-      
+
     case .messaging(.didReceiveRegistrationToken):
       return .run { _ in
         await createFirebaseRegistrationTokenRequest()
       }
-      
+
     case .messaging:
       return .none
 
@@ -99,7 +99,7 @@ public struct AppDelegateLogic: Reducer {
       return .none
     }
   }
-  
+
   func createFirebaseRegistrationTokenRequest() async {
     do {
       let token = try await firebaseMessaging.token()
