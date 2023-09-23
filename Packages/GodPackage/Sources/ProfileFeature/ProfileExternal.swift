@@ -10,6 +10,9 @@ public struct ProfileExternalLogic: Reducer {
   public struct State: Equatable {
     var userId: String
     var user = AsyncValue<God.UserQuery.Data.User>.none
+    
+    @PresentationState var alert: AlertState<Action.Alert>?
+    @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
 
     public init(userId: String) {
       self.userId = userId
@@ -19,17 +22,36 @@ public struct ProfileExternalLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case closeButtonTapped
+    case blockButtonTapped
+    case reportButtonTapped
     case userResponse(TaskResult<God.UserQuery.Data>)
+    case alert(PresentationAction<Alert>)
+    case confirmationDialog(PresentationAction<ConfirmationDialog>)
+    
+    public enum Alert: Equatable {
+      case block
+    }
+    
+    public enum ConfirmationDialog: Equatable {
+      case inappropriatePhoto
+      case pretendingToBeSomeoneElse
+      case mayBeUnder13YearsOld
+      case doesNotGoYoMySchool
+      case bullying
+      case iDoNotLikeThem
+      case other
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  
+  enum Cancel { case currentUser }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
         state.user = .loading
         let userWhere = God.UserWhere(id: .init(stringLiteral: state.userId))
         return .run { send in
@@ -39,7 +61,12 @@ public struct ProfileExternalLogic: Reducer {
         } catch: { error, send in
           await send(.userResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.currentUser)
+        
+      case .closeButtonTapped:
+        return .run { _ in
+          await dismiss()
+        }
 
       case let .userResponse(.success(data)):
         state.user = .success(data.user)
@@ -50,10 +77,22 @@ public struct ProfileExternalLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-      case .closeButtonTapped:
-        return .run { _ in
-          await dismiss()
-        }
+        
+      case .blockButtonTapped:
+        state.confirmationDialog = nil
+        state.alert = .block
+        return .none
+        
+      case .reportButtonTapped:
+        state.alert = nil
+        state.confirmationDialog = .report
+        return .none
+        
+      case .alert:
+        return .none
+        
+      case .confirmationDialog:
+        return .none
       }
     }
   }
@@ -85,7 +124,6 @@ public struct ProfileExternalView: View {
           } else if case .loading = viewStore.user {
             ProgressView()
               .progressViewStyle(.circular)
-              .frame(width: .infinity, alignment: .center)
           }
           Divider()
 
@@ -95,7 +133,26 @@ public struct ProfileExternalView: View {
       .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
+      .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+          Menu {
+            Button {
+              viewStore.send(.blockButtonTapped)
+            } label: {
+              Text("Block User", bundle: .module)
+            }
+            Button {
+              viewStore.send(.reportButtonTapped)
+            } label: {
+              Text("Report User", bundle: .module)
+            }
+          } label: {
+            Image(systemName: "ellipsis")
+              .foregroundStyle(Color.secondary)
+          }
+        }
         ToolbarItem(placement: .topBarTrailing) {
           Button {
             viewStore.send(.closeButtonTapped)
@@ -109,13 +166,56 @@ public struct ProfileExternalView: View {
   }
 }
 
-struct ProfileExternalViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ProfileExternalView(
-      store: .init(
-        initialState: ProfileExternalLogic.State(userId: ""),
-        reducer: { ProfileExternalLogic() }
-      )
+#Preview {
+  ProfileExternalView(
+    store: .init(
+      initialState: ProfileExternalLogic.State(userId: ""),
+      reducer: { ProfileExternalLogic() }
     )
+  )
+}
+
+extension ConfirmationDialogState where Action == ProfileExternalLogic.Action.ConfirmationDialog {
+  static let report = Self {
+    TextState("Report User", bundle: .module)
+  } actions: {
+    ButtonState(action: .inappropriatePhoto) {
+      TextState("Inappropriate photo", bundle: .module)
+    }
+    ButtonState(action: .pretendingToBeSomeoneElse) {
+      TextState("Pretending to be someone else", bundle: .module)
+    }
+    ButtonState(action: .mayBeUnder13YearsOld) {
+      TextState("May be under 13 years old", bundle: .module)
+    }
+    ButtonState(action: .doesNotGoYoMySchool) {
+      TextState("Does not go to my school", bundle: .module)
+    }
+    ButtonState(action: .bullying) {
+      TextState("Bullying", bundle: .module)
+    }
+    ButtonState(action: .iDoNotLikeThem) {
+      TextState("I do not like them", bundle: .module)
+    }
+    ButtonState(action: .other) {
+      TextState("Other", bundle: .module)
+    }
+  } message: {
+    TextState("Please select a reason", bundle: .module)
+  }
+}
+
+extension AlertState where Action == ProfileExternalLogic.Action.Alert {
+  static let block = Self {
+    TextState("Are you sure?", bundle: .module)
+  } actions: {
+    ButtonState(role: .destructive, action: .block) {
+      TextState("Block", bundle: .module)
+    }
+    ButtonState(role: .cancel) {
+      TextState("Cancel", bundle: .module)
+    }
+  } message: {
+    TextState("You won't see this user again in the app.", bundle: .module)
   }
 }
