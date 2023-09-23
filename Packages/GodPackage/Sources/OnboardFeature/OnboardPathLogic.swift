@@ -80,7 +80,7 @@ public struct OnboardPathLogic: Reducer {
         return .none
 
       case .oneTimeCode(.delegate(.nextScreen)):
-        state.path.append(.firstNameSetting())
+        state.path.append(.lastNameSetting())
 
         if state.generation == nil, state.schoolId == nil {
           return .none
@@ -106,11 +106,11 @@ public struct OnboardPathLogic: Reducer {
         state.path.removeAll()
         return .none
 
-      case .firstNameSetting(.delegate(.nextScreen)):
-        state.path.append(.lastNameSetting())
-        return .none
-
       case .lastNameSetting(.delegate(.nextScreen)):
+        state.path.append(.firstNameSetting())
+        return .none
+        
+      case .firstNameSetting(.delegate(.nextScreen)):
         state.path.append(.usernameSetting())
         return .none
 
