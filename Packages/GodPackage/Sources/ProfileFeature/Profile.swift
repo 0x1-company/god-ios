@@ -127,9 +127,12 @@ public struct ProfileView: View {
         LazyVStack(alignment: .leading, spacing: 0) {
           if let data = viewStore.profile {
             ProfileSection(
+              imageURL: data.currentUser.imageURL,
               friendsCount: data.currentUser.friendsCount ?? 0,
               votedCount: data.currentUser.votedCount,
               username: data.currentUser.username ?? "",
+              firstName: data.currentUser.firstName,
+              lastName: data.currentUser.lastName,
               displayName: data.currentUser.displayName.ja,
               schoolShortName: data.currentUser.school?.shortName,
               grade: data.currentUser.grade

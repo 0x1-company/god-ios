@@ -21,10 +21,18 @@ public struct FriendsSection: View {
 
       ForEach(friends, id: \.self) { state in
         HStack(alignment: .center, spacing: 12) {
-          NameImage(
-            familyName: state.lastName,
-            givenName: state.firstName
-          )
+          AsyncImage(url: URL(string: state.imageURL)) { image in
+            image
+              .resizable()
+              .scaledToFill()
+              .frame(width: 42, height: 42)
+              .clipShape(Circle())
+          } placeholder: {
+            NameImage(
+              familyName: state.lastName,
+              givenName: state.firstName
+            )
+          }
 
           Text(state.displayName.ja)
             .frame(maxWidth: .infinity, alignment: .leading)

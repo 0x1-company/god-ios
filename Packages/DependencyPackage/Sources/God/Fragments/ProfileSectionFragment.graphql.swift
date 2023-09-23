@@ -6,7 +6,7 @@
 public extension God {
   struct ProfileSectionFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment ProfileSectionFragment on User { __typename id votedCount displayName { __typename ja } username generation friendsCount schoolId grade school { __typename id name shortName } }"#
+      #"fragment ProfileSectionFragment on User { __typename id votedCount imageURL displayName { __typename ja } firstName lastName username generation friendsCount schoolId grade school { __typename id name shortName } }"#
     }
 
     public let __data: DataDict
@@ -17,7 +17,10 @@ public extension God {
       .field("__typename", String.self),
       .field("id", God.ID.self),
       .field("votedCount", Int.self),
+      .field("imageURL", String.self),
       .field("displayName", DisplayName.self),
+      .field("firstName", String.self),
+      .field("lastName", String.self),
       .field("username", String?.self),
       .field("generation", Int?.self),
       .field("friendsCount", Int?.self),
@@ -30,8 +33,14 @@ public extension God {
     public var id: God.ID { __data["id"] }
     /// 投票された数
     public var votedCount: Int { __data["votedCount"] }
+    /// プロフィール画像のURL
+    public var imageURL: String { __data["imageURL"] }
     /// 表示名
     public var displayName: DisplayName { __data["displayName"] }
+    /// first name
+    public var firstName: String { __data["firstName"] }
+    /// last name
+    public var lastName: String { __data["lastName"] }
     /// username
     public var username: String? { __data["username"] }
     /// 年代

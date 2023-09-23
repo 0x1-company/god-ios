@@ -5,4 +5,5 @@ fragment FriendFragment on User {
   displayName {
     ja
   }
+  imageURL
 }

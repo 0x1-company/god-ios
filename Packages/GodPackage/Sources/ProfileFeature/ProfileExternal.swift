@@ -72,9 +72,12 @@ public struct ProfileExternalView: View {
         LazyVStack(alignment: .leading, spacing: 0) {
           if case let .success(user) = viewStore.user {
             ProfileSection(
+              imageURL: user.imageURL,
               friendsCount: user.friendsCount ?? 0,
               votedCount: user.votedCount,
               username: user.username ?? "",
+              firstName: user.firstName,
+              lastName: user.lastName,
               displayName: user.displayName.ja,
               schoolShortName: user.school?.shortName,
               grade: user.grade
@@ -82,6 +85,7 @@ public struct ProfileExternalView: View {
           } else if case .loading = viewStore.user {
             ProgressView()
               .progressViewStyle(.circular)
+              .frame(width: .infinity, alignment: .center)
           }
           Divider()
 

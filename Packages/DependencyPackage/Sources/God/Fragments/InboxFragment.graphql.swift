@@ -24,7 +24,7 @@ public extension God {
 
     /// ID
     public var id: God.ID { __data["id"] }
-    /// イニシャル
+    /// イニシャルを取得する。God Modeのみ。
     public var initial: String? { __data["initial"] }
     /// 既読かどうか
     public var isRead: Bool { __data["isRead"] }

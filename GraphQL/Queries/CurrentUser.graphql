@@ -6,6 +6,7 @@ query CurrentUser {
     firstName
     lastName
     username
+    imageURL
     generation
     gender
     friendsCount

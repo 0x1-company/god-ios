@@ -120,6 +120,8 @@ public extension God {
             public var id: God.ID { __data["id"] }
             /// 共通のフレンド数
             public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
+            /// プロフィール画像のURL
+            public var imageURL: String { __data["imageURL"] }
             /// 表示名
             public var displayName: FriendsOfFriendsCardFragment.DisplayName { __data["displayName"] }
 

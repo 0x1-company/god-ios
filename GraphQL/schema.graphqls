@@ -13,6 +13,9 @@ type Activity {
 
   """アクティビティの対象"""
   userId: String!
+
+  """vote id"""
+  voteId: String!
 }
 
 type ActivityConnection {
@@ -190,7 +193,7 @@ type InboxActivity {
   """ID"""
   id: ID!
 
-  """イニシャル"""
+  """イニシャルを取得する。God Modeのみ。"""
   initial: String
 
   """既読かどうか"""
@@ -200,6 +203,9 @@ type InboxActivity {
 
   """アクティビティの対象"""
   userId: String!
+
+  """vote id"""
+  voteId: String!
 }
 
 type InboxActivityConnection {
@@ -256,6 +262,7 @@ type Mutation {
 
   """投票する"""
   createVote(input: CreateVoteInput!): Vote!
+  delRedis(key: String!): Int!
   purchase(input: PurchaseInput!): Boolean!
 
   """Activityを既読にする"""
@@ -510,6 +517,9 @@ type User {
 
   """user id"""
   id: ID!
+
+  """プロフィール画像のURL"""
+  imageURL: String!
 
   """last name"""
   lastName: String!

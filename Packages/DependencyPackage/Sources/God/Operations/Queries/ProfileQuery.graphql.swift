@@ -49,8 +49,14 @@ public extension God {
         public var id: God.ID { __data["id"] }
         /// 投票された数
         public var votedCount: Int { __data["votedCount"] }
+        /// プロフィール画像のURL
+        public var imageURL: String { __data["imageURL"] }
         /// 表示名
         public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
+        /// first name
+        public var firstName: String { __data["firstName"] }
+        /// last name
+        public var lastName: String { __data["lastName"] }
         /// username
         public var username: String? { __data["username"] }
         /// 年代
@@ -109,6 +115,8 @@ public extension God {
         public var lastName: String { __data["lastName"] }
         /// 表示名
         public var displayName: FriendFragment.DisplayName { __data["displayName"] }
+        /// プロフィール画像のURL
+        public var imageURL: String { __data["imageURL"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict

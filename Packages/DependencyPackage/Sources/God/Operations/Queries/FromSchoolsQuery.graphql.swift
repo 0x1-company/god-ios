@@ -125,6 +125,8 @@ public extension God {
             public var id: God.ID { __data["id"] }
             /// 年代
             public var generation: Int? { __data["generation"] }
+            /// プロフィール画像のURL
+            public var imageURL: String { __data["imageURL"] }
             /// 表示名
             public var displayName: FromSchoolCardFragment.DisplayName { __data["displayName"] }
 

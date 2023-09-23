@@ -2,28 +2,27 @@ import ButtonStyles
 import Colors
 import God
 import SwiftUI
+import NameImage
 
 public struct ProfileSection: View {
+  let imageURL: String
   let friendsCount: Int
   let votedCount: Int
   let username: String
+  let firstName: String
+  let lastName: String
   let displayName: String
   let schoolShortName: String?
   let grade: String?
   let editProfile: (() -> Void)?
-
-  public init(
-    friendsCount: Int,
-    votedCount: Int,
-    username: String,
-    displayName: String,
-    schoolShortName: String?,
-    grade: String?,
-    editProfile: (() -> Void)? = nil
-  ) {
+  
+  public init(imageURL: String, friendsCount: Int, votedCount: Int, username: String, firstName: String, lastName: String, displayName: String, schoolShortName: String?, grade: String?, editProfile: (() -> Void)? = nil) {
+    self.imageURL = imageURL
     self.friendsCount = friendsCount
     self.votedCount = votedCount
     self.username = username
+    self.firstName = firstName
+    self.lastName = lastName
     self.displayName = displayName
     self.schoolShortName = schoolShortName
     self.grade = grade
@@ -33,9 +32,15 @@ public struct ProfileSection: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       HStack(spacing: 16) {
-        Color.green
-          .frame(width: 90, height: 90)
-          .clipShape(Circle())
+        AsyncImage(url: URL(string: imageURL)) { image in
+          image
+            .resizable()
+            .scaledToFill()
+            .frame(width: 90, height: 90)
+            .clipShape(Circle())
+        } placeholder: {
+          NameImage(familyName: lastName, givenName: firstName, size: 90)
+        }
 
         VStack(alignment: .leading, spacing: 16) {
           HStack(spacing: 16) {
@@ -97,13 +102,3 @@ public struct ProfileSection: View {
   }
 }
 
-#Preview {
-  ProfileSection(
-    friendsCount: 10,
-    votedCount: 100,
-    username: "tomokisun",
-    displayName: "つきやま ともき",
-    schoolShortName: "KHS",
-    grade: "1年生"
-  )
-}

@@ -1,9 +1,12 @@
 fragment ProfileSectionFragment on User {
   id
   votedCount
+  imageURL
   displayName {
     ja
   }
+  firstName
+  lastName
   username
   generation
   friendsCount
