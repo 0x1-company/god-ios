@@ -10,7 +10,7 @@ public struct ProfileExternalLogic: Reducer {
   public struct State: Equatable {
     var userId: String
     var user = AsyncValue<God.UserQuery.Data.User>.none
-    
+
     @PresentationState var alert: AlertState<Action.Alert>?
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
 
@@ -27,11 +27,11 @@ public struct ProfileExternalLogic: Reducer {
     case userResponse(TaskResult<God.UserQuery.Data>)
     case alert(PresentationAction<Alert>)
     case confirmationDialog(PresentationAction<ConfirmationDialog>)
-    
+
     public enum Alert: Equatable {
       case block
     }
-    
+
     public enum ConfirmationDialog: Equatable {
       case inappropriatePhoto
       case pretendingToBeSomeoneElse
@@ -45,7 +45,7 @@ public struct ProfileExternalLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel { case currentUser }
 
   public var body: some Reducer<State, Action> {
@@ -62,7 +62,7 @@ public struct ProfileExternalLogic: Reducer {
           await send(.userResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser)
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -77,20 +77,20 @@ public struct ProfileExternalLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .blockButtonTapped:
         state.confirmationDialog = nil
         state.alert = .block
         return .none
-        
+
       case .reportButtonTapped:
         state.alert = nil
         state.confirmationDialog = .report
         return .none
-        
+
       case .alert:
         return .none
-        
+
       case .confirmationDialog:
         return .none
       }
