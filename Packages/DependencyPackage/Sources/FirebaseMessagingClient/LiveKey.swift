@@ -22,18 +22,14 @@ extension FirebaseMessagingClient: DependencyKey {
 
 extension FirebaseMessagingClient {
   class Delegate: NSObject, MessagingDelegate {
-    let continuation: AsyncStream<Void>.Continuation
+    let continuation: AsyncStream<DelegateAction>.Continuation
 
-    init(continuation: AsyncStream<Void>.Continuation) {
+    init(continuation: AsyncStream<DelegateAction>.Continuation) {
       self.continuation = continuation
     }
 
-    func messaging(
-      _ messaging: Messaging,
-      didReceiveRegistrationToken fcmToken: String?
-    ) {
-      print("func messaging(_ messaging: Messaging,didReceiveRegistrationToken fcmToken: String?): \(fcmToken ?? "")")
-      continuation.yield()
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+      continuation.yield(.didReceiveRegistrationToken(fcmToken: fcmToken))
     }
   }
 }
