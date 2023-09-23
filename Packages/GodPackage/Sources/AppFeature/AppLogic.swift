@@ -16,18 +16,21 @@ public struct AppLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
-
     var account = Account()
 
     var appDelegate = AppDelegateLogic.State()
     var sceneDelegate = SceneDelegateLogic.State()
-    var view = View.State.onboard()
+    var view: View.State
 
     public struct Account: Equatable {
       var authUser = AsyncValue<FirebaseAuthClient.User?>.none
       var isForceUpdate = AsyncValue<Bool>.none
       var isMaintenance = AsyncValue<Bool>.none
+    }
+    
+    public init() {
+      @Dependency(\.userDefaults) var userDefaults
+      view = userDefaults.onboardCompleted() ? View.State.navigation() : View.State.onboard()
     }
   }
 
