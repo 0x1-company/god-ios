@@ -2,8 +2,8 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import SwiftUI
 import NameImage
+import SwiftUI
 
 public struct AddFriendsLogic: Reducer {
   public init() {}
@@ -27,7 +27,7 @@ public struct AddFriendsLogic: Reducer {
       case nextScreen
     }
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -47,14 +47,14 @@ public struct AddFriendsLogic: Reducer {
         return .run { send in
           await send(.delegate(.nextScreen))
         }
-        
+
       case let .usersResponse(.success(data)):
         state.users = data.usersBySchoolId.edges.map(\.node)
         return .none
-        
+
       case .usersResponse(.failure):
         return .none
-        
+
       case .delegate:
         return .none
       }
@@ -82,7 +82,7 @@ public struct AddFriendsView: View {
             .background(Color(uiColor: .quaternarySystemFill))
 
           Divider()
-          
+
           ForEach(viewStore.users, id: \.self) { user in
             HStack(alignment: .center, spacing: 16) {
               AsyncImage(url: URL(string: user.imageURL)) { image in
@@ -115,7 +115,7 @@ public struct AddFriendsView: View {
             .padding(.horizontal, 16)
             .frame(height: 72)
             .background(Color.white)
-            
+
             Divider()
           }
         }
@@ -137,7 +137,7 @@ public struct AddFriendsView: View {
   }
 }
 
-//#Preview {
+// #Preview {
 //  NavigationStack {
 //    AddFriendsView(
 //      store: .init(
@@ -166,4 +166,4 @@ public struct AddFriendsView: View {
 //      }
 //    )
 //  }
-//}
+// }
