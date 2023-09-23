@@ -1,0 +1,15 @@
+query UsersBySchool($schoolId: String!, $first: Int!) {
+  usersBySchoolId(schoolId: $schoolId, first: $first) {
+    edges {
+      node {
+        id
+        imageURL
+        firstName
+        lastName
+        displayName {
+          ja
+        }
+      }
+    }
+  }
+}

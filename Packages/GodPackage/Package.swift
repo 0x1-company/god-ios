@@ -140,6 +140,8 @@ let package = Package(
       "HowItWorksFeature",
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
+      .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "NameImage", package: "UIComponentPackage"),
       .product(name: "PhotosClient", package: "CupertinoPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),

@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "1 mutual friend" : {
-
-    },
     "Add a photo so your friends can find you" : {
       "localizations" : {
         "ja" : {
@@ -244,9 +241,6 @@
         }
       }
     },
-    "Kevin Ding" : {
-
-    },
     "Last Name" : {
 
     },
@@ -292,6 +286,9 @@
           }
         }
       }
+    },
+    "PEOPLE YOU MAY KNOW" : {
+
     },
     "Phone Number" : {
 

@@ -10,6 +10,7 @@ public struct GodClient: Sendable {
   public var user: @Sendable (God.UserWhere) -> AsyncThrowingStream<God.UserQuery.Data, Error>
   public var currentUser: @Sendable () -> AsyncThrowingStream<God.CurrentUserQuery.Data, Error>
   public var profile: @Sendable () -> AsyncThrowingStream<God.ProfileQuery.Data, Error>
+  public var usersBySchool: @Sendable (String) -> AsyncThrowingStream<God.UsersBySchoolQuery.Data, Error>
 
   public var schools: @Sendable () -> AsyncThrowingStream<God.SchoolsQuery.Data, Error>
 
