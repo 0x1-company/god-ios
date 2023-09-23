@@ -164,6 +164,8 @@ let package = Package(
       "ManageAccountFeature",
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
+      .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
       "ShopFeature",
