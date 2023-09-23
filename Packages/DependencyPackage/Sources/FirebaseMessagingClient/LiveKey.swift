@@ -12,6 +12,10 @@ extension FirebaseMessagingClient: DependencyKey {
     },
     setAPNSToken: { apnsToken in
       Messaging.messaging().apnsToken = apnsToken
+    },
+    token: { try await Messaging.messaging().token() },
+    appDidReceiveMessage: { request in
+      Messaging.messaging().appDidReceiveMessage(request.content.userInfo)
     }
   )
 }
