@@ -64,6 +64,8 @@ public extension God {
         public var school: School? { __data["school"] }
         /// 投票された数
         public var votedCount: Int { __data["votedCount"] }
+        /// プロフィール画像のURL
+        public var imageURL: String { __data["imageURL"] }
         /// 表示名
         public var displayName: ProfileSectionFragment.DisplayName { __data["displayName"] }
         /// 年代

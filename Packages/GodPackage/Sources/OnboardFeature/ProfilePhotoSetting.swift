@@ -6,6 +6,8 @@ import FirebaseStorage
 import FirebaseStorageClient
 import PhotosUI
 import SwiftUI
+import God
+import GodClient
 
 public struct ProfilePhotoSettingLogic: Reducer {
   public init() {}
@@ -13,15 +15,19 @@ public struct ProfilePhotoSettingLogic: Reducer {
   public struct State: Equatable {
     @BindingState var photoPickerItems: [PhotosPickerItem] = []
     var image: UIImage?
+    
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     public init() {}
   }
 
   public enum Action: Equatable, BindableAction {
+    case onTask
     case skipButtonTapped
     case nextButtonTapped
     case binding(BindingAction<State>)
     case loadTransferableResponse(TaskResult<Data?>)
     case uploadResponse(TaskResult<StorageMetadata>)
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -29,13 +35,22 @@ public struct ProfilePhotoSettingLogic: Reducer {
     }
   }
   
-  @Dependency(\.firebaseAuth) var firebaseAuth
+  @Dependency(\.godClient) var godClient
   @Dependency(\.firebaseStorage) var firebaseStorage
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+
       case .skipButtonTapped:
         return .send(.delegate(.nextScreen))
         
@@ -52,10 +67,10 @@ public struct ProfilePhotoSettingLogic: Reducer {
         
       case let .loadTransferableResponse(.success(.some(data))):
         state.image = UIImage(data: data)
-        guard let currentUser = firebaseAuth.currentUser() else { return .none }
+        guard let userId = state.currentUser?.id else { return .none }
         return .run { send in
           await send(.uploadResponse(TaskResult {
-            try await firebaseStorage.upload("users/\(currentUser.uid)/icon.png", data)
+            try await firebaseStorage.upload("users/\(userId)/icon.png", data)
           }))
         }
 
@@ -66,6 +81,13 @@ public struct ProfilePhotoSettingLogic: Reducer {
         return .none
         
       case .uploadResponse:
+        return .none
+        
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        return .none
+        
+      case .currentUserResponse(.failure):
         return .none
 
       case .delegate:
@@ -157,6 +179,7 @@ public struct ProfilePhotoSettingView: View {
         }
       }
       .buttonStyle(HoldDownButtonStyle())
+      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
