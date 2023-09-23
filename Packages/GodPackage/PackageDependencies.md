@@ -65,6 +65,8 @@ graph TD;
     OnboardFeature-->HowItWorksFeature;
     OnboardFeature-->GodClient;
     OnboardFeature-->Constants;
+    OnboardFeature-->AsyncValue;
+    OnboardFeature-->NameImage;
     OnboardFeature-->PhotosClient;
     OnboardFeature-->StringHelpers;
     OnboardFeature-->ContactsClient;
