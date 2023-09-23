@@ -21,7 +21,7 @@ public struct ProfileEditLogic: Reducer {
     }
 
     @PresentationState var manageAccount: ManageAccountLogic.State?
-      @PresentationState var alert: AlertState<Action.Alert>?
+    @PresentationState var alert: AlertState<Action.Alert>?
     var user = AsyncValue<UserProfile>.none
     var isUserProfileChanges: Bool {
       if case let .success(currentUser) = user {
@@ -55,18 +55,20 @@ public struct ProfileEditLogic: Reducer {
     case manageAccount(PresentationAction<ManageAccountLogic.Action>)
     case alert(PresentationAction<Alert>)
 
-      public enum Alert: Equatable {
-          public enum NameCanOnlyBeChangedOnce: Equatable {
-              case changeNameButtonTapped
-              case cancelButtonTapped
-          }
-          public enum ChangesNotSaved: Equatable {
-              case discardChangesButtonTapped
-              case cancelButtonTapped
-          }
-          case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
-          case changesNotSaved(ChangesNotSaved)
+    public enum Alert: Equatable {
+      public enum NameCanOnlyBeChangedOnce: Equatable {
+        case changeNameButtonTapped
+        case cancelButtonTapped
       }
+
+      public enum ChangesNotSaved: Equatable {
+        case discardChangesButtonTapped
+        case cancelButtonTapped
+      }
+
+      case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
+      case changesNotSaved(ChangesNotSaved)
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -93,7 +95,7 @@ public struct ProfileEditLogic: Reducer {
         .cancellable(id: CancelId.currentUserRequest)
 
       case .cancelEditButtonTapped:
-          state.alert = .changesNotSaved()
+        state.alert = .changesNotSaved()
         return .none
 
       case .saveButtonTapped:
@@ -175,19 +177,19 @@ public struct ProfileEditLogic: Reducer {
       case .manageAccount:
         return .none
       case .alert(.presented(.changesNotSaved(.discardChangesButtonTapped))):
-          guard case let .success(user) = state.user else {
-              assertionFailure()
-              return .none
-          }
-          state.firstName = user.firstName
-          state.lastName = user.lastName
-          state.username = user.username ?? ""
+        guard case let .success(user) = state.user else {
+          assertionFailure()
           return .none
+        }
+        state.firstName = user.firstName
+        state.lastName = user.lastName
+        state.username = user.username ?? ""
+        return .none
       case .alert(.presented(.nameCanOnlyBeChangedOnce(.changeNameButtonTapped))):
-          //TODO: 一度しか変更できません
-          return .none
+        // TODO: 一度しか変更できません
+        return .none
       case .alert:
-          return .none
+        return .none
       case .binding:
         return .none
       }
@@ -419,38 +421,36 @@ public struct ProfileEditView: View {
   }
 }
 
-extension AlertState where Action == ProfileEditLogic.Action.Alert {
-  fileprivate static func nameCanOnlyBeChangedOnce() -> Self {
+private extension AlertState where Action == ProfileEditLogic.Action.Alert {
+  static func nameCanOnlyBeChangedOnce() -> Self {
     Self {
-        
       TextState("ちょっと待って！")
     } actions: {
-        ButtonState(role: .cancel, action: .nameCanOnlyBeChangedOnce(.cancelButtonTapped)) {
-            TextState("キャンセル")
-        }
-        ButtonState(role: .destructive, action: .nameCanOnlyBeChangedOnce(.changeNameButtonTapped)) {
-            TextState("名前を変更")
-        }
+      ButtonState(role: .cancel, action: .nameCanOnlyBeChangedOnce(.cancelButtonTapped)) {
+        TextState("キャンセル")
+      }
+      ButtonState(role: .destructive, action: .nameCanOnlyBeChangedOnce(.changeNameButtonTapped)) {
+        TextState("名前を変更")
+      }
     } message: {
       TextState("名前は一度しか変更できません")
     }
   }
 
-    fileprivate static func changesNotSaved() -> Self {
-      Self {
-
-        TextState("本当に大丈夫？")
-      } actions: {
-          ButtonState(role: .destructive, action: .changesNotSaved(.discardChangesButtonTapped)) {
-              TextState("変更を破棄")
-          }
-          ButtonState(role: .cancel, action: .changesNotSaved(.cancelButtonTapped)) {
-              TextState("キャンセル")
-          }
-      } message: {
-        TextState("保存していない変更があります")
+  static func changesNotSaved() -> Self {
+    Self {
+      TextState("本当に大丈夫？")
+    } actions: {
+      ButtonState(role: .destructive, action: .changesNotSaved(.discardChangesButtonTapped)) {
+        TextState("変更を破棄")
       }
+      ButtonState(role: .cancel, action: .changesNotSaved(.cancelButtonTapped)) {
+        TextState("キャンセル")
+      }
+    } message: {
+      TextState("保存していない変更があります")
     }
+  }
 }
 
 struct ProfileEditViewPreviews: PreviewProvider {
