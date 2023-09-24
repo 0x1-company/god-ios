@@ -78,11 +78,11 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
 public struct PickFriendToAddYourNameTheirPollView: View {
   let store: StoreOf<PickFriendToAddYourNameTheirPollLogic>
-  
+
   public init(store: StoreOf<PickFriendToAddYourNameTheirPollLogic>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
@@ -94,11 +94,11 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           .frame(maxWidth: .infinity)
           .padding(.bottom, 46)
           .background(Color.godService)
-        
+
         SearchField(text: viewStore.$searchQuery)
-        
+
         Divider()
-        
+
         List(viewStore.friends, id: \.self) { friend in
           Button {
             viewStore.send(.friendButtonTapped(friend))
@@ -107,10 +107,10 @@ public struct PickFriendToAddYourNameTheirPollView: View {
               Color.red
                 .frame(width: 42, height: 42)
                 .clipShape(Circle())
-              
+
               Text(friend.displayName.ja)
                 .frame(maxWidth: .infinity, alignment: .leading)
-              
+
               Rectangle()
                 .fill(viewStore.selection == friend ? Color.godService : Color.white)
                 .frame(width: 26, height: 26)
