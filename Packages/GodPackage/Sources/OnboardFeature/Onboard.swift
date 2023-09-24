@@ -47,7 +47,7 @@ public struct OnboardLogic: Reducer {
       case .welcome(.getStartedButtonTapped):
         state.path.append(.gradeSetting())
         return .none
-        
+
       case .welcome(.loginButtonTapped):
         state.path.append(.gradeSetting())
         return .none
