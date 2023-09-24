@@ -89,6 +89,7 @@
       }
     },
     "See who likes you" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

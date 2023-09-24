@@ -98,6 +98,7 @@ public struct ShopLogic: Reducer {
         return .none
 
       case let .pickFriend(.presented(.delegate(.purchase(userId)))):
+        state.pickFriend = nil
         guard let item = state.items.first(where: { $0.coinAmount == 300 })
         else { return .none }
         let input = God.PurchaseInput(
