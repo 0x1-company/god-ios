@@ -12,6 +12,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public struct State: Equatable {
     @BindingState var searchQuery = ""
     var friends: [God.FriendFragment] = []
+    var selection: God.FriendFragment?
     public init() {}
   }
 
@@ -19,6 +20,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
     case onTask
     case nextButtonTapped
     case closeButtonTapped
+    case friendButtonTapped(God.FriendFragment)
     case friendsResponse(TaskResult<God.FriendsQuery.Data>)
     case binding(BindingAction<State>)
     case delegate(Delegate)
@@ -44,12 +46,18 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
           await send(.friendsResponse(.failure(error)))
         }
       case .nextButtonTapped:
-        return .none
+        guard let userId = state.selection?.id
+        else { return .none }
+        return .send(.delegate(.purchase(userId: userId)), animation: .default)
 
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
+      case let .friendButtonTapped(friend):
+        state.selection = friend
+        return .none
+
       case let .friendsResponse(.success(data)):
         state.friends = data.friends.map(\.fragments.friendFragment)
         return .none
@@ -70,11 +78,11 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
 public struct PickFriendToAddYourNameTheirPollView: View {
   let store: StoreOf<PickFriendToAddYourNameTheirPollLogic>
-
+  
   public init(store: StoreOf<PickFriendToAddYourNameTheirPollLogic>) {
     self.store = store
   }
-
+  
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
@@ -86,22 +94,37 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           .frame(maxWidth: .infinity)
           .padding(.bottom, 46)
           .background(Color.godService)
-
+        
         SearchField(text: viewStore.$searchQuery)
-
+        
         Divider()
-
+        
         List(viewStore.friends, id: \.self) { friend in
-          HStack(spacing: 16) {
-            Color.red
-              .frame(width: 42, height: 42)
-              .clipShape(Circle())
-
-            Text(friend.displayName.ja)
-              .frame(maxWidth: .infinity, alignment: .leading)
+          Button {
+            viewStore.send(.friendButtonTapped(friend))
+          } label: {
+            HStack(spacing: 16) {
+              Color.red
+                .frame(width: 42, height: 42)
+                .clipShape(Circle())
+              
+              Text(friend.displayName.ja)
+                .frame(maxWidth: .infinity, alignment: .leading)
+              
+              Rectangle()
+                .fill(viewStore.selection == friend ? Color.godService : Color.white)
+                .frame(width: 26, height: 26)
+                .clipShape(Circle())
+                .overlay(
+                  RoundedRectangle(cornerRadius: 26 / 2)
+                    .stroke(viewStore.selection == friend ? Color.godService : Color.godTextSecondaryLight, lineWidth: 2)
+                )
+            }
+            .frame(height: 76)
+            .padding(.horizontal, 16)
           }
-          .frame(height: 76)
         }
+        .listStyle(.plain)
       }
       .task { await viewStore.send(.onTask).finish() }
       .toolbar {
@@ -114,7 +137,6 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           }
           .buttonStyle(HoldDownButtonStyle())
         }
-
         ToolbarItem(placement: .topBarTrailing) {
           Button {
             viewStore.send(.nextButtonTapped)
@@ -122,6 +144,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
             Text("Next", bundle: .module)
               .bold()
               .foregroundStyle(.white)
+              .disabled(viewStore.selection == nil)
           }
           .buttonStyle(HoldDownButtonStyle())
         }
