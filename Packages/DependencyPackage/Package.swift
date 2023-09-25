@@ -22,6 +22,7 @@ let package = Package(
     .library(name: "FirestoreClient", targets: ["FirestoreClient"]),
     .library(name: "God", targets: ["God"]),
     .library(name: "GodClient", targets: ["GodClient"]),
+    .library(name: "GodTestMock", targets: ["GodTestMock"]),
     .library(name: "PhoneNumberDependencies", targets: ["PhoneNumberDependencies"]),
     .library(name: "StoreKitHelpers", targets: ["StoreKitHelpers"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
@@ -75,6 +76,10 @@ let package = Package(
       .product(name: "Apollo", package: "apollo-ios"),
       .product(name: "ApolloAPI", package: "apollo-ios"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "GodTestMock", dependencies: [
+      "God",
+      .product(name: "ApolloTestSupport", package: "apollo-ios"),
     ]),
     .target(name: "PhoneNumberDependencies", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),

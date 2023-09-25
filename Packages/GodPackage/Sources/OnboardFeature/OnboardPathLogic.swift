@@ -85,30 +85,28 @@ public struct OnboardPathLogic: Reducer {
         if state.generation == nil, state.schoolId == nil {
           return .none
         }
-        return .merge(
-          .run { [state] send in
-            let input = God.UpdateUserProfileInput(
-              generation: state.generation ?? .null,
-              schoolId: state.schoolId ?? .null
-            )
-            await send(.updateUserProfileResponse(TaskResult {
-              try await godClient.updateUserProfile(input)
-            }))
-          },
-          .run { [contacts = state.contacts] send in
-            let input = Array(contacts.prefix(100))
-            await send(.createContactsResponse(TaskResult {
-              try await godClient.createContacts(input)
-            }))
-          }
-        )
+        return .run { [state] send in
+          let input = God.UpdateUserProfileInput(
+            generation: state.generation ?? .null,
+            schoolId: state.schoolId ?? .null
+          )
+          await send(.updateUserProfileResponse(TaskResult {
+            try await godClient.updateUserProfile(input)
+          }))
+        }
+    
       case .oneTimeCode(.delegate(.popToRoot)):
         state.path.removeAll()
         return .none
 
       case .lastNameSetting(.delegate(.nextScreen)):
         state.path.append(.firstNameSetting())
-        return .none
+        return .run { [contacts = state.contacts] send in
+          let input = Array(contacts.prefix(100))
+          await send(.createContactsResponse(TaskResult {
+            try await godClient.createContacts(input)
+          }))
+        }
 
       case .firstNameSetting(.delegate(.nextScreen)):
         state.path.append(.usernameSetting())
