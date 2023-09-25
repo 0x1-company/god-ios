@@ -5,6 +5,7 @@ query Schools($first: Int!, $after: String) {
         id
         name
         shortName
+        usersCount
       }
     }
   }

@@ -51,24 +51,10 @@
       }
     },
     "Change photo" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "写真を変更する"
-          }
-        }
-      }
+
     },
     "Choose a photo" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フォトライブラリから選択"
-          }
-        }
-      }
+
     },
     "Choose a username" : {
 
@@ -255,13 +241,20 @@
       }
     },
     "MEMBERS" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "人"
+          }
+        }
+      }
     },
     "Next" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "次へ"
           }
         }
