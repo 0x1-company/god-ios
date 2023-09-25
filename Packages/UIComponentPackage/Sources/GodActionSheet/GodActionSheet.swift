@@ -6,7 +6,7 @@ public struct GodActionSheet<Actions: View>: View {
   let description: String?
   let onDismiss: () -> Void
   let actions: () -> Actions
-  
+
   public init(
     title: String,
     description: String?,
@@ -34,7 +34,7 @@ public struct GodActionSheet<Actions: View>: View {
       .multilineTextAlignment(.center)
 
       actions()
-      
+
       Button(action: onDismiss) {
         Text("Close", bundle: .module)
           .bold()
@@ -58,9 +58,7 @@ public struct GodActionSheet<Actions: View>: View {
     description: "For help with this, send us an email\nand we will get back to you right away.",
     onDismiss: {},
     actions: {
-      HStack {
-        
-      }
+      HStack {}
     }
   )
 }
