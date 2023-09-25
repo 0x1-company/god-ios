@@ -44,9 +44,9 @@ public struct ShareTheAppView: View {
           .font(.title2)
           .foregroundStyle(Color.white)
 
-        Button {
-          store.send(.shareButtonTapped)
-        } label: {
+        ShareLink(
+          item: URL(string: "https://godapp.jp")!
+        ) {
           Text("Share the app")
             .bold()
             .frame(width: 188, height: 54)
