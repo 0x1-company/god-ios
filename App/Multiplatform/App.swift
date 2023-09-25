@@ -73,10 +73,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didReceiveRemoteNotification userInfo: [AnyHashable: Any]
   ) async -> UIBackgroundFetchResult {
-//    print(userInfo["hoge"]) // -> fuga
-    let badge = userInfo["badge"] as? Int
     Messaging.messaging().appDidReceiveMessage(userInfo)
     let result = firebaseAuth.canHandleNotification(userInfo)
+    await store.send(.appDelegate(.didReceiveRemoteNotification(userInfo))).finish()
     return result ? .noData : .newData
   }
 
