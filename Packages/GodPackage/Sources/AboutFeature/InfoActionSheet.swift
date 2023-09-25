@@ -1,6 +1,6 @@
 import ButtonStyles
-import GodActionSheet
 import ComposableArchitecture
+import GodActionSheet
 import SwiftUI
 
 public struct InfoActionSheetLogic: Reducer {
@@ -46,9 +46,8 @@ public struct InfoActionSheetView: View {
         actions: {
           HStack(spacing: 0) {
             Spacer()
-            
-            Button {
-            } label: {
+
+            Button {} label: {
               VStack(alignment: .center, spacing: 8) {
                 RoundedRectangle(cornerRadius: 8)
                   .fill(Color.blue)
@@ -57,11 +56,10 @@ public struct InfoActionSheetView: View {
                   .foregroundColor(.godBlack)
               }
             }
-            
+
             Spacer()
-            
-            Button {
-            } label: {
+
+            Button {} label: {
               VStack(alignment: .center, spacing: 8) {
                 RoundedRectangle(cornerRadius: 8)
                   .fill(Color.blue)
@@ -70,11 +68,10 @@ public struct InfoActionSheetView: View {
                   .foregroundColor(.godBlack)
               }
             }
-            
+
             Spacer()
-            
-            Button {
-            } label: {
+
+            Button {} label: {
               VStack(alignment: .center, spacing: 8) {
                 RoundedRectangle(cornerRadius: 8)
                   .fill(Color.gray)
@@ -88,7 +85,7 @@ public struct InfoActionSheetView: View {
                   .foregroundColor(.godBlack)
               }
             }
-            
+
             Spacer()
           }
           .buttonStyle(HoldDownButtonStyle())

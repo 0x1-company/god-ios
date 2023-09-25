@@ -119,7 +119,7 @@ public struct AboutLogic: Reducer {
       Destination()
     }
   }
-  
+
   private func gmailGenerator(subject: String) -> String {
     var components = URLComponents()
     components.scheme = "googlegmail"
@@ -136,7 +136,7 @@ public struct AboutLogic: Reducer {
           """,
           bundle: .module
         )
-      )
+      ),
     ]
     return components.description
   }
@@ -248,7 +248,6 @@ public struct AboutView: View {
     )
   )
 }
-
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
   static let getHelp = Self {
