@@ -8,7 +8,7 @@ public struct AnalyticsClient {
 }
 
 public extension AnalyticsClient {
-  func logScreen<T>(screenName: String, of value: T) {
+  func logScreen(screenName: String, of value: some Any) {
     logEvent(
       AnalyticsEventScreenView,
       [
