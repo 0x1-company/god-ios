@@ -28,7 +28,7 @@ public struct FindFriendLogic: Reducer {
       switch action {
       case .findButtonTapped:
         return .run { send in
-          _ = try await requestAccess(.contacts)
+          _ = try? await requestAccess(.contacts)
           await send(.delegate(.nextScreen))
         }
 

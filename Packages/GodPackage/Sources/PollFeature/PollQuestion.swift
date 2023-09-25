@@ -10,19 +10,22 @@ public struct PollQuestionLogic: Reducer {
   public init() {}
 
   public struct State: Equatable, Identifiable {
-    var pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
-    public var id: String {
-      pollQuestion.id
-    }
+    public var id: String
+    var question: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.Question
+    var choiceGroups: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup]
 
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
-    var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup
-    var currentStep = Step.first
+    var currentIndex = 0
+    
+    var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
+      return choiceGroups[currentIndex]
+    }
 
     public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
-      self.pollQuestion = pollQuestion
-      currentChoiceGroup = pollQuestion.choiceGroups[currentStep.rawValue]
+      self.id = pollQuestion.id
+      self.question = pollQuestion.question
+      self.choiceGroups = pollQuestion.choiceGroups
     }
 
     public enum Step: Int {
@@ -63,25 +66,23 @@ public struct PollQuestionLogic: Reducer {
         state.isAnswered = true
         let input = God.CreateVoteInput(
           choiceGroup: God.ChoiceGroupInput(
-            choices: state.currentChoiceGroup.choices.map {
+            choices: state.choiceGroups[state.currentIndex].choices.map {
               God.ChoiceInput(text: $0.text, userId: $0.userId)
             },
             signature: God.SignatureInput(
-              digest: state.currentChoiceGroup.signature.digest
+              digest: state.choiceGroups[state.currentIndex].signature.digest
             )
           ),
-          pollQuestionId: state.pollQuestion.id,
+          pollQuestionId: state.id,
           votedUserId: votedUserId
         )
         return .send(.delegate(.vote(input)))
 
       case .shuffleButtonTapped:
-        guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
-        else { return .none }
-
-        state.currentStep = nextStep
-        state.currentChoiceGroup = state.pollQuestion.choiceGroups[nextStep.rawValue]
-
+        let maxPageIndex = state.choiceGroups.count - 1
+        let nextIndex = state.currentIndex + 1
+        guard nextIndex <= maxPageIndex else { return .none }
+        state.currentIndex = nextIndex
         return .run { _ in
           await feedbackGenerator.mediumImpact()
         }
@@ -130,7 +131,7 @@ public struct PollQuestionView: View {
           .scaledToFit()
           .frame(height: 140)
 
-        Text(verbatim: viewStore.pollQuestion.question.text.ja)
+        Text(viewStore.question.text.ja)
           .font(.title2)
           .foregroundColor(.white)
 

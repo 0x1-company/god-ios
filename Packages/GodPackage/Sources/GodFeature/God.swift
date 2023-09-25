@@ -51,7 +51,13 @@ public struct GodLogic: Reducer {
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .active:
         guard let poll = data.currentPoll.poll else { return .none }
-        updateChild(state: &state, child: .poll(.init(poll: poll)))
+        let pollQuestions = poll.pollQuestions
+          .filter { $0.choiceGroups.filter { $0.choices.count >= 4 }.count >= 1 }
+        if pollQuestions.count >= 12 {
+          updateChild(state: &state, child: .poll(.init(poll: poll)))
+        } else {
+          updateChild(state: &state, child: .share())
+        }
         return .none
 
       case .currentPollResponse(.success):
@@ -106,6 +112,7 @@ public struct GodLogic: Reducer {
       case poll(PollLogic.State)
       case cashOut(CashOutLogic.State)
       case playAgain(PlayAgainLogic.State)
+      case share(ShareTheAppLogic.State = .init())
       case loading(GodLoadingLogic.State = .init())
     }
 
@@ -113,6 +120,7 @@ public struct GodLogic: Reducer {
       case poll(PollLogic.Action)
       case cashOut(CashOutLogic.Action)
       case playAgain(PlayAgainLogic.Action)
+      case share(ShareTheAppLogic.Action)
       case loading(GodLoadingLogic.Action)
     }
 
@@ -125,6 +133,9 @@ public struct GodLogic: Reducer {
       }
       Scope(state: /State.playAgain, action: /Action.playAgain) {
         PlayAgainLogic()
+      }
+      Scope(state: /State.share, action: /Action.share) {
+        ShareTheAppLogic()
       }
       Scope(state: /State.loading, action: /Action.loading) {
         GodLoadingLogic()
@@ -160,6 +171,12 @@ public struct GodView: View {
           /GodLogic.Child.State.playAgain,
           action: GodLogic.Child.Action.playAgain,
           then: PlayAgainView.init(store:)
+        )
+      case .share:
+        CaseLet(
+          /GodLogic.Child.State.share,
+           action: GodLogic.Child.Action.share,
+           then: ShareTheAppView.init(store:)
         )
       case .loading:
         CaseLet(
