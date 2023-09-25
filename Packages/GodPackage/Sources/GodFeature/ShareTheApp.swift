@@ -20,7 +20,7 @@ public struct ShareTheAppLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .shareButtonTapped:
         return .none
       }

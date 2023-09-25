@@ -94,7 +94,7 @@ public struct OnboardPathLogic: Reducer {
             try await godClient.updateUserProfile(input)
           }))
         }
-    
+
       case .oneTimeCode(.delegate(.popToRoot)):
         state.path.removeAll()
         return .none

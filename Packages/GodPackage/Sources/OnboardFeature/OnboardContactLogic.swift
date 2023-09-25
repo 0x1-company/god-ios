@@ -29,8 +29,8 @@ public struct OnboardContactLogic: Reducer {
       let format = phoneNumberFormat(phoneNumber)
 
       guard countryCode == "+81" else { return .none }
-      
-      if contact.familyName.isEmpty && contact.givenName.isEmpty {
+
+      if contact.familyName.isEmpty, contact.givenName.isEmpty {
         return .none
       }
 

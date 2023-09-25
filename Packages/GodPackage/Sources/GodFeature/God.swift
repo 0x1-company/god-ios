@@ -175,8 +175,8 @@ public struct GodView: View {
       case .share:
         CaseLet(
           /GodLogic.Child.State.share,
-           action: GodLogic.Child.Action.share,
-           then: ShareTheAppView.init(store:)
+          action: GodLogic.Child.Action.share,
+          then: ShareTheAppView.init(store:)
         )
       case .loading:
         CaseLet(
