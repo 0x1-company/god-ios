@@ -1,22 +1,22 @@
 import ButtonStyles
 import SwiftUI
 
-public struct ActionSheet<Actions: View>: View {
-  let title: LocalizedStringKey
-  let description: LocalizedStringKey?
-  let actions: () -> Actions
+public struct GodActionSheet<Actions: View>: View {
+  let title: String
+  let description: String?
   let onDismiss: () -> Void
+  let actions: () -> Actions
   
   public init(
-    title: LocalizedStringKey,
-    description: LocalizedStringKey?,
-    actions: @escaping () -> Actions,
-    onDismiss: @escaping () -> Void
+    title: String,
+    description: String?,
+    onDismiss: @escaping () -> Void,
+    actions: @escaping () -> Actions
   ) {
     self.title = title
     self.description = description
-    self.actions = actions
     self.onDismiss = onDismiss
+    self.actions = actions
   }
 
   public var body: some View {
@@ -53,14 +53,14 @@ public struct ActionSheet<Actions: View>: View {
 }
 
 #Preview {
-  ActionSheet(
+  GodActionSheet(
     title: "Add my school to my profile",
     description: "For help with this, send us an email\nand we will get back to you right away.",
+    onDismiss: {},
     actions: {
       HStack {
         
       }
-    },
-    onDismiss: {}
+    }
   )
 }

@@ -47,6 +47,8 @@ let package = Package(
     .target(name: "AboutFeature", dependencies: [
       "HowItWorksFeature",
       .product(name: "Constants", package: "DependencyPackage"),
+      .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
+      .product(name: "GodActionSheet", package: "UIComponentPackage"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
       "ProfileFeature",
