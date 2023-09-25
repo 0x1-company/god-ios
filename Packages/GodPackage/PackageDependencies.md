@@ -2,6 +2,8 @@
 graph TD;
     AboutFeature-->HowItWorksFeature;
     AboutFeature-->Constants;
+    AboutFeature-->SwiftUIMessage;
+    AboutFeature-->GodActionSheet;
     ActivityFeature-->ProfileFeature;
     AddFeature-->CupertinoMessageFeature;
     AddFeature-->Colors;
@@ -75,6 +77,7 @@ graph TD;
     OnboardFeature-->FirebaseAuthClient;
     OnboardFeature-->FirebaseStorageClient;
     OnboardFeature-->PhoneNumberDependencies;
+    PlayAgainFeature-->ButtonStyles;
     PlayAgainFeature-->ComposableArchitecture;
     PollFeature-->Colors;
     PollFeature-->GodClient;

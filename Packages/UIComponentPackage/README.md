@@ -6,5 +6,6 @@ A description of this package.
 ```mermaid
 graph TD;
     Colors-->ColorHex;
+    GodActionSheet-->ButtonStyles;
     NameImage-->Colors;
 ```
