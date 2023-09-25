@@ -12,24 +12,22 @@ public struct QuickActionLogic: Reducer {
     case let .appDelegate(.configurationForConnecting(.some(shortcutItem))):
       let type = shortcutItem.type
       return .run { send in
-        await send(.quickAction(type))
+        await quickAction(send: send, type: type)
       }
 
     case let .sceneDelegate(.shortcutItem(shortcutItem)):
       let type = shortcutItem.type
       return .run { send in
-        await send(.quickAction(type))
+        await quickAction(send: send, type: type)
       }
-
-    case let .quickAction(key):
-      guard let url = Constants.quickActionURLs[key]
-      else { return .none }
-      return .run { _ in
-        await openURL(url)
-      }
-
+      
     default:
       return .none
     }
+  }
+  
+  private func quickAction(send: Send<Action>, type: String) async {
+    guard let url = Constants.quickActionURLs[type] else { return }
+    await openURL(url)
   }
 }
