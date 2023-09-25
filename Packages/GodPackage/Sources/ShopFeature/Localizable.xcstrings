@@ -9,7 +9,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "友達に関する質問に答えてコインをゲットしよう"
+            "value" : "質問に答えてコインをゲットしよう"
           }
         }
       }
@@ -19,7 +19,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの名前を質問にもっと表示する"
+            "value" : "あなたの名前を友だちにもっと表示しよう"
           }
         }
       }
@@ -29,7 +29,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コインを増やすには？"
+            "value" : "コインを手に入れるには？"
           }
         }
       }
@@ -39,7 +39,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "購入"
+            "value" : "決定"
           }
         }
       }
@@ -59,7 +59,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの名前を\n投票に加える友だちを選ぶ"
+            "value" : "あなたの名前を\n表示させる友だちを選ぶ"
           }
         }
       }
@@ -79,7 +79,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "成功"
+            "value" : "おめでとう"
           }
         }
       }
@@ -89,7 +89,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アイテムは正常に購入されました。"
+            "value" : "あなたの名前は友だちに表示されます"
           }
         }
       }
@@ -99,7 +99,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コインを使うともっと友だちから注目される"
+            "value" : "コインを使って注目度アップ"
           }
         }
       }
@@ -119,7 +119,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コイン残高"
+            "value" : "あなたのコイン"
           }
         }
       }
