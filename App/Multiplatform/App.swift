@@ -1,8 +1,8 @@
+import AnalyticsClient
 import Apollo
 import ApolloAPI
 import ApolloClientHelpers
 import AppFeature
-import AnalyticsClient
 import Build
 import ComposableArchitecture
 import FirebaseAuth
