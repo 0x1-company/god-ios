@@ -11,6 +11,7 @@ public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
   public enum Action: Equatable {
     case didFinishLaunching
+    case didReceiveRemoteNotification([AnyHashable: Any])
     case didRegisterForRemoteNotifications(TaskResult<Data>)
     case userNotifications(UserNotificationClient.DelegateEvent)
     case messaging(FirebaseMessagingClient.DelegateAction)
@@ -19,6 +20,15 @@ public struct AppDelegateLogic: Reducer {
 
     public enum Delegate: Equatable {
       case didFinishLaunching
+    }
+    
+    public static func == (lhs: AppDelegateLogic.Action, rhs: AppDelegateLogic.Action) -> Bool {
+      switch (lhs, rhs) {
+      case (.didReceiveRemoteNotification, .didReceiveRemoteNotification):
+        return false
+      default:
+        return lhs == rhs
+      }
     }
   }
 
@@ -54,6 +64,11 @@ public struct AppDelegateLogic: Reducer {
             await send(.delegate(.didFinishLaunching))
           }
         }
+      }
+    case let .didReceiveRemoteNotification(userInfo):
+      guard let badge = userInfo["badge"] as? Int else { return .none }
+      return .run { _ in
+        try? await userNotifications.setBadgeCount(badge)
       }
     case .didRegisterForRemoteNotifications(.failure):
       return .none

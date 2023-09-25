@@ -25,6 +25,9 @@ extension UserNotificationClient: DependencyKey {
     },
     requestAuthorization: {
       try await UNUserNotificationCenter.current().requestAuthorization(options: $0)
+    },
+    setBadgeCount: { newBadgeCount in
+      try await UNUserNotificationCenter.current().setBadgeCount(newBadgeCount)
     }
   )
 }

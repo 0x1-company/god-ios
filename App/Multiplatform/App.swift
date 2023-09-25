@@ -75,6 +75,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
   ) async -> UIBackgroundFetchResult {
     Messaging.messaging().appDidReceiveMessage(userInfo)
     let result = firebaseAuth.canHandleNotification(userInfo)
+    await store.send(.appDelegate(.didReceiveRemoteNotification(userInfo))).finish()
     return result ? .noData : .newData
   }
 

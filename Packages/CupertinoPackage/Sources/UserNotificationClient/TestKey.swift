@@ -22,7 +22,8 @@ extension UserNotificationClient: TestDependencyKey {
       "\(Self.self).removeDeliveredNotificationsWithIdentifiers"),
     removePendingNotificationRequestsWithIdentifiers: unimplemented(
       "\(Self.self).removePendingNotificationRequestsWithIdentifiers"),
-    requestAuthorization: unimplemented("\(Self.self).requestAuthorization")
+    requestAuthorization: unimplemented("\(Self.self).requestAuthorization"),
+    setBadgeCount: unimplemented("\(Self.self).setBadgeCount")
   )
 }
 
@@ -33,6 +34,7 @@ public extension UserNotificationClient {
     getNotificationSettings: { Notification.Settings(authorizationStatus: .notDetermined) },
     removeDeliveredNotificationsWithIdentifiers: { _ in },
     removePendingNotificationRequestsWithIdentifiers: { _ in },
-    requestAuthorization: { _ in false }
+    requestAuthorization: { _ in false },
+    setBadgeCount: { _ in }
   )
 }
