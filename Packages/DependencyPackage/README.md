@@ -6,5 +6,6 @@ A description of this package.
 ```mermaid
 graph TD;
     GodClient-->God;
+    GodTestMock-->God;
     StringHelpersTests-->StringHelpers;
 ```
