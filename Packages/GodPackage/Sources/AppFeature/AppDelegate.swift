@@ -21,7 +21,7 @@ public struct AppDelegateLogic: Reducer {
     public enum Delegate: Equatable {
       case didFinishLaunching
     }
-    
+
     public static func == (lhs: AppDelegateLogic.Action, rhs: AppDelegateLogic.Action) -> Bool {
       switch (lhs, rhs) {
       case (.didReceiveRemoteNotification, .didReceiveRemoteNotification):
