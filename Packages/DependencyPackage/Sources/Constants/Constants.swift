@@ -1,6 +1,8 @@
 import Foundation
 
 public enum Constants {
+  public static let helpEmailAddress = "help@godapp.jp"
+  
   public static let appId = "6457261581"
   public static let appStoreURL = URL(string: "https://apps.apple.com/jp/app/id\(Self.appId)")!
   public static let appStoreReviewURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id\(Self.appId)?mt=8&action=write-review")!

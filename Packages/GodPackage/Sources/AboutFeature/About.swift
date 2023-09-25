@@ -48,7 +48,9 @@ public struct AboutLogic: Reducer {
           await openURL(Constants.faqURL)
         }
       case .shareFeedbackButtonTapped:
-        state.destination = .shareFeedback()
+        state.destination = .infoActionSheet(
+          InfoActionSheetLogic.State(title: String(localized: "Email us", bundle: .module))
+        )
         return .none
 
       case .getHelpButtonTapped:
@@ -61,25 +63,43 @@ public struct AboutLogic: Reducer {
         }
 
       case let .confirmationDialog(.presented(action)):
+        let infoState: InfoActionSheetLogic.State
         switch action {
         case .addMySchoolToMyProfile:
-          state.destination = .addMySchoolToMyProfile()
-          return .none
+          infoState = .init(
+            title: String(localized: "Add my school to my profile", bundle: .module)
+          )
         case .changeMyGrade:
-          return .none
+          infoState = .init(
+            title: String(localized: "Change my grade", bundle: .module)
+          )
         case .changeMyGender:
-          return .none
+          infoState = .init(
+            title: String(localized: "Change my name", bundle: .module)
+          )
         case .changeMyName:
-          return .none
+          infoState = .init(
+            title: String(localized: "Change my gender", bundle: .module)
+          )
         case .deleteMyAccount:
-          return .none
+          infoState = .init(
+            title: String(localized: "Delete my account", bundle: .module)
+          )
         case .purchasesAndGodMode:
-          return .none
+          infoState = .init(
+            title: String(localized: "Purchases & God Mode", bundle: .module)
+          )
         case .reportBug:
-          return .none
+          infoState = .init(
+            title: String(localized: "Report a bug", bundle: .module)
+          )
         case .somethingElse:
-          return .none
+          infoState = .init(
+            title: String(localized: "Something else", bundle: .module)
+          )
         }
+        state.destination = .infoActionSheet(infoState)
+        return .none
       case .confirmationDialog(.dismiss):
         state.confirmationDialog = nil
         return .none
@@ -99,29 +119,45 @@ public struct AboutLogic: Reducer {
       Destination()
     }
   }
+  
+  private func gmailGenerator(subject: String) -> String {
+    var components = URLComponents()
+    components.scheme = "googlegmail"
+    components.path = "/co"
+    components.queryItems = [
+      URLQueryItem(name: "to", value: Constants.helpEmailAddress),
+      URLQueryItem(name: "subject", value: subject),
+      URLQueryItem(
+        name: "body",
+        value: String(
+          localized: """
+          Please describe your problem or feedback. Attach screenshots if necessary.
+          -----TYPE BELOW THIS LINE-----
+          """,
+          bundle: .module
+        )
+      )
+    ]
+    return components.description
+  }
 
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case shareFeedback(ShareFeedbackLogic.State = .init())
-      case addMySchoolToMyProfile(AddMySchoolToMyProfileLogic.State = .init())
       case howItWorks(HowItWorksLogic.State = .init())
+      case infoActionSheet(InfoActionSheetLogic.State)
     }
 
     public enum Action: Equatable {
-      case shareFeedback(ShareFeedbackLogic.Action)
-      case addMySchoolToMyProfile(AddMySchoolToMyProfileLogic.Action)
       case howItWorks(HowItWorksLogic.Action)
+      case infoActionSheet(InfoActionSheetLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.shareFeedback, action: /Action.shareFeedback) {
-        ShareFeedbackLogic()
-      }
-      Scope(state: /State.addMySchoolToMyProfile, action: /Action.addMySchoolToMyProfile) {
-        AddMySchoolToMyProfileLogic()
-      }
       Scope(state: /State.howItWorks, action: /Action.howItWorks) {
         HowItWorksLogic()
+      }
+      Scope(state: /State.infoActionSheet, action: /Action.infoActionSheet) {
+        InfoActionSheetLogic()
       }
     }
   }
@@ -188,19 +224,11 @@ public struct AboutView: View {
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutLogic.Destination.State.shareFeedback,
-        action: AboutLogic.Destination.Action.shareFeedback
+        state: /AboutLogic.Destination.State.infoActionSheet,
+        action: AboutLogic.Destination.Action.infoActionSheet
       ) { store in
-        ShareFeedback(store: store)
-          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
-      }
-      .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutLogic.Destination.State.addMySchoolToMyProfile,
-        action: AboutLogic.Destination.Action.addMySchoolToMyProfile
-      ) { store in
-        AddMySchoolToMyProfileView(store: store)
-          .presentationDetents([.height(ShareFeedback.heightForPresentationDetents)])
+        InfoActionSheetView(store: store)
+          .presentationDetents([.medium])
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
@@ -211,6 +239,16 @@ public struct AboutView: View {
     }
   }
 }
+
+#Preview {
+  AboutView(
+    store: .init(
+      initialState: AboutLogic.State(),
+      reducer: { AboutLogic() }
+    )
+  )
+}
+
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
   static let getHelp = Self {
@@ -245,16 +283,5 @@ extension ConfirmationDialogState where Action == AboutLogic.Action.Confirmation
     }
   } message: {
     TextState("Get Help", bundle: .module)
-  }
-}
-
-struct AboutViewPreviews: PreviewProvider {
-  static var previews: some View {
-    AboutView(
-      store: .init(
-        initialState: AboutLogic.State(),
-        reducer: { AboutLogic() }
-      )
-    )
   }
 }
