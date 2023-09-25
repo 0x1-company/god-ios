@@ -22,6 +22,7 @@ graph TD;
     AppFeature-->TcaHelpers;
     AppFeature-->StoreKitClient;
     AppFeature-->FirestoreClient;
+    AppFeature-->AnalyticsClient;
     AppFeature-->FirebaseCoreClient;
     AppFeature-->UserNotificationClient;
     AppFeature-->FirebaseMessagingClient;
