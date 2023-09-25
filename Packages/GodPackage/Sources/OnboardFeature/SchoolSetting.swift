@@ -103,8 +103,7 @@ public struct SchoolSettingView: View {
               .frame(maxWidth: .infinity, alignment: .leading)
 
               VStack(spacing: 0) {
-//                Text(school.usersCount.description)
-                Text(0.description)
+                Text(school.usersCount.description)
                   .bold()
                   .foregroundColor(Color.godService)
                 Text("MEMBERS")
