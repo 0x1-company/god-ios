@@ -38,7 +38,6 @@ public struct AppLogic: Reducer {
     case appDelegate(AppDelegateLogic.Action)
     case sceneDelegate(SceneDelegateLogic.Action)
     case view(View.Action)
-    case quickAction(String)
     case configResponse(TaskResult<FirestoreClient.Config>)
     case authUserResponse(TaskResult<FirebaseAuthClient.User?>)
     case transaction(TaskResult<StoreKit.Transaction>)
