@@ -17,15 +17,15 @@ public struct PollQuestionLogic: Reducer {
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
     var currentIndex = 0
-    
+
     var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
-      return choiceGroups[currentIndex]
+      choiceGroups[currentIndex]
     }
 
     public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
-      self.id = pollQuestion.id
-      self.question = pollQuestion.question
-      self.choiceGroups = pollQuestion.choiceGroups
+      id = pollQuestion.id
+      question = pollQuestion.question
+      choiceGroups = pollQuestion.choiceGroups
     }
 
     public enum Step: Int {
