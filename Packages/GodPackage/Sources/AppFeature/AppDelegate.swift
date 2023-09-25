@@ -66,9 +66,10 @@ public struct AppDelegateLogic: Reducer {
         }
       }
     case let .didReceiveRemoteNotification(userInfo):
-      guard let badge = userInfo["badge"] as? Int else { return .none }
+      guard let badge = userInfo["badge"] as? String else { return .none }
+      guard let badgeCount = Int(badge) else { return .none }
       return .run { _ in
-        try? await userNotifications.setBadgeCount(badge)
+        try? await userNotifications.setBadgeCount(badgeCount)
       }
     case .didRegisterForRemoteNotifications(.failure):
       return .none
