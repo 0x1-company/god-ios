@@ -1,3 +1,4 @@
+import ButtonStyles
 import ComposableArchitecture
 import SwiftUI
 
@@ -87,15 +88,23 @@ public struct PlayAgainView: View {
         } label: {
           Text("Invite a friend", bundle: .module)
             .bold()
-            .font(.title2)
             .frame(height: 54)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color.black)
+            .overlay(alignment: .leading) {
+              Image(systemName: "message.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 25, height: 25)
+                .clipped()
+            }
+            .padding(.horizontal, 25)
+            .background(Color.white)
+            .clipShape(Capsule())
+            .shadow(color: .black.opacity(0.2), radius: 25)
         }
-        .background(Color.white)
-        .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.2), radius: 25)
         .padding(.horizontal, 65)
+        .buttonStyle(HoldDownButtonStyle())
       }
       .task { await viewStore.send(.onTask).finish() }
     }

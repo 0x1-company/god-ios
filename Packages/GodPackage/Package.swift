@@ -152,6 +152,7 @@ let package = Package(
       .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
     ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PollFeature", dependencies: [
