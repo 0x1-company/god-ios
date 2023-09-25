@@ -20,12 +20,12 @@ public struct QuickActionLogic: Reducer {
       return .run { send in
         await quickAction(send: send, type: type)
       }
-      
+
     default:
       return .none
     }
   }
-  
+
   private func quickAction(send: Send<Action>, type: String) async {
     guard let url = Constants.quickActionURLs[type] else { return }
     await openURL(url)
