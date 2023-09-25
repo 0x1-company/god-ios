@@ -10,6 +10,7 @@ let package = Package(
     .iOS(.v16),
   ],
   products: [
+    .library(name: "ActionSheet", targets: ["ActionSheet"]),
     .library(name: "AnimationDisableTransaction", targets: ["AnimationDisableTransaction"]),
     .library(name: "ButtonStyles", targets: ["ButtonStyles"]),
     .library(name: "ColorHex", targets: ["ColorHex"]),
@@ -24,6 +25,7 @@ let package = Package(
   dependencies: [
   ],
   targets: [
+    .target(name: "ActionSheet", dependencies: ["ButtonStyles"]),
     .target(name: "AnimationDisableTransaction"),
     .target(name: "ButtonStyles"),
     .target(name: "ColorHex"),
