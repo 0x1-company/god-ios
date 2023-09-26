@@ -8,7 +8,7 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
 
   public struct State: Equatable {
     var friendsOfFriends: IdentifiedArrayOf<FriendRowCardLogic.State>
-    
+
     public init(friendsOfFriends: IdentifiedArrayOf<FriendRowCardLogic.State>) {
       self.friendsOfFriends = friendsOfFriends
     }
@@ -19,7 +19,7 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { state, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .friendsOfFriends:
         return .none
@@ -48,10 +48,8 @@ public struct FriendsOfFriendsPanelView: View {
         ) {
           FriendRowCardView(store: $0)
         }
-        
-        Button {
-          
-        } label: {
+
+        Button {} label: {
           Text("See \(viewStore.friendsOfFriends.count) more", bundle: .module)
         }
         .buttonStyle(SeeMoreButtonStyle())
