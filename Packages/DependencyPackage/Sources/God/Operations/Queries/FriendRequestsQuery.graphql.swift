@@ -76,6 +76,8 @@ public extension God {
             ] }
 
             public var id: God.ID { __data["id"] }
+            /// フレンド状態
+            public var status: GraphQLEnum<God.FriendStatus> { __data["status"] }
             /// ユーザー情報
             public var user: FriendRequestCardFragment.User { __data["user"] }
 

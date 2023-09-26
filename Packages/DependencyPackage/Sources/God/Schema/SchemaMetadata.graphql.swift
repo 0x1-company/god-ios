@@ -43,15 +43,17 @@ public extension God {
       case "UserHide": return God.Objects.UserHide
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
-      case "UserConnection": return God.Objects.UserConnection
-      case "PageInfo": return God.Objects.PageInfo
-      case "UserEdge": return God.Objects.UserEdge
       case "Wallet": return God.Objects.Wallet
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem
+      case "UserConnection": return God.Objects.UserConnection
+      case "PageInfo": return God.Objects.PageInfo
+      case "UserEdge": return God.Objects.UserEdge
       case "InboxActivityConnection": return God.Objects.InboxActivityConnection
       case "InboxActivityEdge": return God.Objects.InboxActivityEdge
       case "Question": return God.Objects.Question
+      case "FriendConnection": return God.Objects.FriendConnection
+      case "FriendEdge": return God.Objects.FriendEdge
       case "ActivityConnection": return God.Objects.ActivityConnection
       case "ActivityEdge": return God.Objects.ActivityEdge
       case "Activity": return God.Objects.Activity
@@ -65,8 +67,6 @@ public extension God {
       case "Subscription": return God.Objects.Subscription
       case "SchoolConnection": return God.Objects.SchoolConnection
       case "SchoolEdge": return God.Objects.SchoolEdge
-      case "FriendConnection": return God.Objects.FriendConnection
-      case "FriendEdge": return God.Objects.FriendEdge
       default: return nil
       }
     }

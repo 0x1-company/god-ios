@@ -350,6 +350,9 @@ type Query {
 
   """フレンドのフレンド一覧"""
   friendsOfFriends(after: String, first: Int!): UserConnection!
+
+  """同じ学校に所属しているユーザー一覧"""
+  fromSchool(after: String, first: Int!): UserConnection!
   getRedis(key: String!): String!
 
   """フレンドのActivityを一覧で取得する"""
@@ -375,9 +378,6 @@ type Query {
 
   """ユーザーを取得"""
   user(where: UserWhere!): User!
-
-  """指定した学校に所属しているユーザー一覧"""
-  usersBySchoolId(after: String, first: Int!, schoolId: String!): UserConnection!
 
   """ユーザー名で指定したユーザーが投票された質問を最大5個まで降順で取得する"""
   votedQuestions(

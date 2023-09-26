@@ -11,16 +11,8 @@ public struct InvitationsLeftLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var invitations: IdentifiedArrayOf<InviteCard> = []
+    var invitations: [CNContact] = []
     @PresentationState var message: CupertinoMessageLogic.State?
-    public init() {}
-
-    public struct InviteCard: Equatable, Identifiable {
-      public var id: String
-      public var familyName: String
-      public var givenName: String
-      public var imageData: Data?
-    }
   }
 
   public enum Action: Equatable {
@@ -62,19 +54,10 @@ public struct InvitationsLeftLogic: Reducer {
           Task.cancel(id: Cancel.enumerateContacts)
           return .none
         }
-        state.invitations.insert(
-          State.InviteCard(
-            id: contact.identifier,
-            familyName: contact.familyName,
-            givenName: contact.givenName,
-            imageData: contact.imageData
-          ),
-          at: 0
-        )
+        state.invitations.append(contact)
         return .none
 
-      case let .contactResponse(.failure(error)):
-        print(error)
+      case .contactResponse(.failure):
         return .none
 
       case .inviteButtonTapped:
@@ -115,34 +98,29 @@ public struct InvitationsLeftView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         FriendHeader(title: "INVITATIONS LEFT")
-
-        ForEach(viewStore.invitations) { state in
+        ForEach(viewStore.invitations, id: \.identifier) { contact in
           InvitationCardView(
-            familyName: state.familyName,
-            givenName: state.givenName,
-            imageData: state.imageData
+            familyName: contact.familyName,
+            givenName: contact.givenName,
+            imageData: contact.imageData
           ) {
             viewStore.send(.inviteButtonTapped)
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$message, action: { .message($0) }),
+        content: CupertinoMessageView.init
+      )
     }
-    .sheet(
-      store: store.scope(state: \.$message, action: { .message($0) }),
-      content: CupertinoMessageView.init
-    )
   }
 }
 
-struct InvitationsLeftViewPreviews: PreviewProvider {
-  static var previews: some View {
-    InvitationsLeftView(
-      store: .init(
-        initialState: InvitationsLeftLogic.State(),
-        reducer: { InvitationsLeftLogic() }
-      )
+#Preview {
+  InvitationsLeftView(
+    store: .init(
+      initialState: InvitationsLeftLogic.State(),
+      reducer: { InvitationsLeftLogic() }
     )
-    .previewLayout(.sizeThatFits)
-  }
+  )
 }

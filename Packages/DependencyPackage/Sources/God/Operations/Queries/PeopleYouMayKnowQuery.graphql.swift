@@ -4,28 +4,20 @@
 @_exported import ApolloAPI
 
 public extension God {
-  class UsersBySchoolQuery: GraphQLQuery {
-    public static let operationName: String = "UsersBySchool"
+  class PeopleYouMayKnowQuery: GraphQLQuery {
+    public static let operationName: String = "PeopleYouMayKnow"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query UsersBySchool($schoolId: String!, $first: Int!) { usersBySchoolId(schoolId: $schoolId, first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName displayName { __typename ja } } } } }"#
+        #"query PeopleYouMayKnow($first: Int!) { fromSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName displayName { __typename ja } grade } } } }"#
       ))
 
-    public var schoolId: String
     public var first: Int
 
-    public init(
-      schoolId: String,
-      first: Int
-    ) {
-      self.schoolId = schoolId
+    public init(first: Int) {
       self.first = first
     }
 
-    public var __variables: Variables? { [
-      "schoolId": schoolId,
-      "first": first
-    ] }
+    public var __variables: Variables? { ["first": first] }
 
     public struct Data: God.SelectionSet {
       public let __data: DataDict
@@ -33,19 +25,16 @@ public extension God {
 
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
-        .field("usersBySchoolId", UsersBySchoolId.self, arguments: [
-          "schoolId": .variable("schoolId"),
-          "first": .variable("first")
-        ]),
+        .field("fromSchool", FromSchool.self, arguments: ["first": .variable("first")]),
       ] }
 
-      /// 指定した学校に所属しているユーザー一覧
-      public var usersBySchoolId: UsersBySchoolId { __data["usersBySchoolId"] }
+      /// 同じ学校に所属しているユーザー一覧
+      public var fromSchool: FromSchool { __data["fromSchool"] }
 
-      /// UsersBySchoolId
+      /// FromSchool
       ///
       /// Parent Type: `UserConnection`
-      public struct UsersBySchoolId: God.SelectionSet {
+      public struct FromSchool: God.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -57,7 +46,7 @@ public extension God {
 
         public var edges: [Edge] { __data["edges"] }
 
-        /// UsersBySchoolId.Edge
+        /// FromSchool.Edge
         ///
         /// Parent Type: `UserEdge`
         public struct Edge: God.SelectionSet {
@@ -72,7 +61,7 @@ public extension God {
 
           public var node: Node { __data["node"] }
 
-          /// UsersBySchoolId.Edge.Node
+          /// FromSchool.Edge.Node
           ///
           /// Parent Type: `User`
           public struct Node: God.SelectionSet {
@@ -87,6 +76,7 @@ public extension God {
               .field("firstName", String.self),
               .field("lastName", String.self),
               .field("displayName", DisplayName.self),
+              .field("grade", String?.self),
             ] }
 
             /// user id
@@ -99,8 +89,10 @@ public extension God {
             public var lastName: String { __data["lastName"] }
             /// 表示名
             public var displayName: DisplayName { __data["displayName"] }
+            /// 学年をテキストで返す
+            public var grade: String? { __data["grade"] }
 
-            /// UsersBySchoolId.Edge.Node.DisplayName
+            /// FromSchool.Edge.Node.DisplayName
             ///
             /// Parent Type: `LocalizableString`
             public struct DisplayName: God.SelectionSet {

@@ -1,0 +1,26 @@
+# import '../fragments/AddPlusCardFragment'
+# import '../fragments/FriendRequestCardFragment'
+
+query AddPlus($first: Int!) {
+  friendRequests(first: 100) {
+    edges {
+      node {
+        ...FriendRequestCardFragment
+      }
+    }
+  }
+  friendsOfFriends(first: $first) {
+    edges {
+      node {
+        ...AddPlusCardFragment
+      }
+    }
+  }
+  fromSchool(first: $first) {
+    edges {
+      node {
+        ...AddPlusCardFragment
+      }
+    }
+  }
+}

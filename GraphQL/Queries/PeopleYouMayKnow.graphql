@@ -1,5 +1,5 @@
-query UsersBySchool($schoolId: String!, $first: Int!) {
-  usersBySchoolId(schoolId: $schoolId, first: $first) {
+query PeopleYouMayKnow($first: Int!) {
+  fromSchool(first: $first) {
     edges {
       node {
         id
@@ -9,6 +9,7 @@ query UsersBySchool($schoolId: String!, $first: Int!) {
         displayName {
           ja
         }
+        grade
       }
     }
   }

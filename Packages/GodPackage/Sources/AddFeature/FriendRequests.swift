@@ -10,12 +10,14 @@ public struct FriendRequestsLogic: Reducer {
 
   public struct State: Equatable {
     var requests: IdentifiedArrayOf<FriendRequestCardLogic.State> = []
-    public init() {}
+
+    public init(requests: IdentifiedArrayOf<FriendRequestCardLogic.State>) {
+      self.requests = requests
+    }
   }
 
   public enum Action: Equatable {
     case onTask
-    case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
   }
 
@@ -29,30 +31,6 @@ public struct FriendRequestsLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .run { send in
-          for try await data in godClient.friendRequests() {
-            await send(.friendRequestResponse(.success(data)))
-          }
-        } catch: { error, send in
-          await send(.friendRequestResponse(.failure(error)))
-        }
-        .cancellable(id: Cancel.friendRequests)
-
-      case let .friendRequestResponse(.success(data)):
-        let requests = data.friendRequests.edges
-          .map(\.node.fragments.friendRequestCardFragment)
-          .map { data in
-            FriendRequestCardLogic.State(
-              friendId: data.id,
-              userId: data.user.id,
-              displayName: data.user.displayName.ja,
-              description: "\(data.user.mutualFriendsCount) mutual friend"
-            )
-          }
-        state.requests = .init(uniqueElements: requests)
-        return .none
-      case .friendRequestResponse(.failure):
-        state.requests = []
         return .none
 
       case .requests:
@@ -91,7 +69,9 @@ struct FriendRequestsViewPreviews: PreviewProvider {
   static var previews: some View {
     FriendRequestsView(
       store: .init(
-        initialState: FriendRequestsLogic.State(),
+        initialState: FriendRequestsLogic.State(
+          requests: []
+        ),
         reducer: { FriendRequestsLogic() }
       )
     )

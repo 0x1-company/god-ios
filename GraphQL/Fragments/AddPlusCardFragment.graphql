@@ -1,0 +1,11 @@
+fragment AddPlusCardFragment on User {
+  id
+  imageURL
+  displayName {
+    ja
+  }
+  firstName
+  lastName
+  mutualFriendsCount
+  grade
+}
