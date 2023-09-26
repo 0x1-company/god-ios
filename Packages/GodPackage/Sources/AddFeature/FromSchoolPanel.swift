@@ -33,13 +33,22 @@ public struct FromSchoolPanelView: View {
   }
 
   public var body: some View {
-    VStack(spacing: 0) {
-      FriendHeader(title: "FROM SCHOOL")
+    WithViewStore(store, observe: { $0 }) { viewStore in
+      VStack(spacing: 0) {
+        FriendHeader(title: "FROM SCHOOL")
 
-      ForEachStore(
-        store.scope(state: \.users, action: FromSchoolPanelLogic.Action.users)
-      ) {
-        FriendRowCardView(store: $0)
+        ForEachStore(
+          store.scope(state: \.users, action: FromSchoolPanelLogic.Action.users)
+        ) {
+          FriendRowCardView(store: $0)
+        }
+
+        Button {
+          
+        } label: {
+          Text("See \(viewStore.users.count) more", bundle: .module)
+        }
+        .buttonStyle(SeeMoreButtonStyle())
       }
     }
   }
