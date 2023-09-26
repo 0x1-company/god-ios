@@ -9,6 +9,7 @@ graph TD;
     AddFeature-->Colors;
     AddFeature-->GodClient;
     AddFeature-->NameImage;
+    AddFeature-->SearchField;
     AddFeature-->ButtonStyles;
     AddFeature-->ContactsClient;
     AddFeature-->UIApplicationClient;
