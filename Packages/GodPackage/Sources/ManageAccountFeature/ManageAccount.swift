@@ -1,8 +1,8 @@
 import ComposableArchitecture
 import God
 import GodClient
-import SwiftUI
 import LabeledButton
+import SwiftUI
 
 public struct ManageAccountLogic: Reducer {
   public init() {}
@@ -18,7 +18,7 @@ public struct ManageAccountLogic: Reducer {
     case resetHideButtonTapped
     case deleteButtonTapped
     case confirmationDialog(PresentationAction<ConfirmationDialog>)
-    
+
     public enum ConfirmationDialog: Equatable {
       case confirm
     }
@@ -37,14 +37,14 @@ public struct ManageAccountLogic: Reducer {
       case .resetBlockButtonTapped:
         state.confirmationDialog = .resetBlock
         return .none
-        
+
       case .resetHideButtonTapped:
         state.confirmationDialog = .resetBlock
         return .none
-        
+
       case .deleteButtonTapped:
         return .none
-        
+
       case .confirmationDialog(.presented(.confirm)):
         state.confirmationDialog = nil
         return .none
