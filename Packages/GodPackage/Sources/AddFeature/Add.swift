@@ -15,7 +15,7 @@ public struct AddLogic: Reducer {
     @BindingState var searchQuery = ""
 
     var contactsReEnable: ContactsReEnableLogic.State?
-    var invitationsLeft = InvitationsLeftLogic.State()
+    var invitationsLeft: InvitationsLeftLogic.State?
     var friendRequestPanel: FriendRequestsLogic.State?
     var friendsOfFriendsPanel: FriendsOfFriendsPanelLogic.State?
     var fromSchoolPanel: FromSchoolPanelLogic.State?
@@ -46,9 +46,6 @@ public struct AddLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
-      InvitationsLeftLogic()
-    }
     Reduce<State, Action> { state, _ in
       state.contactsReEnable = contactsAuthorizationStatus(.contacts) != .authorized ? .init() : nil
       return .none
@@ -106,11 +103,17 @@ public struct AddLogic: Reducer {
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))
         state.friendsOfFriendsPanel = friendsOfFriends.isEmpty ? nil : .init(friendsOfFriends: .init(uniqueElements: friendsOfFriends))
         state.fromSchoolPanel = fromSchools.isEmpty ? nil : .init(users: .init(uniqueElements: fromSchools))
+        if friendsOfFriends.isEmpty, fromSchools.isEmpty {
+          state.invitationsLeft = .init()
+        } else {
+          state.invitationsLeft = nil
+        }
         return .none
       case .addPlusResponse(.failure):
         state.friendRequestPanel = nil
         state.friendsOfFriendsPanel = nil
         state.fromSchoolPanel = nil
+        state.invitationsLeft = .init()
         return .none
       default:
         return .none
@@ -119,9 +122,12 @@ public struct AddLogic: Reducer {
     .forEach(\.searchResult, action: /Action.searchResult) {
       FriendRowCardLogic()
     }
-    .ifLet(\.contactsReEnable, action: /Action.contactsReEnable, then: {
+    .ifLet(\.contactsReEnable, action: /Action.contactsReEnable) {
       ContactsReEnableLogic()
-    })
+    }
+    .ifLet(\.invitationsLeft, action: /Action.invitationsLeft) {
+      InvitationsLeftLogic()
+    }
     .ifLet(\.friendsOfFriendsPanel, action: /Action.friendsOfFriendsPanel) {
       FriendsOfFriendsPanelLogic()
     }
@@ -154,7 +160,10 @@ public struct AddView: View {
         ScrollView {
           LazyVStack(spacing: 0) {
             if viewStore.searchResult.isEmpty {
-              InvitationsLeftView(store: store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft))
+              IfLetStore(
+                store.scope(state: \.invitationsLeft, action: AddLogic.Action.invitationsLeft),
+                then: InvitationsLeftView.init(store:)
+              )
               IfLetStore(
                 store.scope(state: \.friendRequestPanel, action: AddLogic.Action.friendRequestPanel),
                 then: FriendRequestsView.init(store:)
