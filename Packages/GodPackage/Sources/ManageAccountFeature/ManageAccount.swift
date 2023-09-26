@@ -1,26 +1,56 @@
 import ComposableArchitecture
+import God
+import GodClient
 import SwiftUI
+import LabeledButton
 
 public struct ManageAccountLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
     public init() {}
   }
 
   public enum Action: Equatable {
     case closeButtonTapped
+    case resetBlockButtonTapped
+    case resetHideButtonTapped
+    case deleteButtonTapped
+    case confirmationDialog(PresentationAction<ConfirmationDialog>)
+    
+    public enum ConfirmationDialog: Equatable {
+      case confirm
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
+      case .resetBlockButtonTapped:
+        state.confirmationDialog = .resetBlock
+        return .none
+        
+      case .resetHideButtonTapped:
+        state.confirmationDialog = .resetBlock
+        return .none
+        
+      case .deleteButtonTapped:
+        return .none
+        
+      case .confirmationDialog(.presented(.confirm)):
+        state.confirmationDialog = nil
+        return .none
+
+      case .confirmationDialog:
+        return .none
       }
     }
   }
@@ -36,59 +66,65 @@ public struct ManageAccountView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
-        Section("Settings") {
-          LabeledContent {
-            Toggle("Reduce Notifications", isOn: .constant(true))
+        Section {
+          Button {
+            viewStore.send(.resetBlockButtonTapped)
           } label: {
-            Image(systemName: "eye.slash.fill")
+            Label("Reset Block List", systemImage: "eye.slash.fill")
           }
-
-          LabeledContent {
-            Toggle("Hide Top Flames", isOn: .constant(true))
+          Button {
+            viewStore.send(.resetHideButtonTapped)
           } label: {
-            Image(systemName: "eye.slash.fill")
+            Label("Reset Hide List", systemImage: "eye.slash.fill")
           }
-
-          LabeledContent {
-            Toggle("Take a Break from Gas", isOn: .constant(true))
-          } label: {
-            Image(systemName: "eye.slash.fill")
-          }
-        }
-
-        Section("add friends") {
-          Label("Reset Block List", systemImage: "eye.slash.fill")
-          Label("Reset Hide List", systemImage: "eye.slash.fill")
+        } header: {
+          Text("FRIENDS", bundle: .module)
         }
 
         Section {
-          Button(action: {}) {
-            Label("Delete Account", systemImage: "trash")
+          LabeledButton(
+            String(localized: "Delete Account", bundle: .module),
+            systemImage: "trash"
+          ) {
+            viewStore.send(.deleteButtonTapped)
           }
           .foregroundColor(.red)
         }
       }
       .navigationTitle(Text("Manage Account", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
+      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
-          Button("Close") {
+          Button {
             viewStore.send(.closeButtonTapped)
+          } label: {
+            Text("Close", bundle: .module)
+              .foregroundStyle(.primary)
           }
-          .foregroundColor(.primary)
         }
       }
     }
   }
 }
 
-struct ManageAccountViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ManageAccountView(
-      store: .init(
-        initialState: ManageAccountLogic.State(),
-        reducer: { ManageAccountLogic() }
-      )
+#Preview {
+  ManageAccountView(
+    store: .init(
+      initialState: ManageAccountLogic.State(),
+      reducer: { ManageAccountLogic() }
     )
+  )
+}
+
+extension ConfirmationDialogState where Action == ManageAccountLogic.Action.ConfirmationDialog {
+  static let resetBlock = Self {
+    TextState("Unblock all accounts", bundle: .module)
+  } actions: {
+    ButtonState(role: .destructive, action: .confirm) {
+      TextState("Confirm", bundle: .module)
+    }
+  } message: {
+    TextState("Are you sure you want to reset your block list?")
   }
 }
