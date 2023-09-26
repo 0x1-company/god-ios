@@ -4,8 +4,8 @@ import Contacts
 import ContactsClient
 import God
 import GodClient
-import SwiftUI
 import SearchField
+import SwiftUI
 import UIApplicationClient
 
 public struct AddLogic: Reducer {

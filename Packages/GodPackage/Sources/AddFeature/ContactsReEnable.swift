@@ -11,7 +11,7 @@ public struct ContactsReEnableLogic: Reducer {
   public enum Action: Equatable {
     case onTapGesture
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.application.openSettingsURLString) var openSettingsURLString
 
