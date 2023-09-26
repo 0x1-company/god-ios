@@ -7,52 +7,20 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var friendsOfFriends: IdentifiedArrayOf<FriendRowCardLogic.State> = []
-    public init() {}
+    var friendsOfFriends: IdentifiedArrayOf<FriendRowCardLogic.State>
+    
+    public init(friendsOfFriends: IdentifiedArrayOf<FriendRowCardLogic.State>) {
+      self.friendsOfFriends = friendsOfFriends
+    }
   }
 
   public enum Action: Equatable {
-    case onTask
-    case friendsOfFriendsResponse(TaskResult<God.FriendsOfFriendsQuery.Data>)
     case friendsOfFriends(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
-  }
-
-  @Dependency(\.godClient) var godClient
-
-  enum Cancel {
-    case id
   }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
-      case .onTask:
-        return .run { send in
-          for try await data in godClient.friendsOfFriends() {
-            await send(.friendsOfFriendsResponse(.success(data)))
-          }
-        } catch: { error, send in
-          await send(.friendsOfFriendsResponse(.failure(error)))
-        }
-        .cancellable(id: Cancel.id)
-      case let .friendsOfFriendsResponse(.success(data)):
-        let friendsOfFriends = data.friendsOfFriends.edges
-          .map(\.node.fragments.friendsOfFriendsCardFragment)
-          .map { data in
-            let mutualFriendsCount = data.mutualFriendsCount
-            return FriendRowCardLogic.State(
-              id: data.id,
-              displayName: data.displayName.ja,
-              description: mutualFriendsCount.description
-            )
-          }
-        state.friendsOfFriends = .init(uniqueElements: friendsOfFriends)
-        return .none
-
-      case .friendsOfFriendsResponse(.failure):
-        state.friendsOfFriends = []
-        return .none
-
       case .friendsOfFriends:
         return .none
       }
@@ -80,8 +48,14 @@ public struct FriendsOfFriendsPanelView: View {
         ) {
           FriendRowCardView(store: $0)
         }
+        
+        Button {
+          
+        } label: {
+          Text("See \(viewStore.friendsOfFriends.count) more", bundle: .module)
+        }
+        .buttonStyle(SeeMoreButtonStyle())
       }
-      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
@@ -89,7 +63,9 @@ public struct FriendsOfFriendsPanelView: View {
 #Preview {
   FriendsOfFriendsPanelView(
     store: .init(
-      initialState: FriendsOfFriendsPanelLogic.State(),
+      initialState: FriendsOfFriendsPanelLogic.State(
+        friendsOfFriends: []
+      ),
       reducer: { FriendsOfFriendsPanelLogic() }
     )
   )

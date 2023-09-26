@@ -10,12 +10,9 @@ public struct GodClient: Sendable {
   public var user: @Sendable (God.UserWhere) -> AsyncThrowingStream<God.UserQuery.Data, Error>
   public var currentUser: @Sendable () -> AsyncThrowingStream<God.CurrentUserQuery.Data, Error>
   public var profile: @Sendable () -> AsyncThrowingStream<God.ProfileQuery.Data, Error>
-  public var usersBySchool: @Sendable (String) -> AsyncThrowingStream<God.UsersBySchoolQuery.Data, Error>
+  public var peopleYouMayKnow: @Sendable () -> AsyncThrowingStream<God.PeopleYouMayKnowQuery.Data, Error>
 
   public var schools: @Sendable () -> AsyncThrowingStream<God.SchoolsQuery.Data, Error>
-
-  public var createFriendRequest: @Sendable (God.CreateFriendRequestInput) async throws -> God.CreateFriendRequestMutation.Data
-  public var approveFriendRequest: @Sendable (God.ApproveFriendRequestInput) async throws -> God.ApproveFriendRequestMutation.Data
 
   public var store: @Sendable () -> AsyncThrowingStream<God.StoreQuery.Data, Error>
   public var purchase: @Sendable (God.PurchaseInput) async throws -> God.PurchaseMutation.Data
@@ -30,8 +27,10 @@ public struct GodClient: Sendable {
 
   public var friends: @Sendable () -> AsyncThrowingStream<God.FriendsQuery.Data, Error>
   public var friendsOfFriends: @Sendable () -> AsyncThrowingStream<God.FriendsOfFriendsQuery.Data, Error>
-  public var fromSchools: @Sendable (String) -> AsyncThrowingStream<God.FromSchoolsQuery.Data, Error>
   public var friendRequests: @Sendable () -> AsyncThrowingStream<God.FriendRequestsQuery.Data, Error>
+  public var createFriendRequest: @Sendable (God.CreateFriendRequestInput) async throws -> God.CreateFriendRequestMutation.Data
+  public var approveFriendRequest: @Sendable (God.ApproveFriendRequestInput) async throws -> God.ApproveFriendRequestMutation.Data
+  public var addPlus: @Sendable () -> AsyncThrowingStream<God.AddPlusQuery.Data, Error>
 
   public var createFirebaseRegistrationToken: @Sendable (God.CreateFirebaseRegistrationTokenInput) async throws -> God.CreateFirebaseRegistrationTokenMutation.Data
 

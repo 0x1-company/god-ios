@@ -1,5 +1,6 @@
 fragment FriendRequestCardFragment on Friend {
   id
+  status
   user {
     id
     imageURL

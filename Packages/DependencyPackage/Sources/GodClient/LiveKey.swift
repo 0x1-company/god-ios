@@ -38,21 +38,13 @@ public extension GodClient {
         let query = God.ProfileQuery()
         return apolloClient.watch(query: query)
       },
-      usersBySchool: { schoolId in
-        let query = God.UsersBySchoolQuery(schoolId: schoolId, first: 20)
+      peopleYouMayKnow: {
+        let query = God.PeopleYouMayKnowQuery(first: 20)
         return apolloClient.watch(query: query)
       },
       schools: {
         let query = God.SchoolsQuery(first: 100, after: .null)
         return apolloClient.watch(query: query)
-      },
-      createFriendRequest: { input in
-        let mutation = God.CreateFriendRequestMutation(input: input)
-        return try await apolloClient.perform(mutation: mutation)
-      },
-      approveFriendRequest: { input in
-        let mutation = God.ApproveFriendRequestMutation(input: input)
-        return try await apolloClient.perform(mutation: mutation)
       },
       store: {
         let query = God.StoreQuery()
@@ -94,12 +86,20 @@ public extension GodClient {
         let query = God.FriendsOfFriendsQuery(first: 100, after: .null)
         return apolloClient.watch(query: query)
       },
-      fromSchools: { schoolId in
-        let query = God.FromSchoolsQuery(schoolId: schoolId, first: 100, after: .null)
-        return apolloClient.watch(query: query)
-      },
       friendRequests: {
         let query = God.FriendRequestsQuery(first: 100)
+        return apolloClient.watch(query: query)
+      },
+      createFriendRequest: { input in
+        let mutation = God.CreateFriendRequestMutation(input: input)
+        return try await apolloClient.perform(mutation: mutation)
+      },
+      approveFriendRequest: { input in
+        let mutation = God.ApproveFriendRequestMutation(input: input)
+        return try await apolloClient.perform(mutation: mutation)
+      },
+      addPlus: {
+        let query = God.AddPlusQuery(first: 300)
         return apolloClient.watch(query: query)
       },
       createFirebaseRegistrationToken: { input in

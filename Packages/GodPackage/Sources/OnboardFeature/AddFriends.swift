@@ -10,7 +10,7 @@ public struct AddFriendsLogic: Reducer {
 
   public struct State: Equatable {
     let schoolId: String?
-    var users: [God.UsersBySchoolQuery.Data.UsersBySchoolId.Edge.Node] = []
+    var users: [God.PeopleYouMayKnowQuery.Data.FromSchool.Edge.Node] = []
 
     public init(schoolId: String?) {
       self.schoolId = schoolId
@@ -20,7 +20,7 @@ public struct AddFriendsLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case nextButtonTapped
-    case usersResponse(TaskResult<God.UsersBySchoolQuery.Data>)
+    case usersResponse(TaskResult<God.PeopleYouMayKnowQuery.Data>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -34,9 +34,8 @@ public struct AddFriendsLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        guard let schoolId = state.schoolId else { return .none }
         return .run { send in
-          for try await data in godClient.usersBySchool(schoolId) {
+          for try await data in godClient.peopleYouMayKnow() {
             await send(.usersResponse(.success(data)))
           }
         } catch: { error, send in
@@ -49,10 +48,11 @@ public struct AddFriendsLogic: Reducer {
         }
 
       case let .usersResponse(.success(data)):
-        state.users = data.usersBySchoolId.edges.map(\.node)
+        state.users = data.fromSchool.edges.map(\.node)
         return .none
 
       case .usersResponse(.failure):
+        state.users = []
         return .none
 
       case .delegate:
