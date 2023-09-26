@@ -1,7 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "add friends" : {
+    "Are you sure you want to reset your block list?" : {
 
     },
     "Close" : {
@@ -14,6 +14,9 @@
         }
       }
     },
+    "Confirm" : {
+
+    },
     "Delete Account" : {
       "localizations" : {
         "ja" : {
@@ -24,7 +27,7 @@
         }
       }
     },
-    "Hide Top Flames" : {
+    "FRIENDS" : {
 
     },
     "Manage Account" : {
@@ -36,9 +39,6 @@
           }
         }
       }
-    },
-    "Reduce Notifications" : {
-
     },
     "Reset Block List" : {
       "localizations" : {
@@ -60,17 +60,7 @@
         }
       }
     },
-    "Settings" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "設定"
-          }
-        }
-      }
-    },
-    "Take a Break from Gas" : {
+    "Unblock all accounts" : {
 
     }
   },
