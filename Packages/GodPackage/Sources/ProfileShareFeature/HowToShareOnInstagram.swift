@@ -40,7 +40,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
     case onTask
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case stepButtonTapped(State.Step)
-      case primaryButtonTapped(profileCardImage: UIImage? = nil)
+    case primaryButtonTapped(profileCardImage: UIImage? = nil)
     case closeButtonTapped
   }
 
@@ -79,26 +79,27 @@ public struct HowToShareOnInstagramLogic: Reducer {
       case let .primaryButtonTapped(profileCardImage):
         // Stepが最後の場合はInstagramへ飛ばす
         if state.currentStep == State.Step.allCases.last {
-            guard let storiesUrl = URL(string: "instagram-stories://share?source_application=1049646559806019") else { return .none }
-            if !UIApplication.shared.canOpenURL(storiesUrl) {
-                print("Sorry the application is not installed")
-                assertionFailure()
-                return .none
-            }
-            guard let profileCardImage,
-                  let imageData = profileCardImage.pngData() else {
-              assertionFailure()
-              return .none
-            }
-            let pasteboardItems: [String: Any] = [
-              "com.instagram.sharedSticker.stickerImage": imageData,
-              "com.instagram.sharedSticker.backgroundTopColor": "#000000",
-              "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
-            ]
-            UIPasteboard.general.setItems(
-              [pasteboardItems],
-              options: [.expirationDate: Date().addingTimeInterval(300)]
-            )
+          guard let storiesUrl = URL(string: "instagram-stories://share?source_application=1049646559806019") else { return .none }
+          if !UIApplication.shared.canOpenURL(storiesUrl) {
+            print("Sorry the application is not installed")
+            assertionFailure()
+            return .none
+          }
+          guard let profileCardImage,
+                let imageData = profileCardImage.pngData()
+          else {
+            assertionFailure()
+            return .none
+          }
+          let pasteboardItems: [String: Any] = [
+            "com.instagram.sharedSticker.stickerImage": imageData,
+            "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+            "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+          ]
+          UIPasteboard.general.setItems(
+            [pasteboardItems],
+            options: [.expirationDate: Date().addingTimeInterval(300)]
+          )
           return .run { [storiesUrl] _ in
             async let close = dismiss()
             async let openInstagram = openURL(storiesUrl)
@@ -124,7 +125,7 @@ public struct HowToShareOnInstagramView: View {
   public static let heightForPresentationDetents: CGFloat = 260
   let store: StoreOf<HowToShareOnInstagramLogic>
 
-    @Environment(\.displayScale) var displayScale
+  @Environment(\.displayScale) var displayScale
 
   public init(store: StoreOf<HowToShareOnInstagramLogic>) {
     self.store = store
@@ -132,70 +133,70 @@ public struct HowToShareOnInstagramView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-        let profileCardForShareOnInstagram = profileCardForShareOnInstagram(user: viewStore.state.currentUser)
-        ZStack(alignment: .center) {
-            // instagramへのシェア用のView
-            profileCardForShareOnInstagram
+      let profileCardForShareOnInstagram = profileCardForShareOnInstagram(user: viewStore.state.currentUser)
+      ZStack(alignment: .center) {
+        // instagramへのシェア用のView
+        profileCardForShareOnInstagram
 
-            VStack(alignment: .center, spacing: 24) {
-                Text("How to add the\nlink to your Story", bundle: .module)
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.godBlack)
-                    .lineSpacing(-2)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
+        VStack(alignment: .center, spacing: 24) {
+          Text("How to add the\nlink to your Story", bundle: .module)
+            .font(.title)
+            .bold()
+            .foregroundColor(.godBlack)
+            .lineSpacing(-2)
+            .lineLimit(2)
+            .multilineTextAlignment(.center)
 
-                HStack(alignment: .center, spacing: 12) {
-                    ForEach(viewStore.allSteps, id: \.rawValue) { step in
-                        Button {
-                            viewStore.send(.stepButtonTapped(step))
-                        } label: {
-                            Text(String(step.rawValue))
-                                .font(.subheadline)
-                                .foregroundColor(viewStore.state.currentStep == step ? .godWhite : .godBlack)
-                                .frame(width: 36, height: 36)
-                                .background(viewStore.state.currentStep == step ? Color.godBlack : Color.godWhite)
-                                .cornerRadius(18)
-                                .overlay(
-                                    viewStore.state.currentStep == step ? nil :
-                                        Circle()
-                                        .stroke(Color.godBlack, lineWidth: 0.5)
-                                )
-                        }
-                        .buttonStyle(HoldDownButtonStyle())
-                    }
-                }
-
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(Color.red)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 240)
-
-                Button {
-                    let renderer = ImageRenderer(content: profileCardForShareOnInstagram)
-                    renderer.scale = displayScale
-                    viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
-                } label: {
-                    Text(viewStore.state.currentStep.primaryButtonText)
-                        .font(.subheadline)
-                        .bold()
-                        .foregroundColor(.godWhite)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(Color.godService)
-                        .cornerRadius(26)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 26)
-                                .stroke(Color.godService, lineWidth: 0.5)
-                        )
-                }
-                .buttonStyle(HoldDownButtonStyle())
+          HStack(alignment: .center, spacing: 12) {
+            ForEach(viewStore.allSteps, id: \.rawValue) { step in
+              Button {
+                viewStore.send(.stepButtonTapped(step))
+              } label: {
+                Text(String(step.rawValue))
+                  .font(.subheadline)
+                  .foregroundColor(viewStore.state.currentStep == step ? .godWhite : .godBlack)
+                  .frame(width: 36, height: 36)
+                  .background(viewStore.state.currentStep == step ? Color.godBlack : Color.godWhite)
+                  .cornerRadius(18)
+                  .overlay(
+                    viewStore.state.currentStep == step ? nil :
+                      Circle()
+                      .stroke(Color.godBlack, lineWidth: 0.5)
+                  )
+              }
+              .buttonStyle(HoldDownButtonStyle())
             }
-            .padding(20)
-            .background(Color.godWhite)
-            .cornerRadius(24)
+          }
+
+          RoundedRectangle(cornerRadius: 24)
+            .fill(Color.red)
+            .frame(maxWidth: .infinity)
+            .frame(height: 240)
+
+          Button {
+            let renderer = ImageRenderer(content: profileCardForShareOnInstagram)
+            renderer.scale = displayScale
+            viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
+          } label: {
+            Text(viewStore.state.currentStep.primaryButtonText)
+              .font(.subheadline)
+              .bold()
+              .foregroundColor(.godWhite)
+              .frame(maxWidth: .infinity)
+              .frame(height: 52)
+              .background(Color.godService)
+              .cornerRadius(26)
+              .overlay(
+                RoundedRectangle(cornerRadius: 26)
+                  .stroke(Color.godService, lineWidth: 0.5)
+              )
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
+        .padding(20)
+        .background(Color.godWhite)
+        .cornerRadius(24)
+      }
       .task { await viewStore.send(.onTask).finish() }
     }
   }
@@ -248,7 +249,7 @@ public struct HowToShareOnInstagramView: View {
             Circle()
               .fill(Color.godGreen)
               .frame(width: 36, height: 36)
-              
+
             (
               Text("1053 people ").bold() +
                 Text("from\n\(user.school?.name ?? "")")
