@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "1053 people " : {
+
+    },
+    "Add me on" : {
+
+    },
     "Close" : {
       "localizations" : {
         "ja" : {
@@ -17,7 +23,10 @@
     "Copy your god link" : {
 
     },
-    "How to add the\nlink to your Story" : {
+    "from\n%@" : {
+
+    },
+    "godapp.jp" : {
 
     },
     "HowToShareOnInstagram" : {
