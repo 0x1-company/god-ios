@@ -85,8 +85,8 @@ public struct InboxDetailLogic: Reducer {
             }
             let pasteboardItems: [String: Any] = [
               "com.instagram.sharedSticker.stickerImage": imageData,
-              "com.instagram.sharedSticker.backgroundTopColor": "#636e72",
-              "com.instagram.sharedSticker.backgroundBottomColor": "#b2bec3",
+              "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+              "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
             ]
             UIPasteboard.general.setItems(
               [pasteboardItems],
@@ -156,7 +156,7 @@ public struct InboxDetailView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let shareOnInstagramStoryView = shareOnInstagramStoryView()
+        let shareOnInstagramStoryView = shareOnInstagramStoryView(question: viewStore.activity.question.text.ja)
       ZStack {
         // instagramへのシェア用のView
         shareOnInstagramStoryView
@@ -262,10 +262,11 @@ public struct InboxDetailView: View {
   }
 
   @ViewBuilder
-  private func shareOnInstagramStoryView() -> some View {
+    private func shareOnInstagramStoryView(question: String) -> some View {
     let mockChoices = ["Nozomi Isshiki", "Anette Escobedo", "Satoya Hatanaka", "Ava Griego"]
+    let mockSelectedUser = "Nozomi Isshiki"
     VStack(alignment: .center, spacing: 12) {
-      HStack(alignment: .center, spacing: 12) {
+      HStack(alignment: .center, spacing: 8) {
         Image("boy", bundle: .module)
           .resizable()
           .frame(width: 36, height: 36)
@@ -289,7 +290,7 @@ public struct InboxDetailView: View {
           .cornerRadius(20)
       }
       VStack(alignment: .center, spacing: 0) {
-        Text("会えばすぐにハッピーな気分にさせてくれるのは？")
+        Text(question)
           .font(.callout)
           .bold()
           .foregroundColor(.godWhite)
@@ -301,6 +302,7 @@ public struct InboxDetailView: View {
           spacing: 16
         ) {
           ForEach(mockChoices, id: \.self) { choice in
+              let isSelectedUser = choice == mockSelectedUser
             Text(verbatim: choice)
               .font(.callout)
               .bold()
@@ -309,25 +311,41 @@ public struct InboxDetailView: View {
               .padding(.horizontal, 16)
               .frame(height: 64)
               .frame(maxWidth: .infinity, alignment: .leading)
-              .foregroundColor(.godBlue)
+              .foregroundStyle(Color.godPurple)
               .background(
                 Color.godWhite
               )
               .cornerRadius(8)
+              .opacity(isSelectedUser ? 1 : 0.6)
+              .overlay(
+                isSelectedUser ?
+                Image("finger-icon", bundle: .module)
+                    .resizable()
+                    .frame(width: 48, height: 48)
+                    .rotationEffect(.degrees(-30))
+                    .shadow(color: .godPurple, radius: 8)
+                    .offset(x: 20, y: -20) : nil,
+                alignment: .topTrailing
+              )
           }
         }
 
-        // TODO: ここにGODのiconが入る
-        // TODO: url
-        Text("gasapp.co")
+          Image("god-icon-white", bundle: .module)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(height: 24)
+              .foregroundStyle(Color.godWhite)
+              .padding(.top, 10)
+              .padding(.bottom, 4)
+
+          Text(verbatim: "godapp.jp")
           .font(.callout)
           .bold()
           .foregroundColor(.godWhite)
-          .padding(.top, 16)
       }
       .padding(.horizontal, 16)
       .padding(.bottom, 16)
-      .background(Color.godBlue)
+      .background(Color.godPurple)
       .cornerRadius(8)
     }
     .frame(maxWidth: .infinity)
