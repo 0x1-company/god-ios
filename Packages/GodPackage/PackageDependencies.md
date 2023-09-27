@@ -98,6 +98,7 @@ graph TD;
     ProfileShareFeature-->Colors;
     ProfileShareFeature-->GodClient;
     ProfileShareFeature-->ButtonStyles;
+    ProfileShareFeature-->UIPasteboardClient;
     ProfileShareFeature-->AnimationDisableTransaction;
     ProfileShareFeature-->ComposableArchitecture;
     RevealFeature-->Colors;
