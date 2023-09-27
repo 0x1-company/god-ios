@@ -1,50 +1,27 @@
 import AnimationDisableTransaction
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
+import UIPasteboardClient
 
 public struct ProfileShareLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public enum ShareContent {
-      case instagram
-      case line
-      case messages
-      case copyLink
-
-      public var name: String {
-        switch self {
-        case .instagram: return "Instagram"
-        case .line: return "LINE"
-        case .messages: return "Messages"
-        case .copyLink: return "Copy Link"
-        }
-      }
-
-      public var iconImageName: String {
-        switch self {
-        case .instagram: return "instagram"
-        case .line: return "line"
-        case .messages: return "messages"
-        case .copyLink: return "copylink"
-        }
-      }
-    }
-
     @PresentationState var destination: Destination.State?
-    var shareContents: [ShareContent] = [.instagram, .line, .messages, .copyLink]
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
-    case shareContentButtonTapped(State.ShareContent)
+    case contentButtonTapped(Content)
     case closeButtonTapped
     case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -52,15 +29,14 @@ public struct ProfileShareLogic: Reducer {
       case .onTask:
         return .none
 
-      case let .shareContentButtonTapped(shareContent):
-        switch shareContent {
+      case let .contentButtonTapped(content):
+        switch content {
         case .instagram:
           state.destination = .shareProfileToInstagramPopup()
-
         case .line: break
         case .messages: break
         case .copyLink:
-          UIPasteboard.general.string = ""
+          pasteboard.string("")
         }
         return .none
 
@@ -93,6 +69,31 @@ public struct ProfileShareLogic: Reducer {
       }
     }
   }
+  
+  public enum Content: CaseIterable {
+    case instagram
+    case line
+    case messages
+    case copyLink
+
+    public var name: String {
+      switch self {
+      case .instagram: return "Instagram"
+      case .line: return "LINE"
+      case .messages: return "Messages"
+      case .copyLink: return "Copy Link"
+      }
+    }
+
+    public var iconImageName: String {
+      switch self {
+      case .instagram: return "instagram"
+      case .line: return "line"
+      case .messages: return "messages"
+      case .copyLink: return "copylink"
+      }
+    }
+  }
 }
 
 public struct ProfileShareView: View {
@@ -108,15 +109,14 @@ public struct ProfileShareView: View {
       VStack(alignment: .center, spacing: 28) {
         Text("Share Profile", bundle: .module)
           .font(.title3)
+          .bold()
 
         HStack {
           Spacer()
-          ForEach(viewStore.shareContents, id: \.self) { content in
-            Button(action: {
-              var transaction = Transaction()
-              transaction.disablesAnimations = true
-              viewStore.send(.shareContentButtonTapped(content), transaction: transaction)
-            }) {
+          ForEach(ProfileShareLogic.Content.allCases, id: \.self) { content in
+            Button {
+              store.send(.contentButtonTapped(content), transaction: .animationDisable)
+            } label: {
               VStack(spacing: 12) {
                 Image(content.iconImageName, bundle: .module)
                   .resizable()
@@ -129,6 +129,7 @@ public struct ProfileShareView: View {
                   .foregroundColor(.godBlack)
               }
             }
+            .buttonStyle(HoldDownButtonStyle())
             Spacer()
           }
         }
@@ -141,13 +142,14 @@ public struct ProfileShareView: View {
             .frame(height: 52)
             .frame(maxWidth: .infinity)
             .foregroundColor(.black)
+            .overlay(
+              RoundedRectangle(cornerRadius: 52 / 2)
+                .stroke(Color.primary, lineWidth: 1)
+            )
         }
-        .overlay(
-          RoundedRectangle(cornerRadius: 52 / 2)
-            .stroke(Color.primary, lineWidth: 1)
-        )
+        .buttonStyle(HoldDownButtonStyle())
       }
-      .padding(.top, 16)
+      .padding(.top, 24)
       .padding(.horizontal, 16)
       .task { await viewStore.send(.onTask).finish() }
       .fullScreenCover(
@@ -157,9 +159,6 @@ public struct ProfileShareView: View {
       ) { store in
         ShareProfileToInstagramPopupView(store: store)
           .backgroundClearSheet()
-          .transaction { transaction in
-            transaction.disablesAnimations = true
-          }
       }
     }
   }
