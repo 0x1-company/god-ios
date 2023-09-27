@@ -69,7 +69,7 @@ public struct ProfileShareLogic: Reducer {
       }
     }
   }
-  
+
   public enum Content: CaseIterable {
     case instagram
     case line
