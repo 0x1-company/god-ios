@@ -9,7 +9,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "友だちがあなたを見つけられるように写真を追加する"
+            "value" : "写真を追加して友だちから見つけられやすくしよう"
           }
         }
       }
@@ -45,7 +45,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "年齢を選択すると利用規約とプライバシーポリシーに同意したものとみなされます。"
+            "value" : "年齢を選択すると利用規約とプライバシーポリシーに同意したものとします"
           }
         }
       }
@@ -67,7 +67,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "卒業予定\n2023"
+            "value" : "2023年度\n卒業予定"
           }
         }
       }
@@ -77,7 +77,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "卒業予定\n2024"
+            "value" : "2024年度\n卒業予定"
           }
         }
       }
@@ -87,7 +87,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "卒業予定\n2025"
+            "value" : "2025年度\n卒業予定"
           }
         }
       }
@@ -172,7 +172,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godは連絡先から友だちを見つけます"
+            "value" : "Godは友だちを見つけるために連絡先を利用します"
           }
         }
       }
@@ -265,7 +265,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "高校に在籍していない"
+            "value" : "高校生ではない"
           }
         }
       }
