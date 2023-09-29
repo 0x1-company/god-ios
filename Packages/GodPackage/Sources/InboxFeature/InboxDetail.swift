@@ -156,7 +156,7 @@ public struct InboxDetailView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-        let shareOnInstagramStoryView = shareOnInstagramStoryView(question: viewStore.activity.question.text.ja)
+      let shareOnInstagramStoryView = shareOnInstagramStoryView(question: viewStore.activity.question.text.ja)
       ZStack {
         // instagramへのシェア用のView
         shareOnInstagramStoryView
@@ -262,7 +262,7 @@ public struct InboxDetailView: View {
   }
 
   @ViewBuilder
-    private func shareOnInstagramStoryView(question: String) -> some View {
+  private func shareOnInstagramStoryView(question: String) -> some View {
     let mockChoices = ["Nozomi Isshiki", "Anette Escobedo", "Satoya Hatanaka", "Ava Griego"]
     let mockSelectedUser = "Nozomi Isshiki"
     VStack(alignment: .center, spacing: 12) {
@@ -302,7 +302,7 @@ public struct InboxDetailView: View {
           spacing: 16
         ) {
           ForEach(mockChoices, id: \.self) { choice in
-              let isSelectedUser = choice == mockSelectedUser
+            let isSelectedUser = choice == mockSelectedUser
             Text(verbatim: choice)
               .font(.callout)
               .bold()
@@ -319,26 +319,26 @@ public struct InboxDetailView: View {
               .opacity(isSelectedUser ? 1 : 0.6)
               .overlay(
                 isSelectedUser ?
-                Image("finger-icon", bundle: .module)
-                    .resizable()
-                    .frame(width: 48, height: 48)
-                    .rotationEffect(.degrees(-30))
-                    .shadow(color: .godPurple, radius: 8)
-                    .offset(x: 20, y: -20) : nil,
+                  Image("finger-icon", bundle: .module)
+                  .resizable()
+                  .frame(width: 48, height: 48)
+                  .rotationEffect(.degrees(-30))
+                  .shadow(color: .godPurple, radius: 8)
+                  .offset(x: 20, y: -20) : nil,
                 alignment: .topTrailing
               )
           }
         }
 
-          Image("god-icon-white", bundle: .module)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 24)
-              .foregroundStyle(Color.godWhite)
-              .padding(.top, 10)
-              .padding(.bottom, 4)
+        Image("god-icon-white", bundle: .module)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(height: 24)
+          .foregroundStyle(Color.godWhite)
+          .padding(.top, 10)
+          .padding(.bottom, 4)
 
-          Text(verbatim: "godapp.jp")
+        Text(verbatim: "godapp.jp")
           .font(.callout)
           .bold()
           .foregroundColor(.godWhite)
