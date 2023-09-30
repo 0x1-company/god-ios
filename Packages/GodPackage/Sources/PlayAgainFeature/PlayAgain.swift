@@ -9,10 +9,10 @@ public struct PlayAgainLogic: Reducer {
 
   public struct State: Equatable {
     var until: Date
-    
+
     var countdown = "00:00"
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-    
+
     public init(until: Date) {
       self.until = until
     }
