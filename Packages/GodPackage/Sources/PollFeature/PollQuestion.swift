@@ -17,9 +17,9 @@ public struct PollQuestionLogic: Reducer {
     @PresentationState var alert: AlertState<Action.Alert>?
     var isAnswered = false
     var currentIndex = 0
-    
+
     var backgroundColor: Color {
-      return .red
+      .red
     }
 
     var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
