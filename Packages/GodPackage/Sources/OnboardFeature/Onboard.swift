@@ -2,6 +2,8 @@ import ComposableArchitecture
 import Contacts
 import ContactsClient
 import FirebaseAuth
+import FirebaseDynamicLinks
+import FirebaseDynamicLinkClient
 import God
 import HowItWorksFeature
 import SwiftUI
@@ -14,6 +16,7 @@ public struct OnboardLogic: Reducer {
     var path = StackState<Path.State>()
     var generation: Int?
     var schoolId: String?
+    var inviterUserId: String?
     var contacts: [God.ContactInput] = []
 
     public init() {}
@@ -21,6 +24,7 @@ public struct OnboardLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onOpenURL(URL)
     case welcome(WelcomeLogic.Action)
     case path(StackAction<Path.State, Path.Action>)
     case alert(PresentationAction<Alert>)
@@ -28,13 +32,14 @@ public struct OnboardLogic: Reducer {
     case contactResponse(TaskResult<CNContact>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case createContactsResponse(TaskResult<God.CreateContactsMutation.Data>)
+    case dynamicLinkResponse(TaskResult<DynamicLink>)
 
     public enum Alert: Equatable {
       case confirmOkay
     }
   }
-
-  @Dependency(\.contacts.authorizationStatus) var authorizationStatus
+  
+  @Dependency(\.firebaseDynamicLinks) var firebaseDynamicLinks
 
   public var body: some Reducer<State, Action> {
     OnboardPathLogic()
@@ -51,6 +56,21 @@ public struct OnboardLogic: Reducer {
       case .welcome(.loginButtonTapped):
         state.path.append(.gradeSetting())
         return .none
+        
+      case let .onOpenURL(url):
+        return .run { send in
+          await send(.dynamicLinkResponse(TaskResult {
+            try await firebaseDynamicLinks.dynamicLink(url)
+          }))
+        }
+        
+      case let .dynamicLinkResponse(.success(dynamicLink)):
+        guard
+          let deepLink = dynamicLink.url,
+          let inviterUserId = getInviterUserId(from: deepLink.absoluteString)
+        else { return .none }
+        state.inviterUserId = inviterUserId
+        return .none
 
       default:
         return .none
@@ -59,6 +79,23 @@ public struct OnboardLogic: Reducer {
     .forEach(\.path, action: /Action.path) {
       Path()
     }
+  }
+  
+  func getInviterUserId(from urlString: String) -> String? {
+    // 正規表現パターン
+    let pattern = #"https://godapp.jp/users/([0-9a-fA-F\-]+)"#
+    
+    // 正規表現マッチング
+    if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
+      if let match = regex.firstMatch(in: urlString, options: [], range: NSRange(location: 0, length: urlString.utf16.count)) {
+        let uuidRange = Range(match.range(at: 1), in: urlString)
+        if let uuidRange = uuidRange {
+          let uuid = urlString[uuidRange]
+          return String(uuid)
+        }
+      }
+    }
+    return nil
   }
 
   public struct Path: Reducer {
@@ -197,5 +234,8 @@ public struct OnboardView: View {
     }
     .tint(Color.white)
     .task { await store.send(.onTask).finish() }
+    .onOpenURL { url in
+      store.send(.onOpenURL(url))
+    }
   }
 }

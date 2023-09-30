@@ -10,7 +10,6 @@ public extension DependencyValues {
 
 extension FirebaseDynamicLinkClient: TestDependencyKey {
   public static let testValue = Self(
-    shouldHandleDynamicLink: unimplemented("\(Self.self).shouldHandleDynamicLink"),
     dynamicLink: unimplemented("\(Self.self).dynamicLink")
   )
 }
