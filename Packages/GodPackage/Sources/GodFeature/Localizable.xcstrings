@@ -2,10 +2,24 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Get more\nfriends to play" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "より多くの\n遊ぶ友だちを増やす"
+          }
+        }
+      }
     },
     "Share the app" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを招待する"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
