@@ -104,7 +104,7 @@ public struct OnboardLogic: Reducer {
       case schoolSetting(SchoolSettingLogic.State = .init())
       case findFriend(FindFriendLogic.State = .init())
       case phoneNumber(PhoneNumberLogic.State = .init())
-      case oneTimeCode(OneTimeCodeLogic.State = .init())
+      case oneTimeCode(OneTimeCodeLogic.State)
       case firstNameSetting(FirstNameSettingLogic.State = .init())
       case lastNameSetting(LastNameSettingLogic.State = .init())
       case usernameSetting(UsernameSettingLogic.State = .init())

@@ -76,7 +76,9 @@ public struct OnboardPathLogic: Reducer {
         }
 
       case .phoneNumber(.delegate(.nextScreen)):
-        state.path.append(.oneTimeCode())
+        state.path.append(
+          .oneTimeCode(.init(inviterUserId: state.inviterUserId))
+        )
         return .none
 
       case .oneTimeCode(.delegate(.nextScreen)):

@@ -10,12 +10,15 @@ import UserDefaultsClient
 
 public struct OneTimeCodeLogic: Reducer {
   public struct State: Equatable {
+    var inviterUserId: String?
     var phoneNumber = ""
     var oneTimeCode = ""
     var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
 
-    public init() {}
+    public init(inviterUserId: String?) {
+      self.inviterUserId = inviterUserId
+    }
   }
 
   public enum Action: Equatable {
@@ -119,14 +122,17 @@ public struct OneTimeCodeLogic: Reducer {
           await dismiss()
         }
       }
-      return .run { send in
+      return .run { [state] send in
         let parseNumber = try phoneNumberParse(number, withRegion: "JP", ignoreType: true)
         let format = phoneNumberFormat(parseNumber)
         let phoneNumber = God.PhoneNumberInput(
           countryCode: "+81",
           numbers: format.replacing("+81", with: "")
         )
-        let input = God.CreateUserInput(phoneNumber: phoneNumber)
+        let input = God.CreateUserInput(
+          inviterUserId: state.inviterUserId ?? .null,
+          phoneNumber: phoneNumber
+        )
         await send(
           .createUserResponse(
             TaskResult {
@@ -236,7 +242,9 @@ struct OneTimeCodeViewPreviews: PreviewProvider {
   static var previews: some View {
     OneTimeCodeView(
       store: .init(
-        initialState: OneTimeCodeLogic.State(),
+        initialState: OneTimeCodeLogic.State(
+          inviterUserId: nil
+        ),
         reducer: { OneTimeCodeLogic() }
       )
     )
