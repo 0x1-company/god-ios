@@ -49,7 +49,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         guard let username = response.currentUser.username else {
           return .none
         }
-        state.profileLinkString = "https://a.app/\(username)"
+        state.profileLinkString = "https://www.godapp.jp/add/\(username)"
         return .none
 
       case .currentUserResponse(.failure):
