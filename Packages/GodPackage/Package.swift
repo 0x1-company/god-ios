@@ -186,6 +186,7 @@ let package = Package(
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
+      .product(name: "BackgroundClearSheet", package: "UIComponentPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),

@@ -12,8 +12,8 @@ private struct BackgroundClearView: UIViewRepresentable {
   func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
-extension View {
-  func backgroundClearSheet() -> some View {
+public extension View {
+  public func backgroundClearSheet() -> some View {
     background(BackgroundClearView())
   }
 }
