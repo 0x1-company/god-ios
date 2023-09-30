@@ -1,8 +1,16 @@
-//
-//  File.swift
-//  
-//
-//  Created by tomokisun on 2023/09/29.
-//
+import Dependencies
+import XCTestDynamicOverlay
 
-import Foundation
+public extension DependencyValues {
+  var firebaseDynamicLinks: FirebaseDynamicLinkClient {
+    get { self[FirebaseDynamicLinkClient.self] }
+    set { self[FirebaseDynamicLinkClient.self] = newValue }
+  }
+}
+
+extension FirebaseDynamicLinkClient: TestDependencyKey {
+  public static let testValue = Self(
+    shouldHandleDynamicLink: unimplemented("\(Self.self).shouldHandleDynamicLink"),
+    dynamicLink: unimplemented("\(Self.self).dynamicLink")
+  )
+}
