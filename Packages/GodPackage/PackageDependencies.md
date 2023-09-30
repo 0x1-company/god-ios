@@ -101,6 +101,7 @@ graph TD;
     ProfileShareFeature-->GodClient;
     ProfileShareFeature-->ButtonStyles;
     ProfileShareFeature-->UIPasteboardClient;
+    ProfileShareFeature-->BackgroundClearSheet;
     ProfileShareFeature-->AnimationDisableTransaction;
     ProfileShareFeature-->ComposableArchitecture;
     RevealFeature-->Colors;
