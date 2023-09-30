@@ -78,6 +78,7 @@ graph TD;
     OnboardFeature-->FirebaseStorageClient;
     OnboardFeature-->PhoneNumberDependencies;
     OnboardFeature-->FirebaseDynamicLinkClient;
+    PlayAgainFeature-->GodClient;
     PlayAgainFeature-->ButtonStyles;
     PlayAgainFeature-->ComposableArchitecture;
     PollFeature-->Colors;
