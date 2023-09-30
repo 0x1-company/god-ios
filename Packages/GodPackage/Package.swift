@@ -152,6 +152,7 @@ let package = Package(
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
       .product(name: "FirebaseStorageClient", package: "DependencyPackage"),
       .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
+      .product(name: "FirebaseDynamicLinkClient", package: "DependencyPackage"),
     ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "ButtonStyles", package: "UIComponentPackage"),

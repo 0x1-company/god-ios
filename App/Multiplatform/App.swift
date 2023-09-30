@@ -8,6 +8,7 @@ import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthClient
 import FirebaseMessaging
+import FirebaseDynamicLinks
 import GodClient
 import SwiftUI
 
@@ -87,6 +88,10 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
     if firebaseAuth.canHandle(url) {
+      return true
+    }
+    if let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url) {
+      print(dynamicLink)
       return true
     }
     return false
