@@ -7,8 +7,8 @@ import Build
 import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthClient
-import FirebaseMessaging
 import FirebaseDynamicLinks
+import FirebaseMessaging
 import GodClient
 import SwiftUI
 

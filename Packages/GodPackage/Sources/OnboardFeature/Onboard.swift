@@ -2,8 +2,8 @@ import ComposableArchitecture
 import Contacts
 import ContactsClient
 import FirebaseAuth
-import FirebaseDynamicLinks
 import FirebaseDynamicLinkClient
+import FirebaseDynamicLinks
 import God
 import HowItWorksFeature
 import SwiftUI
@@ -38,7 +38,7 @@ public struct OnboardLogic: Reducer {
       case confirmOkay
     }
   }
-  
+
   @Dependency(\.firebaseDynamicLinks) var firebaseDynamicLinks
 
   public var body: some Reducer<State, Action> {
@@ -56,14 +56,14 @@ public struct OnboardLogic: Reducer {
       case .welcome(.loginButtonTapped):
         state.path.append(.gradeSetting())
         return .none
-        
+
       case let .onOpenURL(url):
         return .run { send in
           await send(.dynamicLinkResponse(TaskResult {
             try await firebaseDynamicLinks.dynamicLink(url)
           }))
         }
-        
+
       case let .dynamicLinkResponse(.success(dynamicLink)):
         guard
           let deepLink = dynamicLink.url,
@@ -80,16 +80,16 @@ public struct OnboardLogic: Reducer {
       Path()
     }
   }
-  
+
   func getInviterUserId(from urlString: String) -> String? {
     // 正規表現パターン
     let pattern = #"https://godapp.jp/users/([0-9a-fA-F\-]+)"#
-    
+
     // 正規表現マッチング
     if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
       if let match = regex.firstMatch(in: urlString, options: [], range: NSRange(location: 0, length: urlString.utf16.count)) {
         let uuidRange = Range(match.range(at: 1), in: urlString)
-        if let uuidRange = uuidRange {
+        if let uuidRange {
           let uuid = urlString[uuidRange]
           return String(uuid)
         }
