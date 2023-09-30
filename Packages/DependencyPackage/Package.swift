@@ -58,6 +58,7 @@ let package = Package(
     ]),
     .target(name: "FirebaseDynamicLinkClient", dependencies: [
       .product(name: "FirebaseDynamicLinks", package: "firebase-ios-sdk"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "FirebaseMessagingClient", dependencies: [
       .product(name: "FirebaseMessaging", package: "firebase-ios-sdk"),
