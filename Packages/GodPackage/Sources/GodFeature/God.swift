@@ -20,6 +20,7 @@ public struct GodLogic: Reducer {
     case child(Child.Action)
   }
 
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
 
   enum Cancel {
@@ -32,6 +33,7 @@ public struct GodLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
+          try await mainQueue.sleep(for: .seconds(1))
           await currentPollRequest(send: send)
         }
         .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
