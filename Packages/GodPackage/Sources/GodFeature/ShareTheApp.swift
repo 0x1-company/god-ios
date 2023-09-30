@@ -18,7 +18,7 @@ public struct ShareTheAppLogic: Reducer {
     case shareTheAppButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
 
