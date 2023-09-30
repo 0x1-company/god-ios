@@ -12,11 +12,19 @@ public extension God {
     }
 
     public init(
+      inviterUserId: GraphQLNullable<String> = nil,
       phoneNumber: PhoneNumberInput
     ) {
       __data = InputDict([
+        "inviterUserId": inviterUserId,
         "phoneNumber": phoneNumber
       ])
+    }
+
+    /// 招待したユーザーのID
+    public var inviterUserId: GraphQLNullable<String> {
+      get { __data["inviterUserId"] }
+      set { __data["inviterUserId"] = newValue }
     }
 
     /// Phone Number

@@ -17,6 +17,7 @@ let package = Package(
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
+    .library(name: "FirebaseDynamicLinkClient", targets: ["FirebaseDynamicLinkClient"]),
     .library(name: "FirebaseMessagingClient", targets: ["FirebaseMessagingClient"]),
     .library(name: "FirebaseStorageClient", targets: ["FirebaseStorageClient"]),
     .library(name: "FirestoreClient", targets: ["FirestoreClient"]),
@@ -54,6 +55,9 @@ let package = Package(
     .target(name: "FirebaseCoreClient", dependencies: [
       .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "FirebaseDynamicLinkClient", dependencies: [
+      .product(name: "FirebaseDynamicLinks", package: "firebase-ios-sdk"),
     ]),
     .target(name: "FirebaseMessagingClient", dependencies: [
       .product(name: "FirebaseMessaging", package: "firebase-ios-sdk"),

@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Your contacts are used to find friends and uploaded to a server.</string>
-	<key>endpointURL</key>
-	<string>https://api.godapp.jp/graphql</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -30,10 +26,15 @@
 				<string>app-1-956650290643-ios-cce3e433965d915d2ac326</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
@@ -41,6 +42,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Your camera are used to take profile picture.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Your contacts are used to find friends and uploaded to a server.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your Photo Library are used to select profile picture.</string>
 	<key>UIApplicationSceneManifest</key>
@@ -70,7 +73,7 @@
 			<key>UIApplicationShortcutItemSubtitle</key>
 			<string>Give it a secound chance!</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>🥺 Don&apos;t remove the God App!</string>
+			<string>🥺 Don't remove the God App!</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>/</string>
 		</dict>
@@ -106,9 +109,7 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>FirebaseAutomaticScreenReportingEnabled</key>
-	<false/>
+	<key>endpointURL</key>
+	<string>https://api.godapp.jp/graphql</string>
 </dict>
 </plist>

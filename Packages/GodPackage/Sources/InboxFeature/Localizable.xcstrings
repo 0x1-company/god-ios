@@ -45,6 +45,9 @@
         }
       }
     },
+    "From someone\nin 11th grade" : {
+
+    },
     "From the God team" : {
       "localizations" : {
         "ja" : {
@@ -54,6 +57,9 @@
           }
         }
       }
+    },
+    "gasapp.co" : {
+
     },
     "God" : {
       "localizations" : {
@@ -102,7 +108,6 @@
       }
     },
     "See who sent it" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -151,6 +156,9 @@
           }
         }
       }
+    },
+    "会えばすぐにハッピーな気分にさせてくれるのは？" : {
+
     }
   },
   "version" : "1.0"

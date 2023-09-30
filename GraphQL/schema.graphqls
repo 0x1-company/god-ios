@@ -106,6 +106,9 @@ input CreateUserHideInput {
 }
 
 input CreateUserInput {
+  """招待したユーザーのID"""
+  inviterUserId: String
+
   """Phone Number"""
   phoneNumber: PhoneNumberInput!
 }
