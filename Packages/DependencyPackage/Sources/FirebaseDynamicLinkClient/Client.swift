@@ -1,3 +1,1 @@
-public struct FirebaseDynamicLinkClient {
-  
-}
+public struct FirebaseDynamicLinkClient {}
