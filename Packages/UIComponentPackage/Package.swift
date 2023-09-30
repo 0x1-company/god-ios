@@ -11,6 +11,7 @@ let package = Package(
   ],
   products: [
     .library(name: "AnimationDisableTransaction", targets: ["AnimationDisableTransaction"]),
+    .library(name: "BackgroundClearSheet", targets: ["BackgroundClearSheet"]),
     .library(name: "ButtonStyles", targets: ["ButtonStyles"]),
     .library(name: "ColorHex", targets: ["ColorHex"]),
     .library(name: "Colors", targets: ["Colors"]),
@@ -24,6 +25,7 @@ let package = Package(
   ],
   targets: [
     .target(name: "AnimationDisableTransaction"),
+    .target(name: "BackgroundClearSheet"),
     .target(name: "ButtonStyles"),
     .target(name: "ColorHex"),
     .target(name: "Colors", dependencies: ["ColorHex"]),
