@@ -13,7 +13,7 @@ private struct BackgroundClearView: UIViewRepresentable {
 }
 
 public extension View {
-  public func backgroundClearSheet() -> some View {
+  func backgroundClearSheet() -> some View {
     background(BackgroundClearView())
   }
 }
