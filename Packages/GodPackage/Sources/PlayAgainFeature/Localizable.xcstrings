@@ -12,7 +12,14 @@
       }
     },
     "New Polls in %@" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@後に新しい質問"
+          }
+        }
+      }
     },
     "OR" : {
 
@@ -21,7 +28,14 @@
 
     },
     "Skip the wait" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待ち時間をスキップする"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
