@@ -130,9 +130,17 @@ public struct PollView: View {
           }
         }
         .ignoresSafeArea()
+        
+        VStack(spacing: 8) {
+          ProgressView(
+            value: Double(viewStore.currentPosition),
+            total: Double(viewStore.pollQuestions.count)
+          )
+          .tint(Color.white)
 
-        Text("\(viewStore.currentPosition) of 12")
-          .foregroundStyle(.white)
+          Text("\(viewStore.currentPosition) of \(viewStore.pollQuestions.count)")
+            .foregroundStyle(.white)
+        }
       }
       .task { await viewStore.send(.onTask).finish() }
     }
