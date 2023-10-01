@@ -49,7 +49,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         guard let username = response.currentUser.username else {
           return .none
         }
-        state.profileLinkString = "https://www.godapp.jp/add/\(username)"
+        state.profileLinkString = "godapp.jp/add/\(username)"
         return .none
 
       case .currentUserResponse(.failure):
@@ -59,8 +59,10 @@ public struct ProfileShareToInstagramLogic: Reducer {
         }
 
       case .copyLinkButtonTapped:
-        // TODO: LINK
-        UIPasteboard.general.string = "https://a.app/username"
+        guard let username = response.currentUser.username else {
+          return .none
+        }
+        UIPasteboard.general.string = "https://www.godapp.jp/add/\(username)"
         state.isProfileLinkCopied = true
         return .none
 
