@@ -59,6 +59,7 @@
       }
     },
     "God" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -99,7 +100,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "神モード"
+            "value" : "あなたの好きな友だちを見る"
           }
         }
       }
@@ -129,7 +130,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "どこでもタップして閉じる"
+            "value" : "どこをタップしても閉じれます"
           }
         }
       }
@@ -139,7 +140,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "受信トレイ"
+            "value" : "これは通知タブ"
           }
         }
       }
@@ -149,7 +150,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたが選ばれると\nここにメッセージが届きます。"
+            "value" : "あなたが投票されると\nここにメッセージが届きます。"
           }
         }
       }

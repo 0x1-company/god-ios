@@ -38,10 +38,11 @@ public struct AnswerButton: View {
       Text(verbatim: title)
         .bold()
         .lineLimit(2)
-        .multilineTextAlignment(.leading)
+        .multilineTextAlignment(.center)
         .frame(height: 64)
         .frame(maxWidth: .infinity)
         .foregroundColor(.black)
+        .padding(.horizontal, 8)
         .background(
           GeometryReader { proxy in
             HStack(spacing: 0) {

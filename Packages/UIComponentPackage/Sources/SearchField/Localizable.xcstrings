@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Search..." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザーネームで検索"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -31,10 +31,18 @@ public struct GodLoadingView: View {
   }
 
   public var body: some View {
-    LottieView(animation: LottieAnimation.named("Loading", bundle: .module))
-      .looping()
-      .resizable()
-      .padding(.horizontal, 100)
+    ZStack(alignment: .center) {
+      LottieView(animation: LottieAnimation.named("Loading", bundle: .module))
+        .looping()
+        .resizable()
+        .padding(.horizontal, 100)
+      
+      Image(ImageResource.loading)
+        .resizable()
+        .scaledToFit()
+        .padding(.horizontal, 100)
+        .offset(y: 80)
+    }
   }
 }
 

@@ -36,9 +36,14 @@ public struct FromGodTeamView: View {
 
   public var body: some View {
     VStack(spacing: 24) {
-      Text("God", bundle: .module)
+      VStack(spacing: 16) {
+        Image(ImageResource.god)
+          .resizable()
+          .scaledToFit()
+          .frame(width: 94)
 
-      Text("From the God team", bundle: .module)
+        Text("From the God team", bundle: .module)
+      }
 
       Spacer()
 

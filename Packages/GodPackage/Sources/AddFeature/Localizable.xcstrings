@@ -16,7 +16,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通の友だちが%lld人"
+            "value" : "%lld人の共通の友だち"
           }
         }
       }
@@ -29,7 +29,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "追加"
+            "value" : "友だちになる"
           }
         }
       }
@@ -79,7 +79,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "フレンドのフレンド"
+            "value" : "友だちかも？"
           }
         }
       }
@@ -89,7 +89,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "同じ学校"
+            "value" : "学校の友だち"
           }
         }
       }
