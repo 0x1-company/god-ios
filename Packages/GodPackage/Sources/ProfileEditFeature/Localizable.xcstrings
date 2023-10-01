@@ -4,18 +4,22 @@
     "" : {
 
     },
-    "9th Grade" : {
-
-    },
     "ACCOUNT SETTING" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント"
+          }
+        }
+      }
     },
-    "Boy" : {
+    "Are you sure?" : {
 
     },
     "Cancel" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "キャンセル"
@@ -23,12 +27,9 @@
         }
       }
     },
-    "Class of 2026" : {
-
-    },
     "Close" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "閉じる"
@@ -36,15 +37,42 @@
         }
       }
     },
-    "Edit Profile" : {
+    "Discard Changes" : {
 
     },
+    "Edit Profile" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール編集"
+          }
+        }
+      }
+    },
+    "Female" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
+          }
+        }
+      }
+    },
     "First Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前"
+          }
+        }
+      }
     },
     "Gender" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "性別"
@@ -52,15 +80,19 @@
         }
       }
     },
-    "Las Vegas Academy of Arts" : {
-
-    },
     "Last Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名字"
+          }
+        }
+      }
     },
     "Logout" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログアウト"
@@ -68,15 +100,49 @@
         }
       }
     },
+    "Male" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
+    },
     "Manage Account" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント設定"
+          }
+        }
+      }
+    },
+    "Non-Binary" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "Restore Purchases" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "課金の復元"
+          }
+        }
+      }
     },
     "Save" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存"
@@ -85,30 +151,26 @@
       }
     },
     "SCHOOL" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学校"
+          }
+        }
+      }
     },
-    "You are signed in as 19175926188" : {
-
+    "username" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユザネ"
+          }
+        }
+      }
     },
-    "キャンセル" : {
-
-    },
-    "ちょっと待って！" : {
-
-    },
-    "保存していない変更があります" : {
-
-    },
-    "名前は一度しか変更できません" : {
-
-    },
-    "名前を変更" : {
-
-    },
-    "変更を破棄" : {
-
-    },
-    "本当に大丈夫？" : {
+    "You haven't saved your changes" : {
 
     }
   },

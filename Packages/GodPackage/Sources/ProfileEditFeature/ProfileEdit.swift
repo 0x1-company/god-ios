@@ -3,40 +3,52 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import FirebaseAuthClient
+import FirebaseStorage
+import FirebaseStorageClient
 import God
 import GodClient
-import LabeledButton
 import ManageAccountFeature
 import SwiftUI
 import UserDefaultsClient
+import PhotosUI
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public struct UserProfile: Equatable {
-      var firstName: String
-      var lastName: String
-      var username: String?
-    }
+    public init() {}
 
     @PresentationState var manageAccount: ManageAccountLogic.State?
     @PresentationState var alert: AlertState<Action.Alert>?
-    var user = AsyncValue<UserProfile>.none
-    var isUserProfileChanges: Bool {
-      if case let .success(currentUser) = user {
-        return firstName != currentUser.firstName ||
-          lastName != currentUser.lastName ||
-          username != currentUser.username
-      }
-      return false
-    }
-
+    @BindingState var photoPickerItems: [PhotosPickerItem] = []
     @BindingState var firstName: String = ""
     @BindingState var lastName: String = ""
     @BindingState var username: String = ""
-
-    public init() {}
+    var imageData: Data?
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    
+    var isUserProfileChanges: Bool {
+      guard let currentUser else {
+        return false
+      }
+      return firstName != currentUser.firstName
+      || lastName != currentUser.lastName
+      || username != currentUser.username
+      || imageData != nil
+    }
+    
+    var gender: LocalizedStringKey {
+      switch currentUser?.gender.value {
+      case .male:
+        return "Male"
+      case .female:
+        return "Female"
+      case .other:
+        return "Non-Binary"
+      default:
+        return ""
+      }
+    }
   }
 
   public enum Action: Equatable, BindableAction {
@@ -44,9 +56,11 @@ public struct ProfileEditLogic: Reducer {
     case cancelEditButtonTapped
     case saveButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case uploadResponse(TaskResult<StorageMetadata>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case binding(BindingAction<State>)
+    case loadTransferableResponse(TaskResult<Data?>)
 
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
@@ -56,28 +70,18 @@ public struct ProfileEditLogic: Reducer {
     case alert(PresentationAction<Alert>)
 
     public enum Alert: Equatable {
-      public enum NameCanOnlyBeChangedOnce: Equatable {
-        case changeNameButtonTapped
-        case cancelButtonTapped
-      }
-
-      public enum ChangesNotSaved: Equatable {
-        case discardChangesButtonTapped
-        case cancelButtonTapped
-      }
-
-      case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
-      case changesNotSaved(ChangesNotSaved)
+      case discardChanges
     }
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
-  @Dependency(\.godClient) var godClient
+  @Dependency(\.firebaseStorage) var firebaseStorage
 
-  private enum CancelId {
-    case currentUserRequest
+  private enum Cancel {
+    case currentUser
   }
 
   public var body: some Reducer<State, Action> {
@@ -86,57 +90,53 @@ public struct ProfileEditLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.currentUser() {
-            await send(.currentUserResponse(.success(data)))
-          }
-        } catch: { error, send in
-          await send(.currentUserResponse(.failure(error)))
+          await currentUserRequest(send: send)
         }
-        .cancellable(id: CancelId.currentUserRequest)
+        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
 
       case .cancelEditButtonTapped:
         state.alert = .changesNotSaved()
         return .none
 
       case .saveButtonTapped:
-        guard case let .success(currentUser) = state.user else { return .none }
-        return .merge(
-          .run { [state] send in
+        guard let currentUser = state.currentUser else { return .none }
+        return .run { [state] send in
+          await withThrowingTaskGroup(of: Void.self) { group in
             if state.username != currentUser.username {
-              let data = try await godClient.updateUsername(.init(username: state.username))
-              await send(.updateUsernameResponse(.success(data)))
+              group.addTask {
+                await send(.updateUsernameResponse(TaskResult {
+                  try await godClient.updateUsername(.init(username: state.username))
+                }))
+              }
             }
-          } catch: { error, send in
-            await send(.updateUsernameResponse(.failure(error)))
-          },
-          .run { [state] send in
-            if state.firstName != currentUser.firstName ||
-              state.lastName != currentUser.lastName
-            {
-              let data = try await godClient.updateUserProfile(.init(
-                firstName: state.firstName != currentUser.firstName ? .some(state.firstName) : .null,
-                lastName: state.lastName != currentUser.lastName ? .some(state.lastName) : .null
-              ))
-              await send(.updateUserProfileResponse(.success(data)))
+            
+            if state.firstName != currentUser.firstName || state.lastName != currentUser.lastName {
+              group.addTask {
+                await send(.updateUserProfileResponse(TaskResult {
+                  try await godClient.updateUserProfile(.init(
+                    firstName: state.firstName != currentUser.firstName ? .some(state.firstName) : .null,
+                    lastName: state.lastName != currentUser.lastName ? .some(state.lastName) : .null
+                  ))
+                }))
+              }
             }
-          } catch: { error, send in
-            await send(.updateUserProfileResponse(.failure(error)))
+            
+            if let imageData = state.imageData, let userId = state.currentUser?.id {
+              group.addTask {
+                await send(.uploadResponse(TaskResult {
+                  try await firebaseStorage.upload("users/\(userId)/icon.png", imageData)
+                }))
+              }
+            }
           }
-        )
+          await currentUserRequest(send: send)
+        }
 
-      case let .currentUserResponse(.success(response)):
-        let responseUser = response.currentUser
-        state.user = .success(.init(
-          firstName: responseUser.firstName,
-          lastName: responseUser.lastName,
-          username: responseUser.username
-        ))
-        state.firstName = responseUser.firstName
-        state.lastName = responseUser.lastName
-        state.username = responseUser.username ?? ""
-        return .none
-
-      case .currentUserResponse(.failure):
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        state.firstName = data.currentUser.firstName
+        state.lastName = data.currentUser.lastName
+        state.username = data.currentUser.username ?? ""
         return .none
 
       case let .updateUsernameResponse(.success(response)):
@@ -174,28 +174,43 @@ public struct ProfileEditLogic: Reducer {
           await dismiss()
         }
 
-      case .manageAccount:
-        return .none
-      case .alert(.presented(.changesNotSaved(.discardChangesButtonTapped))):
-        guard case let .success(user) = state.user else {
-          assertionFailure()
-          return .none
+      case .alert(.presented(.discardChanges)):
+        return .run { _ in
+          await dismiss()
         }
-        state.firstName = user.firstName
-        state.lastName = user.lastName
-        state.username = user.username ?? ""
+        
+      case .binding(\.$photoPickerItems):
+        guard let photoPickerItem = state.photoPickerItems.first else { return .none }
+        return .run { send in
+          await send(.loadTransferableResponse(TaskResult {
+            try await photoPickerItem.loadTransferable(type: Data.self)
+          }))
+        }
+        
+      case let .loadTransferableResponse(.success(.some(data))):
+        state.imageData = data
         return .none
-      case .alert(.presented(.nameCanOnlyBeChangedOnce(.changeNameButtonTapped))):
-        // TODO: 一度しか変更できません
+        
+      case .uploadResponse:
+        state.imageData = nil
         return .none
-      case .alert:
-        return .none
-      case .binding:
+
+      default:
         return .none
       }
     }
     .ifLet(\.$manageAccount, action: /Action.manageAccount) {
       ManageAccountLogic()
+    }
+  }
+  
+  func currentUserRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentUser() {
+        await send(.currentUserResponse(.success(data)))
+      }
+    } catch {
+      await send(.currentUserResponse(.failure(error)))
     }
   }
 }
@@ -211,7 +226,26 @@ public struct ProfileEditView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView(.vertical) {
         VStack(spacing: 24) {
-          Color.green
+          PhotosPicker(
+            selection: viewStore.$photoPickerItems,
+            maxSelectionCount: 1,
+            selectionBehavior: .ordered,
+            matching: PHPickerFilter.images,
+            preferredItemEncoding: .current
+          ) {
+            Group {
+              if let imageData = viewStore.imageData, let image = UIImage(data: imageData) {
+                Image(uiImage: image)
+                  .resizable()
+              } else if let imageURL = viewStore.currentUser?.imageURL {
+                AsyncImage(url: URL(string: imageURL)) { image in
+                  image.resizable()
+                } placeholder: {
+                  Color.red
+                }
+              }
+            }
+            .scaledToFill()
             .frame(width: 145, height: 145)
             .clipShape(Circle())
             .overlay(
@@ -222,6 +256,7 @@ public struct ProfileEditView: View {
                 .frame(width: 40, height: 40)
                 .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
             )
+          }
 
           VStack(alignment: .center, spacing: 0) {
             GodTextField(
@@ -229,43 +264,37 @@ public struct ProfileEditView: View {
               fieldName: "First Name"
             )
 
-            separator
+            Separator()
 
             GodTextField(
               text: viewStore.$lastName,
               fieldName: "Last Name"
             )
 
-            separator
+            Separator()
 
             GodTextField(
               text: viewStore.$username,
               fieldName: "username"
             )
 
-            separator
+            Separator()
 
-            Button(action: {}, label: {
-              HStack(alignment: .center, spacing: 0) {
-                Text("Gender")
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
-                  .frame(width: 108, alignment: .leading)
+            HStack(alignment: .center, spacing: 0) {
+              Text("Gender", bundle: .module)
+                .font(.body)
+                .foregroundColor(.godTextSecondaryLight)
+                .frame(width: 108, alignment: .leading)
 
-                Text("Boy")
-                  .multilineTextAlignment(.leading)
-                  .frame(maxWidth: .infinity, alignment: .leading)
-                  .font(.body)
-                  .foregroundColor(.godBlack)
-
-                Text(Image(systemName: "chevron.right"))
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
-              }
-              .padding(.horizontal, 12)
-              .frame(maxWidth: .infinity)
-              .frame(height: 52)
-            })
+              Text(viewStore.gender, bundle: .module)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.body)
+                .foregroundColor(.godBlack)
+            }
+            .padding(.horizontal, 12)
+            .frame(maxWidth: .infinity)
+            .frame(height: 52)
           }
           .overlay(
             RoundedRectangle(cornerRadius: 16)
@@ -284,37 +313,26 @@ public struct ProfileEditView: View {
                   .foregroundColor(.godTextSecondaryLight)
                   .font(.body)
 
-                Text("Las Vegas Academy of Arts", bundle: .module)
+                Text(viewStore.currentUser?.school?.name ?? "")
                   .font(.body)
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text(Image(systemName: "chevron.right"))
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
-              separator
+
+              Separator()
+              
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
                   .foregroundColor(.godTextSecondaryLight)
                   .font(.body)
 
-                Text("9th Grade", bundle: .module)
+                Text(viewStore.currentUser?.grade ?? "")
                   .font(.body)
                   .foregroundColor(.godBlack)
-
-                Spacer()
-
-                Text("Class of 2026", bundle: .module)
-                  .font(.caption)
-                  .foregroundColor(.godTextSecondaryLight)
-
-                Text(Image(systemName: "chevron.right"))
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
+                  .frame(maxWidth: .infinity, alignment: .leading)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
@@ -342,10 +360,6 @@ public struct ProfileEditView: View {
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               viewStore.send(.logoutButtonTapped)
             }
-
-            Text("You are signed in as 19175926188", bundle: .module)
-              .foregroundColor(.secondary)
-              .font(.caption2)
           }
         }
         .padding(.all, 24)
@@ -353,23 +367,29 @@ public struct ProfileEditView: View {
       .navigationTitle(Text("Edit Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        if viewStore.state.isUserProfileChanges {
+        if viewStore.isUserProfileChanges {
           ToolbarItem(placement: .navigationBarLeading) {
-            Button("Cancel") {
+            Button {
               viewStore.send(.cancelEditButtonTapped)
+            } label: {
+              Text("Cancel", bundle: .module)
             }
             .foregroundColor(.primary)
           }
           ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Save") {
+            Button {
               viewStore.send(.saveButtonTapped)
+            } label: {
+              Text("Save", bundle: .module)
             }
             .foregroundColor(.primary)
           }
         } else {
           ToolbarItem(placement: .navigationBarLeading) {
-            Button("Close") {
+            Button {
               viewStore.send(.closeButtonTapped)
+            } label: {
+              Text("Close", bundle: .module)
             }
             .foregroundColor(.primary)
           }
@@ -391,19 +411,21 @@ public struct ProfileEditView: View {
     }
   }
 
-  private var separator: some View {
-    Color.godSeparator
-      .frame(height: 1)
-      .frame(maxWidth: .infinity)
+  private struct Separator: View {
+    var body: some View {
+      Color.godSeparator
+        .frame(height: 1)
+        .frame(maxWidth: .infinity)
+    }
   }
 
   private struct GodTextField: View {
     @Binding var text: String
-    var fieldName: String
+    var fieldName: LocalizedStringKey
 
     var body: some View {
       HStack(alignment: .center, spacing: 0) {
-        Text(fieldName)
+        Text(fieldName, bundle: .module)
           .font(.body)
           .foregroundColor(.godTextSecondaryLight)
           .frame(width: 108, alignment: .leading)
@@ -422,46 +444,29 @@ public struct ProfileEditView: View {
 }
 
 private extension AlertState where Action == ProfileEditLogic.Action.Alert {
-  static func nameCanOnlyBeChangedOnce() -> Self {
-    Self {
-      TextState("ちょっと待って！")
-    } actions: {
-      ButtonState(role: .cancel, action: .nameCanOnlyBeChangedOnce(.cancelButtonTapped)) {
-        TextState("キャンセル")
-      }
-      ButtonState(role: .destructive, action: .nameCanOnlyBeChangedOnce(.changeNameButtonTapped)) {
-        TextState("名前を変更")
-      }
-    } message: {
-      TextState("名前は一度しか変更できません")
-    }
-  }
-
   static func changesNotSaved() -> Self {
     Self {
-      TextState("本当に大丈夫？")
+      TextState("Are you sure?")
     } actions: {
-      ButtonState(role: .destructive, action: .changesNotSaved(.discardChangesButtonTapped)) {
-        TextState("変更を破棄")
+      ButtonState(role: .destructive, action: .discardChanges) {
+        TextState("Discard Changes")
       }
-      ButtonState(role: .cancel, action: .changesNotSaved(.cancelButtonTapped)) {
-        TextState("キャンセル")
+      ButtonState(role: .cancel) {
+        TextState("Cancel")
       }
     } message: {
-      TextState("保存していない変更があります")
+      TextState("You haven't saved your changes")
     }
   }
 }
 
-struct ProfileEditViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      ProfileEditView(
-        store: .init(
-          initialState: ProfileEditLogic.State(),
-          reducer: { ProfileEditLogic() }
-        )
+#Preview {
+  NavigationStack {
+    ProfileEditView(
+      store: .init(
+        initialState: ProfileEditLogic.State(),
+        reducer: { ProfileEditLogic() }
       )
-    }
+    )
   }
 }
