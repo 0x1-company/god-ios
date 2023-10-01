@@ -5,14 +5,21 @@
 
     },
     "ACCOUNT SETTING" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント"
+          }
+        }
+      }
     },
     "Boy" : {
 
     },
     "Cancel" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "キャンセル"
@@ -22,7 +29,7 @@
     },
     "Close" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "閉じる"
@@ -31,14 +38,28 @@
       }
     },
     "Edit Profile" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール編集"
+          }
+        }
+      }
     },
     "First Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前"
+          }
+        }
+      }
     },
     "Gender" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "性別"
@@ -47,11 +68,18 @@
       }
     },
     "Last Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名字"
+          }
+        }
+      }
     },
     "Logout" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログアウト"
@@ -60,14 +88,28 @@
       }
     },
     "Manage Account" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント設定"
+          }
+        }
+      }
     },
     "Restore Purchases" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "課金の復元"
+          }
+        }
+      }
     },
     "Save" : {
       "localizations" : {
-        "en" : {
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存"
@@ -76,10 +118,24 @@
       }
     },
     "SCHOOL" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学校"
+          }
+        }
+      }
     },
     "username" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユザネ"
+          }
+        }
+      }
     },
     "You are signed in as 19175926188" : {
 

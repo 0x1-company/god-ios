@@ -233,27 +233,21 @@ public struct ProfileEditView: View {
 
             Separator()
 
-            Button(action: {}, label: {
-              HStack(alignment: .center, spacing: 0) {
-                Text("Gender")
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
-                  .frame(width: 108, alignment: .leading)
+            HStack(alignment: .center, spacing: 0) {
+              Text("Gender", bundle: .module)
+                .font(.body)
+                .foregroundColor(.godTextSecondaryLight)
+                .frame(width: 108, alignment: .leading)
 
-                Text("Boy")
-                  .multilineTextAlignment(.leading)
-                  .frame(maxWidth: .infinity, alignment: .leading)
-                  .font(.body)
-                  .foregroundColor(.godBlack)
-
-                Text(Image(systemName: "chevron.right"))
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
-              }
-              .padding(.horizontal, 12)
-              .frame(maxWidth: .infinity)
-              .frame(height: 52)
-            })
+              Text("Boy")
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.body)
+                .foregroundColor(.godBlack)
+            }
+            .padding(.horizontal, 12)
+            .frame(maxWidth: .infinity)
+            .frame(height: 52)
           }
           .overlay(
             RoundedRectangle(cornerRadius: 16)
@@ -276,10 +270,6 @@ public struct ProfileEditView: View {
                   .font(.body)
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
-
-//                Text(Image(systemName: "chevron.right"))
-//                  .font(.body)
-//                  .foregroundColor(.godTextSecondaryLight)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
@@ -296,10 +286,6 @@ public struct ProfileEditView: View {
                   .font(.body)
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
-
-//                Text(Image(systemName: "chevron.right"))
-//                  .font(.body)
-//                  .foregroundColor(.godTextSecondaryLight)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
@@ -327,10 +313,6 @@ public struct ProfileEditView: View {
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               viewStore.send(.logoutButtonTapped)
             }
-
-            Text("You are signed in as 19175926188", bundle: .module)
-              .foregroundColor(.secondary)
-              .font(.caption2)
           }
         }
         .padding(.all, 24)
@@ -340,21 +322,27 @@ public struct ProfileEditView: View {
       .toolbar {
         if viewStore.state.isUserProfileChanges {
           ToolbarItem(placement: .navigationBarLeading) {
-            Button("Cancel") {
+            Button {
               viewStore.send(.cancelEditButtonTapped)
+            } label: {
+              Text("Cancel", bundle: .module)
             }
             .foregroundColor(.primary)
           }
           ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Save") {
+            Button {
               viewStore.send(.saveButtonTapped)
+            } label: {
+              Text("Save", bundle: .module)
             }
             .foregroundColor(.primary)
           }
         } else {
           ToolbarItem(placement: .navigationBarLeading) {
-            Button("Close") {
+            Button {
               viewStore.send(.closeButtonTapped)
+            } label: {
+              Text("Close", bundle: .module)
             }
             .foregroundColor(.primary)
           }

@@ -19,13 +19,17 @@ public struct CornerRadiusBorderButton: View {
 
   public var body: some View {
     Button(action: action) {
-      Label(titleKey, systemImage: systemImage)
-        .frame(height: 50)
-        .frame(maxWidth: .infinity)
-        .overlay(
-          RoundedRectangle(cornerRadius: 16)
-            .stroke(Color.godSeparator, lineWidth: 1)
-        )
+      Label {
+        Text(titleKey, bundle: .module)
+      } icon: {
+        Image(systemName: systemImage)
+      }
+      .frame(height: 50)
+      .frame(maxWidth: .infinity)
+      .overlay(
+        RoundedRectangle(cornerRadius: 16)
+          .stroke(Color.godSeparator, lineWidth: 1)
+      )
     }
     .buttonStyle(HoldDownButtonStyle())
   }
