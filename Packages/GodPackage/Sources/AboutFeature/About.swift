@@ -220,7 +220,7 @@ public struct AboutView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 94)
-          
+
           Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
             .font(.footnote)
         }
