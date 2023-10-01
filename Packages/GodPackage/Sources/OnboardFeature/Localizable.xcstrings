@@ -37,9 +37,6 @@
     "Adding your gender\nhelps create your polls" : {
 
     },
-    "Adding your school lets you\nadd classmates on God" : {
-
-    },
     "By entering your age you agree to our Terms and Privacy Policy" : {
       "localizations" : {
         "ja" : {
@@ -79,9 +76,6 @@
           }
         }
       }
-    },
-    "Choose the right school so\nyou can find your friends" : {
-
     },
     "CLASS OF\n2023" : {
       "localizations" : {
@@ -415,6 +409,7 @@
       }
     },
     "We will show schools on\nthe next page" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -475,9 +470,6 @@
       }
     },
     "Your friends may see you as the name in their contacts" : {
-
-    },
-    "Your grade helps you\nfind a school to join" : {
 
     },
     "ひらがなのみ設定できます" : {

@@ -9,17 +9,14 @@ public struct SchoolSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var schoolHelp: SchoolHelpSheetLogic.State?
     var schools: [God.SchoolsQuery.Data.Schools.Edge.Node] = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
-    case infoButtonTapped
     case schoolButtonTapped(id: String)
     case schoolsResponse(TaskResult<God.SchoolsQuery.Data>)
-    case schoolHelp(PresentationAction<SchoolHelpSheetLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -41,10 +38,6 @@ public struct SchoolSettingLogic: Reducer {
           await send(.schoolsResponse(.failure(error)))
         }
 
-      case .infoButtonTapped:
-        state.schoolHelp = .init()
-        return .none
-
       case let .schoolButtonTapped(id):
         return .send(.delegate(.nextScreen(id: id)))
 
@@ -56,15 +49,9 @@ public struct SchoolSettingLogic: Reducer {
         state.schools = []
         return .none
 
-      case .schoolHelp:
-        return .none
-
       case .delegate:
         return .none
       }
-    }
-    .ifLet(\.$schoolHelp, action: /Action.schoolHelp) {
-      SchoolHelpSheetLogic()
     }
   }
 }
@@ -126,24 +113,6 @@ public struct SchoolSettingView: View {
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
-      .toolbar {
-        Button {
-          viewStore.send(.infoButtonTapped)
-        } label: {
-          Image(systemName: "info.circle.fill")
-            .foregroundColor(.white)
-        }
-      }
-      .sheet(
-        store: store.scope(
-          state: \.$schoolHelp,
-          action: SchoolSettingLogic.Action.schoolHelp
-        )
-      ) { store in
-        SchoolHelpSheetView(store: store)
-          .presentationDetents([.fraction(0.4)])
-          .presentationDragIndicator(.visible)
-      }
     }
   }
 }

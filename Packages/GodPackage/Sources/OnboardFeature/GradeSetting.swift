@@ -7,15 +7,12 @@ public struct GradeSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var gradeHelp: GradeHelpSheetLogic.State?
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
-    case infoButtonTapped
     case generationButtonTapped(Int?)
-    case gradeHelp(PresentationAction<GradeHelpSheetLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -29,22 +26,13 @@ public struct GradeSettingLogic: Reducer {
       case .onTask:
         return .none
 
-      case .infoButtonTapped:
-        state.gradeHelp = .init()
-        return .none
-
       case let .generationButtonTapped(generation):
         return .run { send in
           await send(.delegate(.nextScreen(generation)))
         }
-      case .gradeHelp:
-        return .none
       case .delegate:
         return .none
       }
-    }
-    .ifLet(\.$gradeHelp, action: /Action.gradeHelp) {
-      GradeHelpSheetLogic()
     }
   }
 }
@@ -106,24 +94,6 @@ public struct GradeSettingView: View {
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
-      .toolbar {
-        Button {
-          viewStore.send(.infoButtonTapped)
-        } label: {
-          Image(systemName: "info.circle.fill")
-            .foregroundColor(.white)
-        }
-      }
-      .sheet(
-        store: store.scope(
-          state: \.$gradeHelp,
-          action: GradeSettingLogic.Action.gradeHelp
-        )
-      ) { store in
-        GradeHelpSheetView(store: store)
-          .presentationDragIndicator(.visible)
-          .presentationDetents([.fraction(0.4)])
-      }
     }
   }
 
@@ -156,15 +126,13 @@ public struct GradeSettingView: View {
   }
 }
 
-struct GradeSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      GradeSettingView(
-        store: .init(
-          initialState: GradeSettingLogic.State(),
-          reducer: { GradeSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    GradeSettingView(
+      store: .init(
+        initialState: GradeSettingLogic.State(),
+        reducer: { GradeSettingLogic() }
       )
-    }
+    )
   }
 }
