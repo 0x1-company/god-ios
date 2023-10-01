@@ -98,33 +98,37 @@ public struct PickFriendToAddYourNameTheirPollView: View {
         SearchField(text: viewStore.$searchQuery)
 
         Divider()
+        
+        ScrollView {
+          VStack(spacing: 0) {
+            ForEach(viewStore.friends, id: \.self) { friend in
+              Button {
+                viewStore.send(.friendButtonTapped(friend))
+              } label: {
+                HStack(spacing: 16) {
+                  Color.red
+                    .frame(width: 42, height: 42)
+                    .clipShape(Circle())
 
-        List(viewStore.friends, id: \.self) { friend in
-          Button {
-            viewStore.send(.friendButtonTapped(friend))
-          } label: {
-            HStack(spacing: 16) {
-              Color.red
-                .frame(width: 42, height: 42)
-                .clipShape(Circle())
+                  Text(friend.displayName.ja)
+                    .foregroundStyle(Color.black)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-              Text(friend.displayName.ja)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-              Rectangle()
-                .fill(viewStore.selection == friend ? Color.godService : Color.white)
-                .frame(width: 26, height: 26)
-                .clipShape(Circle())
-                .overlay(
-                  RoundedRectangle(cornerRadius: 26 / 2)
-                    .stroke(viewStore.selection == friend ? Color.godService : Color.godTextSecondaryLight, lineWidth: 2)
-                )
+                  Rectangle()
+                    .fill(viewStore.selection == friend ? Color.godService : Color.white)
+                    .frame(width: 26, height: 26)
+                    .clipShape(Circle())
+                    .overlay(
+                      RoundedRectangle(cornerRadius: 26 / 2)
+                        .stroke(viewStore.selection == friend ? Color.godService : Color.godTextSecondaryLight, lineWidth: 2)
+                    )
+                }
+                .frame(height: 76)
+                .padding(.horizontal, 16)
+              }
             }
-            .frame(height: 76)
-            .padding(.horizontal, 16)
           }
         }
-        .listStyle(.plain)
       }
       .task { await viewStore.send(.onTask).finish() }
       .toolbar {

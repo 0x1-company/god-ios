@@ -22,7 +22,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リンクコピー"
+            "value" : "リンクをコピーする"
           }
         }
       }
@@ -32,7 +32,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godリンクをコピー"
+            "value" : "共有リンクをコピー"
           }
         }
       }
@@ -65,7 +65,17 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リンクを追加する"
+            "value" : "リンクを追加する方法"
+          }
+        }
+      }
+    },
+    "LINE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LINE"
           }
         }
       }
@@ -80,12 +90,32 @@
         }
       }
     },
+    "Messages" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
+          }
+        }
+      }
+    },
     "Next Step" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "次へ"
+          }
+        }
+      }
+    },
+    "Other" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
           }
         }
       }
@@ -100,23 +130,12 @@
         }
       }
     },
-    "ProfileShare" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プロフィールシェア"
-          }
-        }
-      }
-    },
     "Share" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シェア"
+            "value" : "共有する"
           }
         }
       }
@@ -126,7 +145,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーを投稿する"
+            "value" : "ストーリーで共有する"
           }
         }
       }
@@ -136,7 +155,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロフィールシェア"
+            "value" : "プロフィールを共有"
           }
         }
       }
@@ -146,27 +165,37 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーでシェアする"
+            "value" : "ストーリーで\n共有する"
           }
         }
       }
     },
-    "Step1" : {
+    "Step 1" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Step1"
+            "value" : "Step 1"
           }
         }
       }
     },
-    "Step2" : {
+    "Step 2" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Step2"
+            "value" : "Step 2"
+          }
+        }
+      }
+    },
+    "Story" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストーリー"
           }
         }
       }

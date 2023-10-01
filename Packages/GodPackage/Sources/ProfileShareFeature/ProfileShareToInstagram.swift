@@ -100,18 +100,18 @@ public struct ProfileShareToInstagramView: View {
             .font(.title)
             .bold()
             .foregroundColor(.godBlack)
-            .lineSpacing(-2)
-            .lineLimit(2)
             .multilineTextAlignment(.center)
         }
 
         VStack(alignment: .center, spacing: 16) {
-          VStack(alignment: .center, spacing: 0) {
-            Text("Step1", bundle: .module)
+          VStack(alignment: .center, spacing: 8) {
+            Text("Step 1", bundle: .module)
               .bold()
+              .font(.title2)
             Text("Copy your God link", bundle: .module)
+              .bold()
+              .font(.headline)
           }
-          .font(.title2)
 
           Text(verbatim: "godapp.jp/add/\(viewStore.username ?? "")")
             .font(.body)
@@ -125,7 +125,6 @@ public struct ProfileShareToInstagramView: View {
             viewStore.send(.copyLinkButtonTapped)
           } label: {
             Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
-              .font(.subheadline)
               .bold()
               .foregroundColor(.godService)
               .frame(maxWidth: .infinity)
@@ -140,23 +139,24 @@ public struct ProfileShareToInstagramView: View {
         }
 
         VStack(alignment: .center, spacing: 16) {
-          VStack(alignment: .center, spacing: 0) {
-            Text("Step2", bundle: .module)
+          VStack(alignment: .center, spacing: 8) {
+            Text("Step 2", bundle: .module)
               .bold()
+              .font(.title2)
             Text("Post on your story", bundle: .module)
+              .bold()
+              .font(.headline)
           }
-          .font(.title2)
 
           Button {
             viewStore.send(.shareButtonTapped)
           } label: {
             Text("Share", bundle: .module)
-              .font(.subheadline)
               .bold()
               .foregroundColor(.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
-              .background(Color(red: 247 / 255, green: 108 / 255, blue: 67 / 255))
+              .background(Color.godService)
               .cornerRadius(26)
           }
           .buttonStyle(HoldDownButtonStyle())

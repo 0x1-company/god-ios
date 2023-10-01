@@ -127,7 +127,7 @@ public struct ProfilePhotoSettingView: View {
         }
 
         Text("Add a photo so your friends can find you", bundle: .module)
-          .foregroundColor(.secondary)
+          .foregroundColor(Color.godTextSecondaryLight)
 
         Spacer()
 
@@ -183,13 +183,11 @@ public struct ProfilePhotoSettingView: View {
   }
 }
 
-struct ProfilePhotoSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ProfilePhotoSettingView(
-      store: .init(
-        initialState: ProfilePhotoSettingLogic.State(),
-        reducer: { ProfilePhotoSettingLogic() }
-      )
+#Preview {
+  ProfilePhotoSettingView(
+    store: .init(
+      initialState: ProfilePhotoSettingLogic.State(),
+      reducer: { ProfilePhotoSettingLogic() }
     )
-  }
+  )
 }
