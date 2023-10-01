@@ -40,30 +40,22 @@ public struct InvitationsLeftLogic: Reducer {
           CNContactImageDataKey as CNKeyDescriptor,
           CNContactPhoneNumbersKey as CNKeyDescriptor,
         ])
-        return .run { send in
-          await withThrowingTaskGroup(of: Void.self) { group in
-            group.addTask {
-              do {
-                for try await data in godClient.currentUser() {
-                  await send(.currentUserResponse(.success(data)))
-                }
-              } catch {
-                await send(.currentUserResponse(.failure(error)))
-              }
+        return .merge(
+          .run { send in
+            for try await data in godClient.currentUser() {
+              await send(.currentUserResponse(.success(data)))
             }
-            if case .authorized = authorizationStatus(.contacts) {
-              group.addTask(priority: .background) {
-                do {
-                  for try await (contact, _) in enumerateContacts(request) {
-                    await send(.contactResponse(.success(contact)))
-                  }
-                } catch {
-                  await send(.contactResponse(.failure(error)))
-                }
-              }
+          } catch: { error, send in
+            await send(.currentUserResponse(.failure(error)))
+          },
+          .run(priority: .background) { send in
+            for try await (contact, _) in enumerateContacts(request) {
+              await send(.contactResponse(.success(contact)))
             }
+          } catch: { error, send in
+            await send(.contactResponse(.failure(error)))
           }
-        }
+        )
       case let .inviteButtonTapped(contact):
         guard
           MessageComposeView.canSendText(),
