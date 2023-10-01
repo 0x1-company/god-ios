@@ -113,7 +113,7 @@ public struct ProfileShareToInstagramView: View {
               .font(.headline)
           }
 
-          Text(verbatim: "godapp.jp/add/\(viewStore.username ?? "")")
+          Text(verbatim: "godapp.jp/@\(viewStore.username ?? "")")
             .font(.body)
             .foregroundColor(.godTextSecondaryDark)
             .frame(maxWidth: .infinity, alignment: .center)
