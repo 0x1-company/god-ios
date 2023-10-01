@@ -141,14 +141,17 @@ public struct GodModeView: View {
         .multilineTextAlignment(.center)
 
         VStack(spacing: 16) {
-          Image(.seeWhoLikesYou)
-            .resizable()
-            .scaledToFit()
-            .padding(.horizontal, 60)
+          VStack(spacing: 0) {
+            Image(.seeWhoLikesYou)
+              .resizable()
+              .scaledToFit()
+              .padding(.horizontal, 60)
 
-          GodModeFunctions()
+            GodModeFunctions()
+          }
 
           Text("\(viewStore.product.displayPrice)/week", bundle: .module)
+            .bold()
 
           Button {
             store.send(.continueButtonTapped)
@@ -159,6 +162,7 @@ public struct GodModeView: View {
                   .progressViewStyle(.circular)
               } else {
                 Text("Continue", bundle: .module)
+                  .bold()
               }
             }
             .bold()
