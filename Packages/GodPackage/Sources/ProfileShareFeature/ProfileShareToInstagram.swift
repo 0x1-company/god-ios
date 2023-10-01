@@ -5,6 +5,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import UIPasteboardClient
 
 public struct ProfileShareToInstagramLogic: Reducer {
   public init() {}
@@ -28,14 +29,14 @@ public struct ProfileShareToInstagramLogic: Reducer {
     }
   }
 
-  @Dependency(\.godClient) var godClient
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.godClient) var godClient
+  @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
         return .run { send in
           for try await data in godClient.currentUser() {
             await send(.currentUserResponse(.success(data)))
@@ -43,14 +44,12 @@ public struct ProfileShareToInstagramLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
 
       case let .currentUserResponse(.success(data)):
         state.username = data.currentUser.username
         return .none
 
       case .currentUserResponse(.failure):
-        assertionFailure()
         return .run { _ in
           await dismiss()
         }
@@ -59,7 +58,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         guard let username = state.username else {
           return .none
         }
-        UIPasteboard.general.string = "https://www.godapp.jp/add/\(username)"
+        pasteboard.url(URL(string: "https://www.godapp.jp/add/\(username)"))
         state.isProfileLinkCopied = true
         return .none
 

@@ -5,6 +5,8 @@ import God
 import GodClient
 import NameImage
 import SwiftUI
+import UIPasteboardClient
+import UIApplicationClient
 
 public struct HowToShareOnInstagramLogic: Reducer {
   public init() {}
@@ -44,15 +46,15 @@ public struct HowToShareOnInstagramLogic: Reducer {
     case closeButtonTapped
   }
 
-  @Dependency(\.godClient) var godClient
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.openURL) var openURL
+  @Dependency(\.godClient) var godClient
+  @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .onTask:
-        enum Cancel { case id }
         return .run { send in
           for try await data in godClient.currentUser() {
             await send(.currentUserResponse(.success(data)))
@@ -60,14 +62,12 @@ public struct HowToShareOnInstagramLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
 
       case let .currentUserResponse(.success(response)):
         state.currentUser = response.currentUser
         return .none
 
       case .currentUserResponse(.failure):
-        assertionFailure()
         return .run { _ in
           await dismiss()
         }
@@ -75,42 +75,33 @@ public struct HowToShareOnInstagramLogic: Reducer {
       case let .stepButtonTapped(step):
         state.currentStep = step
         return .none
-
-      case let .primaryButtonTapped(profileCardImage):
-        // Stepが最後の場合はInstagramへ飛ばす
-        if state.currentStep == State.Step.allCases.last {
-          guard let storiesUrl = URL(string: "instagram-stories://share?source_application=1049646559806019") else { return .none }
-          if !UIApplication.shared.canOpenURL(storiesUrl) {
-            print("Sorry the application is not installed")
-            return .none
-          }
-          guard let profileCardImage,
-                let imageData = profileCardImage.pngData()
-          else {
-            assertionFailure()
-            return .none
-          }
-          let pasteboardItems: [String: Any] = [
-            "com.instagram.sharedSticker.stickerImage": imageData,
-            "com.instagram.sharedSticker.backgroundTopColor": "#000000",
-            "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
-          ]
-          UIPasteboard.general.setItems(
-            [pasteboardItems],
-            options: [.expirationDate: Date().addingTimeInterval(300)]
-          )
-          return .run { [storiesUrl] _ in
-            async let close = dismiss()
-            async let openInstagram = openURL(storiesUrl)
-            _ = await (close, openInstagram)
-          }
-        }
-        // 通常時は説明を次のStepへ
-        if let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1) {
-          state.currentStep = nextStep
+        
+      case let .primaryButtonTapped(profileCardImage) where state.currentStep == State.Step.allCases.last:
+        guard
+          let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
+          let profileCardImage,
+          let imageData = profileCardImage.pngData()
+        else { return .none }
+        let pasteboardItems: [String: Any] = [
+          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+        ]
+        pasteboard.setItems(
+          [pasteboardItems],
+          [.expirationDate: Date().addingTimeInterval(300)]
+        )
+        return .run { _ in
+          await openURL(storiesURL)
+          await dismiss()
         }
 
+      case .primaryButtonTapped:
+        guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
+        else { return .none }
+        state.currentStep = nextStep
         return .none
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -132,7 +123,7 @@ public struct HowToShareOnInstagramView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let profileCardForShareOnInstagram = profileCardForShareOnInstagram(user: viewStore.state.currentUser)
+      let profileCardForShareOnInstagram = profileCardForShareOnInstagram(user: viewStore.currentUser)
       ZStack(alignment: .center) {
         // instagramへのシェア用のView
         profileCardForShareOnInstagram
@@ -227,7 +218,7 @@ public struct HowToShareOnInstagramView: View {
           }
 
           VStack(alignment: .center, spacing: 0) {
-            Text("Add me on")
+            Text("Add me on", bundle: .module)
               .font(.title2)
               .fontWeight(.heavy)
               .foregroundStyle(Color.godWhite)
@@ -237,7 +228,7 @@ public struct HowToShareOnInstagramView: View {
               .frame(height: 24)
               .foregroundStyle(Color.godWhite)
               .padding(.bottom, 4)
-            Text("godapp.jp")
+            Text(verbatim: "godapp.jp")
               .font(.callout)
               .bold()
               .foregroundColor(.godWhite)
