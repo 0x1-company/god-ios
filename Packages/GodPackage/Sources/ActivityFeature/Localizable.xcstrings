@@ -6,6 +6,16 @@
     },
     "3年生の女子より" : {
 
+    },
+    "received" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "が受け取りました"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
