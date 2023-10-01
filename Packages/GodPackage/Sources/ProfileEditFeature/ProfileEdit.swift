@@ -175,11 +175,9 @@ public struct ProfileEditLogic: Reducer {
         }
 
       case .alert(.presented(.discardChanges)):
-        guard let currentUser = state.currentUser else { return .none }
-        state.firstName = currentUser.firstName
-        state.lastName = currentUser.lastName
-        state.username = currentUser.username ?? ""
-        return .none
+        return .run { _ in
+          await dismiss()
+        }
         
       case .binding(\.$photoPickerItems):
         guard let photoPickerItem = state.photoPickerItems.first else { return .none }
@@ -191,6 +189,10 @@ public struct ProfileEditLogic: Reducer {
         
       case let .loadTransferableResponse(.success(.some(data))):
         state.imageData = data
+        return .none
+        
+      case .uploadResponse:
+        state.imageData = nil
         return .none
 
       default:
