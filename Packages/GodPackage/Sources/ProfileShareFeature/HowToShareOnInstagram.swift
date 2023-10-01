@@ -63,8 +63,8 @@ public struct HowToShareOnInstagramLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
-      case let .currentUserResponse(.success(response)):
-        state.currentUser = response.currentUser
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
         return .none
 
       case .currentUserResponse(.failure):
