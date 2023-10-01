@@ -91,8 +91,9 @@ public struct PollQuestionLogic: Reducer {
           await feedbackGenerator.mediumImpact()
         }
       case .skipButtonTapped:
-        return .run { _ in
+        return .run { send in
           await feedbackGenerator.mediumImpact()
+          await send(.delegate(.nextPollQuestion), animation: .default)
         }
       case .continueButtonTapped:
         state.isAnswered = false
