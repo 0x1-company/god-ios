@@ -25,52 +25,154 @@
       }
     },
     "ADDED" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち"
+          }
+        }
+      }
     },
     "Are you sure?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当に大丈夫？"
+          }
+        }
+      }
     },
     "Block" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロック"
+          }
+        }
+      }
     },
     "Block User" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロックする"
+          }
+        }
+      }
     },
     "Bullying" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いじめ"
+          }
+        }
+      }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
     },
     "COINS" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コイン"
+          }
+        }
+      }
     },
     "Does not go to my school" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私の学校には通っていない"
+          }
+        }
+      }
     },
     "EDIT PROFILE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
+          }
+        }
+      }
     },
     "Friends" : {
-
-    },
-    "I do not like them" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド"
+          }
+        }
+      }
     },
     "Inappropriate photo" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不適切な写真"
+          }
+        }
+      }
     },
     "May be under 13 years old" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "13歳未満"
+          }
+        }
+      }
     },
     "Other" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "Please select a reason" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "理由を選択してください"
+          }
+        }
+      }
     },
     "Pretending to be someone else" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この人は誰かになりすましてます"
+          }
+        }
+      }
     },
     "Profile" : {
       "localizations" : {
@@ -83,7 +185,14 @@
       }
     },
     "Report User" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "報告する"
+          }
+        }
+      }
     },
     "Share Profile" : {
       "localizations" : {
@@ -95,8 +204,7 @@
         }
       }
     },
-    "Shop" : {
-      "extractionState" : "stale",
+    "SHOP" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -105,9 +213,6 @@
           }
         }
       }
-    },
-    "SHOP" : {
-
     },
     "Top Stars" : {
       "localizations" : {
@@ -120,7 +225,14 @@
       }
     },
     "You won't see this user again in the app." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このユーザーはアプリ内で二度と表示されません。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

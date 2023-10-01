@@ -38,7 +38,6 @@ public struct ProfileExternalLogic: Reducer {
       case mayBeUnder13YearsOld
       case doesNotGoYoMySchool
       case bullying
-      case iDoNotLikeThem
       case other
     }
   }
@@ -193,9 +192,6 @@ extension ConfirmationDialogState where Action == ProfileExternalLogic.Action.Co
     }
     ButtonState(action: .bullying) {
       TextState("Bullying", bundle: .module)
-    }
-    ButtonState(action: .iDoNotLikeThem) {
-      TextState("I do not like them", bundle: .module)
     }
     ButtonState(action: .other) {
       TextState("Other", bundle: .module)
