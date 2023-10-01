@@ -135,7 +135,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シェア"
+            "value" : "共有"
           }
         }
       }
@@ -155,7 +155,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロフィールをシェア"
+            "value" : "プロフィールを共有"
           }
         }
       }
@@ -165,7 +165,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーでシェアする"
+            "value" : "ストーリーで共有する"
           }
         }
       }
