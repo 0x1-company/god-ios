@@ -1,27 +1,27 @@
 import AnimationDisableTransaction
 import ButtonStyles
 import Colors
+import ComposableArchitecture
 import SwiftUI
 import UserDefaultsClient
-import ComposableArchitecture
 
 public struct FromGodTeamCardLogic: Reducer {
   public struct State: Equatable {
     var isRead = false
   }
-  
+
   public enum Action: Equatable {
     case onTask
     case cardButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case showDetail
     }
   }
-  
+
   @Dependency(\.userDefaults) var userDefaults
-  
+
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
@@ -44,7 +44,7 @@ public struct FromGodTeamCardLogic: Reducer {
 
 public struct FromGodTeamCard: View {
   let store: StoreOf<FromGodTeamCardLogic>
-  
+
   public init(store: StoreOf<FromGodTeamCardLogic>) {
     self.store = store
   }

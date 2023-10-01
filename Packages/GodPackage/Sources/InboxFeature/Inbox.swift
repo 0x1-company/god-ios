@@ -121,7 +121,7 @@ public struct InboxLogic: Reducer {
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
         return .none
-        
+
       case .fromGodTeamCard(.delegate(.showDetail)):
         state.destination = .fromGodTeam(.init())
         return .none
