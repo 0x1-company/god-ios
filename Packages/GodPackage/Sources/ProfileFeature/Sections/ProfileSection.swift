@@ -63,7 +63,8 @@ public struct ProfileSection: View {
               Text("EDIT PROFILE", bundle: .module)
                 .bold()
                 .foregroundColor(.secondary)
-                .frame(width: 120, height: 32)
+                .frame(height: 32)
+                .padding(.horizontal, 12)
                 .overlay(
                   RoundedRectangle(cornerRadius: 32 / 2)
                     .stroke(Color.secondary, lineWidth: 1)
