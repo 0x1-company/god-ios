@@ -99,7 +99,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "神モード"
+            "value" : "あなたの好きな友だちを見る"
           }
         }
       }
@@ -139,7 +139,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "受信トレイ"
+            "value" : "これは通知タブ"
           }
         }
       }
