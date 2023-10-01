@@ -5,8 +5,8 @@ import God
 import GodClient
 import NameImage
 import SwiftUI
-import UIPasteboardClient
 import UIApplicationClient
+import UIPasteboardClient
 
 public struct HowToShareOnInstagramLogic: Reducer {
   public init() {}
@@ -75,7 +75,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
       case let .stepButtonTapped(step):
         state.currentStep = step
         return .none
-        
+
       case let .primaryButtonTapped(profileCardImage) where state.currentStep == State.Step.allCases.last:
         guard
           let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
