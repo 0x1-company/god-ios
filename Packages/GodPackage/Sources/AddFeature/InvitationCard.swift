@@ -27,6 +27,7 @@ public struct InvitationCardView: View {
 
       VStack(alignment: .leading, spacing: 4) {
         Text(verbatim: displayName)
+          .bold()
       }
       .frame(maxWidth: .infinity, alignment: .leading)
 
