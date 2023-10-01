@@ -43,10 +43,10 @@ public struct FromSchoolPanelView: View {
           FriendRowCardView(store: $0)
         }
 
-        Button {} label: {
-          Text("See \(viewStore.users.count) more", bundle: .module)
-        }
-        .buttonStyle(SeeMoreButtonStyle())
+//        Button {} label: {
+//          Text("See \(viewStore.users.count) more", bundle: .module)
+//        }
+//        .buttonStyle(SeeMoreButtonStyle())
       }
     }
   }

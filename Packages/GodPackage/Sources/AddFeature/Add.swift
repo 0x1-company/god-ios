@@ -92,7 +92,7 @@ public struct AddLogic: Reducer {
         return .none
       case let .addPlusResponse(.success(data)):
         let friendRequests = data.friendRequests.edges.map {
-          FriendRequestCardLogic.State(friendId: $0.node.id, userId: $0.node.user.id, displayName: $0.node.user.displayName.ja, description: "\($0.node.user.mutualFriendsCount) mutual friends")
+          FriendRequestCardLogic.State(friendId: $0.node.id, userId: $0.node.user.id, displayName: $0.node.user.displayName.ja, description: String(localized: "\($0.node.user.mutualFriendsCount) mutual friends", bundle: .module))
         }
         let friendsOfFriends = data.friendsOfFriends.edges.map {
           FriendRowCardLogic.State(id: $0.node.id, displayName: $0.node.displayName.ja, description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module))

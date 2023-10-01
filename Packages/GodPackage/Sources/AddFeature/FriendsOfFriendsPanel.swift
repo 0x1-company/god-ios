@@ -49,10 +49,10 @@ public struct FriendsOfFriendsPanelView: View {
           FriendRowCardView(store: $0)
         }
 
-        Button {} label: {
-          Text("See \(viewStore.friendsOfFriends.count) more", bundle: .module)
-        }
-        .buttonStyle(SeeMoreButtonStyle())
+//        Button {} label: {
+//          Text("See \(viewStore.friendsOfFriends.count) more", bundle: .module)
+//        }
+//        .buttonStyle(SeeMoreButtonStyle())
       }
     }
   }
