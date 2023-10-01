@@ -142,6 +142,7 @@ public struct LastNameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color.godService)
+      .navigationBarBackButtonHidden()
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: LastNameSettingLogic.Action.alert))
       .onAppear {
