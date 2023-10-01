@@ -83,6 +83,8 @@ public struct AddLogic: Reducer {
           .init(
             id: data.user.id,
             displayName: data.user.displayName.ja,
+            firstName: data.user.firstName,
+            lastName: data.user.lastName,
             description: "@\(username)"
           ),
         ]
@@ -95,10 +97,22 @@ public struct AddLogic: Reducer {
           FriendRequestCardLogic.State(friendId: $0.node.id, userId: $0.node.user.id, displayName: $0.node.user.displayName.ja, description: String(localized: "\($0.node.user.mutualFriendsCount) mutual friends", bundle: .module))
         }
         let friendsOfFriends = data.friendsOfFriends.edges.map {
-          FriendRowCardLogic.State(id: $0.node.id, displayName: $0.node.displayName.ja, description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module))
+          FriendRowCardLogic.State(
+            id: $0.node.id,
+            displayName: $0.node.displayName.ja,
+            firstName: $0.node.firstName,
+            lastName: $0.node.lastName,
+            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module)
+          )
         }
         let fromSchools = data.fromSchool.edges.map {
-          FriendRowCardLogic.State(id: $0.node.id, displayName: $0.node.displayName.ja, description: $0.node.grade ?? "")
+          FriendRowCardLogic.State(
+            id: $0.node.id,
+            displayName: $0.node.displayName.ja,
+            firstName: $0.node.firstName,
+            lastName: $0.node.lastName,
+            description: $0.node.grade ?? ""
+          )
         }
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))
         state.friendsOfFriendsPanel = friendsOfFriends.isEmpty ? nil : .init(friendsOfFriends: .init(uniqueElements: friendsOfFriends))

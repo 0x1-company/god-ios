@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import NameImage
 
 public struct FriendRowCardLogic: Reducer {
   public init() {}
@@ -11,14 +12,10 @@ public struct FriendRowCardLogic: Reducer {
   public struct State: Equatable, Identifiable {
     public var id: String
     var displayName: String
+    var firstName: String
+    var lastName: String
     var description: String
     var friendStatus = God.FriendStatus.canceled
-
-    public init(id: String, displayName: String, description: String) {
-      self.id = id
-      self.displayName = displayName
-      self.description = description
-    }
   }
 
   public enum Action: Equatable {
@@ -78,12 +75,14 @@ public struct FriendRowCardView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack(alignment: .center, spacing: 16) {
-        Color.red
-          .frame(width: 40, height: 40)
-          .clipShape(Circle())
+        NameImage(
+          familyName: viewStore.lastName,
+          givenName: viewStore.firstName
+        )
 
         VStack(alignment: .leading) {
           Text(verbatim: viewStore.displayName)
+            .bold()
 
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
@@ -131,6 +130,8 @@ public struct FriendRowCardView: View {
       initialState: FriendRowCardLogic.State(
         id: "1",
         displayName: "Taro Tanaka",
+        firstName: "Taro",
+        lastName: "Tanaka",
         description: "Grade 9"
       ),
       reducer: { FriendRowCardLogic() }
