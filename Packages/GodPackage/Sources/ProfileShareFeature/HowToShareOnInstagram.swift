@@ -160,7 +160,7 @@ public struct HowToShareOnInstagramView: View {
             .fill(Color.red)
             .frame(maxWidth: .infinity)
             .frame(height: 240)
-          
+
           Button {
             let renderer = ImageRenderer(content: profileCardForShareOnInstagram)
             renderer.scale = displayScale
