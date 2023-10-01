@@ -8,9 +8,9 @@ import FirebaseStorageClient
 import God
 import GodClient
 import ManageAccountFeature
+import PhotosUI
 import SwiftUI
 import UserDefaultsClient
-import PhotosUI
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
@@ -26,17 +26,17 @@ public struct ProfileEditLogic: Reducer {
     @BindingState var username: String = ""
     var imageData: Data?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
-    
+
     var isUserProfileChanges: Bool {
       guard let currentUser else {
         return false
       }
       return firstName != currentUser.firstName
-      || lastName != currentUser.lastName
-      || username != currentUser.username
-      || imageData != nil
+        || lastName != currentUser.lastName
+        || username != currentUser.username
+        || imageData != nil
     }
-    
+
     var gender: LocalizedStringKey {
       switch currentUser?.gender.value {
       case .male:
@@ -109,7 +109,7 @@ public struct ProfileEditLogic: Reducer {
                 }))
               }
             }
-            
+
             if state.firstName != currentUser.firstName || state.lastName != currentUser.lastName {
               group.addTask {
                 await send(.updateUserProfileResponse(TaskResult {
@@ -120,7 +120,7 @@ public struct ProfileEditLogic: Reducer {
                 }))
               }
             }
-            
+
             if let imageData = state.imageData, let userId = state.currentUser?.id {
               group.addTask {
                 await send(.uploadResponse(TaskResult {
@@ -178,7 +178,7 @@ public struct ProfileEditLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .binding(\.$photoPickerItems):
         guard let photoPickerItem = state.photoPickerItems.first else { return .none }
         return .run { send in
@@ -186,11 +186,11 @@ public struct ProfileEditLogic: Reducer {
             try await photoPickerItem.loadTransferable(type: Data.self)
           }))
         }
-        
+
       case let .loadTransferableResponse(.success(.some(data))):
         state.imageData = data
         return .none
-        
+
       case .uploadResponse:
         state.imageData = nil
         return .none
@@ -203,7 +203,7 @@ public struct ProfileEditLogic: Reducer {
       ManageAccountLogic()
     }
   }
-  
+
   func currentUserRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.currentUser() {
@@ -323,7 +323,7 @@ public struct ProfileEditView: View {
               .frame(height: 52)
 
               Separator()
-              
+
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
                   .foregroundColor(.godTextSecondaryLight)
