@@ -12,7 +12,6 @@ public struct LastNameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var doubleCheckName = DoubleCheckNameLogic.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var lastName = ""
     var isDisabled = true
@@ -27,7 +26,6 @@ public struct LastNameSettingLogic: Reducer {
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    case doubleCheckName(DoubleCheckNameLogic.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
@@ -44,9 +42,6 @@ public struct LastNameSettingLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
-      DoubleCheckNameLogic()
-    }
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
@@ -148,14 +143,6 @@ public struct LastNameSettingView: View {
       .padding(.bottom, 16)
       .background(Color.godService)
       .task { await viewStore.send(.onTask).finish() }
-      .toolbar {
-        DoubleCheckNameView(
-          store: store.scope(
-            state: \.doubleCheckName,
-            action: LastNameSettingLogic.Action.doubleCheckName
-          )
-        )
-      }
       .alert(store: store.scope(state: \.$alert, action: LastNameSettingLogic.Action.alert))
       .onAppear {
         focus = true
