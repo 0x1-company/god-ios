@@ -97,21 +97,21 @@ public struct ProfileShareToInstagramView: View {
             .clipShape(Circle())
 
           Text("Share Profile on\nInstagram", bundle: .module)
-            .font(.title)
+            .font(.title2)
             .bold()
             .foregroundColor(.godBlack)
-            .lineSpacing(-2)
-            .lineLimit(2)
             .multilineTextAlignment(.center)
         }
 
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 0) {
-            Text("Step1", bundle: .module)
+            Text("Step 1", bundle: .module)
               .bold()
+              .font(.title2)
             Text("Copy your God link", bundle: .module)
+              .bold()
+              .font(.headline)
           }
-          .font(.title2)
 
           Text(verbatim: "godapp.jp/add/\(viewStore.username ?? "")")
             .font(.body)
@@ -141,7 +141,7 @@ public struct ProfileShareToInstagramView: View {
 
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 0) {
-            Text("Step2", bundle: .module)
+            Text("Step 2", bundle: .module)
               .bold()
             Text("Post on your story", bundle: .module)
           }

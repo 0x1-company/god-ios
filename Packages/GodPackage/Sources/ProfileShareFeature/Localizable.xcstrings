@@ -170,22 +170,22 @@
         }
       }
     },
-    "Step1" : {
+    "Step 1" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Step1"
+            "value" : "Step 1"
           }
         }
       }
     },
-    "Step2" : {
+    "Step 2" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Step2"
+            "value" : "Step 2"
           }
         }
       }
