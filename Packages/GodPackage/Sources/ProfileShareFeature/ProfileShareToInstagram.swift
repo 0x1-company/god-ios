@@ -104,7 +104,7 @@ public struct ProfileShareToInstagramView: View {
         }
 
         VStack(alignment: .center, spacing: 16) {
-          VStack(alignment: .center, spacing: 0) {
+          VStack(alignment: .center, spacing: 8) {
             Text("Step 1", bundle: .module)
               .bold()
               .font(.title2)
@@ -125,7 +125,6 @@ public struct ProfileShareToInstagramView: View {
             viewStore.send(.copyLinkButtonTapped)
           } label: {
             Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
-              .font(.subheadline)
               .bold()
               .foregroundColor(.godService)
               .frame(maxWidth: .infinity)
@@ -140,18 +139,19 @@ public struct ProfileShareToInstagramView: View {
         }
 
         VStack(alignment: .center, spacing: 16) {
-          VStack(alignment: .center, spacing: 0) {
+          VStack(alignment: .center, spacing: 8) {
             Text("Step 2", bundle: .module)
               .bold()
+              .font(.title2)
             Text("Post on your story", bundle: .module)
+              .bold()
+              .font(.headline)
           }
-          .font(.title2)
 
           Button {
             viewStore.send(.shareButtonTapped)
           } label: {
             Text("Share", bundle: .module)
-              .font(.subheadline)
               .bold()
               .foregroundColor(.godWhite)
               .frame(maxWidth: .infinity)

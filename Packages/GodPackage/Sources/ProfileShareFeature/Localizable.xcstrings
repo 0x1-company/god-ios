@@ -22,7 +22,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リンクコピー"
+            "value" : "リンクをコピーする"
           }
         }
       }
@@ -32,7 +32,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godリンクをコピー"
+            "value" : "共有リンクをコピー"
           }
         }
       }
@@ -135,7 +135,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共有"
+            "value" : "共有する"
           }
         }
       }
@@ -145,7 +145,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーを投稿する"
+            "value" : "ストーリーを\n投稿する"
           }
         }
       }
