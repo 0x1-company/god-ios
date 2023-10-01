@@ -121,9 +121,6 @@ public struct PhoneNumberView: View {
           .keyboardType(.phonePad)
           .focused($focus)
 
-          Text("Remember - never sign up\nwith another person's phone number.", bundle: .module)
-            .multilineTextAlignment(.center)
-
           Spacer()
 
           NextButton(
