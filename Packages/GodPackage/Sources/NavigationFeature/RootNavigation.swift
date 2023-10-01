@@ -110,7 +110,7 @@ public struct RootNavigationView: View {
         .tag(RootNavigationLogic.Tab.about)
       }
       .ignoresSafeArea()
-      .tabViewStyle(.page(indexDisplayMode: .never))
+      .tabViewStyle(.page)
     }
   }
 }
