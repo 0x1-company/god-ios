@@ -144,6 +144,7 @@ public struct PollQuestionView: View {
         Spacer().frame(height: 24)
 
         Text(viewStore.question.text.ja)
+          .bold()
           .font(.title2)
           .foregroundColor(.white)
 
