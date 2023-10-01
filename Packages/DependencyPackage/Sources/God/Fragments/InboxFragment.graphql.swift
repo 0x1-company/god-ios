@@ -6,7 +6,7 @@
 public extension God {
   struct InboxFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment InboxFragment on InboxActivity { __typename id initial isRead createdAt question { __typename text { __typename ja } } }"#
+      #"fragment InboxFragment on InboxActivity { __typename id initial isRead createdAt question { __typename id imageURL text { __typename ja } } }"#
     }
 
     public let __data: DataDict
@@ -41,9 +41,14 @@ public extension God {
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Question }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
+        .field("id", God.ID.self),
+        .field("imageURL", String.self),
         .field("text", Text.self),
       ] }
 
+      public var id: God.ID { __data["id"] }
+      /// imageURL
+      public var imageURL: String { __data["imageURL"] }
       /// text
       public var text: Text { __data["text"] }
 

@@ -10,6 +10,7 @@ query CurrentPoll {
         id
         question {
           id
+          imageURL
           text {
             ja
           }
