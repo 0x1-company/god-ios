@@ -37,7 +37,7 @@
         }
       }
     },
-    "Adding your gender\nhelps create your polls" : {
+    "Boy" : {
 
     },
     "By entering your age you agree to our Terms and Privacy Policy" : {
@@ -189,6 +189,9 @@
         }
       }
     },
+    "Girl" : {
+
+    },
     "God cares intensely about your privacy.\nWeb will never text or spam your contacts." : {
       "localizations" : {
         "ja" : {
@@ -299,6 +302,9 @@
         }
       }
     },
+    "Non-binary" : {
+
+    },
     "Not in High School" : {
       "localizations" : {
         "ja" : {
@@ -340,6 +346,7 @@
       }
     },
     "Prefer not to say" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -353,6 +360,7 @@
 
     },
     "See who likes you on God" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
