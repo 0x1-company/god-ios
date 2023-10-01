@@ -215,9 +215,14 @@ public struct AboutView: View {
         }
         .aspectRatio(contentMode: .fit)
 
-        VStack(spacing: 0) {
-          Text("God", bundle: .module)
+        VStack(spacing: 8) {
+          Image(ImageResource.god)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 94)
+          
           Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
+            .font(.footnote)
         }
         .foregroundColor(.secondary)
         .tint(.secondary)
