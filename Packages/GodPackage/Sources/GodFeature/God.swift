@@ -83,18 +83,19 @@ public struct GodLogic: Reducer {
   }
 
   func updateChild(state: inout State, child: Child.State) {
-    switch (state.child, child) {
-    case (.loading, .loading):
-      break
-    case (.poll, .poll):
-      break
-    case (.cashOut, .cashOut):
-      break
-    case (.playAgain, .playAgain):
-      break
-    default:
-      state.child = child
-    }
+//    switch (state.child, child) {
+//    case (.loading, .loading):
+//      break
+//    case (.poll, .poll):
+//      break
+//    case (.cashOut, .cashOut):
+//      break
+//    case (.playAgain, .playAgain):
+//      break
+//    default:
+//      state.child = child
+//    }
+    state.child = .loading(.init())
   }
 
   func currentPollRequest(send: Send<Action>) async {
