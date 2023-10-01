@@ -40,8 +40,8 @@ public struct GodLoadingView: View {
       Image(ImageResource.loading)
         .resizable()
         .scaledToFit()
-        .padding(.horizontal, 100)
-        .offset(y: 80)
+        .padding(.horizontal, 120)
+        .offset(y: 60)
     }
   }
 }

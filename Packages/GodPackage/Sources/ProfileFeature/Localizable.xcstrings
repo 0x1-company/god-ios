@@ -25,6 +25,7 @@
       }
     },
     "ADDED" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

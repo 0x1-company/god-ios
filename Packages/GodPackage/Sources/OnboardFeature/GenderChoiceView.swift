@@ -6,25 +6,25 @@ public struct GenderChoiceView: View {
   let gender: God.Gender
   let action: () -> Void
 
-  var textGender: String {
+  var textGender: LocalizedStringKey {
     switch gender {
     case .female:
-      return "女の子"
+      return "Girl"
     case .male:
-      return "男の子"
+      return "Boy"
     case .other:
-      return "その他"
+      return "Non-binary"
     }
   }
 
-  var imageNameGender: String {
+  var imageNameGender: ImageResource {
     switch gender {
     case .female:
-      return "girl"
+      return ImageResource.girl
     case .male:
-      return "boy"
+      return ImageResource.boy
     case .other:
-      return "other"
+      return ImageResource.other
     }
   }
 
@@ -39,12 +39,12 @@ public struct GenderChoiceView: View {
   public var body: some View {
     Button(action: action) {
       VStack(spacing: 4) {
-        Image(imageNameGender, bundle: .module)
+        Image(imageNameGender)
           .resizable()
           .frame(width: 120, height: 120)
           .cornerRadius(12)
 
-        Text(textGender)
+        Text(textGender, bundle: .module)
           .foregroundColor(Color.white)
       }
     }

@@ -13,7 +13,6 @@ public struct FirstNameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var doubleCheckName = DoubleCheckNameLogic.State()
     @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var firstName = ""
     var isDisabled = true
@@ -28,7 +27,6 @@ public struct FirstNameSettingLogic: Reducer {
     case binding(BindingAction<State>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    case doubleCheckName(DoubleCheckNameLogic.Action)
 
     public enum Delegate: Equatable {
       case nextScreen
@@ -45,9 +43,6 @@ public struct FirstNameSettingLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.doubleCheckName, action: /Action.doubleCheckName) {
-      DoubleCheckNameLogic()
-    }
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
@@ -129,11 +124,14 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?", bundle: .module)
           .bold()
           .foregroundColor(.godWhite)
-        TextField("First Name", text: viewStore.$firstName)
-          .font(.title)
-          .foregroundColor(.godWhite)
-          .multilineTextAlignment(.center)
-          .focused($focus)
+
+        TextField(text: viewStore.$firstName) {
+          Text("First Name", bundle: .module)
+        }
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
+        .font(.title)
+        .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts", bundle: .module)
@@ -147,16 +145,7 @@ public struct FirstNameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color.godService)
-      .navigationBarBackButtonHidden()
       .task { await viewStore.send(.onTask).finish() }
-      .toolbar {
-        DoubleCheckNameView(
-          store: store.scope(
-            state: \.doubleCheckName,
-            action: FirstNameSettingLogic.Action.doubleCheckName
-          )
-        )
-      }
       .alert(store: store.scope(state: \.$alert, action: FirstNameSettingLogic.Action.alert))
       .onAppear {
         focus = true

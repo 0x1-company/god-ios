@@ -22,7 +22,7 @@ struct ShopItemView: View {
           Text(description)
             .font(.caption)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundStyle(Color.godGray)
+            .foregroundStyle(Color.godTextSecondaryDark)
         }
       }
 

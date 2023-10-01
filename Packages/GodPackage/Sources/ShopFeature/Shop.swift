@@ -158,7 +158,7 @@ public struct ShopView: View {
             .frame(width: 38, height: 38)
 
           Text(verbatim: viewStore.coinBalance.description)
-            .font(.largeTitle)
+            .font(.system(size: 40, weight: .black))
             .bold()
             .contentTransition(.numericText(countsDown: true))
         }

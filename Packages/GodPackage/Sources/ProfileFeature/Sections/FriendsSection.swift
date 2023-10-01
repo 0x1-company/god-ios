@@ -20,42 +20,29 @@ public struct FriendsSection: View {
       Divider()
 
       ForEach(friends, id: \.self) { state in
-        HStack(alignment: .center, spacing: 12) {
-          AsyncImage(url: URL(string: state.imageURL)) { image in
-            image
-              .resizable()
-              .scaledToFill()
-              .frame(width: 42, height: 42)
-              .clipShape(Circle())
-          } placeholder: {
-            NameImage(
-              familyName: state.lastName,
-              givenName: state.firstName
-            )
-          }
-
-          Text(state.displayName.ja)
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-          Button {
-            print("ADDED")
-          } label: {
-            Text("ADDED", bundle: .module)
-              .font(.body)
-              .bold()
-              .foregroundColor(Color.godTextSecondaryLight)
-              .frame(height: 32)
-              .padding(.horizontal, 12)
-              .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                  .stroke(Color.godTextSecondaryLight, lineWidth: 1)
-              )
-          }
-        }
-        .frame(height: 84)
-        .padding(.horizontal, 16)
-        .onTapGesture {
+        Button {
           action(state)
+        } label: {
+          HStack(alignment: .center, spacing: 12) {
+            AsyncImage(url: URL(string: state.imageURL)) { image in
+              image
+                .resizable()
+                .scaledToFill()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+            } placeholder: {
+              NameImage(
+                familyName: state.lastName,
+                givenName: state.firstName
+              )
+            }
+
+            Text(state.displayName.ja)
+              .foregroundStyle(Color.godBlack)
+              .frame(maxWidth: .infinity, alignment: .leading)
+          }
+          .frame(height: 72)
+          .padding(.horizontal, 16)
         }
         Divider()
       }

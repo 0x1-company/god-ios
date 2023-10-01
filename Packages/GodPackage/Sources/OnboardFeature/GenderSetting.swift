@@ -8,15 +8,12 @@ public struct GenderSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var help: GenderHelpLogic.State?
     public init() {}
   }
 
   public enum Action: Equatable {
-    case infoButtonTapped
     case genderButtonTapped(God.Gender)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
-    case help(PresentationAction<GenderHelpLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -29,10 +26,6 @@ public struct GenderSettingLogic: Reducer {
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
-      case .infoButtonTapped:
-        state.help = .init()
-        return .none
-
       case let .genderButtonTapped(gender):
         let input = God.UpdateUserProfileInput(gender: .init(gender))
         return .run { send in
@@ -51,19 +44,9 @@ public struct GenderSettingLogic: Reducer {
         print(error)
         return .none
 
-      case .help(.dismiss):
-        state.help = nil
-        return .none
-
-      case .help:
-        return .none
-
       case .delegate:
         return .none
       }
-    }
-    .ifLet(\.$help, action: /Action.help) {
-      GenderHelpLogic()
     }
   }
 }
@@ -100,24 +83,6 @@ public struct GenderSettingView: View {
             }
           }
         }
-      }
-      .toolbar {
-        Button {
-          viewStore.send(.infoButtonTapped)
-        } label: {
-          Image(systemName: "info.circle.fill")
-            .foregroundColor(.white)
-        }
-      }
-      .sheet(
-        store: store.scope(
-          state: \.$help,
-          action: GenderSettingLogic.Action.help
-        )
-      ) { store in
-        GenderHelpView(store: store)
-          .presentationDetents([.fraction(0.4)])
-          .presentationDragIndicator(.visible)
       }
     }
   }

@@ -6,7 +6,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "[利用規約](https://docs.godapp.jp/terms-of-use) / [プライバリーポリシー](https://docs.godapp.jp/privacy-policy)"
+            "value" : "[利用規約](https://docs.godapp.jp/terms-of-use) / [プライバシー](https://docs.godapp.jp/privacy-policy)"
           }
         }
       }
@@ -142,6 +142,7 @@
       }
     },
     "God" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -231,17 +232,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "その他"
-          }
-        }
-      }
-    },
-    "Terms / Privacy" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "利用規約 / プライバシーポリシー"
           }
         }
       }

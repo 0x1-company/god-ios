@@ -113,14 +113,13 @@ public struct PhoneNumberView: View {
             .bold()
             .font(.title3)
 
-          TextField("Phone Number", text: viewStore.$phoneNumber)
-            .font(.title)
-            .textContentType(.telephoneNumber)
-            .keyboardType(.phonePad)
-            .focused($focus)
-
-          Text("Remember - never sign up\nwith another person's phone number.", bundle: .module)
-            .multilineTextAlignment(.center)
+          TextField(text: viewStore.$phoneNumber) {
+            Text("090 2724 3108", bundle: .module)
+          }
+          .font(.title)
+          .textContentType(.telephoneNumber)
+          .keyboardType(.phonePad)
+          .focused($focus)
 
           Spacer()
 

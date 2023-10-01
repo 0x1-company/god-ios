@@ -55,7 +55,7 @@ public struct ShareShopSection: View {
             .stroke(Color.godTextSecondaryLight, lineWidth: 1)
         )
         .overlay(alignment: .top) {
-          Text("COINS")
+          Text("COINS", bundle: .module)
             .font(.caption)
             .bold()
             .padding(.horizontal, 8)

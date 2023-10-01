@@ -4,6 +4,16 @@
     "" : {
 
     },
+    "090 2724 3108" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "090 2724 3108"
+          }
+        }
+      }
+    },
     "Add a photo so your friends can find you" : {
       "localizations" : {
         "ja" : {
@@ -34,11 +44,15 @@
         }
       }
     },
-    "Adding your gender\nhelps create your polls" : {
-
-    },
-    "Adding your school lets you\nadd classmates on God" : {
-
+    "Boy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
     },
     "By entering your age you agree to our Terms and Privacy Policy" : {
       "localizations" : {
@@ -75,13 +89,10 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ユーザーネーム"
+            "value" : "ユーザーネームは？"
           }
         }
       }
-    },
-    "Choose the right school so\nyou can find your friends" : {
-
     },
     "CLASS OF\n2023" : {
       "localizations" : {
@@ -122,12 +133,6 @@
           }
         }
       }
-    },
-    "Continue Anyway" : {
-
-    },
-    "Double check your name" : {
-
     },
     "Enter your age" : {
       "localizations" : {
@@ -188,6 +193,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "はじめる"
+          }
+        }
+      }
+    },
+    "Girl" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
           }
         }
       }
@@ -267,7 +282,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名字"
+            "value" : "苗字"
           }
         }
       }
@@ -302,6 +317,16 @@
         }
       }
     },
+    "Non-binary" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
+    },
     "Not in High School" : {
       "localizations" : {
         "ja" : {
@@ -332,16 +357,6 @@
         }
       }
     },
-    "Phone Number" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "電話番号"
-          }
-        }
-      }
-    },
     "Pick your school" : {
       "localizations" : {
         "ja" : {
@@ -352,31 +367,8 @@
         }
       }
     },
-    "Prefer not to say" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "言いたくない場合"
-          }
-        }
-      }
-    },
-    "Remember - never sign up\nwith another person's phone number." : {
-
-    },
     "Resend in 30" : {
 
-    },
-    "See who likes you on God" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Godであなたを好きな友だちを見つける"
-          }
-        }
-      }
     },
     "Sent to +81 80-2332-3620" : {
 
@@ -414,16 +406,6 @@
         }
       }
     },
-    "We will show schools on\nthe next page" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "次の画面で学校を選択する"
-          }
-        }
-      }
-    },
     "What grade are you in?" : {
       "localizations" : {
         "ja" : {
@@ -439,7 +421,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前は？"
+            "value" : "あなたの名前は？"
           }
         }
       }
@@ -459,7 +441,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名字は？"
+            "value" : "あなたの苗字は？"
           }
         }
       }
@@ -473,12 +455,6 @@
           }
         }
       }
-    },
-    "Your friends may see you as the name in their contacts" : {
-
-    },
-    "Your grade helps you\nfind a school to join" : {
-
     },
     "ひらがなのみ設定できます" : {
 
