@@ -129,10 +129,10 @@ public struct LastNameSettingView: View {
 
         TextField(text: viewStore.$lastName) {
           Text("Last Name", bundle: .module)
-            .font(.title)
-            .foregroundColor(.white)
-            .multilineTextAlignment(.center)
         }
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
+        .font(.title)
         .focused($focus)
 
         if viewStore.isImport {

@@ -201,11 +201,13 @@ public struct OneTimeCodeView: View {
           Text("Sent to +81 80-2332-3620", bundle: .module)
 
           TextField(
-            "Code",
             text: viewStore.binding(
               get: \.oneTimeCode,
               send: OneTimeCodeLogic.Action.changeOneTimeCode
-            )
+            ),
+            label: {
+              Text("Code", bundle: .module)
+            }
           )
           .font(.title)
           .textContentType(.oneTimeCode)

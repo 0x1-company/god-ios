@@ -115,8 +115,8 @@ public struct PhoneNumberView: View {
 
           TextField(text: viewStore.$phoneNumber) {
             Text("090 2724 3108", bundle: .module)
-              .font(.title)
           }
+          .font(.title)
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
           .focused($focus)
