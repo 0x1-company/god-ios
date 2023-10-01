@@ -98,7 +98,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
         SearchField(text: viewStore.$searchQuery)
 
         Divider()
-        
+
         ScrollView {
           VStack(spacing: 0) {
             ForEach(viewStore.friends, id: \.self) { friend in
