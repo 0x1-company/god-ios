@@ -32,6 +32,7 @@ public struct ProfileEditLogic: Reducer {
       return firstName != currentUser.firstName
       || lastName != currentUser.lastName
       || username != currentUser.username
+      || image != nil
     }
     
     var gender: LocalizedStringKey {
@@ -66,18 +67,7 @@ public struct ProfileEditLogic: Reducer {
     case alert(PresentationAction<Alert>)
 
     public enum Alert: Equatable {
-      case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
-      case changesNotSaved(ChangesNotSaved)
-
-      public enum NameCanOnlyBeChangedOnce: Equatable {
-        case changeNameButtonTapped
-        case cancelButtonTapped
-      }
-
-      public enum ChangesNotSaved: Equatable {
-        case discardChangesButtonTapped
-        case cancelButtonTapped
-      }
+      case discardChanges
     }
   }
 
@@ -96,13 +86,9 @@ public struct ProfileEditLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.currentUser() {
-            await send(.currentUserResponse(.success(data)))
-          }
-        } catch: { error, send in
-          await send(.currentUserResponse(.failure(error)))
+          await currentUserRequest(send: send)
         }
-        .cancellable(id: Cancel.currentUser)
+        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
 
       case .cancelEditButtonTapped:
         state.alert = .changesNotSaved()
@@ -110,29 +96,29 @@ public struct ProfileEditLogic: Reducer {
 
       case .saveButtonTapped:
         guard let currentUser = state.currentUser else { return .none }
-        return .merge(
-          .run { [state] send in
+        return .run { [state] send in
+          await withThrowingTaskGroup(of: Void.self) { group in
             if state.username != currentUser.username {
-              let data = try await godClient.updateUsername(.init(username: state.username))
-              await send(.updateUsernameResponse(.success(data)))
+              group.addTask {
+                await send(.updateUsernameResponse(TaskResult {
+                  try await godClient.updateUsername(.init(username: state.username))
+                }))
+              }
             }
-          } catch: { error, send in
-            await send(.updateUsernameResponse(.failure(error)))
-          },
-          .run { [state] send in
-            if state.firstName != currentUser.firstName ||
-              state.lastName != currentUser.lastName
-            {
-              let data = try await godClient.updateUserProfile(.init(
-                firstName: state.firstName != currentUser.firstName ? .some(state.firstName) : .null,
-                lastName: state.lastName != currentUser.lastName ? .some(state.lastName) : .null
-              ))
-              await send(.updateUserProfileResponse(.success(data)))
+            
+            if state.firstName != currentUser.firstName || state.lastName != currentUser.lastName {
+              group.addTask {
+                await send(.updateUserProfileResponse(TaskResult {
+                  try await godClient.updateUserProfile(.init(
+                    firstName: state.firstName != currentUser.firstName ? .some(state.firstName) : .null,
+                    lastName: state.lastName != currentUser.lastName ? .some(state.lastName) : .null
+                  ))
+                }))
+              }
             }
-          } catch: { error, send in
-            await send(.updateUserProfileResponse(.failure(error)))
           }
-        )
+          await currentUserRequest(send: send)
+        }
 
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
@@ -176,7 +162,7 @@ public struct ProfileEditLogic: Reducer {
           await dismiss()
         }
 
-      case .alert(.presented(.changesNotSaved(.discardChangesButtonTapped))):
+      case .alert(.presented(.discardChanges)):
         guard let currentUser = state.currentUser else { return .none }
         state.firstName = currentUser.firstName
         state.lastName = currentUser.lastName
@@ -203,6 +189,16 @@ public struct ProfileEditLogic: Reducer {
       ManageAccountLogic()
     }
   }
+  
+  func currentUserRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentUser() {
+        await send(.currentUserResponse(.success(data)))
+      }
+    } catch {
+      await send(.currentUserResponse(.failure(error)))
+    }
+  }
 }
 
 public struct ProfileEditView: View {
@@ -224,16 +220,15 @@ public struct ProfileEditView: View {
             preferredItemEncoding: .current
           ) {
             Group {
-              if let imageURL = viewStore.currentUser?.imageURL {
+              if let image = viewStore.image {
+                Image(uiImage: image)
+                  .resizable()
+              } else if let imageURL = viewStore.currentUser?.imageURL {
                 AsyncImage(url: URL(string: imageURL)) { image in
                   image.resizable()
                 } placeholder: {
                   Color.red
                 }
-
-              } else {
-                Image(uiImage: viewStore.image ?? UIImage())
-                  .resizable()
               }
             }
             .scaledToFill()
@@ -358,7 +353,7 @@ public struct ProfileEditView: View {
       .navigationTitle(Text("Edit Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        if viewStore.state.isUserProfileChanges {
+        if viewStore.isUserProfileChanges {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
               viewStore.send(.cancelEditButtonTapped)
@@ -435,33 +430,18 @@ public struct ProfileEditView: View {
 }
 
 private extension AlertState where Action == ProfileEditLogic.Action.Alert {
-  static func nameCanOnlyBeChangedOnce() -> Self {
-    Self {
-      TextState("ちょっと待って！")
-    } actions: {
-      ButtonState(role: .cancel, action: .nameCanOnlyBeChangedOnce(.cancelButtonTapped)) {
-        TextState("キャンセル")
-      }
-      ButtonState(role: .destructive, action: .nameCanOnlyBeChangedOnce(.changeNameButtonTapped)) {
-        TextState("名前を変更")
-      }
-    } message: {
-      TextState("名前は一度しか変更できません")
-    }
-  }
-
   static func changesNotSaved() -> Self {
     Self {
-      TextState("本当に大丈夫？")
+      TextState("Are you sure?")
     } actions: {
-      ButtonState(role: .destructive, action: .changesNotSaved(.discardChangesButtonTapped)) {
-        TextState("変更を破棄")
+      ButtonState(role: .destructive, action: .discardChanges) {
+        TextState("Discard Changes")
       }
-      ButtonState(role: .cancel, action: .changesNotSaved(.cancelButtonTapped)) {
-        TextState("キャンセル")
+      ButtonState(role: .cancel) {
+        TextState("Cancel")
       }
     } message: {
-      TextState("保存していない変更があります")
+      TextState("You haven't saved your changes")
     }
   }
 }
