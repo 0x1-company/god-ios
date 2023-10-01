@@ -77,9 +77,9 @@ public struct ProfileShareLogic: Reducer {
     case messages
     case copyLink
 
-    public var name: String {
+    public var name: LocalizedStringKey {
       switch self {
-      case .instagram: return "Instagram"
+      case .instagram: return "Story"
       case .line: return "LINE"
       case .messages: return "Messages"
       case .copyLink: return "Copy Link"
@@ -125,8 +125,9 @@ public struct ProfileShareView: View {
                   .frame(width: 60, height: 60)
                   .clipShape(Circle())
 
-                Text(content.name)
+                Text(content.name, bundle: .module)
                   .font(.callout)
+                  .bold()
                   .foregroundColor(.godBlack)
               }
             }
