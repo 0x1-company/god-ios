@@ -36,7 +36,7 @@ public struct GodLoadingView: View {
         .looping()
         .resizable()
         .padding(.horizontal, 100)
-      
+
       Image(ImageResource.loading)
         .resizable()
         .scaledToFit()
