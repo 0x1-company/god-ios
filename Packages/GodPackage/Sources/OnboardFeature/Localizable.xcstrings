@@ -373,30 +373,8 @@
         }
       }
     },
-    "Prefer not to say" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "言いたくない場合"
-          }
-        }
-      }
-    },
     "Resend in 30" : {
 
-    },
-    "See who likes you on God" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Godであなたを好きな友だちを見つける"
-          }
-        }
-      }
     },
     "Sent to +81 80-2332-3620" : {
 
