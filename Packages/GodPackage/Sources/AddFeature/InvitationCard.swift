@@ -33,8 +33,9 @@ public struct InvitationCardView: View {
       Button(action: action) {
         Text("INVITE", bundle: .module)
           .bold()
-          .frame(width: 84, height: 34)
+          .frame(height: 34)
           .foregroundColor(.godService)
+          .padding(.horizontal, 12)
           .overlay(
             RoundedRectangle(cornerRadius: 34 / 2)
               .stroke(Color.godService, lineWidth: 1)

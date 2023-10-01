@@ -50,10 +50,6 @@ public struct InvitationsLeftLogic: Reducer {
         .cancellable(id: Cancel.enumerateContacts)
 
       case let .contactResponse(.success(contact)):
-        if state.invitations.count >= 10 {
-          Task.cancel(id: Cancel.enumerateContacts)
-          return .none
-        }
         state.invitations.append(contact)
         return .none
 
@@ -108,6 +104,7 @@ public struct InvitationsLeftView: View {
           }
         }
       }
+      .task { await store.send(.onTask).finish() }
       .sheet(
         store: store.scope(state: \.$message, action: { .message($0) }),
         content: CupertinoMessageView.init

@@ -51,6 +51,7 @@
       }
     },
     "godapp.jp/add/%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
