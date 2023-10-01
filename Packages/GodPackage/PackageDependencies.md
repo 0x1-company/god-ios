@@ -50,6 +50,7 @@ graph TD;
     InboxFeature-->RevealFeature;
     InboxFeature-->GodModeFeature;
     InboxFeature-->ShareScreenshotFeature;
+    InboxFeature-->UserDefaultsClient;
     InboxFeature-->NotificationCenterClient;
     InboxFeature-->AnimationDisableTransaction;
     LaunchFeature-->Colors;
