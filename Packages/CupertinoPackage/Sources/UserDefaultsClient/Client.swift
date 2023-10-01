@@ -48,11 +48,20 @@ public extension UserDefaultsClient {
   func onboardCompleted() -> Bool {
     boolForKey(keyOnboardCompleted)
   }
+  
+  func setReadInitialGodTeamNotification() async {
+    await setBool(true, keyReadInitialGodTeamNotification)
+  }
+  
+  func readInitialGodTeamNotification() -> Bool {
+    boolForKey(keyReadInitialGodTeamNotification)
+  }
 }
 
 private let keyPhoneNumber = "PHONE_NUMBER"
 private let keyVerificationId = "VERIFICATION_ID"
 private let keyOnboardCompleted = "ONBOARD_COMPLETED"
+private let keyReadInitialGodTeamNotification = "READ_INITIAL_GOD_TEAM_NOTIFICATION"
 
 private let decoder = JSONDecoder()
 private let encoder = JSONEncoder()

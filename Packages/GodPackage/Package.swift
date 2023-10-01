@@ -115,6 +115,7 @@ let package = Package(
       "RevealFeature",
       "GodModeFeature",
       "ShareScreenshotFeature",
+      .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
