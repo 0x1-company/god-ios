@@ -13,21 +13,15 @@ public struct InboxCard: View {
       HStack(spacing: 0) {
         LabeledContent {
           Text(createdAt, style: .relative)
+            .font(.footnote)
         } label: {
           Label {
             Text("From a \(gender)", bundle: .module)
           } icon: {
-            Group {
-              if isRead {
-                Image(ImageResource.unreadIcon)
-                  .resizable()
-              } else {
-                Image(ImageResource.otherIcon)
-                  .resizable()
-              }
-            }
-            .scaledToFit()
-            .frame(width: 40)
+            Image(isRead ? ImageResource.unreadIcon : ImageResource.otherIcon)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 56)
           }
         }
         .padding(.horizontal, 16)
@@ -42,4 +36,22 @@ public struct InboxCard: View {
     .listRowSeparator(.hidden)
     .buttonStyle(HoldDownButtonStyle())
   }
+}
+
+#Preview {
+  InboxCard(
+    gender: "男子",
+    createdAt: .now,
+    isRead: true,
+    action: {}
+  )
+}
+
+#Preview {
+  InboxCard(
+    gender: "女子",
+    createdAt: .now,
+    isRead: false,
+    action: {}
+  )
 }
