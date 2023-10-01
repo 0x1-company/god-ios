@@ -14,9 +14,6 @@
         }
       }
     },
-    "Boy" : {
-
-    },
     "Cancel" : {
       "localizations" : {
         "ja" : {
@@ -43,6 +40,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プロフィール編集"
+          }
+        }
+      }
+    },
+    "Female" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
           }
         }
       }
@@ -87,12 +94,32 @@
         }
       }
     },
+    "Male" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
+    },
     "Manage Account" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "アカウント設定"
+          }
+        }
+      }
+    },
+    "Non-Binary" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
           }
         }
       }
@@ -136,9 +163,6 @@
           }
         }
       }
-    },
-    "You are signed in as 19175926188" : {
-
     },
     "キャンセル" : {
 

@@ -8,6 +8,7 @@ import GodClient
 import ManageAccountFeature
 import SwiftUI
 import UserDefaultsClient
+import PhotosUI
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
@@ -17,9 +18,11 @@ public struct ProfileEditLogic: Reducer {
 
     @PresentationState var manageAccount: ManageAccountLogic.State?
     @PresentationState var alert: AlertState<Action.Alert>?
+    @BindingState var photoPickerItems: [PhotosPickerItem] = []
     @BindingState var firstName: String = ""
     @BindingState var lastName: String = ""
     @BindingState var username: String = ""
+    var image: UIImage?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     
     var isUserProfileChanges: Bool {
@@ -29,6 +32,19 @@ public struct ProfileEditLogic: Reducer {
       return firstName != currentUser.firstName
       || lastName != currentUser.lastName
       || username != currentUser.username
+    }
+    
+    var gender: LocalizedStringKey {
+      switch currentUser?.gender.value {
+      case .male:
+        return "Male"
+      case .female:
+        return "Female"
+      case .other:
+        return "Non-Binary"
+      default:
+        return ""
+      }
     }
   }
 
@@ -40,6 +56,7 @@ public struct ProfileEditLogic: Reducer {
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case binding(BindingAction<State>)
+    case loadTransferableResponse(TaskResult<Data?>)
 
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
@@ -124,9 +141,6 @@ public struct ProfileEditLogic: Reducer {
         state.username = data.currentUser.username ?? ""
         return .none
 
-      case .currentUserResponse(.failure):
-        return .none
-
       case let .updateUsernameResponse(.success(response)):
         if let username = response.updateUsername.username {
           state.username = username
@@ -162,23 +176,26 @@ public struct ProfileEditLogic: Reducer {
           await dismiss()
         }
 
-      case .manageAccount:
-        return .none
-
       case .alert(.presented(.changesNotSaved(.discardChangesButtonTapped))):
         guard let currentUser = state.currentUser else { return .none }
         state.firstName = currentUser.firstName
         state.lastName = currentUser.lastName
         state.username = currentUser.username ?? ""
         return .none
-
-      case .alert(.presented(.nameCanOnlyBeChangedOnce(.changeNameButtonTapped))):
+        
+      case .binding(\.$photoPickerItems):
+        guard let photoPickerItem = state.photoPickerItems.first else { return .none }
+        return .run { send in
+          await send(.loadTransferableResponse(TaskResult {
+            try await photoPickerItem.loadTransferable(type: Data.self)
+          }))
+        }
+        
+      case let .loadTransferableResponse(.success(.some(data))):
+        state.image = UIImage(data: data)
         return .none
 
-      case .alert:
-        return .none
-
-      case .binding:
+      default:
         return .none
       }
     }
@@ -199,7 +216,27 @@ public struct ProfileEditView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView(.vertical) {
         VStack(spacing: 24) {
-          Color.green
+          PhotosPicker(
+            selection: viewStore.$photoPickerItems,
+            maxSelectionCount: 1,
+            selectionBehavior: .ordered,
+            matching: PHPickerFilter.images,
+            preferredItemEncoding: .current
+          ) {
+            Group {
+              if let imageURL = viewStore.currentUser?.imageURL {
+                AsyncImage(url: URL(string: imageURL)) { image in
+                  image.resizable()
+                } placeholder: {
+                  Color.red
+                }
+
+              } else {
+                Image(uiImage: viewStore.image ?? UIImage())
+                  .resizable()
+              }
+            }
+            .scaledToFill()
             .frame(width: 145, height: 145)
             .clipShape(Circle())
             .overlay(
@@ -210,6 +247,7 @@ public struct ProfileEditView: View {
                 .frame(width: 40, height: 40)
                 .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
             )
+          }
 
           VStack(alignment: .center, spacing: 0) {
             GodTextField(
@@ -239,7 +277,7 @@ public struct ProfileEditView: View {
                 .foregroundColor(.godTextSecondaryLight)
                 .frame(width: 108, alignment: .leading)
 
-              Text("Boy")
+              Text(viewStore.gender, bundle: .module)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.body)
