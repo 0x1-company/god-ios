@@ -34,7 +34,7 @@ public struct ProfileEditLogic: Reducer {
       return firstName != currentUser.firstName
       || lastName != currentUser.lastName
       || username != currentUser.username
-      || image != nil
+      || imageData != nil
     }
     
     var gender: LocalizedStringKey {
