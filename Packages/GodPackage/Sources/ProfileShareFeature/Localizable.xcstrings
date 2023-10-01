@@ -18,7 +18,14 @@
       }
     },
     "Copy Link" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクコピー"
+          }
+        }
+      }
     },
     "Copy your god link" : {
 
@@ -27,7 +34,14 @@
 
     },
     "godapp.jp" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "godapp.jp"
+          }
+        }
+      }
     },
     "How to add the\nlink to your Story" : {
 
@@ -36,22 +50,50 @@
 
     },
     "Link Copied!" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コピー完了！"
+          }
+        }
+      }
     },
     "Post on your story" : {
 
     },
     "ProfileShare" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールシェア"
+          }
+        }
+      }
     },
     "ProfileShareToInstagram" : {
 
     },
     "Share" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "シェア"
+          }
+        }
+      }
     },
     "Share Profile" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールシェア"
+          }
+        }
+      }
     },
     "Share Profile on\nInstagram" : {
 

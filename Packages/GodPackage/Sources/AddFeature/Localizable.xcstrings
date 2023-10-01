@@ -12,7 +12,14 @@
       }
     },
     "%lld mutual friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共通の友だちが%lld人"
+          }
+        }
+      }
     },
     "1 mutual friend" : {
 
@@ -28,7 +35,14 @@
       }
     },
     "ADDED" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち"
+          }
+        }
+      }
     },
     "APPROVE" : {
       "localizations" : {
@@ -41,7 +55,14 @@
       }
     },
     "Contacts are disabled" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先へのアクセスが無効"
+          }
+        }
+      }
     },
     "FRIEND REQUESTS" : {
       "localizations" : {
@@ -49,17 +70,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "フレンドリクエスト"
-          }
-        }
-      }
-    },
-    "Friends of Friends" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フレンドのフレンド"
           }
         }
       }
@@ -114,22 +124,18 @@
         }
       }
     },
-    "Search..." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "検索..."
-          }
-        }
-      }
-    },
     "See %lld more" : {
 
     },
     "Tap to re-enable" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップしてアクセスを許可する"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
