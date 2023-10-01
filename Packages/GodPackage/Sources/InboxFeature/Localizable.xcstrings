@@ -59,6 +59,7 @@
       }
     },
     "God" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -129,7 +130,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "どこでもタップして閉じる"
+            "value" : "どこでもドア"
           }
         }
       }
