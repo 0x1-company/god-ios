@@ -140,6 +140,8 @@ public struct PollQuestionView: View {
           ProgressView()
             .progressViewStyle(.circular)
         }
+        
+        Spacer().frame(height: 24)
 
         Text(viewStore.question.text.ja)
           .font(.title2)
