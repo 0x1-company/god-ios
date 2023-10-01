@@ -15,7 +15,14 @@
       }
     },
     "Are you sure?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当に大丈夫？"
+          }
+        }
+      }
     },
     "Cancel" : {
       "localizations" : {
@@ -38,7 +45,14 @@
       }
     },
     "Discard Changes" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更を破棄"
+          }
+        }
+      }
     },
     "Edit Profile" : {
       "localizations" : {
@@ -171,7 +185,14 @@
       }
     },
     "You haven't saved your changes" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存していない変更があります"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
