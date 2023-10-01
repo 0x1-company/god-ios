@@ -12,6 +12,7 @@ query Activities($after: String) {
         createdAt
         question {
           id
+          imageURL
           text {
             ja
           }

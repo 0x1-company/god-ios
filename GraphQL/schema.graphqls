@@ -392,8 +392,8 @@ type Query {
 type Question {
   id: ID!
 
-  """imageFileName"""
-  imageFileName: String!
+  """imageURL"""
+  imageURL: String!
 
   """text"""
   text: LocalizableString!

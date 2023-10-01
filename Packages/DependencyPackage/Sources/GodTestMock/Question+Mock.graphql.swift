@@ -11,6 +11,7 @@ public class Question: MockObject {
 
   public struct MockFields {
     @Field<God.ID>("id") public var id
+    @Field<String>("imageURL") public var imageURL
     @Field<LocalizableString>("text") public var text
   }
 }
@@ -18,10 +19,12 @@ public class Question: MockObject {
 public extension Mock where O == Question {
   convenience init(
     id: God.ID? = nil,
+    imageURL: String? = nil,
     text: Mock<LocalizableString>? = nil
   ) {
     self.init()
     _setScalar(id, for: \.id)
+    _setScalar(imageURL, for: \.imageURL)
     _setEntity(text, for: \.text)
   }
 }

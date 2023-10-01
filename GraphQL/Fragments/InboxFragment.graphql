@@ -4,6 +4,8 @@ fragment InboxFragment on InboxActivity {
   isRead
   createdAt
   question {
+    id
+    imageURL
     text {
       ja
     }
