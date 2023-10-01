@@ -131,10 +131,15 @@ public struct PollQuestionView: View {
       VStack(spacing: 0) {
         Spacer()
 
-        Image(.books)
-          .resizable()
-          .scaledToFit()
-          .frame(height: 140)
+        AsyncImage(url: URL(string: viewStore.question.imageURL)) { image in
+          image
+            .resizable()
+            .scaledToFit()
+            .frame(height: 140)
+        } placeholder: {
+          ProgressView()
+            .progressViewStyle(.circular)
+        }
 
         Text(viewStore.question.text.ja)
           .font(.title2)
