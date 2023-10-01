@@ -5,7 +5,14 @@
 
     },
     "090 2724 3108" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "090 2724 3108"
+          }
+        }
+      }
     },
     "Add a photo so your friends can find you" : {
       "localizations" : {
@@ -38,7 +45,14 @@
       }
     },
     "Boy" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
     },
     "By entering your age you agree to our Terms and Privacy Policy" : {
       "localizations" : {
@@ -190,7 +204,14 @@
       }
     },
     "Girl" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
+          }
+        }
+      }
     },
     "God cares intensely about your privacy.\nWeb will never text or spam your contacts." : {
       "localizations" : {
@@ -303,7 +324,14 @@
       }
     },
     "Non-binary" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "Not in High School" : {
       "localizations" : {
