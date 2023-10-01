@@ -158,11 +158,7 @@ public struct PollQuestionView: View {
 
         ZStack {
           if viewStore.isAnswered {
-            Button {
-              viewStore.send(.continueButtonTapped)
-            } label: {
-              Text("Tap to continue", bundle: .module)
-            }
+            Text("Tap to continue", bundle: .module)
           } else {
             HStack(spacing: 0) {
               LabeledButton(
@@ -191,6 +187,11 @@ public struct PollQuestionView: View {
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
       .frame(height: UIScreen.main.bounds.height)
+      .onTapGesture {
+        if viewStore.isAnswered {
+          viewStore.send(.continueButtonTapped)
+        }
+      }
     }
   }
 }
