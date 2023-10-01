@@ -176,6 +176,7 @@ let package = Package(
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
+      .product(name: "FirebaseStorageClient", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
       "ShopFeature",

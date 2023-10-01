@@ -3,6 +3,8 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import FirebaseAuthClient
+import FirebaseStorage
+import FirebaseStorageClient
 import God
 import GodClient
 import ManageAccountFeature
@@ -22,7 +24,7 @@ public struct ProfileEditLogic: Reducer {
     @BindingState var firstName: String = ""
     @BindingState var lastName: String = ""
     @BindingState var username: String = ""
-    var image: UIImage?
+    var imageData: Data?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     
     var isUserProfileChanges: Bool {
@@ -54,6 +56,7 @@ public struct ProfileEditLogic: Reducer {
     case cancelEditButtonTapped
     case saveButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case uploadResponse(TaskResult<StorageMetadata>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case binding(BindingAction<State>)
@@ -75,6 +78,7 @@ public struct ProfileEditLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
+  @Dependency(\.firebaseStorage) var firebaseStorage
 
   private enum Cancel {
     case currentUser
@@ -113,6 +117,14 @@ public struct ProfileEditLogic: Reducer {
                     firstName: state.firstName != currentUser.firstName ? .some(state.firstName) : .null,
                     lastName: state.lastName != currentUser.lastName ? .some(state.lastName) : .null
                   ))
+                }))
+              }
+            }
+            
+            if let imageData = state.imageData, let userId = state.currentUser?.id {
+              group.addTask {
+                await send(.uploadResponse(TaskResult {
+                  try await firebaseStorage.upload("users/\(userId)/icon.png", imageData)
                 }))
               }
             }
@@ -178,7 +190,7 @@ public struct ProfileEditLogic: Reducer {
         }
         
       case let .loadTransferableResponse(.success(.some(data))):
-        state.image = UIImage(data: data)
+        state.imageData = data
         return .none
 
       default:
@@ -220,7 +232,7 @@ public struct ProfileEditView: View {
             preferredItemEncoding: .current
           ) {
             Group {
-              if let image = viewStore.image {
+              if let imageData = viewStore.imageData, let image = UIImage(data: imageData) {
                 Image(uiImage: image)
                   .resizable()
               } else if let imageURL = viewStore.currentUser?.imageURL {
