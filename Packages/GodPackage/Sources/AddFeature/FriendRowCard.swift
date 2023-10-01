@@ -92,29 +92,25 @@ public struct FriendRowCardView: View {
 
         HStack(spacing: 0) {
           Button {
-            viewStore.send(.hideButtonTapped)
-          } label: {
-            Text("HIDE", bundle: .module)
-              .frame(width: 80, height: 34)
-              .foregroundStyle(.secondary)
-          }
-
-          Button {
             viewStore.send(.addButtonTapped)
           } label: {
             Group {
               if case .requested = viewStore.friendStatus {
                 Text("ADDED")
                   .foregroundStyle(Color.godTextSecondaryLight)
-                  .frame(width: 80, height: 34)
+                  .frame(height: 34)
+                  .padding(.horizontal, 8)
                   .overlay(
                     RoundedRectangle(cornerRadius: 34 / 2)
                       .stroke(Color.godTextSecondaryLight, lineWidth: 1)
                   )
               } else {
                 Text("ADD", bundle: .module)
+                  .font(.callout)
+                  .bold()
                   .foregroundStyle(Color.white)
-                  .frame(width: 80, height: 34)
+                  .frame(height: 34)
+                  .padding(.horizontal, 8)
                   .background(Color.godService)
                   .clipShape(Capsule())
               }
