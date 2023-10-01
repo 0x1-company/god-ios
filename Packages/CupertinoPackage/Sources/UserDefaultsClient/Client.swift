@@ -48,11 +48,11 @@ public extension UserDefaultsClient {
   func onboardCompleted() -> Bool {
     boolForKey(keyOnboardCompleted)
   }
-  
+
   func setReadInitialGodTeamNotification() async {
     await setBool(true, keyReadInitialGodTeamNotification)
   }
-  
+
   func readInitialGodTeamNotification() -> Bool {
     boolForKey(keyReadInitialGodTeamNotification)
   }
