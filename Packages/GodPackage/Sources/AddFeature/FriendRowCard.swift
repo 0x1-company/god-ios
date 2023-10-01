@@ -86,6 +86,7 @@ public struct FriendRowCardView: View {
 
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
+            .font(.footnote)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
