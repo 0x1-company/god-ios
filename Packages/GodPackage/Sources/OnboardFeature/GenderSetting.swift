@@ -24,7 +24,7 @@ public struct GenderSettingLogic: Reducer {
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { state, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case let .genderButtonTapped(gender):
         let input = God.UpdateUserProfileInput(gender: .init(gender))
