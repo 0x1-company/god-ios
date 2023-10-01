@@ -95,6 +95,7 @@ public struct GodLogic: Reducer {
     default:
       state.child = child
     }
+    state.child = .loading(.init())
   }
 
   func currentPollRequest(send: Send<Action>) async {
