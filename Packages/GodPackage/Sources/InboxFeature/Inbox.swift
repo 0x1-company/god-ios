@@ -12,6 +12,7 @@ public struct InboxLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var fromGodTeamCard = FromGodTeamCardLogic.State()
     @PresentationState var destination: Destination.State?
 
     var inboxes: [InboxCardState] = []
@@ -32,12 +33,12 @@ public struct InboxLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case activityButtonTapped(id: String)
-    case fromGodTeamButtonTapped
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
     case inboxActivitiesResponse(TaskResult<God.InboxActivitiesQuery.Data>)
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
+    case fromGodTeamCard(FromGodTeamCardLogic.Action)
   }
 
   @Dependency(\.store) var storeClient
@@ -48,6 +49,9 @@ public struct InboxLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
+    Scope(state: \.fromGodTeamCard, action: /Action.fromGodTeamCard) {
+      FromGodTeamCardLogic()
+    }
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
@@ -77,10 +81,6 @@ public struct InboxLogic: Reducer {
           await inboxActivitiesRequest(send: send)
         }
         .cancellable(id: Cancel.readActivity, cancelInFlight: true)
-
-      case .fromGodTeamButtonTapped:
-        state.destination = .fromGodTeam(.init())
-        return .none
 
       case .seeWhoLikesYouButtonTapped:
         let id = storeClient.godModeId()
@@ -120,6 +120,10 @@ public struct InboxLogic: Reducer {
 
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
+        return .none
+        
+      case .fromGodTeamCard(.delegate(.showDetail)):
+        state.destination = .fromGodTeam(.init())
         return .none
 
       default:
@@ -202,9 +206,7 @@ public struct InboxView: View {
             }
           }
 
-          FromGodTeamCard {
-            viewStore.send(.fromGodTeamButtonTapped, transaction: .animationDisable)
-          }
+          FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: InboxLogic.Action.fromGodTeamCard))
 
           Spacer()
             .listRowSeparator(.hidden)
