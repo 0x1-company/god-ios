@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "9th Grade" : {
-
-    },
     "ACCOUNT SETTING" : {
 
     },
@@ -22,9 +19,6 @@
           }
         }
       }
-    },
-    "Class of 2026" : {
-
     },
     "Close" : {
       "localizations" : {
@@ -51,9 +45,6 @@
           }
         }
       }
-    },
-    "Las Vegas Academy of Arts" : {
-
     },
     "Last Name" : {
 
@@ -85,6 +76,9 @@
       }
     },
     "SCHOOL" : {
+
+    },
+    "username" : {
 
     },
     "You are signed in as 19175926188" : {

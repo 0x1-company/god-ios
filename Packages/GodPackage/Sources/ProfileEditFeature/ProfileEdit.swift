@@ -5,7 +5,6 @@ import ComposableArchitecture
 import FirebaseAuthClient
 import God
 import GodClient
-import LabeledButton
 import ManageAccountFeature
 import SwiftUI
 import UserDefaultsClient
@@ -14,29 +13,23 @@ public struct ProfileEditLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public struct UserProfile: Equatable {
-      var firstName: String
-      var lastName: String
-      var username: String?
-    }
+    public init() {}
 
     @PresentationState var manageAccount: ManageAccountLogic.State?
     @PresentationState var alert: AlertState<Action.Alert>?
-    var user = AsyncValue<UserProfile>.none
-    var isUserProfileChanges: Bool {
-      if case let .success(currentUser) = user {
-        return firstName != currentUser.firstName ||
-          lastName != currentUser.lastName ||
-          username != currentUser.username
-      }
-      return false
-    }
-
     @BindingState var firstName: String = ""
     @BindingState var lastName: String = ""
     @BindingState var username: String = ""
-
-    public init() {}
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    
+    var isUserProfileChanges: Bool {
+      guard let currentUser else {
+        return false
+      }
+      return firstName != currentUser.firstName
+      || lastName != currentUser.lastName
+      || username != currentUser.username
+    }
   }
 
   public enum Action: Equatable, BindableAction {
@@ -56,6 +49,9 @@ public struct ProfileEditLogic: Reducer {
     case alert(PresentationAction<Alert>)
 
     public enum Alert: Equatable {
+      case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
+      case changesNotSaved(ChangesNotSaved)
+
       public enum NameCanOnlyBeChangedOnce: Equatable {
         case changeNameButtonTapped
         case cancelButtonTapped
@@ -65,19 +61,16 @@ public struct ProfileEditLogic: Reducer {
         case discardChangesButtonTapped
         case cancelButtonTapped
       }
-
-      case nameCanOnlyBeChangedOnce(NameCanOnlyBeChangedOnce)
-      case changesNotSaved(ChangesNotSaved)
     }
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
-  @Dependency(\.godClient) var godClient
 
-  private enum CancelId {
-    case currentUserRequest
+  private enum Cancel {
+    case currentUser
   }
 
   public var body: some Reducer<State, Action> {
@@ -92,14 +85,14 @@ public struct ProfileEditLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        .cancellable(id: CancelId.currentUserRequest)
+        .cancellable(id: Cancel.currentUser)
 
       case .cancelEditButtonTapped:
         state.alert = .changesNotSaved()
         return .none
 
       case .saveButtonTapped:
-        guard case let .success(currentUser) = state.user else { return .none }
+        guard let currentUser = state.currentUser else { return .none }
         return .merge(
           .run { [state] send in
             if state.username != currentUser.username {
@@ -124,16 +117,11 @@ public struct ProfileEditLogic: Reducer {
           }
         )
 
-      case let .currentUserResponse(.success(response)):
-        let responseUser = response.currentUser
-        state.user = .success(.init(
-          firstName: responseUser.firstName,
-          lastName: responseUser.lastName,
-          username: responseUser.username
-        ))
-        state.firstName = responseUser.firstName
-        state.lastName = responseUser.lastName
-        state.username = responseUser.username ?? ""
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        state.firstName = data.currentUser.firstName
+        state.lastName = data.currentUser.lastName
+        state.username = data.currentUser.username ?? ""
         return .none
 
       case .currentUserResponse(.failure):
@@ -176,20 +164,20 @@ public struct ProfileEditLogic: Reducer {
 
       case .manageAccount:
         return .none
+
       case .alert(.presented(.changesNotSaved(.discardChangesButtonTapped))):
-        guard case let .success(user) = state.user else {
-          assertionFailure()
-          return .none
-        }
-        state.firstName = user.firstName
-        state.lastName = user.lastName
-        state.username = user.username ?? ""
+        guard let currentUser = state.currentUser else { return .none }
+        state.firstName = currentUser.firstName
+        state.lastName = currentUser.lastName
+        state.username = currentUser.username ?? ""
         return .none
+
       case .alert(.presented(.nameCanOnlyBeChangedOnce(.changeNameButtonTapped))):
-        // TODO: 一度しか変更できません
         return .none
+
       case .alert:
         return .none
+
       case .binding:
         return .none
       }
@@ -229,21 +217,21 @@ public struct ProfileEditView: View {
               fieldName: "First Name"
             )
 
-            separator
+            Separator()
 
             GodTextField(
               text: viewStore.$lastName,
               fieldName: "Last Name"
             )
 
-            separator
+            Separator()
 
             GodTextField(
               text: viewStore.$username,
               fieldName: "username"
             )
 
-            separator
+            Separator()
 
             Button(action: {}, label: {
               HStack(alignment: .center, spacing: 0) {
@@ -284,37 +272,34 @@ public struct ProfileEditView: View {
                   .foregroundColor(.godTextSecondaryLight)
                   .font(.body)
 
-                Text("Las Vegas Academy of Arts", bundle: .module)
+                Text(viewStore.currentUser?.school?.name ?? "")
                   .font(.body)
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(Image(systemName: "chevron.right"))
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
+//                Text(Image(systemName: "chevron.right"))
+//                  .font(.body)
+//                  .foregroundColor(.godTextSecondaryLight)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
-              separator
+
+              Separator()
+              
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
                   .foregroundColor(.godTextSecondaryLight)
                   .font(.body)
 
-                Text("9th Grade", bundle: .module)
+                Text(viewStore.currentUser?.grade ?? "")
                   .font(.body)
                   .foregroundColor(.godBlack)
+                  .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer()
-
-                Text("Class of 2026", bundle: .module)
-                  .font(.caption)
-                  .foregroundColor(.godTextSecondaryLight)
-
-                Text(Image(systemName: "chevron.right"))
-                  .font(.body)
-                  .foregroundColor(.godTextSecondaryLight)
+//                Text(Image(systemName: "chevron.right"))
+//                  .font(.body)
+//                  .foregroundColor(.godTextSecondaryLight)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
@@ -391,19 +376,21 @@ public struct ProfileEditView: View {
     }
   }
 
-  private var separator: some View {
-    Color.godSeparator
-      .frame(height: 1)
-      .frame(maxWidth: .infinity)
+  private struct Separator: View {
+    var body: some View {
+      Color.godSeparator
+        .frame(height: 1)
+        .frame(maxWidth: .infinity)
+    }
   }
 
   private struct GodTextField: View {
     @Binding var text: String
-    var fieldName: String
+    var fieldName: LocalizedStringKey
 
     var body: some View {
       HStack(alignment: .center, spacing: 0) {
-        Text(fieldName)
+        Text(fieldName, bundle: .module)
           .font(.body)
           .foregroundColor(.godTextSecondaryLight)
           .frame(width: 108, alignment: .leading)
@@ -453,15 +440,13 @@ private extension AlertState where Action == ProfileEditLogic.Action.Alert {
   }
 }
 
-struct ProfileEditViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      ProfileEditView(
-        store: .init(
-          initialState: ProfileEditLogic.State(),
-          reducer: { ProfileEditLogic() }
-        )
+#Preview {
+  NavigationStack {
+    ProfileEditView(
+      store: .init(
+        initialState: ProfileEditLogic.State(),
+        reducer: { ProfileEditLogic() }
       )
-    }
+    )
   }
 }

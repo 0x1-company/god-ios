@@ -170,10 +170,12 @@ let package = Package(
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
+      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
-      .product(name: "AsyncValue", package: "DependencyPackage"),
-      .product(name: "GodClient", package: "DependencyPackage"),
     ]),
     .target(name: "ProfileFeature", dependencies: [
       "ShopFeature",
