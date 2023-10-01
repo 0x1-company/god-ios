@@ -89,7 +89,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ユーザーネーム"
+            "value" : "ユーザーネームは？"
           }
         }
       }
@@ -133,12 +133,6 @@
           }
         }
       }
-    },
-    "Continue Anyway" : {
-
-    },
-    "Double check your name" : {
-
     },
     "Enter your age" : {
       "localizations" : {
@@ -461,9 +455,6 @@
           }
         }
       }
-    },
-    "Your friends may see you as the name in their contacts" : {
-
     },
     "ひらがなのみ設定できます" : {
 
