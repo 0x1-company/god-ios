@@ -28,7 +28,7 @@ public struct FriendsSection: View {
               image
                 .resizable()
                 .scaledToFill()
-                .frame(width: 42, height: 42)
+                .frame(width: 40, height: 40)
                 .clipShape(Circle())
             } placeholder: {
               NameImage(
