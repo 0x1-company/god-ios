@@ -261,7 +261,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名字"
+            "value" : "苗字"
           }
         }
       }
@@ -408,17 +408,6 @@
         }
       }
     },
-    "We will show schools on\nthe next page" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "次の画面で学校を選択する"
-          }
-        }
-      }
-    },
     "What grade are you in?" : {
       "localizations" : {
         "ja" : {
@@ -434,7 +423,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前は？"
+            "value" : "あなたの名前は？"
           }
         }
       }
@@ -454,7 +443,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名字は？"
+            "value" : "あなたの苗字は？"
           }
         }
       }

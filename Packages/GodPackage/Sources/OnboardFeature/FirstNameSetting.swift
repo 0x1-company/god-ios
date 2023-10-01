@@ -129,11 +129,14 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?", bundle: .module)
           .bold()
           .foregroundColor(.godWhite)
-        TextField("First Name", text: viewStore.$firstName)
-          .font(.title)
-          .foregroundColor(.godWhite)
-          .multilineTextAlignment(.center)
-          .focused($focus)
+
+        TextField(text: viewStore.$firstName) {
+          Text("First Name", bundle: .module)
+            .font(.title)
+            .foregroundColor(.white)
+            .multilineTextAlignment(.center)
+        }
+        .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts", bundle: .module)
