@@ -110,6 +110,16 @@
         }
       }
     },
+    "Other" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
+    },
     "Post on your story" : {
       "localizations" : {
         "ja" : {

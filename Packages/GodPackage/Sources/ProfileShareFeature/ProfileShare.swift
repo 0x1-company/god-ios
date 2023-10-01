@@ -36,8 +36,7 @@ public struct ProfileShareLogic: Reducer {
           state.destination = .shareProfileToInstagramPopup()
         case .line: break
         case .messages: break
-        case .copyLink:
-          pasteboard.string("")
+        case .other: break
         }
         return .none
 
@@ -75,14 +74,14 @@ public struct ProfileShareLogic: Reducer {
     case instagram
     case line
     case messages
-    case copyLink
+    case other
 
     public var name: LocalizedStringKey {
       switch self {
       case .instagram: return "Story"
       case .line: return "LINE"
       case .messages: return "Messages"
-      case .copyLink: return "Copy Link"
+      case .other: return "Other"
       }
     }
 
@@ -91,7 +90,7 @@ public struct ProfileShareLogic: Reducer {
       case .instagram: return "instagram"
       case .line: return "line"
       case .messages: return "messages"
-      case .copyLink: return "copylink"
+      case .other: return "other"
       }
     }
   }

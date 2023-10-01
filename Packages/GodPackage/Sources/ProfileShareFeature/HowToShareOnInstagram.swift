@@ -133,8 +133,6 @@ public struct HowToShareOnInstagramView: View {
             .font(.title)
             .bold()
             .foregroundColor(.godBlack)
-            .lineSpacing(-2)
-            .lineLimit(2)
             .multilineTextAlignment(.center)
 
           HStack(alignment: .center, spacing: 12) {
