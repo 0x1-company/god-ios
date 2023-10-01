@@ -51,13 +51,34 @@
       }
     },
     "Change photo" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を変更する"
+          }
+        }
+      }
     },
     "Choose a photo" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を選択する"
+          }
+        }
+      }
     },
     "Choose a username" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザーネーム"
+          }
+        }
+      }
     },
     "Choose the right school so\nyou can find your friends" : {
 
@@ -119,7 +140,14 @@
       }
     },
     "Enter your phone Number" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電話番号を入力"
+          }
+        }
+      }
     },
     "Error" : {
 
@@ -145,7 +173,14 @@
       }
     },
     "First Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前"
+          }
+        }
+      }
     },
     "Get Started" : {
       "localizations" : {
@@ -228,7 +263,14 @@
       }
     },
     "Last Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名字"
+          }
+        }
+      }
     },
     "Log In" : {
       "localizations" : {
@@ -281,10 +323,24 @@
       }
     },
     "PEOPLE YOU MAY KNOW" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド候補"
+          }
+        }
+      }
     },
     "Phone Number" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電話番号"
+          }
+        }
+      }
     },
     "Pick your school" : {
       "localizations" : {
@@ -339,7 +395,14 @@
 
     },
     "Username" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザーネーム"
+          }
+        }
+      }
     },
     "We sent you a code to verify\nyour number" : {
       "localizations" : {
@@ -372,7 +435,14 @@
       }
     },
     "What's your first name?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前は？"
+          }
+        }
+      }
     },
     "What's your gender?" : {
       "localizations" : {
@@ -385,7 +455,14 @@
       }
     },
     "What's your last name?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名字は？"
+          }
+        }
+      }
     },
     "You must be at least 13 years old to sign up." : {
       "localizations" : {

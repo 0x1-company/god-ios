@@ -2,13 +2,34 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Cash Out" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コインを獲得"
+          }
+        }
+      }
     },
     "Congrats" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おめでとう"
+          }
+        }
+      }
     },
     "You earned %lld coins" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたは %lld コインを獲得しました"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

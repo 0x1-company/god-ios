@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Are you sure you want to reset your block list?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当にブロックリストをリセットしますか？"
+          }
+        }
+      }
     },
     "Close" : {
       "localizations" : {
@@ -28,7 +35,14 @@
       }
     },
     "FRIENDS" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド"
+          }
+        }
+      }
     },
     "Manage Account" : {
       "localizations" : {
@@ -61,7 +75,14 @@
       }
     },
     "Unblock all accounts" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのアカウントのブロックを解除する"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
