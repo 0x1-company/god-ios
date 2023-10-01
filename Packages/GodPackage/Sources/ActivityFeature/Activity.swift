@@ -119,6 +119,7 @@ public struct ActivityView: View {
                 Text(edge.node.user.displayName.ja)
                   .bold()
                 Text("received", bundle: .module)
+                  .font(.footnote)
               }
               Text(edge.node.question.text.ja)
               Text("3年生の女子より", bundle: .module)
