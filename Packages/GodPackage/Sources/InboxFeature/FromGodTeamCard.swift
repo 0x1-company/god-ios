@@ -31,6 +31,7 @@ public struct FromGodTeamCardLogic: Reducer {
       case .cardButtonTapped:
         return .run { send in
           await userDefaults.setReadInitialGodTeamNotification()
+          await send(.onTask)
           await send(.delegate(.showDetail))
         }
       case .delegate:
@@ -53,17 +54,13 @@ public struct FromGodTeamCard: View {
         viewStore.send(.cardButtonTapped)
       } label: {
         HStack(spacing: 0) {
-          LabeledContent {
-            Text(Date.now, style: .relative)
-          } label: {
-            Label {
-              Text("From God Team", bundle: .module)
-            } icon: {
-              Image(ImageResource.godTeamIcon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40)
-            }
+          Label {
+            Text("From God Team", bundle: .module)
+          } icon: {
+            Image(ImageResource.godTeamIcon)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 40)
           }
           .padding(.horizontal, 16)
         }
@@ -76,6 +73,16 @@ public struct FromGodTeamCard: View {
       }
       .listRowSeparator(.hidden)
       .buttonStyle(HoldDownButtonStyle())
+      .task { await store.send(.onTask).finish() }
     }
   }
+}
+
+#Preview {
+  FromGodTeamCard(
+    store: .init(
+      initialState: FromGodTeamCardLogic.State(),
+      reducer: { FromGodTeamCardLogic() }
+    )
+  )
 }
