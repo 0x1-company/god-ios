@@ -110,7 +110,7 @@ public struct FriendRowCardView: View {
                   .bold()
                   .foregroundStyle(Color.white)
                   .frame(height: 34)
-                  .padding(.horizontal, 8)
+                  .padding(.horizontal, 12)
                   .background(Color.godService)
                   .clipShape(Capsule())
               }
