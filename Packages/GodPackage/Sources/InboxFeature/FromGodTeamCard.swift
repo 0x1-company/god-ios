@@ -1,3 +1,4 @@
+import AnimationDisableTransaction
 import ButtonStyles
 import Colors
 import SwiftUI
@@ -32,7 +33,7 @@ public struct FromGodTeamCardLogic: Reducer {
         return .run { send in
           await userDefaults.setReadInitialGodTeamNotification()
           await send(.onTask)
-          await send(.delegate(.showDetail))
+          await send(.delegate(.showDetail), transaction: .animationDisable)
         }
       case .delegate:
         return .none
@@ -56,6 +57,7 @@ public struct FromGodTeamCard: View {
         HStack(spacing: 0) {
           Label {
             Text("From God Team", bundle: .module)
+              .frame(maxWidth: .infinity, alignment: .leading)
           } icon: {
             Image(ImageResource.godTeamIcon)
               .resizable()
