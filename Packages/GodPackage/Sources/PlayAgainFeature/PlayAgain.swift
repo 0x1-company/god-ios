@@ -119,6 +119,7 @@ public struct PlayAgainView: View {
           .foregroundColor(.secondary)
 
         Text("Skip the wait", bundle: .module)
+          .multilineTextAlignment(.center)
           .foregroundColor(.secondary)
 
         Button {
