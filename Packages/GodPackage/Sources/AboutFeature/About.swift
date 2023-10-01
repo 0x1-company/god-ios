@@ -217,9 +217,10 @@ public struct AboutView: View {
 
         VStack(spacing: 0) {
           Text("God", bundle: .module)
-          Text("Terms / Privacy", bundle: .module)
+          Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
         }
         .foregroundColor(.secondary)
+        .tint(.secondary)
       }
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
