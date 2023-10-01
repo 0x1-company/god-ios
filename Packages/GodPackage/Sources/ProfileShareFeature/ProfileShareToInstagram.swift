@@ -10,7 +10,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var profileLinkString: String?
+    var username: String?
     var isProfileLinkCopied: Bool = false
     public init() {}
   }
@@ -45,11 +45,8 @@ public struct ProfileShareToInstagramLogic: Reducer {
         }
         .cancellable(id: Cancel.id)
 
-      case let .currentUserResponse(.success(response)):
-        guard let username = response.currentUser.username else {
-          return .none
-        }
-        state.profileLinkString = "godapp.jp/add/\(username)"
+      case let .currentUserResponse(.success(data)):
+        state.username = data.currentUser.username
         return .none
 
       case .currentUserResponse(.failure):
@@ -59,7 +56,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         }
 
       case .copyLinkButtonTapped:
-        guard let username = response.currentUser.username else {
+        guard let username = state.username else {
           return .none
         }
         UIPasteboard.general.string = "https://www.godapp.jp/add/\(username)"
@@ -113,11 +110,11 @@ public struct ProfileShareToInstagramView: View {
           VStack(alignment: .center, spacing: 0) {
             Text("Step1", bundle: .module)
               .bold()
-            Text("Copy your god link", bundle: .module)
+            Text("Copy your God link", bundle: .module)
           }
           .font(.title2)
 
-          Text(viewStore.state.profileLinkString ?? "")
+          Text(verbatim: "godapp.jp/add/\(viewStore.username ?? "")")
             .font(.body)
             .foregroundColor(.godTextSecondaryDark)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -174,20 +171,18 @@ public struct ProfileShareToInstagramView: View {
   }
 }
 
-struct ProfileShareToInstagramViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("ProfileShareToInstagram")
-      .sheet(
-        isPresented: .constant(true)
-      ) {
-        ProfileShareToInstagramView(
-          store: .init(
-            initialState: ProfileShareToInstagramLogic.State(),
-            reducer: { ProfileShareToInstagramLogic() }
-          )
+#Preview {
+  Color.red
+    .sheet(
+      isPresented: .constant(true)
+    ) {
+      ProfileShareToInstagramView(
+        store: .init(
+          initialState: ProfileShareToInstagramLogic.State(),
+          reducer: { ProfileShareToInstagramLogic() }
         )
-        .presentationDetents([.fraction(0.3)])
-        .presentationDragIndicator(.visible)
-      }
-  }
+      )
+      .presentationDetents([.fraction(0.3)])
+      .presentationDragIndicator(.visible)
+    }
 }

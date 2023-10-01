@@ -16,7 +16,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
       case three = 3
       case four = 4
 
-      var primaryButtonText: String {
+      var primaryButtonText: LocalizedStringKey {
         switch self {
         case .one, .two, .three:
           return "Next Step"
@@ -82,7 +82,6 @@ public struct HowToShareOnInstagramLogic: Reducer {
           guard let storiesUrl = URL(string: "instagram-stories://share?source_application=1049646559806019") else { return .none }
           if !UIApplication.shared.canOpenURL(storiesUrl) {
             print("Sorry the application is not installed")
-            assertionFailure()
             return .none
           }
           guard let profileCardImage,
@@ -178,7 +177,7 @@ public struct HowToShareOnInstagramView: View {
             renderer.scale = displayScale
             viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
           } label: {
-            Text(viewStore.state.currentStep.primaryButtonText)
+            Text(viewStore.currentStep.primaryButtonText, bundle: .module)
               .font(.subheadline)
               .bold()
               .foregroundColor(.godWhite)
@@ -275,20 +274,18 @@ public struct HowToShareOnInstagramView: View {
   }
 }
 
-struct HowToShareOnInstagramViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("HowToShareOnInstagram")
-      .sheet(
-        isPresented: .constant(true)
-      ) {
-        HowToShareOnInstagramView(
-          store: .init(
-            initialState: HowToShareOnInstagramLogic.State(),
-            reducer: { HowToShareOnInstagramLogic() }
-          )
+#Preview {
+  Color.red
+    .sheet(
+      isPresented: .constant(true)
+    ) {
+      HowToShareOnInstagramView(
+        store: .init(
+          initialState: HowToShareOnInstagramLogic.State(),
+          reducer: { HowToShareOnInstagramLogic() }
         )
-        .presentationDetents([.fraction(0.3)])
-        .presentationDragIndicator(.visible)
-      }
-  }
+      )
+      .presentationDetents([.fraction(0.3)])
+      .presentationDragIndicator(.visible)
+    }
 }

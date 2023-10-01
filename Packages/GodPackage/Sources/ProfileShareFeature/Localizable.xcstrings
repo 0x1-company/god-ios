@@ -27,8 +27,15 @@
         }
       }
     },
-    "Copy your god link" : {
-
+    "Copy your God link" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godリンクをコピー"
+          }
+        }
+      }
     },
     "from\n%@" : {
 
@@ -43,11 +50,25 @@
         }
       }
     },
-    "How to add the\nlink to your Story" : {
-
+    "godapp.jp/add/%@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "godapp.jp/add/%@"
+          }
+        }
+      }
     },
-    "HowToShareOnInstagram" : {
-
+    "How to add the\nlink to your Story" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクを追加する"
+          }
+        }
+      }
     },
     "Link Copied!" : {
       "localizations" : {
@@ -59,10 +80,28 @@
         }
       }
     },
+    "Next Step" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次へ"
+          }
+        }
+      }
+    },
     "Post on your story" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストーリーを投稿"
+          }
+        }
+      }
     },
     "ProfileShare" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -72,15 +111,22 @@
         }
       }
     },
-    "ProfileShareToInstagram" : {
-
-    },
     "Share" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "シェア"
+          }
+        }
+      }
+    },
+    "Share on Instagram" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストーリーを投稿する"
           }
         }
       }
@@ -96,16 +142,34 @@
       }
     },
     "Share Profile on\nInstagram" : {
-
-    },
-    "ShareProfileToInstagramPopup" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストーリーでシェアする"
+          }
+        }
+      }
     },
     "Step1" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step1"
+          }
+        }
+      }
     },
     "Step2" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step2"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
