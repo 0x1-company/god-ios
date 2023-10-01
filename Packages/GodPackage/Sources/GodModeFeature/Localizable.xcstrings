@@ -36,7 +36,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前を1文字だけ無制限に見れる"
+            "value" : "名前を1文字だけ\n無制限に見れる"
           }
         }
       }
@@ -66,7 +66,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1週間に2人のフルネームを見れる"
+            "value" : "1週間に2人の\nフルネームを見れる"
           }
         }
       }

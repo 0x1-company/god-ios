@@ -3,7 +3,7 @@ import SwiftUI
 public struct GodModeFunctions: View {
   public var body: some View {
     TabView {
-      VStack(spacing: 0) {
+      VStack(spacing: 12) {
         Image(ImageResource.reveal2NamesPerWeekBoy)
           .resizable()
           .scaledToFit()
@@ -13,7 +13,7 @@ public struct GodModeFunctions: View {
       }
       .padding(.horizontal, 100)
 
-      VStack(spacing: 0) {
+      VStack(spacing: 12) {
         Image(ImageResource.getUnlimitedHints)
           .resizable()
           .scaledToFit()
@@ -23,7 +23,7 @@ public struct GodModeFunctions: View {
       }
       .padding(.horizontal, 100)
 
-      VStack(spacing: 0) {
+      VStack(spacing: 12) {
         Image(ImageResource.doubleCoin)
           .resizable()
           .scaledToFit()
@@ -33,7 +33,7 @@ public struct GodModeFunctions: View {
       }
       .padding(.horizontal, 100)
 
-      VStack(spacing: 0) {
+      VStack(spacing: 12) {
         Image(ImageResource.secretCrushAlertsBoy)
           .resizable()
           .scaledToFit()
