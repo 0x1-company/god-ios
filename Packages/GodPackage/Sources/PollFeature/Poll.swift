@@ -130,7 +130,7 @@ public struct PollView: View {
           }
         }
         .ignoresSafeArea()
-        
+
         VStack(spacing: 8) {
           ProgressView(
             value: Double(viewStore.currentPosition),
