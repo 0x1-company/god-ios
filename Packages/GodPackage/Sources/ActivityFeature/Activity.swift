@@ -135,7 +135,7 @@ public struct ActivityView: View {
               Text("3d", bundle: .module)
                 .foregroundColor(.secondary)
             }
-            .padding(.vertical, 12)
+            .padding(.vertical, 8)
           }
         }
       }
