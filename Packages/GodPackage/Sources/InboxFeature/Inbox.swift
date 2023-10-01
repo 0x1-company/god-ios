@@ -225,7 +225,7 @@ public struct InboxView: View {
               } icon: {
                 Image(systemName: "lock.fill")
               }
-              .frame(height: 50)
+              .frame(height: 56)
               .frame(maxWidth: .infinity)
               .bold()
               .foregroundColor(.white)
