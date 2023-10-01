@@ -11,6 +11,7 @@ public extension DependencyValues {
 extension UIPasteboardClient: TestDependencyKey {
   public static let testValue = Self(
     string: unimplemented("\(Self.self).string"),
-    strings: unimplemented("\(Self.self).strings")
+    strings: unimplemented("\(Self.self).strings"),
+    setItems: unimplemented("\(Self.self).setItems")
   )
 }
