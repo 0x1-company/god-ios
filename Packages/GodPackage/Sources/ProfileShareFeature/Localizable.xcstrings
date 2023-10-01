@@ -65,7 +65,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リンクを追加する"
+            "value" : "リンクを追加する方法"
           }
         }
       }
@@ -145,7 +145,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーを\n投稿する"
+            "value" : "ストーリーを投稿する"
           }
         }
       }
@@ -165,7 +165,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーで共有する"
+            "value" : "ストーリーで\n共有する"
           }
         }
       }

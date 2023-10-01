@@ -160,24 +160,19 @@ public struct HowToShareOnInstagramView: View {
             .fill(Color.red)
             .frame(maxWidth: .infinity)
             .frame(height: 240)
-
+          
           Button {
             let renderer = ImageRenderer(content: profileCardForShareOnInstagram)
             renderer.scale = displayScale
             viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
           } label: {
             Text(viewStore.currentStep.primaryButtonText, bundle: .module)
-              .font(.subheadline)
               .bold()
               .foregroundColor(.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .background(Color.godService)
               .cornerRadius(26)
-              .overlay(
-                RoundedRectangle(cornerRadius: 26)
-                  .stroke(Color.godService, lineWidth: 0.5)
-              )
           }
           .buttonStyle(HoldDownButtonStyle())
         }

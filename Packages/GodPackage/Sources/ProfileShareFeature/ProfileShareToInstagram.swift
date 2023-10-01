@@ -97,7 +97,7 @@ public struct ProfileShareToInstagramView: View {
             .clipShape(Circle())
 
           Text("Share Profile on\nInstagram", bundle: .module)
-            .font(.title2)
+            .font(.title)
             .bold()
             .foregroundColor(.godBlack)
             .multilineTextAlignment(.center)
@@ -156,7 +156,7 @@ public struct ProfileShareToInstagramView: View {
               .foregroundColor(.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
-              .background(Color(red: 247 / 255, green: 108 / 255, blue: 67 / 255))
+              .background(Color.godService)
               .cornerRadius(26)
           }
           .buttonStyle(HoldDownButtonStyle())
