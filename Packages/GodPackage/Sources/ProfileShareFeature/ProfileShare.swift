@@ -165,20 +165,18 @@ public struct ProfileShareView: View {
   }
 }
 
-struct ProfileShareViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("ProfileShare")
-      .sheet(
-        isPresented: .constant(true)
-      ) {
-        ProfileShareView(
-          store: .init(
-            initialState: ProfileShareLogic.State(),
-            reducer: { ProfileShareLogic() }
-          )
+#Preview {
+  Color.red
+    .sheet(
+      isPresented: .constant(true)
+    ) {
+      ProfileShareView(
+        store: .init(
+          initialState: ProfileShareLogic.State(),
+          reducer: { ProfileShareLogic() }
         )
-        .presentationDetents([.fraction(0.3)])
-        .presentationDragIndicator(.visible)
-      }
-  }
+      )
+      .presentationDetents([.fraction(0.3)])
+      .presentationDragIndicator(.visible)
+    }
 }

@@ -109,20 +109,18 @@ public struct ShareProfileToInstagramPopupView: View {
   }
 }
 
-struct ShareProfileToInstagramPopupViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("ShareProfileToInstagramPopup")
-      .sheet(
-        isPresented: .constant(true)
-      ) {
-        ShareProfileToInstagramPopupView(
-          store: .init(
-            initialState: ShareProfileToInstagramPopupLogic.State(),
-            reducer: { ShareProfileToInstagramPopupLogic() }
-          )
+#Preview {
+  Color.red
+    .sheet(
+      isPresented: .constant(true)
+    ) {
+      ShareProfileToInstagramPopupView(
+        store: .init(
+          initialState: ShareProfileToInstagramPopupLogic.State(),
+          reducer: { ShareProfileToInstagramPopupLogic() }
         )
-        .presentationDetents([.fraction(0.3)])
-        .presentationDragIndicator(.visible)
-      }
-  }
+      )
+      .presentationDetents([.fraction(0.3)])
+      .presentationDragIndicator(.visible)
+    }
 }
