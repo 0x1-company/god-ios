@@ -4,10 +4,10 @@ import ComposableArchitecture
 import Contacts
 import ContactsClient
 import CupertinoMessageFeature
-import SwiftUI
-import SwiftUIMessage
 import God
 import GodClient
+import SwiftUI
+import SwiftUIMessage
 
 public struct InvitationsLeftLogic: Reducer {
   public init() {}
@@ -79,11 +79,11 @@ public struct InvitationsLeftLogic: Reducer {
           """
         )
         return .none
-        
+
       case let .contactResponse(.success(contact)):
         state.invitations.append(contact)
         return .none
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
