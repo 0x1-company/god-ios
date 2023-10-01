@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[利用規約](https://docs.godapp.jp/terms-of-use) / [プライバリーポリシー](https://docs.godapp.jp/privacy-policy)"
+          }
+        }
+      }
+    },
     "Add my school to my profile" : {
       "localizations" : {
         "ja" : {
@@ -226,6 +236,7 @@
       }
     },
     "Terms / Privacy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
