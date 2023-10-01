@@ -102,13 +102,13 @@ public struct PollQuestionLogic: Reducer {
         }
       case .alert:
         state.alert = AlertState {
-          TextState("Woah, slow down!🐎")
+          TextState("Woah, slow down!🐎", bundle: .module)
         } actions: {
           ButtonState(action: .confirmOkay) {
-            TextState("OK")
+            TextState("OK", bundle: .module)
           }
         } message: {
-          TextState("You're voting too fast")
+          TextState("You're voting too fast", bundle: .module)
         }
         return .none
       case .delegate:
