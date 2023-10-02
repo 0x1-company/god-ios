@@ -127,7 +127,7 @@ public struct InboxDetailView: View {
   public init(store: StoreOf<InboxDetailLogic>) {
     self.store = store
   }
-  
+
   func genderColor(gender: God.Gender?) -> Color {
     switch gender {
     case .male:
@@ -138,7 +138,7 @@ public struct InboxDetailView: View {
       return Color.godPurple
     }
   }
-  
+
   func genderIcon(gender: God.Gender?) -> ImageResource {
     switch gender {
     case .male:
@@ -149,7 +149,7 @@ public struct InboxDetailView: View {
       return ImageResource.other
     }
   }
-  
+
   func genderText(gender: God.Gender?) -> String {
     switch gender {
     case .male:
@@ -194,7 +194,7 @@ public struct InboxDetailView: View {
                 .bold()
                 .font(.title2)
                 .foregroundColor(.white)
-              
+
               VStack(spacing: 20) {
                 ChoiceGrid(
                   color: genderColor(gender: viewStore.activity.voteUser.gender.value),
@@ -210,7 +210,7 @@ public struct InboxDetailView: View {
             .padding(.horizontal, 36)
 
             Spacer()
-            
+
             HStack(spacing: 0) {
               Spacer()
 

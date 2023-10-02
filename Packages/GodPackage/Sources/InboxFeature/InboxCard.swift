@@ -1,12 +1,12 @@
 import ButtonStyles
 import Colors
-import SwiftUI
 import God
+import SwiftUI
 
 public struct InboxCard: View {
   let inbox: God.InboxFragment
   let action: () -> Void
-  
+
   var gender: String {
     switch inbox.voteUser.gender.value {
     case .male:
@@ -17,7 +17,7 @@ public struct InboxCard: View {
       return String(localized: "someone", bundle: .module)
     }
   }
-  
+
   var genderIcon: ImageResource {
     switch inbox.voteUser.gender.value {
     case .male:
@@ -28,7 +28,7 @@ public struct InboxCard: View {
       return ImageResource.otherIcon
     }
   }
-  
+
   var createdAt: Date? {
     guard let interval = TimeInterval(inbox.createdAt)
     else { return nil }
