@@ -115,6 +115,7 @@ graph TD;
     RevealFeature-->GodClient;
     RevealFeature-->ButtonStyles;
     RevealFeature-->StoreKitClient;
+    RevealFeature-->StoreKitHelpers;
     RevealFeature-->ComposableArchitecture;
     ShareScreenshotFeature-->AsyncValue;
     ShareScreenshotFeature-->PhotosClient;
