@@ -19,6 +19,7 @@ public class Query: MockObject {
     @Field<UserConnection>("fromSchool") public var fromSchool
     @Field<ActivityConnection>("listActivities") public var listActivities
     @Field<InboxActivityConnection>("listInboxActivities") public var listInboxActivities
+    @Field<[Question]>("questionsOrderByVotedDesc") public var questionsOrderByVotedDesc
     @Field<Int>("revealFullNameLimit") public var revealFullNameLimit
     @Field<SchoolConnection>("schools") public var schools
     @Field<Store>("store") public var store
@@ -37,6 +38,7 @@ public extension Mock where O == Query {
     fromSchool: Mock<UserConnection>? = nil,
     listActivities: Mock<ActivityConnection>? = nil,
     listInboxActivities: Mock<InboxActivityConnection>? = nil,
+    questionsOrderByVotedDesc: [Mock<Question>]? = nil,
     revealFullNameLimit: Int? = nil,
     schools: Mock<SchoolConnection>? = nil,
     store: Mock<Store>? = nil,
@@ -52,6 +54,7 @@ public extension Mock where O == Query {
     _setEntity(fromSchool, for: \.fromSchool)
     _setEntity(listActivities, for: \.listActivities)
     _setEntity(listInboxActivities, for: \.listInboxActivities)
+    _setList(questionsOrderByVotedDesc, for: \.questionsOrderByVotedDesc)
     _setScalar(revealFullNameLimit, for: \.revealFullNameLimit)
     _setEntity(schools, for: \.schools)
     _setEntity(store, for: \.store)

@@ -11,6 +11,7 @@ public struct GodClient: Sendable {
   public var currentUser: @Sendable () -> AsyncThrowingStream<God.CurrentUserQuery.Data, Error>
   public var profile: @Sendable () -> AsyncThrowingStream<God.ProfileQuery.Data, Error>
   public var peopleYouMayKnow: @Sendable () -> AsyncThrowingStream<God.PeopleYouMayKnowQuery.Data, Error>
+  public var topStars: @Sendable () -> AsyncThrowingStream<God.QuestionsOrderByVotedDescQuery.Data, Error>
 
   public var schools: @Sendable () -> AsyncThrowingStream<God.SchoolsQuery.Data, Error>
 

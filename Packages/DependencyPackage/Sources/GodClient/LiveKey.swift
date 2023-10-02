@@ -42,6 +42,10 @@ public extension GodClient {
         let query = God.PeopleYouMayKnowQuery(first: 20)
         return apolloClient.watch(query: query)
       },
+      topStars: {
+        let query = God.QuestionsOrderByVotedDescQuery(first: 3)
+        return apolloClient.watch(query: query)
+      },
       schools: {
         let query = God.SchoolsQuery(first: 100, after: .null)
         return apolloClient.watch(query: query)

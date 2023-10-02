@@ -366,6 +366,7 @@ type Query {
 
   """持っているアイテム一覧"""
   listUserItems(after: String, first: Int!): UserItemConnection!
+  questionsOrderByVotedDesc(first: Int!): [Question!]!
 
   """リビール可能数を取得"""
   revealFullNameLimit: Int!
@@ -383,10 +384,7 @@ type Query {
   user(where: UserWhere!): User!
 
   """ユーザー名で指定したユーザーが投票された質問を最大5個まで降順で取得する"""
-  votedQuestions(
-    """ユーザー名"""
-    username: String!
-  ): VotedQuestions!
+  votedQuestions(username: String!): VotedQuestions!
 }
 
 type Question {
