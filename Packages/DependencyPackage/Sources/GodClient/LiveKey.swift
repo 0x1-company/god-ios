@@ -34,8 +34,8 @@ public extension GodClient {
         let query = God.CurrentUserQuery()
         return apolloClient.watch(query: query)
       },
-      profile: {
-        let query = God.ProfileQuery()
+      currentUserProfile: {
+        let query = God.CurrentUserProfileQuery()
         return apolloClient.watch(query: query)
       },
       peopleYouMayKnow: {

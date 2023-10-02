@@ -12,7 +12,7 @@ public struct ProfileLogic: Reducer {
 
   public struct State: Equatable {
     @PresentationState var destination: Destination.State?
-    var profile: God.ProfileQuery.Data?
+    var profile: God.CurrentUserProfileQuery.Data?
     public init() {}
   }
 
@@ -22,7 +22,7 @@ public struct ProfileLogic: Reducer {
     case shareProfileButtonTapped
     case shopButtonTapped
     case friendButtonTapped(userId: String)
-    case profileResponse(TaskResult<God.ProfileQuery.Data>)
+    case profileResponse(TaskResult<God.CurrentUserProfileQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -37,7 +37,7 @@ public struct ProfileLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.profile() {
+          for try await data in godClient.currentUserProfile() {
             await send(.profileResponse(.success(data)))
           }
         } catch: { error, send in
@@ -150,12 +150,14 @@ public struct ProfileView: View {
                 viewStore.send(.shopButtonTapped)
               }
             )
-          }
+            
+            Divider()
 
-          Divider()
-
-          TopStarsSection()
+            TopStarsSection(
+              questions: data.questionsOrderByVotedDesc
+            )
             .padding(.bottom, 16)
+          }
 
           if let data = viewStore.profile, !data.friends.isEmpty {
             FriendsSection(friends: data.friends.map(\.fragments.friendFragment)) { state in

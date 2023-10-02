@@ -1,7 +1,7 @@
 # import '../fragments/FriendCardFragment'
 # import '../fragments/ProfileSectionFragment.graphql'
 
-query Profile {
+query CurrentUserProfile {
   currentUser {
     ...ProfileSectionFragment
     wallet {
@@ -10,5 +10,12 @@ query Profile {
   }
   friends {
     ...FriendFragment
+  }
+  questionsOrderByVotedDesc(first: 3) {
+    id
+    imageURL
+    text {
+      ja
+    }
   }
 }

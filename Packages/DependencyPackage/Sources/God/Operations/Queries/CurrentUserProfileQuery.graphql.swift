@@ -4,11 +4,11 @@
 @_exported import ApolloAPI
 
 public extension God {
-  class ProfileQuery: GraphQLQuery {
-    public static let operationName: String = "Profile"
+  class CurrentUserProfileQuery: GraphQLQuery {
+    public static let operationName: String = "CurrentUserProfile"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Profile { currentUser { __typename ...ProfileSectionFragment wallet { __typename coinBalance } } friends { __typename ...FriendFragment } }"#,
+        #"query CurrentUserProfile { currentUser { __typename ...ProfileSectionFragment wallet { __typename coinBalance } } friends { __typename ...FriendFragment } questionsOrderByVotedDesc(first: 3) { __typename id imageURL text { __typename ja } } }"#,
         fragments: [ProfileSectionFragment.self, FriendFragment.self]
       ))
 
@@ -22,12 +22,14 @@ public extension God {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("currentUser", CurrentUser.self),
         .field("friends", [Friend].self),
+        .field("questionsOrderByVotedDesc", [QuestionsOrderByVotedDesc].self, arguments: ["first": 3]),
       ] }
 
       /// ログイン中ユーザーを取得
       public var currentUser: CurrentUser { __data["currentUser"] }
       /// フレンドの一覧
       public var friends: [Friend] { __data["friends"] }
+      public var questionsOrderByVotedDesc: [QuestionsOrderByVotedDesc] { __data["questionsOrderByVotedDesc"] }
 
       /// CurrentUser
       ///
@@ -123,6 +125,45 @@ public extension God {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var friendFragment: FriendFragment { _toFragment() }
+        }
+      }
+
+      /// QuestionsOrderByVotedDesc
+      ///
+      /// Parent Type: `Question`
+      public struct QuestionsOrderByVotedDesc: God.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { God.Objects.Question }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .field("id", God.ID.self),
+          .field("imageURL", String.self),
+          .field("text", Text.self),
+        ] }
+
+        public var id: God.ID { __data["id"] }
+        /// imageURL
+        public var imageURL: String { __data["imageURL"] }
+        /// text
+        public var text: Text { __data["text"] }
+
+        /// QuestionsOrderByVotedDesc.Text
+        ///
+        /// Parent Type: `LocalizableString`
+        public struct Text: God.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { God.Objects.LocalizableString }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("ja", String.self),
+          ] }
+
+          /// 日本語
+          public var ja: String { __data["ja"] }
         }
       }
     }
