@@ -70,7 +70,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "いじめ"
+            "value" : "いじめの可能性がある"
           }
         }
       }
@@ -100,7 +100,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "私の学校には通っていない"
+            "value" : "この学校の生徒ではない"
           }
         }
       }
@@ -130,7 +130,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "不適切な写真"
+            "value" : "不適切な写真を設定している"
           }
         }
       }
@@ -140,7 +140,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "13歳未満"
+            "value" : "13歳未満のユーザーである"
           }
         }
       }
@@ -170,7 +170,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この人は誰かになりすましてます"
+            "value" : "なりすましをしている"
           }
         }
       }
