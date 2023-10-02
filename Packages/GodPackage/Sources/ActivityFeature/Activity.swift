@@ -2,8 +2,8 @@ import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
-import ProfilePicture
 import ProfileFeature
+import ProfilePicture
 import SwiftUI
 
 public struct ActivityLogic: Reducer {

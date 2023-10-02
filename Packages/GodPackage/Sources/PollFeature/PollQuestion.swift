@@ -3,9 +3,9 @@ import Colors
 import ComposableArchitecture
 import FeedbackGeneratorClient
 import God
+import Kingfisher
 import LabeledButton
 import SwiftUI
-import Kingfisher
 
 public struct PollQuestionLogic: Reducer {
   public init() {}
