@@ -86,7 +86,7 @@ public struct InboxDetailLogic: Reducer {
           try await mainQueue.sleep(for: .seconds(1))
           await send(.showFullName(fullName))
         }
-        
+
       case let .showFullName(fullName):
         state.destination = .fullName(
           .init(fulName: fullName)
