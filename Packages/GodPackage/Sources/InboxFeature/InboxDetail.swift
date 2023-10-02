@@ -137,7 +137,7 @@ public struct InboxDetailView: View {
     self.store = store
   }
   
-  func backgroundColor(gender: God.Gender?) -> Color {
+  func genderColor(gender: God.Gender?) -> Color {
     switch gender {
     case .male:
       return Color.godBlue
@@ -172,12 +172,15 @@ public struct InboxDetailView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let shareOnInstagramStoryView = shareOnInstagramStoryView(question: viewStore.activity.question.text.ja)
+      let instagramStoryView = InstagramStoryView(
+        question: viewStore.activity.question.text.ja,
+        color: genderColor(gender: viewStore.activity.voteUser.gender.value),
+        icon: genderIcon(gender: viewStore.activity.voteUser.gender.value),
+        gender: genderText(gender: viewStore.activity.voteUser.gender.value),
+        grade: viewStore.activity.voteUser.grade
+      )
       ZStack {
-        // instagramへのシェア用のView
-        shareOnInstagramStoryView
-
-        Color.black
+        instagramStoryView
 
         VStack {
           VStack(spacing: 50) {
@@ -207,7 +210,7 @@ public struct InboxDetailView: View {
             Spacer()
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(backgroundColor(gender: viewStore.activity.voteUser.gender.value))
+          .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
           .foregroundColor(.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
@@ -267,97 +270,5 @@ public struct InboxDetailView: View {
         }
       }
     }
-  }
-
-  @ViewBuilder
-  private func shareOnInstagramStoryView(question: String) -> some View {
-    let mockChoices = ["Nozomi Isshiki", "Anette Escobedo", "Satoya Hatanaka", "Ava Griego"]
-    let mockSelectedUser = "Nozomi Isshiki"
-    VStack(alignment: .center, spacing: 12) {
-      HStack(alignment: .center, spacing: 8) {
-        Image("boy", bundle: .module)
-          .resizable()
-          .frame(width: 36, height: 36)
-
-        Text("N年生の男子から")
-          .font(.callout)
-          .bold()
-          .foregroundColor(.white)
-          .lineLimit(2)
-          .multilineTextAlignment(.leading)
-
-        Spacer()
-
-        Text("LBHS")
-          .font(.body)
-          .bold()
-          .foregroundColor(.godWhite)
-          .frame(height: 32)
-          .padding(.horizontal, 8)
-          .background(Color.godGray)
-          .cornerRadius(20)
-      }
-      VStack(alignment: .center, spacing: 0) {
-        Text(question)
-          .font(.callout)
-          .bold()
-          .foregroundColor(.godWhite)
-          .lineLimit(2)
-          .frame(height: 80, alignment: .center)
-
-        LazyVGrid(
-          columns: Array(repeating: GridItem(spacing: 16), count: 2),
-          spacing: 16
-        ) {
-          ForEach(mockChoices, id: \.self) { choice in
-            let isSelectedUser = choice == mockSelectedUser
-            Text(verbatim: choice)
-              .font(.callout)
-              .bold()
-              .lineLimit(2)
-              .multilineTextAlignment(.leading)
-              .padding(.horizontal, 16)
-              .frame(height: 64)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .foregroundStyle(Color.godPurple)
-              .background(
-                Color.godWhite
-              )
-              .cornerRadius(8)
-              .opacity(isSelectedUser ? 1 : 0.6)
-              .overlay(
-                isSelectedUser ?
-                  Image("finger-icon", bundle: .module)
-                  .resizable()
-                  .frame(width: 48, height: 48)
-                  .rotationEffect(.degrees(-30))
-                  .shadow(color: .godPurple, radius: 8)
-                  .offset(x: 20, y: -20) : nil,
-                alignment: .topTrailing
-              )
-          }
-        }
-
-        Image("god-icon-white", bundle: .module)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(height: 24)
-          .foregroundStyle(Color.godWhite)
-          .padding(.top, 10)
-          .padding(.bottom, 4)
-
-        Text(verbatim: "godapp.jp")
-          .font(.callout)
-          .bold()
-          .foregroundColor(.godWhite)
-      }
-      .padding(.horizontal, 16)
-      .padding(.bottom, 16)
-      .background(Color.godPurple)
-      .cornerRadius(8)
-    }
-    .frame(maxWidth: .infinity)
-    .padding(.horizontal, 44)
-    .background(Color.clear)
   }
 }

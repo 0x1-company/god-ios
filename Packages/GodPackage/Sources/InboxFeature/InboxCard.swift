@@ -14,7 +14,7 @@ public struct InboxCard: View {
     case .female:
       return String(localized: "girl", bundle: .module)
     default:
-      return String(localized: "non-binary", bundle: .module)
+      return String(localized: "someone", bundle: .module)
     }
   }
   

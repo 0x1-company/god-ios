@@ -24,17 +24,6 @@
         }
       }
     },
-    "From %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@より"
-          }
-        }
-      }
-    },
     "From %@\nin %@" : {
       "localizations" : {
         "en" : {
@@ -104,19 +93,6 @@
     "LBHS" : {
 
     },
-    "non-binary" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "その他"
-          }
-        }
-      }
-    },
-    "N年生の男子から" : {
-
-    },
     "OK" : {
       "localizations" : {
         "ja" : {
@@ -148,7 +124,14 @@
       }
     },
     "someone" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "Tap a message in your inbox to reveal the sender" : {
       "localizations" : {
