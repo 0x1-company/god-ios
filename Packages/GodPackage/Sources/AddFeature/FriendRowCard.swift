@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import NameImage
+import ProfilePicture
 import SwiftUI
 
 public struct FriendRowCardLogic: Reducer {
@@ -11,6 +11,7 @@ public struct FriendRowCardLogic: Reducer {
 
   public struct State: Equatable, Identifiable {
     public var id: String
+    var imageURL: String
     var displayName: String
     var firstName: String
     var lastName: String
@@ -75,9 +76,11 @@ public struct FriendRowCardView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack(alignment: .center, spacing: 16) {
-        NameImage(
+        ProfilePicture(
+          url: URL(string: viewStore.imageURL),
           familyName: viewStore.lastName,
-          givenName: viewStore.firstName
+          givenName: viewStore.firstName,
+          size: 42
         )
 
         VStack(alignment: .leading) {
@@ -130,6 +133,7 @@ public struct FriendRowCardView: View {
     store: .init(
       initialState: FriendRowCardLogic.State(
         id: "1",
+        imageURL: "",
         displayName: "Taro Tanaka",
         firstName: "Taro",
         lastName: "Tanaka",

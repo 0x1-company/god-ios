@@ -1,7 +1,7 @@
 import ButtonStyles
 import Colors
 import God
-import NameImage
+import ProfilePicture
 import SwiftUI
 
 public struct FriendsSection: View {
@@ -24,18 +24,12 @@ public struct FriendsSection: View {
           action(state)
         } label: {
           HStack(alignment: .center, spacing: 12) {
-            AsyncImage(url: URL(string: state.imageURL)) { image in
-              image
-                .resizable()
-                .scaledToFill()
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
-            } placeholder: {
-              NameImage(
-                familyName: state.lastName,
-                givenName: state.firstName
-              )
-            }
+            ProfilePicture(
+              url: URL(string: state.imageURL),
+              familyName: state.lastName,
+              givenName: state.firstName,
+              size: 40
+            )
 
             Text(state.displayName.ja)
               .foregroundStyle(Color.godBlack)

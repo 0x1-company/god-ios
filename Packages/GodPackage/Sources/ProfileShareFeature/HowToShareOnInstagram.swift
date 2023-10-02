@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import NameImage
+import ProfilePicture
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
@@ -189,15 +189,12 @@ public struct HowToShareOnInstagramView: View {
     if let user {
       VStack(alignment: .center, spacing: 0) {
         VStack(alignment: .center, spacing: 24) {
-          AsyncImage(url: URL(string: user.imageURL)) { image in
-            image
-              .resizable()
-              .scaledToFill()
-              .frame(width: 80, height: 80)
-              .clipShape(Circle())
-          } placeholder: {
-            NameImage(familyName: user.lastName, givenName: user.firstName, size: 90)
-          }
+          ProfilePicture(
+            url: URL(string: user.imageURL),
+            familyName: user.lastName,
+            givenName: user.firstName,
+            size: 90
+          )
 
           VStack(alignment: .center, spacing: 0) {
             Text(user.displayName.ja)
