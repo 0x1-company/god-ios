@@ -26,6 +26,10 @@ query Activities($after: String) {
             ja
           }
         }
+        voteUser {
+          gender
+          grade
+        }
       }
     }
   }

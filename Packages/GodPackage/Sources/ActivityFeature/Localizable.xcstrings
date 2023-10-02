@@ -1,11 +1,61 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "3d" : {
-
+    "boy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
     },
-    "3年生の女子より" : {
-
+    "From a %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@より"
+          }
+        }
+      }
+    },
+    "From a %@ in %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From a %1$@ in %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@の%1$@より"
+          }
+        }
+      }
+    },
+    "girl" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
+          }
+        }
+      }
+    },
+    "non-binary" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "received" : {
       "localizations" : {

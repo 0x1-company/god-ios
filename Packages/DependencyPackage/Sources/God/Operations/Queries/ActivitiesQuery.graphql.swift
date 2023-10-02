@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Activities"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Activities($after: String) { listActivities(first: 100, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id imageURL text { __typename ja } } userId user { __typename imageURL firstName lastName displayName { __typename ja } } } } } }"#,
+        #"query Activities($after: String) { listActivities(first: 100, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename id createdAt question { __typename id imageURL text { __typename ja } } userId user { __typename imageURL firstName lastName displayName { __typename ja } } voteUser { __typename gender grade } } } } }"#,
         fragments: [NextPaginationFragment.self]
       ))
 
@@ -110,6 +110,7 @@ public extension God {
               .field("question", Question.self),
               .field("userId", String.self),
               .field("user", User.self),
+              .field("voteUser", VoteUser.self),
             ] }
 
             /// ID
@@ -119,6 +120,7 @@ public extension God {
             /// アクティビティの対象
             public var userId: String { __data["userId"] }
             public var user: User { __data["user"] }
+            public var voteUser: VoteUser { __data["voteUser"] }
 
             /// ListActivities.Edge.Node.Question
             ///
@@ -200,6 +202,26 @@ public extension God {
                 /// 日本語
                 public var ja: String { __data["ja"] }
               }
+            }
+
+            /// ListActivities.Edge.Node.VoteUser
+            ///
+            /// Parent Type: `PublicVoteUser`
+            public struct VoteUser: God.SelectionSet {
+              public let __data: DataDict
+              public init(_dataDict: DataDict) { __data = _dataDict }
+
+              public static var __parentType: ApolloAPI.ParentType { God.Objects.PublicVoteUser }
+              public static var __selections: [ApolloAPI.Selection] { [
+                .field("__typename", String.self),
+                .field("gender", GraphQLEnum<God.Gender>.self),
+                .field("grade", String?.self),
+              ] }
+
+              /// gender
+              public var gender: GraphQLEnum<God.Gender> { __data["gender"] }
+              /// 学年をテキストで返す
+              public var grade: String? { __data["grade"] }
             }
           }
         }
