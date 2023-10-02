@@ -16,7 +16,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "神を開放"
+            "value" : "はじめる"
           }
         }
       }
@@ -76,7 +76,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シークレットアラート"
+            "value" : "あなたを好きな人が\nいたときに通知します"
           }
         }
       }
