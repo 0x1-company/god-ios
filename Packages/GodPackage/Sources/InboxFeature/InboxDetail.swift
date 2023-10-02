@@ -61,7 +61,7 @@ public struct InboxDetailLogic: Reducer {
 
       case let .shareOnInstagramButtonTapped(.some(stickerImage)):
         guard
-          let storiesURL = URL(string: ""),
+          let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
           let imageData = stickerImage.pngData()
         else { return .none }
         let pasteboardItems: [String: Any] = [
@@ -200,16 +200,22 @@ public struct InboxDetailView: View {
             }
             Spacer()
             
-            Button {
-              let renderer = ImageRenderer(content: instagramStoryView)
-              renderer.scale = displayScale
-              store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
-            } label: {
-              Image(ImageResource.instagram)
-                .resizable()
-                .frame(width: 52, height: 52)
-                .clipShape(Circle())
+            HStack(spacing: 0) {
+              Spacer()
+
+              Button {
+                let renderer = ImageRenderer(content: instagramStoryView)
+                renderer.scale = displayScale
+                store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
+              } label: {
+                Image(ImageResource.instagram)
+                  .resizable()
+                  .frame(width: 52, height: 52)
+                  .clipShape(Circle())
+              }
+              .buttonStyle(HoldDownButtonStyle())
             }
+            .padding(.horizontal, 20)
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
