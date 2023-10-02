@@ -18,10 +18,12 @@ let package = Package(
     .library(name: "GodActionSheet", targets: ["GodActionSheet"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
     .library(name: "NameImage", targets: ["NameImage"]),
+    .library(name: "ProfilePicture", targets: ["ProfilePicture"]),
     .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
     .library(name: "SearchField", targets: ["SearchField"]),
   ],
   dependencies: [
+    .package(url: "https://github.com/onevcat/Kingfisher", from: "7.9.1"),
   ],
   targets: [
     .target(name: "AnimationDisableTransaction"),
@@ -32,6 +34,10 @@ let package = Package(
     .target(name: "GodActionSheet", dependencies: ["ButtonStyles"]),
     .target(name: "LabeledButton"),
     .target(name: "NameImage", dependencies: ["Colors"]),
+    .target(name: "ProfilePicture", dependencies: [
+      "NameImage",
+      .product(name: "Kingfisher", package: "Kingfisher"),
+    ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
   ]

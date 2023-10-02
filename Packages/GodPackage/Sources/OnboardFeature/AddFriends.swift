@@ -2,7 +2,7 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import NameImage
+import ProfilePicture
 import SwiftUI
 
 public struct AddFriendsLogic: Reducer {
@@ -85,19 +85,12 @@ public struct AddFriendsView: View {
 
           ForEach(viewStore.users, id: \.self) { user in
             HStack(alignment: .center, spacing: 16) {
-              AsyncImage(url: URL(string: user.imageURL)) { image in
-                image
-                  .resizable()
-                  .scaledToFill()
-                  .frame(width: 40, height: 40)
-                  .clipShape(Circle())
-              } placeholder: {
-                NameImage(
-                  familyName: user.lastName,
-                  givenName: user.firstName,
-                  size: 40
-                )
-              }
+              ProfilePicture(
+                url: URL(string: user.imageURL),
+                familyName: user.lastName,
+                givenName: user.firstName,
+                size: 40
+              )
 
               VStack(alignment: .leading) {
                 Text(user.displayName.ja)

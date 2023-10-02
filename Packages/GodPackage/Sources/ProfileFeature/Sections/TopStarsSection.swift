@@ -1,6 +1,7 @@
 import Colors
 import God
 import SwiftUI
+import Kingfisher
 
 public struct TopStarsSection: View {
   let questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
@@ -17,23 +18,22 @@ public struct TopStarsSection: View {
 
       ForEach(Array(questions.enumerated()), id: \.offset) { offset, question in
         HStack(spacing: 12) {
-          AsyncImage(url: URL(string: question.imageURL)) { image in
-            image
-              .resizable()
-              .scaledToFill()
-              .clipped()
-              .frame(width: 60, height: 60)
-          } placeholder: {
-            ProgressView()
-              .progressViewStyle(.circular)
-          }
-          .overlay(alignment: .bottomLeading) {
-            Image("digit-\(offset + 1)", bundle: .module)
-              .resizable()
-              .scaledToFit()
-              .frame(width: 20, height: 20)
-              .clipShape(Circle())
-          }
+          KFImage
+            .url(URL(string: question.imageURL))
+            .resizable()
+            .placeholder {
+              ProgressView()
+                .progressViewStyle(.circular)
+            }
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 60, height: 60)
+            .overlay(alignment: .bottomLeading) {
+              Image("digit-\(offset + 1)", bundle: .module)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
+                .clipShape(Circle())
+            }
 
           Text(question.text.ja)
             .multilineTextAlignment(.leading)

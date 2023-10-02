@@ -5,6 +5,7 @@ import FeedbackGeneratorClient
 import God
 import LabeledButton
 import SwiftUI
+import Kingfisher
 
 public struct PollQuestionLogic: Reducer {
   public init() {}
@@ -131,15 +132,15 @@ public struct PollQuestionView: View {
       VStack(spacing: 0) {
         Spacer()
 
-        AsyncImage(url: URL(string: viewStore.question.imageURL)) { image in
-          image
-            .resizable()
-            .scaledToFit()
-            .frame(height: 140)
-        } placeholder: {
-          ProgressView()
-            .progressViewStyle(.circular)
-        }
+        KFImage
+          .url(URL(string: viewStore.question.imageURL))
+          .placeholder {
+            ProgressView()
+              .progressViewStyle(.circular)
+          }
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+          .frame(height: 140)
 
         Spacer().frame(height: 24)
 

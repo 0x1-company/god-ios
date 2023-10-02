@@ -85,6 +85,7 @@ public struct AddLogic: Reducer {
         state.searchResult = [
           .init(
             id: data.user.id,
+            imageURL: data.user.imageURL,
             displayName: data.user.displayName.ja,
             firstName: data.user.firstName,
             lastName: data.user.lastName,
@@ -97,11 +98,17 @@ public struct AddLogic: Reducer {
         return .none
       case let .addPlusResponse(.success(data)):
         let friendRequests = data.friendRequests.edges.map {
-          FriendRequestCardLogic.State(friendId: $0.node.id, userId: $0.node.user.id, displayName: $0.node.user.displayName.ja, description: String(localized: "\($0.node.user.mutualFriendsCount) mutual friends", bundle: .module))
+          FriendRequestCardLogic.State(
+            friendId: $0.node.id,
+            userId: $0.node.user.id,
+            displayName: $0.node.user.displayName.ja,
+            description: String(localized: "\($0.node.user.mutualFriendsCount) mutual friends", bundle: .module)
+          )
         }
         let friendsOfFriends = data.friendsOfFriends.edges.map {
           FriendRowCardLogic.State(
             id: $0.node.id,
+            imageURL: $0.node.imageURL,
             displayName: $0.node.displayName.ja,
             firstName: $0.node.firstName,
             lastName: $0.node.lastName,
@@ -111,6 +118,7 @@ public struct AddLogic: Reducer {
         let fromSchools = data.fromSchool.edges.map {
           FriendRowCardLogic.State(
             id: $0.node.id,
+            imageURL: $0.node.imageURL,
             displayName: $0.node.displayName.ja,
             firstName: $0.node.firstName,
             lastName: $0.node.lastName,

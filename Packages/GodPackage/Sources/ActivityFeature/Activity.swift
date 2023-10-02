@@ -2,7 +2,7 @@ import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
-import NameImage
+import ProfilePicture
 import ProfileFeature
 import SwiftUI
 
@@ -104,18 +104,12 @@ public struct ActivityView: View {
             viewStore.send(.activityButtonTapped(edge))
           } label: {
             HStack(alignment: .top, spacing: 16) {
-              AsyncImage(url: URL(string: edge.node.user.imageURL)) { image in
-                image
-                  .resizable()
-                  .scaledToFill()
-                  .frame(width: 42, height: 42)
-                  .clipShape(Circle())
-              } placeholder: {
-                NameImage(
-                  familyName: edge.node.user.lastName,
-                  givenName: edge.node.user.firstName
-                )
-              }
+              ProfilePicture(
+                url: URL(string: edge.node.user.imageURL),
+                familyName: edge.node.user.lastName,
+                givenName: edge.node.user.firstName,
+                size: 42
+              )
 
               VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 4) {
