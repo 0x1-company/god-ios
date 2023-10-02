@@ -6,6 +6,7 @@ import SwiftUI
 public struct AnswerButton: View {
   let title: String
   let progress: Double
+  let color: Color
   let action: () -> Void
 
   @State var engine: CHHapticEngine?
@@ -17,10 +18,12 @@ public struct AnswerButton: View {
   public init(
     _ title: String,
     progress: Double,
+    color: Color,
     action: @escaping () -> Void
   ) {
     self.title = title
     self.progress = progress
+    self.color = color
     self.action = action
   }
 
@@ -46,10 +49,12 @@ public struct AnswerButton: View {
         .background(
           GeometryReader { proxy in
             HStack(spacing: 0) {
-              Color.godGreenLight
+              color
+                .opacity(0.4)
                 .frame(width: proxy.size.width * progress)
               Color.white
             }
+            .background(Color.white)
             .animation(.easeIn(duration: 0.2), value: progress)
           }
         )
@@ -104,23 +109,5 @@ public struct AnswerButton: View {
         fatalError("Failed to restart the engine: \(error)")
       }
     }
-  }
-}
-
-struct AnswerButtonPreviews: PreviewProvider {
-  static var previews: some View {
-    LazyVGrid(
-      columns: Array(repeating: GridItem(spacing: 16), count: 2),
-      spacing: 16,
-      content: {
-        AnswerButton("Ariana Duclos", progress: 0.1, action: {})
-        AnswerButton("Allie Yarbrough", progress: 0.3, action: {})
-        AnswerButton("Abby Arambula", progress: 0.5, action: {})
-        AnswerButton("Ava Griego", progress: 0.9, action: {})
-      }
-    )
-    .padding()
-    .background(Color.godGreen)
-    .previewLayout(.sizeThatFits)
   }
 }
