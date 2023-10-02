@@ -1,10 +1,10 @@
 import Colors
-import SwiftUI
 import God
+import SwiftUI
 
 public struct TopStarsSection: View {
   let questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
-  
+
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       Text("Top Stars", bundle: .module)
@@ -14,7 +14,7 @@ public struct TopStarsSection: View {
         .padding(.horizontal, 16)
 
       Divider()
-      
+
       ForEach(Array(questions.enumerated()), id: \.offset) { offset, question in
         HStack(spacing: 12) {
           AsyncImage(url: URL(string: question.imageURL)) { image in
@@ -34,12 +34,12 @@ public struct TopStarsSection: View {
               .frame(width: 20, height: 20)
               .clipShape(Circle())
           }
-          
+
           Text(question.text.ja)
             .multilineTextAlignment(.leading)
         }
         .frame(height: 84)
-        
+
         Divider()
       }
       .padding(.horizontal, 16)
