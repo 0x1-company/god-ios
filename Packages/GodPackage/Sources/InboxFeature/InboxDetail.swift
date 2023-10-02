@@ -29,7 +29,7 @@ public struct InboxDetailLogic: Reducer {
     case onTask
     case seeWhoSentItButtonTapped
     case closeButtonTapped
-    case shareOnInstagramButtonTapped(UIImage)
+    case shareOnInstagramButtonTapped(UIImage?)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -59,33 +59,24 @@ public struct InboxDetailLogic: Reducer {
         state.destination = nil
         return .none
 
-      case let .shareOnInstagramButtonTapped(stickerImage):
-        if let storiesUrl = URL(string: "instagram-stories://share?source_application=1049646559806019") {
-          if UIApplication.shared.canOpenURL(storiesUrl) {
-            guard let imageData = stickerImage.pngData() else {
-              assertionFailure()
-              return .none
-            }
-            let pasteboardItems: [String: Any] = [
-              "com.instagram.sharedSticker.stickerImage": imageData,
-              "com.instagram.sharedSticker.backgroundTopColor": "#000000",
-              "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
-            ]
-            UIPasteboard.general.setItems(
-              [pasteboardItems],
-              options: [.expirationDate: Date().addingTimeInterval(300)]
-            )
+      case let .shareOnInstagramButtonTapped(.some(stickerImage)):
+        guard
+          let storiesURL = URL(string: ""),
+          let imageData = stickerImage.pngData()
+        else { return .none }
+        let pasteboardItems: [String: Any] = [
+          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+        ]
+        UIPasteboard.general.setItems(
+          [pasteboardItems],
+          options: [.expirationDate: Date().addingTimeInterval(300)]
+        )
 
-            return .run { _ in
-              await openURL(storiesUrl)
-            }
-          } else {
-            print("Sorry the application is not installed")
-            assertionFailure()
-            return .none
-          }
+        return .run { _ in
+          await openURL(storiesURL)
         }
-        return .none
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = .fullName(
@@ -93,7 +84,7 @@ public struct InboxDetailLogic: Reducer {
         )
         return .none
 
-      case .destination:
+      default:
         return .none
       }
     }
@@ -208,6 +199,17 @@ public struct InboxDetailView: View {
                 .bold()
             }
             Spacer()
+            
+            Button {
+              let renderer = ImageRenderer(content: instagramStoryView)
+              renderer.scale = displayScale
+              store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
+            } label: {
+              Image(ImageResource.instagram)
+                .resizable()
+                .frame(width: 52, height: 52)
+                .clipShape(Circle())
+            }
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
