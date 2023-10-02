@@ -52,7 +52,7 @@ public struct FriendRequestsView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 0) {
+      LazyVStack(spacing: 0) {
         FriendHeader(title: "FRIEND REQUESTS")
 
         ForEachStore(
