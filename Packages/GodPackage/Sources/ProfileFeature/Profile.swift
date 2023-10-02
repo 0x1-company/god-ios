@@ -150,7 +150,7 @@ public struct ProfileView: View {
                 viewStore.send(.shopButtonTapped)
               }
             )
-            
+
             Divider()
 
             TopStarsSection(
