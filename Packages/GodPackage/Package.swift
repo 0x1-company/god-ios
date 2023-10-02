@@ -203,6 +203,7 @@ let package = Package(
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
+      .product(name: "StoreKitHelpers", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [

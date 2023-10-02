@@ -46,7 +46,7 @@ public struct InboxDetailLogic: Reducer {
 
       case .seeWhoSentItButtonTapped:
         state.destination = .reveal(
-          .init(activityId: state.activity.id)
+          .init(activity: state.activity)
         )
         return .none
 
@@ -79,6 +79,7 @@ public struct InboxDetailLogic: Reducer {
         }
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
+        state.destination = nil
         state.destination = .fullName(
           .init(fulName: fullName)
         )
