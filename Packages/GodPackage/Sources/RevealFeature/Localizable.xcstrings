@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@ per reveal" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@でヒントを見る"
+          }
+        }
+      }
     },
     "Close" : {
       "localizations" : {
@@ -13,9 +20,6 @@
           }
         }
       }
-    },
-    "S" : {
-
     },
     "See Full Name" : {
       "localizations" : {
@@ -28,10 +32,24 @@
       }
     },
     "The first letter in their name is..." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前の最初の文字は..."
+          }
+        }
+      }
     },
     "You have %lld reveals" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld回ヒントを見れます"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

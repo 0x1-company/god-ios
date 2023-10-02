@@ -12,14 +12,14 @@ public struct RevealLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var activityId: String
+    var activity: God.InboxFragment
     var isActivityIndicatorVisible = false
     var revealFullNameLimit = 0
     var product: StoreKit.Product?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
 
-    public init(activityId: String) {
-      self.activityId = activityId
+    public init(activity: God.InboxFragment) {
+      self.activity = activity
     }
   }
 
@@ -80,7 +80,7 @@ public struct RevealLogic: Reducer {
         }
 
       case .seeFullNameButtonTapped where state.revealFullNameLimit > 0:
-        let input = God.RevealFullNameInput(activityId: state.activityId)
+        let input = God.RevealFullNameInput(activityId: state.activity.id)
         return .run { send in
           await revealFullNameRequest(send: send, input: input)
         }
@@ -89,7 +89,9 @@ public struct RevealLogic: Reducer {
         guard let userId = state.currentUser?.id else { return .none }
         guard let token = UUID(uuidString: userId) else { return .none }
         guard let product = state.product else { return .none }
+
         state.isActivityIndicatorVisible = true
+
         return .run { send in
           let result = try await storeClient.purchase(product, token)
           switch result {
@@ -122,7 +124,7 @@ public struct RevealLogic: Reducer {
         return .none
 
       case let .transactionFinish(transaction):
-        let input = God.RevealFullNameInput(activityId: state.activityId)
+        let input = God.RevealFullNameInput(activityId: state.activity.id)
         return .run { send in
           await transaction.finish()
           await revealFullNameRequest(send: send, input: input)
@@ -189,12 +191,12 @@ public struct RevealView: View {
             .font(.title3)
             .bold()
 
-          Text("S")
-            .font(.largeTitle)
+          Text(viewStore.activity.initial ?? "")
+            .font(.system(size: 40))
             .bold()
             .foregroundColor(Color.godService)
         }
-        VStack {
+        VStack(spacing: 12) {
           Button {
             viewStore.send(.seeFullNameButtonTapped)
           } label: {
@@ -229,18 +231,5 @@ public struct RevealView: View {
       .multilineTextAlignment(.center)
       .task { await viewStore.send(.onTask).finish() }
     }
-  }
-}
-
-struct RevealViewPreviews: PreviewProvider {
-  static var previews: some View {
-    RevealView(
-      store: .init(
-        initialState: RevealLogic.State(
-          activityId: ""
-        ),
-        reducer: { RevealLogic() }
-      )
-    )
   }
 }

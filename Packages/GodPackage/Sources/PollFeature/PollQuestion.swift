@@ -139,8 +139,9 @@ public struct PollQuestionView: View {
               .progressViewStyle(.circular)
           }
           .resizable()
-          .aspectRatio(contentMode: .fill)
+          .aspectRatio(contentMode: .fit)
           .frame(height: 140)
+          .clipped()
 
         Spacer().frame(height: 24)
 
