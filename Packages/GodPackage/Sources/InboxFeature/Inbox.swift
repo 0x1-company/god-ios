@@ -85,15 +85,21 @@ public struct InboxLogic: Reducer {
         state.products = products
         return .none
 
-      case let .productsResponse(.failure):
+      case .productsResponse(.failure):
         return .none
 
       case .destination(.presented(.godMode(.delegate(.activated)))):
         state.destination = .activatedGodMode()
         return .run { send in
-          await activeSubscriptionRequest(send: send)
+          await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await activeSubscriptionRequest(send: send)
+            }
+            group.addTask {
+              await inboxActivitiesRequest(send: send)
+            }
+          }
         }
-
       case let .inboxActivitiesResponse(.success(data)):
         let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
         state.inboxActivities = inboxes

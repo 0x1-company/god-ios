@@ -30,6 +30,7 @@ public struct InboxDetailLogic: Reducer {
     case seeWhoSentItButtonTapped
     case closeButtonTapped
     case shareOnInstagramButtonTapped(UIImage?)
+    case showFullName(String)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -37,6 +38,7 @@ public struct InboxDetailLogic: Reducer {
   @Dependency(\.photos) var photos
   @Dependency(\.notificationCenter) var notificationCenter
   @Dependency(\.openURL) var openURL
+  @Dependency(\.mainQueue) var mainQueue
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -80,6 +82,12 @@ public struct InboxDetailLogic: Reducer {
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = nil
+        return .run { send in
+          try await mainQueue.sleep(for: .seconds(1))
+          await send(.showFullName(fullName))
+        }
+        
+      case let .showFullName(fullName):
         state.destination = .fullName(
           .init(fulName: fullName)
         )
@@ -275,7 +283,7 @@ public struct InboxDetailView: View {
               action: InboxDetailLogic.Destination.Action.fullName
             ) { store in
               FullNameView(store: store)
-                .presentationDetents([.fraction(0.4)])
+                .presentationDetents([.height(180)])
             }
           case .shareScreenshot:
             CaseLet(
