@@ -17,7 +17,12 @@ public struct PollLogic: Reducer {
     ) {
       pollId = poll.id
       pollQuestions = .init(
-        uniqueElements: poll.pollQuestions.map(PollQuestionLogic.State.init)
+        uniqueElements: poll.pollQuestions.enumerated().map {
+          PollQuestionLogic.State(
+            backgroundColor: Color("question-background-\($0.offset + 1)", bundle: .module),
+            pollQuestion: $0.element
+          )
+        }
       )
       currentId = pollQuestions[0].id
     }

@@ -12,6 +12,7 @@ public struct PollQuestionLogic: Reducer {
 
   public struct State: Equatable, Identifiable {
     public var id: String
+    var backgroundColor: Color
     var question: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.Question
     var choiceGroups: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup]
 
@@ -19,18 +20,18 @@ public struct PollQuestionLogic: Reducer {
     var isAnswered = false
     var currentIndex = 0
 
-    var backgroundColor: Color {
-      .red
-    }
-
     var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
       choiceGroups[currentIndex]
     }
 
-    public init(pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion) {
+    public init(
+      backgroundColor: Color,
+      pollQuestion: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion
+    ) {
       id = pollQuestion.id
       question = pollQuestion.question
       choiceGroups = pollQuestion.choiceGroups
+      self.backgroundColor = backgroundColor
     }
 
     public enum Step: Int {
@@ -159,7 +160,8 @@ public struct PollQuestionView: View {
           ForEach(viewStore.currentChoiceGroup.choices, id: \.self) { choice in
             AnswerButton(
               choice.text,
-              progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0
+              progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0,
+              color: viewStore.backgroundColor
             ) {
               viewStore.send(.voteButtonTapped(votedUserId: choice.userId))
             }
@@ -194,7 +196,7 @@ public struct PollQuestionView: View {
         .padding(.vertical, 64)
       }
       .padding(.horizontal, 36)
-      .background(Color.godGreen)
+      .background(viewStore.backgroundColor)
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
       .frame(height: UIScreen.main.bounds.height)
