@@ -32,7 +32,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共有リンクをコピー"
+            "value" : "あなたのリンクをコピー"
           }
         }
       }
@@ -66,7 +66,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リンクを追加する方法"
+            "value" : "ストーリーに\nリンクを追加しよう"
           }
         }
       }
@@ -136,7 +136,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共有する"
+            "value" : "シェアする"
           }
         }
       }
@@ -146,7 +146,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーで共有する"
+            "value" : "ストーリーでシェアする"
           }
         }
       }
@@ -156,7 +156,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロフィールを共有"
+            "value" : "プロフィールをシェア"
           }
         }
       }
@@ -166,7 +166,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーで\n共有する"
+            "value" : "ストーリーで\nプロフィールをシェアしよう"
           }
         }
       }
