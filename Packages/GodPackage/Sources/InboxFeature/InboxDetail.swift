@@ -189,15 +189,26 @@ public struct InboxDetailView: View {
               }
             }
 
-            VStack(spacing: 20) {
+            VStack(spacing: 32) {
               Text(viewStore.activity.question.text.ja)
                 .bold()
                 .font(.title2)
                 .foregroundColor(.white)
+              
+              VStack(spacing: 20) {
+                ChoiceGrid(
+                  color: genderColor(gender: viewStore.activity.voteUser.gender.value),
+                  choices: ["Tomoki Tsukiyama", "Satoya Hatanaka", "Anette Escobedo", "Nozomi Isshiki"],
+                  selectedChoice: "Tomoki Tsukiyama"
+                )
 
-              Text(verbatim: "godapp.jp")
-                .bold()
+                Text(verbatim: "godapp.jp")
+                  .bold()
+                  .font(.title3)
+              }
             }
+            .padding(.horizontal, 36)
+
             Spacer()
             
             HStack(spacing: 0) {
@@ -215,7 +226,7 @@ public struct InboxDetailView: View {
               }
               .buttonStyle(HoldDownButtonStyle())
             }
-            .padding(.horizontal, 20)
+            .padding(.all, 20)
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
