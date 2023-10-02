@@ -1,7 +1,7 @@
 import Colors
 import God
-import SwiftUI
 import Kingfisher
+import SwiftUI
 
 public struct TopStarsSection: View {
   let questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
