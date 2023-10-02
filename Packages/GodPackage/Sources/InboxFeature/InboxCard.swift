@@ -1,24 +1,53 @@
 import ButtonStyles
 import Colors
 import SwiftUI
+import God
 
 public struct InboxCard: View {
-  let gender: String
-  let createdAt: Date
-  let isRead: Bool
+  let inbox: God.InboxFragment
   let action: () -> Void
+  
+  var gender: String {
+    switch inbox.voteUser.gender.value {
+    case .male:
+      return String(localized: "boy", bundle: .module)
+    case .female:
+      return String(localized: "girl", bundle: .module)
+    default:
+      return String(localized: "non-binary", bundle: .module)
+    }
+  }
+  
+  var genderIcon: ImageResource {
+    switch inbox.voteUser.gender.value {
+    case .male:
+      return ImageResource.boyIcon
+    case .female:
+      return ImageResource.girlIcon
+    default:
+      return ImageResource.otherIcon
+    }
+  }
+  
+  var createdAt: Date? {
+    guard let interval = TimeInterval(inbox.createdAt)
+    else { return nil }
+    return Date(timeIntervalSince1970: interval / 1000.0)
+  }
 
   public var body: some View {
     Button(action: action) {
       HStack(spacing: 0) {
         LabeledContent {
-          Text(createdAt, style: .relative)
-            .font(.footnote)
+          if let createdAt {
+            Text(createdAt, style: .relative)
+              .font(.footnote)
+          }
         } label: {
           Label {
             Text("From a \(gender)", bundle: .module)
           } icon: {
-            Image(isRead ? ImageResource.unreadIcon : ImageResource.otherIcon)
+            Image(inbox.isRead ? ImageResource.unreadIcon : genderIcon)
               .resizable()
               .scaledToFit()
               .frame(width: 56)
@@ -27,8 +56,8 @@ public struct InboxCard: View {
         .padding(.horizontal, 16)
       }
       .frame(height: 72)
-      .foregroundStyle(isRead ? Color.godTextSecondaryLight : Color.primary)
-      .background(isRead ? Color.godBackgroundWhite : Color.white)
+      .foregroundStyle(inbox.isRead ? Color.godTextSecondaryLight : Color.primary)
+      .background(inbox.isRead ? Color.godBackgroundWhite : Color.white)
       .cornerRadius(8)
       .compositingGroup()
       .shadow(color: Color.black.opacity(0.1), radius: 10)
@@ -36,22 +65,4 @@ public struct InboxCard: View {
     .listRowSeparator(.hidden)
     .buttonStyle(HoldDownButtonStyle())
   }
-}
-
-#Preview {
-  InboxCard(
-    gender: "男子",
-    createdAt: .now,
-    isRead: true,
-    action: {}
-  )
-}
-
-#Preview {
-  InboxCard(
-    gender: "女子",
-    createdAt: .now,
-    isRead: false,
-    action: {}
-  )
 }

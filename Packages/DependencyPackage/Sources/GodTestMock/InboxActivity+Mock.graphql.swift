@@ -15,6 +15,7 @@ public class InboxActivity: MockObject {
     @Field<String>("initial") public var initial
     @Field<Bool>("isRead") public var isRead
     @Field<Question>("question") public var question
+    @Field<PublicVoteUser>("voteUser") public var voteUser
   }
 }
 
@@ -24,7 +25,8 @@ public extension Mock where O == InboxActivity {
     id: God.ID? = nil,
     initial: String? = nil,
     isRead: Bool? = nil,
-    question: Mock<Question>? = nil
+    question: Mock<Question>? = nil,
+    voteUser: Mock<PublicVoteUser>? = nil
   ) {
     self.init()
     _setScalar(createdAt, for: \.createdAt)
@@ -32,5 +34,6 @@ public extension Mock where O == InboxActivity {
     _setScalar(initial, for: \.initial)
     _setScalar(isRead, for: \.isRead)
     _setEntity(question, for: \.question)
+    _setEntity(voteUser, for: \.voteUser)
   }
 }

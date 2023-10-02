@@ -11,7 +11,9 @@ public extension Color {
   static let godTextSecondaryLight = Color(ColorResource.textSecondaryLight)
   static let godWhite = Color(ColorResource.white)
   static let godBackgroundWhite = Color(ColorResource.backgroundWhite)
+  
   static let godBlue = Color(ColorResource.blue)
+  static let godPink = Color(ColorResource.pink)
 
   static let godPurple = Color(ColorResource.purple)
   static let godPurpleLight = Color(ColorResource.purpleLight)

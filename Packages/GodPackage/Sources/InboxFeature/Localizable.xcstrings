@@ -14,13 +14,39 @@
         }
       }
     },
-    "Close" : {
+    "boy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
+    },
+    "From %@" : {
       "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "閉じる"
+            "value" : "%@より"
+          }
+        }
+      }
+    },
+    "From %@\nin %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From %1$@\nin %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@の%1$@より"
           }
         }
       }
@@ -45,9 +71,6 @@
         }
       }
     },
-    "From someone\nin 11th grade" : {
-
-    },
     "From the God team" : {
       "localizations" : {
         "ja" : {
@@ -58,13 +81,12 @@
         }
       }
     },
-    "God" : {
-      "extractionState" : "stale",
+    "girl" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "God"
+            "value" : "女子"
           }
         }
       }
@@ -81,6 +103,16 @@
     },
     "LBHS" : {
 
+    },
+    "non-binary" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "N年生の男子から" : {
 
@@ -114,6 +146,9 @@
           }
         }
       }
+    },
+    "someone" : {
+
     },
     "Tap a message in your inbox to reveal the sender" : {
       "localizations" : {

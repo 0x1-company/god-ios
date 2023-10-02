@@ -15,19 +15,11 @@ public struct InboxLogic: Reducer {
     var fromGodTeamCard = FromGodTeamCardLogic.State()
     @PresentationState var destination: Destination.State?
 
-    var inboxes: [InboxCardState] = []
     var inboxActivities: [God.InboxFragment] = []
     var products: [Product] = []
     var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
 
     public init() {}
-
-    public struct InboxCardState: Equatable, Identifiable {
-      public let id: String
-      let gender: String
-      let createdAt: Date
-      let isRead: Bool
-    }
   }
 
   public enum Action: Equatable {
@@ -93,8 +85,7 @@ public struct InboxLogic: Reducer {
         state.products = products
         return .none
 
-      case let .productsResponse(.failure(error)):
-        print(error)
+      case let .productsResponse(.failure):
         return .none
 
       case .destination(.presented(.godMode(.delegate(.activated)))):
@@ -106,16 +97,6 @@ public struct InboxLogic: Reducer {
       case let .inboxActivitiesResponse(.success(data)):
         let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
         state.inboxActivities = inboxes
-        state.inboxes = inboxes.compactMap {
-          guard let createdAt = TimeInterval($0.createdAt)
-          else { return nil }
-          return State.InboxCardState(
-            id: $0.id,
-            gender: "",
-            createdAt: Date(timeIntervalSince1970: createdAt / 1000.0),
-            isRead: $0.isRead
-          )
-        }
         return .none
 
       case let .activeSubscriptionResponse(.success(data)):
@@ -196,13 +177,9 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
-          ForEach(viewStore.inboxes) { state in
-            InboxCard(
-              gender: state.gender,
-              createdAt: state.createdAt,
-              isRead: state.isRead
-            ) {
-              viewStore.send(.activityButtonTapped(id: state.id), transaction: .animationDisable)
+          ForEach(viewStore.inboxActivities, id: \.self) { inbox in
+            InboxCard(inbox: inbox) {
+              viewStore.send(.activityButtonTapped(id: inbox.id), transaction: .animationDisable)
             }
           }
 

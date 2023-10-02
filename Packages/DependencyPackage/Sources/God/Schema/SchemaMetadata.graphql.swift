@@ -52,12 +52,12 @@ public extension God {
       case "UserEdge": return God.Objects.UserEdge
       case "InboxActivityConnection": return God.Objects.InboxActivityConnection
       case "InboxActivityEdge": return God.Objects.InboxActivityEdge
+      case "PublicVoteUser": return God.Objects.PublicVoteUser
       case "FriendConnection": return God.Objects.FriendConnection
       case "FriendEdge": return God.Objects.FriendEdge
       case "ActivityConnection": return God.Objects.ActivityConnection
       case "ActivityEdge": return God.Objects.ActivityEdge
       case "Activity": return God.Objects.Activity
-      case "PublicVoteUser": return God.Objects.PublicVoteUser
       case "CurrentPoll": return God.Objects.CurrentPoll
       case "CoolDown": return God.Objects.CoolDown
       case "Poll": return God.Objects.Poll

@@ -31,7 +31,6 @@ public struct InboxDetailLogic: Reducer {
     case closeButtonTapped
     case shareOnInstagramButtonTapped(UIImage)
     case destination(PresentationAction<Destination.Action>)
-    case userDidTakeScreenshotNotification
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -43,12 +42,8 @@ public struct InboxDetailLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .run { send in
-          _ = await photos.requestAuthorization(.readWrite)
-          for await _ in await notificationCenter.userDidTakeScreenshotNotification() {
-            await send(.userDidTakeScreenshotNotification)
-          }
-        }
+        return .none
+
       case .seeWhoSentItButtonTapped:
         state.destination = .reveal(
           .init(activityId: state.activity.id)
@@ -59,18 +54,6 @@ public struct InboxDetailLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-      case .userDidTakeScreenshotNotification:
-        guard case .authorized = photos.authorizationStatus(.readWrite)
-        else { return .none }
-        let options = PHFetchOptions()
-        options.fetchLimit = 1
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        guard let asset = photos.fetchAssets(options).first
-        else { return .none }
-        state.destination = .shareScreenshot(
-          ShareScreenshotLogic.State(asset: asset)
-        )
-        return .none
 
       case .destination(.dismiss):
         state.destination = nil
@@ -153,6 +136,39 @@ public struct InboxDetailView: View {
   public init(store: StoreOf<InboxDetailLogic>) {
     self.store = store
   }
+  
+  func backgroundColor(gender: God.Gender?) -> Color {
+    switch gender {
+    case .male:
+      return Color.godBlue
+    case .female:
+      return Color.godPink
+    default:
+      return Color.godPurple
+    }
+  }
+  
+  func genderIcon(gender: God.Gender?) -> ImageResource {
+    switch gender {
+    case .male:
+      return ImageResource.boy
+    case .female:
+      return ImageResource.girl
+    default:
+      return ImageResource.other
+    }
+  }
+  
+  func genderText(gender: God.Gender?) -> String {
+    switch gender {
+    case .male:
+      return String(localized: "boy", bundle: .module)
+    case .female:
+      return String(localized: "girl", bundle: .module)
+    default:
+      return String(localized: "someone", bundle: .module)
+    }
+  }
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -168,24 +184,30 @@ public struct InboxDetailView: View {
             Spacer()
 
             VStack(spacing: 20) {
-              Image(.other)
+              Image(genderIcon(gender: viewStore.activity.voteUser.gender.value))
                 .resizable()
                 .frame(width: 80, height: 80)
 
-              Text("From someone\nin 11th grade", bundle: .module)
+              if let grade = viewStore.activity.voteUser.grade {
+                Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value))\nin \(grade)", bundle: .module)
+              } else {
+                Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
+              }
             }
 
             VStack(spacing: 20) {
-              Text(verbatim: viewStore.activity.question.text.ja)
+              Text(viewStore.activity.question.text.ja)
                 .bold()
+                .font(.title2)
+                .foregroundColor(.white)
 
-              Text("godapp.jp", bundle: .module)
+              Text(verbatim: "godapp.jp")
                 .bold()
             }
             Spacer()
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(Color.godPurple)
+          .background(backgroundColor(gender: viewStore.activity.voteUser.gender.value))
           .foregroundColor(.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
@@ -208,21 +230,7 @@ public struct InboxDetailView: View {
             }
             .buttonStyle(HoldDownButtonStyle())
           }
-        }.overlay(
-          Button(action: {
-            let renderer = ImageRenderer(content: shareOnInstagramStoryView)
-            renderer.scale = displayScale
-            if let image = renderer.uiImage {
-              viewStore.send(.shareOnInstagramButtonTapped(image))
-            }
-          }) {
-            Image("instagram", bundle: .module)
-              .resizable()
-              .frame(width: 36, height: 36)
-              .cornerRadius(18)
-          }.offset(x: -48, y: -48),
-          alignment: .bottomTrailing
-        )
+        }
       }
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
