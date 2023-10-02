@@ -14,13 +14,28 @@
         }
       }
     },
-    "Close" : {
-      "extractionState" : "stale",
+    "boy" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "閉じる"
+            "value" : "男子"
+          }
+        }
+      }
+    },
+    "From %@\nin %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From %1$@\nin %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@の%1$@より"
           }
         }
       }
@@ -45,9 +60,6 @@
         }
       }
     },
-    "From someone\nin 11th grade" : {
-
-    },
     "From the God team" : {
       "localizations" : {
         "ja" : {
@@ -58,13 +70,12 @@
         }
       }
     },
-    "God" : {
-      "extractionState" : "stale",
+    "girl" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "God"
+            "value" : "女子"
           }
         }
       }
@@ -80,9 +91,6 @@
       }
     },
     "LBHS" : {
-
-    },
-    "N年生の男子から" : {
 
     },
     "OK" : {
@@ -111,6 +119,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "誰が送ったか見る"
+          }
+        }
+      }
+    },
+    "someone" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
           }
         }
       }

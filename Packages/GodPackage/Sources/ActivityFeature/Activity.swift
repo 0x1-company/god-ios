@@ -100,36 +100,8 @@ public struct ActivityView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       List {
         ForEach(viewStore.edges, id: \.cursor) { edge in
-          Button {
-            viewStore.send(.activityButtonTapped(edge))
-          } label: {
-            HStack(alignment: .top, spacing: 16) {
-              ProfilePicture(
-                url: URL(string: edge.node.user.imageURL),
-                familyName: edge.node.user.lastName,
-                givenName: edge.node.user.firstName,
-                size: 42
-              )
-
-              VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 4) {
-                  Text(edge.node.user.displayName.ja)
-                    .bold()
-                    .font(.callout)
-                  Text("received", bundle: .module)
-                    .font(.footnote)
-                }
-
-                Text(edge.node.question.text.ja)
-                Text("3年生の女子より", bundle: .module)
-                  .foregroundColor(.secondary)
-              }
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-              Text("3d", bundle: .module)
-                .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 8)
+          ActivityCard(activity: edge) { activity in
+            viewStore.send(.activityButtonTapped(activity))
           }
         }
       }

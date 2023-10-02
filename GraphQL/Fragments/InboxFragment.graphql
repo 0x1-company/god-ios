@@ -10,4 +10,8 @@ fragment InboxFragment on InboxActivity {
       ja
     }
   }
+  voteUser {
+    grade
+    gender
+  }
 }

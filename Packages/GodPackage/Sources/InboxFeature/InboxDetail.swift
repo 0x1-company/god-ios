@@ -29,9 +29,8 @@ public struct InboxDetailLogic: Reducer {
     case onTask
     case seeWhoSentItButtonTapped
     case closeButtonTapped
-    case shareOnInstagramButtonTapped(UIImage)
+    case shareOnInstagramButtonTapped(UIImage?)
     case destination(PresentationAction<Destination.Action>)
-    case userDidTakeScreenshotNotification
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -43,12 +42,8 @@ public struct InboxDetailLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .run { send in
-          _ = await photos.requestAuthorization(.readWrite)
-          for await _ in await notificationCenter.userDidTakeScreenshotNotification() {
-            await send(.userDidTakeScreenshotNotification)
-          }
-        }
+        return .none
+
       case .seeWhoSentItButtonTapped:
         state.destination = .reveal(
           .init(activityId: state.activity.id)
@@ -59,50 +54,29 @@ public struct InboxDetailLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-      case .userDidTakeScreenshotNotification:
-        guard case .authorized = photos.authorizationStatus(.readWrite)
-        else { return .none }
-        let options = PHFetchOptions()
-        options.fetchLimit = 1
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        guard let asset = photos.fetchAssets(options).first
-        else { return .none }
-        state.destination = .shareScreenshot(
-          ShareScreenshotLogic.State(asset: asset)
-        )
-        return .none
 
       case .destination(.dismiss):
         state.destination = nil
         return .none
 
-      case let .shareOnInstagramButtonTapped(stickerImage):
-        if let storiesUrl = URL(string: "instagram-stories://share?source_application=1049646559806019") {
-          if UIApplication.shared.canOpenURL(storiesUrl) {
-            guard let imageData = stickerImage.pngData() else {
-              assertionFailure()
-              return .none
-            }
-            let pasteboardItems: [String: Any] = [
-              "com.instagram.sharedSticker.stickerImage": imageData,
-              "com.instagram.sharedSticker.backgroundTopColor": "#000000",
-              "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
-            ]
-            UIPasteboard.general.setItems(
-              [pasteboardItems],
-              options: [.expirationDate: Date().addingTimeInterval(300)]
-            )
+      case let .shareOnInstagramButtonTapped(.some(stickerImage)):
+        guard
+          let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
+          let imageData = stickerImage.pngData()
+        else { return .none }
+        let pasteboardItems: [String: Any] = [
+          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+        ]
+        UIPasteboard.general.setItems(
+          [pasteboardItems],
+          options: [.expirationDate: Date().addingTimeInterval(300)]
+        )
 
-            return .run { _ in
-              await openURL(storiesUrl)
-            }
-          } else {
-            print("Sorry the application is not installed")
-            assertionFailure()
-            return .none
-          }
+        return .run { _ in
+          await openURL(storiesURL)
         }
-        return .none
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = .fullName(
@@ -110,7 +84,7 @@ public struct InboxDetailLogic: Reducer {
         )
         return .none
 
-      case .destination:
+      default:
         return .none
       }
     }
@@ -153,39 +127,109 @@ public struct InboxDetailView: View {
   public init(store: StoreOf<InboxDetailLogic>) {
     self.store = store
   }
+  
+  func genderColor(gender: God.Gender?) -> Color {
+    switch gender {
+    case .male:
+      return Color.godBlue
+    case .female:
+      return Color.godPink
+    default:
+      return Color.godPurple
+    }
+  }
+  
+  func genderIcon(gender: God.Gender?) -> ImageResource {
+    switch gender {
+    case .male:
+      return ImageResource.boy
+    case .female:
+      return ImageResource.girl
+    default:
+      return ImageResource.other
+    }
+  }
+  
+  func genderText(gender: God.Gender?) -> String {
+    switch gender {
+    case .male:
+      return String(localized: "boy", bundle: .module)
+    case .female:
+      return String(localized: "girl", bundle: .module)
+    default:
+      return String(localized: "someone", bundle: .module)
+    }
+  }
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let shareOnInstagramStoryView = shareOnInstagramStoryView(question: viewStore.activity.question.text.ja)
+      let instagramStoryView = InstagramStoryView(
+        question: viewStore.activity.question.text.ja,
+        color: genderColor(gender: viewStore.activity.voteUser.gender.value),
+        icon: genderIcon(gender: viewStore.activity.voteUser.gender.value),
+        gender: genderText(gender: viewStore.activity.voteUser.gender.value),
+        grade: viewStore.activity.voteUser.grade
+      )
       ZStack {
-        // instagramへのシェア用のView
-        shareOnInstagramStoryView
-
-        Color.black
+        instagramStoryView
 
         VStack {
           VStack(spacing: 50) {
             Spacer()
 
             VStack(spacing: 20) {
-              Image(.other)
+              Image(genderIcon(gender: viewStore.activity.voteUser.gender.value))
                 .resizable()
                 .frame(width: 80, height: 80)
 
-              Text("From someone\nin 11th grade", bundle: .module)
+              if let grade = viewStore.activity.voteUser.grade {
+                Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value))\nin \(grade)", bundle: .module)
+              } else {
+                Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
+              }
             }
 
-            VStack(spacing: 20) {
-              Text(verbatim: viewStore.activity.question.text.ja)
+            VStack(spacing: 32) {
+              Text(viewStore.activity.question.text.ja)
                 .bold()
+                .font(.title2)
+                .foregroundColor(.white)
+              
+              VStack(spacing: 20) {
+                ChoiceGrid(
+                  color: genderColor(gender: viewStore.activity.voteUser.gender.value),
+                  choices: ["Tomoki Tsukiyama", "Satoya Hatanaka", "Anette Escobedo", "Nozomi Isshiki"],
+                  selectedChoice: "Tomoki Tsukiyama"
+                )
 
-              Text("godapp.jp", bundle: .module)
-                .bold()
+                Text(verbatim: "godapp.jp")
+                  .bold()
+                  .font(.title3)
+              }
             }
+            .padding(.horizontal, 36)
+
             Spacer()
+            
+            HStack(spacing: 0) {
+              Spacer()
+
+              Button {
+                let renderer = ImageRenderer(content: instagramStoryView)
+                renderer.scale = displayScale
+                store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
+              } label: {
+                Image(ImageResource.instagram)
+                  .resizable()
+                  .frame(width: 52, height: 52)
+                  .clipShape(Circle())
+              }
+              .buttonStyle(HoldDownButtonStyle())
+            }
+            .padding(.all, 20)
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(Color.godPurple)
+          .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
           .foregroundColor(.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
@@ -208,21 +252,7 @@ public struct InboxDetailView: View {
             }
             .buttonStyle(HoldDownButtonStyle())
           }
-        }.overlay(
-          Button(action: {
-            let renderer = ImageRenderer(content: shareOnInstagramStoryView)
-            renderer.scale = displayScale
-            if let image = renderer.uiImage {
-              viewStore.send(.shareOnInstagramButtonTapped(image))
-            }
-          }) {
-            Image("instagram", bundle: .module)
-              .resizable()
-              .frame(width: 36, height: 36)
-              .cornerRadius(18)
-          }.offset(x: -48, y: -48),
-          alignment: .bottomTrailing
-        )
+        }
       }
       .task { await viewStore.send(.onTask).finish() }
       .sheet(
@@ -259,97 +289,5 @@ public struct InboxDetailView: View {
         }
       }
     }
-  }
-
-  @ViewBuilder
-  private func shareOnInstagramStoryView(question: String) -> some View {
-    let mockChoices = ["Nozomi Isshiki", "Anette Escobedo", "Satoya Hatanaka", "Ava Griego"]
-    let mockSelectedUser = "Nozomi Isshiki"
-    VStack(alignment: .center, spacing: 12) {
-      HStack(alignment: .center, spacing: 8) {
-        Image("boy", bundle: .module)
-          .resizable()
-          .frame(width: 36, height: 36)
-
-        Text("N年生の男子から")
-          .font(.callout)
-          .bold()
-          .foregroundColor(.white)
-          .lineLimit(2)
-          .multilineTextAlignment(.leading)
-
-        Spacer()
-
-        Text("LBHS")
-          .font(.body)
-          .bold()
-          .foregroundColor(.godWhite)
-          .frame(height: 32)
-          .padding(.horizontal, 8)
-          .background(Color.godGray)
-          .cornerRadius(20)
-      }
-      VStack(alignment: .center, spacing: 0) {
-        Text(question)
-          .font(.callout)
-          .bold()
-          .foregroundColor(.godWhite)
-          .lineLimit(2)
-          .frame(height: 80, alignment: .center)
-
-        LazyVGrid(
-          columns: Array(repeating: GridItem(spacing: 16), count: 2),
-          spacing: 16
-        ) {
-          ForEach(mockChoices, id: \.self) { choice in
-            let isSelectedUser = choice == mockSelectedUser
-            Text(verbatim: choice)
-              .font(.callout)
-              .bold()
-              .lineLimit(2)
-              .multilineTextAlignment(.leading)
-              .padding(.horizontal, 16)
-              .frame(height: 64)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .foregroundStyle(Color.godPurple)
-              .background(
-                Color.godWhite
-              )
-              .cornerRadius(8)
-              .opacity(isSelectedUser ? 1 : 0.6)
-              .overlay(
-                isSelectedUser ?
-                  Image("finger-icon", bundle: .module)
-                  .resizable()
-                  .frame(width: 48, height: 48)
-                  .rotationEffect(.degrees(-30))
-                  .shadow(color: .godPurple, radius: 8)
-                  .offset(x: 20, y: -20) : nil,
-                alignment: .topTrailing
-              )
-          }
-        }
-
-        Image("god-icon-white", bundle: .module)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(height: 24)
-          .foregroundStyle(Color.godWhite)
-          .padding(.top, 10)
-          .padding(.bottom, 4)
-
-        Text(verbatim: "godapp.jp")
-          .font(.callout)
-          .bold()
-          .foregroundColor(.godWhite)
-      }
-      .padding(.horizontal, 16)
-      .padding(.bottom, 16)
-      .background(Color.godPurple)
-      .cornerRadius(8)
-    }
-    .frame(maxWidth: .infinity)
-    .padding(.horizontal, 44)
-    .background(Color.clear)
   }
 }

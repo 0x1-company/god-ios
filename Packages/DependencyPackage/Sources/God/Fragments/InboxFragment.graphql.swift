@@ -6,7 +6,7 @@
 public extension God {
   struct InboxFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment InboxFragment on InboxActivity { __typename id initial isRead createdAt question { __typename id imageURL text { __typename ja } } }"#
+      #"fragment InboxFragment on InboxActivity { __typename id initial isRead createdAt question { __typename id imageURL text { __typename ja } } voteUser { __typename grade gender } }"#
     }
 
     public let __data: DataDict
@@ -20,6 +20,7 @@ public extension God {
       .field("isRead", Bool.self),
       .field("createdAt", God.Date.self),
       .field("question", Question.self),
+      .field("voteUser", VoteUser.self),
     ] }
 
     /// ID
@@ -30,6 +31,7 @@ public extension God {
     public var isRead: Bool { __data["isRead"] }
     public var createdAt: God.Date { __data["createdAt"] }
     public var question: Question { __data["question"] }
+    public var voteUser: VoteUser { __data["voteUser"] }
 
     /// Question
     ///
@@ -68,6 +70,26 @@ public extension God {
         /// 日本語
         public var ja: String { __data["ja"] }
       }
+    }
+
+    /// VoteUser
+    ///
+    /// Parent Type: `PublicVoteUser`
+    public struct VoteUser: God.SelectionSet {
+      public let __data: DataDict
+      public init(_dataDict: DataDict) { __data = _dataDict }
+
+      public static var __parentType: ApolloAPI.ParentType { God.Objects.PublicVoteUser }
+      public static var __selections: [ApolloAPI.Selection] { [
+        .field("__typename", String.self),
+        .field("grade", String?.self),
+        .field("gender", GraphQLEnum<God.Gender>.self),
+      ] }
+
+      /// 学年をテキストで返す
+      public var grade: String? { __data["grade"] }
+      /// gender
+      public var gender: GraphQLEnum<God.Gender> { __data["gender"] }
     }
   }
 

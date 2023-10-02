@@ -124,6 +124,7 @@ public extension God {
             public var isRead: Bool { __data["isRead"] }
             public var createdAt: God.Date { __data["createdAt"] }
             public var question: InboxFragment.Question { __data["question"] }
+            public var voteUser: InboxFragment.VoteUser { __data["voteUser"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
