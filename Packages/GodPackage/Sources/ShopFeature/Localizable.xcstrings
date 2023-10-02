@@ -59,7 +59,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの名前を\n表示させる友だちを選ぶ"
+            "value" : "どの友だちに\n自分の名前を表示したいですか？"
           }
         }
       }
