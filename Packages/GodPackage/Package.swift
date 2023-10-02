@@ -39,6 +39,7 @@ let package = Package(
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
     .package(path: "../DependencyPackage"),
+    .package(url: "https://github.com/onevcat/Kingfisher", from: "7.9.1"),
     .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
     .package(url: "https://github.com/edonv/SwiftUIMessage", from: "0.0.3"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
@@ -161,6 +162,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PollFeature", dependencies: [
+      .product(name: "Kingfisher", package: "Kingfisher"),
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
@@ -182,8 +184,9 @@ let package = Package(
       "ShopFeature",
       "ProfileEditFeature",
       "ProfileShareFeature",
-      .product(name: "ProfilePicture", package: "UIComponentPackage"),
+      .product(name: "Kingfisher", package: "Kingfisher"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "ProfilePicture", package: "UIComponentPackage"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),

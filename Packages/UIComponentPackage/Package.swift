@@ -16,7 +16,6 @@ let package = Package(
     .library(name: "ColorHex", targets: ["ColorHex"]),
     .library(name: "Colors", targets: ["Colors"]),
     .library(name: "GodActionSheet", targets: ["GodActionSheet"]),
-    .library(name: "GodAsyncImage", targets: ["GodAsyncImage"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
     .library(name: "NameImage", targets: ["NameImage"]),
     .library(name: "ProfilePicture", targets: ["ProfilePicture"]),
@@ -33,9 +32,6 @@ let package = Package(
     .target(name: "ColorHex"),
     .target(name: "Colors", dependencies: ["ColorHex"]),
     .target(name: "GodActionSheet", dependencies: ["ButtonStyles"]),
-    .target(name: "GodAsyncImage", dependencies: [
-      .product(name: "Kingfisher", package: "Kingfisher"),
-    ]),
     .target(name: "LabeledButton"),
     .target(name: "NameImage", dependencies: ["Colors"]),
     .target(name: "ProfilePicture", dependencies: [
