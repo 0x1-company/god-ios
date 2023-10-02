@@ -44,6 +44,7 @@ public extension God {
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
       case "Wallet": return God.Objects.Wallet
+      case "Question": return God.Objects.Question
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem
       case "UserConnection": return God.Objects.UserConnection
@@ -51,7 +52,6 @@ public extension God {
       case "UserEdge": return God.Objects.UserEdge
       case "InboxActivityConnection": return God.Objects.InboxActivityConnection
       case "InboxActivityEdge": return God.Objects.InboxActivityEdge
-      case "Question": return God.Objects.Question
       case "FriendConnection": return God.Objects.FriendConnection
       case "FriendEdge": return God.Objects.FriendEdge
       case "ActivityConnection": return God.Objects.ActivityConnection

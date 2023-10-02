@@ -124,9 +124,6 @@ public struct ProfileExternalView: View {
             ProgressView()
               .progressViewStyle(.circular)
           }
-          Divider()
-
-          TopStarsSection()
         }
       }
       .navigationTitle(Text("Profile", bundle: .module))

@@ -1,9 +1,0 @@
-query QuestionsOrderByVotedDesc($first:Int!) {
-  questionsOrderByVotedDesc(first:$first) {
-    id
-    imageURL
-    text {
-      ja
-    }
-  }
-}

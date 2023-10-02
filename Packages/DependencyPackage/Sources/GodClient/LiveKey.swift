@@ -34,16 +34,12 @@ public extension GodClient {
         let query = God.CurrentUserQuery()
         return apolloClient.watch(query: query)
       },
-      profile: {
-        let query = God.ProfileQuery()
+      currentUserProfile: {
+        let query = God.CurrentUserProfileQuery()
         return apolloClient.watch(query: query)
       },
       peopleYouMayKnow: {
         let query = God.PeopleYouMayKnowQuery(first: 20)
-        return apolloClient.watch(query: query)
-      },
-      topStars: {
-        let query = God.QuestionsOrderByVotedDescQuery(first: 3)
         return apolloClient.watch(query: query)
       },
       schools: {
