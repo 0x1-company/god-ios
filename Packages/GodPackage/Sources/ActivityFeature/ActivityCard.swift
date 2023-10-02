@@ -1,11 +1,11 @@
-import SwiftUI
 import God
 import ProfilePicture
+import SwiftUI
 
 public struct ActivityCard: View {
   let activity: God.ActivitiesQuery.Data.ListActivities.Edge
   let action: (God.ActivitiesQuery.Data.ListActivities.Edge) -> Void
-  
+
   var gender: String {
     switch activity.node.voteUser.gender.value {
     case .male:
@@ -16,7 +16,7 @@ public struct ActivityCard: View {
       return String(localized: "non-binary", bundle: .module)
     }
   }
-  
+
   var genderIcon: ImageResource {
     switch activity.node.voteUser.gender.value {
     case .male:
@@ -27,7 +27,7 @@ public struct ActivityCard: View {
       return ImageResource.other
     }
   }
-  
+
   var createdAt: Date? {
     guard let interval = TimeInterval(activity.node.createdAt)
     else { return nil }
@@ -63,7 +63,7 @@ public struct ActivityCard: View {
               .aspectRatio(contentMode: .fit)
               .clipped()
               .frame(width: 14, height: 14)
-            
+
             Group {
               if let grade = activity.node.voteUser.grade {
                 Text("From a \(gender) in \(grade)", bundle: .module)
@@ -75,7 +75,7 @@ public struct ActivityCard: View {
           }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        
+
 //        if let createdAt {
 //          Text(createdAt, style: .relative)
 //            .foregroundColor(.secondary)

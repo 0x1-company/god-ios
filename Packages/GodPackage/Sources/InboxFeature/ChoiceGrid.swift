@@ -4,7 +4,7 @@ struct ChoiceGrid: View {
   let color: Color
   let choices: [String]
   let selectedChoice: String
-  
+
   var body: some View {
     LazyVGrid(
       columns: Array(repeating: GridItem(spacing: 16), count: 2),

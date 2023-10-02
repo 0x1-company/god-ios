@@ -1,6 +1,6 @@
 import Colors
-import SwiftUI
 import God
+import SwiftUI
 
 struct InstagramStoryView: View {
   let question: String
@@ -25,11 +25,11 @@ struct InstagramStoryView: View {
             Text("From a \(gender)", bundle: .module)
           }
         }
-          .font(.callout)
-          .bold()
-          .lineLimit(2)
-          .foregroundColor(.white)
-          .frame(maxWidth: .infinity, alignment: .leading)
+        .font(.callout)
+        .bold()
+        .lineLimit(2)
+        .foregroundColor(.white)
+        .frame(maxWidth: .infinity, alignment: .leading)
 
         Text(verbatim: "LBHS")
           .font(.body)
