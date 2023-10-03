@@ -217,6 +217,7 @@ let package = Package(
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "SearchField", package: "UIComponentPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "ProfilePicture", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
   ]

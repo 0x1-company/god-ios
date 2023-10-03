@@ -5,6 +5,7 @@ import God
 import GodClient
 import SearchField
 import SwiftUI
+import ProfilePicture
 
 public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
@@ -95,20 +96,23 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           .padding(.bottom, 46)
           .background(Color.godService)
 
-        SearchField(text: viewStore.$searchQuery)
+//        SearchField(text: viewStore.$searchQuery)
 
         Divider()
 
         ScrollView {
-          VStack(spacing: 0) {
+          LazyVStack(spacing: 0) {
             ForEach(viewStore.friends, id: \.self) { friend in
               Button {
                 viewStore.send(.friendButtonTapped(friend))
               } label: {
                 HStack(spacing: 16) {
-                  Color.red
-                    .frame(width: 42, height: 42)
-                    .clipShape(Circle())
+                  ProfilePicture(
+                    url: URL(string: friend.imageURL),
+                    familyName: friend.lastName,
+                    givenName: friend.firstName,
+                    size: 42
+                  )
 
                   Text(friend.displayName.ja)
                     .foregroundStyle(Color.black)
