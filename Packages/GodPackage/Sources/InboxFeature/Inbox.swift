@@ -15,7 +15,7 @@ public struct InboxLogic: Reducer {
     var fromGodTeamCard = FromGodTeamCardLogic.State()
     @PresentationState var destination: Destination.State?
 
-    var inboxActivities: [God.InboxFragment] = []
+    var inboxActivities: [God.InboxCardFragment] = []
     var products: [Product] = []
     var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
 
@@ -29,6 +29,8 @@ public struct InboxLogic: Reducer {
     case productsResponse(TaskResult<[Product]>)
     case inboxActivitiesResponse(TaskResult<God.InboxActivitiesQuery.Data>)
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
+    case inboxActivityResponse(TaskResult<God.InboxActivityQuery.Data>)
+    case readActivityResponse(TaskResult<God.ReadActivityMutation.Data>)
     case destination(PresentationAction<Destination.Action>)
     case fromGodTeamCard(FromGodTeamCardLogic.Action)
   }
@@ -38,6 +40,8 @@ public struct InboxLogic: Reducer {
 
   enum Cancel {
     case readActivity
+    case inboxActivity
+    case inboxActivities
   }
 
   public var body: some Reducer<State, Action> {
@@ -61,18 +65,18 @@ public struct InboxLogic: Reducer {
             }
           }
         }
-      case let .activityButtonTapped(id):
-        let isInGodMode = state.subscription != nil
-        guard let activity = state.inboxActivities.first(where: { $0.id == id })
-        else { return .none }
-        state.destination = .inboxDetail(
-          .init(activity: activity, isInGodMode: isInGodMode)
+      case let .activityButtonTapped(activityId):
+        return Effect<Action>.merge(
+          Effect<Action>.run(operation: { send in
+            await inboxActivityRequest(send: send, id: activityId)
+          })
+          .cancellable(id: Cancel.inboxActivity, cancelInFlight: true),
+
+          Effect<Action>.run(operation: { send in
+            await readActivityRequest(send: send, activityId: activityId)
+          })
+          .cancellable(id: Cancel.readActivity, cancelInFlight: true)
         )
-        return .run { send in
-          _ = try await godClient.readActivity(id)
-          await inboxActivitiesRequest(send: send)
-        }
-        .cancellable(id: Cancel.readActivity, cancelInFlight: true)
 
       case .seeWhoLikesYouButtonTapped:
         let id = storeClient.godModeId()
@@ -101,13 +105,27 @@ public struct InboxLogic: Reducer {
           }
         }
       case let .inboxActivitiesResponse(.success(data)):
-        let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxFragment)
+        let inboxes = data.listInboxActivities.edges.map(\.node.fragments.inboxCardFragment)
         state.inboxActivities = inboxes
         return .none
 
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
         return .none
+        
+      case let .inboxActivityResponse(.success(data)):
+        let activity = data.inboxActivity.fragments.inboxFragment
+        let isInGodMode = state.subscription != nil
+        state.destination = .inboxDetail(
+          .init(activity: activity, isInGodMode: isInGodMode)
+        )
+        return .none
+        
+      case .readActivityResponse(.success):
+        return .run { send in
+          await inboxActivitiesRequest(send: send)
+        }
+        .cancellable(id: Cancel.inboxActivities, cancelInFlight: true)
 
       case .fromGodTeamCard(.delegate(.showDetail)):
         state.destination = .fromGodTeam(.init())
@@ -136,6 +154,22 @@ public struct InboxLogic: Reducer {
     } catch {
       await send(.inboxActivitiesResponse(.failure(error)))
     }
+  }
+  
+  func inboxActivityRequest(send: Send<Action>, id: String) async {
+    do {
+      for try await data in godClient.inboxActivity(id) {
+        await send(.inboxActivityResponse(.success(data)), transaction: .animationDisable)
+      }
+    } catch {
+      await send(.inboxActivityResponse(.failure(error)))
+    }
+  }
+  
+  func readActivityRequest(send: Send<Action>, activityId: String) async {
+    await send(.readActivityResponse(TaskResult {
+      try await godClient.readActivity(activityId)
+    }))
   }
 
   func activeSubscriptionRequest(send: Send<Action>) async {
@@ -185,7 +219,7 @@ public struct InboxView: View {
         List {
           ForEach(viewStore.inboxActivities, id: \.self) { inbox in
             InboxCard(inbox: inbox) {
-              viewStore.send(.activityButtonTapped(id: inbox.id), transaction: .animationDisable)
+              viewStore.send(.activityButtonTapped(id: inbox.id))
             }
           }
 

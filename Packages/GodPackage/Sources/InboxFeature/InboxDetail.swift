@@ -47,9 +47,7 @@ public struct InboxDetailLogic: Reducer {
         return .none
 
       case .seeWhoSentItButtonTapped:
-        state.destination = .reveal(
-          .init(activity: state.activity)
-        )
+        state.destination = .reveal(.init(activity: state.activity))
         return .none
 
       case .closeButtonTapped:

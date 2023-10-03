@@ -115,7 +115,7 @@ public struct AddLogic: Reducer {
             description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module)
           )
         }
-        let fromSchools = data.fromSchool.edges.map {
+        let fromSchools = data.usersBySameSchool.edges.map {
           FriendRowCardLogic.State(
             id: $0.node.id,
             imageURL: $0.node.imageURL,

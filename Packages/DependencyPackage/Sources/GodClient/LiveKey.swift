@@ -66,6 +66,10 @@ public extension GodClient {
         let query = God.InboxActivitiesQuery(first: 100, after: .null)
         return apolloClient.watch(query: query)
       },
+      inboxActivity: {
+        let query = God.InboxActivityQuery(id: $0)
+        return apolloClient.watch(query: query)
+      },
       currentPoll: {
         let query = God.CurrentPollQuery()
         return apolloClient.watch(query: query)
