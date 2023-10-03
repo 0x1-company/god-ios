@@ -26,15 +26,9 @@
     },
     "From %@\nin %@" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "From %1$@\nin %2$@"
-          }
-        },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "%2$@の%1$@より"
           }
         }

@@ -7,6 +7,7 @@ import StoreKit
 import StoreKitClient
 import StoreKitHelpers
 import SwiftUI
+import Build
 
 public struct RevealLogic: Reducer {
   public init() {}
@@ -39,6 +40,7 @@ public struct RevealLogic: Reducer {
     }
   }
 
+  @Dependency(\.build) var build
   @Dependency(\.store) var storeClient
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
@@ -52,7 +54,8 @@ public struct RevealLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        let id = storeClient.revealId()
+        guard let id = build.infoDictionary("REVEAL_POLL_ID", for: String.self)
+        else { return .none }
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
@@ -70,7 +73,8 @@ public struct RevealLogic: Reducer {
         }
 
       case let .productsResponse(.success(products)):
-        let id = storeClient.revealId()
+        guard let id = build.infoDictionary("REVEAL_POLL_ID", for: String.self)
+        else { return .none }
         state.product = products.first(where: { $0.id == id })
         return .none
 

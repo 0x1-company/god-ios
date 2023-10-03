@@ -7,6 +7,7 @@ import GodModeFeature
 import StoreKit
 import StoreKitClient
 import SwiftUI
+import Build
 
 public struct InboxLogic: Reducer {
   public init() {}
@@ -35,6 +36,7 @@ public struct InboxLogic: Reducer {
     case fromGodTeamCard(FromGodTeamCardLogic.Action)
   }
 
+  @Dependency(\.build) var build
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
 
@@ -51,7 +53,8 @@ public struct InboxLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        let id = storeClient.godModeId()
+        guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
+        else { return .none }
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
@@ -79,7 +82,8 @@ public struct InboxLogic: Reducer {
         )
 
       case .seeWhoLikesYouButtonTapped:
-        let id = storeClient.godModeId()
+        guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
+        else { return .none }
         guard let product = state.products.first(where: { $0.id == id })
         else { return .none }
         state.destination = .godMode(.init(product: product))

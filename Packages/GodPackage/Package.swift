@@ -201,6 +201,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "RevealFeature", dependencies: [
+      .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
