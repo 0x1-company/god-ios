@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import ProfilePicture
 
 public struct FriendRequestCardLogic: Reducer {
   public init() {}
@@ -15,20 +16,11 @@ public struct FriendRequestCardLogic: Reducer {
 
     var friendId: String
     var userId: String
+    var imageURL: String
     var displayName: String
+    var firstName: String
+    var lastName: String
     var description: String
-
-    public init(
-      friendId: String,
-      userId: String,
-      displayName: String,
-      description: String
-    ) {
-      self.friendId = friendId
-      self.userId = userId
-      self.displayName = displayName
-      self.description = description
-    }
   }
 
   public enum Action: Equatable {
@@ -83,34 +75,33 @@ public struct FriendRequestCardView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack(alignment: .center, spacing: 16) {
-        Color.red
-          .frame(width: 40, height: 40)
-          .clipShape(Circle())
+        ProfilePicture(
+          url: URL(string: viewStore.imageURL),
+          familyName: viewStore.lastName,
+          givenName: viewStore.firstName,
+          size: 42
+        )
 
         VStack(alignment: .leading) {
           Text(verbatim: viewStore.displayName)
+            .bold()
 
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
+            .font(.footnote)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
         HStack(spacing: 0) {
           Button {
-            viewStore.send(.hideButtonTapped)
-          } label: {
-            Text("HIDE", bundle: .module)
-              .frame(width: 80, height: 34)
-              .foregroundStyle(.secondary)
-          }
-
-          Button {
             viewStore.send(.approveButtonTapped)
           } label: {
             Text("APPROVE", bundle: .module)
+              .font(.callout)
+              .bold()
               .foregroundStyle(Color.white)
               .frame(height: 34)
-              .frame(minWidth: 80, maxWidth: 120)
+              .padding(.horizontal, 12)
               .background(Color.godService)
               .clipShape(Capsule())
           }
@@ -121,19 +112,4 @@ public struct FriendRequestCardView: View {
       .padding(.horizontal, 16)
     }
   }
-}
-
-#Preview {
-  FriendRequestCardView(
-    store: .init(
-      initialState: FriendRequestCardLogic.State(
-        friendId: "1",
-        userId: "3",
-        displayName: "Tomoki Tsukiyama",
-        description: "1 mutual friend"
-
-      ),
-      reducer: { FriendRequestCardLogic() }
-    )
-  )
 }

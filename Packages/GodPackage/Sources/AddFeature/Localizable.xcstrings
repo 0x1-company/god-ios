@@ -21,9 +21,6 @@
         }
       }
     },
-    "1 mutual friend" : {
-
-    },
     "ADD" : {
       "localizations" : {
         "ja" : {
@@ -34,22 +31,12 @@
         }
       }
     },
-    "ADDED" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だち"
-          }
-        }
-      }
-    },
     "APPROVE" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "承認"
+            "value" : "承認する"
           }
         }
       }
@@ -94,16 +81,6 @@
         }
       }
     },
-    "HIDE" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "非表示"
-          }
-        }
-      }
-    },
     "INVITATIONS LEFT" : {
       "localizations" : {
         "ja" : {
@@ -120,6 +97,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "招待する"
+          }
+        }
+      }
+    },
+    "REQUESTED" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リクエストした"
           }
         }
       }
