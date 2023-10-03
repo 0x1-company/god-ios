@@ -48,11 +48,11 @@ public struct OneTimeCodeLogic: Reducer {
   @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.phoneNumberParse) var phoneNumberParse
   @Dependency(\.phoneNumberFormat) var phoneNumberFormat
-  
+
   enum Cancel {
     case signUp
   }
-  
+
   public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce<State, Action> { state, action in
@@ -65,7 +65,7 @@ public struct OneTimeCodeLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .resendButtonTapped:
         state.oneTimeCode = ""
         return .run { [state] send in
@@ -102,7 +102,7 @@ public struct OneTimeCodeLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .signInResponse(.success):
         guard let number = userDefaults.phoneNumber() else {
           state.isActivityIndicatorVisible = false
@@ -130,28 +130,28 @@ public struct OneTimeCodeLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .createUserResponse(.success):
         state.isActivityIndicatorVisible = false
         return .run { @MainActor send in
           send(.delegate(.nextScreen), animation: .default)
         }
-        
+
       case .createUserResponse(.failure):
         state.isActivityIndicatorVisible = false
         return .send(.delegate(.popToRoot), animation: .default)
-        
+
       case .alert(.presented(.confirmOkay)):
         return .run { _ in
           await dismiss()
         }
-        
+
 //      case .binding(\.$oneTimeCode):
 //        guard state.oneTimeCode.count >= 6 else {
 //          return .none
 //        }
 //        return .send(.nextButtonTapped)
-        
+
       default:
         return .none
       }
