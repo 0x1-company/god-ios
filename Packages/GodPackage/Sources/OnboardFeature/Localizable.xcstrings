@@ -388,6 +388,9 @@
         }
       }
     },
+    "Sorry, that username is not available!" : {
+
+    },
     "title" : {
 
     },
@@ -400,6 +403,9 @@
           }
         }
       }
+    },
+    "username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined" : {
+
     },
     "We sent you a code to verify\nyour number" : {
       "localizations" : {
