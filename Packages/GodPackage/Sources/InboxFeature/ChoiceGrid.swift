@@ -1,9 +1,9 @@
 import SwiftUI
+import God
 
 struct ChoiceGrid: View {
   let color: Color
-  let choices: [String]
-  let selectedChoice: String
+  let choices: [God.InboxFragment.Choice]
 
   var body: some View {
     LazyVGrid(
@@ -11,23 +11,22 @@ struct ChoiceGrid: View {
       spacing: 16
     ) {
       ForEach(choices, id: \.self) { choice in
-        let isSelectedUser: Bool = choice == selectedChoice
-        Text(verbatim: choice)
+        Text(verbatim: choice.text)
           .font(.callout)
           .bold()
           .lineLimit(2)
-          .multilineTextAlignment(.leading)
+          .multilineTextAlignment(.center)
           .padding(.horizontal, 16)
           .frame(height: 64)
-          .frame(maxWidth: .infinity, alignment: .leading)
+          .frame(maxWidth: .infinity, alignment: .center)
           .foregroundStyle(color)
           .background(
             Color.godWhite
           )
           .cornerRadius(8)
-          .opacity(isSelectedUser ? 1 : 0.6)
+          .opacity(choice.isSelected ? 1 : 0.6)
           .overlay(alignment: .topTrailing) {
-            if isSelectedUser {
+            if choice.isSelected {
               Image(ImageResource.fingerIcon)
                 .resizable()
                 .frame(width: 48, height: 48)

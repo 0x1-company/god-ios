@@ -10,6 +10,7 @@ public class InboxActivity: MockObject {
   public typealias MockValueCollectionType = Array<Mock<InboxActivity>>
 
   public struct MockFields {
+    @Field<[VoteChoice]>("choices") public var choices
     @Field<God.Date>("createdAt") public var createdAt
     @Field<God.ID>("id") public var id
     @Field<String>("initial") public var initial
@@ -21,6 +22,7 @@ public class InboxActivity: MockObject {
 
 public extension Mock where O == InboxActivity {
   convenience init(
+    choices: [Mock<VoteChoice>]? = nil,
     createdAt: God.Date? = nil,
     id: God.ID? = nil,
     initial: String? = nil,
@@ -29,6 +31,7 @@ public extension Mock where O == InboxActivity {
     voteUser: Mock<PublicVoteUser>? = nil
   ) {
     self.init()
+    _setList(choices, for: \.choices)
     _setScalar(createdAt, for: \.createdAt)
     _setScalar(id, for: \.id)
     _setScalar(initial, for: \.initial)

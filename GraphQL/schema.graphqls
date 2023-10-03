@@ -192,6 +192,8 @@ enum Gender {
 }
 
 type InboxActivity {
+  """投票の際に表示されていた選択肢"""
+  choices: [VoteChoice!]!
   createdAt: Date!
 
   """ID"""
@@ -336,6 +338,9 @@ type PublicVoteUser {
 
   """学年をテキストで返す"""
   grade: String
+
+  """user id"""
+  id: ID!
 }
 
 input PurchaseInput {
@@ -367,10 +372,8 @@ type Query {
 
   """フレンドのフレンド一覧"""
   friendsOfFriends(after: String, first: Int!): UserConnection!
-
-  """同じ学校に所属しているユーザー一覧"""
-  fromSchool(after: String, first: Int!): UserConnection!
   getRedis(key: String!): String!
+  inboxActivity(id: String!): InboxActivity!
 
   """フレンドのActivityを一覧で取得する"""
   listActivities(after: String, first: Int!): ActivityConnection!
@@ -396,6 +399,9 @@ type Query {
 
   """ユーザーを取得"""
   user(where: UserWhere!): User!
+
+  """同じ学校に所属しているユーザー一覧"""
+  usersBySameSchool(after: String, first: Int!): UserConnection!
 
   """ユーザー名で指定したユーザーが投票された質問を最大5個まで降順で取得する"""
   votedQuestions(username: String!): VotedQuestions!
@@ -613,6 +619,14 @@ type Vote {
 
   """投票された人"""
   votedUserId: String!
+}
+
+type VoteChoice {
+  id: String!
+  isSelected: Boolean!
+  orderIndex: Int!
+  text: String!
+  userId: String!
 }
 
 type VotedQuestions {

@@ -1,7 +1,6 @@
 fragment InboxFragment on InboxActivity {
   id
   initial
-  isRead
   createdAt
   question {
     id
@@ -11,7 +10,15 @@ fragment InboxFragment on InboxActivity {
     }
   }
   voteUser {
+    id
     grade
     gender
+  }
+  choices {
+    id
+    userId
+    text
+    orderIndex
+    isSelected
   }
 }

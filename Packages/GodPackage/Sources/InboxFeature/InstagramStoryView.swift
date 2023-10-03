@@ -8,10 +8,9 @@ struct InstagramStoryView: View {
   let icon: ImageResource
   let gender: String
   let grade: String?
+  let choices: [God.InboxFragment.Choice]
 
   var body: some View {
-    let mockChoices = ["Nozomi Isshiki", "Anette Escobedo", "Satoya Hatanaka", "Ava Griego"]
-    let mockSelectedUser = "Nozomi Isshiki"
     VStack(spacing: 12) {
       HStack(spacing: 8) {
         Image(icon)
@@ -50,8 +49,7 @@ struct InstagramStoryView: View {
 
         ChoiceGrid(
           color: color,
-          choices: mockChoices,
-          selectedChoice: mockSelectedUser
+          choices: choices
         )
 
         Image(ImageResource.godIconWhite)
@@ -84,6 +82,7 @@ struct InstagramStoryView: View {
     color: Color.godBlue,
     icon: ImageResource.boy,
     gender: "boy",
-    grade: "11th"
+    grade: "11th",
+    choices: []
   )
 }

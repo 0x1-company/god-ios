@@ -10,7 +10,7 @@ public struct AddFriendsLogic: Reducer {
 
   public struct State: Equatable {
     let schoolId: String?
-    var users: [God.PeopleYouMayKnowQuery.Data.FromSchool.Edge.Node] = []
+    var users: [God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node] = []
 
     public init(schoolId: String?) {
       self.schoolId = schoolId
@@ -48,7 +48,7 @@ public struct AddFriendsLogic: Reducer {
         }
 
       case let .usersResponse(.success(data)):
-        state.users = data.fromSchool.edges.map(\.node)
+        state.users = data.usersBySameSchool.edges.map(\.node)
         return .none
 
       case .usersResponse(.failure):

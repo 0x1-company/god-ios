@@ -4,7 +4,7 @@ import God
 import SwiftUI
 
 public struct InboxCard: View {
-  let inbox: God.InboxFragment
+  let inbox: God.InboxCardFragment
   let action: () -> Void
 
   var gender: String {

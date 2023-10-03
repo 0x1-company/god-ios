@@ -1,5 +1,5 @@
 # import '../fragments/NextPaginationFragment'
-# import '../fragments/InboxFragment'
+# import '../fragments/InboxCardFragment'
 
 query InboxActivities($first: Int!, $after: String){
   listInboxActivities(first:$first, after:$after) {
@@ -9,7 +9,7 @@ query InboxActivities($first: Int!, $after: String){
     edges {
       cursor
       node {
-        ...InboxFragment
+        ...InboxCardFragment
       }
     }
   }

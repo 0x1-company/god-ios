@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "PeopleYouMayKnow"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query PeopleYouMayKnow($first: Int!) { fromSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName displayName { __typename ja } grade } } } }"#
+        #"query PeopleYouMayKnow($first: Int!) { usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName displayName { __typename ja } grade } } } }"#
       ))
 
     public var first: Int
@@ -25,16 +25,16 @@ public extension God {
 
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
-        .field("fromSchool", FromSchool.self, arguments: ["first": .variable("first")]),
+        .field("usersBySameSchool", UsersBySameSchool.self, arguments: ["first": .variable("first")]),
       ] }
 
       /// 同じ学校に所属しているユーザー一覧
-      public var fromSchool: FromSchool { __data["fromSchool"] }
+      public var usersBySameSchool: UsersBySameSchool { __data["usersBySameSchool"] }
 
-      /// FromSchool
+      /// UsersBySameSchool
       ///
       /// Parent Type: `UserConnection`
-      public struct FromSchool: God.SelectionSet {
+      public struct UsersBySameSchool: God.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -46,7 +46,7 @@ public extension God {
 
         public var edges: [Edge] { __data["edges"] }
 
-        /// FromSchool.Edge
+        /// UsersBySameSchool.Edge
         ///
         /// Parent Type: `UserEdge`
         public struct Edge: God.SelectionSet {
@@ -61,7 +61,7 @@ public extension God {
 
           public var node: Node { __data["node"] }
 
-          /// FromSchool.Edge.Node
+          /// UsersBySameSchool.Edge.Node
           ///
           /// Parent Type: `User`
           public struct Node: God.SelectionSet {
@@ -92,7 +92,7 @@ public extension God {
             /// 学年をテキストで返す
             public var grade: String? { __data["grade"] }
 
-            /// FromSchool.Edge.Node.DisplayName
+            /// UsersBySameSchool.Edge.Node.DisplayName
             ///
             /// Parent Type: `LocalizableString`
             public struct DisplayName: God.SelectionSet {

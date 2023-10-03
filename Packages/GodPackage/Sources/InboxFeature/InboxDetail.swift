@@ -47,9 +47,7 @@ public struct InboxDetailLogic: Reducer {
         return .none
 
       case .seeWhoSentItButtonTapped:
-        state.destination = .reveal(
-          .init(activity: state.activity)
-        )
+        state.destination = .reveal(.init(activity: state.activity))
         return .none
 
       case .closeButtonTapped:
@@ -177,7 +175,8 @@ public struct InboxDetailView: View {
         color: genderColor(gender: viewStore.activity.voteUser.gender.value),
         icon: genderIcon(gender: viewStore.activity.voteUser.gender.value),
         gender: genderText(gender: viewStore.activity.voteUser.gender.value),
-        grade: viewStore.activity.voteUser.grade
+        grade: viewStore.activity.voteUser.grade,
+        choices: viewStore.activity.choices
       )
       ZStack {
         instagramStoryView
@@ -207,8 +206,7 @@ public struct InboxDetailView: View {
               VStack(spacing: 20) {
                 ChoiceGrid(
                   color: genderColor(gender: viewStore.activity.voteUser.gender.value),
-                  choices: ["Tomoki Tsukiyama", "Satoya Hatanaka", "Anette Escobedo", "Nozomi Isshiki"],
-                  selectedChoice: "Tomoki Tsukiyama"
+                  choices: viewStore.activity.choices
                 )
 
                 Text(verbatim: "godapp.jp")
