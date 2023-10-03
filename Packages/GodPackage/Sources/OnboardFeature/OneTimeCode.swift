@@ -198,8 +198,6 @@ public struct OneTimeCodeView: View {
             .bold()
             .font(.title3)
 
-          Text("Sent to \(viewStore.phoneNumber)", bundle: .module)
-
           TextField(
             text: viewStore.binding(
               get: \.oneTimeCode,

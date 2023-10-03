@@ -368,6 +368,7 @@
       }
     },
     "Sent to %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -405,7 +406,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "電話番号を確認するためにコードを送りました。\nあなたの電話番号は"
+            "value" : "電話番号を確認するためにコードを送りました。"
           }
         }
       }
