@@ -129,34 +129,3 @@ public struct AddFriendsView: View {
     }
   }
 }
-
-// #Preview {
-//  NavigationStack {
-//    AddFriendsView(
-//      store: .init(
-//        initialState: AddFriendsLogic.State(
-//          schoolId: "1"
-//        ),
-//        reducer: { AddFriendsLogic() }
-//      )
-//    )
-//    AddFriendsView(
-//      store: Store(initialState: AddFriendsLogic.State(schoolId: "")) {
-//        AddFriendsLogic()
-//      } withDependencies: {
-//        $0.godClient.usersBySchool = { value in
-//          AsyncThrowingStream { continuation in
-//            continuation.yield(
-//              God.UsersBySchoolQuery.Data(
-//                _dataDict: DataDict(
-//                  data: [:],
-//                  fulfilledFragments: []
-//                )
-//              )
-//            )
-//          }
-//        }
-//      }
-//    )
-//  }
-// }

@@ -367,17 +367,6 @@
         }
       }
     },
-    "Sent to %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@にコードを送信しました"
-          }
-        }
-      }
-    },
     "Skip" : {
       "localizations" : {
         "ja" : {
