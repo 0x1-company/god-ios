@@ -11,6 +11,7 @@ public class VoteChoice: MockObject {
 
   public struct MockFields {
     @Field<String>("id") public var id
+    @Field<Bool>("isSelected") public var isSelected
     @Field<Int>("orderIndex") public var orderIndex
     @Field<String>("text") public var text
     @Field<String>("userId") public var userId
@@ -20,12 +21,14 @@ public class VoteChoice: MockObject {
 public extension Mock where O == VoteChoice {
   convenience init(
     id: String? = nil,
+    isSelected: Bool? = nil,
     orderIndex: Int? = nil,
     text: String? = nil,
     userId: String? = nil
   ) {
     self.init()
     _setScalar(id, for: \.id)
+    _setScalar(isSelected, for: \.isSelected)
     _setScalar(orderIndex, for: \.orderIndex)
     _setScalar(text, for: \.text)
     _setScalar(userId, for: \.userId)

@@ -6,7 +6,7 @@
 public extension God {
   struct InboxFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment InboxFragment on InboxActivity { __typename id initial createdAt question { __typename id imageURL text { __typename ja } } voteUser { __typename id grade gender } choices { __typename id userId text orderIndex } }"#
+      #"fragment InboxFragment on InboxActivity { __typename id initial createdAt question { __typename id imageURL text { __typename ja } } voteUser { __typename id grade gender } choices { __typename id userId text orderIndex isSelected } }"#
     }
 
     public let __data: DataDict
@@ -109,12 +109,14 @@ public extension God {
         .field("userId", String.self),
         .field("text", String.self),
         .field("orderIndex", Int.self),
+        .field("isSelected", Bool.self),
       ] }
 
       public var id: String { __data["id"] }
       public var userId: String { __data["userId"] }
       public var text: String { __data["text"] }
       public var orderIndex: Int { __data["orderIndex"] }
+      public var isSelected: Bool { __data["isSelected"] }
     }
   }
 

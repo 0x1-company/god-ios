@@ -19,5 +19,6 @@ fragment InboxFragment on InboxActivity {
     userId
     text
     orderIndex
+    isSelected
   }
 }

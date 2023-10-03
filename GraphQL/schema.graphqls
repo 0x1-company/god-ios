@@ -623,6 +623,7 @@ type Vote {
 
 type VoteChoice {
   id: String!
+  isSelected: Boolean!
   orderIndex: Int!
   text: String!
   userId: String!
