@@ -3,6 +3,7 @@ import Colors
 import SwiftUI
 
 struct ShopItemView: View {
+  let id: String
   let name: String
   let description: String?
   let amount: Int
@@ -10,8 +11,11 @@ struct ShopItemView: View {
 
   var body: some View {
     HStack(alignment: .center, spacing: 16) {
-      Color.red
+      Image(id, bundle: .module)
+        .resizable()
+        .aspectRatio(contentMode: .fill)
         .frame(width: 60, height: 60)
+      
       VStack(spacing: 4) {
         Text(name)
           .font(.callout)
@@ -50,6 +54,7 @@ struct ShopItemView: View {
 
 #Preview {
   ShopItemView(
+    id: "PutYourNameInYourCrushsPoll",
     name: "Put Your Name in Your Crush's Poll",
     description: "Your name remains secret",
     amount: 300,

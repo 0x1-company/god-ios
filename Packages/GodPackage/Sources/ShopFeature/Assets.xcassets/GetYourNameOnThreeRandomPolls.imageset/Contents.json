@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "get-your-name-on-three-random-polls.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
