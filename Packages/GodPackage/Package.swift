@@ -83,7 +83,7 @@ let package = Package(
     .target(name: "CashOutFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ], resources: [.copy("coin.json")]),
+    ], resources: [.copy("Coin.json")]),
     .target(name: "CupertinoMessageFeature", dependencies: [
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
