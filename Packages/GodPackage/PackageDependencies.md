@@ -66,6 +66,7 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     OnboardFeature-->HowItWorksFeature;
+    OnboardFeature-->Kingfisher;
     OnboardFeature-->GodClient;
     OnboardFeature-->Constants;
     OnboardFeature-->AsyncValue;
