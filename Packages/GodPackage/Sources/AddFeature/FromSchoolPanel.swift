@@ -10,12 +10,24 @@ public struct FromSchoolPanelLogic: Reducer {
 
   public enum Action: Equatable {
     case users(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case cardButtonTapped(String)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case showExternalProfile(userId: String)
+    }
   }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .users:
+        return .none
+        
+      case let .cardButtonTapped(userId):
+        return .send(.delegate(.showExternalProfile(userId: userId)), animation: .default)
+        
+      case .delegate:
         return .none
       }
     }
@@ -39,14 +51,14 @@ public struct FromSchoolPanelView: View {
 
         ForEachStore(
           store.scope(state: \.users, action: FromSchoolPanelLogic.Action.users)
-        ) {
-          FriendRowCardView(store: $0)
+        ) { cardStore in
+          WithViewStore(cardStore, observe: { $0 }) { viewStore in
+            FriendRowCardView(store: cardStore)
+              .onTapGesture {
+                store.send(.cardButtonTapped(viewStore.id))
+              }
+          }
         }
-
-//        Button {} label: {
-//          Text("See \(viewStore.users.count) more", bundle: .module)
-//        }
-//        .buttonStyle(SeeMoreButtonStyle())
       }
     }
   }

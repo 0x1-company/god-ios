@@ -55,6 +55,7 @@ let package = Package(
       "ProfileFeature",
     ]),
     .target(name: "AddFeature", dependencies: [
+      "ProfileFeature",
       "CupertinoMessageFeature",
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),

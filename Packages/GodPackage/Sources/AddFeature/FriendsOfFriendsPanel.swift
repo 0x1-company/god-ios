@@ -16,12 +16,24 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
 
   public enum Action: Equatable {
     case friendsOfFriends(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case cardButtonTapped(String)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case showExternalProfile(userId: String)
+    }
   }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .friendsOfFriends:
+        return .none
+        
+      case let .cardButtonTapped(userId):
+        return .send(.delegate(.showExternalProfile(userId: userId)), animation: .default)
+        
+      case .delegate:
         return .none
       }
     }
@@ -45,8 +57,13 @@ public struct FriendsOfFriendsPanelView: View {
 
         ForEachStore(
           store.scope(state: \.friendsOfFriends, action: FriendsOfFriendsPanelLogic.Action.friendsOfFriends)
-        ) {
-          FriendRowCardView(store: $0)
+        ) { cardStore in
+          WithViewStore(cardStore, observe: { $0 }) { viewStore in
+            FriendRowCardView(store: cardStore)
+              .onTapGesture {
+                store.send(.cardButtonTapped(viewStore.id))
+              }
+          }
         }
 
 //        Button {} label: {

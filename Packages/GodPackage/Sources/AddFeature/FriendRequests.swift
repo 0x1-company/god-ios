@@ -19,6 +19,12 @@ public struct FriendRequestsLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
+    case cardButtonTapped(String)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case showExternalProfile(userId: String)
+    }
   }
 
   @Dependency(\.godClient) var godClient
@@ -34,6 +40,12 @@ public struct FriendRequestsLogic: Reducer {
         return .none
 
       case .requests:
+        return .none
+        
+      case let .cardButtonTapped(userId):
+        return .send(.delegate(.showExternalProfile(userId: userId)), animation: .default)
+        
+      case .delegate:
         return .none
       }
     }
@@ -54,11 +66,17 @@ public struct FriendRequestsView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       LazyVStack(spacing: 0) {
         FriendHeader(title: "FRIEND REQUESTS")
-
+        
         ForEachStore(
-          store.scope(state: \.requests, action: FriendRequestsLogic.Action.requests),
-          content: FriendRequestCardView.init(store:)
-        )
+          store.scope(state: \.requests, action: FriendRequestsLogic.Action.requests)
+        ) { cardStore in
+          WithViewStore(cardStore, observe: { $0 }) { viewStore in
+            FriendRequestCardView(store: cardStore)
+              .onTapGesture {
+                store.send(.cardButtonTapped(viewStore.userId))
+              }
+          }
+        }
       }
       .task { await viewStore.send(.onTask).finish() }
     }

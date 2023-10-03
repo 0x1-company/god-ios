@@ -7,12 +7,14 @@ import GodClient
 import SearchField
 import SwiftUI
 import UIApplicationClient
+import ProfileFeature
 
 public struct AddLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
     @BindingState var searchQuery = ""
+    @PresentationState var destination: Destination.State?
 
     var contactsReEnable: ContactsReEnableLogic.State?
     var invitationsLeft = InvitationsLeftLogic.State()
@@ -35,6 +37,7 @@ public struct AddLogic: Reducer {
     case friendsOfFriendsPanel(FriendsOfFriendsPanelLogic.Action)
     case fromSchoolPanel(FromSchoolPanelLogic.Action)
     case searchResult(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.godClient) var godClient
@@ -137,6 +140,24 @@ public struct AddLogic: Reducer {
         state.friendsOfFriendsPanel = nil
         state.fromSchoolPanel = nil
         return .none
+        
+      case let .friendRequestPanel(.delegate(.showExternalProfile(userId))):
+        state.destination = .profileExternal(
+          ProfileExternalLogic.State(userId: userId)
+        )
+        return .none
+        
+      case let .friendsOfFriendsPanel(.delegate(.showExternalProfile(userId))):
+        state.destination = .profileExternal(
+          ProfileExternalLogic.State(userId: userId)
+        )
+        return .none
+        
+      case let .fromSchoolPanel(.delegate(.showExternalProfile(userId))):
+        state.destination = .profileExternal(
+          ProfileExternalLogic.State(userId: userId)
+        )
+        return .none
       default:
         return .none
       }
@@ -155,6 +176,23 @@ public struct AddLogic: Reducer {
     }
     .ifLet(\.fromSchoolPanel, action: /Action.fromSchoolPanel) {
       FromSchoolPanelLogic()
+    }
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
+    }
+  }
+  
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case profileExternal(ProfileExternalLogic.State)
+    }
+    public enum Action: Equatable {
+      case profileExternal(ProfileExternalLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.profileExternal, action: /Action.profileExternal) {
+        ProfileExternalLogic()
+      }
     }
   }
 }
@@ -208,6 +246,15 @@ public struct AddView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$destination, action: AddLogic.Action.destination),
+        state: /AddLogic.Destination.State.profileExternal,
+        action: AddLogic.Destination.Action.profileExternal
+      ) { store in
+        NavigationStack {
+          ProfileExternalView(store: store)
+        }
+      }
     }
   }
 }
