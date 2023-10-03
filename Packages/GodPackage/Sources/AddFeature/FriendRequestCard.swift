@@ -92,14 +92,6 @@ public struct FriendRequestCardView: View {
 
         HStack(spacing: 0) {
           Button {
-            viewStore.send(.hideButtonTapped)
-          } label: {
-            Text("HIDE", bundle: .module)
-              .frame(width: 80, height: 34)
-              .foregroundStyle(.secondary)
-          }
-
-          Button {
             viewStore.send(.approveButtonTapped)
           } label: {
             Text("APPROVE", bundle: .module)
