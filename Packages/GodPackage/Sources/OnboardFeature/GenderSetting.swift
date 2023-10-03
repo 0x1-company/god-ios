@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import AnalyticsClient
 
 public struct GenderSettingLogic: Reducer {
   public init() {}
@@ -22,6 +23,7 @@ public struct GenderSettingLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -29,14 +31,11 @@ public struct GenderSettingLogic: Reducer {
       switch action {
       case let .genderButtonTapped(gender):
         let input = God.UpdateUserProfileInput(gender: .init(gender))
+        analytics.setUserProperty("gender", gender.rawValue)
         return .run { send in
-          await send(
-            .updateUserProfileResponse(
-              TaskResult {
-                try await godClient.updateUserProfile(input)
-              }
-            )
-          )
+          await send(.updateUserProfileResponse(TaskResult {
+            try await godClient.updateUserProfile(input)
+          }))
         }
       case .updateUserProfileResponse(.success):
         return .send(.delegate(.nextScreen))

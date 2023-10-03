@@ -7,6 +7,7 @@ import GodClient
 import UIKit
 import UserNotificationClient
 import UserDefaultsClient
+import AnalyticsClient
 
 public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
@@ -34,6 +35,7 @@ public struct AppDelegateLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseCore) var firebaseCore
   @Dependency(\.firebaseAuth) var firebaseAuth
@@ -106,6 +108,9 @@ public struct AppDelegateLogic: Reducer {
       }
 
     case let .dynamicLink(.some(url)):
+      analytics.logEvent("event_invitation", [
+        "deepLink": url.absoluteString
+      ])
       return .run { _ in
         await userDefaults.setDynamicLinkURL(url.absoluteString)
       }
