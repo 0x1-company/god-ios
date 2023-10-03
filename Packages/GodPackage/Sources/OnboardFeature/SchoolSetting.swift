@@ -77,15 +77,12 @@ public struct SchoolSettingView: View {
               KFImage
                 .url(URL(string: school.profileImageURL))
                 .placeholder {
-                  ProgressView()
-                }
-                .onFailureImage(
                   Image(ImageResource.school)
                     .resizable()
                     .frame(width: 40, height: 40)
                     .scaledToFit()
-                    .clipped() as? KFCrossPlatformImage
-                )
+                    .clipped()
+                }
                 .resizable()
                 .frame(width: 40, height: 40)
                 .scaledToFit()
