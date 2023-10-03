@@ -2,9 +2,9 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
+import Kingfisher
 import RoundedCorner
 import SwiftUI
-import Kingfisher
 
 public struct SchoolSettingLogic: Reducer {
   public init() {}
