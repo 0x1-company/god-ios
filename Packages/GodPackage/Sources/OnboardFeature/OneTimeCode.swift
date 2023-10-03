@@ -49,7 +49,12 @@ public struct OneTimeCodeLogic: Reducer {
   @Dependency(\.phoneNumberParse) var phoneNumberParse
   @Dependency(\.phoneNumberFormat) var phoneNumberFormat
   
+  enum Cancel {
+    case signUp
+  }
+  
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
@@ -84,6 +89,7 @@ public struct OneTimeCodeLogic: Reducer {
             try await firebaseAuth.signIn(credential)
           }))
         }
+        .cancellable(id: Cancel.signUp, cancelInFlight: true)
       case let .verifyResponse(.success(id)):
         return .run { _ in
           if let id {
@@ -140,11 +146,11 @@ public struct OneTimeCodeLogic: Reducer {
           await dismiss()
         }
         
-      case .binding:
-        guard state.oneTimeCode.count >= 6 else {
-          return .none
-        }
-        return .send(.nextButtonTapped)
+//      case .binding(\.$oneTimeCode):
+//        guard state.oneTimeCode.count >= 6 else {
+//          return .none
+//        }
+//        return .send(.nextButtonTapped)
         
       default:
         return .none
