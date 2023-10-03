@@ -3,9 +3,9 @@ import BackgroundClearSheet
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import SwiftUI
 import God
 import GodClient
+import SwiftUI
 
 public struct ProfileShareLogic: Reducer {
   public init() {}
@@ -55,7 +55,7 @@ public struct ProfileShareLogic: Reducer {
 
       case .contentButtonTapped(.messages):
         return .none
-        
+
       case .contentButtonTapped(.other):
         return .none
 
@@ -63,11 +63,11 @@ public struct ProfileShareLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
-        
+
       case .currentUserResponse(.failure):
         state.currentUser = nil
         return .none

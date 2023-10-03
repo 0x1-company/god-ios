@@ -70,7 +70,7 @@ public struct SchoolSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
         Color.godService
-        
+
         switch viewStore.schools {
         case let .success(schools):
           List(schools, id: \.self) { school in
@@ -120,7 +120,7 @@ public struct SchoolSettingView: View {
           .multilineTextAlignment(.center)
           .cornerRadius(12, corners: [.topLeft, .topRight])
           .edgesIgnoringSafeArea(.bottom)
-          
+
         case .loading:
           Color.white
             .ignoresSafeArea()
@@ -129,7 +129,7 @@ public struct SchoolSettingView: View {
                 .progressViewStyle(.circular)
                 .tint(Color.black)
             }
-          
+
         default:
           Color.white
             .ignoresSafeArea()

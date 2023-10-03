@@ -119,8 +119,8 @@ struct InstagramStoryView: View {
           ],
           fulfilledFragments: []
         )
-      )
+      ),
     ]
   )
-  .environment(\.locale, Locale.init(identifier: "ja_JP"))
+  .environment(\.locale, Locale(identifier: "ja_JP"))
 }
