@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "1053 people " : {
-
-    },
     "Add me on" : {
 
     },
@@ -36,9 +33,6 @@
           }
         }
       }
-    },
-    "from\n%@" : {
-
     },
     "godapp.jp" : {
       "localizations" : {

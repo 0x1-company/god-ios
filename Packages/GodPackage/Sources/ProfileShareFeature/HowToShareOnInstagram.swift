@@ -12,27 +12,10 @@ public struct HowToShareOnInstagramLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public enum Step: Int, CaseIterable {
-      case one = 1
-      case two = 2
-      case three = 3
-      case four = 4
-
-      var primaryButtonText: LocalizedStringKey {
-        switch self {
-        case .one, .two, .three:
-          return "Next Step"
-        case .four:
-          return "Share on Instagram"
-        }
-      }
-
-      var descriptionImageName: String {
-        "how-tow-share-on-instagram-\(rawValue)"
-      }
-    }
-
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    var profileImageData: Data?
+    var schoolImageData: Data?
+    
     var allSteps: [Step] = Step.allCases
     var currentStep: Step = .one
     public init() {}
@@ -40,16 +23,19 @@ public struct HowToShareOnInstagramLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
-    case stepButtonTapped(State.Step)
+    case stepButtonTapped(Step)
     case primaryButtonTapped(profileCardImage: UIImage? = nil)
     case closeButtonTapped
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case profileImageResponse(TaskResult<Data>)
+    case schoolImageResponse(TaskResult<Data>)
   }
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
   @Dependency(\.pasteboard) var pasteboard
+  @Dependency(\.urlSession) var urlSession
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
@@ -63,20 +49,11 @@ public struct HowToShareOnInstagramLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
-      case let .currentUserResponse(.success(data)):
-        state.currentUser = data.currentUser
-        return .none
-
-      case .currentUserResponse(.failure):
-        return .run { _ in
-          await dismiss()
-        }
-
       case let .stepButtonTapped(step):
         state.currentStep = step
         return .none
 
-      case let .primaryButtonTapped(profileCardImage) where state.currentStep == State.Step.allCases.last:
+      case let .primaryButtonTapped(profileCardImage) where state.currentStep == Step.allCases.last:
         guard
           let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
           let profileCardImage,
@@ -97,7 +74,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
         }
 
       case .primaryButtonTapped:
-        guard let nextStep = State.Step(rawValue: state.currentStep.rawValue + 1)
+        guard let nextStep = Step(rawValue: state.currentStep.rawValue + 1)
         else { return .none }
         state.currentStep = nextStep
         return .none
@@ -106,7 +83,70 @@ public struct HowToShareOnInstagramLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+        
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        return .run { send in
+          await withThrowingTaskGroup(of: Void.self) { group in
+            if let imageURL = URL(string: data.currentUser.imageURL) {
+              group.addTask {
+                do {
+                  let (data, _) = try await urlSession.data(from: imageURL)
+                  await send(.profileImageResponse(.success(data)))
+                } catch {
+                  await send(.profileImageResponse(.failure(error)))
+                }
+              }
+            }
+            if let imageURL = URL(string: data.currentUser.school?.profileImageURL ?? "") {
+              group.addTask {
+                do {
+                  let (data, _) = try await urlSession.data(from: imageURL)
+                  await send(.schoolImageResponse(.success(data)))
+                } catch {
+                  await send(.schoolImageResponse(.failure(error)))
+                }
+              }
+            }
+          }
+        }
+
+      case .currentUserResponse(.failure):
+        return .run { _ in
+          await dismiss()
+        }
+        
+      case let .profileImageResponse(.success(data)):
+        state.profileImageData = data
+        return .none
+
+      case let .schoolImageResponse(.success(data)):
+        state.schoolImageData = data
+        return .none
+        
+      default:
+        return .none
       }
+    }
+  }
+  
+  public enum Step: Int, CaseIterable {
+    case one = 1
+    case two = 2
+    case three = 3
+    case four = 4
+
+    var primaryButtonText: LocalizedStringKey {
+      switch self {
+      case .one, .two, .three:
+        return "Next Step"
+      case .four:
+        return "Share on Instagram"
+      }
+    }
+
+    var descriptionImageName: String {
+      "how-tow-share-on-instagram-\(rawValue)"
     }
   }
 }
@@ -120,13 +160,35 @@ public struct HowToShareOnInstagramView: View {
   public init(store: StoreOf<HowToShareOnInstagramLogic>) {
     self.store = store
   }
+  
+  @ViewBuilder
+  func storyView(
+    profileImageData: Data?,
+    schoolImageData: Data?,
+    user: God.CurrentUserQuery.Data.CurrentUser?
+  ) -> some View {
+    if let user {
+      InstagramStoryView(
+        profileImageData: profileImageData,
+        lastName: user.lastName,
+        firstName: user.firstName,
+        displayName: user.displayName.ja,
+        username: user.username,
+        schoolImageData: schoolImageData,
+        schoolName: user.school?.name
+      )
+    }
+  }
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let profileCardForShareOnInstagram = profileCardForShareOnInstagram(user: viewStore.currentUser)
+      let instagramStoryView = storyView(
+        profileImageData: viewStore.profileImageData,
+        schoolImageData: viewStore.schoolImageData,
+        user: viewStore.currentUser
+      )
       ZStack(alignment: .center) {
-        // instagramへのシェア用のView
-        profileCardForShareOnInstagram
+        instagramStoryView
 
         VStack(alignment: .center, spacing: 24) {
           Text("How to add the\nlink to your Story", bundle: .module)
@@ -162,7 +224,7 @@ public struct HowToShareOnInstagramView: View {
             .frame(height: 240)
 
           Button {
-            let renderer = ImageRenderer(content: profileCardForShareOnInstagram)
+            let renderer = ImageRenderer(content: instagramStoryView)
             renderer.scale = displayScale
             viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
           } label: {
@@ -183,90 +245,13 @@ public struct HowToShareOnInstagramView: View {
       .task { await viewStore.send(.onTask).finish() }
     }
   }
-
-  @ViewBuilder
-  private func profileCardForShareOnInstagram(user: God.CurrentUserQuery.Data.CurrentUser?) -> some View {
-    if let user {
-      VStack(alignment: .center, spacing: 0) {
-        VStack(alignment: .center, spacing: 24) {
-          ProfilePicture(
-            url: URL(string: user.imageURL),
-            familyName: user.lastName,
-            givenName: user.firstName,
-            size: 90
-          )
-
-          VStack(alignment: .center, spacing: 0) {
-            Text(user.displayName.ja)
-              .font(.headline)
-              .bold()
-              .foregroundStyle(Color.godWhite)
-
-            Text(verbatim: "@\(user.username ?? "")")
-              .font(.body)
-              .foregroundStyle(Color.godTextSecondaryLight)
-          }
-
-          VStack(alignment: .center, spacing: 0) {
-            Text("Add me on", bundle: .module)
-              .font(.title2)
-              .fontWeight(.heavy)
-              .foregroundStyle(Color.godWhite)
-            Image("god-icon-white", bundle: .module)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 24)
-              .foregroundStyle(Color.godWhite)
-              .padding(.bottom, 4)
-            Text(verbatim: "godapp.jp")
-              .font(.callout)
-              .bold()
-              .foregroundColor(.godWhite)
-          }
-          .padding(.bottom, 8)
-
-          HStack(alignment: .center, spacing: 4) {
-            Circle()
-              .fill(Color.godGreen)
-              .frame(width: 36, height: 36)
-
-            (
-              Text("1053 people ").bold() +
-                Text("from\n\(user.school?.name ?? "")")
-            )
-            .foregroundStyle(Color.godWhite)
-            .font(.footnote)
-            .lineLimit(2)
-            .multilineTextAlignment(.leading)
-          }
-          .frame(maxWidth: .infinity, alignment: .center)
-          .frame(height: 48)
-          .background(Color(red: 30 / 255, green: 30 / 255, blue: 30 / 255))
-        }
-        .padding(.top, 32)
-        .background(Color(red: 35 / 255, green: 35 / 255, blue: 35 / 255))
-        .cornerRadius(16)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-      }
-      .frame(maxWidth: .infinity)
-      .padding(.horizontal, 24)
-      .background(Color.clear)
-    }
-  }
 }
 
 #Preview {
-  Color.red
-    .sheet(
-      isPresented: .constant(true)
-    ) {
-      HowToShareOnInstagramView(
-        store: .init(
-          initialState: HowToShareOnInstagramLogic.State(),
-          reducer: { HowToShareOnInstagramLogic() }
-        )
-      )
-      .presentationDetents([.fraction(0.3)])
-      .presentationDragIndicator(.visible)
-    }
+  HowToShareOnInstagramView(
+    store: .init(
+      initialState: HowToShareOnInstagramLogic.State(),
+      reducer: { HowToShareOnInstagramLogic() }
+    )
+  )
 }
