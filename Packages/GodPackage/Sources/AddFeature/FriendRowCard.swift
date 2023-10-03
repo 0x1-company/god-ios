@@ -32,6 +32,7 @@ public struct FriendRowCardLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .addButtonTapped:
+        state.friendStatus = .requested
         let input = God.CreateFriendRequestInput(toUserId: state.id)
         return .run { send in
           await send(.friendRequestResponse(TaskResult {
@@ -39,7 +40,6 @@ public struct FriendRowCardLogic: Reducer {
           }))
         }
       case .hideButtonTapped:
-        state.friendStatus = .requested
         let input = God.CreateUserHideInput(hiddenUserId: state.id)
         return .run { send in
           await send(.hideResponse(TaskResult {
@@ -99,7 +99,7 @@ public struct FriendRowCardView: View {
           } label: {
             Group {
               if case .requested = viewStore.friendStatus {
-                Text("ADDED")
+                Text("REQUESTED", bundle: .module)
                   .foregroundStyle(Color.godTextSecondaryLight)
                   .frame(height: 34)
                   .padding(.horizontal, 8)

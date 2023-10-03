@@ -131,7 +131,6 @@ public struct FriendRequestCardView: View {
         userId: "3",
         displayName: "Tomoki Tsukiyama",
         description: "1 mutual friend"
-
       ),
       reducer: { FriendRequestCardLogic() }
     )

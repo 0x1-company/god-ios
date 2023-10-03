@@ -34,16 +34,6 @@
         }
       }
     },
-    "ADDED" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だち"
-          }
-        }
-      }
-    },
     "APPROVE" : {
       "localizations" : {
         "ja" : {
@@ -120,6 +110,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "招待する"
+          }
+        }
+      }
+    },
+    "REQUESTED" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リクエストした"
           }
         }
       }
