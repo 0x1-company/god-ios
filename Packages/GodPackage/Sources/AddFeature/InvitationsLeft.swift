@@ -81,6 +81,9 @@ public struct InvitationsLeftLogic: Reducer {
         return .none
 
       case let .contactResponse(.success(contact)):
+        guard state.invitations.count <= 40 else {
+          return .cancel(id: Cancel.contacts)
+        }
         state.invitations.append(contact)
         return .none
 

@@ -259,6 +259,10 @@ public struct AddFriendsView: View {
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
       .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$message, action: { .message($0) }),
+        content: CupertinoMessageView.init
+      )
       .toolbar {
         Button("Next") {
           viewStore.send(.nextButtonTapped)
