@@ -427,6 +427,9 @@ type School {
   """学校名"""
   name: String!
 
+  """アイコン画像URL"""
+  profileImageURL: String!
+
   """学校名（略称）"""
   shortName: String!
 

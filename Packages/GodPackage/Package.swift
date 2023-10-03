@@ -142,6 +142,7 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
+      .product(name: "Kingfisher", package: "Kingfisher"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
