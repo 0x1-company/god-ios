@@ -105,29 +105,40 @@ public struct ProfilePhotoSettingView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 12) {
+      VStack(spacing: 24) {
         Spacer()
 
         Text("Add a profile photo", bundle: .module)
           .bold()
+          .font(.title3)
           .foregroundColor(Color.white)
-
-        Group {
-          if let image = viewStore.image {
-            Image(uiImage: image)
-              .resizable()
-              .scaledToFill()
-              .frame(width: 120, height: 120)
-              .clipShape(Circle())
-          } else {
-            Color.red
-              .frame(width: 120, height: 120)
-              .clipShape(Circle())
+        
+        PhotosPicker(
+          selection: viewStore.$photoPickerItems,
+          maxSelectionCount: 1,
+          selectionBehavior: .ordered,
+          matching: PHPickerFilter.images,
+          preferredItemEncoding: .current
+        ) {
+          Group {
+            if let image = viewStore.image {
+              Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 120, height: 120)
+                .clipShape(Circle())
+            } else {
+              Image(ImageResource.emptyPicture)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 120, height: 120)
+                .clipShape(Circle())
+            }
           }
         }
 
         Text("Add a photo so your friends can find you", bundle: .module)
-          .foregroundColor(Color.godTextSecondaryLight)
+          .foregroundColor(Color.white.opacity(0.7))
 
         Spacer()
 
