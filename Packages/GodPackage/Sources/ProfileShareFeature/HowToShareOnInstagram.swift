@@ -144,7 +144,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
         return "Share on Instagram"
       }
     }
-    
+
     var description: LocalizedStringKey {
       switch self {
       case .one:
@@ -230,7 +230,7 @@ public struct HowToShareOnInstagramView: View {
               .buttonStyle(HoldDownButtonStyle())
             }
           }
-          
+
           Text(viewStore.currentStep.description, bundle: .module)
             .font(.system(.headline, design: .rounded))
 
