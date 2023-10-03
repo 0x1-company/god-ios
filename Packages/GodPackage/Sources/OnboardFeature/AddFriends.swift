@@ -33,6 +33,7 @@ public struct AddFriendsLogic: Reducer {
     case inviteButtonTapped(CNContact)
     case usersResponse(TaskResult<God.PeopleYouMayKnowQuery.Data>)
     case contactResponse(TaskResult<CNContact>)
+    case createFriendRequest(TaskResult<God.CreateFriendRequestMutation.Data>)
     case delegate(Delegate)
     case message(PresentationAction<CupertinoMessageLogic.Action>)
 
@@ -67,9 +68,19 @@ public struct AddFriendsLogic: Reducer {
         )
         
       case .nextButtonTapped:
-        return .run { send in
-          await send(.delegate(.nextScreen))
-        }
+        return .merge(
+          .run(operation: { send in
+            await send(.delegate(.nextScreen))
+          }),
+          .run(operation: { [userIds = state.selectUserIds] send in
+            for userId in userIds {
+              let input = God.CreateFriendRequestInput(toUserId: userId)
+              await send(.createFriendRequest(TaskResult {
+                try await godClient.createFriendRequest(input)
+              }))
+            }
+          })
+        )
         
       case let .selectButtonTapped(userId):
         if state.selectUserIds.contains(userId) {
@@ -111,9 +122,6 @@ public struct AddFriendsLogic: Reducer {
         state.contacts.append(contact)
         return .none
         
-      case .contactResponse(.failure):
-        return .none
-
       default:
         return .none
       }
