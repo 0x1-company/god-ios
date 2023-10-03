@@ -112,7 +112,7 @@ public struct ProfilePhotoSettingView: View {
           .bold()
           .font(.title3)
           .foregroundColor(Color.white)
-        
+
         PhotosPicker(
           selection: viewStore.$photoPickerItems,
           maxSelectionCount: 1,
