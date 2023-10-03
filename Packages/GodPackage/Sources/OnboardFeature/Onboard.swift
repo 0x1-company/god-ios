@@ -27,7 +27,6 @@ public struct OnboardLogic: Reducer {
     case onOpenURL(URL)
     case welcome(WelcomeLogic.Action)
     case path(StackAction<Path.State, Path.Action>)
-    case alert(PresentationAction<Alert>)
     case pathInsert(Path.State)
     case contactResponse(TaskResult<CNContact>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)

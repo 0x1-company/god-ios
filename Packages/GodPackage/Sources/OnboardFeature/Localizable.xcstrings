@@ -277,6 +277,16 @@
         }
       }
     },
+    "INVITE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待する"
+          }
+        }
+      }
+    },
     "Last Name" : {
       "localizations" : {
         "ja" : {
@@ -352,7 +362,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "フレンド候補"
+            "value" : "友だち候補"
           }
         }
       }

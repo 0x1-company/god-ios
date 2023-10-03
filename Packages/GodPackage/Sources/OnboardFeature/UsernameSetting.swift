@@ -22,7 +22,7 @@ public struct UsernameSettingLogic: Reducer {
     case binding(BindingAction<State>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case delegate(Delegate)
-    case alert(Alert)
+    case alert(PresentationAction<Alert>)
 
     public enum Delegate: Equatable {
       case nextScreen
@@ -68,7 +68,7 @@ public struct UsernameSettingLogic: Reducer {
           TextState("username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined", bundle: .module)
         }
         return .none
-        
+
       case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .internal:
         state.isActivityIndicatorVisible = false
         state.alert = AlertState {
@@ -81,9 +81,13 @@ public struct UsernameSettingLogic: Reducer {
           TextState("Sorry, that username is not available!", bundle: .module)
         }
         return .none
-
+        
       case .updateUsernameResponse(.failure):
         state.isActivityIndicatorVisible = false
+        return .none
+        
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
         return .none
 
       default:
@@ -129,6 +133,7 @@ public struct UsernameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color.godService)
+      .alert(store: store.scope(state: \.$alert, action: UsernameSettingLogic.Action.alert))
       .onAppear {
         focus = true
       }
