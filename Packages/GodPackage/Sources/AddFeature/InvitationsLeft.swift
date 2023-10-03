@@ -29,7 +29,7 @@ public struct InvitationsLeftLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
-  
+
   enum Cancel {
     case contacts
     case currentUser
