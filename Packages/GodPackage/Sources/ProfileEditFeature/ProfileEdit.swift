@@ -349,13 +349,13 @@ public struct ProfileEditView: View {
               .font(.caption)
               .bold()
               .foregroundColor(.godTextSecondaryLight)
-            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
-              viewStore.send(.restorePurchasesButtonTapped)
-            }
-
-            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
-              viewStore.send(.manageAccountButtonTapped)
-            }
+//            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
+//              viewStore.send(.restorePurchasesButtonTapped)
+//            }
+//
+//            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
+//              viewStore.send(.manageAccountButtonTapped)
+//            }
 
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               viewStore.send(.logoutButtonTapped)
