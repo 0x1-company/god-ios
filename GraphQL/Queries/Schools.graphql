@@ -6,6 +6,7 @@ query Schools($first: Int!, $after: String) {
         name
         shortName
         usersCount
+        profileImageURL
       }
     }
   }

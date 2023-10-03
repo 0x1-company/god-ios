@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Schools"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Schools($first: Int!, $after: String) { schools(first: $first, after: $after) { __typename edges { __typename node { __typename id name shortName usersCount } } } }"#
+        #"query Schools($first: Int!, $after: String) { schools(first: $first, after: $after) { __typename edges { __typename node { __typename id name shortName usersCount profileImageURL } } } }"#
       ))
 
     public var first: Int
@@ -86,6 +86,7 @@ public extension God {
               .field("name", String.self),
               .field("shortName", String.self),
               .field("usersCount", Int.self),
+              .field("profileImageURL", String.self),
             ] }
 
             public var id: God.ID { __data["id"] }
@@ -95,6 +96,8 @@ public extension God {
             public var shortName: String { __data["shortName"] }
             /// スクールに所属しているユーザー数
             public var usersCount: Int { __data["usersCount"] }
+            /// アイコン画像URL
+            public var profileImageURL: String { __data["profileImageURL"] }
           }
         }
       }

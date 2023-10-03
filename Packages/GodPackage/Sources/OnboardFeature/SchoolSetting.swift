@@ -4,6 +4,7 @@ import God
 import GodClient
 import RoundedCorner
 import SwiftUI
+import Kingfisher
 
 public struct SchoolSettingLogic: Reducer {
   public init() {}
@@ -73,10 +74,19 @@ public struct SchoolSettingView: View {
             viewStore.send(.schoolButtonTapped(id: school.id))
           } label: {
             HStack(alignment: .center, spacing: 16) {
-              Image(ImageResource.school)
+              KFImage
+                .url(URL(string: school.profileImageURL))
+                .placeholder {
+                  Image(ImageResource.school)
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .scaledToFit()
+                    .clipped()
+                }
                 .resizable()
                 .frame(width: 40, height: 40)
                 .scaledToFit()
+                .clipped()
 
               VStack(alignment: .leading) {
                 Text(school.name)
