@@ -1,3 +1,4 @@
+import ButtonStyles
 import Colors
 import ComposableArchitecture
 import God
@@ -70,20 +71,66 @@ public struct GenderSettingView: View {
             .foregroundColor(Color.white)
 
           HStack(spacing: 24) {
-            GenderChoiceView(gender: .male) {
+            ChoiceView(gender: .male) {
               viewStore.send(.genderButtonTapped(.male))
             }
-            GenderChoiceView(gender: .female) {
+            ChoiceView(gender: .female) {
               viewStore.send(.genderButtonTapped(.female))
             }
           }
           HStack(spacing: 24) {
-            GenderChoiceView(gender: .other) {
+            ChoiceView(gender: .other) {
               viewStore.send(.genderButtonTapped(.other))
             }
           }
         }
       }
+    }
+  }
+  
+  struct ChoiceView: View {
+    let gender: God.Gender
+    let action: () -> Void
+
+    var textGender: LocalizedStringKey {
+      switch gender {
+      case .female:
+        return "Girl"
+      case .male:
+        return "Boy"
+      case .other:
+        return "Non-binary"
+      }
+    }
+
+    var imageNameGender: ImageResource {
+      switch gender {
+      case .female:
+        return ImageResource.girl
+      case .male:
+        return ImageResource.boy
+      case .other:
+        return ImageResource.other
+      }
+    }
+
+    var body: some View {
+      Button(action: action) {
+        VStack(spacing: 8) {
+          Image(imageNameGender)
+            .resizable()
+            .frame(width: 136, height: 136)
+            .background(
+              Color.white
+                .opacity(0.3)
+                .cornerRadius(12)
+            )
+
+          Text(textGender, bundle: .module)
+            .foregroundColor(Color.white)
+        }
+      }
+      .buttonStyle(HoldDownButtonStyle())
     }
   }
 }
