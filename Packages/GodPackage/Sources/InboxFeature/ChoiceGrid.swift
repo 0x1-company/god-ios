@@ -1,5 +1,5 @@
-import SwiftUI
 import God
+import SwiftUI
 
 struct ChoiceGrid: View {
   let color: Color

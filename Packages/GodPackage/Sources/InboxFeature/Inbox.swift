@@ -112,7 +112,7 @@ public struct InboxLogic: Reducer {
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
         return .none
-        
+
       case let .inboxActivityResponse(.success(data)):
         let activity = data.inboxActivity.fragments.inboxFragment
         let isInGodMode = state.subscription != nil
@@ -120,7 +120,7 @@ public struct InboxLogic: Reducer {
           .init(activity: activity, isInGodMode: isInGodMode)
         )
         return .none
-        
+
       case .readActivityResponse(.success):
         return .run { send in
           await inboxActivitiesRequest(send: send)
@@ -155,7 +155,7 @@ public struct InboxLogic: Reducer {
       await send(.inboxActivitiesResponse(.failure(error)))
     }
   }
-  
+
   func inboxActivityRequest(send: Send<Action>, id: String) async {
     do {
       for try await data in godClient.inboxActivity(id) {
@@ -165,7 +165,7 @@ public struct InboxLogic: Reducer {
       await send(.inboxActivityResponse(.failure(error)))
     }
   }
-  
+
   func readActivityRequest(send: Send<Action>, activityId: String) async {
     await send(.readActivityResponse(TaskResult {
       try await godClient.readActivity(activityId)
