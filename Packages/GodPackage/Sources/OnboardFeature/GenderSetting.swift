@@ -87,7 +87,7 @@ public struct GenderSettingView: View {
       }
     }
   }
-  
+
   struct ChoiceView: View {
     let gender: God.Gender
     let action: () -> Void

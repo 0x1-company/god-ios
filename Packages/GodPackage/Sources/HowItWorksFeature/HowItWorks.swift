@@ -1,10 +1,10 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
-import Lottie
-import SwiftUI
 import God
 import GodClient
+import Lottie
+import SwiftUI
 
 public struct HowItWorksLogic: Reducer {
   public init() {}
@@ -23,7 +23,7 @@ public struct HowItWorksLogic: Reducer {
       case start
     }
   }
-  
+
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -31,11 +31,11 @@ public struct HowItWorksLogic: Reducer {
       switch action {
       case .startButtonTapped:
         return .send(.delegate(.start), animation: .default)
-        
+
       case let .currentUserResponse(.success(data)):
         state.gender = data.currentUser.gender.value
         return .none
-        
+
       case .currentUserResponse(.failure):
         state.gender = nil
         return .none
