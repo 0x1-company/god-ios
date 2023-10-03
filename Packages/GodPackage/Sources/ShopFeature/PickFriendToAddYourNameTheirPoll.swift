@@ -3,9 +3,9 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
+import ProfilePicture
 import SearchField
 import SwiftUI
-import ProfilePicture
 
 public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
