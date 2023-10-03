@@ -367,11 +367,15 @@
         }
       }
     },
-    "Resend in 30" : {
-
-    },
-    "Sent to +81 80-2332-3620" : {
-
+    "Sent to %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@にコードを送信しました"
+          }
+        }
+      }
     },
     "Skip" : {
       "localizations" : {

@@ -198,7 +198,7 @@ public struct OneTimeCodeView: View {
             .bold()
             .font(.title3)
 
-          Text("Sent to +81 80-2332-3620", bundle: .module)
+          Text("Sent to \(viewStore.phoneNumber)", bundle: .module)
 
           TextField(
             text: viewStore.binding(
@@ -217,10 +217,10 @@ public struct OneTimeCodeView: View {
           Spacer()
 
           VStack(spacing: 24) {
-            Button("Resend in 30") {
-              viewStore.send(.resendButtonTapped)
-            }
-            .bold()
+//            Button("Resend in 30") {
+//              viewStore.send(.resendButtonTapped)
+//            }
+//            .bold()
 
             NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
               viewStore.send(.nextButtonTapped)
