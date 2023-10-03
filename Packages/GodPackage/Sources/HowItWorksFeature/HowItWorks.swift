@@ -15,6 +15,7 @@ public struct HowItWorksLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onTask
     case startButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case delegate(Delegate)
@@ -25,10 +26,24 @@ public struct HowItWorksLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case currentUser
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+        
       case .startButtonTapped:
         return .send(.delegate(.start), animation: .default)
 
@@ -84,6 +99,7 @@ public struct HowItWorksView: View {
         .buttonStyle(HoldDownButtonStyle())
       }
       .padding(.all, 16)
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

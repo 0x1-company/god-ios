@@ -47,19 +47,17 @@ public struct CashOutView: View {
         VStack(spacing: 88) {
           VStack(spacing: 100) {
             Text("Congrats", bundle: .module)
-              .bold()
-              .font(.largeTitle)
+              .font(.system(.largeTitle, design: .rounded, weight: .black))
 
             Text("You earned \(viewStore.earnedCoinAmount) coins", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
           }
 
           Button {
             viewStore.send(.cashOutButtonTapped)
           } label: {
             Text("Cash Out", bundle: .module)
-              .bold()
-              .font(.title2)
+              .font(.system(.title3, design: .rounded, weight: .bold))
               .frame(height: 54)
               .frame(maxWidth: .infinity)
               .foregroundColor(Color.black)
@@ -78,7 +76,7 @@ public struct CashOutView: View {
           .padding(.horizontal, 65)
         }
 
-        LottieView(animation: LottieAnimation.named("coin", bundle: .module))
+        LottieView(animation: LottieAnimation.named("Coin", bundle: .module))
           .resizable()
           .padding(.bottom, 320)
       }

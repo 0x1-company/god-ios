@@ -1,3 +1,4 @@
+import AsyncValue
 import Colors
 import ComposableArchitecture
 import God
@@ -10,7 +11,7 @@ public struct SchoolSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var schools: [God.SchoolsQuery.Data.Schools.Edge.Node] = []
+    var schools = AsyncValue<[God.SchoolsQuery.Data.Schools.Edge.Node]>.none
     public init() {}
   }
 
@@ -31,6 +32,7 @@ public struct SchoolSettingLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        state.schools = .loading
         return .run { send in
           for try await data in godClient.schools() {
             await send(.schoolsResponse(.success(data)))
@@ -43,11 +45,11 @@ public struct SchoolSettingLogic: Reducer {
         return .send(.delegate(.nextScreen(id: id)))
 
       case let .schoolsResponse(.success(data)):
-        state.schools = data.schools.edges.map(\.node)
+        state.schools = .success(data.schools.edges.map(\.node))
         return .none
 
-      case .schoolsResponse(.failure):
-        state.schools = []
+      case let .schoolsResponse(.failure(error)):
+        state.schools = .failure(error)
         return .none
 
       case .delegate:
@@ -68,54 +70,70 @@ public struct SchoolSettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
         Color.godService
+        
+        switch viewStore.schools {
+        case let .success(schools):
+          List(schools, id: \.self) { school in
+            Button {
+              viewStore.send(.schoolButtonTapped(id: school.id))
+            } label: {
+              HStack(alignment: .center, spacing: 16) {
+                KFImage
+                  .url(URL(string: school.profileImageURL))
+                  .placeholder {
+                    Image(ImageResource.school)
+                      .resizable()
+                      .frame(width: 40, height: 40)
+                      .scaledToFit()
+                      .clipped()
+                  }
+                  .resizable()
+                  .frame(width: 40, height: 40)
+                  .scaledToFit()
+                  .clipped()
 
-        List(viewStore.schools, id: \.self) { school in
-          Button {
-            viewStore.send(.schoolButtonTapped(id: school.id))
-          } label: {
-            HStack(alignment: .center, spacing: 16) {
-              KFImage
-                .url(URL(string: school.profileImageURL))
-                .placeholder {
-                  Image(ImageResource.school)
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .scaledToFit()
-                    .clipped()
+                VStack(alignment: .leading) {
+                  Text(school.name)
+                    .bold()
+                    .lineLimit(1)
+
+                  Text(school.shortName)
+                    .foregroundColor(Color.godTextSecondaryLight)
                 }
-                .resizable()
-                .frame(width: 40, height: 40)
-                .scaledToFit()
-                .clipped()
+                .font(.footnote)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-              VStack(alignment: .leading) {
-                Text(school.name)
-                  .bold()
-                  .lineLimit(1)
-
-                Text(school.shortName)
-                  .foregroundColor(Color.godTextSecondaryLight)
+                VStack(spacing: 0) {
+                  Text(school.usersCount.description)
+                    .bold()
+                    .foregroundColor(Color.godService)
+                  Text("MEMBERS")
+                    .foregroundColor(Color.godTextSecondaryLight)
+                }
+                .font(.footnote)
               }
-              .font(.footnote)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-              VStack(spacing: 0) {
-                Text(school.usersCount.description)
-                  .bold()
-                  .foregroundColor(Color.godService)
-                Text("MEMBERS")
-                  .foregroundColor(Color.godTextSecondaryLight)
-              }
-              .font(.footnote)
             }
           }
+          .listStyle(.plain)
+          .foregroundColor(.primary)
+          .background(Color.white)
+          .multilineTextAlignment(.center)
+          .cornerRadius(12, corners: [.topLeft, .topRight])
+          .edgesIgnoringSafeArea(.bottom)
+          
+        case .loading:
+          Color.white
+            .ignoresSafeArea()
+            .overlay {
+              ProgressView()
+                .progressViewStyle(.circular)
+                .tint(Color.black)
+            }
+          
+        default:
+          Color.white
+            .ignoresSafeArea()
         }
-        .listStyle(.plain)
-        .foregroundColor(.primary)
-        .background(Color.white)
-        .multilineTextAlignment(.center)
-        .cornerRadius(12, corners: [.topLeft, .topRight])
-        .edgesIgnoringSafeArea(.bottom)
       }
       .task { await viewStore.send(.onTask).finish() }
       .navigationTitle(Text("Pick your school", bundle: .module))

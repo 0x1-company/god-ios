@@ -4,12 +4,14 @@ import ButtonStyles
 import Colors
 import ComposableArchitecture
 import SwiftUI
-import UIPasteboardClient
+import God
+import GodClient
 
 public struct ProfileShareLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     @PresentationState var destination: Destination.State?
     public init() {}
   }
@@ -18,32 +20,57 @@ public struct ProfileShareLogic: Reducer {
     case onTask
     case contentButtonTapped(Content)
     case closeButtonTapped
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.dismiss) var dismiss
-  @Dependency(\.pasteboard) var pasteboard
+  @Dependency(\.openURL) var openURL
+  @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+
+      case .contentButtonTapped(.instagram):
+        state.destination = .shareProfileToInstagramPopup()
         return .none
 
-      case let .contentButtonTapped(content):
-        switch content {
-        case .instagram:
-          state.destination = .shareProfileToInstagramPopup()
-        case .line: break
-        case .messages: break
-        case .other: break
+      case .contentButtonTapped(.line):
+        guard let username = state.currentUser?.username else { return .none }
+        let text = "https://godapp.jp/add/\(username)"
+        guard let url = URL(string: "https://line.me/R/share?text=\(text)")
+        else { return .none }
+        return .run { _ in
+          await openURL(url)
         }
+
+      case .contentButtonTapped(.messages):
+        return .none
+        
+      case .contentButtonTapped(.other):
         return .none
 
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
         }
+        
+      case let .currentUserResponse(.success(data)):
+        state.currentUser = data.currentUser
+        return .none
+        
+      case .currentUserResponse(.failure):
+        state.currentUser = nil
+        return .none
 
       case .destination:
         return .none

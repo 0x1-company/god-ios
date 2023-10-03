@@ -19,7 +19,7 @@ struct IconButton: View {
   var body: some View {
     Button(action: action) {
       Text(title, bundle: .module)
-        .font(.headline)
+        .font(.system(.headline, design: .rounded, weight: .bold))
         .frame(height: 54)
         .frame(maxWidth: .infinity)
         .foregroundColor(Color.black)
