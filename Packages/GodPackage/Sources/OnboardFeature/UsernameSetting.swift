@@ -10,6 +10,7 @@ public struct UsernameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var username = ""
     var isDisabled = true
     var isActivityIndicatorVisible = false
@@ -21,9 +22,14 @@ public struct UsernameSettingLogic: Reducer {
     case binding(BindingAction<State>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case delegate(Delegate)
+    case alert(Alert)
 
     public enum Delegate: Equatable {
       case nextScreen
+    }
+    
+    public enum Alert: Equatable {
+      case confirmOkay
     }
   }
 
@@ -37,32 +43,50 @@ public struct UsernameSettingLogic: Reducer {
         state.isActivityIndicatorVisible = true
         let input = God.UpdateUsernameInput(username: state.username)
         return .run { send in
-          await send(
-            .updateUsernameResponse(
-              TaskResult {
-                try await godClient.updateUsername(input)
-              }
-            )
-          )
+          await send(.updateUsernameResponse(TaskResult {
+            try await godClient.updateUsername(input)
+          }))
         }
 
       case .binding:
         state.isDisabled = !validateUsername(for: state.username)
         return .none
+
       case .updateUsernameResponse(.success):
         state.isActivityIndicatorVisible = false
         return .send(.delegate(.nextScreen), animation: .default)
 
-      case let .updateUsernameResponse(.failure(error as GodServerError)):
+      case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .badUserInput:
         state.isActivityIndicatorVisible = false
-        print(error)
+        state.alert = AlertState {
+          TextState("Error", bundle: .module)
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK", bundle: .module)
+          }
+        } message: {
+          TextState("username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined", bundle: .module)
+        }
+        return .none
+        
+      case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .internal:
+        state.isActivityIndicatorVisible = false
+        state.alert = AlertState {
+          TextState("Error", bundle: .module)
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK", bundle: .module)
+          }
+        } message: {
+          TextState("Sorry, that username is not available!", bundle: .module)
+        }
         return .none
 
       case .updateUsernameResponse(.failure):
         state.isActivityIndicatorVisible = false
         return .none
 
-      case .delegate:
+      default:
         return .none
       }
     }

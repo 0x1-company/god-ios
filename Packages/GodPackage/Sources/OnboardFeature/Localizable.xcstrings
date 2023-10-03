@@ -367,11 +367,16 @@
         }
       }
     },
-    "Resend in 30" : {
-
-    },
-    "Sent to +81 80-2332-3620" : {
-
+    "Sent to %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@にコードを送信しました"
+          }
+        }
+      }
     },
     "Skip" : {
       "localizations" : {
@@ -382,6 +387,9 @@
           }
         }
       }
+    },
+    "Sorry, that username is not available!" : {
+
     },
     "title" : {
 
@@ -396,12 +404,15 @@
         }
       }
     },
+    "username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined" : {
+
+    },
     "We sent you a code to verify\nyour number" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "電話番号を確認するためにコードを送りました。\nあなたの電話番号は"
+            "value" : "電話番号を確認するためにコードを送りました。"
           }
         }
       }
