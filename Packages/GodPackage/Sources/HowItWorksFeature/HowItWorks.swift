@@ -26,7 +26,7 @@ public struct HowItWorksLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case currentUser
   }
@@ -43,7 +43,7 @@ public struct HowItWorksLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
-        
+
       case .startButtonTapped:
         return .send(.delegate(.start), animation: .default)
 
