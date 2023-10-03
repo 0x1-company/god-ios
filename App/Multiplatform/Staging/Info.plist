@@ -85,7 +85,7 @@
 			<key>UIApplicationShortcutItemSubtitle</key>
 			<string>Give it a secound chance!</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>🥺 Don't remove the God App!</string>
+			<string>🥺 Don&apos;t remove the God App!</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>/</string>
 		</dict>
@@ -123,5 +123,9 @@
 	<string>Light</string>
 	<key>endpointURL</key>
 	<string>https://god-server-dip5kutcuq-an.a.run.app/graphql</string>
+	<key>GOD_MODE_ID</key>
+	<string>jp.godapp.ios.staging.god_mode.default</string>
+	<key>REVEAL_POLL_ID</key>
+	<string>jp.godapp.ios.staging.reveal_poll</string>
 </dict>
 </plist>
