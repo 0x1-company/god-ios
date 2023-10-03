@@ -106,8 +106,7 @@ public struct PlayAgainView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 44) {
         Text("Play Again", bundle: .module)
-          .bold()
-          .font(.largeTitle)
+          .font(.system(.largeTitle, design: .rounded, weight: .black))
 
         Image(.locked)
           .rotationEffect(Angle(degrees: -10.0))
