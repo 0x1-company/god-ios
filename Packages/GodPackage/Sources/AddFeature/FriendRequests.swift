@@ -21,7 +21,7 @@ public struct FriendRequestsLogic: Reducer {
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
     case cardButtonTapped(String)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case showExternalProfile(userId: String)
     }
@@ -41,10 +41,10 @@ public struct FriendRequestsLogic: Reducer {
 
       case .requests:
         return .none
-        
+
       case let .cardButtonTapped(userId):
         return .send(.delegate(.showExternalProfile(userId: userId)), animation: .default)
-        
+
       case .delegate:
         return .none
       }
@@ -66,7 +66,7 @@ public struct FriendRequestsView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       LazyVStack(spacing: 0) {
         FriendHeader(title: "FRIEND REQUESTS")
-        
+
         ForEachStore(
           store.scope(state: \.requests, action: FriendRequestsLogic.Action.requests)
         ) { cardStore in

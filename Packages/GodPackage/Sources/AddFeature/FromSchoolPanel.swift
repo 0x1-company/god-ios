@@ -12,7 +12,7 @@ public struct FromSchoolPanelLogic: Reducer {
     case users(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
     case cardButtonTapped(String)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case showExternalProfile(userId: String)
     }
@@ -23,10 +23,10 @@ public struct FromSchoolPanelLogic: Reducer {
       switch action {
       case .users:
         return .none
-        
+
       case let .cardButtonTapped(userId):
         return .send(.delegate(.showExternalProfile(userId: userId)), animation: .default)
-        
+
       case .delegate:
         return .none
       }
