@@ -45,6 +45,7 @@ public struct InvitationsLeftLogic: Reducer {
           CNContactImageDataKey as CNKeyDescriptor,
           CNContactPhoneNumbersKey as CNKeyDescriptor,
         ])
+        state.invitations = []
         return .merge(
           .run(operation: { send in
             for try await data in godClient.currentUser() {
