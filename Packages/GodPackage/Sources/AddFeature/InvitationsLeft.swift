@@ -29,6 +29,11 @@ public struct InvitationsLeftLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
+  
+  enum Cancel {
+    case contacts
+    case currentUser
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -41,20 +46,22 @@ public struct InvitationsLeftLogic: Reducer {
           CNContactPhoneNumbersKey as CNKeyDescriptor,
         ])
         return .merge(
-          .run { send in
+          .run(operation: { send in
             for try await data in godClient.currentUser() {
               await send(.currentUserResponse(.success(data)))
             }
-          } catch: { error, send in
+          }, catch: { error, send in
             await send(.currentUserResponse(.failure(error)))
-          },
-          .run(priority: .background) { send in
+          })
+          .cancellable(id: Cancel.currentUser, cancelInFlight: true),
+          .run(priority: .background, operation: { send in
             for try await (contact, _) in enumerateContacts(request) {
               await send(.contactResponse(.success(contact)))
             }
-          } catch: { error, send in
+          }, catch: { error, send in
             await send(.contactResponse(.failure(error)))
-          }
+          })
+          .cancellable(id: Cancel.contacts, cancelInFlight: true)
         )
       case let .inviteButtonTapped(contact):
         guard
