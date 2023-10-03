@@ -1,10 +1,10 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Contacts
 import ContactsClient
 import God
 import GodClient
 import UserDefaultsClient
-import AnalyticsClient
 
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.analytics) var analytics
@@ -85,7 +85,7 @@ public struct OnboardPathLogic: Reducer {
 
       case .oneTimeCode(.delegate(.nextScreen)):
         state.path.append(.lastNameSetting())
-        
+
         analytics.setUserProperty("school_id", state.schoolId)
         analytics.setUserProperty("generation", state.generation?.description)
 

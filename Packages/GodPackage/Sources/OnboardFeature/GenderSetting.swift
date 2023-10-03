@@ -1,10 +1,10 @@
+import AnalyticsClient
 import ButtonStyles
 import Colors
 import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
-import AnalyticsClient
 
 public struct GenderSettingLogic: Reducer {
   public init() {}
