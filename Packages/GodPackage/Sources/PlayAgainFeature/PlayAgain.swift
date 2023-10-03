@@ -3,6 +3,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import StoreKit
 
 public struct PlayAgainLogic: Reducer {
   public init() {}
@@ -96,6 +97,8 @@ public struct PlayAgainLogic: Reducer {
 }
 
 public struct PlayAgainView: View {
+  @Environment(\.requestReview) var requestReview
+
   let store: StoreOf<PlayAgainLogic>
 
   public init(store: StoreOf<PlayAgainLogic>) {
@@ -136,7 +139,10 @@ public struct PlayAgainView: View {
         .padding(.horizontal, 65)
         .buttonStyle(HoldDownButtonStyle())
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task {
+        requestReview()
+        await viewStore.send(.onTask).finish()
+      }
     }
   }
 }
