@@ -1,8 +1,8 @@
-import SwiftUI
 import Colors
 import Kingfisher
-import ProfilePicture
 import NameImage
+import ProfilePicture
+import SwiftUI
 
 struct InstagramStoryView: View {
   let profileImageData: Data?
@@ -12,7 +12,7 @@ struct InstagramStoryView: View {
   let username: String?
   let schoolImageData: Data?
   let schoolName: String?
-  
+
   var body: some View {
     VStack(spacing: 0) {
       VStack(spacing: 24) {

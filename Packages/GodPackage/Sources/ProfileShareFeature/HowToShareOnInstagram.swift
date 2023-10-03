@@ -15,7 +15,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     var profileImageData: Data?
     var schoolImageData: Data?
-    
+
     var allSteps: [Step] = Step.allCases
     var currentStep: Step = .one
     public init() {}
@@ -83,7 +83,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .run { send in
@@ -115,7 +115,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case let .profileImageResponse(.success(data)):
         state.profileImageData = data
         return .none
@@ -123,13 +123,13 @@ public struct HowToShareOnInstagramLogic: Reducer {
       case let .schoolImageResponse(.success(data)):
         state.schoolImageData = data
         return .none
-        
+
       default:
         return .none
       }
     }
   }
-  
+
   public enum Step: Int, CaseIterable {
     case one = 1
     case two = 2
@@ -160,7 +160,7 @@ public struct HowToShareOnInstagramView: View {
   public init(store: StoreOf<HowToShareOnInstagramLogic>) {
     self.store = store
   }
-  
+
   @ViewBuilder
   func storyView(
     profileImageData: Data?,
