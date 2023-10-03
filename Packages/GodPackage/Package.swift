@@ -109,9 +109,10 @@ let package = Package(
     .target(name: "HowItWorksFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ], resources: [.copy("onboarding.json")]),
+    ], resources: [.copy("Onboarding.json")]),
     .target(name: "InboxFeature", dependencies: [
       "RevealFeature",
       "GodModeFeature",
@@ -143,7 +144,6 @@ let package = Package(
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
       .product(name: "Kingfisher", package: "Kingfisher"),
-      .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
       .product(name: "ProfilePicture", package: "UIComponentPackage"),

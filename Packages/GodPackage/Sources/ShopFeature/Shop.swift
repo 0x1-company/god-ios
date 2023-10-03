@@ -181,6 +181,7 @@ public struct ShopView: View {
         VStack {
           ForEach(viewStore.items, id: \.self) { item in
             ShopItemView(
+              id: item.id,
               name: item.title.ja,
               description: item.description?.ja,
               amount: item.coinAmount
