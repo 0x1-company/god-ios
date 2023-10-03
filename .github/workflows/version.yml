@@ -1,0 +1,39 @@
+name: Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'CFBundleShortVersionString'
+        required: true
+
+jobs:
+  upgrade:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          CURRENT_VERSION=$(defaults read $(pwd)/App/Multiplatform/Development/Info CFBundleShortVersionString)
+          sed -i '' "s/$CURRENT_VERSION/${{ github.event.inputs.version }}/g" App/Multiplatform/Development/Info.plist
+          sed -i '' "s/$CURRENT_VERSION/${{ github.event.inputs.version }}/g" App/Multiplatform/Staging/Info.plist
+          sed -i '' "s/$CURRENT_VERSION/${{ github.event.inputs.version }}/g" App/Multiplatform/Production/Info.plist
+      - continue-on-error: true
+        uses: peter-evans/create-pull-request@v5
+        id: create-pr
+        with:
+          delete-branch: true
+          author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          branch-suffix: short-commit-hash
+          commit-message: "feat: 🎸 update version to ${{ github.event.inputs.version }}"
+          title: "feat: 🎸 update version to ${{ github.event.inputs.version }}"
+      - continue-on-error: true
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - continue-on-error: true
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
