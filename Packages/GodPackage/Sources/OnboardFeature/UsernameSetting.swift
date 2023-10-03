@@ -22,7 +22,7 @@ public struct UsernameSettingLogic: Reducer {
     case binding(BindingAction<State>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case delegate(Delegate)
-    case alert(Alert)
+    case alert(PresentationAction<Alert>)
 
     public enum Delegate: Equatable {
       case nextScreen
@@ -81,9 +81,13 @@ public struct UsernameSettingLogic: Reducer {
           TextState("Sorry, that username is not available!", bundle: .module)
         }
         return .none
-
+        
       case .updateUsernameResponse(.failure):
         state.isActivityIndicatorVisible = false
+        return .none
+        
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
         return .none
 
       default:
@@ -129,6 +133,7 @@ public struct UsernameSettingView: View {
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .background(Color.godService)
+      .alert(store: store.scope(state: \.$alert, action: UsernameSettingLogic.Action.alert))
       .onAppear {
         focus = true
       }

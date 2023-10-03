@@ -277,6 +277,16 @@
         }
       }
     },
+    "INVITE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待する"
+          }
+        }
+      }
+    },
     "Last Name" : {
       "localizations" : {
         "ja" : {
@@ -352,7 +362,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "フレンド候補"
+            "value" : "友だち候補"
           }
         }
       }
@@ -363,17 +373,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あなたの高校を選択"
-          }
-        }
-      }
-    },
-    "Sent to %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@にコードを送信しました"
           }
         }
       }

@@ -47,7 +47,9 @@ public struct GodServerError: Error {
   public let message: String
   public let extensions: [String: Any]
   public var code: GodServerErrorCode? {
-    extensions["code"] as? GodServerErrorCode
+    guard let code = extensions["code"] as? String
+    else { return nil }
+    return GodServerErrorCode(rawValue: code)
   }
 
   public init(
@@ -62,7 +64,7 @@ public struct GodServerError: Error {
     case badUserInput = "BAD_USER_INPUT"
     case forbidden = "FORBIDDEN"
     case unauthenticated = "UNAUTHENTICATED"
-    case `internal` = "INTERNAL"
+    case `internal` = "INTERNAL_SERVER_ERROR"
     case notInGodMode = "NOT_IN_GOD_MODE"
     case noRevealPermission = "NO_REVEAL_PERMISSION"
   }
