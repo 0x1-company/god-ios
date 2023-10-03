@@ -144,9 +144,22 @@ public struct HowToShareOnInstagramLogic: Reducer {
         return "Share on Instagram"
       }
     }
+    
+    var description: LocalizedStringKey {
+      switch self {
+      case .one:
+        return "Click the button"
+      case .two:
+        return "click the **LINK** button"
+      case .three:
+        return "Paste your link"
+      case .four:
+        return "Frame the link"
+      }
+    }
 
     var descriptionImageName: String {
-      "how-tow-share-on-instagram-\(rawValue)"
+      "step\(rawValue)"
     }
   }
 }
@@ -217,11 +230,15 @@ public struct HowToShareOnInstagramView: View {
               .buttonStyle(HoldDownButtonStyle())
             }
           }
+          
+          Text(viewStore.currentStep.description, bundle: .module)
+            .font(.system(.title2, design: .rounded))
 
-          RoundedRectangle(cornerRadius: 24)
-            .fill(Color.red)
+          Image(viewStore.currentStep.descriptionImageName, bundle: .module)
+            .resizable()
             .frame(maxWidth: .infinity)
-            .frame(height: 240)
+            .aspectRatio(contentMode: .fit)
+            .clipped()
 
           Button {
             let renderer = ImageRenderer(content: instagramStoryView)

@@ -4,6 +4,26 @@
     "Add me on" : {
 
     },
+    "click the **LINK** button" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**リンク**を選択"
+          }
+        }
+      }
+    },
+    "Click the button" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このボタンをタップ"
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "ja" : {
@@ -34,23 +54,22 @@
         }
       }
     },
+    "Frame the link" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**リンク**を好きな場所に置く"
+          }
+        }
+      }
+    },
     "godapp.jp" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "godapp.jp"
-          }
-        }
-      }
-    },
-    "godapp.jp/add/%@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "godapp.jp/add/%@"
           }
         }
       }
@@ -111,6 +130,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "その他"
+          }
+        }
+      }
+    },
+    "Paste your link" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクをペーストする"
           }
         }
       }
