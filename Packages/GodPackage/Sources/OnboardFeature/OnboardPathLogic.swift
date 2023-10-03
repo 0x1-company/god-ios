@@ -4,8 +4,10 @@ import ContactsClient
 import God
 import GodClient
 import UserDefaultsClient
+import AnalyticsClient
 
 public struct OnboardPathLogic: Reducer {
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
@@ -83,15 +85,18 @@ public struct OnboardPathLogic: Reducer {
 
       case .oneTimeCode(.delegate(.nextScreen)):
         state.path.append(.lastNameSetting())
+        
+        analytics.setUserProperty("school_id", state.schoolId)
+        analytics.setUserProperty("generation", state.generation?.description)
 
         if state.generation == nil, state.schoolId == nil {
           return .none
         }
-        return .run { [state] send in
-          let input = God.UpdateUserProfileInput(
-            generation: state.generation ?? .null,
-            schoolId: state.schoolId ?? .null
-          )
+        let input = God.UpdateUserProfileInput(
+          generation: state.generation ?? .null,
+          schoolId: state.schoolId ?? .null
+        )
+        return .run { send in
           await send(.updateUserProfileResponse(TaskResult {
             try await godClient.updateUserProfile(input)
           }))
