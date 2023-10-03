@@ -1,14 +1,14 @@
-import NameImage
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import Contacts
+import ContactsClient
+import CupertinoMessageFeature
 import God
 import GodClient
+import NameImage
 import ProfilePicture
 import SwiftUI
-import Contacts
-import CupertinoMessageFeature
-import ContactsClient
 import SwiftUIMessage
 
 public struct AddFriendsLogic: Reducer {
@@ -44,7 +44,7 @@ public struct AddFriendsLogic: Reducer {
 
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
-  
+
   enum Cancel {
     case contacts
   }
@@ -66,7 +66,7 @@ public struct AddFriendsLogic: Reducer {
           })
           .cancellable(id: Cancel.contacts, cancelInFlight: true)
         )
-        
+
       case .nextButtonTapped:
         return .merge(
           .run(operation: { send in
@@ -81,7 +81,7 @@ public struct AddFriendsLogic: Reducer {
             }
           })
         )
-        
+
       case let .selectButtonTapped(userId):
         if state.selectUserIds.contains(userId) {
           state.selectUserIds = state.selectUserIds.filter { $0 != userId }
@@ -89,7 +89,7 @@ public struct AddFriendsLogic: Reducer {
           state.selectUserIds.append(userId)
         }
         return .none
-        
+
       case let .inviteButtonTapped(contact):
         guard
           MessageComposeView.canSendText(),
@@ -108,20 +108,20 @@ public struct AddFriendsLogic: Reducer {
       case .usersResponse(.failure):
         state.users = []
         return .none
-        
+
       case let .contactResponse(.success(contact)):
         guard
           !contact.phoneNumbers.isEmpty,
           !contact.familyName.isEmpty,
           !contact.givenName.isEmpty
         else { return .none }
-        
+
         guard state.contacts.count <= 100 else {
           return Effect<Action>.cancel(id: Cancel.contacts)
         }
         state.contacts.append(contact)
         return .none
-        
+
       default:
         return .none
       }
@@ -130,7 +130,7 @@ public struct AddFriendsLogic: Reducer {
       CupertinoMessageLogic()
     }
   }
-  
+
   private func contactsRequest(send: Send<Action>) async {
     do {
       let request = CNContactFetchRequest(keysToFetch: [
@@ -168,7 +168,7 @@ public struct AddFriendsView: View {
             .background(Color(uiColor: .quaternarySystemFill))
 
           Divider()
-          
+
           ForEach(viewStore.users, id: \.self) { user in
             Button {
               viewStore.send(.selectButtonTapped(user.id))
@@ -190,8 +190,8 @@ public struct AddFriendsView: View {
                 Rectangle()
                   .fill(
                     viewStore.selectUserIds.contains(user.id)
-                    ? Color.godService
-                    : Color.white
+                      ? Color.godService
+                      : Color.white
                   )
                   .frame(width: 26, height: 26)
                   .clipShape(Circle())
@@ -199,8 +199,8 @@ public struct AddFriendsView: View {
                     RoundedRectangle(cornerRadius: 26 / 2)
                       .stroke(
                         viewStore.selectUserIds.contains(user.id)
-                        ? Color.godService
-                        : Color.godTextSecondaryLight,
+                          ? Color.godService
+                          : Color.godTextSecondaryLight,
                         lineWidth: 2
                       )
                   )
@@ -232,8 +232,7 @@ public struct AddFriendsView: View {
 
               Spacer()
 
-              Button {
-              } label: {
+              Button {} label: {
                 Text("INVITE", bundle: .module)
                   .bold()
                   .frame(height: 34)
