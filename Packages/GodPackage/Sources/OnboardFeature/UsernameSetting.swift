@@ -27,7 +27,7 @@ public struct UsernameSettingLogic: Reducer {
     public enum Delegate: Equatable {
       case nextScreen
     }
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -68,7 +68,7 @@ public struct UsernameSettingLogic: Reducer {
           TextState("username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined", bundle: .module)
         }
         return .none
-        
+
       case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .internal:
         state.isActivityIndicatorVisible = false
         state.alert = AlertState {
