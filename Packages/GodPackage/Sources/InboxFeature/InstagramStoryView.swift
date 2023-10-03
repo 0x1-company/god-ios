@@ -78,11 +78,49 @@ struct InstagramStoryView: View {
 
 #Preview {
   InstagramStoryView(
-    question: "Always doing the most and I like it",
+    question: "どんな髪型でも似合うのは？",
     color: Color.godBlue,
     icon: ImageResource.boy,
-    gender: "boy",
-    grade: "11th",
-    choices: []
+    gender: "男子",
+    grade: "2年生",
+    choices: [
+      God.InboxFragment.Choice(
+        _dataDict: DataDict(
+          data: [
+            "isSelected": 1,
+            "text": "やまだ たろう",
+          ],
+          fulfilledFragments: []
+        )
+      ),
+      God.InboxFragment.Choice(
+        _dataDict: DataDict(
+          data: [
+            "isSelected": 0,
+            "text": "まつし れん",
+          ],
+          fulfilledFragments: []
+        )
+      ),
+      God.InboxFragment.Choice(
+        _dataDict: DataDict(
+          data: [
+            "isSelected": 0,
+            "text": "家 ",
+          ],
+          fulfilledFragments: []
+        )
+      ),
+      God.InboxFragment.Choice(
+        _dataDict: DataDict(
+          data: [
+            "isSelected": 0,
+            "text": "たんまつ てすと",
+          ],
+          fulfilledFragments: []
+        )
+      )
+    ]
   )
+  .environment(\.locale, Locale.init(identifier: "ja_JP"))
 }
