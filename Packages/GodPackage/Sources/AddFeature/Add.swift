@@ -4,10 +4,10 @@ import Contacts
 import ContactsClient
 import God
 import GodClient
+import ProfileFeature
 import SearchField
 import SwiftUI
 import UIApplicationClient
-import ProfileFeature
 
 public struct AddLogic: Reducer {
   public init() {}
@@ -140,19 +140,19 @@ public struct AddLogic: Reducer {
         state.friendsOfFriendsPanel = nil
         state.fromSchoolPanel = nil
         return .none
-        
+
       case let .friendRequestPanel(.delegate(.showExternalProfile(userId))):
         state.destination = .profileExternal(
           ProfileExternalLogic.State(userId: userId)
         )
         return .none
-        
+
       case let .friendsOfFriendsPanel(.delegate(.showExternalProfile(userId))):
         state.destination = .profileExternal(
           ProfileExternalLogic.State(userId: userId)
         )
         return .none
-        
+
       case let .fromSchoolPanel(.delegate(.showExternalProfile(userId))):
         state.destination = .profileExternal(
           ProfileExternalLogic.State(userId: userId)
@@ -181,14 +181,16 @@ public struct AddLogic: Reducer {
       Destination()
     }
   }
-  
+
   public struct Destination: Reducer {
     public enum State: Equatable {
       case profileExternal(ProfileExternalLogic.State)
     }
+
     public enum Action: Equatable {
       case profileExternal(ProfileExternalLogic.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profileExternal, action: /Action.profileExternal) {
         ProfileExternalLogic()
