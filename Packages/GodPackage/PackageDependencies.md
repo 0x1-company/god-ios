@@ -5,6 +5,7 @@ graph TD;
     AboutFeature-->SwiftUIMessage;
     AboutFeature-->GodActionSheet;
     ActivityFeature-->ProfileFeature;
+    AddFeature-->ProfileFeature;
     AddFeature-->CupertinoMessageFeature;
     AddFeature-->Colors;
     AddFeature-->GodClient;
