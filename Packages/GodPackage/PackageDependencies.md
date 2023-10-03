@@ -113,6 +113,7 @@ graph TD;
     ProfileShareFeature-->BackgroundClearSheet;
     ProfileShareFeature-->AnimationDisableTransaction;
     ProfileShareFeature-->ComposableArchitecture;
+    RevealFeature-->Build;
     RevealFeature-->Colors;
     RevealFeature-->GodClient;
     RevealFeature-->ButtonStyles;
