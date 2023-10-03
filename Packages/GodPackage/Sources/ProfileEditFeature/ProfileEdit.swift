@@ -56,7 +56,7 @@ public struct ProfileEditLogic: Reducer {
     case cancelEditButtonTapped
     case saveButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
-    case uploadResponse(TaskResult<StorageMetadata>)
+    case uploadResponse(TaskResult<URL>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case binding(BindingAction<State>)
@@ -124,7 +124,7 @@ public struct ProfileEditLogic: Reducer {
             if let imageData = state.imageData, let userId = state.currentUser?.id {
               group.addTask {
                 await send(.uploadResponse(TaskResult {
-                  try await firebaseStorage.upload("users/\(userId)/icon.png", imageData)
+                  try await firebaseStorage.upload("users/profile_images/\(userId)", imageData)
                 }))
               }
             }

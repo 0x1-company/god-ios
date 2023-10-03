@@ -25,7 +25,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
     case nextButtonTapped
     case binding(BindingAction<State>)
     case loadTransferableResponse(TaskResult<Data?>)
-    case uploadResponse(TaskResult<StorageMetadata>)
+    case uploadResponse(TaskResult<URL>)
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case delegate(Delegate)
 
@@ -69,7 +69,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
         guard let userId = state.currentUser?.id else { return .none }
         return .run { send in
           await send(.uploadResponse(TaskResult {
-            try await firebaseStorage.upload("users/\(userId)/icon.png", data)
+            try await firebaseStorage.upload("users/profile_images/\(userId)", data)
           }))
         }
 
