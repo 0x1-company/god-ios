@@ -3,8 +3,8 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import SwiftUI
 import ProfilePicture
+import SwiftUI
 
 public struct FriendRequestCardLogic: Reducer {
   public init() {}
