@@ -101,7 +101,10 @@ public struct AddLogic: Reducer {
           FriendRequestCardLogic.State(
             friendId: $0.node.id,
             userId: $0.node.user.id,
+            imageURL: $0.node.user.imageURL,
             displayName: $0.node.user.displayName.ja,
+            firstName: $0.node.user.firstName,
+            lastName: $0.node.user.lastName,
             description: String(localized: "\($0.node.user.mutualFriendsCount) mutual friends", bundle: .module)
           )
         }

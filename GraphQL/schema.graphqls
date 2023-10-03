@@ -341,6 +341,10 @@ type PublicVoteUser {
 
   """user id"""
   id: ID!
+
+  """所属している学校"""
+  school: School
+  schoolId: String
 }
 
 input PurchaseInput {

@@ -8,5 +8,7 @@ fragment FriendRequestCardFragment on Friend {
     displayName {
       ja
     }
+    firstName
+    lastName
   }
 }
