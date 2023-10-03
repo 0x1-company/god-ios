@@ -79,14 +79,16 @@ public struct FriendRequestCardView: View {
           url: URL(string: viewStore.imageURL),
           familyName: viewStore.lastName,
           givenName: viewStore.firstName,
-          size: 40
+          size: 42
         )
 
         VStack(alignment: .leading) {
           Text(verbatim: viewStore.displayName)
+            .bold()
 
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
+            .font(.footnote)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -95,9 +97,11 @@ public struct FriendRequestCardView: View {
             viewStore.send(.approveButtonTapped)
           } label: {
             Text("APPROVE", bundle: .module)
+              .font(.callout)
+              .bold()
               .foregroundStyle(Color.white)
               .frame(height: 34)
-              .frame(minWidth: 80, maxWidth: 120)
+              .padding(.horizontal, 12)
               .background(Color.godService)
               .clipShape(Capsule())
           }

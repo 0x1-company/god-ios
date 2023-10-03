@@ -36,7 +36,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "承認"
+            "value" : "承認する"
           }
         }
       }
@@ -77,16 +77,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "学校の友だち"
-          }
-        }
-      }
-    },
-    "HIDE" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "非表示"
           }
         }
       }
