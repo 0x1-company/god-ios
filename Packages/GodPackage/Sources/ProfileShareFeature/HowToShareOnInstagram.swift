@@ -232,7 +232,7 @@ public struct HowToShareOnInstagramView: View {
           }
           
           Text(viewStore.currentStep.description, bundle: .module)
-            .font(.system(.title2, design: .rounded))
+            .font(.system(.headline, design: .rounded))
 
           Image(viewStore.currentStep.descriptionImageName, bundle: .module)
             .resizable()
