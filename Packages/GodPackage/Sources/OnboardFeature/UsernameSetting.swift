@@ -81,11 +81,11 @@ public struct UsernameSettingLogic: Reducer {
           TextState("Sorry, that username is not available!", bundle: .module)
         }
         return .none
-        
+
       case .updateUsernameResponse(.failure):
         state.isActivityIndicatorVisible = false
         return .none
-        
+
       case .alert(.presented(.confirmOkay)):
         state.alert = nil
         return .none
