@@ -8,8 +8,8 @@ public extension God {
     public static let operationName: String = "InboxActivities"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query InboxActivities($first: Int!, $after: String) { listInboxActivities(first: $first, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename ...InboxFragment } } } }"#,
-        fragments: [NextPaginationFragment.self, InboxFragment.self]
+        #"query InboxActivities($first: Int!, $after: String) { listInboxActivities(first: $first, after: $after) { __typename pageInfo { __typename ...NextPaginationFragment } edges { __typename cursor node { __typename ...InboxCardFragment } } } }"#,
+        fragments: [NextPaginationFragment.self, InboxCardFragment.self]
       ))
 
     public var first: Int
@@ -113,24 +113,22 @@ public extension God {
             public static var __parentType: ApolloAPI.ParentType { God.Objects.InboxActivity }
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
-              .fragment(InboxFragment.self),
+              .fragment(InboxCardFragment.self),
             ] }
 
             /// ID
             public var id: God.ID { __data["id"] }
-            /// イニシャルを取得する。God Modeのみ。
-            public var initial: String? { __data["initial"] }
             /// 既読かどうか
             public var isRead: Bool { __data["isRead"] }
             public var createdAt: God.Date { __data["createdAt"] }
-            public var question: InboxFragment.Question { __data["question"] }
-            public var voteUser: InboxFragment.VoteUser { __data["voteUser"] }
+            public var question: InboxCardFragment.Question { __data["question"] }
+            public var voteUser: InboxCardFragment.VoteUser { __data["voteUser"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
               public init(_dataDict: DataDict) { __data = _dataDict }
 
-              public var inboxFragment: InboxFragment { _toFragment() }
+              public var inboxCardFragment: InboxCardFragment { _toFragment() }
             }
           }
         }

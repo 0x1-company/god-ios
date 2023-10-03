@@ -1,0 +1,7 @@
+# import '../fragments/InboxFragment'
+
+query InboxActivity($id: String!) {
+  inboxActivity(id:$id) {
+    ...InboxFragment
+  }
+}

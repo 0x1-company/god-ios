@@ -1,0 +1,16 @@
+fragment InboxCardFragment on InboxActivity {
+  id
+  isRead
+  createdAt
+  question {
+    id
+    text {
+      ja
+    }
+  }
+  voteUser {
+    id
+    grade
+    gender
+  }
+}

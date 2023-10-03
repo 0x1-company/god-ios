@@ -1,5 +1,5 @@
 query PeopleYouMayKnow($first: Int!) {
-  fromSchool(first: $first) {
+  usersBySameSchool(first: $first) {
     edges {
       node {
         id

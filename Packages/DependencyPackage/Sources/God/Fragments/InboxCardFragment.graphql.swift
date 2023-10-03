@@ -4,9 +4,9 @@
 @_exported import ApolloAPI
 
 public extension God {
-  struct InboxFragment: God.SelectionSet, Fragment {
+  struct InboxCardFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment InboxFragment on InboxActivity { __typename id initial createdAt question { __typename id imageURL text { __typename ja } } voteUser { __typename id grade gender } choices { __typename id userId text orderIndex } }"#
+      #"fragment InboxCardFragment on InboxActivity { __typename id isRead createdAt question { __typename id text { __typename ja } } voteUser { __typename id grade gender } }"#
     }
 
     public let __data: DataDict
@@ -16,22 +16,19 @@ public extension God {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("id", God.ID.self),
-      .field("initial", String?.self),
+      .field("isRead", Bool.self),
       .field("createdAt", God.Date.self),
       .field("question", Question.self),
       .field("voteUser", VoteUser.self),
-      .field("choices", [Choice].self),
     ] }
 
     /// ID
     public var id: God.ID { __data["id"] }
-    /// イニシャルを取得する。God Modeのみ。
-    public var initial: String? { __data["initial"] }
+    /// 既読かどうか
+    public var isRead: Bool { __data["isRead"] }
     public var createdAt: God.Date { __data["createdAt"] }
     public var question: Question { __data["question"] }
     public var voteUser: VoteUser { __data["voteUser"] }
-    /// 投票の際に表示されていた選択肢
-    public var choices: [Choice] { __data["choices"] }
 
     /// Question
     ///
@@ -44,13 +41,10 @@ public extension God {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
         .field("id", God.ID.self),
-        .field("imageURL", String.self),
         .field("text", Text.self),
       ] }
 
       public var id: God.ID { __data["id"] }
-      /// imageURL
-      public var imageURL: String { __data["imageURL"] }
       /// text
       public var text: Text { __data["text"] }
 
@@ -93,28 +87,6 @@ public extension God {
       public var grade: String? { __data["grade"] }
       /// gender
       public var gender: GraphQLEnum<God.Gender> { __data["gender"] }
-    }
-
-    /// Choice
-    ///
-    /// Parent Type: `VoteChoice`
-    public struct Choice: God.SelectionSet {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public static var __parentType: ApolloAPI.ParentType { God.Objects.VoteChoice }
-      public static var __selections: [ApolloAPI.Selection] { [
-        .field("__typename", String.self),
-        .field("id", String.self),
-        .field("userId", String.self),
-        .field("text", String.self),
-        .field("orderIndex", Int.self),
-      ] }
-
-      public var id: String { __data["id"] }
-      public var userId: String { __data["userId"] }
-      public var text: String { __data["text"] }
-      public var orderIndex: Int { __data["orderIndex"] }
     }
   }
 

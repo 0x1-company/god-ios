@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "AddPlus"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query AddPlus($first: Int!) { friendRequests(first: 100) { __typename edges { __typename node { __typename ...FriendRequestCardFragment } } } friendsOfFriends(first: $first) { __typename edges { __typename node { __typename ...AddPlusCardFragment } } } fromSchool(first: $first) { __typename edges { __typename node { __typename ...AddPlusCardFragment } } } }"#,
+        #"query AddPlus($first: Int!) { friendRequests(first: 100) { __typename edges { __typename node { __typename ...FriendRequestCardFragment } } } friendsOfFriends(first: $first) { __typename edges { __typename node { __typename ...AddPlusCardFragment } } } usersBySameSchool(first: $first) { __typename edges { __typename node { __typename ...AddPlusCardFragment } } } }"#,
         fragments: [FriendRequestCardFragment.self, AddPlusCardFragment.self]
       ))
 
@@ -28,7 +28,7 @@ public extension God {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("friendRequests", FriendRequests.self, arguments: ["first": 100]),
         .field("friendsOfFriends", FriendsOfFriends.self, arguments: ["first": .variable("first")]),
-        .field("fromSchool", FromSchool.self, arguments: ["first": .variable("first")]),
+        .field("usersBySameSchool", UsersBySameSchool.self, arguments: ["first": .variable("first")]),
       ] }
 
       /// フレンドリクエスト一覧
@@ -36,7 +36,7 @@ public extension God {
       /// フレンドのフレンド一覧
       public var friendsOfFriends: FriendsOfFriends { __data["friendsOfFriends"] }
       /// 同じ学校に所属しているユーザー一覧
-      public var fromSchool: FromSchool { __data["fromSchool"] }
+      public var usersBySameSchool: UsersBySameSchool { __data["usersBySameSchool"] }
 
       /// FriendRequests
       ///
@@ -165,10 +165,10 @@ public extension God {
         }
       }
 
-      /// FromSchool
+      /// UsersBySameSchool
       ///
       /// Parent Type: `UserConnection`
-      public struct FromSchool: God.SelectionSet {
+      public struct UsersBySameSchool: God.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -180,7 +180,7 @@ public extension God {
 
         public var edges: [Edge] { __data["edges"] }
 
-        /// FromSchool.Edge
+        /// UsersBySameSchool.Edge
         ///
         /// Parent Type: `UserEdge`
         public struct Edge: God.SelectionSet {
@@ -195,7 +195,7 @@ public extension God {
 
           public var node: Node { __data["node"] }
 
-          /// FromSchool.Edge.Node
+          /// UsersBySameSchool.Edge.Node
           ///
           /// Parent Type: `User`
           public struct Node: God.SelectionSet {

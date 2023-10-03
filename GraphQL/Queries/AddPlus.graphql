@@ -16,7 +16,7 @@ query AddPlus($first: Int!) {
       }
     }
   }
-  fromSchool(first: $first) {
+  usersBySameSchool(first: $first) {
     edges {
       node {
         ...AddPlusCardFragment

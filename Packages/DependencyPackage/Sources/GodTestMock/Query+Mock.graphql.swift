@@ -16,7 +16,7 @@ public class Query: MockObject {
     @Field<FriendConnection>("friendRequests") public var friendRequests
     @Field<[User]>("friends") public var friends
     @Field<UserConnection>("friendsOfFriends") public var friendsOfFriends
-    @Field<UserConnection>("fromSchool") public var fromSchool
+    @Field<InboxActivity>("inboxActivity") public var inboxActivity
     @Field<ActivityConnection>("listActivities") public var listActivities
     @Field<InboxActivityConnection>("listInboxActivities") public var listInboxActivities
     @Field<[Question]>("questionsOrderByVotedDesc") public var questionsOrderByVotedDesc
@@ -24,6 +24,7 @@ public class Query: MockObject {
     @Field<SchoolConnection>("schools") public var schools
     @Field<Store>("store") public var store
     @Field<User>("user") public var user
+    @Field<UserConnection>("usersBySameSchool") public var usersBySameSchool
   }
 }
 
@@ -35,14 +36,15 @@ public extension Mock where O == Query {
     friendRequests: Mock<FriendConnection>? = nil,
     friends: [Mock<User>]? = nil,
     friendsOfFriends: Mock<UserConnection>? = nil,
-    fromSchool: Mock<UserConnection>? = nil,
+    inboxActivity: Mock<InboxActivity>? = nil,
     listActivities: Mock<ActivityConnection>? = nil,
     listInboxActivities: Mock<InboxActivityConnection>? = nil,
     questionsOrderByVotedDesc: [Mock<Question>]? = nil,
     revealFullNameLimit: Int? = nil,
     schools: Mock<SchoolConnection>? = nil,
     store: Mock<Store>? = nil,
-    user: Mock<User>? = nil
+    user: Mock<User>? = nil,
+    usersBySameSchool: Mock<UserConnection>? = nil
   ) {
     self.init()
     _setEntity(activeSubscription, for: \.activeSubscription)
@@ -51,7 +53,7 @@ public extension Mock where O == Query {
     _setEntity(friendRequests, for: \.friendRequests)
     _setList(friends, for: \.friends)
     _setEntity(friendsOfFriends, for: \.friendsOfFriends)
-    _setEntity(fromSchool, for: \.fromSchool)
+    _setEntity(inboxActivity, for: \.inboxActivity)
     _setEntity(listActivities, for: \.listActivities)
     _setEntity(listInboxActivities, for: \.listInboxActivities)
     _setList(questionsOrderByVotedDesc, for: \.questionsOrderByVotedDesc)
@@ -59,5 +61,6 @@ public extension Mock where O == Query {
     _setEntity(schools, for: \.schools)
     _setEntity(store, for: \.store)
     _setEntity(user, for: \.user)
+    _setEntity(usersBySameSchool, for: \.usersBySameSchool)
   }
 }
