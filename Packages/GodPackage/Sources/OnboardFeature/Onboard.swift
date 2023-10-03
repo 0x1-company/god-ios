@@ -7,6 +7,7 @@ import FirebaseDynamicLinks
 import God
 import HowItWorksFeature
 import SwiftUI
+import UserDefaultsClient
 
 public struct OnboardLogic: Reducer {
   public init() {}
@@ -38,6 +39,7 @@ public struct OnboardLogic: Reducer {
     }
   }
 
+  @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseDynamicLinks) var firebaseDynamicLinks
 
   public var body: some Reducer<State, Action> {
@@ -50,12 +52,22 @@ public struct OnboardLogic: Reducer {
       switch action {
       case .welcome(.getStartedButtonTapped):
         state.path.append(.gradeSetting())
+        guard
+          let deepLink = userDefaults.dynamicLinkURL(),
+          let inviterUserId = getInviterUserId(from: deepLink)
+        else { return .none }
+        state.inviterUserId = inviterUserId
         return .none
 
       case .welcome(.loginButtonTapped):
         state.path.append(.gradeSetting())
+        guard
+          let deepLink = userDefaults.dynamicLinkURL(),
+          let inviterUserId = getInviterUserId(from: deepLink)
+        else { return .none }
+        state.inviterUserId = inviterUserId
         return .none
-
+        
       case let .onOpenURL(url):
         return .run { send in
           await send(.dynamicLinkResponse(TaskResult {

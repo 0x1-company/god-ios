@@ -134,6 +134,7 @@ public struct OneTimeCodeLogic: Reducer {
       case .createUserResponse(.success):
         state.isActivityIndicatorVisible = false
         return .run { @MainActor send in
+          await userDefaults.setDynamicLinkURL(nil)
           send(.delegate(.nextScreen), animation: .default)
         }
 

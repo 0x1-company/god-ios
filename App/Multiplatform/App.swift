@@ -91,7 +91,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
       return true
     }
     if let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url) {
-      print(dynamicLink)
+      store.send(.appDelegate(.dynamicLink(dynamicLink.url)))
       return true
     }
     return false
