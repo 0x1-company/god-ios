@@ -6,6 +6,7 @@ import God
 import GodClient
 import UIKit
 import UserNotificationClient
+import UserDefaultsClient
 
 public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
@@ -16,6 +17,7 @@ public struct AppDelegateLogic: Reducer {
     case userNotifications(UserNotificationClient.DelegateEvent)
     case messaging(FirebaseMessagingClient.DelegateAction)
     case configurationForConnecting(UIApplicationShortcutItem?)
+    case dynamicLink(URL?)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -32,6 +34,7 @@ public struct AppDelegateLogic: Reducer {
     }
   }
 
+  @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseCore) var firebaseCore
   @Dependency(\.firebaseAuth) var firebaseAuth
   @Dependency(\.userNotifications) var userNotifications
@@ -97,21 +100,17 @@ public struct AppDelegateLogic: Reducer {
         completionHandler()
       }
 
-    case .userNotifications:
-      return .none
-
     case .messaging(.didReceiveRegistrationToken):
       return .run { _ in
         await createFirebaseRegistrationTokenRequest()
       }
 
-    case .messaging:
-      return .none
+    case let .dynamicLink(.some(url)):
+      return .run { _ in
+        await userDefaults.setDynamicLinkURL(url.absoluteString)
+      }
 
-    case .configurationForConnecting:
-      return .none
-
-    case .delegate:
+    default:
       return .none
     }
   }
