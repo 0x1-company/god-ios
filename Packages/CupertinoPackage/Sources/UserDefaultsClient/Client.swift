@@ -56,11 +56,11 @@ public extension UserDefaultsClient {
   func readInitialGodTeamNotification() -> Bool {
     boolForKey(keyReadInitialGodTeamNotification)
   }
-  
+
   func setDynamicLinkURL(_ value: String?) async {
     await setString(value, keyDynamicLinkURL)
   }
-  
+
   func dynamicLinkURL() -> String? {
     stringForKey(keyDynamicLinkURL)
   }

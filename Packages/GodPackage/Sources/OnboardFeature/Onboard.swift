@@ -67,7 +67,7 @@ public struct OnboardLogic: Reducer {
         else { return .none }
         state.inviterUserId = inviterUserId
         return .none
-        
+
       case let .onOpenURL(url):
         return .run { send in
           await send(.dynamicLinkResponse(TaskResult {

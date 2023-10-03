@@ -5,8 +5,8 @@ import FirebaseMessagingClient
 import God
 import GodClient
 import UIKit
-import UserNotificationClient
 import UserDefaultsClient
+import UserNotificationClient
 
 public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
