@@ -125,5 +125,6 @@ graph TD;
     ShopFeature-->GodClient;
     ShopFeature-->SearchField;
     ShopFeature-->ButtonStyles;
+    ShopFeature-->ProfilePicture;
     ShopFeature-->ComposableArchitecture;
 ```
