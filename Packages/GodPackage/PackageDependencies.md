@@ -67,6 +67,7 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     OnboardFeature-->HowItWorksFeature;
+    OnboardFeature-->CupertinoMessageFeature;
     OnboardFeature-->Kingfisher;
     OnboardFeature-->Constants;
     OnboardFeature-->AsyncValue;
