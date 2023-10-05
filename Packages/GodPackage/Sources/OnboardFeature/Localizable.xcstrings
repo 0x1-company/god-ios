@@ -4,6 +4,26 @@
     "" : {
 
     },
+    "@godappteam" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "@godappteam"
+          }
+        }
+      }
+    },
+    "000 000" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "000 000"
+          }
+        }
+      }
+    },
     "090 2724 3108" : {
       "localizations" : {
         "ja" : {
@@ -124,16 +144,6 @@
         }
       }
     },
-    "Code" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "確認コード"
-          }
-        }
-      }
-    },
     "Enter your age" : {
       "localizations" : {
         "ja" : {
@@ -155,7 +165,14 @@
       }
     },
     "Error" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
     },
     "Find My Friends" : {
       "localizations" : {
@@ -397,10 +414,18 @@
         }
       }
     },
-    "Sorry, that username is not available!" : {
-
+    "The username %@ is not available." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@というユーザーネームは使用できません。"
+          }
+        }
+      }
     },
     "Username" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -410,8 +435,15 @@
         }
       }
     },
-    "username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined" : {
-
+    "Usernames can only use Roman latters (a-z, A-Z), numbers, underscores and periods" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザーネームに使えるのは英字(a-z, A-Z)、数字、アンダースコア(_)、ピリオド(.)だけです"
+          }
+        }
+      }
     },
     "We sent you a code to verify\nyour number" : {
       "localizations" : {

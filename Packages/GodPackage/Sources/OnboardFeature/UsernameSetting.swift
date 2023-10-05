@@ -65,12 +65,13 @@ public struct UsernameSettingLogic: Reducer {
             TextState("OK", bundle: .module)
           }
         } message: {
-          TextState("username must be a string at least 4 characters long and up to 30 characters long containing only letters, numbers, underscores, and periods except that no two periods shall be in sequence or undefined", bundle: .module)
+          TextState("Usernames can only use Roman latters (a-z, A-Z), numbers, underscores and periods", bundle: .module)
         }
         return .none
 
       case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .internal:
         state.isActivityIndicatorVisible = false
+        let username = state.username
         state.alert = AlertState {
           TextState("Error", bundle: .module)
         } actions: {
@@ -78,7 +79,7 @@ public struct UsernameSettingLogic: Reducer {
             TextState("OK", bundle: .module)
           }
         } message: {
-          TextState("Sorry, that username is not available!", bundle: .module)
+          TextState("The username \(username) is not available.", bundle: .module)
         }
         return .none
 
@@ -107,19 +108,24 @@ public struct UsernameSettingView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack {
+      VStack(spacing: 8) {
         Spacer()
         Text("Choose a username", bundle: .module)
           .bold()
-          .foregroundColor(.white)
+          .font(.title3)
 
-        TextField("Username", text: viewStore.$username)
-          .textInputAutocapitalization(.never)
-          .textContentType(.username)
-          .font(.title)
-          .foregroundColor(.white)
-          .multilineTextAlignment(.center)
-          .focused($focus)
+        TextField(text: viewStore.$username) {
+          Text("@godappteam", bundle: .module)
+        }
+        .textInputAutocapitalization(.never)
+        .textContentType(.username)
+        .font(.title)
+        .focused($focus)
+        
+        if viewStore.isDisabled {
+          Text("Usernames can only use Roman latters (a-z, A-Z), numbers, underscores and periods", bundle: .module)
+            .font(.footnote)
+        }
 
         Spacer()
 
@@ -132,7 +138,9 @@ public struct UsernameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
+      .foregroundStyle(Color.white)
       .background(Color.godService)
+      .multilineTextAlignment(.center)
       .alert(store: store.scope(state: \.$alert, action: UsernameSettingLogic.Action.alert))
       .onAppear {
         focus = true
@@ -151,5 +159,6 @@ struct UsernameSettingViewPreviews: PreviewProvider {
         )
       )
     }
+    .environment(\.locale, Locale(identifier: "ja_JP"))
   }
 }
