@@ -26,6 +26,7 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     OnboardFeature-->HowItWorksFeature;
+    OnboardFeature-->CupertinoMessageFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
