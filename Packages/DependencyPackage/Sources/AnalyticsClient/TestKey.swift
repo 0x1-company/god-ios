@@ -24,15 +24,4 @@ public extension AnalyticsClient {
     setUserProperty: { _, _ in },
     setAnalyticsCollectionEnabled: { _ in }
   )
-  static let consoleLogger = Self(
-    logEvent: { name, parameters in
-      print("""
-      Analytics: \(name)
-      \(parameters ?? [:])
-      """)
-    },
-    setUserId: { print("[\(Self.self).setUserId]: \($0)") },
-    setUserProperty: { print("[\(Self.self).setUserProperty]\($0): \($1)") },
-    setAnalyticsCollectionEnabled: { print("[\(Self.self).setAnalyticsCollectionEnabled]: \($0)") }
-  )
 }

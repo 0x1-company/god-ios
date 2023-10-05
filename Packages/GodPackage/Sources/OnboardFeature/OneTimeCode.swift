@@ -143,6 +143,7 @@ public struct OneTimeCodeLogic: Reducer {
         return .send(.delegate(.popToRoot), animation: .default)
 
       case .alert(.presented(.confirmOkay)):
+        state.alert = nil
         return .run { _ in
           await dismiss()
         }
@@ -183,7 +184,7 @@ public struct OneTimeCodeView: View {
           TextField(
             text: viewStore.$oneTimeCode,
             label: {
-              Text("Code", bundle: .module)
+              Text("000 000", bundle: .module)
             }
           )
           .font(.title)
@@ -194,11 +195,6 @@ public struct OneTimeCodeView: View {
           Spacer()
 
           VStack(spacing: 24) {
-//            Button("Resend in 30") {
-//              viewStore.send(.resendButtonTapped)
-//            }
-//            .bold()
-
             NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
               viewStore.send(.nextButtonTapped)
             }

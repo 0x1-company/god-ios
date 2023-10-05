@@ -1,6 +1,8 @@
 query Store {
   currentUser {
+    id
     wallet {
+      id
       coinBalance
 		}
   }

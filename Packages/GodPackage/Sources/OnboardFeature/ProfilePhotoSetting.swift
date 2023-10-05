@@ -7,6 +7,9 @@ import God
 import GodClient
 import PhotosUI
 import SwiftUI
+import Contacts
+import ContactsClient
+import UserDefaultsClient
 
 public struct ProfilePhotoSettingLogic: Reducer {
   public init() {}
@@ -35,6 +38,8 @@ public struct ProfilePhotoSettingLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
+  @Dependency(\.contacts) var contactsClient
+  @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseStorage) var firebaseStorage
 
   public var body: some Reducer<State, Action> {
@@ -43,11 +48,19 @@ public struct ProfilePhotoSettingLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.currentUser() {
-            await send(.currentUserResponse(.success(data)))
+          await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await currentUserRequest(send: send)
+            }
+            group.addTask {
+              guard
+                case .authorized = contactsClient.authorizationStatus(.contacts),
+                let number = userDefaults.phoneNumber(),
+                let contact = try? contactsClient.findByPhoneNumber(number: number).first
+              else { return }
+              await send(.loadTransferableResponse(.success(contact.imageData)))
+            }
           }
-        } catch: { error, send in
-          await send(.currentUserResponse(.failure(error)))
         }
 
       case .skipButtonTapped:
@@ -92,6 +105,16 @@ public struct ProfilePhotoSettingLogic: Reducer {
       case .delegate:
         return .none
       }
+    }
+  }
+  
+  private func currentUserRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentUser() {
+        await send(.currentUserResponse(.success(data)))
+      }
+    } catch {
+      await send(.currentUserResponse(.failure(error)))
     }
   }
 }

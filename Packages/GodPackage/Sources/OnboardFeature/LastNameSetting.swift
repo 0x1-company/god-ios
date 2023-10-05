@@ -12,7 +12,6 @@ public struct LastNameSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var lastName = ""
     var isDisabled = true
     var isImport = false
@@ -24,15 +23,10 @@ public struct LastNameSettingLogic: Reducer {
     case nextButtonTapped
     case binding(BindingAction<State>)
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
-    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
       case nextScreen
-    }
-
-    public enum Alert: Equatable {
-      case confirmOkay
     }
   }
 
@@ -56,52 +50,22 @@ public struct LastNameSettingLogic: Reducer {
         return .none
 
       case .nextButtonTapped:
-        let lastName = state.lastName
-        guard
-          !lastName.isEmpty,
-          validateHiragana(for: lastName)
-        else {
-          state.alert = .hiraganaValidateError()
-          return .none
-        }
         let input = God.UpdateUserProfileInput(
-          lastName: .init(stringLiteral: lastName)
+          lastName: .init(stringLiteral: state.lastName)
         )
         return .run { send in
           async let next: Void = send(.delegate(.nextScreen))
-          async let update: Void = send(
-            .updateProfileResponse(
-              TaskResult {
-                try await godClient.updateUserProfile(input)
-              }
-            )
-          )
+          async let update: Void = send(.updateProfileResponse(TaskResult {
+            try await godClient.updateUserProfile(input)
+          }))
           _ = await (next, update)
         }
       case .binding:
-        state.isImport = false
-        state.isDisabled = state.lastName.isEmpty
-        return .none
-      case .alert(.dismiss):
-        state.alert = nil
+        state.isDisabled = state.lastName.isEmpty || !validateHiragana(for: state.lastName)
         return .none
       default:
         return .none
       }
-    }
-  }
-}
-
-extension AlertState where Action == LastNameSettingLogic.Action.Alert {
-  static func hiraganaValidateError() -> Self {
-    Self {
-      TextState("title")
-    } actions: {
-      ButtonState(action: .confirmOkay) {
-        TextState("OK")
-      }
-    } message: {
-      TextState("ひらがなのみ設定できます")
     }
   }
 }
@@ -116,23 +80,23 @@ public struct LastNameSettingView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack {
+      VStack(spacing: 8) {
         Spacer()
         Text("What's your last name?", bundle: .module)
           .bold()
-          .foregroundColor(.white)
+          .font(.title3)
+        
+        Text("Only hiragana can be set", bundle: .module)
 
         TextField(text: viewStore.$lastName) {
           Text("Last Name", bundle: .module)
         }
-        .foregroundColor(.white)
         .multilineTextAlignment(.center)
         .font(.title)
         .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts", bundle: .module)
-            .foregroundColor(.godWhite)
         }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
@@ -141,10 +105,10 @@ public struct LastNameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
+      .foregroundColor(Color.white)
       .background(Color.godService)
       .navigationBarBackButtonHidden()
       .task { await viewStore.send(.onTask).finish() }
-      .alert(store: store.scope(state: \.$alert, action: LastNameSettingLogic.Action.alert))
       .onAppear {
         focus = true
       }

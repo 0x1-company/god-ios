@@ -39,13 +39,15 @@ public struct InvitationsLeftLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        guard state.invitations.count <= 10 else {
+          return .none
+        }
         let request = CNContactFetchRequest(keysToFetch: [
           CNContactGivenNameKey as CNKeyDescriptor,
           CNContactFamilyNameKey as CNKeyDescriptor,
           CNContactImageDataKey as CNKeyDescriptor,
           CNContactPhoneNumbersKey as CNKeyDescriptor,
         ])
-        state.invitations = []
         return .merge(
           .run(operation: { send in
             for try await data in godClient.currentUser() {
@@ -81,7 +83,7 @@ public struct InvitationsLeftLogic: Reducer {
         return .none
 
       case let .contactResponse(.success(contact)):
-        guard state.invitations.count <= 40 else {
+        guard state.invitations.count <= 10 else {
           return .cancel(id: Cancel.contacts)
         }
         state.invitations.append(contact)

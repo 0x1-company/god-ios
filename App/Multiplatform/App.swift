@@ -45,7 +45,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         ._printChanges()
         .transformDependency(\.self) {
           $0.godClient = .live(apolloClient: ApolloClient(build: $0.build))
-          $0.analytics = .consoleLogger
         }
     }
   )

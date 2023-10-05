@@ -36,7 +36,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前の最初の文字は..."
+            "value" : "名前の頭文字は..."
           }
         }
       }
@@ -46,7 +46,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld回ヒントを見れます"
+            "value" : "あと%lld回フルネームを見れます（週に2回まで）"
           }
         }
       }
