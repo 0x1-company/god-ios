@@ -146,6 +146,5 @@ struct UsernameSettingViewPreviews: PreviewProvider {
         )
       )
     }
-    .environment(\.locale, Locale(identifier: "ja_JP"))
   }
 }
