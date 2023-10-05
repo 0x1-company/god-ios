@@ -56,19 +56,6 @@ public struct UsernameSettingLogic: Reducer {
         state.isActivityIndicatorVisible = false
         return .send(.delegate(.nextScreen), animation: .default)
 
-      case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .badUserInput:
-        state.isActivityIndicatorVisible = false
-        state.alert = AlertState {
-          TextState("Error", bundle: .module)
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK", bundle: .module)
-          }
-        } message: {
-          TextState("Usernames can only use Roman latters (a-z, A-Z), numbers, underscores and periods", bundle: .module)
-        }
-        return .none
-
       case let .updateUsernameResponse(.failure(error as GodServerError)) where error.code == .internal:
         state.isActivityIndicatorVisible = false
         let username = state.username
