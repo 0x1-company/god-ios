@@ -1,14 +1,14 @@
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import Contacts
+import ContactsClient
 import FirebaseStorage
 import FirebaseStorageClient
 import God
 import GodClient
 import PhotosUI
 import SwiftUI
-import Contacts
-import ContactsClient
 import UserDefaultsClient
 
 public struct ProfilePhotoSettingLogic: Reducer {
@@ -107,7 +107,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
       }
     }
   }
-  
+
   private func currentUserRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.currentUser() {

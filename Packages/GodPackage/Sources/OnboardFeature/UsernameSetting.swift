@@ -108,7 +108,7 @@ public struct UsernameSettingView: View {
         .textContentType(.username)
         .font(.title)
         .focused($focus)
-        
+
         if viewStore.isDisabled {
           Text("Usernames can only use Roman latters (a-z, A-Z), numbers, underscores and periods", bundle: .module)
             .font(.footnote)

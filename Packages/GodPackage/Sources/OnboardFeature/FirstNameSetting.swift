@@ -87,7 +87,7 @@ public struct FirstNameSettingView: View {
         Text("What's your first name?", bundle: .module)
           .bold()
           .font(.title3)
-        
+
         Text("Only hiragana can be set", bundle: .module)
 
         TextField(text: viewStore.$firstName) {
