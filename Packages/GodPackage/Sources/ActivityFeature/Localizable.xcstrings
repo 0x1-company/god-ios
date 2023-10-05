@@ -62,7 +62,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "が受け取りました"
+            "value" : "が投票されました"
           }
         }
       }
