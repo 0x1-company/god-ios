@@ -357,6 +357,16 @@
         }
       }
     },
+    "Only hiragana can be set" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ひらがなのみ設定出来ます"
+          }
+        }
+      }
+    },
     "PEOPLE YOU MAY KNOW" : {
       "localizations" : {
         "ja" : {
@@ -388,9 +398,6 @@
       }
     },
     "Sorry, that username is not available!" : {
-
-    },
-    "title" : {
 
     },
     "Username" : {
@@ -465,9 +472,6 @@
           }
         }
       }
-    },
-    "ひらがなのみ設定できます" : {
-
     }
   },
   "version" : "1.0"
