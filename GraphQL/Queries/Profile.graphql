@@ -5,6 +5,7 @@ query CurrentUserProfile {
   currentUser {
     ...ProfileSectionFragment
     wallet {
+      id
       coinBalance
     }
   }

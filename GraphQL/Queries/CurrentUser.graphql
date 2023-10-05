@@ -18,6 +18,7 @@ query CurrentUser {
       profileImageURL
     }
     wallet {
+      id
       coinBalance
 		}
     ...ProfileSectionFragment
