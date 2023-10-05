@@ -9,7 +9,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "質問に答えてコインをゲットしよう"
+            "value" : "質問に答えると\nランダムな数のコインがもらえます"
           }
         }
       }
@@ -19,7 +19,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの名前を友だちにもっと表示しよう"
+            "value" : "相手の質問の選択肢に自分の名前を追加しよう！"
           }
         }
       }
