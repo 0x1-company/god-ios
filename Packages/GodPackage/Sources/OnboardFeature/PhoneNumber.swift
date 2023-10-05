@@ -81,6 +81,7 @@ public struct PhoneNumberLogic: Reducer {
         return .none
 
       case .alert(.presented(.confirmOkay)):
+        state.alert = nil
         return .none
 
       case .alert:
@@ -136,6 +137,7 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
+      .alert(store: store.scope(state: \.$alert, action: PhoneNumberLogic.Action.alert))
       .onAppear {
         focus = true
       }

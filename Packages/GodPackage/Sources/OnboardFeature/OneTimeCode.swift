@@ -143,6 +143,7 @@ public struct OneTimeCodeLogic: Reducer {
         return .send(.delegate(.popToRoot), animation: .default)
 
       case .alert(.presented(.confirmOkay)):
+        state.alert = nil
         return .run { _ in
           await dismiss()
         }

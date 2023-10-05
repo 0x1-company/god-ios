@@ -15,6 +15,7 @@ public extension ContactsClient {
       CNContactPhoneticGivenNameKey as CNKeyDescriptor,
       CNContactPhoneticFamilyNameKey as CNKeyDescriptor,
       CNContactPhoneNumbersKey as CNKeyDescriptor,
+      CNContactImageDataKey as CNKeyDescriptor,
     ]
     return try unifiedContacts(predicate, keysToFetch)
   }
