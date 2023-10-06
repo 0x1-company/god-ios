@@ -32,6 +32,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
   @Dependency(\.pasteboard) var pasteboard
@@ -57,7 +58,8 @@ public struct HowToShareOnInstagramLogic: Reducer {
         guard
           let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
           let profileCardImage,
-          let imageData = profileCardImage.pngData()
+          let imageData = profileCardImage.pngData(),
+          let username = state.currentUser?.username
         else { return .none }
         let pasteboardItems: [String: Any] = [
           "com.instagram.sharedSticker.stickerImage": imageData,
@@ -70,6 +72,8 @@ public struct HowToShareOnInstagramLogic: Reducer {
         )
         return .run { _ in
           await openURL(storiesURL)
+          try await mainQueue.sleep(for: .seconds(0.5))
+          pasteboard.url(URL(string: "https://godapp.jp/add/\(username)"))
           await dismiss()
         }
 
