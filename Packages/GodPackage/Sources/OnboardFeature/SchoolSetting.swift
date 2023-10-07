@@ -1,9 +1,9 @@
 import AsyncValue
+import CachedAsyncImage
 import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import CachedAsyncImage
 import RoundedCorner
 import SwiftUI
 
@@ -131,7 +131,7 @@ public struct SchoolSettingView: View {
       .toolbarColorScheme(.dark, for: .navigationBar)
     }
   }
-  
+
   struct SchoolImage: View {
     let urlString: String
     var body: some View {

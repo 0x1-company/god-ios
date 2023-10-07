@@ -9,9 +9,9 @@ import God
 import GodClient
 import ManageAccountFeature
 import PhotosUI
+import ProfileImage
 import SwiftUI
 import UserDefaultsClient
-import ProfileImage
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
