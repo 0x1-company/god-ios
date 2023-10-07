@@ -159,11 +159,11 @@ public struct ProfileView: View {
               )
               .padding(.bottom, 16)
             }
-          }
-
-          if let data = viewStore.profile, !data.friends.isEmpty {
-            FriendsSection(friends: data.friends.map(\.fragments.friendFragment)) { state in
-              viewStore.send(.friendButtonTapped(userId: state.id))
+            
+            if !data.friends.isEmpty {
+              FriendsSection(friends: data.friends.map(\.fragments.friendFragment)) { state in
+                viewStore.send(.friendButtonTapped(userId: state.id))
+              }
             }
           }
         }
