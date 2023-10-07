@@ -61,7 +61,7 @@ public struct ProfileLogic: Reducer {
       case let .friendButtonTapped(userId):
         state.destination = .external(.init(userId: userId))
         return .none
-        
+
       case .friendEmptyButtonTapped:
         state.destination = .profileShare()
         return .none
@@ -157,14 +157,14 @@ public struct ProfileView: View {
             )
 
             Divider()
-            
+
             if !data.questionsOrderByVotedDesc.isEmpty {
               TopStarsSection(
                 questions: data.questionsOrderByVotedDesc
               )
               .padding(.bottom, 16)
             }
-            
+
             FriendsSection(
               friends: data.friends.map(\.fragments.friendFragment),
               emptyAction: {
