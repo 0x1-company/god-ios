@@ -148,22 +148,28 @@ extension RootNavigationView {
     var body: some View {
       GeometryReader { geometry in
         HStack(spacing: 0) {
-          Button(before?.rawValue ?? "") {
+          Button {
             withAnimation(.default) {
               selection = before ?? selection
             }
+          } label: {
+            Text(before?.rawValue ?? "", bundle: .module)
           }
           .frame(width: geometry.size.width / 3, alignment: .leading)
           .buttonStyle(TabButtonStyle(isSelected: false))
-
-          Button(selection.rawValue) {}
-            .frame(width: geometry.size.width / 3)
-            .buttonStyle(TabButtonStyle(isSelected: true))
-
-          Button(after?.rawValue ?? "") {
+          
+          Button(action: {}) {
+            Text(selection.rawValue, bundle: .module)
+          }
+          .frame(width: geometry.size.width / 3)
+          .buttonStyle(TabButtonStyle(isSelected: true))
+          
+          Button {
             withAnimation(.default) {
               selection = after ?? selection
             }
+          } label: {
+            Text(after?.rawValue ?? "", bundle: .module)
           }
           .frame(width: geometry.size.width / 3, alignment: .trailing)
           .buttonStyle(TabButtonStyle(isSelected: false))
@@ -171,6 +177,7 @@ extension RootNavigationView {
         .frame(height: 52)
         .frame(maxWidth: .infinity)
       }
+      .padding(.horizontal, 16)
     }
 
     struct TabButtonStyle: ButtonStyle {
@@ -178,8 +185,7 @@ extension RootNavigationView {
       func makeBody(configuration: Configuration) -> some View {
         configuration.label
           .foregroundStyle(isSelected ? Color.black : Color.secondary)
-          .font(.system(size: 18, weight: .bold, design: .rounded))
-          .padding(.horizontal, 16)
+          .font(.system(.callout, design: .rounded, weight: .bold))
           .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
           .animation(.default, value: configuration.isPressed)
       }
