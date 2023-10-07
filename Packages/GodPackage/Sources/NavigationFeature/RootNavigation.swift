@@ -10,13 +10,13 @@ import SwiftUI
 public struct RootNavigationLogic: Reducer {
   public init() {}
 
-  public enum Tab: Equatable {
-    case add
-    case activity
-    case inbox
-    case god
-    case profile
-    case about
+  public enum Tab: LocalizedStringKey, Equatable, CaseIterable {
+    case add = "Add+"
+    case activity = "Activity"
+    case inbox = "Inbox"
+    case god = "God"
+    case profile = "Profile"
+    case about = "About"
   }
 
   public struct State: Equatable {
@@ -67,6 +67,7 @@ public struct RootNavigationView: View {
             action: RootNavigationLogic.Action.add
           )
         )
+        .padding(.top, 52)
         .tag(RootNavigationLogic.Tab.add)
 
         ActivityView(
@@ -75,6 +76,7 @@ public struct RootNavigationView: View {
             action: RootNavigationLogic.Action.activity
           )
         )
+        .padding(.top, 52)
         .tag(RootNavigationLogic.Tab.activity)
 
         InboxView(
@@ -83,6 +85,7 @@ public struct RootNavigationView: View {
             action: RootNavigationLogic.Action.inbox
           )
         )
+        .padding(.top, 52)
         .tag(RootNavigationLogic.Tab.inbox)
 
         GodView(
@@ -99,6 +102,7 @@ public struct RootNavigationView: View {
             action: RootNavigationLogic.Action.profile
           )
         )
+        .padding(.top, 52)
         .tag(RootNavigationLogic.Tab.profile)
 
         AboutView(
@@ -107,21 +111,79 @@ public struct RootNavigationView: View {
             action: RootNavigationLogic.Action.about
           )
         )
+        .padding(.top, 52)
         .tag(RootNavigationLogic.Tab.about)
       }
       .ignoresSafeArea()
-      .tabViewStyle(.page)
+      .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+      .overlay(alignment: .top) {
+        SlideTabMenuView(
+          tabItems: RootNavigationLogic.Tab.allCases,
+          selection: viewStore.$selectedTab
+        )
+      }
     }
   }
 }
 
-struct RootNavigationViewPreviews: PreviewProvider {
-  static var previews: some View {
-    RootNavigationView(
-      store: .init(
-        initialState: RootNavigationLogic.State(),
-        reducer: { RootNavigationLogic() }
-      )
-    )
+extension RootNavigationView {
+  struct SlideTabMenuView: View {
+    let tabItems: [RootNavigationLogic.Tab]
+    @Binding var selection: RootNavigationLogic.Tab
+    
+    var before: RootNavigationLogic.Tab? {
+      return Array(tabItems.enumerated())
+        .first(where: { $0.element == selection })
+        .map { $0.offset == tabItems.startIndex ? nil : tabItems[$0.offset - 1] }
+        ?? nil
+    }
+    
+    var after: RootNavigationLogic.Tab? {
+      return Array(tabItems.enumerated())
+        .first(where: { $0.element == selection })
+        .map { $0.offset + 1 == tabItems.endIndex ? nil : tabItems[$0.offset + 1] }
+        ?? nil
+    }
+  
+    var body: some View {
+      GeometryReader { geometry in
+        HStack(spacing: 0) {
+          Button(before?.rawValue ?? "") {
+            withAnimation(.default) {
+              selection = before ?? selection
+            }
+          }
+          .frame(width: geometry.size.width / 3, alignment: .leading)
+          .buttonStyle(TabButtonStyle(isSelected: false))
+          
+          Button(selection.rawValue) {
+          }
+          .frame(width: geometry.size.width / 3)
+          .buttonStyle(TabButtonStyle(isSelected: true))
+          
+          Button(after?.rawValue ?? "") {
+            withAnimation(.default) {
+              selection = after ?? selection
+            }
+          }
+          .frame(width: geometry.size.width / 3, alignment: .trailing)
+          .buttonStyle(TabButtonStyle(isSelected: false))
+        }
+        .frame(height: 52)
+        .frame(maxWidth: .infinity)
+      }
+    }
+    
+    struct TabButtonStyle: ButtonStyle {
+      let isSelected: Bool
+      func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+          .foregroundStyle(isSelected ? Color.black : Color.secondary)
+          .font(.system(size: 18, weight: .bold, design: .rounded))
+          .padding(.horizontal, 16)
+          .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+          .animation(.default, value: configuration.isPressed)
+      }
+    }
   }
 }

@@ -144,8 +144,10 @@ public struct PollView: View {
           .tint(Color.white)
 
           Text("\(viewStore.currentPosition) of \(viewStore.pollQuestions.count)")
+            .bold()
             .foregroundStyle(.white)
         }
+        .padding(.top, 52)
       }
       .task { await viewStore.send(.onTask).finish() }
     }
