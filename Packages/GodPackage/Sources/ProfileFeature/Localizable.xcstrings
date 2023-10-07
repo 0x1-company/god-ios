@@ -25,7 +25,14 @@
       }
     },
     "Add Friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを招待する"
+          }
+        }
+      }
     },
     "ADDED" : {
       "extractionState" : "stale",
@@ -229,7 +236,14 @@
       }
     },
     "You have no friends" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちがいません"
+          }
+        }
+      }
     },
     "You won't see this user again in the app." : {
       "localizations" : {

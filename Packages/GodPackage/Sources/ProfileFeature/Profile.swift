@@ -63,6 +63,7 @@ public struct ProfileLogic: Reducer {
         return .none
         
       case .friendEmptyButtonTapped:
+        state.destination = .profileShare()
         return .none
 
       case let .profileResponse(.success(data)):
