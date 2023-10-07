@@ -22,6 +22,7 @@ public struct ProfileLogic: Reducer {
     case shareProfileButtonTapped
     case shopButtonTapped
     case friendButtonTapped(userId: String)
+    case friendEmptyButtonTapped
     case profileResponse(TaskResult<God.CurrentUserProfileQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
@@ -59,6 +60,10 @@ public struct ProfileLogic: Reducer {
 
       case let .friendButtonTapped(userId):
         state.destination = .external(.init(userId: userId))
+        return .none
+        
+      case .friendEmptyButtonTapped:
+        state.destination = .profileShare()
         return .none
 
       case let .profileResponse(.success(data)):
@@ -152,17 +157,23 @@ public struct ProfileView: View {
             )
 
             Divider()
-
-            TopStarsSection(
-              questions: data.questionsOrderByVotedDesc
-            )
-            .padding(.bottom, 16)
-          }
-
-          if let data = viewStore.profile, !data.friends.isEmpty {
-            FriendsSection(friends: data.friends.map(\.fragments.friendFragment)) { state in
-              viewStore.send(.friendButtonTapped(userId: state.id))
+            
+            if !data.questionsOrderByVotedDesc.isEmpty {
+              TopStarsSection(
+                questions: data.questionsOrderByVotedDesc
+              )
+              .padding(.bottom, 16)
             }
+            
+            FriendsSection(
+              friends: data.friends.map(\.fragments.friendFragment),
+              emptyAction: {
+                store.send(.friendEmptyButtonTapped)
+              },
+              action: { user in
+                store.send(.friendButtonTapped(userId: user.id))
+              }
+            )
           }
         }
         .background(Color.godBackgroundWhite)

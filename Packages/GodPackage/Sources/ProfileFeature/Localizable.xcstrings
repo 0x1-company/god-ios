@@ -24,6 +24,16 @@
         }
       }
     },
+    "Add Friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待する"
+          }
+        }
+      }
+    },
     "ADDED" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -221,6 +231,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "トップスター"
+          }
+        }
+      }
+    },
+    "You have no friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちがいません"
           }
         }
       }
