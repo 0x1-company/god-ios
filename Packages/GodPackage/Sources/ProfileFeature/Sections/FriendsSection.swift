@@ -19,7 +19,7 @@ public struct FriendsSection: View {
         .padding(.horizontal, 16)
 
       Divider()
-      
+
       if friends.isEmpty {
         EmptyView(emptyAction: emptyAction)
       } else {
@@ -31,14 +31,14 @@ public struct FriendsSection: View {
     }
     .background(Color.godWhite)
   }
-  
+
   struct EmptyView: View {
     let emptyAction: () -> Void
     var body: some View {
       VStack(spacing: 20) {
         Text("You have no friends", bundle: .module)
           .foregroundStyle(Color.godTextSecondaryLight)
-        
+
         Button(action: emptyAction) {
           Text("Add Friends", bundle: .module)
             .bold()
@@ -54,7 +54,7 @@ public struct FriendsSection: View {
       .frame(maxWidth: .infinity)
     }
   }
-  
+
   struct FriendCard: View {
     let friend: God.FriendFragment
     let action: (God.FriendFragment) -> Void
