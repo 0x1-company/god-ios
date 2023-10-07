@@ -157,13 +157,13 @@ extension RootNavigationView {
           }
           .frame(width: geometry.size.width / 3, alignment: .leading)
           .buttonStyle(TabButtonStyle(isSelected: false))
-          
+
           Button(action: {}) {
             Text(selection.rawValue, bundle: .module)
           }
           .frame(width: geometry.size.width / 3)
           .buttonStyle(TabButtonStyle(isSelected: true))
-          
+
           Button {
             withAnimation(.default) {
               selection = after ?? selection
