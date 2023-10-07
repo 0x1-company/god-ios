@@ -1,5 +1,5 @@
-import Colors
 import CachedAsyncImage
+import Colors
 import NameImage
 import SwiftUI
 
@@ -7,13 +7,13 @@ public struct ProfileImage: View {
   let urlString: String
   let name: String
   let size: CGFloat
-  
+
   public init(urlString: String, name: String, size: CGFloat) {
     self.urlString = urlString
     self.name = name
     self.size = size
   }
-  
+
   public var body: some View {
     CachedAsyncImage(url: URL(string: urlString), urlCache: .shared) { phase in
       switch phase {

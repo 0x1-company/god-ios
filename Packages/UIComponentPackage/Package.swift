@@ -36,7 +36,7 @@ let package = Package(
     .target(name: "NameImage", dependencies: ["Colors"]),
     .target(name: "ProfileImage", dependencies: [
       "NameImage",
-      .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image")
+      .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
     ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),

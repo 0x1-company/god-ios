@@ -1,6 +1,6 @@
+import CachedAsyncImage
 import Colors
 import God
-import CachedAsyncImage
 import SwiftUI
 
 public struct TopStarsSection: View {
@@ -27,11 +27,11 @@ public struct TopStarsSection: View {
                 .frame(width: 60, height: 60)
                 .clipped()
                 .overlay(alignment: .bottomLeading) {
-                                Image("digit-\(offset + 1)", bundle: .module)
-                                  .resizable()
-                                  .scaledToFit()
-                                  .frame(width: 20, height: 20)
-                                  .clipShape(Circle())
+                  Image("digit-\(offset + 1)", bundle: .module)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .clipShape(Circle())
                 }
             },
             placeholder: {
