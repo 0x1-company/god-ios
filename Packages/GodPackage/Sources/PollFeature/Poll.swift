@@ -136,14 +136,14 @@ public struct PollView: View {
         }
         .ignoresSafeArea()
 
-        VStack(spacing: 8) {
+        VStack(spacing: 18) {
           ProgressView(
             value: Double(viewStore.currentPosition),
             total: Double(viewStore.pollQuestions.count)
           )
           .tint(Color.white)
 
-          Text("\(viewStore.currentPosition) of \(viewStore.pollQuestions.count)")
+          Text("\(viewStore.currentPosition) of \(viewStore.pollQuestions.count)", bundle: .module)
             .bold()
             .foregroundStyle(.white)
         }
