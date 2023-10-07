@@ -33,7 +33,7 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
       case .page(.profileShareToInstagram(.delegate(.nextPage))):
         state.currentPage = .howToShareOnInstagram()
         return .none
-        
+
       case .page(.howToShareOnInstagram(.delegate(.showdStories))):
         state.currentPage = .profileShareToInstagram()
         return .none
