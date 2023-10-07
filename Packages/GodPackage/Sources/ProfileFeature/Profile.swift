@@ -152,11 +152,13 @@ public struct ProfileView: View {
             )
 
             Divider()
-
-            TopStarsSection(
-              questions: data.questionsOrderByVotedDesc
-            )
-            .padding(.bottom, 16)
+            
+            if !data.questionsOrderByVotedDesc.isEmpty {
+              TopStarsSection(
+                questions: data.questionsOrderByVotedDesc
+              )
+              .padding(.bottom, 16)
+            }
           }
 
           if let data = viewStore.profile, !data.friends.isEmpty {
