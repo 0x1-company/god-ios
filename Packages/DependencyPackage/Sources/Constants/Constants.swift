@@ -25,4 +25,6 @@ public enum Constants {
   public static let safetyCenterURL = URL(string: "\(Self.docsURL)/safety-center")!
   public static let privacyPolicyURL = URL(string: "\(Self.docsURL)/privacy-policy")!
   public static let termsOfUseURL = URL(string: "\(Self.docsURL)/terms-of-use")!
+  
+  public static let storiesURL = URL(string: "instagram-stories://share?source_application=6922843987766997")!
 }
