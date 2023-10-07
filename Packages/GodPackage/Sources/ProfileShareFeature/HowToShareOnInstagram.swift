@@ -4,7 +4,7 @@ import ComposableArchitecture
 import Constants
 import God
 import GodClient
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient

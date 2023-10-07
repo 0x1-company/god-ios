@@ -1,7 +1,6 @@
 import Colors
-import Kingfisher
 import NameImage
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 
 struct InstagramStoryView: View {
@@ -24,11 +23,7 @@ struct InstagramStoryView: View {
               .frame(width: 86, height: 86)
               .clipShape(Circle())
           } else {
-            NameImage(
-              familyName: lastName,
-              givenName: firstName,
-              size: 86
-            )
+            NameImage(name: firstName, size: 86)
           }
         }
         .overlay(

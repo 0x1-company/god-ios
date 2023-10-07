@@ -11,6 +11,7 @@ import ManageAccountFeature
 import PhotosUI
 import SwiftUI
 import UserDefaultsClient
+import ProfileImage
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
@@ -192,6 +193,7 @@ public struct ProfileEditLogic: Reducer {
         return .none
 
       case .uploadResponse:
+        URLCache.shared.removeAllCachedResponses()
         state.imageData = nil
         return .none
 
@@ -237,12 +239,12 @@ public struct ProfileEditView: View {
               if let imageData = viewStore.imageData, let image = UIImage(data: imageData) {
                 Image(uiImage: image)
                   .resizable()
-              } else if let imageURL = viewStore.currentUser?.imageURL {
-                AsyncImage(url: URL(string: imageURL)) { image in
-                  image.resizable()
-                } placeholder: {
-                  Color.red
-                }
+              } else if let user = viewStore.currentUser {
+                ProfileImage(
+                  urlString: user.imageURL,
+                  name: user.firstName,
+                  size: 145
+                )
               }
             }
             .scaledToFill()
@@ -257,6 +259,7 @@ public struct ProfileEditView: View {
                 .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
             )
           }
+          .buttonStyle(HoldDownButtonStyle())
 
           VStack(alignment: .center, spacing: 0) {
             GodTextField(
@@ -446,16 +449,16 @@ public struct ProfileEditView: View {
 private extension AlertState where Action == ProfileEditLogic.Action.Alert {
   static func changesNotSaved() -> Self {
     Self {
-      TextState("Are you sure?")
+      TextState("Are you sure?", bundle: .module)
     } actions: {
       ButtonState(role: .destructive, action: .discardChanges) {
-        TextState("Discard Changes")
+        TextState("Discard Changes", bundle: .module)
       }
       ButtonState(role: .cancel) {
-        TextState("Cancel")
+        TextState("Cancel", bundle: .module)
       }
     } message: {
-      TextState("You haven't saved your changes")
+      TextState("You haven't saved your changes", bundle: .module)
     }
   }
 }

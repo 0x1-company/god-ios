@@ -7,7 +7,7 @@ import CupertinoMessageFeature
 import God
 import GodClient
 import NameImage
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 import SwiftUIMessage
 
@@ -174,10 +174,9 @@ public struct AddFriendsView: View {
               viewStore.send(.selectButtonTapped(user.id))
             } label: {
               HStack(alignment: .center, spacing: 16) {
-                ProfilePicture(
-                  url: URL(string: user.imageURL),
-                  familyName: user.lastName,
-                  givenName: user.firstName,
+                ProfileImage(
+                  urlString: user.imageURL,
+                  name: user.firstName,
                   size: 40
                 )
 
@@ -220,10 +219,7 @@ public struct AddFriendsView: View {
                   .frame(width: 42, height: 42)
                   .clipShape(Circle())
               } else {
-                NameImage(
-                  familyName: contact.familyName,
-                  givenName: contact.givenName
-                )
+                NameImage(name: contact.givenName, size: 42)
               }
 
               VStack(alignment: .leading) {

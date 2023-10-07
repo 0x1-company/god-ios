@@ -2,30 +2,26 @@ import Colors
 import SwiftUI
 
 public struct NameImage: View {
-  let familyName: String
-  let givenName: String
+  let name: String
   let size: CGFloat
 
   var initialName: String {
-    [familyName.first, givenName.first]
-      .compactMap { $0 }
+    name.prefix(2)
       .compactMap(String.init)
       .joined()
   }
 
   public init(
-    familyName: String,
-    givenName: String,
+    name: String,
     size: CGFloat = 42
   ) {
-    self.familyName = familyName
-    self.givenName = givenName
+    self.name = name
     self.size = size
   }
 
   public var body: some View {
     Text(initialName)
-      .bold()
+      .font(.system(size: size / 3, weight: .bold, design: .rounded))
       .frame(width: size, height: size)
       .background(Color.godBackgroundWhite)
       .foregroundStyle(Color.godTextSecondaryLight)
@@ -34,8 +30,9 @@ public struct NameImage: View {
 }
 
 #Preview {
-  NameImage(
-    familyName: "つきやま",
-    givenName: "ともき"
-  )
+  VStack {
+    NameImage(name: "ともき", size: 42)
+    NameImage(name: "ともき", size: 140)
+    NameImage(name: "と", size: 140)
+  }
 }

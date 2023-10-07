@@ -1,7 +1,7 @@
 import ButtonStyles
 import Colors
 import God
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 
 public struct ProfileSection: View {
@@ -32,10 +32,9 @@ public struct ProfileSection: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       HStack(spacing: 16) {
-        ProfilePicture(
-          url: URL(string: imageURL),
-          familyName: lastName,
-          givenName: firstName,
+        ProfileImage(
+          urlString: imageURL,
+          name: firstName,
           size: 90
         )
 

@@ -1,6 +1,6 @@
 import Colors
 import God
-import Kingfisher
+import CachedAsyncImage
 import SwiftUI
 
 public struct TopStarsSection: View {
@@ -18,22 +18,27 @@ public struct TopStarsSection: View {
 
       ForEach(Array(questions.enumerated()), id: \.offset) { offset, question in
         HStack(spacing: 12) {
-          KFImage
-            .url(URL(string: question.imageURL))
-            .resizable()
-            .placeholder {
+          CachedAsyncImage(
+            url: URL(string: question.imageURL),
+            content: { image in
+              image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 60, height: 60)
+                .clipped()
+                .overlay(alignment: .bottomLeading) {
+                                Image("digit-\(offset + 1)", bundle: .module)
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(width: 20, height: 20)
+                                  .clipShape(Circle())
+                }
+            },
+            placeholder: {
               ProgressView()
                 .progressViewStyle(.circular)
             }
-            .aspectRatio(contentMode: .fill)
-            .frame(width: 60, height: 60)
-            .overlay(alignment: .bottomLeading) {
-              Image("digit-\(offset + 1)", bundle: .module)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 20, height: 20)
-                .clipShape(Circle())
-            }
+          )
 
           Text(question.text.ja)
             .multilineTextAlignment(.leading)

@@ -18,12 +18,12 @@ let package = Package(
     .library(name: "GodActionSheet", targets: ["GodActionSheet"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
     .library(name: "NameImage", targets: ["NameImage"]),
-    .library(name: "ProfilePicture", targets: ["ProfilePicture"]),
+    .library(name: "ProfileImage", targets: ["ProfileImage"]),
     .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
     .library(name: "SearchField", targets: ["SearchField"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/onevcat/Kingfisher", from: "7.9.1"),
+    .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
   ],
   targets: [
     .target(name: "AnimationDisableTransaction"),
@@ -34,9 +34,9 @@ let package = Package(
     .target(name: "GodActionSheet", dependencies: ["ButtonStyles"]),
     .target(name: "LabeledButton"),
     .target(name: "NameImage", dependencies: ["Colors"]),
-    .target(name: "ProfilePicture", dependencies: [
+    .target(name: "ProfileImage", dependencies: [
       "NameImage",
-      .product(name: "Kingfisher", package: "Kingfisher"),
+      .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image")
     ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),

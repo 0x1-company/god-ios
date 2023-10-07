@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 
 public struct FriendRequestCardLogic: Reducer {
@@ -75,10 +75,9 @@ public struct FriendRequestCardView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack(alignment: .center, spacing: 16) {
-        ProfilePicture(
-          url: URL(string: viewStore.imageURL),
-          familyName: viewStore.lastName,
-          givenName: viewStore.firstName,
+        ProfileImage(
+          urlString: viewStore.imageURL,
+          name: viewStore.firstName,
           size: 42
         )
 

@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import Kingfisher
+import CachedAsyncImage
 import RoundedCorner
 import SwiftUI
 
@@ -78,19 +78,7 @@ public struct SchoolSettingView: View {
               viewStore.send(.schoolButtonTapped(id: school.id))
             } label: {
               HStack(alignment: .center, spacing: 16) {
-                KFImage
-                  .url(URL(string: school.profileImageURL))
-                  .placeholder {
-                    Image(ImageResource.school)
-                      .resizable()
-                      .frame(width: 40, height: 40)
-                      .scaledToFit()
-                      .clipped()
-                  }
-                  .resizable()
-                  .frame(width: 40, height: 40)
-                  .scaledToFit()
-                  .clipped()
+                SchoolImage(urlString: school.profileImageURL)
 
                 VStack(alignment: .leading) {
                   Text(school.name)
@@ -143,17 +131,47 @@ public struct SchoolSettingView: View {
       .toolbarColorScheme(.dark, for: .navigationBar)
     }
   }
+  
+  struct SchoolImage: View {
+    let urlString: String
+    var body: some View {
+      CachedAsyncImage(url: URL(string: urlString)) { phase in
+        switch phase {
+        case let .success(image):
+          image.resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 40, height: 40)
+            .background(Color.godBackgroundWhite)
+            .clipShape(Circle())
+
+        case .failure:
+          Image(ImageResource.school)
+            .resizable()
+            .frame(width: 40, height: 40)
+            .scaledToFit()
+            .clipped()
+
+        default:
+          RoundedRectangle(cornerRadius: 40 / 2, style: .circular)
+            .fill(Color.godBackgroundWhite)
+            .frame(width: 40, height: 40)
+            .overlay {
+              ProgressView()
+                .progressViewStyle(.circular)
+            }
+        }
+      }
+    }
+  }
 }
 
-struct SchoolSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      SchoolSettingView(
-        store: .init(
-          initialState: SchoolSettingLogic.State(),
-          reducer: { SchoolSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    SchoolSettingView(
+      store: .init(
+        initialState: SchoolSettingLogic.State(),
+        reducer: { SchoolSettingLogic() }
       )
-    }
+    )
   }
 }
