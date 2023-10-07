@@ -1,4 +1,5 @@
 import ButtonStyles
+import Constants
 import Colors
 import ComposableArchitecture
 import God
@@ -29,6 +30,11 @@ public struct HowToShareOnInstagramLogic: Reducer {
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case profileImageResponse(TaskResult<Data>)
     case schoolImageResponse(TaskResult<Data>)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case showdStories
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -56,7 +62,6 @@ public struct HowToShareOnInstagramLogic: Reducer {
 
       case let .primaryButtonTapped(profileCardImage) where state.currentStep == Step.allCases.last:
         guard
-          let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
           let profileCardImage,
           let imageData = profileCardImage.pngData(),
           let username = state.currentUser?.username
@@ -70,11 +75,11 @@ public struct HowToShareOnInstagramLogic: Reducer {
           [pasteboardItems],
           [.expirationDate: Date().addingTimeInterval(300)]
         )
-        return .run { _ in
-          await openURL(storiesURL)
+        return .run { send in
+          await openURL(Constants.storiesURL)
           try await mainQueue.sleep(for: .seconds(0.5))
           pasteboard.url(URL(string: "https://godapp.jp/add/\(username)"))
-          await dismiss()
+          await send(.delegate(.showdStories))
         }
 
       case .primaryButtonTapped:

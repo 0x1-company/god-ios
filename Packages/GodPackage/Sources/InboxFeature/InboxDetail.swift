@@ -1,4 +1,5 @@
 import ButtonStyles
+import Constants
 import Colors
 import ComposableArchitecture
 import God
@@ -60,10 +61,7 @@ public struct InboxDetailLogic: Reducer {
         return .none
 
       case let .shareOnInstagramButtonTapped(.some(stickerImage)):
-        guard
-          let storiesURL = URL(string: "instagram-stories://share?source_application=1049646559806019"),
-          let imageData = stickerImage.pngData()
-        else { return .none }
+        guard let imageData = stickerImage.pngData() else { return .none }
         let pasteboardItems: [String: Any] = [
           "com.instagram.sharedSticker.stickerImage": imageData,
           "com.instagram.sharedSticker.backgroundTopColor": "#000000",
@@ -75,7 +73,7 @@ public struct InboxDetailLogic: Reducer {
         )
 
         return .run { _ in
-          await openURL(storiesURL)
+          await openURL(Constants.storiesURL)
         }
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):

@@ -117,6 +117,7 @@ let package = Package(
       "RevealFeature",
       "GodModeFeature",
       "ShareScreenshotFeature",
+      .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
@@ -192,6 +193,7 @@ let package = Package(
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ProfilePicture", package: "UIComponentPackage"),
