@@ -1,5 +1,27 @@
 {
   "sourceLanguage" : "en",
-  "strings" : {},
+  "strings" : {
+    "" : {
+
+    },
+    "About" : {
+
+    },
+    "Activity" : {
+
+    },
+    "Add+" : {
+
+    },
+    "God" : {
+
+    },
+    "Inbox" : {
+
+    },
+    "Profile" : {
+
+    }
+  },
   "version" : "1.0"
 }
