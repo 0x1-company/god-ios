@@ -24,6 +24,9 @@
         }
       }
     },
+    "Add Friends" : {
+
+    },
     "ADDED" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -224,6 +227,9 @@
           }
         }
       }
+    },
+    "You have no friends" : {
+
     },
     "You won't see this user again in the app." : {
       "localizations" : {
