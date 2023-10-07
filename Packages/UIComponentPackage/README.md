@@ -8,5 +8,5 @@ graph TD;
     Colors-->ColorHex;
     GodActionSheet-->ButtonStyles;
     NameImage-->Colors;
-    ProfilePicture-->NameImage;
+    ProfileImage-->NameImage;
 ```
