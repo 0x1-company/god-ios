@@ -3,7 +3,7 @@ import Colors
 import ComposableArchitecture
 import God
 import GodClient
-import ProfilePicture
+import ProfileImage
 import SearchField
 import SwiftUI
 
@@ -107,10 +107,9 @@ public struct PickFriendToAddYourNameTheirPollView: View {
                 viewStore.send(.friendButtonTapped(friend))
               } label: {
                 HStack(spacing: 16) {
-                  ProfilePicture(
-                    url: URL(string: friend.imageURL),
-                    familyName: friend.lastName,
-                    givenName: friend.firstName,
+                  ProfileImage(
+                    urlString: friend.imageURL,
+                    name: friend.firstName,
                     size: 42
                   )
 

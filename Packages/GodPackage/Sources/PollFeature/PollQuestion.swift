@@ -1,9 +1,9 @@
 import ButtonStyles
+import CachedAsyncImage
 import Colors
 import ComposableArchitecture
 import FeedbackGeneratorClient
 import God
-import Kingfisher
 import LabeledButton
 import SwiftUI
 
@@ -133,16 +133,20 @@ public struct PollQuestionView: View {
       VStack(spacing: 0) {
         Spacer()
 
-        KFImage
-          .url(URL(string: viewStore.question.imageURL))
-          .placeholder {
+        CachedAsyncImage(
+          url: URL(string: viewStore.question.imageURL),
+          content: { image in
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(height: 140)
+              .clipped()
+          },
+          placeholder: {
             ProgressView()
               .progressViewStyle(.circular)
           }
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(height: 140)
-          .clipped()
+        )
 
         Spacer().frame(height: 24)
 

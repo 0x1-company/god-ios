@@ -3,7 +3,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import ProfileFeature
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 
 public struct ActivityLogic: Reducer {

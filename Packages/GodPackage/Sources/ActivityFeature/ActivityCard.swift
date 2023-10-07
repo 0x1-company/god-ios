@@ -1,5 +1,5 @@
 import God
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 
 public struct ActivityCard: View {
@@ -39,10 +39,9 @@ public struct ActivityCard: View {
       action(activity)
     } label: {
       HStack(alignment: .top, spacing: 16) {
-        ProfilePicture(
-          url: URL(string: activity.node.user.imageURL),
-          familyName: activity.node.user.lastName,
-          givenName: activity.node.user.firstName,
+        ProfileImage(
+          urlString: activity.node.user.imageURL,
+          name: activity.node.user.firstName,
           size: 42
         )
 

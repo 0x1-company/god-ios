@@ -22,7 +22,7 @@ public struct InvitationCardView: View {
           .frame(width: 42, height: 42)
           .clipShape(Circle())
       } else {
-        NameImage(familyName: familyName, givenName: givenName)
+        NameImage(name: givenName, size: 42)
       }
 
       VStack(alignment: .leading, spacing: 4) {

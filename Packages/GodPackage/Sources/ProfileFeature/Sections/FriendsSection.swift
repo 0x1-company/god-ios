@@ -1,7 +1,7 @@
 import ButtonStyles
 import Colors
 import God
-import ProfilePicture
+import ProfileImage
 import SwiftUI
 
 public struct FriendsSection: View {
@@ -64,10 +64,9 @@ public struct FriendsSection: View {
         action(friend)
       } label: {
         HStack(alignment: .center, spacing: 12) {
-          ProfilePicture(
-            url: URL(string: friend.imageURL),
-            familyName: friend.lastName,
-            givenName: friend.firstName,
+          ProfileImage(
+            urlString: friend.imageURL,
+            name: friend.firstName,
             size: 40
           )
 
