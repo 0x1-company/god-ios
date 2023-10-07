@@ -5,22 +5,64 @@
 
     },
     "About" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "Activity" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクティビティ"
+          }
+        }
+      }
     },
     "Add+" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加+"
+          }
+        }
+      }
     },
     "God" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "God"
+          }
+        }
+      }
     },
     "Inbox" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
+          }
+        }
+      }
     },
     "Profile" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
