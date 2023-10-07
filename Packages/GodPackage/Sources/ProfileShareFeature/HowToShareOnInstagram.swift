@@ -1,7 +1,7 @@
 import ButtonStyles
-import Constants
 import Colors
 import ComposableArchitecture
+import Constants
 import God
 import GodClient
 import ProfilePicture
@@ -31,7 +31,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
     case profileImageResponse(TaskResult<Data>)
     case schoolImageResponse(TaskResult<Data>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case showdStories
     }
