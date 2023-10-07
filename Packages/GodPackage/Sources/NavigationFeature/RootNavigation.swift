@@ -130,21 +130,21 @@ extension RootNavigationView {
   struct SlideTabMenuView: View {
     let tabItems: [RootNavigationLogic.Tab]
     @Binding var selection: RootNavigationLogic.Tab
-    
+
     var before: RootNavigationLogic.Tab? {
-      return Array(tabItems.enumerated())
+      Array(tabItems.enumerated())
         .first(where: { $0.element == selection })
         .map { $0.offset == tabItems.startIndex ? nil : tabItems[$0.offset - 1] }
         ?? nil
     }
-    
+
     var after: RootNavigationLogic.Tab? {
-      return Array(tabItems.enumerated())
+      Array(tabItems.enumerated())
         .first(where: { $0.element == selection })
         .map { $0.offset + 1 == tabItems.endIndex ? nil : tabItems[$0.offset + 1] }
         ?? nil
     }
-  
+
     var body: some View {
       GeometryReader { geometry in
         HStack(spacing: 0) {
@@ -155,12 +155,11 @@ extension RootNavigationView {
           }
           .frame(width: geometry.size.width / 3, alignment: .leading)
           .buttonStyle(TabButtonStyle(isSelected: false))
-          
-          Button(selection.rawValue) {
-          }
-          .frame(width: geometry.size.width / 3)
-          .buttonStyle(TabButtonStyle(isSelected: true))
-          
+
+          Button(selection.rawValue) {}
+            .frame(width: geometry.size.width / 3)
+            .buttonStyle(TabButtonStyle(isSelected: true))
+
           Button(after?.rawValue ?? "") {
             withAnimation(.default) {
               selection = after ?? selection
@@ -173,7 +172,7 @@ extension RootNavigationView {
         .frame(maxWidth: .infinity)
       }
     }
-    
+
     struct TabButtonStyle: ButtonStyle {
       let isSelected: Bool
       func makeBody(configuration: Configuration) -> some View {
