@@ -228,7 +228,9 @@ public struct AddFriendsView: View {
 
               Spacer()
 
-              Button {} label: {
+              Button {
+                store.send(.inviteButtonTapped(contact))
+              } label: {
                 Text("INVITE", bundle: .module)
                   .bold()
                   .frame(height: 34)
