@@ -193,6 +193,7 @@ public struct ProfileEditLogic: Reducer {
         return .none
 
       case .uploadResponse:
+        URLCache.shared.removeAllCachedResponses()
         state.imageData = nil
         return .none
 
