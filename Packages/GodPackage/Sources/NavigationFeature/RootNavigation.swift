@@ -94,7 +94,6 @@ public struct RootNavigationView: View {
             action: RootNavigationLogic.Action.god
           )
         )
-        .ignoresSafeArea()
         .tag(RootNavigationLogic.Tab.god)
 
         ProfileView(
@@ -180,8 +179,10 @@ extension RootNavigationView {
       func makeBody(configuration: Configuration) -> some View {
         configuration.label
           .foregroundStyle(isSelected ? Color.black : Color.secondary)
-          .font(.system(.headline, design: .rounded, weight: .bold))
+          .font(.system(size: 18, weight: .bold, design: .rounded))
           .padding(.horizontal, 16)
+          .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+          .animation(.default, value: configuration.isPressed)
       }
     }
   }
