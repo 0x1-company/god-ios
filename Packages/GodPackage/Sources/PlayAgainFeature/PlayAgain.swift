@@ -69,7 +69,7 @@ public struct PlayAgainLogic: Reducer {
         else { return .none }
         let text = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)
+        https://godapp.jp/invite/\(username)?utm_source=line&utm_campaign=invite
         """
         guard
           let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),

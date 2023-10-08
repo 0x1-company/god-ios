@@ -184,7 +184,7 @@ public struct OneTimeCodeView: View {
           TextField(
             text: viewStore.$oneTimeCode,
             label: {
-              Text("000 000", bundle: .module)
+              Text("000000", bundle: .module)
             }
           )
           .font(.title)

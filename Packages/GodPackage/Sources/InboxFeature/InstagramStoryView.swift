@@ -8,6 +8,7 @@ struct InstagramStoryView: View {
   let icon: ImageResource
   let gender: String
   let grade: String?
+  let schoolName: String?
   let choices: [God.InboxFragment.Choice]
 
   var body: some View {
@@ -29,15 +30,17 @@ struct InstagramStoryView: View {
         .lineLimit(2)
         .foregroundColor(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
-
-        Text(verbatim: "LBHS")
-          .font(.body)
-          .bold()
-          .foregroundColor(.godWhite)
-          .frame(height: 32)
-          .padding(.horizontal, 8)
-          .background(Color.godGray)
-          .cornerRadius(20)
+        
+        if let schoolName {
+          Text(schoolName)
+            .font(.body)
+            .bold()
+            .foregroundColor(.godWhite)
+            .frame(height: 32)
+            .padding(.horizontal, 8)
+            .background(Color.godGray)
+            .cornerRadius(20)
+        }
       }
       VStack(spacing: 8) {
         Text(question)
@@ -71,7 +74,6 @@ struct InstagramStoryView: View {
       .cornerRadius(8)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .padding(.horizontal, 44)
     .background(Color.black)
   }
 }
@@ -83,6 +85,7 @@ struct InstagramStoryView: View {
     icon: ImageResource.boy,
     gender: "男子",
     grade: "2年生",
+    schoolName: nil,
     choices: [
       God.InboxFragment.Choice(
         _dataDict: DataDict(

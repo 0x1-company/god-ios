@@ -31,16 +31,9 @@ struct InstagramStoryView: View {
             .stroke(Color.godService, lineWidth: 3)
         )
 
-        VStack(spacing: 8) {
-          Text(displayName)
-            .font(.headline)
-            .bold()
-            .foregroundStyle(Color.godWhite)
-
-          Text(verbatim: "@\(username ?? "")")
-            .font(.body)
-            .foregroundStyle(Color.godTextSecondaryLight)
-        }
+        Text(verbatim: "@\(username ?? "")")
+          .font(.body)
+          .foregroundStyle(Color.godTextSecondaryLight)
 
         VStack(spacing: 8) {
           Text("Add me on", bundle: .module)

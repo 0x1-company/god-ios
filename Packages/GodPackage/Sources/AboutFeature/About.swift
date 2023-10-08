@@ -3,6 +3,7 @@ import ComposableArchitecture
 import Constants
 import HowItWorksFeature
 import SwiftUI
+import Build
 
 public struct AboutLogic: Reducer {
   public init() {}
@@ -10,10 +11,17 @@ public struct AboutLogic: Reducer {
   public struct State: Equatable {
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
     @PresentationState var destination: Destination.State?
-    public init() {}
+    let appVersion: String
+    public init() {
+      @Dependency(\.build) var build
+      let bundleVersion = build.bundleVersion()
+      let bundleShortVersion = build.bundleShortVersion()
+      appVersion = "\(bundleShortVersion) (\(bundleVersion))"
+    }
   }
 
   public enum Action: Equatable {
+    case onTask
     case howItWorksButtonTapped
     case faqButtonTapped
     case shareFeedbackButtonTapped
@@ -33,12 +41,14 @@ public struct AboutLogic: Reducer {
       case somethingElse
     }
   }
-
+  
   @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        return .none
       case .howItWorksButtonTapped:
         state.destination = .howItWorks()
         return .none
@@ -75,11 +85,11 @@ public struct AboutLogic: Reducer {
           )
         case .changeMyGender:
           infoState = .init(
-            title: String(localized: "Change my name", bundle: .module)
+            title: String(localized: "Change my gender", bundle: .module)
           )
         case .changeMyName:
           infoState = .init(
-            title: String(localized: "Change my gender", bundle: .module)
+            title: String(localized: "Change my name", bundle: .module)
           )
         case .deleteMyAccount:
           infoState = .init(
@@ -118,27 +128,6 @@ public struct AboutLogic: Reducer {
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
     }
-  }
-
-  private func gmailGenerator(subject: String) -> String {
-    var components = URLComponents()
-    components.scheme = "googlegmail"
-    components.path = "/co"
-    components.queryItems = [
-      URLQueryItem(name: "to", value: Constants.helpEmailAddress),
-      URLQueryItem(name: "subject", value: subject),
-      URLQueryItem(
-        name: "body",
-        value: String(
-          localized: """
-          Please describe your problem or feedback. Attach screenshots if necessary.
-          -----TYPE BELOW THIS LINE-----
-          """,
-          bundle: .module
-        )
-      ),
-    ]
-    return components.description
   }
 
   public struct Destination: Reducer {
@@ -223,10 +212,14 @@ public struct AboutView: View {
 
           Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
             .font(.footnote)
+          
+          Text(viewStore.appVersion)
+            .font(.footnote)
         }
         .foregroundColor(.secondary)
         .tint(.secondary)
       }
+      .task { await store.send(.onTask).finish() }
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
@@ -234,7 +227,8 @@ public struct AboutView: View {
         action: AboutLogic.Destination.Action.infoActionSheet
       ) { store in
         InfoActionSheetView(store: store)
-          .presentationDetents([.medium])
+          .presentationDetents([.fraction(0.5)])
+          .presentationDragIndicator(.visible)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
@@ -244,15 +238,6 @@ public struct AboutView: View {
       )
     }
   }
-}
-
-#Preview {
-  AboutView(
-    store: .init(
-      initialState: AboutLogic.State(),
-      reducer: { AboutLogic() }
-    )
-  )
 }
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
@@ -290,3 +275,13 @@ extension ConfirmationDialogState where Action == AboutLogic.Action.Confirmation
     TextState("Get Help", bundle: .module)
   }
 }
+
+#Preview {
+  AboutView(
+    store: .init(
+      initialState: AboutLogic.State(),
+      reducer: { AboutLogic() }
+    )
+  )
+}
+

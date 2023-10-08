@@ -77,7 +77,7 @@ public struct InvitationsLeftLogic: Reducer {
           recipient: phoneNumber,
           body: """
           \(schoolName)向けの新しいアプリダウンロードしてみて！
-          https://godapp.jp/add/\(username)
+          https://godapp.jp/add/\(username)?utm_source=sms&utm_campaign=add
           """
         )
         return .none

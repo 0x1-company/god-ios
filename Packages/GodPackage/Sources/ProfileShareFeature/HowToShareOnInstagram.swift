@@ -78,7 +78,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
         return .run { send in
           await openURL(Constants.storiesURL)
           try await mainQueue.sleep(for: .seconds(0.5))
-          pasteboard.url(URL(string: "https://godapp.jp/add/\(username)"))
+          pasteboard.url(URL(string: "https://godapp.jp/add/\(username)?utm_source=instagram&utm_campaign=profile"))
           await send(.delegate(.showdStories))
         }
 
