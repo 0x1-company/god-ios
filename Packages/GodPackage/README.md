@@ -31,4 +31,5 @@ graph TD;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
     ProfileFeature-->ProfileShareFeature;
+    ProfileShareFeature-->CupertinoMessageFeature;
 ```

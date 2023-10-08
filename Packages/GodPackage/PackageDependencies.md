@@ -108,6 +108,7 @@ graph TD;
     ProfileFeature-->ProfileShareFeature;
     ProfileFeature-->AsyncValue;
     ProfileFeature-->CachedAsyncImage;
+    ProfileShareFeature-->CupertinoMessageFeature;
     ProfileShareFeature-->Colors;
     ProfileShareFeature-->Constants;
     ProfileShareFeature-->GodClient;
