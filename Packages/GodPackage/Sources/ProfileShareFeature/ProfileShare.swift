@@ -6,13 +6,18 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import CupertinoMessageFeature
 
 public struct ProfileShareLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var lineURL = URL(string: "https://godapp.jp")!
+    var shareURL = URL(string: "https://godapp.jp")!
+    var invitationText = ""
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     @PresentationState var destination: Destination.State?
+    @PresentationState var message: CupertinoMessageLogic.State?
     public init() {}
   }
 
@@ -22,6 +27,7 @@ public struct ProfileShareLogic: Reducer {
     case closeButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
+    case message(PresentationAction<CupertinoMessageLogic.Action>)
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -45,18 +51,17 @@ public struct ProfileShareLogic: Reducer {
         return .none
 
       case .contentButtonTapped(.line):
-        guard let username = state.currentUser?.username else { return .none }
-        let text = "https://godapp.jp/add/\(username)"
-        guard let url = URL(string: "https://line.me/R/share?text=\(text)")
+        guard let url = URL(string: "https://line.me/R/share?text=\(state.invitationText)")
         else { return .none }
         return .run { _ in
           await openURL(url)
         }
 
       case .contentButtonTapped(.messages):
-        return .none
-
-      case .contentButtonTapped(.other):
+        state.message = .init(
+          recipients: [],
+          body: state.invitationText
+        )
         return .none
 
       case .closeButtonTapped:
@@ -65,19 +70,31 @@ public struct ProfileShareLogic: Reducer {
         }
 
       case let .currentUserResponse(.success(data)):
-        state.currentUser = data.currentUser
+        func text(schoolName: String, username: String) -> String? {
+          return """
+          \(schoolName)向けの新しいアプリダウンロードしてみて！
+          https://godapp.jp/add/\(username)
+          """.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
+        }
+        guard
+          let username = data.currentUser.username,
+          let schoolName = data.currentUser.school?.name,
+          let invitationText = text(schoolName: schoolName, username: username),
+          let shareURL = URL(string: "https://godapp.jp/add/\(username)")
+        else { return .none }
+        state.shareURL = shareURL
+        state.invitationText = invitationText
         return .none
 
-      case .currentUserResponse(.failure):
-        state.currentUser = nil
-        return .none
-
-      case .destination:
+      default:
         return .none
       }
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+    .ifLet(\.$message, action: /Action.message) {
+      CupertinoMessageLogic()
     }
   }
 
@@ -111,15 +128,6 @@ public struct ProfileShareLogic: Reducer {
       case .other: return "Other"
       }
     }
-
-    public var iconImageName: String {
-      switch self {
-      case .instagram: return "instagram"
-      case .line: return "line"
-      case .messages: return "messages"
-      case .other: return "other"
-      }
-    }
   }
 }
 
@@ -141,25 +149,47 @@ public struct ProfileShareView: View {
         HStack {
           Spacer()
           ForEach(ProfileShareLogic.Content.allCases, id: \.self) { content in
-            Button {
-              store.send(.contentButtonTapped(content), transaction: .animationDisable)
-            } label: {
-              VStack(spacing: 12) {
-                Image(content.iconImageName, bundle: .module)
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                  .frame(width: 60, height: 60)
-                  .clipShape(Circle())
+            switch content {
+            case .instagram, .line:
+              ShareButton(content: content) {
+                store.send(.contentButtonTapped(content))
+              }
+            case .messages:
+              Button {
+                store.send(.contentButtonTapped(content))
+              } label: {
+                VStack(spacing: 12) {
+                  Image(systemName: "message.fill")
+                    .font(.system(size: 34))
+                    .frame(width: 60, height: 60)
+                    .foregroundStyle(Color.white)
+                    .background(Color.green.gradient)
+                    .clipShape(Circle())
+                  
+                  Text(content.name, bundle: .module)
+                    .font(.callout)
+                    .bold()
+                    .foregroundColor(.godBlack)
+                }
+              }
+            case .other:
+              ShareLink(item: viewStore.shareURL) {
+                VStack(spacing: 12) {
+                  Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 40))
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
 
-                Text(content.name, bundle: .module)
-                  .font(.callout)
-                  .bold()
-                  .foregroundColor(.godBlack)
+                  Text(content.name, bundle: .module)
+                    .font(.callout)
+                    .bold()
+                    .foregroundColor(.godBlack)
+                }
               }
             }
-            .buttonStyle(HoldDownButtonStyle())
             Spacer()
           }
+          .buttonStyle(HoldDownButtonStyle())
         }
 
         Button {
@@ -180,6 +210,10 @@ public struct ProfileShareView: View {
       .padding(.top, 24)
       .padding(.horizontal, 16)
       .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$message, action: { .message($0) }),
+        content: CupertinoMessageView.init
+      )
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /ProfileShareLogic.Destination.State.shareProfileToInstagramPopup,
@@ -188,6 +222,46 @@ public struct ProfileShareView: View {
         ShareProfileToInstagramPopupView(store: store)
           .backgroundClearSheet()
       }
+    }
+  }
+  
+  struct ShareButton: View {
+    let content: ProfileShareLogic.Content
+    let action: () -> Void
+
+    var body: some View {
+      Button(action: action) {
+        VStack(spacing: 12) {
+          switch content {
+          case .instagram:
+            Image(ImageResource.instagram)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 60, height: 60)
+              .clipShape(Circle())
+          case .line:
+            Image(ImageResource.line)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 60, height: 60)
+              .clipShape(Circle())
+          case .messages:
+            Image(ImageResource.line)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 60, height: 60)
+              .clipShape(Circle())
+          case .other:
+            fatalError()
+          }
+
+          Text(content.name, bundle: .module)
+            .font(.callout)
+            .bold()
+            .foregroundColor(.godBlack)
+        }
+      }
+      .buttonStyle(HoldDownButtonStyle())
     }
   }
 }
