@@ -12,7 +12,7 @@ public struct NotificationsReEnableLogic: Reducer {
   public enum Action: Equatable {
     case onTapGesture
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.application.openNotificationSettingsURLString) var openNotificationSettingsURLString
 

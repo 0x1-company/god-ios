@@ -55,8 +55,8 @@ public struct InboxLogic: Reducer {
     Scope(state: \.fromGodTeamCard, action: /Action.fromGodTeamCard) {
       FromGodTeamCardLogic()
     }
-    Reduce<State, Action> { state, _ in
-      return .run { send in
+    Reduce<State, Action> { _, _ in
+      .run { send in
         await send(.notificationSettings(TaskResult {
           await userNotifications.getNotificationSettings()
         }))
@@ -142,7 +142,7 @@ public struct InboxLogic: Reducer {
           await inboxActivitiesRequest(send: send)
         }
         .cancellable(id: Cancel.inboxActivities, cancelInFlight: true)
-        
+
       case let .notificationSettings(.success(settings)):
         let isAuthorized = settings.authorizationStatus == .authorized
         state.notificationsReEnable = isAuthorized ? .init() : nil
