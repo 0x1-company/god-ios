@@ -10,7 +10,7 @@ import SwiftUI
 import UIApplicationClient
 
 public struct AddLogic: Reducer {
-  public init()  {}
+  public init() {}
 
   public struct State: Equatable {
     @BindingState var searchQuery = ""
