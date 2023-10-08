@@ -71,7 +71,9 @@ public struct PlayAgainLogic: Reducer {
         \(schoolName)向けの新しいアプリダウンロードしてみて！
         https://godapp.jp/invite/\(username)
         """
-        guard let url = URL(string: "https://line.me/R/share?text=\(text)")
+        guard
+          let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+          let url = URL(string: "https://line.me/R/share?text=\(encodedText)")
         else { return .none }
 
         return .run { _ in
