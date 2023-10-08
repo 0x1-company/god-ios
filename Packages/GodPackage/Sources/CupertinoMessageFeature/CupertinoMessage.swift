@@ -7,11 +7,16 @@ public struct CupertinoMessageLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var recipient: String
+    var recipients: [String]
     var body: String
 
     public init(recipient: String, body: String) {
-      self.recipient = recipient
+      self.recipients = [recipient]
+      self.body = body
+    }
+    
+    public init(recipients: [String], body: String) {
+      self.recipients = recipients
       self.body = body
     }
   }
@@ -32,7 +37,7 @@ public struct CupertinoMessageView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       MessageComposeView(
         .init(
-          recipients: [viewStore.recipient],
+          recipients: viewStore.recipients,
           body: viewStore.body
         )
       )

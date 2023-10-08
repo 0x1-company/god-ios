@@ -194,6 +194,7 @@ let package = Package(
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
+      "CupertinoMessageFeature",
       .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
