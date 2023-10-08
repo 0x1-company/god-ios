@@ -51,7 +51,9 @@ public struct ProfileShareLogic: Reducer {
         return .none
 
       case .contentButtonTapped(.line):
-        guard let url = URL(string: "https://line.me/R/share?text=\(state.invitationText)")
+        guard
+          let text = state.invitationText.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+          let url = URL(string: "https://line.me/R/share?text=\(text)")
         else { return .none }
         return .run { _ in
           await openURL(url)
@@ -70,20 +72,16 @@ public struct ProfileShareLogic: Reducer {
         }
 
       case let .currentUserResponse(.success(data)):
-        func text(schoolName: String, username: String) -> String? {
-          return """
-          \(schoolName)向けの新しいアプリダウンロードしてみて！
-          https://godapp.jp/add/\(username)
-          """.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
-        }
         guard
           let username = data.currentUser.username,
           let schoolName = data.currentUser.school?.name,
-          let invitationText = text(schoolName: schoolName, username: username),
           let shareURL = URL(string: "https://godapp.jp/add/\(username)")
         else { return .none }
         state.shareURL = shareURL
-        state.invitationText = invitationText
+        state.invitationText = """
+        \(schoolName)向けの新しいアプリダウンロードしてみて！
+        https://godapp.jp/add/\(username)
+        """
         return .none
 
       default:
