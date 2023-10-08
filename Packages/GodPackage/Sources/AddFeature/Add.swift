@@ -28,7 +28,7 @@ public struct AddLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
-    case searchResponse(TaskResult<God.UserQuery.Data>)
+    case searchResponse(TaskResult<God.UserSearchQuery.Data>)
     case addPlusResponse(TaskResult<God.AddPlusQuery.Data>)
     case binding(BindingAction<State>)
     case contactsReEnable(ContactsReEnableLogic.Action)
@@ -69,14 +69,11 @@ public struct AddLogic: Reducer {
           state.searchResult = []
           return .cancel(id: Cancel.search)
         }
-        let userWhere = God.UserWhere(
-          username: .init(stringLiteral: username)
-        )
         return .run { send in
           try await withTaskCancellation(id: Cancel.search, cancelInFlight: true) {
             try await mainQueue.sleep(for: .seconds(1))
 
-            for try await data in godClient.user(userWhere) {
+            for try await data in godClient.userSearch(username) {
               await send(.searchResponse(.success(data)))
             }
           }
@@ -84,16 +81,16 @@ public struct AddLogic: Reducer {
           await send(.searchResponse(.failure(error)))
         }
       case let .searchResponse(.success(data)):
-        let username = data.user.username ?? ""
+        let username = data.userSearch.username ?? ""
         state.searchResult = [
           .init(
-            id: data.user.id,
-            imageURL: data.user.imageURL,
-            displayName: data.user.displayName.ja,
-            firstName: data.user.firstName,
-            lastName: data.user.lastName,
+            id: data.userSearch.id,
+            imageURL: data.userSearch.imageURL,
+            displayName: data.userSearch.displayName.ja,
+            firstName: data.userSearch.firstName,
+            lastName: data.userSearch.lastName,
             description: "@\(username)",
-            friendStatus: data.user.friendStatus.value
+            friendStatus: data.userSearch.friendStatus.value
           ),
         ]
         return .none

@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "UserSearch"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query UserSearch($username: String!) { userSearch(username: $username) { __typename id firstName displayName { __typename ja } username imageURL friendStatus mutualFriendsCount } }"#
+        #"query UserSearch($username: String!) { userSearch(username: $username) { __typename id firstName lastName displayName { __typename ja } username imageURL friendStatus mutualFriendsCount } }"#
       ))
 
     public var username: String
@@ -42,6 +42,7 @@ public extension God {
           .field("__typename", String.self),
           .field("id", God.ID.self),
           .field("firstName", String.self),
+          .field("lastName", String.self),
           .field("displayName", DisplayName.self),
           .field("username", String?.self),
           .field("imageURL", String.self),
@@ -53,6 +54,8 @@ public extension God {
         public var id: God.ID { __data["id"] }
         /// first name
         public var firstName: String { __data["firstName"] }
+        /// last name
+        public var lastName: String { __data["lastName"] }
         /// 表示名
         public var displayName: DisplayName { __data["displayName"] }
         /// username
