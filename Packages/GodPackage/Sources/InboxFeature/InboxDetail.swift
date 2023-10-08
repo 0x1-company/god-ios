@@ -174,6 +174,7 @@ public struct InboxDetailView: View {
         icon: genderIcon(gender: viewStore.activity.voteUser.gender.value),
         gender: genderText(gender: viewStore.activity.voteUser.gender.value),
         grade: viewStore.activity.voteUser.grade,
+        schoolName: nil,
         choices: viewStore.activity.choices
       )
       ZStack {
