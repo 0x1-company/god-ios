@@ -216,20 +216,10 @@ public struct InboxDetailView: View {
 
             Spacer()
 
-            HStack(spacing: 0) {
-              Spacer()
-
-              Button {
-                let renderer = ImageRenderer(content: instagramStoryView)
-                renderer.scale = displayScale
-                store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
-              } label: {
-                Image(ImageResource.instagram)
-                  .resizable()
-                  .frame(width: 52, height: 52)
-                  .clipShape(Circle())
-              }
-              .buttonStyle(HoldDownButtonStyle())
+            StoriesButton {
+              let renderer = ImageRenderer(content: instagramStoryView)
+              renderer.scale = displayScale
+              store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
             }
             .padding(.all, 20)
           }
