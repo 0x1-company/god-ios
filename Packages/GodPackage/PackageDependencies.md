@@ -1,9 +1,11 @@
 ```mermaid
 graph TD;
     AboutFeature-->HowItWorksFeature;
+    AboutFeature-->Build;
     AboutFeature-->Constants;
     AboutFeature-->SwiftUIMessage;
     AboutFeature-->GodActionSheet;
+    AboutFeature-->UIPasteboardClient;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
     AddFeature-->CupertinoMessageFeature;
@@ -20,7 +22,6 @@ graph TD;
     AppFeature-->NavigationFeature;
     AppFeature-->ForceUpdateFeature;
     AppFeature-->MaintenanceFeature;
-    AppFeature-->Build;
     AppFeature-->TcaHelpers;
     AppFeature-->StoreKitClient;
     AppFeature-->FirestoreClient;
