@@ -17,7 +17,7 @@ public struct PollQuestionLogic: Reducer {
     var choiceGroups: [God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup]
 
     @PresentationState var alert: AlertState<Action.Alert>?
-    var isAnswered = false
+    var voteChoices: [String: Double] = [:]
     var currentIndex = 0
 
     var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
@@ -69,7 +69,11 @@ public struct PollQuestionLogic: Reducer {
         return .none
 
       case let .voteButtonTapped(votedUserId):
-        state.isAnswered = true
+        var voteChoices: [God.ID: Double] = [:]
+        state.currentChoiceGroup.choices.forEach { choice in
+          voteChoices[choice.userId] = choice.userId == votedUserId ? Double.random(in: 0.4 ..< 0.6) : Double.random(in: 0.01 ..< 0.4)
+        }
+        state.voteChoices = voteChoices
         let input = God.CreateVoteInput(
           choiceGroup: God.ChoiceGroupInput(
             choices: state.choiceGroups[state.currentIndex].choices.map {
@@ -98,7 +102,6 @@ public struct PollQuestionLogic: Reducer {
           await send(.delegate(.nextPollQuestion), animation: .default)
         }
       case .continueButtonTapped:
-        state.isAnswered = false
         return .run { send in
           await feedbackGenerator.mediumImpact()
           await send(.delegate(.nextPollQuestion), animation: .default)
@@ -164,17 +167,17 @@ public struct PollQuestionView: View {
           ForEach(viewStore.currentChoiceGroup.choices, id: \.self) { choice in
             AnswerButton(
               choice.text,
-              progress: viewStore.isAnswered ? Double.random(in: 0.1 ..< 0.9) : 0.0,
+              progress: viewStore.voteChoices[choice.userId] ?? 0.0,
               color: viewStore.backgroundColor
             ) {
               viewStore.send(.voteButtonTapped(votedUserId: choice.userId))
             }
-            .disabled(viewStore.isAnswered)
+            .disabled(!viewStore.voteChoices.isEmpty)
           }
         }
 
         ZStack {
-          if viewStore.isAnswered {
+          if !viewStore.voteChoices.isEmpty {
             Text("Tap to continue", bundle: .module)
           } else {
             HStack(spacing: 0) {
@@ -195,7 +198,7 @@ public struct PollQuestionView: View {
           }
         }
         .frame(height: 50)
-        .animation(.default, value: viewStore.isAnswered)
+        .animation(.default, value: !viewStore.voteChoices.isEmpty)
         .foregroundColor(.white)
         .padding(.vertical, 64)
       }
@@ -205,7 +208,7 @@ public struct PollQuestionView: View {
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
       .frame(height: UIScreen.main.bounds.height)
       .onTapGesture {
-        if viewStore.isAnswered {
+        if !viewStore.voteChoices.isEmpty {
           viewStore.send(.continueButtonTapped)
         }
       }
