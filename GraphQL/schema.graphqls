@@ -403,6 +403,7 @@ type Query {
 
   """ユーザーを取得"""
   user(where: UserWhere!): User!
+  userSearch(username: String!): User!
 
   """同じ学校に所属しているユーザー一覧"""
   usersBySameSchool(after: String, first: Int!): UserConnection!
