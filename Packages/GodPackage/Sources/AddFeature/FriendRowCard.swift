@@ -16,7 +16,7 @@ public struct FriendRowCardLogic: Reducer {
     var firstName: String
     var lastName: String
     var description: String
-    var friendStatus = God.FriendStatus.canceled
+    var friendStatus: God.FriendStatus?
   }
 
   public enum Action: Equatable {
@@ -99,7 +99,8 @@ public struct FriendRowCardView: View {
             viewStore.send(.addButtonTapped)
           } label: {
             Group {
-              if case .requested = viewStore.friendStatus {
+              switch viewStore.friendStatus {
+              case .requested:
                 Text("REQUESTED", bundle: .module)
                   .foregroundStyle(Color.godTextSecondaryLight)
                   .frame(height: 34)
@@ -108,7 +109,10 @@ public struct FriendRowCardView: View {
                     RoundedRectangle(cornerRadius: 34 / 2)
                       .stroke(Color.godTextSecondaryLight, lineWidth: 1)
                   )
-              } else {
+                  .disabled(true)
+              case .approved:
+                EmptyView()
+              default:
                 Text("ADD", bundle: .module)
                   .font(.callout)
                   .bold()
@@ -138,7 +142,8 @@ public struct FriendRowCardView: View {
         displayName: "Taro Tanaka",
         firstName: "Taro",
         lastName: "Tanaka",
-        description: "Grade 9"
+        description: "Grade 9",
+        friendStatus: .canceled
       ),
       reducer: { FriendRowCardLogic() }
     )

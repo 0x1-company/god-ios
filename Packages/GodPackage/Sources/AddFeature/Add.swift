@@ -40,6 +40,7 @@ public struct AddLogic: Reducer {
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
@@ -66,19 +67,22 @@ public struct AddLogic: Reducer {
         let username = state.searchQuery.lowercased()
         guard username.count >= 4 else {
           state.searchResult = []
-          return .none
+          return .cancel(id: Cancel.search)
         }
         let userWhere = God.UserWhere(
           username: .init(stringLiteral: username)
         )
         return .run { send in
-          for try await data in godClient.user(userWhere) {
-            await send(.searchResponse(.success(data)))
+          try await withTaskCancellation(id: Cancel.search, cancelInFlight: true) {
+            try await mainQueue.sleep(for: .seconds(1))
+
+            for try await data in godClient.user(userWhere) {
+              await send(.searchResponse(.success(data)))
+            }
           }
         } catch: { error, send in
           await send(.searchResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.search, cancelInFlight: true)
       case let .searchResponse(.success(data)):
         let username = data.user.username ?? ""
         state.searchResult = [
@@ -88,7 +92,8 @@ public struct AddLogic: Reducer {
             displayName: data.user.displayName.ja,
             firstName: data.user.firstName,
             lastName: data.user.lastName,
-            description: "@\(username)"
+            description: "@\(username)",
+            friendStatus: data.user.friendStatus.value
           ),
         ]
         return .none
@@ -114,7 +119,8 @@ public struct AddLogic: Reducer {
             displayName: $0.node.displayName.ja,
             firstName: $0.node.firstName,
             lastName: $0.node.lastName,
-            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module)
+            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module),
+            friendStatus: $0.node.friendStatus.value
           )
         }
         let fromSchools = data.usersBySameSchool.edges.map {
@@ -124,7 +130,8 @@ public struct AddLogic: Reducer {
             displayName: $0.node.displayName.ja,
             firstName: $0.node.firstName,
             lastName: $0.node.lastName,
-            description: $0.node.grade ?? ""
+            description: $0.node.grade ?? "",
+            friendStatus: $0.node.friendStatus.value
           )
         }
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))

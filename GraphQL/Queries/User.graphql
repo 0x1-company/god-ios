@@ -12,6 +12,7 @@ query User($where: UserWhere!) {
       name
       shortName
     }
+    friendStatus
     ...ProfileSectionFragment
   }
 }
