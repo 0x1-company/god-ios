@@ -73,14 +73,19 @@ public struct ShareTheAppView: View {
       Color.godService
         .ignoresSafeArea()
       VStack(spacing: 20) {
-        Text("Get more\nfriends to play")
+        Image(ImageResource.upsideDownFace)
+          .resizable()
+          .aspectRatio(1, contentMode: .fit)
+          .frame(width: 100)
+
+        Text("Get more\nfriends to play", bundle: .module)
           .font(.title2)
           .foregroundStyle(Color.white)
 
         ShareLink(
           item: URL(string: "https://godapp.jp")!
         ) {
-          Text("Share the app")
+          Text("Share the app", bundle: .module)
             .bold()
             .frame(width: 188, height: 54)
             .background(Color.white)
