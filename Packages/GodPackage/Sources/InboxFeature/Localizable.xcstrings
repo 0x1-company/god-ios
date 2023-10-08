@@ -140,6 +140,16 @@
         }
       }
     },
+    "Share Stories" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストーリーでシェアする"
+          }
+        }
+      }
+    },
     "someone" : {
       "localizations" : {
         "ja" : {
