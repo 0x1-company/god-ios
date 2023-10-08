@@ -44,7 +44,7 @@ public struct AppLogic: Reducer {
     case createTransactionResponse(TaskResult<StoreKit.Transaction>)
   }
 
-  @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.analytics) var analytics
   @Dependency(\.userDefaults) var userDefaults
 
   public var body: some Reducer<State, Action> {
@@ -75,6 +75,14 @@ public struct AppLogic: Reducer {
           } else {
             state.view = .onboard()
           }
+        }
+        return .none
+      }
+      .onChange(of: \.account.authUser) { authUser, _, _ in
+        if case let .success(.some(user)) = authUser {
+          analytics.setUserProperty("firebase_uid", user.uid)
+        } else {
+          analytics.setUserProperty("firebase_uid", nil)
         }
         return .none
       }
