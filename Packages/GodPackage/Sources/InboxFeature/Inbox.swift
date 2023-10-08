@@ -240,25 +240,26 @@ public struct InboxView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
-        List {
+        VStack(spacing: 0) {
           IfLetStore(
             store.scope(state: \.notificationsReEnable, action: InboxLogic.Action.notificationsReEnable),
             then: NotificationsReEnableView.init(store:)
           )
-            
-          ForEach(viewStore.inboxActivities, id: \.self) { inbox in
-            InboxCard(inbox: inbox) {
-              viewStore.send(.activityButtonTapped(id: inbox.id))
+          List {
+            ForEach(viewStore.inboxActivities, id: \.self) { inbox in
+              InboxCard(inbox: inbox) {
+                viewStore.send(.activityButtonTapped(id: inbox.id))
+              }
             }
+
+            FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: InboxLogic.Action.fromGodTeamCard))
+
+            Spacer()
+              .listRowSeparator(.hidden)
+              .frame(height: 80)
           }
-
-          FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: InboxLogic.Action.fromGodTeamCard))
-
-          Spacer()
-            .listRowSeparator(.hidden)
-            .frame(height: 80)
+          .listStyle(.plain)
         }
-        .listStyle(.plain)
 
         if !viewStore.products.isEmpty, viewStore.subscription == nil {
           ZStack(alignment: .top) {

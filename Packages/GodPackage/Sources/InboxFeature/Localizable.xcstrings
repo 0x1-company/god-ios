@@ -101,7 +101,14 @@
 
     },
     "Notifications are off" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知がオフになっています"
+          }
+        }
+      }
     },
     "OK" : {
       "localizations" : {
@@ -164,14 +171,21 @@
       }
     },
     "Tap to re-enable" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップしてオンにする"
+          }
+        }
+      }
     },
     "This is your inbox" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "これは通知タブ"
+            "value" : "ここは通知タブ"
           }
         }
       }
