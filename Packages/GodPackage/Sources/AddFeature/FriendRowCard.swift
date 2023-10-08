@@ -25,7 +25,7 @@ public struct FriendRowCardLogic: Reducer {
     case friendRequestResponse(TaskResult<God.CreateFriendRequestMutation.Data>)
     case hideResponse(TaskResult<God.CreateUserHideMutation.Data>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case requested
     }
