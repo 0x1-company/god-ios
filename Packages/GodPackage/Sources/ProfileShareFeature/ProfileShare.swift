@@ -75,12 +75,12 @@ public struct ProfileShareLogic: Reducer {
         guard
           let username = data.currentUser.username,
           let schoolName = data.currentUser.school?.name,
-          let shareURL = URL(string: "https://godapp.jp/add/\(username)")
+          let shareURL = URL(string: "https://godapp.jp/add/\(username)?utm_source=share&utm_campaign=profile")
         else { return .none }
         state.shareURL = shareURL
         state.invitationText = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/add/\(username)
+        https://godapp.jp/add/\(username)?utm_source=line&utm_campaign=profile
         """
         return .none
 

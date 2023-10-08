@@ -58,7 +58,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         guard let username = state.username else {
           return .none
         }
-        pasteboard.url(URL(string: "https://www.godapp.jp/add/\(username)"))
+        pasteboard.url(URL(string: "https://www.godapp.jp/add/\(username)?utm_source=instagram&utm_campaign=profile"))
         state.isProfileLinkCopied = true
         return .none
 
