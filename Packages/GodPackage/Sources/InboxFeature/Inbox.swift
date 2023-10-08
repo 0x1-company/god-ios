@@ -55,8 +55,11 @@ public struct InboxLogic: Reducer {
     Scope(state: \.fromGodTeamCard, action: /Action.fromGodTeamCard) {
       FromGodTeamCardLogic()
     }
-    Reduce<State, Action> { _, _ in
-      .run { send in
+    Reduce<State, Action> { _, action in
+      if case .notificationSettings = action {
+        return .none
+      }
+      return .run { send in
         await send(.notificationSettings(TaskResult {
           await userNotifications.getNotificationSettings()
         }))

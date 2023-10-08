@@ -184,6 +184,7 @@ public struct GodModeView: View {
           }
           .buttonStyle(HoldDownButtonStyle())
         }
+        .disabled(viewStore.isActivityIndicatorVisible)
         .foregroundColor(Color.white)
         .padding(.vertical, 24)
         .background(Color.black.gradient)
