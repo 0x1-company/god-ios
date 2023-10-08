@@ -31,6 +31,17 @@
         }
       }
     },
+    "ADDED" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち"
+          }
+        }
+      }
+    },
     "APPROVE" : {
       "localizations" : {
         "ja" : {

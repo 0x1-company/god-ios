@@ -154,6 +154,8 @@ public extension God {
             public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
             /// 学年をテキストで返す
             public var grade: String? { __data["grade"] }
+            /// フレンドステータス
+            public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
@@ -222,6 +224,8 @@ public extension God {
             public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
             /// 学年をテキストで返す
             public var grade: String? { __data["grade"] }
+            /// フレンドステータス
+            public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict

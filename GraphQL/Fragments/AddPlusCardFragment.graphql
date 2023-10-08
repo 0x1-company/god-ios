@@ -8,4 +8,5 @@ fragment AddPlusCardFragment on User {
   lastName
   mutualFriendsCount
   grade
+  friendStatus
 }

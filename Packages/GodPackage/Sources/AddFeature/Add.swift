@@ -10,7 +10,7 @@ import SwiftUI
 import UIApplicationClient
 
 public struct AddLogic: Reducer {
-  public init() {}
+  public init()  {}
 
   public struct State: Equatable {
     @BindingState var searchQuery = ""
@@ -28,7 +28,7 @@ public struct AddLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
-    case searchResponse(TaskResult<God.UserQuery.Data>)
+    case searchResponse(TaskResult<God.UserSearchQuery.Data>)
     case addPlusResponse(TaskResult<God.AddPlusQuery.Data>)
     case binding(BindingAction<State>)
     case contactsReEnable(ContactsReEnableLogic.Action)
@@ -40,6 +40,7 @@ public struct AddLogic: Reducer {
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
@@ -66,29 +67,30 @@ public struct AddLogic: Reducer {
         let username = state.searchQuery.lowercased()
         guard username.count >= 4 else {
           state.searchResult = []
-          return .none
+          return .cancel(id: Cancel.search)
         }
-        let userWhere = God.UserWhere(
-          username: .init(stringLiteral: username)
-        )
         return .run { send in
-          for try await data in godClient.user(userWhere) {
-            await send(.searchResponse(.success(data)))
+          try await withTaskCancellation(id: Cancel.search, cancelInFlight: true) {
+            try await mainQueue.sleep(for: .seconds(1))
+
+            for try await data in godClient.userSearch(username) {
+              await send(.searchResponse(.success(data)))
+            }
           }
         } catch: { error, send in
           await send(.searchResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.search, cancelInFlight: true)
       case let .searchResponse(.success(data)):
-        let username = data.user.username ?? ""
+        let username = data.userSearch.username ?? ""
         state.searchResult = [
           .init(
-            id: data.user.id,
-            imageURL: data.user.imageURL,
-            displayName: data.user.displayName.ja,
-            firstName: data.user.firstName,
-            lastName: data.user.lastName,
-            description: "@\(username)"
+            id: data.userSearch.id,
+            imageURL: data.userSearch.imageURL,
+            displayName: data.userSearch.displayName.ja,
+            firstName: data.userSearch.firstName,
+            lastName: data.userSearch.lastName,
+            description: "@\(username)",
+            friendStatus: data.userSearch.friendStatus.value
           ),
         ]
         return .none
@@ -114,7 +116,8 @@ public struct AddLogic: Reducer {
             displayName: $0.node.displayName.ja,
             firstName: $0.node.firstName,
             lastName: $0.node.lastName,
-            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module)
+            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module),
+            friendStatus: $0.node.friendStatus.value
           )
         }
         let fromSchools = data.usersBySameSchool.edges.map {
@@ -124,7 +127,8 @@ public struct AddLogic: Reducer {
             displayName: $0.node.displayName.ja,
             firstName: $0.node.firstName,
             lastName: $0.node.lastName,
-            description: $0.node.grade ?? ""
+            description: $0.node.grade ?? "",
+            friendStatus: $0.node.friendStatus.value
           )
         }
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))

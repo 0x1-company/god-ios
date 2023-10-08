@@ -1,0 +1,14 @@
+query UserSearch($username: String!) {
+  userSearch(username: $username) {
+    id
+    firstName
+    lastName
+    displayName {
+      ja
+    }
+    username
+    imageURL
+    friendStatus
+    mutualFriendsCount
+  }
+}

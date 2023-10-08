@@ -24,6 +24,7 @@ public class Query: MockObject {
     @Field<SchoolConnection>("schools") public var schools
     @Field<Store>("store") public var store
     @Field<User>("user") public var user
+    @Field<User>("userSearch") public var userSearch
     @Field<UserConnection>("usersBySameSchool") public var usersBySameSchool
   }
 }
@@ -44,6 +45,7 @@ public extension Mock where O == Query {
     schools: Mock<SchoolConnection>? = nil,
     store: Mock<Store>? = nil,
     user: Mock<User>? = nil,
+    userSearch: Mock<User>? = nil,
     usersBySameSchool: Mock<UserConnection>? = nil
   ) {
     self.init()
@@ -61,6 +63,7 @@ public extension Mock where O == Query {
     _setEntity(schools, for: \.schools)
     _setEntity(store, for: \.store)
     _setEntity(user, for: \.user)
+    _setEntity(userSearch, for: \.userSearch)
     _setEntity(usersBySameSchool, for: \.usersBySameSchool)
   }
 }
