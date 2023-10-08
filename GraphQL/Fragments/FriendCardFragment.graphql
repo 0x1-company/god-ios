@@ -6,4 +6,5 @@ fragment FriendFragment on User {
     ja
   }
   imageURL
+  friendStatus
 }

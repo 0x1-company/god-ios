@@ -24,6 +24,11 @@ public struct FriendRowCardLogic: Reducer {
     case hideButtonTapped
     case friendRequestResponse(TaskResult<God.CreateFriendRequestMutation.Data>)
     case hideResponse(TaskResult<God.CreateUserHideMutation.Data>)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case requested
+    }
   }
 
   @Dependency(\.godClient) var godClient
@@ -50,16 +55,13 @@ public struct FriendRowCardLogic: Reducer {
         guard let status = data.createFriendRequest.status.value
         else { return .none }
         state.friendStatus = status
-        return .none
+        return .send(.delegate(.requested))
 
       case .friendRequestResponse(.failure):
         state.friendStatus = .canceled
         return .none
 
-      case .hideResponse(.success):
-        return .none
-
-      case .hideResponse(.failure):
+      default:
         return .none
       }
     }

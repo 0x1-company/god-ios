@@ -106,7 +106,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リクエストした"
+            "value" : "リクエスト中"
           }
         }
       }

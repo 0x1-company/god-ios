@@ -4,6 +4,7 @@ fragment FriendRequestCardFragment on Friend {
   user {
     id
     imageURL
+    friendStatus
     mutualFriendsCount
     displayName {
       ja

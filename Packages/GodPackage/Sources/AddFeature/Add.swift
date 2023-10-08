@@ -60,11 +60,7 @@ public struct AddLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.addPlus() {
-            await send(.addPlusResponse(.success(data)))
-          }
-        } catch: { error, send in
-          await send(.addPlusResponse(.failure(error)))
+          await addPlusRequest(send: send)
         }
       case .binding(\.$searchQuery):
         let username = state.searchQuery.lowercased()
@@ -112,25 +108,25 @@ public struct AddLogic: Reducer {
           )
         }
         let friendsOfFriends = data.friendsOfFriends.edges.map {
-          FriendRowCardLogic.State(
-            id: $0.node.id,
-            imageURL: $0.node.imageURL,
-            displayName: $0.node.displayName.ja,
-            firstName: $0.node.firstName,
-            lastName: $0.node.lastName,
-            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module)
-          )
-        }
+            FriendRowCardLogic.State(
+              id: $0.node.id,
+              imageURL: $0.node.imageURL,
+              displayName: $0.node.displayName.ja,
+              firstName: $0.node.firstName,
+              lastName: $0.node.lastName,
+              description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module)
+            )
+          }
         let fromSchools = data.usersBySameSchool.edges.map {
-          FriendRowCardLogic.State(
-            id: $0.node.id,
-            imageURL: $0.node.imageURL,
-            displayName: $0.node.displayName.ja,
-            firstName: $0.node.firstName,
-            lastName: $0.node.lastName,
-            description: $0.node.grade ?? ""
-          )
-        }
+            FriendRowCardLogic.State(
+              id: $0.node.id,
+              imageURL: $0.node.imageURL,
+              displayName: $0.node.displayName.ja,
+              firstName: $0.node.firstName,
+              lastName: $0.node.lastName,
+              description: $0.node.grade ?? ""
+            )
+          }
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))
         state.friendsOfFriendsPanel = friendsOfFriends.isEmpty ? nil : .init(friendsOfFriends: .init(uniqueElements: friendsOfFriends))
         state.fromSchoolPanel = fromSchools.isEmpty ? nil : .init(users: .init(uniqueElements: fromSchools))
@@ -146,18 +142,34 @@ public struct AddLogic: Reducer {
           ProfileExternalLogic.State(userId: userId)
         )
         return .none
+        
+      case .friendRequestPanel(.requests(_, .delegate(.approved))):
+        return .run { send in
+          await addPlusRequest(send: send)
+        }
 
       case let .friendsOfFriendsPanel(.delegate(.showExternalProfile(userId))):
         state.destination = .profileExternal(
           ProfileExternalLogic.State(userId: userId)
         )
         return .none
+        
+      case .friendsOfFriendsPanel(.friendsOfFriends(_, .delegate(.requested))):
+        return .run { send in
+          await addPlusRequest(send: send)
+        }
 
       case let .fromSchoolPanel(.delegate(.showExternalProfile(userId))):
         state.destination = .profileExternal(
           ProfileExternalLogic.State(userId: userId)
         )
         return .none
+        
+      case .fromSchoolPanel(.users(_, .delegate(.requested))):
+        return .run { send in
+          await addPlusRequest(send: send)
+        }
+
       default:
         return .none
       }
@@ -179,6 +191,16 @@ public struct AddLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+  }
+  
+  private func addPlusRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.addPlus() {
+        await send(.addPlusResponse(.success(data)))
+      }
+    } catch {
+      await send(.addPlusResponse(.failure(error)))
     }
   }
 

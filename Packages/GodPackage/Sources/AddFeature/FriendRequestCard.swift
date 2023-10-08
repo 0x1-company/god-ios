@@ -28,6 +28,11 @@ public struct FriendRequestCardLogic: Reducer {
     case hideButtonTapped
     case approveResponse(TaskResult<God.ApproveFriendRequestMutation.Data>)
     case hideResponse(TaskResult<God.CreateUserHideMutation.Data>)
+    case delegate(Delegate)
+
+    public enum Delegate: Equatable {
+      case approved
+    }
   }
 
   @Dependency(\.godClient) var godClient
@@ -50,15 +55,8 @@ public struct FriendRequestCardLogic: Reducer {
           }))
         }
       case .approveResponse(.success):
-        return .none
-
-      case .approveResponse(.failure):
-        return .none
-
-      case .hideResponse(.success):
-        return .none
-
-      case .hideResponse(.failure):
+        return .send(.delegate(.approved))
+      default:
         return .none
       }
     }

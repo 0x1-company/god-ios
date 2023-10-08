@@ -6,7 +6,7 @@
 public extension God {
   struct FriendRequestCardFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment FriendRequestCardFragment on Friend { __typename id status user { __typename id imageURL mutualFriendsCount displayName { __typename ja } firstName lastName } }"#
+      #"fragment FriendRequestCardFragment on Friend { __typename id status user { __typename id imageURL friendStatus mutualFriendsCount displayName { __typename ja } firstName lastName } }"#
     }
 
     public let __data: DataDict
@@ -38,6 +38,7 @@ public extension God {
         .field("__typename", String.self),
         .field("id", God.ID.self),
         .field("imageURL", String.self),
+        .field("friendStatus", GraphQLEnum<God.FriendStatus>.self),
         .field("mutualFriendsCount", Int.self),
         .field("displayName", DisplayName.self),
         .field("firstName", String.self),
@@ -48,6 +49,8 @@ public extension God {
       public var id: God.ID { __data["id"] }
       /// プロフィール画像のURL
       public var imageURL: String { __data["imageURL"] }
+      /// フレンドステータス
+      public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
       /// 共通のフレンド数
       public var mutualFriendsCount: Int { __data["mutualFriendsCount"] }
       /// 表示名
