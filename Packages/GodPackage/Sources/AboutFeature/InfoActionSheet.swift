@@ -1,9 +1,9 @@
 import ButtonStyles
 import ComposableArchitecture
+import Constants
 import GodActionSheet
 import SwiftUI
 import UIPasteboardClient
-import Constants
 
 public struct InfoActionSheetLogic: Reducer {
   public init() {}
@@ -19,7 +19,7 @@ public struct InfoActionSheetLogic: Reducer {
     case gmailButtonTapped
     case copyButtonTapped
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.pasteboard) var pasteboard
@@ -34,7 +34,7 @@ public struct InfoActionSheetLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .mailButtonTapped:
         guard let url = mailGenerator(subject: state.title)
         else { return .none }
@@ -57,7 +57,7 @@ public struct InfoActionSheetLogic: Reducer {
       }
     }
   }
-  
+
   private func mailGenerator(subject: String) -> URL? {
     var components = URLComponents()
     components.scheme = "mailto"
@@ -77,7 +77,7 @@ public struct InfoActionSheetLogic: Reducer {
     ]
     return components.url
   }
-  
+
   private func gmailGenerator(subject: String) -> URL? {
     var components = URLComponents()
     components.scheme = "googlegmail"
@@ -136,7 +136,7 @@ public struct InfoActionSheetView: View {
                       .aspectRatio(contentMode: .fit)
                       .cornerRadius(12)
                   }
-                
+
                 Text("Mail", bundle: .module)
                   .bold()
                   .foregroundColor(.godBlack)

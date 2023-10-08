@@ -1,9 +1,9 @@
+import Build
 import Colors
 import ComposableArchitecture
 import Constants
 import HowItWorksFeature
 import SwiftUI
-import Build
 
 public struct AboutLogic: Reducer {
   public init() {}
@@ -41,7 +41,7 @@ public struct AboutLogic: Reducer {
       case somethingElse
     }
   }
-  
+
   @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
@@ -212,7 +212,7 @@ public struct AboutView: View {
 
           Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
             .font(.footnote)
-          
+
           Text(viewStore.appVersion)
             .font(.footnote)
         }
@@ -284,4 +284,3 @@ extension ConfirmationDialogState where Action == AboutLogic.Action.Confirmation
     )
   )
 }
-
