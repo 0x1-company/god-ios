@@ -102,7 +102,7 @@ public struct UsernameSettingView: View {
           .font(.title3)
 
         TextField(text: viewStore.$username) {
-          Text("@godappteam", bundle: .module)
+          Text("godappteam", bundle: .module)
         }
         .textInputAutocapitalization(.never)
         .textContentType(.username)

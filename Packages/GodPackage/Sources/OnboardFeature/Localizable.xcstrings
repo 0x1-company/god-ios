@@ -4,22 +4,12 @@
     "" : {
 
     },
-    "@godappteam" : {
+    "000000" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "@godappteam"
-          }
-        }
-      }
-    },
-    "000 000" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "000 000"
+            "value" : "000000"
           }
         }
       }
@@ -240,6 +230,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Godは友だちを見つけるために連絡先を利用します"
+          }
+        }
+      }
+    },
+    "godappteam" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "godappteam"
           }
         }
       }

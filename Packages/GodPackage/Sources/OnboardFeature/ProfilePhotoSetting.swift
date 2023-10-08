@@ -173,7 +173,7 @@ public struct ProfilePhotoSettingView: View {
           preferredItemEncoding: .current
         ) {
           Text(
-            viewStore.photoPickerItems.isEmpty ? "Choose a photo" : "Change photo",
+            viewStore.image == nil ? "Choose a photo" : "Change photo",
             bundle: .module
           )
           .bold()
@@ -185,7 +185,7 @@ public struct ProfilePhotoSettingView: View {
               .stroke(Color.white, lineWidth: 1)
           )
         }
-        if !viewStore.photoPickerItems.isEmpty {
+        if viewStore.image != nil {
           Button {
             viewStore.send(.nextButtonTapped)
           } label: {
