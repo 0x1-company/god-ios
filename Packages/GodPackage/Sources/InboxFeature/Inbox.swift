@@ -145,7 +145,7 @@ public struct InboxLogic: Reducer {
         
       case let .notificationSettings(.success(settings)):
         let isAuthorized = settings.authorizationStatus == .authorized
-        state.notificationsReEnable = isAuthorized ? .init() : nil
+        state.notificationsReEnable = isAuthorized ? nil : .init()
         return .none
 
       case .fromGodTeamCard(.delegate(.showDetail)):

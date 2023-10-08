@@ -59,10 +59,10 @@ public struct FromGodTeamCard: View {
             Text("From God Team", bundle: .module)
               .frame(maxWidth: .infinity, alignment: .leading)
           } icon: {
-            Image(ImageResource.godTeamIcon)
+            Image(viewStore.isRead ? ImageResource.unreadIcon : ImageResource.godTeamIcon)
               .resizable()
               .scaledToFit()
-              .frame(width: 40)
+              .frame(width: 56)
           }
           .padding(.horizontal, 16)
         }
