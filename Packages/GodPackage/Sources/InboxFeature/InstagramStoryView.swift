@@ -71,7 +71,6 @@ struct InstagramStoryView: View {
       .cornerRadius(8)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .padding(.horizontal, 44)
     .background(Color.black)
   }
 }
