@@ -49,6 +49,8 @@ public extension God {
         public var displayName: FriendFragment.DisplayName { __data["displayName"] }
         /// プロフィール画像のURL
         public var imageURL: String { __data["imageURL"] }
+        /// フレンドステータス
+        public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict

@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "CurrentUserProfile"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentUserProfile { currentUser { __typename ...ProfileSectionFragment wallet { __typename coinBalance } } friends { __typename ...FriendFragment } questionsOrderByVotedDesc(first: 3) { __typename id imageURL text { __typename ja } } }"#,
+        #"query CurrentUserProfile { currentUser { __typename ...ProfileSectionFragment wallet { __typename id coinBalance } } friends { __typename ...FriendFragment } questionsOrderByVotedDesc(first: 3) { __typename id imageURL text { __typename ja } } }"#,
         fragments: [ProfileSectionFragment.self, FriendFragment.self]
       ))
 
@@ -88,9 +88,11 @@ public extension God {
           public static var __parentType: ApolloAPI.ParentType { God.Objects.Wallet }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
+            .field("id", God.ID.self),
             .field("coinBalance", Int.self),
           ] }
 
+          public var id: God.ID { __data["id"] }
           /// コイン枚数
           public var coinBalance: Int { __data["coinBalance"] }
         }
@@ -119,6 +121,8 @@ public extension God {
         public var displayName: FriendFragment.DisplayName { __data["displayName"] }
         /// プロフィール画像のURL
         public var imageURL: String { __data["imageURL"] }
+        /// フレンドステータス
+        public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict

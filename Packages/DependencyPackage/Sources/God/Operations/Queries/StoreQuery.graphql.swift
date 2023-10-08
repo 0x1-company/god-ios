@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "Store"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query Store { currentUser { __typename wallet { __typename coinBalance } } store { __typename items { __typename id coinAmount itemType description { __typename ja } title { __typename ja } } } }"#
+        #"query Store { currentUser { __typename id wallet { __typename id coinBalance } } store { __typename items { __typename id coinAmount itemType description { __typename ja } title { __typename ja } } } }"#
       ))
 
     public init() {}
@@ -38,9 +38,12 @@ public extension God {
         public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
+          .field("id", God.ID.self),
           .field("wallet", Wallet?.self),
         ] }
 
+        /// user id
+        public var id: God.ID { __data["id"] }
         /// wallet
         public var wallet: Wallet? { __data["wallet"] }
 
@@ -54,9 +57,11 @@ public extension God {
           public static var __parentType: ApolloAPI.ParentType { God.Objects.Wallet }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
+            .field("id", God.ID.self),
             .field("coinBalance", Int.self),
           ] }
 
+          public var id: God.ID { __data["id"] }
           /// コイン枚数
           public var coinBalance: Int { __data["coinBalance"] }
         }

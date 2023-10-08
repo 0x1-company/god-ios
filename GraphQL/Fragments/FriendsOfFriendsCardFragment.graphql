@@ -5,4 +5,5 @@ fragment FriendsOfFriendsCardFragment on User {
   displayName {
     ja
   }
+  friendStatus
 }

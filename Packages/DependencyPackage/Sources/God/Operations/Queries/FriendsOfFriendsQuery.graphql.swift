@@ -124,6 +124,8 @@ public extension God {
             public var imageURL: String { __data["imageURL"] }
             /// 表示名
             public var displayName: FriendsOfFriendsCardFragment.DisplayName { __data["displayName"] }
+            /// フレンドステータス
+            public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict

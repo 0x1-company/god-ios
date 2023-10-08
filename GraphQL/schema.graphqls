@@ -531,6 +531,9 @@ type User {
   """first name"""
   firstName: String!
 
+  """フレンドステータス"""
+  friendStatus: FriendStatus!
+
   """フレンド数"""
   friendsCount: Int
 

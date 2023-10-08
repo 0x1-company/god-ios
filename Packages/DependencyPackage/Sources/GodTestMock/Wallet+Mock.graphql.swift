@@ -11,14 +11,17 @@ public class Wallet: MockObject {
 
   public struct MockFields {
     @Field<Int>("coinBalance") public var coinBalance
+    @Field<God.ID>("id") public var id
   }
 }
 
 public extension Mock where O == Wallet {
   convenience init(
-    coinBalance: Int? = nil
+    coinBalance: Int? = nil,
+    id: God.ID? = nil
   ) {
     self.init()
     _setScalar(coinBalance, for: \.coinBalance)
+    _setScalar(id, for: \.id)
   }
 }
