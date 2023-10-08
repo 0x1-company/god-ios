@@ -8,6 +8,7 @@ import GodModeFeature
 import StoreKit
 import StoreKitClient
 import SwiftUI
+import UserNotificationClient
 
 public struct InboxLogic: Reducer {
   public init() {}
@@ -15,6 +16,7 @@ public struct InboxLogic: Reducer {
   public struct State: Equatable {
     var fromGodTeamCard = FromGodTeamCardLogic.State()
     @PresentationState var destination: Destination.State?
+    var notificationsReEnable: NotificationsReEnableLogic.State?
 
     var inboxActivities: [God.InboxCardFragment] = []
     var products: [Product] = []
@@ -32,13 +34,16 @@ public struct InboxLogic: Reducer {
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case inboxActivityResponse(TaskResult<God.InboxActivityQuery.Data>)
     case readActivityResponse(TaskResult<God.ReadActivityMutation.Data>)
+    case notificationSettings(TaskResult<UserNotificationClient.Notification.Settings>)
     case destination(PresentationAction<Destination.Action>)
     case fromGodTeamCard(FromGodTeamCardLogic.Action)
+    case notificationsReEnable(NotificationsReEnableLogic.Action)
   }
 
   @Dependency(\.build) var build
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
+  @Dependency(\.userNotifications) var userNotifications
 
   enum Cancel {
     case readActivity
@@ -49,6 +54,13 @@ public struct InboxLogic: Reducer {
   public var body: some Reducer<State, Action> {
     Scope(state: \.fromGodTeamCard, action: /Action.fromGodTeamCard) {
       FromGodTeamCardLogic()
+    }
+    Reduce<State, Action> { state, _ in
+      return .run { send in
+        await send(.notificationSettings(TaskResult {
+          await userNotifications.getNotificationSettings()
+        }))
+      }
     }
     Reduce<State, Action> { state, action in
       switch action {
@@ -130,6 +142,11 @@ public struct InboxLogic: Reducer {
           await inboxActivitiesRequest(send: send)
         }
         .cancellable(id: Cancel.inboxActivities, cancelInFlight: true)
+        
+      case let .notificationSettings(.success(settings)):
+        let isAuthorized = settings.authorizationStatus == .authorized
+        state.notificationsReEnable = isAuthorized ? .init() : nil
+        return .none
 
       case .fromGodTeamCard(.delegate(.showDetail)):
         state.destination = .fromGodTeam(.init())
@@ -141,6 +158,9 @@ public struct InboxLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+    .ifLet(\.notificationsReEnable, action: /Action.notificationsReEnable) {
+      NotificationsReEnableLogic()
     }
   }
 
@@ -221,6 +241,11 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         List {
+          IfLetStore(
+            store.scope(state: \.notificationsReEnable, action: InboxLogic.Action.notificationsReEnable),
+            then: NotificationsReEnableView.init(store:)
+          )
+            
           ForEach(viewStore.inboxActivities, id: \.self) { inbox in
             InboxCard(inbox: inbox) {
               viewStore.send(.activityButtonTapped(id: inbox.id))

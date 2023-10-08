@@ -77,7 +77,6 @@ let package = Package(
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "FirestoreClient", package: "DependencyPackage"),
       .product(name: "FirebaseCoreClient", package: "DependencyPackage"),
-      .product(name: "UserNotificationClient", package: "CupertinoPackage"),
       .product(name: "FirebaseMessagingClient", package: "DependencyPackage"),
     ]),
     .target(name: "CashOutFeature", dependencies: [
@@ -119,6 +118,8 @@ let package = Package(
       "ShareScreenshotFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
+      .product(name: "UIApplicationClient", package: "CupertinoPackage"),
+      .product(name: "UserNotificationClient", package: "CupertinoPackage"),
       .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),

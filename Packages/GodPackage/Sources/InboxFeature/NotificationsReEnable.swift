@@ -1,7 +1,8 @@
 import ComposableArchitecture
 import SwiftUI
+import UIApplicationClient
 
-public struct ContactsReEnableLogic: Reducer {
+public struct NotificationsReEnableLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -11,18 +12,17 @@ public struct ContactsReEnableLogic: Reducer {
   public enum Action: Equatable {
     case onTapGesture
   }
-
+  
   @Dependency(\.openURL) var openURL
-  @Dependency(\.application.openSettingsURLString) var openSettingsURLString
+  @Dependency(\.application.openNotificationSettingsURLString) var openNotificationSettingsURLString
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTapGesture:
         return .run { _ in
-          let settingsURLString = await openSettingsURLString()
-          guard let url = URL(string: settingsURLString)
-          else { return }
+          let openNotificationSettingsURLString = await openNotificationSettingsURLString()
+          guard let url = URL(string: openNotificationSettingsURLString) else { return }
           await openURL(url)
         }
       }
@@ -30,20 +30,20 @@ public struct ContactsReEnableLogic: Reducer {
   }
 }
 
-public struct ContactsReEnableView: View {
-  let store: StoreOf<ContactsReEnableLogic>
+public struct NotificationsReEnableView: View {
+  let store: StoreOf<NotificationsReEnableLogic>
 
-  public init(store: StoreOf<ContactsReEnableLogic>) {
+  public init(store: StoreOf<NotificationsReEnableLogic>) {
     self.store = store
   }
 
   public var body: some View {
     VStack(spacing: 0) {
       HStack(spacing: 16) {
-        Image(systemName: "person.crop.square.fill")
+        Image(systemName: "bell.slash.fill")
           .font(.system(size: 30))
         VStack(alignment: .leading, spacing: 4) {
-          Text("Contacts are disabled", bundle: .module)
+          Text("Notifications are off", bundle: .module)
             .bold()
           Text("Tap to re-enable", bundle: .module)
             .foregroundStyle(Color.white.opacity(0.6))
@@ -63,10 +63,10 @@ public struct ContactsReEnableView: View {
 }
 
 #Preview {
-  ContactsReEnableView(
+  NotificationsReEnableView(
     store: .init(
-      initialState: ContactsReEnableLogic.State(),
-      reducer: { ContactsReEnableLogic() }
+      initialState: NotificationsReEnableLogic.State(),
+      reducer: { NotificationsReEnableLogic() }
     )
   )
 }
