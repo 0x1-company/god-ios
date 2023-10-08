@@ -3,6 +3,7 @@ import ComposableArchitecture
 import Constants
 import HowItWorksFeature
 import SwiftUI
+import Build
 
 public struct AboutLogic: Reducer {
   public init() {}
@@ -10,10 +11,17 @@ public struct AboutLogic: Reducer {
   public struct State: Equatable {
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
     @PresentationState var destination: Destination.State?
-    public init() {}
+    let appVersion: String
+    public init() {
+      @Dependency(\.build) var build
+      let bundleVersion = build.bundleVersion()
+      let bundleShortVersion = build.bundleShortVersion()
+      appVersion = "\(bundleShortVersion) (\(bundleVersion))"
+    }
   }
 
   public enum Action: Equatable {
+    case onTask
     case howItWorksButtonTapped
     case faqButtonTapped
     case shareFeedbackButtonTapped
@@ -33,12 +41,14 @@ public struct AboutLogic: Reducer {
       case somethingElse
     }
   }
-
+  
   @Dependency(\.openURL) var openURL
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        return .none
       case .howItWorksButtonTapped:
         state.destination = .howItWorks()
         return .none
@@ -202,10 +212,14 @@ public struct AboutView: View {
 
           Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
             .font(.footnote)
+          
+          Text(viewStore.appVersion)
+            .font(.footnote)
         }
         .foregroundColor(.secondary)
         .tint(.secondary)
       }
+      .task { await store.send(.onTask).finish() }
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),

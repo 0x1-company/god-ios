@@ -62,6 +62,7 @@
       }
     },
     "Close" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -112,6 +113,7 @@
       }
     },
     "For help with this, send us an email and we’ll get back to you right away." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

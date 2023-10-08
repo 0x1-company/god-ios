@@ -47,6 +47,7 @@ let package = Package(
   targets: [
     .target(name: "AboutFeature", dependencies: [
       "HowItWorksFeature",
+      .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
       .product(name: "GodActionSheet", package: "UIComponentPackage"),
@@ -73,7 +74,6 @@ let package = Package(
       "NavigationFeature",
       "ForceUpdateFeature",
       "MaintenanceFeature",
-      .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "TcaHelpers", package: "DependencyPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "FirestoreClient", package: "DependencyPackage"),
