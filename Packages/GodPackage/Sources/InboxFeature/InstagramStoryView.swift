@@ -30,7 +30,7 @@ struct InstagramStoryView: View {
         .lineLimit(2)
         .foregroundColor(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
-        
+
         if let schoolName {
           Text(schoolName)
             .font(.body)
