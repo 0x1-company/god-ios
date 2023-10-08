@@ -36,15 +36,16 @@ public struct GodActionSheet<Actions: View>: View {
       actions()
 
       Button(action: onDismiss) {
-        Text("Close", bundle: .module)
-          .bold()
-          .foregroundColor(.black)
+        RoundedRectangle(cornerRadius: 24)
+          .stroke(Color.black, lineWidth: 1)
           .frame(height: 48)
-          .frame(maxWidth: .infinity)
-          .overlay(
-            RoundedRectangle(cornerRadius: 24)
-              .stroke(Color.black, lineWidth: 1)
-          )
+          .background {
+            Text("Close", bundle: .module)
+              .bold()
+              .foregroundColor(.black)
+              .frame(height: 48)
+              .frame(maxWidth: .infinity)
+          }
       }
       .buttonStyle(HoldDownButtonStyle())
     }

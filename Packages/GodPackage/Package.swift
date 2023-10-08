@@ -50,6 +50,7 @@ let package = Package(
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
       .product(name: "GodActionSheet", package: "UIComponentPackage"),
+      .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
       "ProfileFeature",

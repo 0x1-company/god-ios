@@ -75,11 +75,11 @@ public struct AboutLogic: Reducer {
           )
         case .changeMyGender:
           infoState = .init(
-            title: String(localized: "Change my name", bundle: .module)
+            title: String(localized: "Change my gender", bundle: .module)
           )
         case .changeMyName:
           infoState = .init(
-            title: String(localized: "Change my gender", bundle: .module)
+            title: String(localized: "Change my name", bundle: .module)
           )
         case .deleteMyAccount:
           infoState = .init(
@@ -118,27 +118,6 @@ public struct AboutLogic: Reducer {
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
     }
-  }
-
-  private func gmailGenerator(subject: String) -> String {
-    var components = URLComponents()
-    components.scheme = "googlegmail"
-    components.path = "/co"
-    components.queryItems = [
-      URLQueryItem(name: "to", value: Constants.helpEmailAddress),
-      URLQueryItem(name: "subject", value: subject),
-      URLQueryItem(
-        name: "body",
-        value: String(
-          localized: """
-          Please describe your problem or feedback. Attach screenshots if necessary.
-          -----TYPE BELOW THIS LINE-----
-          """,
-          bundle: .module
-        )
-      ),
-    ]
-    return components.description
   }
 
   public struct Destination: Reducer {
@@ -234,7 +213,8 @@ public struct AboutView: View {
         action: AboutLogic.Destination.Action.infoActionSheet
       ) { store in
         InfoActionSheetView(store: store)
-          .presentationDetents([.medium])
+          .presentationDetents([.fraction(0.5)])
+          .presentationDragIndicator(.visible)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
@@ -244,15 +224,6 @@ public struct AboutView: View {
       )
     }
   }
-}
-
-#Preview {
-  AboutView(
-    store: .init(
-      initialState: AboutLogic.State(),
-      reducer: { AboutLogic() }
-    )
-  )
 }
 
 extension ConfirmationDialogState where Action == AboutLogic.Action.ConfirmationDialog {
@@ -290,3 +261,13 @@ extension ConfirmationDialogState where Action == AboutLogic.Action.Confirmation
     TextState("Get Help", bundle: .module)
   }
 }
+
+#Preview {
+  AboutView(
+    store: .init(
+      initialState: AboutLogic.State(),
+      reducer: { AboutLogic() }
+    )
+  )
+}
+
