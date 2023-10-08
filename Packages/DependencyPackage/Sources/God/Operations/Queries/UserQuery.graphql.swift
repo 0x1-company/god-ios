@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "User"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query User($where: UserWhere!) { user(where: $where) { __typename id firstName lastName username schoolId school { __typename id name shortName } friendStatus ...ProfileSectionFragment } }"#,
+        #"query User($where: UserWhere!) { user(where: $where) { __typename id firstName lastName username schoolId school { __typename id name shortName } ...ProfileSectionFragment } }"#,
         fragments: [ProfileSectionFragment.self]
       ))
 
@@ -48,7 +48,6 @@ public extension God {
           .field("username", String?.self),
           .field("schoolId", String?.self),
           .field("school", School?.self),
-          .field("friendStatus", GraphQLEnum<God.FriendStatus>.self),
           .fragment(ProfileSectionFragment.self),
         ] }
 
@@ -63,8 +62,6 @@ public extension God {
         public var schoolId: String? { __data["schoolId"] }
         /// 所属している学校
         public var school: School? { __data["school"] }
-        /// フレンドステータス
-        public var friendStatus: GraphQLEnum<God.FriendStatus> { __data["friendStatus"] }
         /// 投票された数
         public var votedCount: Int { __data["votedCount"] }
         /// プロフィール画像のURL

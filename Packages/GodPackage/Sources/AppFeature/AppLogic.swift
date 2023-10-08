@@ -80,9 +80,9 @@ public struct AppLogic: Reducer {
       }
       .onChange(of: \.account.authUser) { authUser, _, _ in
         if case let .success(.some(user)) = authUser {
-          analytics.setUserProperty("firebase_uid", user.uid)
+          analytics.setUserProperty("uid", user.uid)
         } else {
-          analytics.setUserProperty("firebase_uid", nil)
+          analytics.setUserProperty("uid", nil)
         }
         return .none
       }
