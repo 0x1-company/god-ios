@@ -3,10 +3,10 @@ import BackgroundClearSheet
 import ButtonStyles
 import Colors
 import ComposableArchitecture
+import CupertinoMessageFeature
 import God
 import GodClient
 import SwiftUI
-import CupertinoMessageFeature
 
 public struct ProfileShareLogic: Reducer {
   public init() {}
@@ -71,7 +71,7 @@ public struct ProfileShareLogic: Reducer {
 
       case let .currentUserResponse(.success(data)):
         func text(schoolName: String, username: String) -> String? {
-          return """
+          """
           \(schoolName)向けの新しいアプリダウンロードしてみて！
           https://godapp.jp/add/\(username)
           """.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
@@ -165,7 +165,7 @@ public struct ProfileShareView: View {
                     .foregroundStyle(Color.white)
                     .background(Color.green.gradient)
                     .clipShape(Circle())
-                  
+
                   Text(content.name, bundle: .module)
                     .font(.callout)
                     .bold()
@@ -224,7 +224,7 @@ public struct ProfileShareView: View {
       }
     }
   }
-  
+
   struct ShareButton: View {
     let content: ProfileShareLogic.Content
     let action: () -> Void

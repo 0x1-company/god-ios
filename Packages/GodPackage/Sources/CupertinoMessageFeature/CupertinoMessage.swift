@@ -11,10 +11,10 @@ public struct CupertinoMessageLogic: Reducer {
     var body: String
 
     public init(recipient: String, body: String) {
-      self.recipients = [recipient]
+      recipients = [recipient]
       self.body = body
     }
-    
+
     public init(recipients: [String], body: String) {
       self.recipients = recipients
       self.body = body
