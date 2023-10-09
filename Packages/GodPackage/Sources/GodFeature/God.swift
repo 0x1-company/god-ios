@@ -126,7 +126,7 @@ public struct GodLogic: Reducer {
       repeats: false
     )
     let request = UNNotificationRequest(
-      identifier: UUID().uuidString,
+      identifier: until.hashValue.description,
       content: content,
       trigger: trigger
     )
