@@ -49,9 +49,9 @@ public struct ShareTheAppLogic: Reducer {
         """
         guard let shareURL = URL(string: "https://line.me/R/share?text=\(text)")
         else { return .none }
-        
+
         state.shareURL = shareURL
-        
+
         return .none
 
       case .currentUserResponse(.failure):
