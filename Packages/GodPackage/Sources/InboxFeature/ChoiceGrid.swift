@@ -17,7 +17,7 @@ struct ChoiceGrid: View {
               RoundedRectangle(cornerRadius: 7)
                 .fill(color)
                 .frame(height: 14)
-              
+
               RoundedRectangle(cornerRadius: 7)
                 .fill(color)
                 .frame(height: 14)
@@ -29,29 +29,29 @@ struct ChoiceGrid: View {
             Text(choice.text)
           }
         }
-          .font(.callout)
-          .bold()
-          .lineLimit(2)
-          .multilineTextAlignment(.center)
-          .padding(.horizontal, 16)
-          .frame(height: 64)
-          .frame(maxWidth: .infinity, alignment: .center)
-          .foregroundStyle(color)
-          .background(
-            Color.godWhite
-          )
-          .cornerRadius(8)
-          .opacity(choice.isSelected ? 1 : 0.6)
-          .overlay(alignment: .topTrailing) {
-            if choice.isSelected {
-              Image(ImageResource.fingerIcon)
-                .resizable()
-                .frame(width: 48, height: 48)
-                .rotationEffect(.degrees(-30))
-                .shadow(color: color, radius: 8)
-                .offset(x: 20, y: -20)
-            }
+        .font(.callout)
+        .bold()
+        .lineLimit(2)
+        .multilineTextAlignment(.center)
+        .padding(.horizontal, 16)
+        .frame(height: 64)
+        .frame(maxWidth: .infinity, alignment: .center)
+        .foregroundStyle(color)
+        .background(
+          Color.godWhite
+        )
+        .cornerRadius(8)
+        .opacity(choice.isSelected ? 1 : 0.6)
+        .overlay(alignment: .topTrailing) {
+          if choice.isSelected {
+            Image(ImageResource.fingerIcon)
+              .resizable()
+              .frame(width: 48, height: 48)
+              .rotationEffect(.degrees(-30))
+              .shadow(color: color, radius: 8)
+              .offset(x: 20, y: -20)
           }
+        }
       }
     }
   }
@@ -64,7 +64,7 @@ struct ChoiceGrid: View {
       God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Apple", "isSelected": false], fulfilledFragments: [])),
       God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Orange", "isSelected": true], fulfilledFragments: [])),
       God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Banana", "isSelected": false], fulfilledFragments: [])),
-      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "", "isSelected": false], fulfilledFragments: []))
+      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "", "isSelected": false], fulfilledFragments: [])),
     ]
   )
   .padding()
