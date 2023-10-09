@@ -1,12 +1,32 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "🏆 Tap to vote" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🏆 タップして投票する"
+          }
+        }
+      }
+    },
     "Get more\nfriends to play" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "より多くの\n遊ぶ友だちを増やす"
+          }
+        }
+      }
+    },
+    "New polls available" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい質問があります"
           }
         }
       }

@@ -5,6 +5,7 @@ import GodClient
 import PlayAgainFeature
 import PollFeature
 import SwiftUI
+import UserNotificationClient
 
 public struct GodLogic: Reducer {
   public init() {}
@@ -22,6 +23,8 @@ public struct GodLogic: Reducer {
 
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
+  @Dependency(\.userNotifications) var userNotifications
+  @Dependency(\.calendar) var calendar
 
   enum Cancel {
     case currentPoll
@@ -47,7 +50,9 @@ public struct GodLogic: Reducer {
         }
         let until = Date(timeIntervalSince1970: untilTimeInterval / 1000.0)
         updateChild(state: &state, child: .playAgain(.init(until: until)))
-        return .none
+        return .run { _ in
+          await registerLocalNotification(until: until)
+        }
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .active:
         guard let poll = data.currentPoll.poll else { return .none }
@@ -105,6 +110,27 @@ public struct GodLogic: Reducer {
     } catch {
       await send(.currentPollResponse(.failure(error)))
     }
+  }
+  
+  func registerLocalNotification(until: Date) async {
+    let content = UNMutableNotificationContent()
+    content.title = String(localized: "New polls available", bundle: .module)
+    content.body = String(localized: "🏆 Tap to vote", bundle: .module)
+    content.sound = UNNotificationSound.default
+
+    let trigger = UNCalendarNotificationTrigger(
+      dateMatching: calendar.dateComponents(
+        [.year, .month, .day, .hour, .minute, .second],
+        from: until
+      ),
+      repeats: false
+    )
+    let request = UNNotificationRequest(
+      identifier: UUID().uuidString,
+      content: content,
+      trigger: trigger
+    )
+    try? await userNotifications.add(request)
   }
 
   public struct Child: Reducer {

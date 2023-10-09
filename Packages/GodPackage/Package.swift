@@ -97,6 +97,7 @@ let package = Package(
       "PollFeature",
       "CashOutFeature",
       "PlayAgainFeature",
+      .product(name: "UserNotificationClient", package: "CupertinoPackage"),
     ], resources: [.copy("Loading.json")]),
     .target(name: "GodModeFeature", dependencies: [
       .product(name: "Colors", package: "UIComponentPackage"),
