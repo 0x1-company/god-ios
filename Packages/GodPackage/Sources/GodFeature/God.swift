@@ -111,7 +111,7 @@ public struct GodLogic: Reducer {
       await send(.currentPollResponse(.failure(error)))
     }
   }
-  
+
   func registerLocalNotification(until: Date) async {
     let content = UNMutableNotificationContent()
     content.title = String(localized: "New polls available", bundle: .module)
