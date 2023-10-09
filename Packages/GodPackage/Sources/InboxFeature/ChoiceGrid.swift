@@ -11,7 +11,24 @@ struct ChoiceGrid: View {
       spacing: 16
     ) {
       ForEach(choices, id: \.self) { choice in
-        Text(verbatim: choice.text)
+        Group {
+          if choice.text.isEmpty {
+            VStack(spacing: 8) {
+              RoundedRectangle(cornerRadius: 7)
+                .fill(color)
+                .frame(height: 14)
+              
+              RoundedRectangle(cornerRadius: 7)
+                .fill(color)
+                .frame(height: 14)
+                .padding(.horizontal, 26)
+            }
+            .padding(.horizontal, 8)
+            .opacity(0.5)
+          } else {
+            Text(choice.text)
+          }
+        }
           .font(.callout)
           .bold()
           .lineLimit(2)
@@ -38,4 +55,18 @@ struct ChoiceGrid: View {
       }
     }
   }
+}
+
+#Preview {
+  ChoiceGrid(
+    color: Color.blue,
+    choices: [
+      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Apple", "isSelected": false], fulfilledFragments: [])),
+      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Orange", "isSelected": true], fulfilledFragments: [])),
+      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Banana", "isSelected": false], fulfilledFragments: [])),
+      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "", "isSelected": false], fulfilledFragments: []))
+    ]
+  )
+  .padding()
+  .background(Color.blue)
 }
