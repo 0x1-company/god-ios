@@ -37,6 +37,7 @@ graph TD;
     GodFeature-->PollFeature;
     GodFeature-->CashOutFeature;
     GodFeature-->PlayAgainFeature;
+    GodFeature-->UserNotificationClient;
     GodModeFeature-->Colors;
     GodModeFeature-->GodClient;
     GodModeFeature-->ButtonStyles;
