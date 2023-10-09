@@ -95,7 +95,7 @@ public struct SchoolSettingView: View {
                   Text(school.usersCount.description)
                     .bold()
                     .foregroundColor(Color.godService)
-                  Text("MEMBERS")
+                  Text("MEMBERS", bundle: .module)
                     .foregroundColor(Color.godTextSecondaryLight)
                 }
                 .font(.footnote)

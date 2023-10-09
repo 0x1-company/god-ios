@@ -9,7 +9,7 @@ public struct ShareTheAppLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var currentUser: God.CurrentUserQuery.Data.CurrentUser?
+    var shareURL = URL(string: "https://godapp.jp")!
     public init() {}
   }
 
@@ -35,26 +35,26 @@ public struct ShareTheAppLogic: Reducer {
         }
 
       case .shareTheAppButtonTapped:
+        return .run { _ in
+//          await openURL(url)
+        }
+      case let .currentUserResponse(.success(data)):
         guard
-          let schoolName = state.currentUser?.school?.name,
-          let username = state.currentUser?.username
+          let schoolName = data.currentUser.school?.name,
+          let username = data.currentUser.username
         else { return .none }
         let text = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)?utm_source=line&utm_campaign=invite
+        https://godapp.jp/invite/\(username)?utm_source=line&utm_campaign=share_the_app
         """
-        guard let url = URL(string: "https://line.me/R/share?text=\(text)")
+        guard let shareURL = URL(string: "https://line.me/R/share?text=\(text)")
         else { return .none }
-
-        return .run { _ in
-          await openURL(url)
-        }
-      case let .currentUserResponse(.success(data)):
-        state.currentUser = data.currentUser
+        
+        state.shareURL = shareURL
+        
         return .none
 
       case .currentUserResponse(.failure):
-        state.currentUser = nil
         return .none
       }
     }
@@ -69,33 +69,30 @@ public struct ShareTheAppView: View {
   }
 
   public var body: some View {
-    ZStack {
-      Color.godService
-        .ignoresSafeArea()
-      VStack(spacing: 20) {
-        Image(ImageResource.upsideDownFace)
-          .resizable()
-          .aspectRatio(1, contentMode: .fit)
-          .frame(width: 100)
+    WithViewStore(store, observe: { $0 }) { viewStore in
+      ZStack {
+        Color.godService
+          .ignoresSafeArea()
+        VStack(spacing: 20) {
+          Text("Get more\nfriends to play")
+            .font(.title2)
+            .foregroundStyle(Color.white)
 
-        Text("Get more\nfriends to play", bundle: .module)
-          .font(.title2)
-          .foregroundStyle(Color.white)
-
-        ShareLink(
-          item: URL(string: "https://godapp.jp")!
-        ) {
-          Text("Share the app", bundle: .module)
-            .bold()
-            .frame(width: 188, height: 54)
-            .background(Color.white)
-            .clipShape(Capsule())
+          ShareLink(
+            item: viewStore.shareURL
+          ) {
+            Text("Share the app")
+              .bold()
+              .frame(width: 188, height: 54)
+              .background(Color.white)
+              .clipShape(Capsule())
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
-        .buttonStyle(HoldDownButtonStyle())
+        .multilineTextAlignment(.center)
       }
-      .multilineTextAlignment(.center)
+      .task { await store.send(.onTask).finish() }
     }
-    .task { await store.send(.onTask).finish() }
   }
 }
 

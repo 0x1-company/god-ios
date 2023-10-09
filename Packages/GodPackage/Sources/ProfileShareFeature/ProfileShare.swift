@@ -14,7 +14,7 @@ public struct ProfileShareLogic: Reducer {
   public struct State: Equatable {
     var lineURL = URL(string: "https://godapp.jp")!
     var shareURL = URL(string: "https://godapp.jp")!
-    var invitationText = ""
+    var smsText = ""
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     @PresentationState var destination: Destination.State?
     @PresentationState var message: CupertinoMessageLogic.State?
@@ -51,19 +51,12 @@ public struct ProfileShareLogic: Reducer {
         return .none
 
       case .contentButtonTapped(.line):
-        guard
-          let text = state.invitationText.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-          let url = URL(string: "https://line.me/R/share?text=\(text)")
-        else { return .none }
-        return .run { _ in
+        return .run { [url = state.lineURL] _ in
           await openURL(url)
         }
 
       case .contentButtonTapped(.messages):
-        state.message = .init(
-          recipients: [],
-          body: state.invitationText
-        )
+        state.message = .init(recipients: [], body: state.smsText)
         return .none
 
       case .closeButtonTapped:
@@ -78,10 +71,19 @@ public struct ProfileShareLogic: Reducer {
           let shareURL = URL(string: "https://godapp.jp/add/\(username)?utm_source=share&utm_campaign=profile")
         else { return .none }
         state.shareURL = shareURL
-        state.invitationText = """
+        state.smsText = """
+        \(schoolName)向けの新しいアプリダウンロードしてみて！
+        https://godapp.jp/add/\(username)?utm_source=sms&utm_campaign=profile
+        """
+        let lineText = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
         https://godapp.jp/add/\(username)?utm_source=line&utm_campaign=profile
         """
+        guard
+          let text = lineText.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+          let lineURL = URL(string: "https://line.me/R/share?text=\(text)")
+        else { return .none }
+        state.lineURL = lineURL
         return .none
 
       default:
