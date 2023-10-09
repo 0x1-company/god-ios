@@ -202,6 +202,7 @@ public struct PollQuestionView: View {
         .foregroundColor(.white)
         .padding(.vertical, 64)
       }
+      .padding(.top, 80)
       .padding(.horizontal, 36)
       .background(viewStore.backgroundColor)
       .task { await viewStore.send(.onTask).finish() }
