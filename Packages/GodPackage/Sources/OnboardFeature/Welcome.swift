@@ -91,6 +91,7 @@ public struct WelcomeView: View {
               Text("By entering your age you agree to our [Terms](https://docs.godapp.jp/terms-of-use) and [Privacy Policy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
                 .frame(height: 54)
                 .foregroundColor(Color.godTextSecondaryDark)
+                .tint(Color.godTextSecondaryDark)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             } else {
