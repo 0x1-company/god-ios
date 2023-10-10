@@ -126,7 +126,7 @@ public struct GodLogic: Reducer {
       repeats: false
     )
     let request = UNNotificationRequest(
-      identifier: until.hashValue.description,
+      identifier: "new-polls-available",
       content: content,
       trigger: trigger
     )
