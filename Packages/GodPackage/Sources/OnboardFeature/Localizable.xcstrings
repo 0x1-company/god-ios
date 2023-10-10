@@ -149,7 +149,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "電話番号を入力"
+            "value" : "アカウントを作成するために\n電話番号を入力"
           }
         }
       }
@@ -229,7 +229,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godは友だちを見つけるために連絡先を利用します"
+            "value" : "Godは友だちを見つけるために\n連絡先を利用します"
           }
         }
       }
