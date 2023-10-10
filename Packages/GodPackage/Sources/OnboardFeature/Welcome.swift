@@ -88,9 +88,10 @@ public struct WelcomeView: View {
         VStack(spacing: 24) {
           ZStack {
             if case .none = viewStore.age {
-              Text("By entering your age you agree to our Terms and Privacy Policy", bundle: .module)
+              Text("By entering your age you agree to our [Terms](https://docs.godapp.jp/terms-of-use) and [Privacy Policy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
                 .frame(height: 54)
                 .foregroundColor(Color.godTextSecondaryDark)
+                .tint(Color.godTextSecondaryDark)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             } else {
