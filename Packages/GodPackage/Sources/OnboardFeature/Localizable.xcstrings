@@ -64,12 +64,12 @@
         }
       }
     },
-    "By entering your age you agree to our Terms and Privacy Policy" : {
+    "By entering your age you agree to our [Terms](https://docs.godapp.jp/terms-of-use) and [Privacy Policy](https://docs.godapp.jp/privacy-policy)" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "年齢を選択すると利用規約とプライバシーポリシーに同意したものとします"
+            "value" : "年齢を選択すると[利用規約](https://docs.godapp.jp/terms-of-use)と[プライバシーポリシー](https://docs.godapp.jp/privacy-policy)に同意したものとします"
           }
         }
       }
@@ -420,17 +420,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@というユーザーネームは使用できません。"
-          }
-        }
-      }
-    },
-    "Username" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ユーザーネーム"
           }
         }
       }
