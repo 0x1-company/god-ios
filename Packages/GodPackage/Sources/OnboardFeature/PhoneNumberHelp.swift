@@ -1,7 +1,7 @@
 import ButtonStyles
 import ComposableArchitecture
-import SwiftUI
 import Constants
+import SwiftUI
 
 public struct PhoneNumberHelpLogic: Reducer {
   public init() {}
@@ -14,7 +14,7 @@ public struct PhoneNumberHelpLogic: Reducer {
     case onTask
     case okayButtonTapped
   }
-  
+
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
@@ -45,12 +45,12 @@ public struct PhoneNumberHelpView: View {
         .aspectRatio(contentMode: .fit)
         .frame(width: 64, height: 64)
         .cornerRadius(12)
-      
+
       Text("Create an account.", bundle: .module)
         .bold()
-      
+
       Text("God cares intensely about your privacy.\nWe will not share your personal information with outside parties or use it for private purposes without your permission.", bundle: .module)
-      
+
       Button {
         store.send(.okayButtonTapped)
       } label: {
@@ -61,7 +61,7 @@ public struct PhoneNumberHelpView: View {
           .background(Color.godService)
           .clipShape(Capsule())
       }
-      
+
       Link(destination: Constants.privacyPolicyURL) {
         Text("Privacy Policy", bundle: .module)
           .foregroundColor(.godTextSecondaryLight)
