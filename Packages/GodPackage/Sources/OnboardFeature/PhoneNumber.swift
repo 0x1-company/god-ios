@@ -12,14 +12,17 @@ public struct PhoneNumberLogic: Reducer {
     var isDisabled = true
     var isActivityIndicatorVisible = false
     @PresentationState var alert: AlertState<Action.Alert>?
+    @PresentationState var help: PhoneNumberHelpLogic.State?
     public init() {}
   }
 
   public enum Action: Equatable, BindableAction {
+    case infoButtonTapped
     case nextButtonTapped
     case binding(BindingAction<State>)
     case verifyResponse(TaskResult<String?>)
     case alert(PresentationAction<Alert>)
+    case help(PresentationAction<PhoneNumberHelpLogic.Action>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -41,6 +44,9 @@ public struct PhoneNumberLogic: Reducer {
     BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
+      case .infoButtonTapped:
+        state.help = .init()
+        return .none
       case .nextButtonTapped:
         guard
           isValidPhoneNumber(state.phoneNumber),
@@ -86,10 +92,16 @@ public struct PhoneNumberLogic: Reducer {
 
       case .alert:
         return .none
+        
+      case .help:
+        return .none
 
       case .delegate:
         return .none
       }
+    }
+    .ifLet(\.$help, action: /Action.help) {
+      PhoneNumberHelpLogic()
     }
   }
 }
@@ -138,6 +150,24 @@ public struct PhoneNumberView: View {
       }
       .navigationBarBackButtonHidden()
       .alert(store: store.scope(state: \.$alert, action: PhoneNumberLogic.Action.alert))
+      .sheet(
+        store: store.scope(state: \.$help, action: PhoneNumberLogic.Action.help),
+        content: { store in
+          PhoneNumberHelpView(store: store)
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
+      )
+      .toolbar {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button {
+            store.send(.infoButtonTapped)
+          } label: {
+            Image(systemName: "info.circle.fill")
+              .foregroundStyle(Color.white)
+          }
+        }
+      }
       .onAppear {
         focus = true
       }
@@ -147,11 +177,13 @@ public struct PhoneNumberView: View {
 
 struct PhoneNumberViewPreviews: PreviewProvider {
   static var previews: some View {
-    PhoneNumberView(
-      store: .init(
-        initialState: PhoneNumberLogic.State(),
-        reducer: { PhoneNumberLogic() }
+    NavigationStack {
+      PhoneNumberView(
+        store: .init(
+          initialState: PhoneNumberLogic.State(),
+          reducer: { PhoneNumberLogic() }
+        )
       )
-    )
+    }
   }
 }
