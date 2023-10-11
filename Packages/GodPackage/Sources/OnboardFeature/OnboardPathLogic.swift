@@ -86,8 +86,8 @@ public struct OnboardPathLogic: Reducer {
       case .oneTimeCode(.delegate(.nextScreen)):
         state.path.append(.lastNameSetting())
 
-        analytics.setUserProperty("school_id", state.schoolId)
-        analytics.setUserProperty("generation", state.generation?.description)
+        analytics.setUserProperty(key: .schoolId, value: state.schoolId)
+        analytics.setUserProperty(key: .generation, value: state.generation?.description)
 
         if state.generation == nil, state.schoolId == nil {
           return .none
