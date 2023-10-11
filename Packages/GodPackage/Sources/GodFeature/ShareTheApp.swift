@@ -15,7 +15,6 @@ public struct ShareTheAppLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
-    case shareTheAppButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
   }
 
@@ -34,10 +33,6 @@ public struct ShareTheAppLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
-      case .shareTheAppButtonTapped:
-        return .run { _ in
-//          await openURL(url)
-        }
       case let .currentUserResponse(.success(data)):
         guard
           let schoolName = data.currentUser.school?.name,
@@ -73,15 +68,19 @@ public struct ShareTheAppView: View {
       ZStack {
         Color.godService
           .ignoresSafeArea()
-        VStack(spacing: 20) {
-          Text("Get more\nfriends to play")
+        VStack(spacing: 24) {
+          Image(ImageResource.upsideDownFace)
+            .resizable()
+            .aspectRatio(1, contentMode: .fit)
+            .frame(width: 120)
+          Text("Get more\nfriends to play", bundle: .module)
             .font(.title2)
             .foregroundStyle(Color.white)
 
           ShareLink(
             item: viewStore.shareURL
           ) {
-            Text("Share the app")
+            Text("Share the app", bundle: .module)
               .bold()
               .frame(width: 188, height: 54)
               .background(Color.white)
