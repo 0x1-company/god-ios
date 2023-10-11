@@ -92,7 +92,7 @@ public struct PhoneNumberLogic: Reducer {
 
       case .alert:
         return .none
-        
+
       case .help:
         return .none
 
