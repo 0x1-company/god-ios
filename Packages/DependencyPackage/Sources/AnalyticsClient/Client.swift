@@ -24,7 +24,7 @@ public extension AnalyticsClient {
     setUserProperty(key.rawValue, value)
     print("[AnalyticsClient][setUserProperty] Changed [key: \(key.rawValue), value: \(value ?? "NULL")]")
   }
-  
+
   enum UserProperty: String {
     case uid
     case gender
