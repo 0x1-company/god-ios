@@ -72,7 +72,7 @@ public struct ProfileLogic: Reducer {
       case .profileResponse(.failure):
         state.profile = nil
         return .none
-        
+
       case .destination(.presented(.profileEdit(.delegate(.changed)))):
         return .run { send in
           await withTaskCancellation(id: Cancel.profile, cancelInFlight: true) {
@@ -92,7 +92,7 @@ public struct ProfileLogic: Reducer {
       Destination()
     }
   }
-  
+
   func currentUserRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.currentUserProfile() {
