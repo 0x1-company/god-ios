@@ -100,6 +100,7 @@ graph TD;
     ProfileEditFeature-->Colors;
     ProfileEditFeature-->GodClient;
     ProfileEditFeature-->AsyncValue;
+    ProfileEditFeature-->StringHelpers;
     ProfileEditFeature-->ProfileImage;
     ProfileEditFeature-->ButtonStyles;
     ProfileEditFeature-->UserDefaultsClient;
