@@ -134,6 +134,16 @@
         }
       }
     },
+    "Create an account." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを作成します。"
+          }
+        }
+      }
+    },
     "Enter your age" : {
       "localizations" : {
         "ja" : {
@@ -210,6 +220,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "女子"
+          }
+        }
+      }
+    },
+    "God cares intensely about your privacy.\nWe will not share your personal information with outside parties or use it for private purposes without your permission." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godはあなたのプライバシーを非常に大切にします。\n個人情報を許可なく外部に共有したり\n私的に利用することはありません。"
           }
         }
       }
@@ -400,6 +420,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あなたの高校を選択"
+          }
+        }
+      }
+    },
+    "Privacy Policy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーポリシーを見る"
           }
         }
       }
