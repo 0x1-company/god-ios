@@ -31,7 +31,7 @@ public struct GenderSettingLogic: Reducer {
       switch action {
       case let .genderButtonTapped(gender):
         let input = God.UpdateUserProfileInput(gender: .init(gender))
-        analytics.setUserProperty("gender", gender.rawValue)
+        analytics.setUserProperty(key: .gender, value: gender.rawValue)
         return .run { send in
           await send(.updateUserProfileResponse(TaskResult {
             try await godClient.updateUserProfile(input)

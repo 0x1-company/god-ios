@@ -1,3 +1,4 @@
+import AnalyticsClient
 import Colors
 import ComposableArchitecture
 import God
@@ -27,6 +28,7 @@ public struct ProfileLogic: Reducer {
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
 
   enum Cancel {
@@ -68,6 +70,7 @@ public struct ProfileLogic: Reducer {
 
       case let .profileResponse(.success(data)):
         state.profile = data
+        analytics.setUserProperty(key: .schoolId, value: data.currentUser.schoolId)
         return .none
       case .profileResponse(.failure):
         state.profile = nil

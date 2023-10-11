@@ -79,10 +79,8 @@ public struct AppLogic: Reducer {
         return .none
       }
       .onChange(of: \.account.authUser) { authUser, _, _ in
-        if case let .success(.some(user)) = authUser {
-          analytics.setUserProperty("uid", user.uid)
-        } else {
-          analytics.setUserProperty("uid", nil)
+        if case let .success(user) = authUser {
+          analytics.setUserProperty(key: .uid, value: user?.uid)
         }
         return .none
       }

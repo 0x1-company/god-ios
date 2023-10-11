@@ -18,3 +18,17 @@ public extension AnalyticsClient {
     )
   }
 }
+
+public extension AnalyticsClient {
+  func setUserProperty(key: UserProperty, value: String?) {
+    setUserProperty(key.rawValue, value)
+    print("[AnalyticsClient][setUserProperty] Changed [key: \(key.rawValue), value: \(value ?? "NULL")]")
+  }
+  
+  enum UserProperty: String {
+    case uid
+    case gender
+    case generation
+    case schoolId = "school_id"
+  }
+}

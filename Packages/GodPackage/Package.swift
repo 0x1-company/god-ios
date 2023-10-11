@@ -193,6 +193,7 @@ let package = Package(
       "ProfileEditFeature",
       "ProfileShareFeature",
       .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
