@@ -64,6 +64,16 @@
         }
       }
     },
+    "Error" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "入力内容に問題があります。"
+          }
+        }
+      }
+    },
     "Female" : {
       "localizations" : {
         "ja" : {
@@ -124,17 +134,6 @@
         }
       }
     },
-    "Manage Account" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アカウント設定"
-          }
-        }
-      }
-    },
     "Non-Binary" : {
       "localizations" : {
         "ja" : {
@@ -145,13 +144,22 @@
         }
       }
     },
-    "Restore Purchases" : {
-      "extractionState" : "stale",
+    "OK" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "課金の復元"
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Only hiragana can be used." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平仮名のみ使用できます。"
           }
         }
       }
