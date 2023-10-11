@@ -40,7 +40,7 @@ public struct ShareTheAppLogic: Reducer {
         else { return .none }
         let text = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)?utm_source=line&utm_campaign=share_the_app
+        https://godapp.jp/invite/\(username)
         """
         guard let shareURL = URL(string: "https://line.me/R/share?text=\(text)")
         else { return .none }

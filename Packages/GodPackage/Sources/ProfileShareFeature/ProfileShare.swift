@@ -77,7 +77,7 @@ public struct ProfileShareLogic: Reducer {
         """
         let lineText = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/add/\(username)?utm_source=line&utm_campaign=profile
+        https://godapp.jp/add/\(username)
         """
         guard
           let text = lineText.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
