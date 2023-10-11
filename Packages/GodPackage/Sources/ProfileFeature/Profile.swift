@@ -40,13 +40,10 @@ public struct ProfileLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          for try await data in godClient.currentUserProfile() {
-            await send(.profileResponse(.success(data)))
+          await withTaskCancellation(id: Cancel.profile, cancelInFlight: true) {
+            await currentUserRequest(send: send)
           }
-        } catch: { error, send in
-          await send(.profileResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.profile)
 
       case .editProfileButtonTapped:
         state.destination = .profileEdit()
@@ -75,6 +72,13 @@ public struct ProfileLogic: Reducer {
       case .profileResponse(.failure):
         state.profile = nil
         return .none
+        
+      case .destination(.presented(.profileEdit(.delegate(.changed)))):
+        return .run { send in
+          await withTaskCancellation(id: Cancel.profile, cancelInFlight: true) {
+            await currentUserRequest(send: send)
+          }
+        }
 
       case .destination(.dismiss):
         state.destination = nil
@@ -86,6 +90,16 @@ public struct ProfileLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+  }
+  
+  func currentUserRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.currentUserProfile() {
+        await send(.profileResponse(.success(data)))
+      }
+    } catch {
+      await send(.profileResponse(.failure(error)))
     }
   }
 

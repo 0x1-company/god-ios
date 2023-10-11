@@ -70,10 +70,15 @@ public struct ProfileEditLogic: Reducer {
     case closeButtonTapped
     case manageAccount(PresentationAction<ManageAccountLogic.Action>)
     case alert(PresentationAction<Alert>)
+    case delegate(Delegate)
 
     public enum Alert: Equatable {
       case okay
       case discardChanges
+    }
+    
+    public enum Delegate: Equatable {
+      case changed
     }
   }
 
@@ -153,7 +158,7 @@ public struct ProfileEditLogic: Reducer {
         if let username = response.updateUsername.username {
           state.username = username
         }
-        return .none
+        return .send(.delegate(.changed))
 
       case .updateUsernameResponse(.failure):
         return .none
@@ -161,7 +166,7 @@ public struct ProfileEditLogic: Reducer {
       case let .updateUserProfileResponse(.success(response)):
         state.firstName = response.updateUserProfile.firstName
         state.lastName = response.updateUserProfile.lastName
-        return .none
+        return .send(.delegate(.changed))
 
       case .updateUserProfileResponse(.failure):
         return .none
