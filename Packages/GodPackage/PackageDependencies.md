@@ -109,6 +109,7 @@ graph TD;
     ProfileFeature-->ProfileEditFeature;
     ProfileFeature-->ProfileShareFeature;
     ProfileFeature-->AsyncValue;
+    ProfileFeature-->AnalyticsClient;
     ProfileFeature-->CachedAsyncImage;
     ProfileShareFeature-->CupertinoMessageFeature;
     ProfileShareFeature-->Colors;
