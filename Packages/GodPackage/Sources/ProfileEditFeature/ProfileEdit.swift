@@ -10,8 +10,8 @@ import GodClient
 import ManageAccountFeature
 import PhotosUI
 import ProfileImage
-import SwiftUI
 import StringHelpers
+import SwiftUI
 import UserDefaultsClient
 
 public struct ProfileEditLogic: Reducer {
@@ -76,7 +76,7 @@ public struct ProfileEditLogic: Reducer {
       case okay
       case discardChanges
     }
-    
+
     public enum Delegate: Equatable {
       case changed
     }
@@ -188,7 +188,7 @@ public struct ProfileEditLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .alert(.presented(.okay)):
         state.alert = nil
         return .none
@@ -479,7 +479,7 @@ private extension AlertState where Action == ProfileEditLogic.Action.Alert {
       TextState("You haven't saved your changes", bundle: .module)
     }
   }
-  
+
   static func invalid() -> Self {
     Self {
       TextState("Error", bundle: .module)
