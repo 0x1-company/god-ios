@@ -11,6 +11,7 @@ import ManageAccountFeature
 import PhotosUI
 import ProfileImage
 import SwiftUI
+import StringHelpers
 import UserDefaultsClient
 
 public struct ProfileEditLogic: Reducer {
@@ -71,6 +72,7 @@ public struct ProfileEditLogic: Reducer {
     case alert(PresentationAction<Alert>)
 
     public enum Alert: Equatable {
+      case okay
       case discardChanges
     }
   }
@@ -100,7 +102,14 @@ public struct ProfileEditLogic: Reducer {
         return .none
 
       case .saveButtonTapped:
-        guard let currentUser = state.currentUser else { return .none }
+        guard
+          let currentUser = state.currentUser,
+          validateHiragana(for: state.firstName),
+          validateHiragana(for: state.lastName)
+        else {
+          state.alert = .invalid()
+          return .none
+        }
         return .run { [state] send in
           await withThrowingTaskGroup(of: Void.self) { group in
             if state.username != currentUser.username {
@@ -174,6 +183,10 @@ public struct ProfileEditLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+        
+      case .alert(.presented(.okay)):
+        state.alert = nil
+        return .none
 
       case .alert(.presented(.discardChanges)):
         return .run { _ in
@@ -263,15 +276,15 @@ public struct ProfileEditView: View {
 
           VStack(alignment: .center, spacing: 0) {
             GodTextField(
-              text: viewStore.$firstName,
-              fieldName: "First Name"
+              text: viewStore.$lastName,
+              fieldName: "Last Name"
             )
 
             Separator()
 
             GodTextField(
-              text: viewStore.$lastName,
-              fieldName: "Last Name"
+              text: viewStore.$firstName,
+              fieldName: "First Name"
             )
 
             Separator()
@@ -459,6 +472,18 @@ private extension AlertState where Action == ProfileEditLogic.Action.Alert {
       }
     } message: {
       TextState("You haven't saved your changes", bundle: .module)
+    }
+  }
+  
+  static func invalid() -> Self {
+    Self {
+      TextState("Error", bundle: .module)
+    } actions: {
+      ButtonState(action: .okay) {
+        TextState("OK", bundle: .module)
+      }
+    } message: {
+      TextState("Only hiragana can be used.", bundle: .module)
     }
   }
 }
