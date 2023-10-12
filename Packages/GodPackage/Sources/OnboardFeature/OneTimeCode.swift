@@ -1,3 +1,4 @@
+import AnalyticsClient
 import Apollo
 import ComposableArchitecture
 import FirebaseAuth
@@ -7,7 +8,6 @@ import GodClient
 import PhoneNumberDependencies
 import SwiftUI
 import UserDefaultsClient
-import AnalyticsClient
 
 public struct OneTimeCodeLogic: Reducer {
   public struct State: Equatable {
@@ -68,7 +68,7 @@ public struct OneTimeCodeLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "OneTimeCode", of: self)
         return .none

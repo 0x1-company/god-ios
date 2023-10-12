@@ -1,8 +1,8 @@
+import AnalyticsClient
 import Colors
 import ComposableArchitecture
 import RoundedCorner
 import SwiftUI
-import AnalyticsClient
 
 public struct GradeSettingLogic: Reducer {
   public init() {}
@@ -21,7 +21,7 @@ public struct GradeSettingLogic: Reducer {
       case nextScreen(Int?)
     }
   }
-  
+
   @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
@@ -29,7 +29,7 @@ public struct GradeSettingLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "GradeSetting", of: self)
         return .none

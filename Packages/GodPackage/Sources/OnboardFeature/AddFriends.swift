@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ButtonStyles
 import Colors
 import ComposableArchitecture
@@ -10,7 +11,6 @@ import NameImage
 import ProfileImage
 import SwiftUI
 import SwiftUIMessage
-import AnalyticsClient
 
 public struct AddFriendsLogic: Reducer {
   public init() {}

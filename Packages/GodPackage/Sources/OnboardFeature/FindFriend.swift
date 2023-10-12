@@ -1,10 +1,10 @@
+import AnalyticsClient
 import ButtonStyles
 import Colors
 import ComposableArchitecture
 import Contacts
 import ContactsClient
 import SwiftUI
-import AnalyticsClient
 
 public struct FindFriendLogic: Reducer {
   public init() {}

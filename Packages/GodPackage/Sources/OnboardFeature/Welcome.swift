@@ -33,7 +33,7 @@ public struct WelcomeLogic: Reducer {
       case confirmOkay
     }
   }
-  
+
   @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
