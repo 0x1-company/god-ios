@@ -2,6 +2,7 @@ import ButtonStyles
 import ComposableArchitecture
 import Constants
 import SwiftUI
+import AnalyticsClient
 
 public struct PhoneNumberHelpLogic: Reducer {
   public init() {}
@@ -12,15 +13,20 @@ public struct PhoneNumberHelpLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case okayButtonTapped
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
+        return .none
+      case .onAppear:
+        analytics.logScreen(screenName: "PhoneNumberHelp", of: self)
         return .none
       case .okayButtonTapped:
         return .run { _ in
@@ -70,6 +76,7 @@ public struct PhoneNumberHelpView: View {
     .padding(.horizontal, 24)
     .multilineTextAlignment(.center)
     .buttonStyle(HoldDownButtonStyle())
+    .onAppear { store.send(.onAppear) }
   }
 }
 

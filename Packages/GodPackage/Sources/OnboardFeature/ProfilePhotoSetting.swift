@@ -10,6 +10,7 @@ import GodClient
 import PhotosUI
 import SwiftUI
 import UserDefaultsClient
+import AnalyticsClient
 
 public struct ProfilePhotoSettingLogic: Reducer {
   public init() {}
@@ -24,6 +25,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case skipButtonTapped
     case nextButtonTapped
     case binding(BindingAction<State>)
@@ -37,6 +39,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts) var contactsClient
   @Dependency(\.userDefaults) var userDefaults
@@ -62,6 +65,10 @@ public struct ProfilePhotoSettingLogic: Reducer {
             }
           }
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfilePhotoSetting", of: self)
+        return .none
 
       case .skipButtonTapped:
         return .send(.delegate(.nextScreen))
@@ -213,6 +220,7 @@ public struct ProfilePhotoSettingView: View {
       }
       .buttonStyle(HoldDownButtonStyle())
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AsyncValue
 import ButtonStyles
 import Colors
@@ -22,6 +23,7 @@ public struct WelcomeLogic: Reducer {
   }
 
   public enum Action: Equatable, BindableAction {
+    case onAppear
     case loginButtonTapped
     case getStartedButtonTapped
     case binding(BindingAction<State>)
@@ -31,11 +33,16 @@ public struct WelcomeLogic: Reducer {
       case confirmOkay
     }
   }
+  
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "Welcome", of: self)
+        return .none
       case .loginButtonTapped:
         return .none
       case .getStartedButtonTapped:
@@ -132,6 +139,7 @@ public struct WelcomeView: View {
       }
       .background(Color.godBlack)
       .alert(store: store.scope(state: \.$alert, action: WelcomeLogic.Action.alert))
+      .onAppear { store.send(.onAppear) }
       .toolbar {
         Button {
           store.send(.loginButtonTapped)

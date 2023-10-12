@@ -2,6 +2,7 @@ import Colors
 import ComposableArchitecture
 import RoundedCorner
 import SwiftUI
+import AnalyticsClient
 
 public struct GradeSettingLogic: Reducer {
   public init() {}
@@ -12,6 +13,7 @@ public struct GradeSettingLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case generationButtonTapped(Int?)
     case delegate(Delegate)
 
@@ -19,11 +21,17 @@ public struct GradeSettingLogic: Reducer {
       case nextScreen(Int?)
     }
   }
+  
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "GradeSetting", of: self)
         return .none
 
       case let .generationButtonTapped(generation):
@@ -94,6 +102,7 @@ public struct GradeSettingView: View {
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
+      .onAppear { store.send(.onAppear) }
     }
   }
 

@@ -7,6 +7,7 @@ import GodClient
 import StringHelpers
 import SwiftUI
 import UserDefaultsClient
+import AnalyticsClient
 
 public struct LastNameSettingLogic: Reducer {
   public init() {}
@@ -20,6 +21,7 @@ public struct LastNameSettingLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case nextButtonTapped
     case binding(BindingAction<State>)
     case updateProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
@@ -30,6 +32,7 @@ public struct LastNameSettingLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts) var contactsClient
   @Dependency(\.userDefaults) var userDefaults
@@ -47,6 +50,10 @@ public struct LastNameSettingLogic: Reducer {
         else { return .none }
         state.lastName = transformedLastName
         state.isImport = true
+        return .none
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "LastNameSetting", of: self)
         return .none
 
       case .nextButtonTapped:
@@ -111,6 +118,7 @@ public struct LastNameSettingView: View {
       .task { await viewStore.send(.onTask).finish() }
       .onAppear {
         focus = true
+        store.send(.onAppear)
       }
     }
   }
