@@ -189,18 +189,20 @@ public struct InboxDetailView: View {
                 .resizable()
                 .frame(width: 80, height: 80)
 
-              if let grade = viewStore.activity.voteUser.grade {
-                Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value))\nin \(grade)", bundle: .module)
-              } else {
-                Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
+              Group {
+                if let grade = viewStore.activity.voteUser.grade {
+                  Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value))\nin \(grade)", bundle: .module)
+                } else {
+                  Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
+                }
               }
+              .font(.system(.body, design: .rounded, weight: .regular))
             }
 
             VStack(spacing: 32) {
               Text(viewStore.activity.question.text.ja)
-                .bold()
-                .font(.title2)
                 .foregroundColor(.white)
+                .font(.system(.title2, design: .rounded, weight: .bold))
 
               VStack(spacing: 20) {
                 ChoiceGrid(
@@ -237,9 +239,9 @@ public struct InboxDetailView: View {
               viewStore.send(.seeWhoSentItButtonTapped)
             } label: {
               Label("See who sent it", systemImage: "lock.fill")
+                .font(.system(.body, design: .rounded, weight: .bold))
                 .frame(height: 50)
                 .frame(maxWidth: .infinity)
-                .bold()
                 .foregroundColor(.white)
                 .background(Color.godGray)
                 .clipShape(Capsule())

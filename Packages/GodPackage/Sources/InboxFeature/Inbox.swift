@@ -277,7 +277,7 @@ public struct InboxView: View {
               }
               .frame(height: 56)
               .frame(maxWidth: .infinity)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .foregroundColor(.white)
               .background(Color.black)
               .clipShape(Capsule())
