@@ -133,7 +133,7 @@ public struct PhoneNumberView: View {
             .font(.title3)
 
           TextField(text: viewStore.$phoneNumber) {
-            Text("090 2724 3108", bundle: .module)
+            Text("080 8478 4955", bundle: .module)
           }
           .font(.title)
           .textContentType(.telephoneNumber)
