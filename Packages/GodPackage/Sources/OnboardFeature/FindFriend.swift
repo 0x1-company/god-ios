@@ -4,6 +4,7 @@ import ComposableArchitecture
 import Contacts
 import ContactsClient
 import SwiftUI
+import AnalyticsClient
 
 public struct FindFriendLogic: Reducer {
   public init() {}
@@ -13,6 +14,7 @@ public struct FindFriendLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onAppear
     case findButtonTapped
     case delegate(Delegate)
 
@@ -21,11 +23,15 @@ public struct FindFriendLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.contacts.requestAccess) var requestAccess
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "FindFriend", of: self)
+        return .none
       case .findButtonTapped:
         return .run { send in
           _ = try? await requestAccess(.contacts)
@@ -79,6 +85,7 @@ public struct FindFriendView: View {
       .multilineTextAlignment(.center)
       .background(Color.godService)
       .navigationBarBackButtonHidden()
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

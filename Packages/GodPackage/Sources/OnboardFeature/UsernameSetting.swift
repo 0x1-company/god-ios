@@ -1,4 +1,5 @@
 import Apollo
+import AnalyticsClient
 import Colors
 import ComposableArchitecture
 import God
@@ -18,6 +19,7 @@ public struct UsernameSettingLogic: Reducer {
   }
 
   public enum Action: Equatable, BindableAction {
+    case onAppear
     case nextButtonTapped
     case binding(BindingAction<State>)
     case updateUsernameResponse(TaskResult<God.UpdateUsernameMutation.Data>)
@@ -34,11 +36,15 @@ public struct UsernameSettingLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "UsernameSetting", of: self)
+        return .none
       case .nextButtonTapped:
         state.isActivityIndicatorVisible = true
         let input = God.UpdateUsernameInput(username: state.username)
@@ -131,6 +137,7 @@ public struct UsernameSettingView: View {
       .alert(store: store.scope(state: \.$alert, action: UsernameSettingLogic.Action.alert))
       .onAppear {
         focus = true
+        store.send(.onAppear)
       }
     }
   }

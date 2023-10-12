@@ -7,6 +7,7 @@ import GodClient
 import PhoneNumberDependencies
 import SwiftUI
 import UserDefaultsClient
+import AnalyticsClient
 
 public struct OneTimeCodeLogic: Reducer {
   public struct State: Equatable {
@@ -23,6 +24,7 @@ public struct OneTimeCodeLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case resendButtonTapped
     case nextButtonTapped
     case verifyResponse(TaskResult<String?>)
@@ -43,6 +45,7 @@ public struct OneTimeCodeLogic: Reducer {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth) var firebaseAuth
@@ -65,6 +68,10 @@ public struct OneTimeCodeLogic: Reducer {
         return .run { _ in
           await dismiss()
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "OneTimeCode", of: self)
+        return .none
 
       case .resendButtonTapped:
         state.oneTimeCode = ""
@@ -208,6 +215,7 @@ public struct OneTimeCodeView: View {
       .alert(store: store.scope(state: \.$alert, action: OneTimeCodeLogic.Action.alert))
       .onAppear {
         focus = true
+        store.send(.onAppear)
       }
     }
   }

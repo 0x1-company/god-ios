@@ -6,6 +6,7 @@ import God
 import GodClient
 import RoundedCorner
 import SwiftUI
+import AnalyticsClient
 
 public struct SchoolSettingLogic: Reducer {
   public init() {}
@@ -17,6 +18,7 @@ public struct SchoolSettingLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case schoolButtonTapped(id: String)
     case schoolsResponse(TaskResult<God.SchoolsQuery.Data>)
     case delegate(Delegate)
@@ -27,6 +29,7 @@ public struct SchoolSettingLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -40,6 +43,10 @@ public struct SchoolSettingLogic: Reducer {
         } catch: { error, send in
           await send(.schoolsResponse(.failure(error)))
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "SchoolSetting", of: self)
+        return .none
 
       case let .schoolButtonTapped(id):
         return .send(.delegate(.nextScreen(id: id)))
@@ -124,6 +131,7 @@ public struct SchoolSettingView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .navigationTitle(Text("Pick your school", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(Color.godService, for: .navigationBar)

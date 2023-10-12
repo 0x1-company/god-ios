@@ -5,6 +5,7 @@ import PhoneNumberDependencies
 import PhoneNumberKit
 import SwiftUI
 import UserDefaultsClient
+import AnalyticsClient
 
 public struct PhoneNumberLogic: Reducer {
   public struct State: Equatable {
@@ -17,6 +18,7 @@ public struct PhoneNumberLogic: Reducer {
   }
 
   public enum Action: Equatable, BindableAction {
+    case onAppear
     case infoButtonTapped
     case nextButtonTapped
     case binding(BindingAction<State>)
@@ -34,6 +36,7 @@ public struct PhoneNumberLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.phoneNumberParse) var phoneNumberParse
   @Dependency(\.phoneNumberFormat) var phoneNumberFormat
@@ -44,6 +47,9 @@ public struct PhoneNumberLogic: Reducer {
     BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "PhoneNumber", of: self)
+        return .none
       case .infoButtonTapped:
         state.help = .init()
         return .none
@@ -170,6 +176,7 @@ public struct PhoneNumberView: View {
       }
       .onAppear {
         focus = true
+        store.send(.onAppear)
       }
     }
   }

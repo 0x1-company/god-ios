@@ -10,6 +10,7 @@ import NameImage
 import ProfileImage
 import SwiftUI
 import SwiftUIMessage
+import AnalyticsClient
 
 public struct AddFriendsLogic: Reducer {
   public init() {}
@@ -28,6 +29,7 @@ public struct AddFriendsLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case nextButtonTapped
     case selectButtonTapped(String)
     case inviteButtonTapped(CNContact)
@@ -42,6 +44,7 @@ public struct AddFriendsLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
 
@@ -66,6 +69,9 @@ public struct AddFriendsLogic: Reducer {
           })
           .cancellable(id: Cancel.contacts, cancelInFlight: true)
         )
+      case .onAppear:
+        analytics.logScreen(screenName: "AddFriends", of: self)
+        return .none
 
       case .nextButtonTapped:
         return .merge(
@@ -257,6 +263,7 @@ public struct AddFriendsView: View {
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$message, action: { .message($0) }),
         content: CupertinoMessageView.init

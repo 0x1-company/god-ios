@@ -14,6 +14,7 @@ public struct GenderSettingLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onAppear
     case genderButtonTapped(God.Gender)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)
     case delegate(Delegate)
@@ -29,6 +30,9 @@ public struct GenderSettingLogic: Reducer {
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "GenderSetting", of: self)
+        return .none
       case let .genderButtonTapped(gender):
         let input = God.UpdateUserProfileInput(gender: .init(gender))
         analytics.setUserProperty(key: .gender, value: gender.rawValue)
@@ -84,6 +88,7 @@ public struct GenderSettingView: View {
           }
         }
       }
+      .onAppear { store.send(.onAppear) }
     }
   }
 
