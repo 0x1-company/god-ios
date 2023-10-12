@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ButtonStyles
 import Colors
 import ComposableArchitecture
@@ -10,7 +11,6 @@ import GodClient
 import PhotosUI
 import SwiftUI
 import UserDefaultsClient
-import AnalyticsClient
 
 public struct ProfilePhotoSettingLogic: Reducer {
   public init() {}
@@ -65,7 +65,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
             }
           }
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ProfilePhotoSetting", of: self)
         return .none

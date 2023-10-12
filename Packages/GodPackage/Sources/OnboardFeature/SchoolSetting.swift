@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AsyncValue
 import CachedAsyncImage
 import Colors
@@ -6,7 +7,6 @@ import God
 import GodClient
 import RoundedCorner
 import SwiftUI
-import AnalyticsClient
 
 public struct SchoolSettingLogic: Reducer {
   public init() {}
@@ -43,7 +43,7 @@ public struct SchoolSettingLogic: Reducer {
         } catch: { error, send in
           await send(.schoolsResponse(.failure(error)))
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "SchoolSetting", of: self)
         return .none

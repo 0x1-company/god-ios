@@ -1,3 +1,4 @@
+import AnalyticsClient
 import Apollo
 import Colors
 import ComposableArchitecture
@@ -7,7 +8,6 @@ import GodClient
 import StringHelpers
 import SwiftUI
 import UserDefaultsClient
-import AnalyticsClient
 
 public struct LastNameSettingLogic: Reducer {
   public init() {}
@@ -51,7 +51,7 @@ public struct LastNameSettingLogic: Reducer {
         state.lastName = transformedLastName
         state.isImport = true
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "LastNameSetting", of: self)
         return .none

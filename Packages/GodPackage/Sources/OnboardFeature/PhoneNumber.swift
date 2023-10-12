@@ -1,3 +1,4 @@
+import AnalyticsClient
 import Colors
 import ComposableArchitecture
 import FirebaseAuthClient
@@ -5,7 +6,6 @@ import PhoneNumberDependencies
 import PhoneNumberKit
 import SwiftUI
 import UserDefaultsClient
-import AnalyticsClient
 
 public struct PhoneNumberLogic: Reducer {
   public struct State: Equatable {
