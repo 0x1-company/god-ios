@@ -2,6 +2,7 @@ import God
 import SwiftUI
 
 struct ChoiceGrid: View {
+  @State var isAnimation = false
   let color: Color
   let choices: [God.InboxFragment.Choice]
 
@@ -50,6 +51,14 @@ struct ChoiceGrid: View {
               .rotationEffect(.degrees(-30))
               .shadow(color: color, radius: 8)
               .offset(x: 20, y: -20)
+              .scaleEffect(isAnimation ? 1.1 : 1.0)
+              .animation(
+                .default.repeatForever(autoreverses: true).speed(0.5),
+                value: isAnimation
+              )
+              .task {
+                isAnimation = true
+              }
           }
         }
       }
