@@ -1,4 +1,4 @@
-import ButtonStyles
+import Styleguide
 import CachedAsyncImage
 import Styleguide
 import ComposableArchitecture

@@ -1,5 +1,5 @@
 import AnimationDisableTransaction
-import ButtonStyles
+import Styleguide
 import Styleguide
 import ComposableArchitecture
 import SwiftUI

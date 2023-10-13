@@ -1,4 +1,4 @@
-import ButtonStyles
+import Styleguide
 import Styleguide
 import CoreHaptics
 import SwiftUI
