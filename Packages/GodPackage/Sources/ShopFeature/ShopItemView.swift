@@ -1,5 +1,5 @@
 import ButtonStyles
-import Colors
+import Styleguide
 import SwiftUI
 
 struct ShopItemView: View {

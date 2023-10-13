@@ -1,6 +1,6 @@
 import AnalyticsClient
 import ButtonStyles
-import Colors
+import Styleguide
 import ComposableArchitecture
 import Contacts
 import ContactsClient

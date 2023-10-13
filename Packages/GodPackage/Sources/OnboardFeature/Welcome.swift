@@ -1,7 +1,7 @@
 import AnalyticsClient
 import AsyncValue
 import ButtonStyles
-import Colors
+import Styleguide
 import ComposableArchitecture
 import Lottie
 import SwiftUI

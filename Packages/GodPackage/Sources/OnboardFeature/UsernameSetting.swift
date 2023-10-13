@@ -1,6 +1,6 @@
 import AnalyticsClient
 import Apollo
-import Colors
+import Styleguide
 import ComposableArchitecture
 import God
 import GodClient

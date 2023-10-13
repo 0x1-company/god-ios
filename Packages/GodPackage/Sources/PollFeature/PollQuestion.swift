@@ -1,6 +1,6 @@
 import ButtonStyles
 import CachedAsyncImage
-import Colors
+import Styleguide
 import ComposableArchitecture
 import FeedbackGeneratorClient
 import God

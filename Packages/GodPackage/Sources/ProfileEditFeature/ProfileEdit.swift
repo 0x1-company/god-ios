@@ -1,6 +1,6 @@
 import AsyncValue
 import ButtonStyles
-import Colors
+import Styleguide
 import ComposableArchitecture
 import FirebaseAuthClient
 import FirebaseStorage

@@ -1,5 +1,5 @@
 import AnimationDisableTransaction
-import Colors
+import Styleguide
 import ComposableArchitecture
 import God
 import GodClient

@@ -1,4 +1,4 @@
-import Colors
+import Styleguide
 import ComposableArchitecture
 import Contacts
 import ContactsClient

@@ -1,5 +1,5 @@
 import ButtonStyles
-import Colors
+import Styleguide
 import God
 import SwiftUI
 
