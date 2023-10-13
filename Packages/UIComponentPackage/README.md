@@ -5,8 +5,7 @@ A description of this package.
 ## Package Dependencies
 ```mermaid
 graph TD;
-    Colors-->ColorHex;
-    GodActionSheet-->ButtonStyles;
-    NameImage-->Colors;
+    GodActionSheet-->Styleguide;
+    NameImage-->Styleguide;
     ProfileImage-->NameImage;
 ```
