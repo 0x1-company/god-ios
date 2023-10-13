@@ -21,6 +21,7 @@ let package = Package(
     .library(name: "ProfileImage", targets: ["ProfileImage"]),
     .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
     .library(name: "SearchField", targets: ["SearchField"]),
+    .library(name: "Styleguide", targets: ["Styleguide"]),
   ],
   dependencies: [
     .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
@@ -40,5 +41,8 @@ let package = Package(
     ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
+    .target(name: "Styleguide", resources: [
+      .process("Fonts")
+    ]),
   ]
 )
