@@ -1,7 +1,7 @@
 import AnalyticsClient
-import Styleguide
 import ComposableArchitecture
 import RoundedCorner
+import Styleguide
 import SwiftUI
 
 public struct GradeSettingLogic: Reducer {

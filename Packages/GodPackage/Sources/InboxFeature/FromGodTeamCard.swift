@@ -1,7 +1,6 @@
 import AnimationDisableTransaction
-import Styleguide
-import Styleguide
 import ComposableArchitecture
+import Styleguide
 import SwiftUI
 import UserDefaultsClient
 

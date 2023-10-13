@@ -1,9 +1,8 @@
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import God
 import GodClient
 import Lottie
+import Styleguide
 import SwiftUI
 
 public struct HowItWorksLogic: Reducer {

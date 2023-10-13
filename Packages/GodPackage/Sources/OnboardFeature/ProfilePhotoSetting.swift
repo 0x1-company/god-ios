@@ -1,6 +1,4 @@
 import AnalyticsClient
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import Contacts
 import ContactsClient
@@ -9,6 +7,7 @@ import FirebaseStorageClient
 import God
 import GodClient
 import PhotosUI
+import Styleguide
 import SwiftUI
 import UserDefaultsClient
 

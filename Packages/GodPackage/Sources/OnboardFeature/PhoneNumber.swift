@@ -1,9 +1,9 @@
 import AnalyticsClient
-import Styleguide
 import ComposableArchitecture
 import FirebaseAuthClient
 import PhoneNumberDependencies
 import PhoneNumberKit
+import Styleguide
 import SwiftUI
 import UserDefaultsClient
 

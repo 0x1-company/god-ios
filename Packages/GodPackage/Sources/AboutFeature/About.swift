@@ -1,8 +1,8 @@
 import Build
-import Styleguide
 import ComposableArchitecture
 import Constants
 import HowItWorksFeature
+import Styleguide
 import SwiftUI
 
 public struct AboutLogic: Reducer {

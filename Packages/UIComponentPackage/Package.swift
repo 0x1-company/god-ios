@@ -36,7 +36,7 @@ let package = Package(
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
     .target(name: "Styleguide", resources: [
-      .process("Fonts")
+      .process("Fonts"),
     ]),
   ]
 )

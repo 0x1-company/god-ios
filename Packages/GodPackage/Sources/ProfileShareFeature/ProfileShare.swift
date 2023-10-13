@@ -1,11 +1,10 @@
 import AnimationDisableTransaction
 import BackgroundClearSheet
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import CupertinoMessageFeature
 import God
 import GodClient
+import Styleguide
 import SwiftUI
 
 public struct ProfileShareLogic: Reducer {

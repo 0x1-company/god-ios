@@ -1,5 +1,3 @@
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import Constants
 import God
@@ -9,6 +7,7 @@ import Photos
 import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
+import Styleguide
 import SwiftUI
 
 public struct InboxDetailLogic: Reducer {

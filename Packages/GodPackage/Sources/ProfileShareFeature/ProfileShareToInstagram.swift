@@ -1,9 +1,8 @@
 import AnimationDisableTransaction
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import God
 import GodClient
+import Styleguide
 import SwiftUI
 import UIPasteboardClient
 

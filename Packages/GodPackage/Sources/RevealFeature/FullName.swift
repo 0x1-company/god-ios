@@ -1,6 +1,5 @@
-import Styleguide
-import Styleguide
 import ComposableArchitecture
+import Styleguide
 import SwiftUI
 
 public struct FullNameLogic: Reducer {

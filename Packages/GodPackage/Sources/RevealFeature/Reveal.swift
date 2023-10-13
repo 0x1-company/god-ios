@@ -1,12 +1,11 @@
 import Build
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import God
 import GodClient
 import StoreKit
 import StoreKitClient
 import StoreKitHelpers
+import Styleguide
 import SwiftUI
 
 public struct RevealLogic: Reducer {

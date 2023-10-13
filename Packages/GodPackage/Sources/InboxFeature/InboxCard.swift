@@ -1,6 +1,5 @@
-import Styleguide
-import Styleguide
 import God
+import Styleguide
 import SwiftUI
 
 public struct InboxCard: View {

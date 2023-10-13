@@ -1,7 +1,6 @@
-import Styleguide
-import Styleguide
 import God
 import ProfileImage
+import Styleguide
 import SwiftUI
 
 public struct ProfileSection: View {

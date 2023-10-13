@@ -1,10 +1,9 @@
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import Constants
 import God
 import GodClient
 import ProfileImage
+import Styleguide
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient

@@ -1,11 +1,11 @@
 import AnalyticsClient
-import Styleguide
 import ComposableArchitecture
 import God
 import GodClient
 import ProfileEditFeature
 import ProfileShareFeature
 import ShopFeature
+import Styleguide
 import SwiftUI
 
 public struct ProfileLogic: Reducer {

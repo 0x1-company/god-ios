@@ -1,5 +1,4 @@
 import Styleguide
-import Styleguide
 import SwiftUI
 
 public struct ShareShopSection: View {

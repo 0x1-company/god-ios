@@ -1,6 +1,6 @@
-import Styleguide
 import NameImage
 import ProfileImage
+import Styleguide
 import SwiftUI
 
 struct InstagramStoryView: View {

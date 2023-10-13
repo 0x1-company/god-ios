@@ -1,4 +1,3 @@
-import Styleguide
 import ComposableArchitecture
 import Contacts
 import ContactsClient
@@ -6,6 +5,7 @@ import God
 import GodClient
 import ProfileFeature
 import SearchField
+import Styleguide
 import SwiftUI
 import UIApplicationClient
 

@@ -1,9 +1,8 @@
 import AnalyticsClient
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import God
 import GodClient
+import Styleguide
 import SwiftUI
 
 public struct GenderSettingLogic: Reducer {
