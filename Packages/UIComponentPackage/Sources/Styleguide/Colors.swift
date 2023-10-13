@@ -1,4 +1,3 @@
-import ColorHex
 import SwiftUI
 
 public extension Color {
