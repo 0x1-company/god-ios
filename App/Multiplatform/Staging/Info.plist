@@ -119,6 +119,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MPLUSRounded1c-Bold.ttf</string>
+		<string>MPLUSRounded1c-Regular.ttf</string>
+	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>endpointURL</key>
