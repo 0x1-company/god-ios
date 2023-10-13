@@ -1,6 +1,4 @@
 import AsyncValue
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import FirebaseAuthClient
 import FirebaseStorage
@@ -11,6 +9,7 @@ import ManageAccountFeature
 import PhotosUI
 import ProfileImage
 import StringHelpers
+import Styleguide
 import SwiftUI
 import UserDefaultsClient
 

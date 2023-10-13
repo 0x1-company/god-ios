@@ -1,6 +1,6 @@
 import CachedAsyncImage
-import Styleguide
 import God
+import Styleguide
 import SwiftUI
 
 public struct TopStarsSection: View {

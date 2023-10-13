@@ -1,5 +1,5 @@
-import Styleguide
 import God
+import Styleguide
 import SwiftUI
 
 struct InstagramStoryView: View {

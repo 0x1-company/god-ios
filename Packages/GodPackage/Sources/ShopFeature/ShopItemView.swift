@@ -1,5 +1,4 @@
 import Styleguide
-import Styleguide
 import SwiftUI
 
 struct ShopItemView: View {

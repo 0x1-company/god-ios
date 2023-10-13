@@ -1,6 +1,6 @@
 import CachedAsyncImage
-import Styleguide
 import NameImage
+import Styleguide
 import SwiftUI
 
 public struct ProfileImage: View {

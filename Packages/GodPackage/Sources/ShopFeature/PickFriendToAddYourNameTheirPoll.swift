@@ -1,10 +1,9 @@
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import God
 import GodClient
 import ProfileImage
 import SearchField
+import Styleguide
 import SwiftUI
 
 public struct PickFriendToAddYourNameTheirPollLogic: Reducer {

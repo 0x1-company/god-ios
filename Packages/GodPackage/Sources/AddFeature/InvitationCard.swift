@@ -1,7 +1,6 @@
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import NameImage
+import Styleguide
 import SwiftUI
 
 public struct InvitationCardView: View {

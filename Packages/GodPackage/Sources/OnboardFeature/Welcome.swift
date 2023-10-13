@@ -1,9 +1,8 @@
 import AnalyticsClient
 import AsyncValue
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import Lottie
+import Styleguide
 import SwiftUI
 
 public struct WelcomeLogic: Reducer {

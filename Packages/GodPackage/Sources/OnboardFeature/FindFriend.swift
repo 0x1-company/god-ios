@@ -1,9 +1,8 @@
 import AnalyticsClient
-import Styleguide
-import Styleguide
 import ComposableArchitecture
 import Contacts
 import ContactsClient
+import Styleguide
 import SwiftUI
 
 public struct FindFriendLogic: Reducer {

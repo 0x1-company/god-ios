@@ -1,12 +1,12 @@
 import AnalyticsClient
 import Apollo
-import Styleguide
 import ComposableArchitecture
 import Contacts
 import ContactsClient
 import God
 import GodClient
 import StringHelpers
+import Styleguide
 import SwiftUI
 import UserDefaultsClient
 

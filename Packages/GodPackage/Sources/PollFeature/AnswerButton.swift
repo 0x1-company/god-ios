@@ -1,6 +1,5 @@
-import Styleguide
-import Styleguide
 import CoreHaptics
+import Styleguide
 import SwiftUI
 
 public struct AnswerButton: View {
