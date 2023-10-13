@@ -1,7 +1,7 @@
 import AnalyticsClient
 import AsyncValue
 import CachedAsyncImage
-import Colors
+import Styleguide
 import ComposableArchitecture
 import God
 import GodClient

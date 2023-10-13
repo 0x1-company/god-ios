@@ -1,5 +1,5 @@
-import ButtonStyles
-import Colors
+import Styleguide
+import Styleguide
 import God
 import ProfileImage
 import SwiftUI

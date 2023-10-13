@@ -1,7 +1,7 @@
 import AnimationDisableTransaction
 import BackgroundClearSheet
-import ButtonStyles
-import Colors
+import Styleguide
+import Styleguide
 import ComposableArchitecture
 import CupertinoMessageFeature
 import God

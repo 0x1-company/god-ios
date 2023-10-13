@@ -1,5 +1,5 @@
 import CachedAsyncImage
-import Colors
+import Styleguide
 import NameImage
 import SwiftUI
 

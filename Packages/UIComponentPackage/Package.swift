@@ -12,15 +12,13 @@ let package = Package(
   products: [
     .library(name: "AnimationDisableTransaction", targets: ["AnimationDisableTransaction"]),
     .library(name: "BackgroundClearSheet", targets: ["BackgroundClearSheet"]),
-    .library(name: "ButtonStyles", targets: ["ButtonStyles"]),
-    .library(name: "ColorHex", targets: ["ColorHex"]),
-    .library(name: "Colors", targets: ["Colors"]),
     .library(name: "GodActionSheet", targets: ["GodActionSheet"]),
     .library(name: "LabeledButton", targets: ["LabeledButton"]),
     .library(name: "NameImage", targets: ["NameImage"]),
     .library(name: "ProfileImage", targets: ["ProfileImage"]),
     .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
     .library(name: "SearchField", targets: ["SearchField"]),
+    .library(name: "Styleguide", targets: ["Styleguide"]),
   ],
   dependencies: [
     .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
@@ -28,17 +26,17 @@ let package = Package(
   targets: [
     .target(name: "AnimationDisableTransaction"),
     .target(name: "BackgroundClearSheet"),
-    .target(name: "ButtonStyles"),
-    .target(name: "ColorHex"),
-    .target(name: "Colors", dependencies: ["ColorHex"]),
-    .target(name: "GodActionSheet", dependencies: ["ButtonStyles"]),
+    .target(name: "GodActionSheet", dependencies: ["Styleguide"]),
     .target(name: "LabeledButton"),
-    .target(name: "NameImage", dependencies: ["Colors"]),
+    .target(name: "NameImage", dependencies: ["Styleguide"]),
     .target(name: "ProfileImage", dependencies: [
       "NameImage",
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
     ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
+    .target(name: "Styleguide", resources: [
+      .process("Fonts")
+    ]),
   ]
 )

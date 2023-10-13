@@ -1,4 +1,4 @@
-import Colors
+import Styleguide
 import SwiftUI
 
 public struct NameImage: View {

@@ -1,6 +1,6 @@
 import AnimationDisableTransaction
-import ButtonStyles
-import Colors
+import Styleguide
+import Styleguide
 import ComposableArchitecture
 import God
 import GodClient

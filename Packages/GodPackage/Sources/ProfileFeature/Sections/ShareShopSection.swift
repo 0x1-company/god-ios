@@ -1,5 +1,5 @@
-import ButtonStyles
-import Colors
+import Styleguide
+import Styleguide
 import SwiftUI
 
 public struct ShareShopSection: View {

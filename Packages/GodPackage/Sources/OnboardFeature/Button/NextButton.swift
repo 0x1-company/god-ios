@@ -1,4 +1,4 @@
-import ButtonStyles
+import Styleguide
 import SwiftUI
 
 public struct NextButton: View {

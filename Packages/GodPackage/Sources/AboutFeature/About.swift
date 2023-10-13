@@ -1,5 +1,5 @@
 import Build
-import Colors
+import Styleguide
 import ComposableArchitecture
 import Constants
 import HowItWorksFeature

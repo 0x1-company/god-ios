@@ -59,11 +59,10 @@ let package = Package(
     .target(name: "AddFeature", dependencies: [
       "ProfileFeature",
       "CupertinoMessageFeature",
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "SearchField", package: "UIComponentPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -89,8 +88,8 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ForceUpdateFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [
@@ -100,18 +99,16 @@ let package = Package(
       .product(name: "UserNotificationClient", package: "CupertinoPackage"),
     ], resources: [.copy("Loading.json")]),
     .target(name: "GodModeFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "StoreKitHelpers", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-ios"),
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ], resources: [.copy("Onboarding.json")]),
     .target(name: "InboxFeature", dependencies: [
@@ -126,11 +123,11 @@ let package = Package(
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
     .target(name: "LaunchFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "MaintenanceFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ManageAccountFeature", dependencies: [
@@ -165,13 +162,12 @@ let package = Package(
     ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "PollFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
       .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
@@ -179,12 +175,11 @@ let package = Package(
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
       .product(name: "FirebaseStorageClient", package: "DependencyPackage"),
@@ -199,10 +194,9 @@ let package = Package(
     ]),
     .target(name: "ProfileShareFeature", dependencies: [
       "CupertinoMessageFeature",
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
@@ -212,9 +206,8 @@ let package = Package(
     ]),
     .target(name: "RevealFeature", dependencies: [
       .product(name: "Build", package: "CupertinoPackage"),
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "StoreKitHelpers", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -225,10 +218,9 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShopFeature", dependencies: [
-      .product(name: "Colors", package: "UIComponentPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "SearchField", package: "UIComponentPackage"),
-      .product(name: "ButtonStyles", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),

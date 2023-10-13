@@ -1,4 +1,4 @@
-import ButtonStyles
+import Styleguide
 import SwiftUI
 
 public struct StoriesButton: View {
