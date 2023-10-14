@@ -112,6 +112,7 @@ graph TD;
     ProfileShareFeature-->GodClient;
     ProfileShareFeature-->Styleguide;
     ProfileShareFeature-->ProfileImage;
+    ProfileShareFeature-->ShareLinkBuilder;
     ProfileShareFeature-->UIPasteboardClient;
     ProfileShareFeature-->UIApplicationClient;
     ProfileShareFeature-->BackgroundClearSheet;
