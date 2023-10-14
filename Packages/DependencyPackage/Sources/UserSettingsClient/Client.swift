@@ -2,65 +2,58 @@ import Contacts
 import UserNotifications
 
 public struct UserSettingsClient {
-  public var contact: (ContactParam) async throws -> Void
-  public var notification: (NotificationParam) async throws -> Void
+  public var update: (UpdateParam) async throws -> Void
   
-  public struct ContactParam: Codable, Equatable {
+  public struct UpdateParam: Equatable {
     let uid: String
-    let status: AuthorizationStatus
+    let contactStatus: String
+    let notificationStatus: String
     
-    public enum AuthorizationStatus: String, Codable {
-      case notDetermined
-      case restricted
-      case denied
-      case authorized
-    }
-    
-    public init(uid: String, status: CNAuthorizationStatus) {
+    public init(
+      uid: String,
+      contact: CNAuthorizationStatus,
+      notification: UNAuthorizationStatus
+    ) {
       self.uid = uid
-      switch status {
-      case .notDetermined:
-        self.status = .notDetermined
-      case .restricted:
-        self.status = .restricted
-      case .denied:
-        self.status = .denied
-      case .authorized:
-        self.status = .authorized
-      @unknown default:
-        fatalError()
-      }
+      self.contactStatus = contact.stringValue
+      self.notificationStatus = notification.stringValue
     }
   }
-  
-  public struct NotificationParam: Codable, Equatable {
-    let uid: String
-    let status: AuthorizationStatus
-    
-    public enum AuthorizationStatus: String, Codable {
-      case notDetermined
-      case denied
-      case authorized
-      case provisional
-      case ephemeral
+}
+
+
+extension CNAuthorizationStatus {
+  var stringValue: String {
+    switch self {
+    case .notDetermined:
+      return "notDetermined"
+    case .restricted:
+      return "restricted"
+    case .denied:
+      return "denied"
+    case .authorized:
+      return "authorized"
+    @unknown default:
+      fatalError()
     }
-    
-    public init(uid: String, status: UNAuthorizationStatus) {
-      self.uid = uid
-      switch status {
-      case .notDetermined:
-        self.status = .notDetermined
-      case .denied:
-        self.status = .denied
-      case .authorized:
-        self.status = .authorized
-      case .provisional:
-        self.status = .provisional
-      case .ephemeral:
-        self.status = .ephemeral
-      @unknown default:
-        fatalError()
-      }
+  }
+}
+
+extension UNAuthorizationStatus {
+  var stringValue: String {
+    switch self {
+    case .notDetermined:
+      return "notDetermined"
+    case .denied:
+      return "denied"
+    case .authorized:
+      return "authorized"
+    case .provisional:
+      return "provisional"
+    case .ephemeral:
+      return "ephemeral"
+    @unknown default:
+      fatalError()
     }
   }
 }

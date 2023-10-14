@@ -31,6 +31,7 @@ public struct RootNavigationLogic: Reducer {
   }
 
   public enum Action: Equatable, BindableAction {
+    case onTask
     case add(AddLogic.Action)
     case activity(ActivityLogic.Action)
     case inbox(InboxLogic.Action)
@@ -116,6 +117,7 @@ public struct RootNavigationView: View {
       }
       .ignoresSafeArea()
       .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+      .task { await store.send(.onTask).finish() }
       .overlay(alignment: .top) {
         SlideTabMenuView(
           tabItems: RootNavigationLogic.Tab.allCases,

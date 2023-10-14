@@ -10,7 +10,6 @@ public extension DependencyValues {
 
 extension UserSettingsClient: TestDependencyKey {
   public static let testValue = Self(
-    contact: unimplemented("\(Self.self).contact"),
-    notification: unimplemented("\(Self.self).notification")
+    update: unimplemented("\(Self.self).update")
   )
 }
