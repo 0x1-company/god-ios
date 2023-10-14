@@ -7,5 +7,6 @@ A description of this package.
 graph TD;
     GodClient-->God;
     GodTestMock-->God;
+    ShareLinkBuilderTests-->ShareLinkBuilder;
     StringHelpersTests-->StringHelpers;
 ```
