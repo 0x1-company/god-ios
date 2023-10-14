@@ -4,6 +4,7 @@ import GodClient
 import StoreKit
 import Styleguide
 import SwiftUI
+import ShareLinkBuilder
 
 public struct PlayAgainLogic: Reducer {
   public init() {}
@@ -63,17 +64,7 @@ public struct PlayAgainLogic: Reducer {
         return .none
 
       case .inviteFriendButtonTapped:
-        guard
-          let schoolName = state.currentUser?.school?.name,
-          let username = state.currentUser?.username
-        else { return .none }
-        let text = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)
-        """
-        guard
-          let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-          let url = URL(string: "https://line.me/R/share?text=\(encodedText)")
+        guard let url = ShareLinkBuilder.buildForLine(path: .invite,username: state.currentUser?.username)
         else { return .none }
 
         return .run { _ in
