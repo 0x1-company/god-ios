@@ -1,8 +1,8 @@
 import ComposableArchitecture
-import UserSettingsClient
 import ContactsClient
-import UserNotificationClient
 import FirebaseAuthClient
+import UserNotificationClient
+import UserSettingsClient
 
 public struct UserSettingsLogic: Reducer {
   @Dependency(\.contacts) var contacts
@@ -16,7 +16,7 @@ public struct UserSettingsLogic: Reducer {
   ) -> Effect<AppLogic.Action> {
     switch action {
     case .view(.navigation(.onTask)):
-      return .run { send in
+      return .run { _ in
         let currentUser = firebaseAuth.currentUser()
         guard let uid = currentUser?.uid else { return }
 

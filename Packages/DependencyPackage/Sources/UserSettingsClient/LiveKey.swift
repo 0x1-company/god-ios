@@ -11,7 +11,7 @@ extension UserSettingsClient: DependencyKey {
         .setData(
           [
             "contactStatus": param.contactStatus,
-            "notificationStatus": param.notificationStatus
+            "notificationStatus": param.notificationStatus,
           ],
           merge: true
         )
