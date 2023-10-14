@@ -47,8 +47,8 @@ public struct AppDelegateLogic: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .didFinishLaunching:
+      firebaseCore.configure()
       return .run { @MainActor send in
-        firebaseCore.configure()
         await withThrowingTaskGroup(of: Void.self) { group in
           group.addTask {
             guard try await userNotifications.requestAuthorization([.alert, .sound, .badge])

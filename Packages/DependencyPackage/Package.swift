@@ -29,6 +29,7 @@ let package = Package(
     .library(name: "StoreKitHelpers", targets: ["StoreKitHelpers"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
+    .library(name: "UserSettingsClient", targets: ["UserSettingsClient"]),
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
@@ -105,5 +106,10 @@ let package = Package(
     .target(name: "TcaHelpers", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "UserSettingsClient", dependencies: [
+      .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+      .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ])
   ]
 )
