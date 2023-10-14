@@ -169,6 +169,7 @@ let package = Package(
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

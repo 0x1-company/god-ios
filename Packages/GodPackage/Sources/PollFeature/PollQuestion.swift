@@ -5,6 +5,7 @@ import God
 import LabeledButton
 import Styleguide
 import SwiftUI
+import AnalyticsClient
 
 public struct PollQuestionLogic: Reducer {
   public init() {}
@@ -59,6 +60,7 @@ public struct PollQuestionLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
@@ -85,6 +87,10 @@ public struct PollQuestionLogic: Reducer {
           pollQuestionId: state.id,
           votedUserId: votedUserId
         )
+        analytics.logEvent("vote", [
+          "voted_user_id": votedUserId,
+          "question": state.question.text.ja
+        ])
         return .send(.delegate(.vote(input)))
 
       case .shuffleButtonTapped:
