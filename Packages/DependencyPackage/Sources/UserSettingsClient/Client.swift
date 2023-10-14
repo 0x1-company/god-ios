@@ -3,24 +3,23 @@ import UserNotifications
 
 public struct UserSettingsClient {
   public var update: (UpdateParam) async throws -> Void
-  
+
   public struct UpdateParam: Equatable {
     let uid: String
     let contactStatus: String
     let notificationStatus: String
-    
+
     public init(
       uid: String,
       contact: CNAuthorizationStatus,
       notification: UNAuthorizationStatus
     ) {
       self.uid = uid
-      self.contactStatus = contact.stringValue
-      self.notificationStatus = notification.stringValue
+      contactStatus = contact.stringValue
+      notificationStatus = notification.stringValue
     }
   }
 }
-
 
 extension CNAuthorizationStatus {
   var stringValue: String {

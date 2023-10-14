@@ -110,6 +110,6 @@ let package = Package(
       .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
       .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ])
+    ]),
   ]
 )
