@@ -2,10 +2,10 @@ import AnimationDisableTransaction
 import ComposableArchitecture
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 import UIPasteboardClient
-import ShareLinkBuilder
 
 public struct ProfileShareToInstagramLogic: Reducer {
   public init() {}

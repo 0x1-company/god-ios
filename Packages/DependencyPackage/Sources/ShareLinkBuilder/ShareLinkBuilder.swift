@@ -25,7 +25,7 @@ public func buildForLine(
     let shareText = buildShareText(path: path, username: username, source: source, medium: medium),
     let text = shareText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
   else { return nil }
-  
+
   return URL(string: "https://line.me/R/share?text=\(text)")
 }
 

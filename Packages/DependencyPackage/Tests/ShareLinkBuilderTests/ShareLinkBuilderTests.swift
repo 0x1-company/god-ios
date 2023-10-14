@@ -1,5 +1,5 @@
-import XCTest
 import ShareLinkBuilder
+import XCTest
 
 class ShareLinkBuilderTests: XCTestCase {
   func testLINE() {
@@ -13,7 +13,7 @@ class ShareLinkBuilderTests: XCTestCase {
       URL(string: "https://line.me/R/share?text=Try%20downloading%20the%20new%20app!%0Ahttps://godapp.jp/invite/tomokisun?utm_source=instagram&utm_medium=add")
     )
   }
-  
+
   func testText() {
     XCTAssertEqual(
       buildShareText(
