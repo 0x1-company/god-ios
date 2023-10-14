@@ -7,6 +7,7 @@ import Styleguide
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
+import ShareLinkBuilder
 
 public struct HowToShareOnInstagramLogic: Reducer {
   public init() {}
@@ -74,10 +75,16 @@ public struct HowToShareOnInstagramLogic: Reducer {
           [pasteboardItems],
           [.expirationDate: Date().addingTimeInterval(300)]
         )
+        let shareLink = ShareLinkBuilder.buildGodLink(
+          path: .add,
+          username: username,
+          source: .instagram,
+          medium: .profile
+        )
         return .run { send in
           await openURL(Constants.storiesURL)
           try await mainQueue.sleep(for: .seconds(0.5))
-          pasteboard.url(URL(string: "https://godapp.jp/add/\(username)?utm_source=instagram&utm_campaign=profile"))
+          pasteboard.url(shareLink)
           await send(.delegate(.showdStories))
         }
 

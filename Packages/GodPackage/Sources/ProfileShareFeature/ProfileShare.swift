@@ -4,6 +4,7 @@ import ComposableArchitecture
 import CupertinoMessageFeature
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
@@ -64,25 +65,19 @@ public struct ProfileShareLogic: Reducer {
         }
 
       case let .currentUserResponse(.success(data)):
-        guard
-          let username = data.currentUser.username,
-          let schoolName = data.currentUser.school?.name,
-          let shareURL = URL(string: "https://godapp.jp/add/\(username)?utm_source=share&utm_campaign=profile")
-        else { return .none }
-        state.shareURL = shareURL
-        state.smsText = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/add/\(username)?utm_source=sms&utm_campaign=profile
-        """
-        let lineText = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/add/\(username)
-        """
-        guard
-          let text = lineText.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-          let lineURL = URL(string: "https://line.me/R/share?text=\(text)")
-        else { return .none }
-        state.lineURL = lineURL
+        guard let username = data.currentUser.username else { return .none }
+        state.shareURL = ShareLinkBuilder.buildGodLink(
+          path: .add,
+          username: username,
+          source: .share,
+          medium: .profile
+        )
+        if let smsText = ShareLinkBuilder.buildShareText(path: .add, username: username, source: .sms, medium: .profile) {
+          state.smsText = smsText
+        }
+        if let lineURL = ShareLinkBuilder.buildForLine(path: .add, username: username) {
+          state.lineURL = lineURL
+        }
         return .none
 
       default:

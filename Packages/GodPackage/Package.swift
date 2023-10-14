@@ -198,6 +198,7 @@ let package = Package(
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
+      .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
       .product(name: "BackgroundClearSheet", package: "UIComponentPackage"),
