@@ -40,7 +40,7 @@ public struct ShareTheAppLogic: Reducer {
         let text = """
         \(schoolName)向けの新しいアプリダウンロードしてみて！
         https://godapp.jp/invite/\(username)
-        """
+        """.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         guard let shareURL = URL(string: "https://line.me/R/share?text=\(text)")
         else { return .none }
 

@@ -1,0 +1,16 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Try downloading the new app!\n%@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいアプリダウンロードしてみて！\n%@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
