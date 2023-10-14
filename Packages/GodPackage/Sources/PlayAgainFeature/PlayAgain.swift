@@ -1,10 +1,10 @@
 import ComposableArchitecture
 import God
 import GodClient
+import ShareLinkBuilder
 import StoreKit
 import Styleguide
 import SwiftUI
-import ShareLinkBuilder
 
 public struct PlayAgainLogic: Reducer {
   public init() {}
@@ -64,7 +64,7 @@ public struct PlayAgainLogic: Reducer {
         return .none
 
       case .inviteFriendButtonTapped:
-        guard let url = ShareLinkBuilder.buildForLine(path: .invite,username: state.currentUser?.username)
+        guard let url = ShareLinkBuilder.buildForLine(path: .invite, username: state.currentUser?.username)
         else { return .none }
 
         return .run { _ in
