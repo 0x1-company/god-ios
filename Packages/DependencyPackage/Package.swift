@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "GodClient", targets: ["GodClient"]),
     .library(name: "GodTestMock", targets: ["GodTestMock"]),
     .library(name: "PhoneNumberDependencies", targets: ["PhoneNumberDependencies"]),
+    .library(name: "ShareLinkBuilder", targets: ["ShareLinkBuilder"]),
     .library(name: "StoreKitHelpers", targets: ["StoreKitHelpers"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
@@ -89,6 +90,10 @@ let package = Package(
     .target(name: "PhoneNumberDependencies", dependencies: [
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "ShareLinkBuilder"),
+    .testTarget(name: "ShareLinkBuilderTests", dependencies: [
+      "ShareLinkBuilder",
     ]),
     .target(name: "StoreKitHelpers", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
