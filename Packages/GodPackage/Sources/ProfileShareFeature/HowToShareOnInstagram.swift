@@ -3,11 +3,11 @@ import Constants
 import God
 import GodClient
 import ProfileImage
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
-import ShareLinkBuilder
 
 public struct HowToShareOnInstagramLogic: Reducer {
   public init() {}
