@@ -24,6 +24,7 @@ graph TD;
     AppFeature-->TcaHelpers;
     AppFeature-->StoreKitClient;
     AppFeature-->FirestoreClient;
+    AppFeature-->UserSettingsClient;
     AppFeature-->FirebaseCoreClient;
     AppFeature-->FirebaseMessagingClient;
     CashOutFeature-->Lottie;
