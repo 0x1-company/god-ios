@@ -1,3 +1,4 @@
+import AnalyticsClient
 import CachedAsyncImage
 import ComposableArchitecture
 import FeedbackGeneratorClient
@@ -5,7 +6,6 @@ import God
 import LabeledButton
 import Styleguide
 import SwiftUI
-import AnalyticsClient
 
 public struct PollQuestionLogic: Reducer {
   public init() {}
@@ -89,7 +89,7 @@ public struct PollQuestionLogic: Reducer {
         )
         analytics.logEvent("vote", [
           "voted_user_id": votedUserId,
-          "question": state.question.text.ja
+          "question": state.question.text.ja,
         ])
         return .send(.delegate(.vote(input)))
 
