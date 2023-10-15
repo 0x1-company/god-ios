@@ -1,15 +1,18 @@
-fragment FriendRequestSheetFragment on User {
+fragment FriendRequestSheetFragment on Friend {
   id
-  imageURL
-  firstName
-  displayName {
-    ja
-  }
-  votedCount
-  username
-  school {
+  user {
     id
-    shortName
+    imageURL
+    firstName
+    displayName {
+      ja
+    }
+    votedCount
+    username
+    school {
+      id
+      shortName
+    }
+    grade
   }
-  grade
 }

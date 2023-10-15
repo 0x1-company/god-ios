@@ -10,9 +10,9 @@ public struct FriendRequestSheetLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    let user: God.FriendRequestSheetFragment
+    let user: God.FriendRequestSheetFragment.User
 
-    public init(user: God.FriendRequestSheetFragment) {
+    public init(user: God.FriendRequestSheetFragment.User) {
       self.user = user
     }
   }
@@ -130,7 +130,7 @@ public struct FriendRequestSheetView: View {
       FriendRequestSheetView(
         store: .init(
           initialState: FriendRequestSheetLogic.State(
-            user: God.FriendRequestSheetFragment(
+            user: God.FriendRequestSheetFragment.User(
               _dataDict: DataDict(
                 data: [
                   "id": "test",
