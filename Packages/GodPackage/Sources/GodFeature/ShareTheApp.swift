@@ -1,9 +1,9 @@
 import ComposableArchitecture
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
-import ShareLinkBuilder
 
 public struct ShareTheAppLogic: Reducer {
   public init() {}
@@ -36,7 +36,7 @@ public struct ShareTheAppLogic: Reducer {
       case let .currentUserResponse(.success(data)):
         guard let username = data.currentUser.username
         else { return .none }
-        
+
         state.shareURL = ShareLinkBuilder.buildGodLink(path: .invite, username: username)
 
         return .none
