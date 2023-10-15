@@ -28,6 +28,7 @@ graph TD;
     AppFeature-->FirebaseCoreClient;
     AppFeature-->FirebaseMessagingClient;
     CashOutFeature-->Lottie;
+    CashOutFeature-->Styleguide;
     CashOutFeature-->ComposableArchitecture;
     CupertinoMessageFeature-->SwiftUIMessage;
     CupertinoMessageFeature-->ComposableArchitecture;
