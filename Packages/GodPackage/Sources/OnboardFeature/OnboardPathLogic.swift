@@ -5,6 +5,8 @@ import ContactsClient
 import God
 import GodClient
 import UserDefaultsClient
+import UserNotificationClient
+import UIApplicationClient
 
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.analytics) var analytics
@@ -31,6 +33,9 @@ public struct OnboardPathLogic: Reducer {
       await send(.contactResponse(.failure(error)))
     }
   }
+  
+  @Dependency(\.userNotifications.requestAuthorization) var requestAuthorization
+  @Dependency(\.application.registerForRemoteNotifications) var registerForRemoteNotifications
 
   public func reduce(
     into state: inout OnboardLogic.State,
@@ -136,6 +141,13 @@ public struct OnboardPathLogic: Reducer {
       case .addFriends(.delegate(.nextScreen)):
         state.path.append(.howItWorks())
         return .none
+        
+      case .howItWorks(.delegate(.notifyRequest)):
+        return .run { send in
+          guard try await requestAuthorization([.alert, .sound, .badge])
+          else { return }
+          await registerForRemoteNotifications()
+        }
 
       case .howItWorks(.delegate(.start)):
         // オンボーディングすべて終わり

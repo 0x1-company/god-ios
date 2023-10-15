@@ -51,11 +51,6 @@ public struct AppDelegateLogic: Reducer {
       return .run { @MainActor send in
         await withThrowingTaskGroup(of: Void.self) { group in
           group.addTask {
-            guard try await userNotifications.requestAuthorization([.alert, .sound, .badge])
-            else { return }
-            await registerForRemoteNotifications()
-          }
-          group.addTask {
             for await event in userNotifications.delegate() {
               await send(.userNotifications(event))
             }
