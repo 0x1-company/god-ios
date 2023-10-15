@@ -4,9 +4,9 @@ import Contacts
 import ContactsClient
 import God
 import GodClient
+import UIApplicationClient
 import UserDefaultsClient
 import UserNotificationClient
-import UIApplicationClient
 
 public struct OnboardPathLogic: Reducer {
   @Dependency(\.analytics) var analytics
@@ -33,7 +33,7 @@ public struct OnboardPathLogic: Reducer {
       await send(.contactResponse(.failure(error)))
     }
   }
-  
+
   @Dependency(\.userNotifications.requestAuthorization) var requestAuthorization
   @Dependency(\.application.registerForRemoteNotifications) var registerForRemoteNotifications
 
@@ -141,9 +141,9 @@ public struct OnboardPathLogic: Reducer {
       case .addFriends(.delegate(.nextScreen)):
         state.path.append(.howItWorks())
         return .none
-        
+
       case .howItWorks(.delegate(.notifyRequest)):
-        return .run { send in
+        return .run { _ in
           guard try await requestAuthorization([.alert, .sound, .badge])
           else { return }
           await registerForRemoteNotifications()
