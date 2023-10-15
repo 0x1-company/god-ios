@@ -20,6 +20,16 @@
           }
         }
       }
+    },
+    "Friend request received!" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンドリクエストが届きました"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
