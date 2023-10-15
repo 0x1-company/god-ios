@@ -10,23 +10,25 @@ public struct FriendRequestSheetLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    let user: God.FriendRequestSheetFragment.User
+    let friend: God.FriendRequestSheetFragment
 
-    public init(user: God.FriendRequestSheetFragment.User) {
-      self.user = user
+    public init(friend: God.FriendRequestSheetFragment) {
+      self.friend = friend
     }
   }
 
   public enum Action: Equatable {
     case onTask
     case dismissButtonTapped
+    case approveButtonTapped
+    case approveResponse(TaskResult<God.ApproveFriendRequestMutation.Data>)
   }
   
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
         return .none
@@ -35,6 +37,22 @@ public struct FriendRequestSheetLogic: Reducer {
         return .run { _ in
           await self.dismiss()
         }
+      case .approveButtonTapped:
+        let input = God.ApproveFriendRequestInput(id: state.friend.id)
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await self.dismiss()
+            }
+            group.addTask {
+              await send(.approveResponse(TaskResult {
+                try await godClient.approveFriendRequest(input)
+              }))
+            }
+          }
+        }
+      default:
+        return .none
       }
     }
   }
@@ -72,10 +90,10 @@ public struct FriendRequestSheetView: View {
           Spacer()
 
           VStack(spacing: 4) {
-            Text(viewStore.user.displayName.ja)
+            Text(viewStore.friend.user.displayName.ja)
               .font(.system(.body, design: .rounded, weight: .bold))
             
-            if let username = viewStore.user.username {
+            if let username = viewStore.friend.user.username {
               Text("@\(username)", bundle: .module)
                 .font(.system(.footnote, design: .rounded))
                 .foregroundStyle(Color.secondary)
@@ -87,15 +105,16 @@ public struct FriendRequestSheetView: View {
               .resizable()
               .frame(width: 24, height: 24)
             
-            Text(viewStore.user.votedCount.description)
+            Text(viewStore.friend.user.votedCount.description)
           }
           .foregroundStyle(Color.secondary)
           
           Button {
-            
+            store.send(.approveButtonTapped)
           } label: {
-            Text("ADD", bundle: .module)
-              .frame(width: 96, height: 34)
+            Text("ACCEPT", bundle: .module)
+              .frame(height: 34)
+              .padding(.horizontal, 12)
               .foregroundStyle(Color.white)
               .background(Color.godService)
               .clipShape(Capsule())
@@ -107,8 +126,8 @@ public struct FriendRequestSheetView: View {
         .background(Color.white)
         .overlay(alignment: .top) {
           ProfileImage(
-            urlString: viewStore.user.imageURL,
-            name: viewStore.user.firstName,
+            urlString: viewStore.friend.user.imageURL,
+            name: viewStore.friend.user.firstName,
             size: 150
           )
           .overlay {
@@ -131,25 +150,31 @@ public struct FriendRequestSheetView: View {
       FriendRequestSheetView(
         store: .init(
           initialState: FriendRequestSheetLogic.State(
-            user: God.FriendRequestSheetFragment.User(
+            friend: God.FriendRequestSheetFragment(
               _dataDict: DataDict(
                 data: [
-                  "id": "test",
-                  "firstName": "Tomoki",
-                  "username": "tomokisun",
-                  "votedCount": 10,
-                  "grade": "Grade 9",
-                  "imageURL": "https://storage.googleapis.com/god-staging.appspot.com/users/profile_images/1571f30f-6320-4e61-8e98-225b57b14c9a",
-                  "displayName": DataDict(
+                  "id": "hoge",
+                  "user": DataDict(
                     data: [
-                      "ja": "Tomoki Tsukiyama"
-                    ],
-                    fulfilledFragments: []
-                  ),
-                  "school": DataDict(
-                    data: [
-                      "id": "KHS",
-                      "shortName": "KHS"
+                      "id": "test",
+                      "firstName": "Tomoki",
+                      "username": "tomokisun",
+                      "votedCount": 10,
+                      "grade": "Grade 9",
+                      "imageURL": "https://storage.googleapis.com/god-staging.appspot.com/users/profile_images/1571f30f-6320-4e61-8e98-225b57b14c9a",
+                      "displayName": DataDict(
+                        data: [
+                          "ja": "Tomoki Tsukiyama"
+                        ],
+                        fulfilledFragments: []
+                      ),
+                      "school": DataDict(
+                        data: [
+                          "id": "KHS",
+                          "shortName": "KHS"
+                        ],
+                        fulfilledFragments: []
+                      )
                     ],
                     fulfilledFragments: []
                   )

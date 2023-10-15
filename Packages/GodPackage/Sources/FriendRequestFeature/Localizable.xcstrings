@@ -2,10 +2,24 @@
   "sourceLanguage" : "en",
   "strings" : {
     "@%@" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "@%@"
+          }
+        }
+      }
     },
-    "ADD" : {
-
+    "ACCEPT" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "承認"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

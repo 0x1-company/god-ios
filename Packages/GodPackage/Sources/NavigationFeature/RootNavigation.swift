@@ -23,7 +23,7 @@ public struct RootNavigationLogic: Reducer {
   }
 
   public struct State: Equatable {
-    var friendRequestsPending: [God.FriendRequestSheetFragment.User] = []
+    var friendRequestsPending: [God.FriendRequestSheetFragment] = []
     @PresentationState var friendRequestSheet: FriendRequestSheetLogic.State?
     var add = AddLogic.State()
     var activity = ActivityLogic.State()
@@ -75,11 +75,11 @@ public struct RootNavigationLogic: Reducer {
         .cancellable(id: Cancel.friendRequests, cancelInFlight: true)
 
       case let .friendRequestResponse(.success(data)):
-        let users = data.friendRequests.edges.map(\.node.user)
-        state.friendRequestsPending = users
+        let requests = data.friendRequests.edges.map(\.node.fragments.friendRequestSheetFragment)
+        state.friendRequestsPending = requests
         
-        if let latest = users.first {
-          state.friendRequestSheet = .init(user: latest)
+        if let latest = requests.first {
+          state.friendRequestSheet = .init(friend: latest)
         } else {
           state.friendRequestSheet = nil
         }
@@ -93,7 +93,7 @@ public struct RootNavigationLogic: Reducer {
         _ = state.friendRequestsPending.removeFirst()
         
         if let latest = state.friendRequestsPending.first {
-          state.friendRequestSheet = .init(user: latest)
+          state.friendRequestSheet = .init(friend: latest)
         } else {
           state.friendRequestSheet = nil
         }
