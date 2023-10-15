@@ -21,6 +21,7 @@ public struct HowItWorksLogic: Reducer {
 
     public enum Delegate: Equatable {
       case start
+      case notifyRequest
     }
   }
 
@@ -35,6 +36,7 @@ public struct HowItWorksLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
+          await send(.delegate(.notifyRequest))
           for try await data in godClient.currentUser() {
             await send(.currentUserResponse(.success(data)))
           }
