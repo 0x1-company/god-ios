@@ -50,7 +50,8 @@ public struct FriendRequestSheetView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
-        Spacer()
+        Color.clear
+          .contentShape(Rectangle())
           .onTapGesture {
             store.send(.dismissButtonTapped)
           }
