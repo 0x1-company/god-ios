@@ -127,20 +127,23 @@ public struct FriendRequestSheetView: View {
           }
           .tint(Color.godTextSecondaryLight)
           .foregroundStyle(Color.godTextSecondaryLight)
+          
+          Text("Friend request received!", bundle: .module)
+            .font(.system(.body, design: .rounded, weight: .bold))
 
           Button {
             store.send(.approveButtonTapped)
           } label: {
             Text("ACCEPT", bundle: .module)
               .frame(height: 34)
-              .padding(.horizontal, 12)
+              .padding(.horizontal, 24)
               .foregroundStyle(Color.white)
               .background(Color.godService)
               .clipShape(Capsule())
               .font(.system(.body, design: .rounded, weight: .bold))
           }
         }
-        .frame(height: 220)
+        .frame(height: 260)
         .frame(maxWidth: .infinity)
         .background(Color.white)
         .overlay(alignment: .top) {
