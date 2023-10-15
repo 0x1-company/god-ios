@@ -144,6 +144,12 @@
         }
       }
     },
+    "Enable Contacts" : {
+
+    },
+    "Enable Notify" : {
+
+    },
     "Enter your age" : {
       "localizations" : {
         "ja" : {
@@ -224,6 +230,9 @@
         }
       }
     },
+    "God cares intensely about your privacy.\nWe will never text or spam your contacts." : {
+
+    },
     "God cares intensely about your privacy.\nWe will not share your personal information with outside parties or use it for private purposes without your permission." : {
       "localizations" : {
         "ja" : {
@@ -243,6 +252,9 @@
           }
         }
       }
+    },
+    "God needs to find your school and suggest friends." : {
+
     },
     "God uses your contacts\nto find friends" : {
       "localizations" : {
@@ -423,6 +435,9 @@
           }
         }
       }
+    },
+    "Please allow access" : {
+
     },
     "Privacy Policy" : {
       "localizations" : {
