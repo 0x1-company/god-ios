@@ -19,6 +19,7 @@ public struct PollQuestionLogic: Reducer {
     @PresentationState var alert: AlertState<Action.Alert>?
     var voteChoices: [String: Double] = [:]
     var currentIndex = 0
+    var isPollAvailable = false
 
     var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
       choiceGroups[currentIndex]
@@ -47,6 +48,7 @@ public struct PollQuestionLogic: Reducer {
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
+    case pollAvailable
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
 
@@ -60,6 +62,7 @@ public struct PollQuestionLogic: Reducer {
     }
   }
 
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
   @Dependency(\.feedbackGenerator) var feedbackGenerator
 
@@ -67,9 +70,23 @@ public struct PollQuestionLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .run { send in
+          await sleepPollAvailable(send: send)
+        }
+        
+      case .voteButtonTapped where !state.isPollAvailable:
+        state.alert = AlertState {
+          TextState("Woah, slow down!🐎", bundle: .module)
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK", bundle: .module)
+          }
+        } message: {
+          TextState("You're voting too fast", bundle: .module)
+        }
         return .none
 
-      case let .voteButtonTapped(votedUserId):
+      case let .voteButtonTapped(votedUserId) where state.isPollAvailable:
         var voteChoices: [God.ID: Double] = [:]
         state.currentChoiceGroup.choices.forEach { choice in
           voteChoices[choice.userId] = choice.userId == votedUserId ? Double.random(in: 0.4 ..< 0.6) : Double.random(in: 0.01 ..< 0.4)
@@ -111,20 +128,26 @@ public struct PollQuestionLogic: Reducer {
           await feedbackGenerator.mediumImpact()
           await send(.delegate(.nextPollQuestion), animation: .default)
         }
-      case .alert:
-        state.alert = AlertState {
-          TextState("Woah, slow down!🐎", bundle: .module)
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK", bundle: .module)
-          }
-        } message: {
-          TextState("You're voting too fast", bundle: .module)
-        }
+      case .pollAvailable:
+        state.isPollAvailable = true
         return .none
-      case .delegate:
+
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
+        return .none
+
+      default:
         return .none
       }
+    }
+  }
+  
+  func sleepPollAvailable(send: Send<Action>) async {
+    do {
+      try await mainQueue.sleep(for: .seconds(1))
+      await send(.pollAvailable)
+    } catch {
+      
     }
   }
 }
