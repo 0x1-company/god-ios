@@ -3,6 +3,7 @@ import God
 import GodClient
 import Styleguide
 import SwiftUI
+import ShareLinkBuilder
 
 public struct ShareTheAppLogic: Reducer {
   public init() {}
@@ -33,17 +34,9 @@ public struct ShareTheAppLogic: Reducer {
         }
 
       case let .currentUserResponse(.success(data)):
-        guard
-          let schoolName = data.currentUser.school?.name,
-          let username = data.currentUser.username
+        guard let shareURL = ShareLinkBuilder.buildForLine(path: .invite, username: data.currentUser.username)
         else { return .none }
-        let text = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)
-        """.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        guard let shareURL = URL(string: "https://line.me/R/share?text=\(text)")
-        else { return .none }
-
+        
         state.shareURL = shareURL
 
         return .none
