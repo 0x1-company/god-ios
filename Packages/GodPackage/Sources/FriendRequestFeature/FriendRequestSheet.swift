@@ -2,9 +2,9 @@ import BackgroundClearSheet
 import ComposableArchitecture
 import God
 import GodClient
+import ProfileImage
 import Styleguide
 import SwiftUI
-import ProfileImage
 
 public struct FriendRequestSheetLogic: Reducer {
   public init() {}
@@ -23,7 +23,7 @@ public struct FriendRequestSheetLogic: Reducer {
     case approveButtonTapped
     case approveResponse(TaskResult<God.ApproveFriendRequestMutation.Data>)
   }
-  
+
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
 
@@ -32,17 +32,17 @@ public struct FriendRequestSheetLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .dismissButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
       case .approveButtonTapped:
         let input = God.ApproveFriendRequestInput(id: state.friend.id)
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
-              await self.dismiss()
+              await dismiss()
             }
             group.addTask {
               await send(.approveResponse(TaskResult {
@@ -73,12 +73,11 @@ public struct FriendRequestSheetView: View {
           .onTapGesture {
             store.send(.dismissButtonTapped)
           }
-        
+
         VStack(spacing: 18) {
           HStack {
-            
             Spacer()
-            
+
             Button {
               store.send(.dismissButtonTapped)
             } label: {
@@ -92,23 +91,23 @@ public struct FriendRequestSheetView: View {
           VStack(spacing: 4) {
             Text(viewStore.friend.user.displayName.ja)
               .font(.system(.body, design: .rounded, weight: .bold))
-            
+
             if let username = viewStore.friend.user.username {
               Text("@\(username)", bundle: .module)
                 .font(.system(.footnote, design: .rounded))
                 .foregroundStyle(Color.secondary)
             }
           }
-          
+
           HStack(spacing: 12) {
             HStack(spacing: 0) {
               Image(ImageResource.star)
                 .resizable()
                 .frame(width: 24, height: 24)
-              
+
               Text(viewStore.friend.user.votedCount.description)
             }
-            
+
             if let shortName = viewStore.friend.user.school?.shortName {
               HStack(spacing: 4) {
                 Image(systemName: "house.fill")
@@ -128,7 +127,7 @@ public struct FriendRequestSheetView: View {
           }
           .tint(Color.godTextSecondaryLight)
           .foregroundStyle(Color.godTextSecondaryLight)
-          
+
           Button {
             store.send(.approveButtonTapped)
           } label: {
@@ -184,20 +183,20 @@ public struct FriendRequestSheetView: View {
                       "imageURL": "https://storage.googleapis.com/god-staging.appspot.com/users/profile_images/1571f30f-6320-4e61-8e98-225b57b14c9a",
                       "displayName": DataDict(
                         data: [
-                          "ja": "Tomoki Tsukiyama"
+                          "ja": "Tomoki Tsukiyama",
                         ],
                         fulfilledFragments: []
                       ),
                       "school": DataDict(
                         data: [
                           "id": "KHS",
-                          "shortName": "KHS"
+                          "shortName": "KHS",
                         ],
                         fulfilledFragments: []
-                      )
+                      ),
                     ],
                     fulfilledFragments: []
-                  )
+                  ),
                 ],
                 fulfilledFragments: []
               )

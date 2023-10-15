@@ -2,13 +2,13 @@ import AboutFeature
 import ActivityFeature
 import AddFeature
 import ComposableArchitecture
+import FriendRequestFeature
+import God
+import GodClient
 import GodFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
-import FriendRequestFeature
-import God
-import GodClient
 
 public struct RootNavigationLogic: Reducer {
   public init() {}
@@ -47,9 +47,9 @@ public struct RootNavigationLogic: Reducer {
     case binding(BindingAction<State>)
     case friendRequestSheet(PresentationAction<FriendRequestSheetLogic.Action>)
   }
-  
+
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case friendRequests
   }
@@ -77,27 +77,27 @@ public struct RootNavigationLogic: Reducer {
       case let .friendRequestResponse(.success(data)):
         let requests = data.friendRequests.edges.map(\.node.fragments.friendRequestSheetFragment)
         state.friendRequestsPending = requests
-        
+
         if let latest = requests.first {
           state.friendRequestSheet = .init(friend: latest)
         } else {
           state.friendRequestSheet = nil
         }
-        
+
         return .cancel(id: Cancel.friendRequests)
-        
+
       case .friendRequestResponse(.failure):
         return .cancel(id: Cancel.friendRequests)
-        
+
       case .friendRequestSheet(.dismiss):
         _ = state.friendRequestsPending.removeFirst()
-        
+
         if let latest = state.friendRequestsPending.first {
           state.friendRequestSheet = .init(friend: latest)
         } else {
           state.friendRequestSheet = nil
         }
-        
+
         return .none
 
       default:
