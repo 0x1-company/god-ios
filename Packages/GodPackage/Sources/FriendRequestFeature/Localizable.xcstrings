@@ -1,5 +1,21 @@
 {
   "sourceLanguage" : "en",
-  "strings" : {},
+  "strings" : {
+    "" : {
+
+    },
+    "@coffeetoken" : {
+
+    },
+    "ADD" : {
+
+    },
+    "FriendRequestSheet" : {
+
+    },
+    "Kevin Ding" : {
+
+    }
+  },
   "version" : "1.0"
 }

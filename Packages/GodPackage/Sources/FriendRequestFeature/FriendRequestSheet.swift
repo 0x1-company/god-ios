@@ -14,8 +14,10 @@ public struct FriendRequestSheetLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case dismissButtonTapped
   }
   
+  @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
 
   public var body: some Reducer<State, Action> {
@@ -23,6 +25,11 @@ public struct FriendRequestSheetLogic: Reducer {
       switch action {
       case .onTask:
         return .none
+        
+      case .dismissButtonTapped:
+        return .run { _ in
+          await self.dismiss()
+        }
       }
     }
   }
@@ -38,10 +45,70 @@ public struct FriendRequestSheetView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack {
-        Text("FriendRequestSheet", bundle: .module)
+        Spacer()
+          .onTapGesture {
+            store.send(.dismissButtonTapped)
+          }
+        
+        VStack(spacing: 18) {
+          HStack {
+            
+            Spacer()
+            
+            Button {
+              store.send(.dismissButtonTapped)
+            } label: {
+              Image(systemName: "chevron.down")
+                .frame(width: 52, height: 52)
+                .foregroundStyle(Color.secondary)
+            }
+          }
+          Spacer()
+
+          VStack(spacing: 4) {
+            Text("Kevin Ding", bundle: .module)
+              .font(.system(.body, design: .rounded, weight: .bold))
+
+            Text("@coffeetoken", bundle: .module)
+              .font(.system(.footnote, design: .rounded))
+              .foregroundStyle(Color.secondary)
+          }
+          
+          HStack(spacing: 0) {
+            Image(ImageResource.star)
+              .resizable()
+              .frame(width: 24, height: 24)
+            
+            Text("1")
+          }
+          .foregroundStyle(Color.secondary)
+          
+          Button {
+            
+          } label: {
+            Text("ADD", bundle: .module)
+              .frame(width: 96, height: 34)
+              .foregroundStyle(Color.white)
+              .background(Color.godService)
+              .clipShape(Capsule())
+              .font(.system(.body, design: .rounded, weight: .bold))
+          }
+        }
+        .frame(height: 220)
+        .frame(maxWidth: .infinity)
+        .background(Color.white)
+        .overlay(alignment: .top) {
+          Color.blue
+            .frame(width: 150, height: 150)
+            .clipShape(Circle())
+            .overlay {
+              RoundedRectangle(cornerRadius: 75)
+                .stroke(Color.white, lineWidth: 4)
+            }
+            .offset(y: -75)
+        }
       }
-      .navigationTitle("FriendRequestSheet")
-      .navigationBarTitleDisplayMode(.inline)
+      .buttonStyle(HoldDownButtonStyle())
       .task { await viewStore.send(.onTask).finish() }
     }
   }
@@ -57,5 +124,6 @@ public struct FriendRequestSheetView: View {
           reducer: { FriendRequestSheetLogic() }
         )
       )
+      .presentationBackground(Color.clear)
     }
 }
