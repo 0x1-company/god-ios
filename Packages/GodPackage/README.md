@@ -8,6 +8,7 @@ graph TD;
     AboutFeature-->HowItWorksFeature;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
+    AddFeature-->FriendRequestFeature;
     AddFeature-->CupertinoMessageFeature;
     AppFeature-->LaunchFeature;
     AppFeature-->OnboardFeature;
