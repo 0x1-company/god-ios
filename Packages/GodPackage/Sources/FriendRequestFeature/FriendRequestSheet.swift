@@ -4,12 +4,17 @@ import God
 import GodClient
 import Styleguide
 import SwiftUI
+import ProfileImage
 
 public struct FriendRequestSheetLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    public init() {}
+    let user: God.FriendRequestSheetFragment
+
+    public init(user: God.FriendRequestSheetFragment) {
+      self.user = user
+    }
   }
 
   public enum Action: Equatable {
@@ -66,12 +71,14 @@ public struct FriendRequestSheetView: View {
           Spacer()
 
           VStack(spacing: 4) {
-            Text("Kevin Ding", bundle: .module)
+            Text(viewStore.user.displayName.ja)
               .font(.system(.body, design: .rounded, weight: .bold))
-
-            Text("@coffeetoken", bundle: .module)
-              .font(.system(.footnote, design: .rounded))
-              .foregroundStyle(Color.secondary)
+            
+            if let username = viewStore.user.username {
+              Text("@\(username)", bundle: .module)
+                .font(.system(.footnote, design: .rounded))
+                .foregroundStyle(Color.secondary)
+            }
           }
           
           HStack(spacing: 0) {
@@ -79,7 +86,7 @@ public struct FriendRequestSheetView: View {
               .resizable()
               .frame(width: 24, height: 24)
             
-            Text("1")
+            Text(viewStore.user.votedCount.description)
           }
           .foregroundStyle(Color.secondary)
           
@@ -98,14 +105,16 @@ public struct FriendRequestSheetView: View {
         .frame(maxWidth: .infinity)
         .background(Color.white)
         .overlay(alignment: .top) {
-          Color.blue
-            .frame(width: 150, height: 150)
-            .clipShape(Circle())
-            .overlay {
-              RoundedRectangle(cornerRadius: 75)
-                .stroke(Color.white, lineWidth: 4)
-            }
-            .offset(y: -75)
+          ProfileImage(
+            urlString: viewStore.user.imageURL,
+            name: viewStore.user.firstName,
+            size: 150
+          )
+          .overlay {
+            RoundedRectangle(cornerRadius: 75)
+              .stroke(Color.white, lineWidth: 4)
+          }
+          .offset(y: -75)
         }
       }
       .buttonStyle(HoldDownButtonStyle())
@@ -120,7 +129,34 @@ public struct FriendRequestSheetView: View {
     .sheet(isPresented: .constant(true)) {
       FriendRequestSheetView(
         store: .init(
-          initialState: FriendRequestSheetLogic.State(),
+          initialState: FriendRequestSheetLogic.State(
+            user: God.FriendRequestSheetFragment(
+              _dataDict: DataDict(
+                data: [
+                  "id": "test",
+                  "firstName": "Tomoki",
+                  "username": "tomokisun",
+                  "votedCount": 10,
+                  "grade": "Grade 9",
+                  "imageURL": "https://storage.googleapis.com/god-staging.appspot.com/users/profile_images/1571f30f-6320-4e61-8e98-225b57b14c9a",
+                  "displayName": DataDict(
+                    data: [
+                      "ja": "Tomoki Tsukiyama"
+                    ],
+                    fulfilledFragments: []
+                  ),
+                  "school": DataDict(
+                    data: [
+                      "id": "KHS",
+                      "shortName": "KHS"
+                    ],
+                    fulfilledFragments: []
+                  )
+                ],
+                fulfilledFragments: []
+              )
+            )
+          ),
           reducer: { FriendRequestSheetLogic() }
         )
       )

@@ -1,19 +1,10 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
-    "@coffeetoken" : {
+    "@%@" : {
 
     },
     "ADD" : {
-
-    },
-    "FriendRequestSheet" : {
-
-    },
-    "Kevin Ding" : {
 
     }
   },

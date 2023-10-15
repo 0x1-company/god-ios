@@ -98,6 +98,7 @@ let package = Package(
     .target(name: "FriendRequestFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "BackgroundClearSheet", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
