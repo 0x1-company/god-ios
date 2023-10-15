@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Lottie
 import SwiftUI
+import Styleguide
 
 public struct CashOutLogic: Reducer {
   public init() {}
@@ -69,10 +70,11 @@ public struct CashOutView: View {
                   .clipped()
               }
               .padding(.horizontal, 16)
+              .background(Color.white)
+              .clipShape(Capsule())
           }
-          .background(Color.white)
-          .clipShape(Capsule())
           .shadow(color: .black.opacity(0.2), radius: 25)
+          .buttonStyle(HoldDownButtonStyle())
           .padding(.horizontal, 65)
         }
 
