@@ -7,7 +7,7 @@ let package = Package(
   name: "GodPackage",
   defaultLocalization: "en",
   platforms: [
-    .iOS(.v16),
+    .iOS("16.4"),
   ],
   products: [
     .library(name: "AboutFeature", targets: ["AboutFeature"]),
@@ -17,6 +17,7 @@ let package = Package(
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
+    .library(name: "FriendRequestFeature", targets: ["FriendRequestFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
@@ -58,6 +59,7 @@ let package = Package(
     ]),
     .target(name: "AddFeature", dependencies: [
       "ProfileFeature",
+      "FriendRequestFeature",
       "CupertinoMessageFeature",
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
@@ -92,6 +94,13 @@ let package = Package(
     .target(name: "ForceUpdateFeature", dependencies: [
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "FriendRequestFeature", dependencies: [
+      .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ProfileImage", package: "UIComponentPackage"),
+      .product(name: "BackgroundClearSheet", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodFeature", dependencies: [

@@ -6,6 +6,9 @@ import GodFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
+import FriendRequestFeature
+import God
+import GodClient
 
 public struct RootNavigationLogic: Reducer {
   public init() {}
@@ -20,6 +23,8 @@ public struct RootNavigationLogic: Reducer {
   }
 
   public struct State: Equatable {
+    var friendRequestsPending: [God.FriendRequestSheetFragment] = []
+    @PresentationState var friendRequestSheet: FriendRequestSheetLogic.State?
     var add = AddLogic.State()
     var activity = ActivityLogic.State()
     var inbox = InboxLogic.State()
@@ -32,6 +37,7 @@ public struct RootNavigationLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
     case add(AddLogic.Action)
     case activity(ActivityLogic.Action)
     case inbox(InboxLogic.Action)
@@ -39,6 +45,13 @@ public struct RootNavigationLogic: Reducer {
     case profile(ProfileLogic.Action)
     case about(AboutLogic.Action)
     case binding(BindingAction<State>)
+    case friendRequestSheet(PresentationAction<FriendRequestSheetLogic.Action>)
+  }
+  
+  @Dependency(\.godClient) var godClient
+  
+  enum Cancel {
+    case friendRequests
   }
 
   public var body: some Reducer<State, Action> {
@@ -49,6 +62,51 @@ public struct RootNavigationLogic: Reducer {
     Scope(state: \.god, action: /Action.god, child: GodLogic.init)
     Scope(state: \.profile, action: /Action.profile, child: ProfileLogic.init)
     Scope(state: \.about, action: /Action.about, child: AboutLogic.init)
+    Reduce<State, Action> { state, action in
+      switch action {
+      case .onTask:
+        return .run { send in
+          for try await data in godClient.friendRequests() {
+            await send(.friendRequestResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.friendRequestResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.friendRequests, cancelInFlight: true)
+
+      case let .friendRequestResponse(.success(data)):
+        let requests = data.friendRequests.edges.map(\.node.fragments.friendRequestSheetFragment)
+        state.friendRequestsPending = requests
+        
+        if let latest = requests.first {
+          state.friendRequestSheet = .init(friend: latest)
+        } else {
+          state.friendRequestSheet = nil
+        }
+        
+        return .cancel(id: Cancel.friendRequests)
+        
+      case .friendRequestResponse(.failure):
+        return .cancel(id: Cancel.friendRequests)
+        
+      case .friendRequestSheet(.dismiss):
+        _ = state.friendRequestsPending.removeFirst()
+        
+        if let latest = state.friendRequestsPending.first {
+          state.friendRequestSheet = .init(friend: latest)
+        } else {
+          state.friendRequestSheet = nil
+        }
+        
+        return .none
+
+      default:
+        return .none
+      }
+    }
+    .ifLet(\.$friendRequestSheet, action: /Action.friendRequestSheet) {
+      FriendRequestSheetLogic()
+    }
   }
 }
 
@@ -124,72 +182,11 @@ public struct RootNavigationView: View {
           selection: viewStore.$selectedTab
         )
       }
-    }
-  }
-}
-
-extension RootNavigationView {
-  struct SlideTabMenuView: View {
-    let tabItems: [RootNavigationLogic.Tab]
-    @Binding var selection: RootNavigationLogic.Tab
-
-    var before: RootNavigationLogic.Tab? {
-      Array(tabItems.enumerated())
-        .first(where: { $0.element == selection })
-        .map { $0.offset == tabItems.startIndex ? nil : tabItems[$0.offset - 1] }
-        ?? nil
-    }
-
-    var after: RootNavigationLogic.Tab? {
-      Array(tabItems.enumerated())
-        .first(where: { $0.element == selection })
-        .map { $0.offset + 1 == tabItems.endIndex ? nil : tabItems[$0.offset + 1] }
-        ?? nil
-    }
-
-    var body: some View {
-      GeometryReader { geometry in
-        HStack(spacing: 0) {
-          Button {
-            withAnimation(.default) {
-              selection = before ?? selection
-            }
-          } label: {
-            Text(before?.rawValue ?? "", bundle: .module)
-          }
-          .frame(width: geometry.size.width / 3, alignment: .leading)
-          .buttonStyle(TabButtonStyle(isSelected: false))
-
-          Button(action: {}) {
-            Text(selection.rawValue, bundle: .module)
-          }
-          .frame(width: geometry.size.width / 3)
-          .buttonStyle(TabButtonStyle(isSelected: true))
-
-          Button {
-            withAnimation(.default) {
-              selection = after ?? selection
-            }
-          } label: {
-            Text(after?.rawValue ?? "", bundle: .module)
-          }
-          .frame(width: geometry.size.width / 3, alignment: .trailing)
-          .buttonStyle(TabButtonStyle(isSelected: false))
-        }
-        .frame(height: 52)
-        .frame(maxWidth: .infinity)
-      }
-      .padding(.horizontal, 16)
-    }
-
-    struct TabButtonStyle: ButtonStyle {
-      let isSelected: Bool
-      func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-          .foregroundStyle(isSelected ? Color.black : Color.secondary)
-          .font(.system(.callout, design: .rounded, weight: .bold))
-          .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
-          .animation(.default, value: configuration.isPressed)
+      .sheet(
+        store: store.scope(state: \.$friendRequestSheet, action: RootNavigationLogic.Action.friendRequestSheet)
+      ) { store in
+        FriendRequestSheetView(store: store)
+          .presentationBackground(Color.clear)
       }
     }
   }

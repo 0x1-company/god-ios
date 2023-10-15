@@ -7,7 +7,7 @@ let package = Package(
   name: "DependencyPackage",
   defaultLocalization: "en",
   platforms: [
-    .iOS(.v16),
+    .iOS("16.4"),
     .macOS(.v13),
   ],
   products: [
