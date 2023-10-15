@@ -73,7 +73,7 @@ public struct PollQuestionLogic: Reducer {
         return .run { send in
           await sleepPollAvailable(send: send)
         }
-        
+
       case .voteButtonTapped where !state.isPollAvailable:
         state.alert = AlertState {
           TextState("Woah, slow down!🐎", bundle: .module)
@@ -141,14 +141,12 @@ public struct PollQuestionLogic: Reducer {
       }
     }
   }
-  
+
   func sleepPollAvailable(send: Send<Action>) async {
     do {
       try await mainQueue.sleep(for: .seconds(1))
       await send(.pollAvailable)
-    } catch {
-      
-    }
+    } catch {}
   }
 }
 
