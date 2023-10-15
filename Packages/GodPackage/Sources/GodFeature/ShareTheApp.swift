@@ -34,10 +34,10 @@ public struct ShareTheAppLogic: Reducer {
         }
 
       case let .currentUserResponse(.success(data)):
-        guard let shareURL = ShareLinkBuilder.buildForLine(path: .invite, username: data.currentUser.username)
+        guard let username = data.currentUser.username
         else { return .none }
         
-        state.shareURL = shareURL
+        state.shareURL = ShareLinkBuilder.buildGodLink(path: .invite, username: username)
 
         return .none
 
