@@ -127,7 +127,7 @@ public struct FriendRequestSheetView: View {
           }
           .tint(Color.godTextSecondaryLight)
           .foregroundStyle(Color.godTextSecondaryLight)
-          
+
           Text("Friend request received!", bundle: .module)
             .font(.system(.body, design: .rounded, weight: .bold))
 
