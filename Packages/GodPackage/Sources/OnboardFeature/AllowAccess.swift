@@ -1,9 +1,9 @@
 import AnalyticsClient
 import ComposableArchitecture
-import SwiftUI
-import Styleguide
-import UserNotificationClient
 import ContactsClient
+import Styleguide
+import SwiftUI
+import UserNotificationClient
 
 public struct AllowAccessLogic: Reducer {
   public init() {}
@@ -18,7 +18,7 @@ public struct AllowAccessLogic: Reducer {
     case onTask
     case onAppear
   }
-  
+
   @Dependency(\.contacts) var contacts
   @Dependency(\.analytics) var analytics
   @Dependency(\.userNotifications) var userNotifications
@@ -28,7 +28,7 @@ public struct AllowAccessLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "AllowAccess", of: self)
         return .none
@@ -58,13 +58,11 @@ public struct AllowAccessView: View {
           Text("God needs to find your school and suggest friends.", bundle: .module)
             .font(.system(.body, design: .rounded))
         }
-        
+
         Spacer()
-        
+
         VStack(spacing: 8) {
-          Button {
-            
-          } label: {
+          Button {} label: {
             HStack(spacing: 12) {
               Image(ImageResource.bell)
                 .resizable()
@@ -75,10 +73,8 @@ public struct AllowAccessView: View {
           }
           .disabled(viewStore.isDisabledNotify)
           .buttonStyle(AllowButtonStyle(isDisabled: viewStore.isDisabledNotify))
-          
-          Button {
-            
-          } label: {
+
+          Button {} label: {
             HStack(spacing: 12) {
               Image(ImageResource.ledger)
                 .resizable()
@@ -90,9 +86,9 @@ public struct AllowAccessView: View {
           .disabled(viewStore.isDisabledContact)
           .buttonStyle(AllowButtonStyle(isDisabled: viewStore.isDisabledContact))
         }
-        
+
         Spacer()
-        
+
         Spacer()
 
         HStack(spacing: 8) {
@@ -117,7 +113,7 @@ public struct AllowAccessView: View {
       .onAppear { store.send(.onAppear) }
     }
   }
-  
+
   struct AllowButtonStyle: ButtonStyle {
     let isDisabled: Bool
     func makeBody(configuration: Configuration) -> some View {
