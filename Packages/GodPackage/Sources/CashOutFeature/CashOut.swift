@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import Lottie
-import SwiftUI
 import Styleguide
+import SwiftUI
 
 public struct CashOutLogic: Reducer {
   public init() {}
