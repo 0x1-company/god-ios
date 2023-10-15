@@ -100,14 +100,34 @@ public struct FriendRequestSheetView: View {
             }
           }
           
-          HStack(spacing: 0) {
-            Image(ImageResource.star)
-              .resizable()
-              .frame(width: 24, height: 24)
+          HStack(spacing: 12) {
+            HStack(spacing: 0) {
+              Image(ImageResource.star)
+                .resizable()
+                .frame(width: 24, height: 24)
+              
+              Text(viewStore.friend.user.votedCount.description)
+            }
             
-            Text(viewStore.friend.user.votedCount.description)
+            if let shortName = viewStore.friend.user.school?.shortName {
+              HStack(spacing: 4) {
+                Image(systemName: "house.fill")
+                  .resizable()
+                  .frame(width: 16, height: 16)
+                Text(verbatim: shortName)
+              }
+            }
+            if let grade = viewStore.friend.user.grade {
+              HStack(spacing: 4) {
+                Image(systemName: "graduationcap.fill")
+                  .resizable()
+                  .frame(width: 16, height: 16)
+                Text(verbatim: grade)
+              }
+            }
           }
-          .foregroundStyle(Color.secondary)
+          .tint(Color.godTextSecondaryLight)
+          .foregroundStyle(Color.godTextSecondaryLight)
           
           Button {
             store.send(.approveButtonTapped)
