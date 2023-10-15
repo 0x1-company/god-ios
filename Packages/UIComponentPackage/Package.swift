@@ -7,7 +7,7 @@ let package = Package(
   name: "UIComponentPackage",
   defaultLocalization: "en",
   platforms: [
-    .iOS(.v16),
+    .iOS("16.4"),
   ],
   products: [
     .library(name: "AnimationDisableTransaction", targets: ["AnimationDisableTransaction"]),
