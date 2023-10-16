@@ -203,6 +203,7 @@ public struct AboutView: View {
           }
         }
         .aspectRatio(contentMode: .fit)
+        .buttonStyle(HoldDownButtonStyle())
 
         VStack(spacing: 8) {
           Image(ImageResource.god)
@@ -211,10 +212,10 @@ public struct AboutView: View {
             .frame(width: 94)
 
           Text("[Terms](https://docs.godapp.jp/terms-of-use) / [Privacy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
-            .font(.footnote)
+            .font(.system(.footnote, design: .rounded))
 
           Text(viewStore.appVersion)
-            .font(.footnote)
+            .font(.system(.footnote, design: .rounded))
         }
         .foregroundColor(.secondary)
         .tint(.secondary)

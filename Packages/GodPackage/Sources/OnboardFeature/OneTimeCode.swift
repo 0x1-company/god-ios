@@ -13,6 +13,7 @@ public struct OneTimeCodeLogic: Reducer {
   public struct State: Equatable {
     var inviterUserId: String?
     var phoneNumber = ""
+    var isDisabled = true
     var isActivityIndicatorVisible = false
     @BindingState var oneTimeCode = ""
     @PresentationState var alert: AlertState<Action.Alert>?
@@ -155,11 +156,9 @@ public struct OneTimeCodeLogic: Reducer {
           await dismiss()
         }
 
-//      case .binding(\.$oneTimeCode):
-//        guard state.oneTimeCode.count >= 6 else {
-//          return .none
-//        }
-//        return .send(.nextButtonTapped)
+      case .binding(\.$oneTimeCode):
+        state.isDisabled = state.oneTimeCode.count != 6
+        return .none
 
       default:
         return .none
@@ -201,10 +200,11 @@ public struct OneTimeCodeView: View {
 
           Spacer()
 
-          VStack(spacing: 24) {
-            NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
-              viewStore.send(.nextButtonTapped)
-            }
+          NextButton(
+            isLoading: viewStore.isActivityIndicatorVisible,
+            isDisabled: viewStore.isDisabled
+          ) {
+            store.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
