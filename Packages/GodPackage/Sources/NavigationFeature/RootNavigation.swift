@@ -38,6 +38,7 @@ public struct RootNavigationLogic: Reducer {
   public enum Action: Equatable, BindableAction {
     case onTask
     case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
+    case performAfterFriendRequestSheetDismiss
     case add(AddLogic.Action)
     case activity(ActivityLogic.Action)
     case inbox(InboxLogic.Action)
@@ -48,6 +49,7 @@ public struct RootNavigationLogic: Reducer {
     case friendRequestSheet(PresentationAction<FriendRequestSheetLogic.Action>)
   }
 
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
 
   enum Cancel {
@@ -80,8 +82,6 @@ public struct RootNavigationLogic: Reducer {
 
         if let latest = requests.first {
           state.friendRequestSheet = .init(friend: latest)
-        } else {
-          state.friendRequestSheet = nil
         }
 
         return .cancel(id: Cancel.friendRequests)
@@ -90,14 +90,17 @@ public struct RootNavigationLogic: Reducer {
         return .cancel(id: Cancel.friendRequests)
 
       case .friendRequestSheet(.dismiss):
+        state.friendRequestSheet = nil
         _ = state.friendRequestsPending.removeFirst()
-
-        if let latest = state.friendRequestsPending.first {
-          state.friendRequestSheet = .init(friend: latest)
-        } else {
-          state.friendRequestSheet = nil
+        return .run { send in
+          try await mainQueue.sleep(for: .seconds(0.5))
+          await send(.performAfterFriendRequestSheetDismiss)
         }
 
+      case .performAfterFriendRequestSheetDismiss:
+        guard let latest = state.friendRequestsPending.first
+        else { return .none }
+        state.friendRequestSheet = .init(friend: latest)
         return .none
 
       default:
