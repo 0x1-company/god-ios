@@ -66,7 +66,7 @@ struct ChoiceGrid: View {
   }
 }
 
-//#Preview {
+// #Preview {
 //  ChoiceGrid(
 //    color: Color.blue,
 //    choices: [
@@ -78,4 +78,4 @@ struct ChoiceGrid: View {
 //  )
 //  .padding()
 //  .background(Color.blue)
-//}
+// }

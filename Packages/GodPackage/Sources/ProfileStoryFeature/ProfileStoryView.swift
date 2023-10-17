@@ -10,7 +10,7 @@ public struct ProfileStoryView: View {
   let username: String?
   let schoolImageData: Data?
   let schoolName: String?
-  
+
   public init(
     profileImageData: Data?,
     firstName: String,

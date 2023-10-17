@@ -1,19 +1,19 @@
 import AnalyticsClient
 import ComposableArchitecture
-import Contacts
 import Constants
+import Contacts
 import ContactsClient
 import CupertinoMessageFeature
 import God
 import GodClient
 import NameImage
 import ProfileImage
+import ProfileStoryFeature
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 import SwiftUIMessage
-import ProfileStoryFeature
 import UIPasteboardClient
-import ShareLinkBuilder
 
 public struct AddFriendsLogic: Reducer {
   public init() {}
@@ -23,7 +23,7 @@ public struct AddFriendsLogic: Reducer {
     var users: [God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node] = []
     var contacts: [CNContact] = []
     @PresentationState var message: CupertinoMessageLogic.State?
-    
+
     var shareURL = URL(string: "https://godapp.jp")!
     var profileStoryFragment: God.ProfileStoryFragment?
     var profileImageData: Data?
@@ -82,7 +82,7 @@ public struct AddFriendsLogic: Reducer {
       case .onAppear:
         analytics.logScreen(screenName: "AddFriends", of: self)
         return .none
-        
+
       case let .storyButtonTapped(.some(profileCardImage)):
         analytics.buttonClick(name: "story_share")
         guard let imageData = profileCardImage.pngData() else {
@@ -97,10 +97,10 @@ public struct AddFriendsLogic: Reducer {
           [pasteboardItems],
           [.expirationDate: Date().addingTimeInterval(300)]
         )
-        return .run { send in
-          await self.openURL(Constants.storiesURL)
+        return .run { _ in
+          await openURL(Constants.storiesURL)
         }
-        
+
       case .lineButtonTapped:
         analytics.buttonClick(name: "line_share")
         guard let lineURL = ShareLinkBuilder.buildForLine(
@@ -109,10 +109,10 @@ public struct AddFriendsLogic: Reducer {
           source: .line,
           medium: .onboard
         ) else { return .none }
-        return .run { send in
+        return .run { _ in
           await openURL(lineURL)
         }
-        
+
       case .messageButtonTapped:
         analytics.buttonClick(name: "sms_share")
         let username = state.profileStoryFragment?.username
@@ -190,11 +190,11 @@ public struct AddFriendsLogic: Reducer {
       case .usersResponse(.failure):
         state.users = []
         return .none
-        
+
       case let .profileImageResponse(.success(data)):
         state.profileImageData = data
         return .none
-        
+
       case let .schoolImageResponse(.success(data)):
         state.schoolImageData = data
         return .none
@@ -219,7 +219,7 @@ public struct AddFriendsLogic: Reducer {
       CupertinoMessageLogic()
     }
   }
-  
+
   private func peopleYouMayKnowRequest(send: Send<Action>) async {
     do {
       for try await data in godClient.peopleYouMayKnow() {
@@ -275,7 +275,7 @@ public struct AddFriendsView: View {
               .foregroundColor(.secondary)
               .background(Color(uiColor: .quaternarySystemFill))
               .font(.system(.body, design: .rounded, weight: .bold))
-            
+
             Divider()
 
             SocialShareView(
@@ -294,9 +294,9 @@ public struct AddFriendsView: View {
             )
             .padding(.vertical, 12)
             .padding(.horizontal, 24)
-            
+
             Divider()
-            
+
             Text("PEOPLE YOU MAY KNOW", bundle: .module)
               .frame(height: 34)
               .frame(maxWidth: .infinity, alignment: .leading)
@@ -411,7 +411,7 @@ public struct AddFriendsView: View {
       }
     }
   }
-  
+
   @ViewBuilder
   func instagramStoryView(
     profileImageData: Data?,

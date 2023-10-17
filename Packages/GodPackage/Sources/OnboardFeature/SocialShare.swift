@@ -1,12 +1,12 @@
-import SwiftUI
 import Styleguide
+import SwiftUI
 
 struct SocialShareView: View {
   let shareURL: URL
   let storyAction: () -> Void
   let lineAction: () -> Void
   let messageAction: () -> Void
-  
+
   var body: some View {
     HStack(spacing: 0) {
       Button(action: storyAction) {
@@ -21,9 +21,9 @@ struct SocialShareView: View {
             .font(.system(.callout, design: .rounded, weight: .bold))
         }
       }
-      
+
       Spacer()
-      
+
       Button(action: lineAction) {
         VStack(spacing: 12) {
           Image(ImageResource.line)
@@ -36,9 +36,9 @@ struct SocialShareView: View {
             .font(.system(.callout, design: .rounded, weight: .bold))
         }
       }
-      
+
       Spacer()
-      
+
       Button(action: messageAction) {
         VStack(spacing: 12) {
           Image(systemName: "message.fill")
@@ -52,16 +52,16 @@ struct SocialShareView: View {
             .font(.system(.callout, design: .rounded, weight: .bold))
         }
       }
-      
+
       Spacer()
-      
+
       ShareLink(item: shareURL) {
         VStack(spacing: 12) {
           Image(systemName: "square.and.arrow.up")
             .font(.system(size: 34))
             .frame(width: 56, height: 56)
             .clipShape(Circle())
-          
+
           Text("Other", bundle: .module)
             .font(.system(.callout, design: .rounded, weight: .bold))
         }
