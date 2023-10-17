@@ -137,16 +137,3 @@ public struct GenderSettingView: View {
     }
   }
 }
-
-struct GenderSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      GenderSettingView(
-        store: .init(
-          initialState: GenderSettingLogic.State(),
-          reducer: { GenderSettingLogic() }
-        )
-      )
-    }
-  }
-}
