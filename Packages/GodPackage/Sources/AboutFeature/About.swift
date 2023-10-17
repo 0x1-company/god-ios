@@ -1,9 +1,9 @@
 import Build
 import ComposableArchitecture
 import Constants
+import EmailFeature
 import HowItWorksFeature
 import Styleguide
-import EmailFeature
 import SwiftUI
 
 public struct AboutLogic: Reducer {
