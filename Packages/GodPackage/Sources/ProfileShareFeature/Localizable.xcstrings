@@ -61,17 +61,6 @@
         }
       }
     },
-    "godapp.jp" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "godapp.jp"
-          }
-        }
-      }
-    },
     "How to add the\nlink to your Story" : {
       "localizations" : {
         "ja" : {
