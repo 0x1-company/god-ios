@@ -1,0 +1,13 @@
+fragment ProfileStoryFragment on User {
+  imageURL
+  firstName
+  username
+  displayName {
+    ja
+  }
+  school {
+    id
+    name
+    profileImageURL
+  }
+}

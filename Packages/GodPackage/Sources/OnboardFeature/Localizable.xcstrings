@@ -480,7 +480,14 @@
       }
     },
     "SHARE PROFILE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールシェア"
+          }
+        }
+      }
     },
     "Skip" : {
       "localizations" : {

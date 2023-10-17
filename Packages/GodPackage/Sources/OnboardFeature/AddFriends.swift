@@ -1,6 +1,7 @@
 import AnalyticsClient
 import ComposableArchitecture
 import Contacts
+import Constants
 import ContactsClient
 import CupertinoMessageFeature
 import God
@@ -10,6 +11,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 import SwiftUIMessage
+import ProfileStoryFeature
+import UIPasteboardClient
 
 public struct AddFriendsLogic: Reducer {
   public init() {}
@@ -19,6 +22,10 @@ public struct AddFriendsLogic: Reducer {
     var users: [God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node] = []
     var contacts: [CNContact] = []
     @PresentationState var message: CupertinoMessageLogic.State?
+    
+    var profileStoryFragment: God.ProfileStoryFragment?
+    var profileImageData: Data?
+    var schoolImageData: Data?
 
     public init() {}
   }
@@ -26,7 +33,7 @@ public struct AddFriendsLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case onAppear
-    case storyButtonTapped
+    case storyButtonTapped(UIImage?)
     case lineButtonTapped
     case messageButtonTapped
     case nextButtonTapped
@@ -34,7 +41,9 @@ public struct AddFriendsLogic: Reducer {
     case inviteButtonTapped(CNContact)
     case usersResponse(TaskResult<God.PeopleYouMayKnowQuery.Data>)
     case contactResponse(TaskResult<CNContact>)
-    case createFriendRequest(TaskResult<God.CreateFriendRequestMutation.Data>)
+    case profileImageResponse(TaskResult<Data>)
+    case schoolImageResponse(TaskResult<Data>)
+    case createFriendResponse(TaskResult<God.CreateFriendRequestMutation.Data>)
     case delegate(Delegate)
     case message(PresentationAction<CupertinoMessageLogic.Action>)
 
@@ -43,8 +52,11 @@ public struct AddFriendsLogic: Reducer {
     }
   }
 
+  @Dependency(\.openURL) var openURL
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.urlSession) var urlSession
+  @Dependency(\.pasteboard) var pasteboard
   @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
 
@@ -69,8 +81,22 @@ public struct AddFriendsLogic: Reducer {
         analytics.logScreen(screenName: "AddFriends", of: self)
         return .none
         
-      case .storyButtonTapped:
-        return .none
+      case let .storyButtonTapped(.some(profileCardImage)):
+        guard let imageData = profileCardImage.pngData() else {
+          return .none
+        }
+        let pasteboardItems: [String: Any] = [
+          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+        ]
+        pasteboard.setItems(
+          [pasteboardItems],
+          [.expirationDate: Date().addingTimeInterval(300)]
+        )
+        return .run { send in
+          await self.openURL(Constants.storiesURL)
+        }
         
       case .lineButtonTapped:
         return .none
@@ -86,7 +112,7 @@ public struct AddFriendsLogic: Reducer {
           .run(operation: { [userIds = state.selectUserIds] send in
             for userId in userIds {
               let input = God.CreateFriendRequestInput(toUserId: userId)
-              await send(.createFriendRequest(TaskResult {
+              await send(.createFriendResponse(TaskResult {
                 try await godClient.createFriendRequest(input)
               }))
             }
@@ -114,10 +140,42 @@ public struct AddFriendsLogic: Reducer {
 
       case let .usersResponse(.success(data)):
         state.users = data.usersBySameSchool.edges.map(\.node)
-        return .none
+        state.profileStoryFragment = data.currentUser.fragments.profileStoryFragment
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            if let imageURL = URL(string: data.currentUser.imageURL) {
+              group.addTask {
+                do {
+                  let (data, _) = try await urlSession.data(from: imageURL)
+                  await send(.profileImageResponse(.success(data)))
+                } catch {
+                  await send(.profileImageResponse(.failure(error)))
+                }
+              }
+            }
+            if let imageURL = URL(string: data.currentUser.school?.profileImageURL ?? "") {
+              group.addTask {
+                do {
+                  let (data, _) = try await urlSession.data(from: imageURL)
+                  await send(.schoolImageResponse(.success(data)))
+                } catch {
+                  await send(.schoolImageResponse(.failure(error)))
+                }
+              }
+            }
+          }
+        }
 
       case .usersResponse(.failure):
         state.users = []
+        return .none
+        
+      case let .profileImageResponse(.success(data)):
+        state.profileImageData = data
+        return .none
+        
+      case let .schoolImageResponse(.success(data)):
+        state.schoolImageData = data
         return .none
 
       case let .contactResponse(.success(contact)):
@@ -172,6 +230,7 @@ public struct AddFriendsLogic: Reducer {
 
 public struct AddFriendsView: View {
   let store: StoreOf<AddFriendsLogic>
+  @Environment(\.displayScale) var displayScale
 
   public init(store: StoreOf<AddFriendsLogic>) {
     self.store = store
@@ -179,7 +238,13 @@ public struct AddFriendsView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
+      let instagramStoryView = instagramStoryView(
+        profileImageData: viewStore.profileImageData,
+        schoolImageData: viewStore.schoolImageData,
+        fragment: viewStore.profileStoryFragment
+      )
       ZStack {
+        instagramStoryView
         ScrollView {
           LazyVStack(spacing: 0) {
             Text("SHARE PROFILE", bundle: .module)
@@ -195,7 +260,9 @@ public struct AddFriendsView: View {
             SocialShareView(
               shareURL: URL(string: "https://godapp.jp")!,
               storyAction: {
-                store.send(.storyButtonTapped)
+                let renderer = ImageRenderer(content: instagramStoryView)
+                renderer.scale = displayScale
+                store.send(.storyButtonTapped(renderer.uiImage))
               },
               lineAction: {
                 store.send(.lineButtonTapped)
@@ -301,6 +368,7 @@ public struct AddFriendsView: View {
             }
           }
         }
+        .background(Color.white)
       }
       .navigationTitle(Text("Add Friends", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
@@ -320,6 +388,24 @@ public struct AddFriendsView: View {
         .bold()
         .foregroundColor(Color.white)
       }
+    }
+  }
+  
+  @ViewBuilder
+  func instagramStoryView(
+    profileImageData: Data?,
+    schoolImageData: Data?,
+    fragment: God.ProfileStoryFragment?
+  ) -> some View {
+    if let fragment {
+      ProfileStoryView(
+        profileImageData: profileImageData,
+        firstName: fragment.firstName,
+        displayName: fragment.displayName.ja,
+        username: fragment.username,
+        schoolImageData: schoolImageData,
+        schoolName: fragment.school?.name
+      )
     }
   }
 }
