@@ -164,6 +164,7 @@ public struct AddFriendsView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(spacing: 0) {
+          
           Text("PEOPLE YOU MAY KNOW", bundle: .module)
             .bold()
             .frame(maxWidth: .infinity, alignment: .leading)
