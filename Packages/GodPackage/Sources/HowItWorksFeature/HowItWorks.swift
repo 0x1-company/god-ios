@@ -7,7 +7,7 @@ import SwiftUI
 
 public struct HowItWorksLogic: Reducer {
   public init() {}
-  
+
   enum Step: Int, CaseIterable {
     case poll, congrats, voted
   }
@@ -51,10 +51,10 @@ public struct HowItWorksLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
-        
+
       case .startButtonTapped where state.currentStep == .voted:
         return .send(.delegate(.start), animation: .default)
-        
+
       case .startButtonTapped:
         guard let nextStep = Step(rawValue: state.currentStep.rawValue + 1)
         else { return .none }
@@ -68,7 +68,7 @@ public struct HowItWorksLogic: Reducer {
       case .currentUserResponse(.failure):
         state.gender = nil
         return .none
-        
+
       case .binding:
         return .none
 
@@ -93,13 +93,13 @@ public struct HowItWorksView: View {
           Image(ImageResource.poll)
             .resizable()
             .scaledToFit()
-          .tag(HowItWorksLogic.Step.poll)
-          
+            .tag(HowItWorksLogic.Step.poll)
+
           Image(ImageResource.congrats)
             .resizable()
             .scaledToFit()
-          .tag(HowItWorksLogic.Step.congrats)
-          
+            .tag(HowItWorksLogic.Step.congrats)
+
           Image(viewStore.gender == .female ? ImageResource.votedForGirl : ImageResource.votedForBoy)
             .resizable()
             .scaledToFit()
@@ -107,7 +107,7 @@ public struct HowItWorksView: View {
         }
         .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle())
-        
+
         VStack(spacing: 0) {
           LottieView(animation: LottieAnimation.named("Onboarding", bundle: .module))
             .looping()
