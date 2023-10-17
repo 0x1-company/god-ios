@@ -29,7 +29,7 @@ public struct QuickActionLogic: Reducer {
   }
 
   private func quickAction(send: Send<Action>, type: String) async {
-    analytics.logEvent("quick_action", ["shortcut_item_type":type])
+    analytics.logEvent("quick_action", ["shortcut_item_type": type])
     guard let url = Constants.quickActionURLs[type] else { return }
     await openURL(url)
   }
