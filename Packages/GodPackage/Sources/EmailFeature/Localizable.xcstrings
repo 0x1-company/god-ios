@@ -1,0 +1,76 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Close" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コピー"
+          }
+        }
+      }
+    },
+    "Email us" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールでのお問い合わせ"
+          }
+        }
+      }
+    },
+    "Gmail" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gmail"
+          }
+        }
+      }
+    },
+    "If you need help with the app or want to share feedback, send us an email and we will get back to you right away." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリのヘルプが必要な場合、またはフィードバックを共有したい場合はメールをお寄せください。すぐにお返事いたします。"
+          }
+        }
+      }
+    },
+    "Mail" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メール"
+          }
+        }
+      }
+    },
+    "Please describe your problem or feedback. Attach screenshots if necessary.\n-----TYPE BELOW THIS LINE-----" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "問題やご意見をご記入ください。必要であればスクリーンショットを添付してください。\nアカウントの削除を希望の場合はユーザーネームと登録に使用した電話番号を記載ください。\n-----この行の下に入力してください-----"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
