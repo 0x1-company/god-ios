@@ -28,10 +28,12 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     OnboardFeature-->HowItWorksFeature;
+    OnboardFeature-->ProfileStoryFeature;
     OnboardFeature-->CupertinoMessageFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
     ProfileFeature-->ProfileShareFeature;
+    ProfileShareFeature-->ProfileStoryFeature;
     ProfileShareFeature-->CupertinoMessageFeature;
 ```
