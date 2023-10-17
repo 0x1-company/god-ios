@@ -3,7 +3,7 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-struct InstagramStoryView: View {
+struct ProfileStoryView: View {
   let profileImageData: Data?
   let lastName: String
   let firstName: String
@@ -93,7 +93,7 @@ struct InstagramStoryView: View {
 }
 
 #Preview {
-  InstagramStoryView(
+  ProfileStoryView(
     profileImageData: nil,
     lastName: "つきやま",
     firstName: "ともき",

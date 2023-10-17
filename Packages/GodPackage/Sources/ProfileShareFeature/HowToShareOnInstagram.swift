@@ -196,7 +196,7 @@ public struct HowToShareOnInstagramView: View {
     user: God.CurrentUserQuery.Data.CurrentUser?
   ) -> some View {
     if let user {
-      InstagramStoryView(
+      ProfileStoryView(
         profileImageData: profileImageData,
         lastName: user.lastName,
         firstName: user.firstName,
