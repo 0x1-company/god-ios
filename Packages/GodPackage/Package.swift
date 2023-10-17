@@ -163,6 +163,7 @@ let package = Package(
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
+      "ProfileStoryFeature",
       "CupertinoMessageFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
