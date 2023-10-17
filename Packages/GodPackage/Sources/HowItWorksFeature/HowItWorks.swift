@@ -94,16 +94,19 @@ public struct HowItWorksView: View {
             .resizable()
             .scaledToFit()
             .tag(HowItWorksLogic.Step.poll)
+            .padding(.horizontal, 36)
 
           Image(ImageResource.congrats)
             .resizable()
             .scaledToFit()
             .tag(HowItWorksLogic.Step.congrats)
+            .padding(.horizontal, 36)
 
           Image(viewStore.gender == .female ? ImageResource.votedForGirl : ImageResource.votedForBoy)
             .resizable()
             .scaledToFit()
             .tag(HowItWorksLogic.Step.voted)
+            .padding(.horizontal, 36)
         }
         .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle())
