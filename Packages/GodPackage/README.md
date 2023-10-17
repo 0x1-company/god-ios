@@ -5,6 +5,7 @@ Only XxxFeature in GodPackage
 ## Package Dependencies
 ```mermaid
 graph TD;
+    AboutFeature-->EmailFeature;
     AboutFeature-->HowItWorksFeature;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;

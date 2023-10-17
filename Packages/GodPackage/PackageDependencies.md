@@ -1,10 +1,10 @@
 ```mermaid
 graph TD;
+    AboutFeature-->EmailFeature;
     AboutFeature-->HowItWorksFeature;
     AboutFeature-->Build;
     AboutFeature-->Constants;
     AboutFeature-->SwiftUIMessage;
-    AboutFeature-->GodActionSheet;
     AboutFeature-->UIPasteboardClient;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
@@ -33,6 +33,10 @@ graph TD;
     CashOutFeature-->ComposableArchitecture;
     CupertinoMessageFeature-->SwiftUIMessage;
     CupertinoMessageFeature-->ComposableArchitecture;
+    EmailFeature-->Constants;
+    EmailFeature-->Styleguide;
+    EmailFeature-->UIPasteboardClient;
+    EmailFeature-->ComposableArchitecture;
     ForceUpdateFeature-->Constants;
     ForceUpdateFeature-->Styleguide;
     ForceUpdateFeature-->ComposableArchitecture;
