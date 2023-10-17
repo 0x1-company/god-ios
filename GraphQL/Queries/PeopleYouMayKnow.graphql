@@ -1,4 +1,9 @@
+# import '../fragments/ProfileStoryFragment'
+
 query PeopleYouMayKnow($first: Int!) {
+  currentUser {
+    ...ProfileStoryFragment
+  }
   usersBySameSchool(first: $first) {
     edges {
       node {

@@ -346,6 +346,16 @@
         }
       }
     },
+    "LINE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LINE"
+          }
+        }
+      }
+    },
     "Log In" : {
       "localizations" : {
         "ja" : {
@@ -362,6 +372,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "人"
+          }
+        }
+      }
+    },
+    "Message" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
           }
         }
       }
@@ -416,6 +436,16 @@
         }
       }
     },
+    "Other" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
+    },
     "PEOPLE YOU MAY KNOW" : {
       "localizations" : {
         "ja" : {
@@ -449,12 +479,32 @@
         }
       }
     },
+    "SHARE PROFILE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールシェア"
+          }
+        }
+      }
+    },
     "Skip" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "スキップ"
+          }
+        }
+      }
+    },
+    "Story" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストーリー"
           }
         }
       }

@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Add me on" : {
-
-    },
     "click the **LINK** button" : {
       "localizations" : {
         "ja" : {
@@ -60,16 +57,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "**リンク**を好きな場所に置く"
-          }
-        }
-      }
-    },
-    "godapp.jp" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "godapp.jp"
           }
         }
       }

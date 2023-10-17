@@ -8,7 +8,8 @@ public extension God {
     public static let operationName: String = "PeopleYouMayKnow"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query PeopleYouMayKnow($first: Int!) { usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName displayName { __typename ja } grade } } } }"#
+        #"query PeopleYouMayKnow($first: Int!) { currentUser { __typename ...ProfileStoryFragment } usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName displayName { __typename ja } grade } } } }"#,
+        fragments: [ProfileStoryFragment.self]
       ))
 
     public var first: Int
@@ -25,11 +26,46 @@ public extension God {
 
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
+        .field("currentUser", CurrentUser.self),
         .field("usersBySameSchool", UsersBySameSchool.self, arguments: ["first": .variable("first")]),
       ] }
 
+      /// ログイン中ユーザーを取得
+      public var currentUser: CurrentUser { __data["currentUser"] }
       /// 同じ学校に所属しているユーザー一覧
       public var usersBySameSchool: UsersBySameSchool { __data["usersBySameSchool"] }
+
+      /// CurrentUser
+      ///
+      /// Parent Type: `User`
+      public struct CurrentUser: God.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .fragment(ProfileStoryFragment.self),
+        ] }
+
+        /// プロフィール画像のURL
+        public var imageURL: String { __data["imageURL"] }
+        /// first name
+        public var firstName: String { __data["firstName"] }
+        /// username
+        public var username: String? { __data["username"] }
+        /// 表示名
+        public var displayName: ProfileStoryFragment.DisplayName { __data["displayName"] }
+        /// 所属している学校
+        public var school: ProfileStoryFragment.School? { __data["school"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var profileStoryFragment: ProfileStoryFragment { _toFragment() }
+        }
+      }
 
       /// UsersBySameSchool
       ///

@@ -121,7 +121,7 @@ public struct OnboardLogic: Reducer {
       case usernameSetting(UsernameSettingLogic.State = .init())
       case genderSetting(GenderSettingLogic.State = .init())
       case profilePhotoSetting(ProfilePhotoSettingLogic.State = .init())
-      case addFriends(AddFriendsLogic.State)
+      case addFriends(AddFriendsLogic.State = .init())
       case howItWorks(HowItWorksLogic.State = .init())
     }
 
