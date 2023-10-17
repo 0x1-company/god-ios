@@ -16,6 +16,7 @@ let package = Package(
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
+    .library(name: "EmailFeature", targets: ["EmailFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "FriendRequestFeature", targets: ["FriendRequestFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
@@ -47,11 +48,11 @@ let package = Package(
   ],
   targets: [
     .target(name: "AboutFeature", dependencies: [
+      "EmailFeature",
       "HowItWorksFeature",
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
-      .product(name: "GodActionSheet", package: "UIComponentPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
@@ -89,6 +90,12 @@ let package = Package(
     ], resources: [.copy("Coin.json")]),
     .target(name: "CupertinoMessageFeature", dependencies: [
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "EmailFeature", dependencies: [
+      .product(name: "Constants", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ForceUpdateFeature", dependencies: [

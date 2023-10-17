@@ -1,25 +1,28 @@
 import ComposableArchitecture
-import Constants
-import GodActionSheet
 import Styleguide
 import SwiftUI
 import UIPasteboardClient
+import Constants
 
-public struct InfoActionSheetLogic: Reducer {
+public struct EmailSheetLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
     let title: String
+
+    public init(title: String) {
+      self.title = title
+    }
   }
 
   public enum Action: Equatable {
     case onTask
-    case closeButtonTapped
+    case dismissButtonTapped
     case mailButtonTapped
     case gmailButtonTapped
     case copyButtonTapped
   }
-
+  
   @Dependency(\.openURL) var openURL
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.pasteboard) var pasteboard
@@ -30,13 +33,13 @@ public struct InfoActionSheetLogic: Reducer {
       case .onTask:
         return .none
 
-      case .closeButtonTapped:
+      case .dismissButtonTapped:
         return .run { _ in
-          await dismiss()
+          await self.dismiss()
         }
 
       case .mailButtonTapped:
-        guard let url = mailGenerator(subject: state.title)
+        guard let url = generateEmail(subject: state.title)
         else { return .none }
         return .run { _ in
           await openURL(url)
@@ -44,7 +47,7 @@ public struct InfoActionSheetLogic: Reducer {
         }
 
       case .gmailButtonTapped:
-        guard let url = gmailGenerator(subject: state.title)
+        guard let url = generateGmail(subject: state.title)
         else { return .none }
         return .run { _ in
           await openURL(url)
@@ -57,8 +60,8 @@ public struct InfoActionSheetLogic: Reducer {
       }
     }
   }
-
-  private func mailGenerator(subject: String) -> URL? {
+  
+  private func generateEmail(subject: String) -> URL? {
     var components = URLComponents()
     components.scheme = "mailto"
     components.path = "\(Constants.helpEmailAddress)"
@@ -78,7 +81,7 @@ public struct InfoActionSheetLogic: Reducer {
     return components.url
   }
 
-  private func gmailGenerator(subject: String) -> URL? {
+  private func generateGmail(subject: String) -> URL? {
     var components = URLComponents()
     components.scheme = "googlegmail"
     components.path = "/co"
@@ -100,26 +103,33 @@ public struct InfoActionSheetLogic: Reducer {
   }
 }
 
-public struct InfoActionSheetView: View {
-  let store: StoreOf<InfoActionSheetLogic>
+public struct EmailSheetView: View {
+  let store: StoreOf<EmailSheetLogic>
   @Environment(\.displayScale) var displayScale
 
-  public init(store: StoreOf<InfoActionSheetLogic>) {
+  public init(store: StoreOf<EmailSheetLogic>) {
     self.store = store
   }
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      GodActionSheet(
-        title: viewStore.title,
-        description: String(
-          localized: "If you need help with the app or want to\nshare feedback, send us an email and\nwe will get back to you right away.",
-          bundle: .module
-        ),
-        onDismiss: {
-          viewStore.send(.closeButtonTapped)
-        },
-        actions: {
+      VStack {
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture {
+            store.send(.dismissButtonTapped)
+          }
+        
+        VStack(spacing: 24) {
+          VStack(spacing: 12) {
+            Text(viewStore.title)
+              .font(.system(.title3, design: .rounded, weight: .bold))
+            
+            Text("If you need help with the app or want to share feedback, send us an email and we will get back to you right away.", bundle: .module)
+              .foregroundStyle(.secondary)
+              .font(.system(.footnote, design: .rounded))
+          }
+          
           HStack(spacing: 0) {
             Spacer()
 
@@ -186,19 +196,46 @@ public struct InfoActionSheetView: View {
             Spacer()
           }
           .buttonStyle(HoldDownButtonStyle())
+          
+          Button {
+            store.send(.dismissButtonTapped)
+          } label: {
+            RoundedRectangle(cornerRadius: 24)
+              .stroke(Color.black, lineWidth: 1)
+              .frame(height: 48)
+              .background {
+                Text("Close", bundle: .module)
+                  .bold()
+                  .foregroundColor(.black)
+                  .frame(height: 48)
+                  .frame(maxWidth: .infinity)
+              }
+          }
+          .buttonStyle(HoldDownButtonStyle())
         }
-      )
+        .padding(.top, 18)
+        .padding(.horizontal, 16)
+        .frame(maxWidth: .infinity)
+        .background(Color.white)
+        .multilineTextAlignment(.center)
+      }
+      .task { await viewStore.send(.onTask).finish() }
     }
   }
 }
 
 #Preview {
-  InfoActionSheetView(
-    store: .init(
-      initialState: InfoActionSheetLogic.State(
-        title: "Email us"
-      ),
-      reducer: { InfoActionSheetLogic() }
-    )
-  )
+  Color.red
+    .ignoresSafeArea()
+    .sheet(isPresented: .constant(true)) {
+      EmailSheetView(
+        store: .init(
+          initialState: EmailSheetLogic.State(
+            title: "Email us"
+          ),
+          reducer: { EmailSheetLogic() }
+        )
+      )
+      .presentationBackground(Color.clear)
+    }
 }

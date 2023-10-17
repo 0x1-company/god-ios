@@ -3,10 +3,27 @@ import ComposableArchitecture
 import Constants
 import HowItWorksFeature
 import Styleguide
+import EmailFeature
 import SwiftUI
 
 public struct AboutLogic: Reducer {
   public init() {}
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case howItWorks(HowItWorksLogic.State = .init())
+      case emailSheet(EmailSheetLogic.State)
+    }
+
+    public enum Action: Equatable {
+      case howItWorks(HowItWorksLogic.Action)
+      case emailSheet(EmailSheetLogic.Action)
+    }
+
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.howItWorks, action: /Action.howItWorks, child: HowItWorksLogic.init)
+      Scope(state: /State.emailSheet, action: /Action.emailSheet, child: EmailSheetLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
@@ -58,8 +75,8 @@ public struct AboutLogic: Reducer {
           await openURL(Constants.faqURL)
         }
       case .shareFeedbackButtonTapped:
-        state.destination = .infoActionSheet(
-          InfoActionSheetLogic.State(title: String(localized: "Email us", bundle: .module))
+        state.destination = .emailSheet(
+          EmailSheetLogic.State(title: String(localized: "Email us", bundle: .module))
         )
         return .none
 
@@ -73,42 +90,42 @@ public struct AboutLogic: Reducer {
         }
 
       case let .confirmationDialog(.presented(action)):
-        let infoState: InfoActionSheetLogic.State
+        let emailState: EmailSheetLogic.State
         switch action {
         case .addMySchoolToMyProfile:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Add my school to my profile", bundle: .module)
           )
         case .changeMyGrade:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Change my grade", bundle: .module)
           )
         case .changeMyGender:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Change my gender", bundle: .module)
           )
         case .changeMyName:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Change my name", bundle: .module)
           )
         case .deleteMyAccount:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Delete my account", bundle: .module)
           )
         case .purchasesAndGodMode:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Purchases & God Mode", bundle: .module)
           )
         case .reportBug:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Report a bug", bundle: .module)
           )
         case .somethingElse:
-          infoState = .init(
+          emailState = .init(
             title: String(localized: "Something else", bundle: .module)
           )
         }
-        state.destination = .infoActionSheet(infoState)
+        state.destination = .emailSheet(emailState)
         return .none
       case .confirmationDialog(.dismiss):
         state.confirmationDialog = nil
@@ -127,27 +144,6 @@ public struct AboutLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
-    }
-  }
-
-  public struct Destination: Reducer {
-    public enum State: Equatable {
-      case howItWorks(HowItWorksLogic.State = .init())
-      case infoActionSheet(InfoActionSheetLogic.State)
-    }
-
-    public enum Action: Equatable {
-      case howItWorks(HowItWorksLogic.Action)
-      case infoActionSheet(InfoActionSheetLogic.Action)
-    }
-
-    public var body: some Reducer<State, Action> {
-      Scope(state: /State.howItWorks, action: /Action.howItWorks) {
-        HowItWorksLogic()
-      }
-      Scope(state: /State.infoActionSheet, action: /Action.infoActionSheet) {
-        InfoActionSheetLogic()
-      }
     }
   }
 }
@@ -224,12 +220,11 @@ public struct AboutView: View {
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutLogic.Destination.State.infoActionSheet,
-        action: AboutLogic.Destination.Action.infoActionSheet
+        state: /AboutLogic.Destination.State.emailSheet,
+        action: AboutLogic.Destination.Action.emailSheet
       ) { store in
-        InfoActionSheetView(store: store)
-          .presentationDetents([.fraction(0.5)])
-          .presentationDragIndicator(.visible)
+        EmailSheetView(store: store)
+          .presentationBackground(Color.clear)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
