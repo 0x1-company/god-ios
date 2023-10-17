@@ -5,6 +5,7 @@ public enum GodAppJpPath: String {
 
 public enum UtmSource: String {
   case sms
+  case line
   case instagram
   case share
 }
@@ -13,4 +14,5 @@ public enum UtmMedium: String {
   case add
   case invite
   case profile
+  case onboard
 }

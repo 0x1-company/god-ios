@@ -13,6 +13,7 @@ import SwiftUI
 import SwiftUIMessage
 import ProfileStoryFeature
 import UIPasteboardClient
+import ShareLinkBuilder
 
 public struct AddFriendsLogic: Reducer {
   public init() {}
@@ -23,6 +24,7 @@ public struct AddFriendsLogic: Reducer {
     var contacts: [CNContact] = []
     @PresentationState var message: CupertinoMessageLogic.State?
     
+    var shareURL = URL(string: "https://godapp.jp")!
     var profileStoryFragment: God.ProfileStoryFragment?
     var profileImageData: Data?
     var schoolImageData: Data?
@@ -99,9 +101,22 @@ public struct AddFriendsLogic: Reducer {
         }
         
       case .lineButtonTapped:
-        return .none
+        guard let lineURL = ShareLinkBuilder.buildForLine(
+          path: .add,
+          username: state.profileStoryFragment?.username,
+          source: .line,
+          medium: .onboard
+        ) else { return .none }
+        return .run { send in
+          await openURL(lineURL)
+        }
         
       case .messageButtonTapped:
+        let username = state.profileStoryFragment?.username
+        let smsText = ShareLinkBuilder.buildShareText(path: .add, username: username, source: .sms, medium: .onboard)
+        guard let smsText, MessageComposeView.canSendText()
+        else { return .none }
+        state.message = .init(recipients: [], body: smsText)
         return .none
 
       case .nextButtonTapped:
@@ -141,6 +156,9 @@ public struct AddFriendsLogic: Reducer {
       case let .usersResponse(.success(data)):
         state.users = data.usersBySameSchool.edges.map(\.node)
         state.profileStoryFragment = data.currentUser.fragments.profileStoryFragment
+        if let username = data.currentUser.username {
+          state.shareURL = ShareLinkBuilder.buildGodLink(path: .add, username: username, source: .share, medium: .onboard)
+        }
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             if let imageURL = URL(string: data.currentUser.imageURL) {
@@ -258,7 +276,7 @@ public struct AddFriendsView: View {
             Divider()
 
             SocialShareView(
-              shareURL: URL(string: "https://godapp.jp")!,
+              shareURL: viewStore.shareURL,
               storyAction: {
                 let renderer = ImageRenderer(content: instagramStoryView)
                 renderer.scale = displayScale
