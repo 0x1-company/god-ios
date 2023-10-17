@@ -15,15 +15,12 @@ public struct AddFriendsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    let schoolId: String?
     var selectUserIds: [String] = []
     var users: [God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node] = []
     var contacts: [CNContact] = []
     @PresentationState var message: CupertinoMessageLogic.State?
 
-    public init(schoolId: String?) {
-      self.schoolId = schoolId
-    }
+    public init() {}
   }
 
   public enum Action: Equatable {
@@ -45,6 +42,7 @@ public struct AddFriendsLogic: Reducer {
 
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.contacts.authorizationStatus) var authorizationStatus
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts
 
   enum Cancel {
@@ -137,6 +135,8 @@ public struct AddFriendsLogic: Reducer {
   }
 
   private func contactsRequest(send: Send<Action>) async {
+    guard case .authorized = authorizationStatus(.contacts)
+    else { return }
     do {
       let request = CNContactFetchRequest(keysToFetch: [
         CNContactImageDataKey as CNKeyDescriptor,
@@ -164,14 +164,34 @@ public struct AddFriendsView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(spacing: 0) {
-          
-          Text("PEOPLE YOU MAY KNOW", bundle: .module)
-            .bold()
-            .frame(maxWidth: .infinity, alignment: .leading)
+          Text("SHARE PROFILE", bundle: .module)
             .frame(height: 34)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .foregroundColor(.secondary)
             .background(Color(uiColor: .quaternarySystemFill))
+            .font(.system(.body, design: .rounded, weight: .bold))
+          
+          Divider()
+
+          SocialShareView(
+            shareURL: URL(string: "https://godapp.jp")!,
+            storyAction: {},
+            lineAction: {},
+            messageAction: {}
+          )
+          .padding(.vertical, 12)
+          .padding(.horizontal, 24)
+          
+          Divider()
+          
+          Text("PEOPLE YOU MAY KNOW", bundle: .module)
+            .frame(height: 34)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+            .foregroundColor(.secondary)
+            .background(Color(uiColor: .quaternarySystemFill))
+            .font(.system(.body, design: .rounded, weight: .bold))
 
           Divider()
 
@@ -276,5 +296,16 @@ public struct AddFriendsView: View {
         .foregroundColor(Color.white)
       }
     }
+  }
+}
+
+#Preview {
+  NavigationStack {
+    AddFriendsView(
+      store: .init(
+        initialState: AddFriendsLogic.State(),
+        reducer: { AddFriendsLogic() }
+      )
+    )
   }
 }

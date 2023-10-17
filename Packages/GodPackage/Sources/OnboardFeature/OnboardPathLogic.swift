@@ -133,9 +133,7 @@ public struct OnboardPathLogic: Reducer {
         return .none
 
       case .profilePhotoSetting(.delegate(.nextScreen)):
-        state.path.append(
-          .addFriends(.init(schoolId: state.schoolId))
-        )
+        state.path.append(.addFriends())
         return .none
 
       case .addFriends(.delegate(.nextScreen)):

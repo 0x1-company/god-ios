@@ -346,6 +346,9 @@
         }
       }
     },
+    "LINE" : {
+
+    },
     "Log In" : {
       "localizations" : {
         "ja" : {
@@ -365,6 +368,9 @@
           }
         }
       }
+    },
+    "Message" : {
+
     },
     "Next" : {
       "localizations" : {
@@ -416,6 +422,9 @@
         }
       }
     },
+    "Other" : {
+
+    },
     "PEOPLE YOU MAY KNOW" : {
       "localizations" : {
         "ja" : {
@@ -450,6 +459,7 @@
       }
     },
     "Share Stories" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -469,7 +479,11 @@
         }
       }
     },
+    "Story" : {
+
+    },
     "Story Share" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
