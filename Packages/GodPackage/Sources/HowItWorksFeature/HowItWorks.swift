@@ -108,7 +108,6 @@ public struct HowItWorksView: View {
             .tag(HowItWorksLogic.Step.voted)
             .padding(.horizontal, 36)
         }
-        .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle())
 
         VStack(spacing: 0) {
