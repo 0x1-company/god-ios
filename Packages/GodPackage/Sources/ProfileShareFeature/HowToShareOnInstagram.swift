@@ -8,6 +8,7 @@ import Styleguide
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
+import ProfileStoryFeature
 
 public struct HowToShareOnInstagramLogic: Reducer {
   public init() {}

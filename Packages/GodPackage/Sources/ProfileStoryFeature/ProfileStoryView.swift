@@ -3,7 +3,7 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-struct ProfileStoryView: View {
+public struct ProfileStoryView: View {
   let profileImageData: Data?
   let lastName: String
   let firstName: String
@@ -11,8 +11,26 @@ struct ProfileStoryView: View {
   let username: String?
   let schoolImageData: Data?
   let schoolName: String?
+  
+  public init(
+    profileImageData: Data?,
+    lastName: String,
+    firstName: String,
+    displayName: String,
+    username: String?,
+    schoolImageData: Data?,
+    schoolName: String?
+  ) {
+    self.profileImageData = profileImageData
+    self.lastName = lastName
+    self.firstName = firstName
+    self.displayName = displayName
+    self.username = username
+    self.schoolImageData = schoolImageData
+    self.schoolName = schoolName
+  }
 
-  var body: some View {
+  public var body: some View {
     VStack(spacing: 0) {
       VStack(spacing: 24) {
         Group {
