@@ -173,6 +173,7 @@ let package = Package(
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
       .product(name: "FirebaseAuthClient", package: "DependencyPackage"),

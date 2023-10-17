@@ -1,6 +1,8 @@
+import Constants
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
+import UIPasteboardClient
 import ProfileStoryFeature
 
 public struct StoryShareLogic: Reducer {
@@ -14,8 +16,11 @@ public struct StoryShareLogic: Reducer {
     case onTask
     case onAppear
     case nextButtonTapped
-    case shareStoriesButtonTapped
+    case shareStoriesButtonTapped(UIImage?)
   }
+  
+  @Dependency(\.openURL) var openURL
+  @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
@@ -29,7 +34,22 @@ public struct StoryShareLogic: Reducer {
       case .nextButtonTapped:
         return .none
         
-      case .shareStoriesButtonTapped:
+      case let .shareStoriesButtonTapped(.some(profileCardImage)):
+        guard let imageData = profileCardImage.pngData()
+        else { return .none }
+        let pasteboardItems: [String: Any] = [
+          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+        ]
+        pasteboard.setItems(
+          [pasteboardItems],
+          [.expirationDate: Date().addingTimeInterval(300)]
+        )
+        return .run { send in
+          await openURL(Constants.storiesURL)
+        }
+      default:
         return .none
       }
     }
@@ -38,6 +58,7 @@ public struct StoryShareLogic: Reducer {
 
 public struct StoryShareView: View {
   let store: StoreOf<StoryShareLogic>
+  @Environment(\.displayScale) var displayScale
 
   public init(store: StoreOf<StoryShareLogic>) {
     self.store = store
@@ -61,7 +82,9 @@ public struct StoryShareView: View {
         Spacer()
         
         Button {
-          store.send(.shareStoriesButtonTapped)
+          let renderer = ImageRenderer(content: instagramStoryView)
+          renderer.scale = displayScale
+          store.send(.shareStoriesButtonTapped(renderer.uiImage))
         } label: {
           Text("Share Stories", bundle: .module)
             .foregroundStyle(Color.white)
