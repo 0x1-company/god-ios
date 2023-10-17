@@ -347,7 +347,14 @@
       }
     },
     "LINE" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LINE"
+          }
+        }
+      }
     },
     "Log In" : {
       "localizations" : {
@@ -370,7 +377,14 @@
       }
     },
     "Message" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージ"
+          }
+        }
+      }
     },
     "Next" : {
       "localizations" : {
@@ -423,7 +437,14 @@
       }
     },
     "Other" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
     },
     "PEOPLE YOU MAY KNOW" : {
       "localizations" : {
@@ -458,16 +479,8 @@
         }
       }
     },
-    "Share Stories" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ストーリーでシェアする"
-          }
-        }
-      }
+    "SHARE PROFILE" : {
+
     },
     "Skip" : {
       "localizations" : {
@@ -480,15 +493,11 @@
       }
     },
     "Story" : {
-
-    },
-    "Story Share" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストーリーでシェアする"
+            "value" : "ストーリー"
           }
         }
       }

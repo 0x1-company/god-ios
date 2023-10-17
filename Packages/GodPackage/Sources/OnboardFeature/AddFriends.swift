@@ -26,6 +26,9 @@ public struct AddFriendsLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case onAppear
+    case storyButtonTapped
+    case lineButtonTapped
+    case messageButtonTapped
     case nextButtonTapped
     case selectButtonTapped(String)
     case inviteButtonTapped(CNContact)
@@ -55,11 +58,7 @@ public struct AddFriendsLogic: Reducer {
       case .onTask:
         return .merge(
           .run(operation: { send in
-            for try await data in godClient.peopleYouMayKnow() {
-              await send(.usersResponse(.success(data)))
-            }
-          }, catch: { error, send in
-            await send(.usersResponse(.failure(error)))
+            await peopleYouMayKnowRequest(send: send)
           }),
           .run(operation: { send in
             await contactsRequest(send: send)
@@ -68,6 +67,15 @@ public struct AddFriendsLogic: Reducer {
         )
       case .onAppear:
         analytics.logScreen(screenName: "AddFriends", of: self)
+        return .none
+        
+      case .storyButtonTapped:
+        return .none
+        
+      case .lineButtonTapped:
+        return .none
+        
+      case .messageButtonTapped:
         return .none
 
       case .nextButtonTapped:
@@ -113,15 +121,14 @@ public struct AddFriendsLogic: Reducer {
         return .none
 
       case let .contactResponse(.success(contact)):
+        guard state.contacts.count <= 20 else {
+          return .cancel(id: Cancel.contacts)
+        }
         guard
           !contact.phoneNumbers.isEmpty,
           !contact.familyName.isEmpty,
           !contact.givenName.isEmpty
         else { return .none }
-
-        guard state.contacts.count <= 100 else {
-          return Effect<Action>.cancel(id: Cancel.contacts)
-        }
         state.contacts.append(contact)
         return .none
 
@@ -131,6 +138,16 @@ public struct AddFriendsLogic: Reducer {
     }
     .ifLet(\.$message, action: /Action.message) {
       CupertinoMessageLogic()
+    }
+  }
+  
+  private func peopleYouMayKnowRequest(send: Send<Action>) async {
+    do {
+      for try await data in godClient.peopleYouMayKnow() {
+        await send(.usersResponse(.success(data)))
+      }
+    } catch {
+      await send(.usersResponse(.failure(error)))
     }
   }
 
@@ -162,118 +179,126 @@ public struct AddFriendsView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollView {
-        LazyVStack(spacing: 0) {
-          Text("SHARE PROFILE", bundle: .module)
-            .frame(height: 34)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 16)
-            .foregroundColor(.secondary)
-            .background(Color(uiColor: .quaternarySystemFill))
-            .font(.system(.body, design: .rounded, weight: .bold))
-          
-          Divider()
+      ZStack {
+        ScrollView {
+          LazyVStack(spacing: 0) {
+            Text("SHARE PROFILE", bundle: .module)
+              .frame(height: 34)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .padding(.horizontal, 16)
+              .foregroundColor(.secondary)
+              .background(Color(uiColor: .quaternarySystemFill))
+              .font(.system(.body, design: .rounded, weight: .bold))
+            
+            Divider()
 
-          SocialShareView(
-            shareURL: URL(string: "https://godapp.jp")!,
-            storyAction: {},
-            lineAction: {},
-            messageAction: {}
-          )
-          .padding(.vertical, 12)
-          .padding(.horizontal, 24)
-          
-          Divider()
-          
-          Text("PEOPLE YOU MAY KNOW", bundle: .module)
-            .frame(height: 34)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 16)
-            .foregroundColor(.secondary)
-            .background(Color(uiColor: .quaternarySystemFill))
-            .font(.system(.body, design: .rounded, weight: .bold))
+            SocialShareView(
+              shareURL: URL(string: "https://godapp.jp")!,
+              storyAction: {
+                store.send(.storyButtonTapped)
+              },
+              lineAction: {
+                store.send(.lineButtonTapped)
+              },
+              messageAction: {
+                store.send(.messageButtonTapped)
+              }
+            )
+            .padding(.vertical, 12)
+            .padding(.horizontal, 24)
+            
+            Divider()
+            
+            Text("PEOPLE YOU MAY KNOW", bundle: .module)
+              .frame(height: 34)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .padding(.horizontal, 16)
+              .foregroundColor(.secondary)
+              .background(Color(uiColor: .quaternarySystemFill))
+              .font(.system(.body, design: .rounded, weight: .bold))
 
-          Divider()
+            Divider()
 
-          ForEach(viewStore.users, id: \.self) { user in
-            Button {
-              viewStore.send(.selectButtonTapped(user.id))
-            } label: {
+            ForEach(viewStore.users, id: \.self) { user in
+              Button {
+                viewStore.send(.selectButtonTapped(user.id))
+              } label: {
+                HStack(alignment: .center, spacing: 16) {
+                  ProfileImage(
+                    urlString: user.imageURL,
+                    name: user.firstName,
+                    size: 40
+                  )
+
+                  VStack(alignment: .leading) {
+                    Text(user.displayName.ja)
+                      .foregroundStyle(Color.black)
+                  }
+                  .frame(maxWidth: .infinity, alignment: .leading)
+
+                  Rectangle()
+                    .fill(
+                      viewStore.selectUserIds.contains(user.id)
+                        ? Color.godService
+                        : Color.white
+                    )
+                    .frame(width: 26, height: 26)
+                    .clipShape(Circle())
+                    .overlay(
+                      RoundedRectangle(cornerRadius: 26 / 2)
+                        .stroke(
+                          viewStore.selectUserIds.contains(user.id)
+                            ? Color.godService
+                            : Color.godTextSecondaryLight,
+                          lineWidth: 2
+                        )
+                    )
+                }
+                .padding(.horizontal, 16)
+                .frame(height: 72)
+                .background(Color.white)
+              }
+
+              Divider()
+            }
+            ForEach(viewStore.contacts, id: \.identifier) { contact in
               HStack(alignment: .center, spacing: 16) {
-                ProfileImage(
-                  urlString: user.imageURL,
-                  name: user.firstName,
-                  size: 40
-                )
+                if let imageData = contact.imageData, let image = UIImage(data: imageData) {
+                  Image(uiImage: image)
+                    .resizable()
+                    .frame(width: 42, height: 42)
+                    .clipShape(Circle())
+                } else {
+                  NameImage(name: contact.givenName, size: 42)
+                }
 
                 VStack(alignment: .leading) {
-                  Text(user.displayName.ja)
-                    .foregroundStyle(Color.black)
+                  Text(contact.familyName + contact.givenName)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Rectangle()
-                  .fill(
-                    viewStore.selectUserIds.contains(user.id)
-                      ? Color.godService
-                      : Color.white
-                  )
-                  .frame(width: 26, height: 26)
-                  .clipShape(Circle())
-                  .overlay(
-                    RoundedRectangle(cornerRadius: 26 / 2)
-                      .stroke(
-                        viewStore.selectUserIds.contains(user.id)
-                          ? Color.godService
-                          : Color.godTextSecondaryLight,
-                        lineWidth: 2
-                      )
-                  )
+                Spacer()
+
+                Button {
+                  store.send(.inviteButtonTapped(contact))
+                } label: {
+                  Text("INVITE", bundle: .module)
+                    .bold()
+                    .frame(height: 34)
+                    .foregroundColor(.godService)
+                    .padding(.horizontal, 12)
+                    .overlay(
+                      RoundedRectangle(cornerRadius: 34 / 2)
+                        .stroke(Color.godService, lineWidth: 1)
+                    )
+                }
+                .buttonStyle(HoldDownButtonStyle())
               }
               .padding(.horizontal, 16)
               .frame(height: 72)
               .background(Color.white)
+
+              Divider()
             }
-
-            Divider()
-          }
-          ForEach(viewStore.contacts, id: \.identifier) { contact in
-            HStack(alignment: .center, spacing: 16) {
-              if let imageData = contact.imageData, let image = UIImage(data: imageData) {
-                Image(uiImage: image)
-                  .resizable()
-                  .frame(width: 42, height: 42)
-                  .clipShape(Circle())
-              } else {
-                NameImage(name: contact.givenName, size: 42)
-              }
-
-              VStack(alignment: .leading) {
-                Text(contact.familyName + contact.givenName)
-              }
-
-              Spacer()
-
-              Button {
-                store.send(.inviteButtonTapped(contact))
-              } label: {
-                Text("INVITE", bundle: .module)
-                  .bold()
-                  .frame(height: 34)
-                  .foregroundColor(.godService)
-                  .padding(.horizontal, 12)
-                  .overlay(
-                    RoundedRectangle(cornerRadius: 34 / 2)
-                      .stroke(Color.godService, lineWidth: 1)
-                  )
-              }
-              .buttonStyle(HoldDownButtonStyle())
-            }
-            .padding(.horizontal, 16)
-            .frame(height: 72)
-            .background(Color.white)
-
-            Divider()
           }
         }
       }
