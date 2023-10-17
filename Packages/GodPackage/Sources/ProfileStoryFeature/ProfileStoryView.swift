@@ -5,7 +5,6 @@ import SwiftUI
 
 public struct ProfileStoryView: View {
   let profileImageData: Data?
-  let lastName: String
   let firstName: String
   let displayName: String
   let username: String?
@@ -14,7 +13,6 @@ public struct ProfileStoryView: View {
   
   public init(
     profileImageData: Data?,
-    lastName: String,
     firstName: String,
     displayName: String,
     username: String?,
@@ -22,7 +20,6 @@ public struct ProfileStoryView: View {
     schoolName: String?
   ) {
     self.profileImageData = profileImageData
-    self.lastName = lastName
     self.firstName = firstName
     self.displayName = displayName
     self.username = username
@@ -113,7 +110,6 @@ public struct ProfileStoryView: View {
 #Preview {
   ProfileStoryView(
     profileImageData: nil,
-    lastName: "つきやま",
     firstName: "ともき",
     displayName: "つきやま ともき",
     username: "tomokisun",

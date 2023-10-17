@@ -199,7 +199,6 @@ public struct HowToShareOnInstagramView: View {
     if let user {
       ProfileStoryView(
         profileImageData: profileImageData,
-        lastName: user.lastName,
         firstName: user.firstName,
         displayName: user.displayName.ja,
         username: user.username,
