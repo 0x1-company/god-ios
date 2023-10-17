@@ -1,8 +1,8 @@
 import ComposableArchitecture
+import Constants
 import Styleguide
 import SwiftUI
 import UIPasteboardClient
-import Constants
 
 public struct EmailSheetLogic: Reducer {
   public init() {}
@@ -22,7 +22,7 @@ public struct EmailSheetLogic: Reducer {
     case gmailButtonTapped
     case copyButtonTapped
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.pasteboard) var pasteboard
@@ -35,7 +35,7 @@ public struct EmailSheetLogic: Reducer {
 
       case .dismissButtonTapped:
         return .run { _ in
-          await self.dismiss()
+          await dismiss()
         }
 
       case .mailButtonTapped:
@@ -60,7 +60,7 @@ public struct EmailSheetLogic: Reducer {
       }
     }
   }
-  
+
   private func generateEmail(subject: String) -> URL? {
     var components = URLComponents()
     components.scheme = "mailto"
@@ -119,17 +119,17 @@ public struct EmailSheetView: View {
           .onTapGesture {
             store.send(.dismissButtonTapped)
           }
-        
+
         VStack(spacing: 24) {
           VStack(spacing: 12) {
             Text(viewStore.title)
               .font(.system(.title3, design: .rounded, weight: .bold))
-            
+
             Text("If you need help with the app or want to share feedback, send us an email and we will get back to you right away.", bundle: .module)
               .foregroundStyle(.secondary)
               .font(.system(.footnote, design: .rounded))
           }
-          
+
           HStack(spacing: 0) {
             Spacer()
 
@@ -196,7 +196,7 @@ public struct EmailSheetView: View {
             Spacer()
           }
           .buttonStyle(HoldDownButtonStyle())
-          
+
           Button {
             store.send(.dismissButtonTapped)
           } label: {
