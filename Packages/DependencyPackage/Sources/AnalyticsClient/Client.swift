@@ -17,6 +17,12 @@ public extension AnalyticsClient {
       ]
     )
   }
+  
+  func buttonClick(name: String, parameters: [String: Any] = [:]) {
+    var parameters = parameters
+    parameters["name"] = name
+    logEvent("button_click", parameters)
+  }
 }
 
 public extension AnalyticsClient {

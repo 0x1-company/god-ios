@@ -84,6 +84,7 @@ public struct AddFriendsLogic: Reducer {
         return .none
         
       case let .storyButtonTapped(.some(profileCardImage)):
+        analytics.buttonClick(name: "story_share")
         guard let imageData = profileCardImage.pngData() else {
           return .none
         }
@@ -101,6 +102,7 @@ public struct AddFriendsLogic: Reducer {
         }
         
       case .lineButtonTapped:
+        analytics.buttonClick(name: "line_share")
         guard let lineURL = ShareLinkBuilder.buildForLine(
           path: .add,
           username: state.profileStoryFragment?.username,
@@ -112,6 +114,7 @@ public struct AddFriendsLogic: Reducer {
         }
         
       case .messageButtonTapped:
+        analytics.buttonClick(name: "sms_share")
         let username = state.profileStoryFragment?.username
         let smsText = ShareLinkBuilder.buildShareText(path: .add, username: username, source: .sms, medium: .onboard)
         guard let smsText, MessageComposeView.canSendText()
