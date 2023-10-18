@@ -27,6 +27,11 @@ public struct PlayAgainLogic: Reducer {
     case timerTick
     case inviteFriendButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case loading
+    }
   }
 
   @Dependency(\.date.now) var now
@@ -35,6 +40,10 @@ public struct PlayAgainLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
   @Dependency(\.continuousClock) var clock
+  
+  enum Cancel {
+    case timer
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -43,10 +52,12 @@ public struct PlayAgainLogic: Reducer {
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
-              await send(.timerTick)
+              await send(.timerTick, animation: .default)
             }
             group.addTask {
-              await startTimer(send: send)
+              await withTaskCancellation(id: Cancel.timer, cancelInFlight: true) {
+                await startTimer(send: send)
+              }
             }
             group.addTask {
               do {
@@ -62,6 +73,12 @@ public struct PlayAgainLogic: Reducer {
       case .onAppear:
         analytics.logScreen(screenName: "PlayAgain", of: self)
         return .none
+
+      case .timerTick where state.until < now:
+        return .run { send in
+          Task.cancel(id: Cancel.timer)
+          await send(.delegate(.loading), animation: .default)
+        }
 
       case .timerTick:
         let difference = calendar.dateComponents([.minute, .second], from: now, to: state.until)
@@ -92,13 +109,16 @@ public struct PlayAgainLogic: Reducer {
       case .currentUserResponse(.failure):
         state.currentUser = nil
         return .none
+        
+      case .delegate:
+        return .none
       }
     }
   }
 
   private func startTimer(send: Send<Action>) async {
     for await _ in clock.timer(interval: .seconds(1)) {
-      await send(.timerTick)
+      await send(.timerTick, animation: .default)
     }
   }
 }
