@@ -22,6 +22,7 @@ public struct AddLogic: Reducer {
     var friendsOfFriendsPanel: FriendsOfFriendsPanelLogic.State?
     var fromSchoolPanel: FromSchoolPanelLogic.State?
 
+    var currentUser: God.AddPlusQuery.Data.CurrentUser?
     var searchResult: IdentifiedArrayOf<FriendRowCardLogic.State> = []
     public init() {}
   }
@@ -134,11 +135,13 @@ public struct AddLogic: Reducer {
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))
         state.friendsOfFriendsPanel = friendsOfFriends.isEmpty ? nil : .init(friendsOfFriends: .init(uniqueElements: friendsOfFriends))
         state.fromSchoolPanel = fromSchools.isEmpty ? nil : .init(users: .init(uniqueElements: fromSchools))
+        state.currentUser = data.currentUser
         return .none
       case .addPlusResponse(.failure):
         state.friendRequestPanel = nil
         state.friendsOfFriendsPanel = nil
         state.fromSchoolPanel = nil
+        state.currentUser = nil
         return .none
 
       case let .friendRequestPanel(.delegate(.showExternalProfile(userId))):
