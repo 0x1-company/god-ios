@@ -89,7 +89,9 @@ public struct PollQuestionLogic: Reducer {
         } message: {
           TextState("You're voting too fast", bundle: .module)
         }
-        return .none
+        return .run { _ in
+          await feedbackGenerator.notificationOccurred(.error)
+        }
 
       case let .voteButtonTapped(votedUserId) where state.isPollAvailable:
         var voteChoices: [God.ID: Double] = [:]
@@ -114,7 +116,10 @@ public struct PollQuestionLogic: Reducer {
           "question_id": state.question.id,
           "question_text": state.question.text.ja,
         ])
-        return .send(.delegate(.vote(input)))
+        return .run { send in
+          await feedbackGenerator.impactOccurred()
+          await send(.delegate(.vote(input)))
+        }
 
       case .shuffleButtonTapped:
         let maxPageIndex = state.choiceGroups.count - 1
@@ -128,7 +133,7 @@ public struct PollQuestionLogic: Reducer {
         guard nextIndex <= maxPageIndex else { return .none }
         state.currentIndex = nextIndex
         return .run { _ in
-          await feedbackGenerator.mediumImpact()
+          await feedbackGenerator.impactOccurred()
         }
       case .skipButtonTapped:
         analytics.buttonClick(name: .skip, parameters: [
@@ -136,12 +141,12 @@ public struct PollQuestionLogic: Reducer {
           "question_text": state.question.text.ja,
         ])
         return .run { send in
-          await feedbackGenerator.mediumImpact()
+          await feedbackGenerator.impactOccurred()
           await send(.delegate(.nextPollQuestion), animation: .default)
         }
       case .continueButtonTapped:
         return .run { send in
-          await feedbackGenerator.mediumImpact()
+          await feedbackGenerator.impactOccurred()
           await send(.delegate(.nextPollQuestion), animation: .default)
         }
       case .pollAvailable:
