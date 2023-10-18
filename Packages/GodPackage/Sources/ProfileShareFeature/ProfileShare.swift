@@ -54,15 +54,18 @@ public struct ProfileShareLogic: Reducer {
         return .none
 
       case .contentButtonTapped(.instagram):
+        analytics.buttonClick(name: .storyShare)
         state.destination = .shareProfileToInstagramPopup()
         return .none
 
       case .contentButtonTapped(.line):
+        analytics.buttonClick(name: .lineShare)
         return .run { [url = state.lineURL] _ in
           await openURL(url)
         }
 
       case .contentButtonTapped(.messages):
+        analytics.buttonClick(name: .smsShare)
         state.message = .init(recipients: [], body: state.smsText)
         return .none
 

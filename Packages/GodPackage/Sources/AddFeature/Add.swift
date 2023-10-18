@@ -100,7 +100,7 @@ public struct AddLogic: Reducer {
           await addPlusRequest(send: send)
         }
       case let .storyButtonTapped(.some(profileCardImage)):
-        analytics.buttonClick(name: "story_share")
+        analytics.buttonClick(name: .storyShare)
         guard let imageData = profileCardImage.pngData() else {
           return .none
         }
@@ -118,7 +118,7 @@ public struct AddLogic: Reducer {
         }
 
       case .lineButtonTapped:
-        analytics.buttonClick(name: "line_share")
+        analytics.buttonClick(name: .lineShare)
         guard let lineURL = ShareLinkBuilder.buildForLine(
           path: .add,
           username: state.currentUser?.username
@@ -128,7 +128,7 @@ public struct AddLogic: Reducer {
         }
 
       case .messageButtonTapped:
-        analytics.buttonClick(name: "sms_share")
+        analytics.buttonClick(name: .smsShare)
         guard let smsText = ShareLinkBuilder.buildShareText(
           path: .invite,
           username: state.currentUser?.username,
