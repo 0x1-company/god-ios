@@ -109,6 +109,7 @@ graph TD;
     OnboardFeature-->FirebaseDynamicLinkClient;
     PlayAgainFeature-->GodClient;
     PlayAgainFeature-->Styleguide;
+    PlayAgainFeature-->AnalyticsClient;
     PlayAgainFeature-->ShareLinkBuilder;
     PlayAgainFeature-->ComposableArchitecture;
     PollFeature-->GodClient;
