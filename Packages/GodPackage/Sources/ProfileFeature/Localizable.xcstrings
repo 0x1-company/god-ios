@@ -29,18 +29,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "招待する"
-          }
-        }
-      }
-    },
-    "ADDED" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だち"
+            "value" : "LINEで招待する"
           }
         }
       }
