@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Contacts
 import ContactsClient
+import CupertinoMessageFeature
 import God
 import GodClient
 import ProfileFeature
@@ -13,6 +14,20 @@ import UIApplicationClient
 
 public struct AddLogic: Reducer {
   public init() {}
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case profileExternal(ProfileExternalLogic.State)
+      case message(CupertinoMessageLogic.State)
+    }
+    public enum Action: Equatable {
+      case profileExternal(ProfileExternalLogic.Action)
+      case message(CupertinoMessageLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.profileExternal, action: /Action.profileExternal, child: ProfileExternalLogic.init)
+      Scope(state: /State.message, action: /Action.message, child: CupertinoMessageLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     var shareURL = URL(string: "https://godapp.jp")!
@@ -70,6 +85,24 @@ public struct AddLogic: Reducer {
         return .run { send in
           await addPlusRequest(send: send)
         }
+      case let .storyButtonTapped(.some(profileCardImage)):
+        return .none
+
+      case .lineButtonTapped:
+        return .none
+
+      case .messageButtonTapped:
+        guard let smsText = ShareLinkBuilder.buildShareText(
+          path: .invite,
+          username: state.currentUser?.username,
+          source: .sms,
+          medium: .add
+        ) else { return .none }
+        state.destination = .message(
+          CupertinoMessageLogic.State(recipients: [], body: smsText)
+        )
+        return .none
+
       case .binding(\.$searchQuery):
         let username = state.searchQuery.lowercased()
         guard username.count >= 4 else {
@@ -136,7 +169,7 @@ public struct AddLogic: Reducer {
         let fromSchools = data.usersBySameSchool
           .edges
           .filter {
-            $0.node.friendStatus.value == God.FriendStatus.canceled || 
+            $0.node.friendStatus.value == God.FriendStatus.canceled ||
             $0.node.friendStatus.value == God.FriendStatus.unspecified
           }
           .map {
@@ -231,22 +264,6 @@ public struct AddLogic: Reducer {
       await send(.addPlusResponse(.failure(error)))
     }
   }
-
-  public struct Destination: Reducer {
-    public enum State: Equatable {
-      case profileExternal(ProfileExternalLogic.State)
-    }
-
-    public enum Action: Equatable {
-      case profileExternal(ProfileExternalLogic.Action)
-    }
-
-    public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileExternal, action: /Action.profileExternal) {
-        ProfileExternalLogic()
-      }
-    }
-  }
 }
 
 public struct AddView: View {
@@ -315,6 +332,12 @@ public struct AddView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .sheet(
+        store: store.scope(state: \.$destination, action: AddLogic.Action.destination),
+        state: /AddLogic.Destination.State.message,
+        action: AddLogic.Destination.Action.message,
+        content: CupertinoMessageView.init
+      )
       .sheet(
         store: store.scope(state: \.$destination, action: AddLogic.Action.destination),
         state: /AddLogic.Destination.State.profileExternal,
