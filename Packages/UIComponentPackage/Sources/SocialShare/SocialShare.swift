@@ -1,13 +1,25 @@
 import Styleguide
 import SwiftUI
 
-struct SocialShareView: View {
+public struct SocialShare: View {
   let shareURL: URL
   let storyAction: () -> Void
   let lineAction: () -> Void
   let messageAction: () -> Void
+  
+  public init(
+    shareURL: URL,
+    storyAction: @escaping () -> Void,
+    lineAction: @escaping () -> Void,
+    messageAction: @escaping () -> Void
+  ) {
+    self.shareURL = shareURL
+    self.storyAction = storyAction
+    self.lineAction = lineAction
+    self.messageAction = messageAction
+  }
 
-  var body: some View {
+  public var body: some View {
     HStack(spacing: 0) {
       Button(action: storyAction) {
         VStack(spacing: 12) {
@@ -72,7 +84,7 @@ struct SocialShareView: View {
 }
 
 #Preview {
-  SocialShareView(
+  SocialShare(
     shareURL: URL(string: "https://godapp.jp")!,
     storyAction: {},
     lineAction: {},

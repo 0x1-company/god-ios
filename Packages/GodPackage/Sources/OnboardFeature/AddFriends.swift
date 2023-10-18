@@ -10,6 +10,7 @@ import NameImage
 import ProfileImage
 import ProfileStoryFeature
 import ShareLinkBuilder
+import SocialShare
 import Styleguide
 import SwiftUI
 import SwiftUIMessage
