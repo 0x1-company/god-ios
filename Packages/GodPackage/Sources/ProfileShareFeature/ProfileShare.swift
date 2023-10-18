@@ -145,74 +145,82 @@ public struct ProfileShareView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(alignment: .center, spacing: 28) {
-        Text("Share Profile", bundle: .module)
-          .font(.title3)
-          .bold()
-
-        HStack {
-          Spacer()
-          ForEach(ProfileShareLogic.Content.allCases, id: \.self) { content in
-            switch content {
-            case .instagram, .line:
-              ShareButton(content: content) {
-                store.send(.contentButtonTapped(content))
-              }
-            case .messages:
-              Button {
-                store.send(.contentButtonTapped(content))
-              } label: {
-                VStack(spacing: 12) {
-                  Image(systemName: "message.fill")
-                    .font(.system(size: 34))
-                    .frame(width: 60, height: 60)
-                    .foregroundStyle(Color.white)
-                    .background(Color.green.gradient)
-                    .clipShape(Circle())
-
-                  Text(content.name, bundle: .module)
-                    .font(.callout)
-                    .bold()
-                    .foregroundColor(.godBlack)
-                }
-              }
-            case .other:
-              ShareLink(item: viewStore.shareURL) {
-                VStack(spacing: 12) {
-                  Image(systemName: "square.and.arrow.up")
-                    .font(.system(size: 40))
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-
-                  Text(content.name, bundle: .module)
-                    .font(.callout)
-                    .bold()
-                    .foregroundColor(.godBlack)
-                }
-              }
-            }
-            Spacer()
+      VStack(spacing: 0) {
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture {
+            store.send(.closeButtonTapped)
           }
-          .buttonStyle(HoldDownButtonStyle())
-        }
-
-        Button {
-          viewStore.send(.closeButtonTapped)
-        } label: {
-          Text("Close", bundle: .module)
+        
+        VStack(alignment: .center, spacing: 28) {
+          Text("Share Profile", bundle: .module)
+            .font(.title3)
             .bold()
-            .frame(height: 52)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.black)
-            .overlay(
-              RoundedRectangle(cornerRadius: 52 / 2)
-                .stroke(Color.primary, lineWidth: 1)
-            )
+
+          HStack {
+            Spacer()
+            ForEach(ProfileShareLogic.Content.allCases, id: \.self) { content in
+              switch content {
+              case .instagram, .line:
+                ShareButton(content: content) {
+                  store.send(.contentButtonTapped(content), transaction: .animationDisable)
+                }
+              case .messages:
+                Button {
+                  store.send(.contentButtonTapped(content))
+                } label: {
+                  VStack(spacing: 12) {
+                    Image(systemName: "message.fill")
+                      .font(.system(size: 34))
+                      .frame(width: 60, height: 60)
+                      .foregroundStyle(Color.white)
+                      .background(Color.green.gradient)
+                      .clipShape(Circle())
+
+                    Text(content.name, bundle: .module)
+                      .font(.callout)
+                      .bold()
+                      .foregroundColor(.godBlack)
+                  }
+                }
+              case .other:
+                ShareLink(item: viewStore.shareURL) {
+                  VStack(spacing: 12) {
+                    Image(systemName: "square.and.arrow.up")
+                      .font(.system(size: 40))
+                      .frame(width: 60, height: 60)
+                      .clipShape(Circle())
+
+                    Text(content.name, bundle: .module)
+                      .font(.callout)
+                      .bold()
+                      .foregroundColor(.godBlack)
+                  }
+                }
+              }
+              Spacer()
+            }
+          }
+
+          Button {
+            viewStore.send(.closeButtonTapped)
+          } label: {
+            Text("Close", bundle: .module)
+              .bold()
+              .frame(height: 52)
+              .frame(maxWidth: .infinity)
+              .foregroundColor(.black)
+              .overlay(
+                RoundedRectangle(cornerRadius: 52 / 2)
+                  .stroke(Color.primary, lineWidth: 1)
+              )
+          }
         }
+        .padding(.top, 24)
+        .padding(.horizontal, 16)
+        .background(Color.white)
         .buttonStyle(HoldDownButtonStyle())
       }
-      .padding(.top, 24)
-      .padding(.horizontal, 16)
       .task { await viewStore.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
@@ -282,7 +290,6 @@ public struct ProfileShareView: View {
           reducer: { ProfileShareLogic() }
         )
       )
-      .presentationDetents([.fraction(0.3)])
-      .presentationDragIndicator(.visible)
+      .presentationBackground(Color.clear)
     }
 }

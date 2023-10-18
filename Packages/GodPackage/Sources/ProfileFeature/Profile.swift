@@ -223,8 +223,7 @@ public struct ProfileView: View {
         action: ProfileLogic.Destination.Action.profileShare
       ) { store in
         ProfileShareView(store: store)
-          .presentationDetents([.height(ProfileShareView.heightForPresentationDetents)])
-          .presentationCornerRadiusIfPossible(24)
+          .presentationBackground(Color.clear)
       }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
@@ -235,17 +234,6 @@ public struct ProfileView: View {
           ProfileExternalView(store: store)
         }
       }
-    }
-  }
-}
-
-extension View {
-  @ViewBuilder
-  func presentationCornerRadiusIfPossible(_ cornerRadius: CGFloat) -> some View {
-    if #available(iOS 16.4, *) {
-      self.presentationCornerRadius(cornerRadius)
-    } else {
-      self
     }
   }
 }
