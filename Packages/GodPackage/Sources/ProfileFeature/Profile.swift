@@ -56,8 +56,11 @@ public struct ProfileLogic: Reducer {
         return .none
 
       case .shareProfileButtonTapped:
-        analytics.buttonClick(name: .shareProfile)
         state.destination = .profileShare()
+        analytics.buttonClick(
+          name: .shareProfile,
+          parameters: ["title": String(localized: "Share Profile", bundle: .module)]
+        )
         return .none
 
       case .shopButtonTapped:
@@ -71,6 +74,10 @@ public struct ProfileLogic: Reducer {
 
       case .friendEmptyButtonTapped:
         state.destination = .profileShare()
+        analytics.buttonClick(
+          name: .addFriends,
+          parameters: ["title": String(localized: "Add Friends", bundle: .module)]
+        )
         return .none
 
       case let .profileResponse(.success(data)):
