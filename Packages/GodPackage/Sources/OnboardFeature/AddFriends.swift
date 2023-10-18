@@ -106,9 +106,7 @@ public struct AddFriendsLogic: Reducer {
         analytics.buttonClick(name: "line_share")
         guard let lineURL = ShareLinkBuilder.buildForLine(
           path: .add,
-          username: state.profileStoryFragment?.username,
-          source: .line,
-          medium: .onboard
+          username: state.profileStoryFragment?.username
         ) else { return .none }
         return .run { _ in
           await openURL(lineURL)
