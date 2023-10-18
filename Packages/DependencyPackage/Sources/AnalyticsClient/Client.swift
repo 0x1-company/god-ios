@@ -48,5 +48,6 @@ public extension AnalyticsClient {
     case shareProfile = "share_profile"
     case shop = "shop"
     case shareOnInstagram = "share_on_instagram"
+    case copyLink = "copy_link"
   }
 }
