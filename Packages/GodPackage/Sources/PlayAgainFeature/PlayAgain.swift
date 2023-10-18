@@ -73,12 +73,12 @@ public struct PlayAgainLogic: Reducer {
       case .inviteFriendButtonTapped:
         guard let url = ShareLinkBuilder.buildForLine(path: .invite, username: state.currentUser?.username)
         else { return .none }
-        
+
         analytics.buttonClick(
           name: .inviteFriend,
           parameters: [
             "title": String(localized: "Invite a friend", bundle: .module),
-            "url": url
+            "url": url,
           ]
         )
         return .run { _ in
@@ -132,7 +132,7 @@ public struct PlayAgainView: View {
           .multilineTextAlignment(.center)
           .foregroundColor(.secondary)
           .font(.system(.body, design: .rounded))
-        
+
         Button {
           viewStore.send(.inviteFriendButtonTapped)
         } label: {

@@ -78,7 +78,7 @@ public struct PollQuestionLogic: Reducer {
         analytics.buttonClick(name: .voteSlowDown, parameters: [
           "voted_user_id": votedUserId,
           "question_id": state.question.id,
-          "question_text": state.question.text.ja
+          "question_text": state.question.text.ja,
         ])
         state.alert = AlertState {
           TextState("Woah, slow down!🐎", bundle: .module)
@@ -112,7 +112,7 @@ public struct PollQuestionLogic: Reducer {
         analytics.buttonClick(name: .vote, parameters: [
           "voted_user_id": votedUserId,
           "question_id": state.question.id,
-          "question_text": state.question.text.ja
+          "question_text": state.question.text.ja,
         ])
         return .send(.delegate(.vote(input)))
 
@@ -123,7 +123,7 @@ public struct PollQuestionLogic: Reducer {
           "question_id": state.question.id,
           "question_text": state.question.text.ja,
           "current_index": state.currentIndex,
-          "next_index": nextIndex
+          "next_index": nextIndex,
         ])
         guard nextIndex <= maxPageIndex else { return .none }
         state.currentIndex = nextIndex
@@ -133,7 +133,7 @@ public struct PollQuestionLogic: Reducer {
       case .skipButtonTapped:
         analytics.buttonClick(name: .skip, parameters: [
           "question_id": state.question.id,
-          "question_text": state.question.text.ja
+          "question_text": state.question.text.ja,
         ])
         return .run { send in
           await feedbackGenerator.mediumImpact()
