@@ -74,7 +74,12 @@ public struct PollQuestionLogic: Reducer {
           await sleepPollAvailable(send: send)
         }
 
-      case .voteButtonTapped where !state.isPollAvailable:
+      case let .voteButtonTapped(votedUserId) where !state.isPollAvailable:
+        analytics.buttonClick(name: .voteSlowDown, parameters: [
+          "voted_user_id": votedUserId,
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja
+        ])
         state.alert = AlertState {
           TextState("Woah, slow down!🐎", bundle: .module)
         } actions: {
@@ -104,7 +109,7 @@ public struct PollQuestionLogic: Reducer {
           pollQuestionId: state.id,
           votedUserId: votedUserId
         )
-        analytics.logEvent("vote", [
+        analytics.buttonClick(name: .vote, parameters: [
           "voted_user_id": votedUserId,
           "question_id": state.question.id,
           "question_text": state.question.text.ja
@@ -114,12 +119,22 @@ public struct PollQuestionLogic: Reducer {
       case .shuffleButtonTapped:
         let maxPageIndex = state.choiceGroups.count - 1
         let nextIndex = state.currentIndex + 1
+        analytics.buttonClick(name: .shuffle, parameters: [
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja,
+          "current_index": state.currentIndex,
+          "next_index": nextIndex
+        ])
         guard nextIndex <= maxPageIndex else { return .none }
         state.currentIndex = nextIndex
         return .run { _ in
           await feedbackGenerator.mediumImpact()
         }
       case .skipButtonTapped:
+        analytics.buttonClick(name: .skip, parameters: [
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja
+        ])
         return .run { send in
           await feedbackGenerator.mediumImpact()
           await send(.delegate(.nextPollQuestion), animation: .default)
