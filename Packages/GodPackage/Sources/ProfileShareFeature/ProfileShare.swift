@@ -48,7 +48,7 @@ public struct ProfileShareLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ProfileShare", of: self)
         return .none
@@ -151,7 +151,7 @@ public struct ProfileShareView: View {
           .onTapGesture {
             store.send(.closeButtonTapped)
           }
-        
+
         VStack(alignment: .center, spacing: 28) {
           Text("Share Profile", bundle: .module)
             .font(.title3)

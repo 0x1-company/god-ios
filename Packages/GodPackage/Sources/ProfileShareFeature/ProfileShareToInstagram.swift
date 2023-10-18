@@ -47,7 +47,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ProfileShareToInstagram", of: self)
         return .none

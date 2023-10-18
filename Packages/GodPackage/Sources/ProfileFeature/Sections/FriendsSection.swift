@@ -38,7 +38,7 @@ public struct FriendsSection: View {
         Text("You have no friends", bundle: .module)
           .foregroundStyle(Color.godTextSecondaryLight)
           .frame(maxWidth: .infinity)
-        
+
         Button(action: emptyAction) {
           Text("Add Friends", bundle: .module)
             .frame(height: 56)
