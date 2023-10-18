@@ -36,6 +36,7 @@ public struct PollLogic: Reducer {
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
+      case voted
       case finish(earnedCoinAmount: Int)
     }
   }
@@ -51,6 +52,7 @@ public struct PollLogic: Reducer {
 
       case let .pollQuestions(_, .delegate(.vote(input))):
         return .run { send in
+          await send(.delegate(.voted))
           await send(.createVoteResponse(TaskResult {
             try await createVote(input)
           }))
