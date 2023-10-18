@@ -1,4 +1,5 @@
 import AnalyticsClient
+import ProfileStoryFeature
 import Constants
 import ComposableArchitecture
 import Contacts
@@ -43,6 +44,8 @@ public struct AddLogic: Reducer {
     var friendsOfFriendsPanel: FriendsOfFriendsPanelLogic.State?
     var fromSchoolPanel: FromSchoolPanelLogic.State?
 
+    var profileImageData: Data?
+    var schoolImageData: Data?
     var currentUser: God.AddPlusQuery.Data.CurrentUser?
     var searchResult: IdentifiedArrayOf<FriendRowCardLogic.State> = []
     public init() {}
@@ -55,6 +58,8 @@ public struct AddLogic: Reducer {
     case messageButtonTapped
     case searchResponse(TaskResult<God.UserSearchQuery.Data>)
     case addPlusResponse(TaskResult<God.AddPlusQuery.Data>)
+    case profileImageResponse(TaskResult<Data>)
+    case schoolImageResponse(TaskResult<Data>)
     case binding(BindingAction<State>)
     case contactsReEnable(ContactsReEnableLogic.Action)
     case invitationsLeft(InvitationsLeftLogic.Action)
@@ -70,6 +75,7 @@ public struct AddLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
   @Dependency(\.pasteboard) var pasteboard
+  @Dependency(\.urlSession) var urlSession
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
   enum Cancel {
@@ -222,12 +228,22 @@ public struct AddLogic: Reducer {
         if let username = data.currentUser.username {
           state.shareURL = ShareLinkBuilder.buildGodLink(path: .invite, username: username, source: .share, medium: .add)
         }
-        return .none
+        return .run { send in
+          await profileImageRequest(send: send, data: data.currentUser.fragments.profileStoryFragment)
+        }
       case .addPlusResponse(.failure):
         state.friendRequestPanel = nil
         state.friendsOfFriendsPanel = nil
         state.fromSchoolPanel = nil
         state.currentUser = nil
+        return .none
+        
+      case let .profileImageResponse(.success(data)):
+        state.profileImageData = data
+        return .none
+
+      case let .schoolImageResponse(.success(data)):
+        state.schoolImageData = data
         return .none
 
       case let .friendRequestPanel(.delegate(.showExternalProfile(userId))):
@@ -296,10 +312,36 @@ public struct AddLogic: Reducer {
       await send(.addPlusResponse(.failure(error)))
     }
   }
+  
+  private func profileImageRequest(send: Send<Action>, data: God.ProfileStoryFragment) async {
+    await withTaskGroup(of: Void.self) { group in
+      if let imageURL = URL(string: data.imageURL) {
+        group.addTask {
+          do {
+            let (data, _) = try await urlSession.data(from: imageURL)
+            await send(.profileImageResponse(.success(data)))
+          } catch {
+            await send(.profileImageResponse(.failure(error)))
+          }
+        }
+      }
+      if let imageURL = URL(string: data.school?.profileImageURL ?? "") {
+        group.addTask {
+          do {
+            let (data, _) = try await urlSession.data(from: imageURL)
+            await send(.schoolImageResponse(.success(data)))
+          } catch {
+            await send(.schoolImageResponse(.failure(error)))
+          }
+        }
+      }
+    }
+  }
 }
 
 public struct AddView: View {
   let store: StoreOf<AddLogic>
+  @Environment(\.displayScale) var displayScale
 
   public init(store: StoreOf<AddLogic>) {
     self.store = store
@@ -307,57 +349,66 @@ public struct AddView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 0) {
-        IfLetStore(
-          store.scope(state: \.contactsReEnable, action: AddLogic.Action.contactsReEnable),
-          then: ContactsReEnableView.init(store:)
-        )
-        SearchField(text: viewStore.$searchQuery)
-        Divider()
-        
-        SocialShare(
-          shareURL: viewStore.shareURL,
-          storyAction: {
-            store.send(.storyButtonTapped(nil))
-          },
-          lineAction: {
-            store.send(.lineButtonTapped)
-          },
-          messageAction: {
-            store.send(.messageButtonTapped)
-          }
-        )
-        .padding(.vertical, 12)
-        .padding(.horizontal, 24)
-        
-        Divider()
+      let instagramStoryView = instagramStoryView(
+        profileImageData: nil,
+        schoolImageData: nil,
+        fragment: viewStore.currentUser?.fragments.profileStoryFragment
+      )
+      ZStack {
+        VStack(spacing: 0) {
+          IfLetStore(
+            store.scope(state: \.contactsReEnable, action: AddLogic.Action.contactsReEnable),
+            then: ContactsReEnableView.init(store:)
+          )
+          SearchField(text: viewStore.$searchQuery)
+          Divider()
+          
+          SocialShare(
+            shareURL: viewStore.shareURL,
+            storyAction: {
+              let renderer = ImageRenderer(content: instagramStoryView)
+              renderer.scale = displayScale
+              store.send(.storyButtonTapped(renderer.uiImage))
+            },
+            lineAction: {
+              store.send(.lineButtonTapped)
+            },
+            messageAction: {
+              store.send(.messageButtonTapped)
+            }
+          )
+          .padding(.vertical, 12)
+          .padding(.horizontal, 24)
+          
+          Divider()
 
-        ScrollView {
-          LazyVStack(spacing: 0) {
-            if viewStore.searchResult.isEmpty {
-              IfLetStore(
-                store.scope(state: \.friendRequestPanel, action: AddLogic.Action.friendRequestPanel),
-                then: FriendRequestsView.init(store:)
-              )
-              IfLetStore(
-                store.scope(state: \.friendsOfFriendsPanel, action: AddLogic.Action.friendsOfFriendsPanel),
-                then: FriendsOfFriendsPanelView.init(store:)
-              )
-              IfLetStore(
-                store.scope(state: \.fromSchoolPanel, action: AddLogic.Action.fromSchoolPanel),
-                then: FromSchoolPanelView.init(store:)
-              )
-              InvitationsLeftView(
-                store: store.scope(
-                  state: \.invitationsLeft,
-                  action: AddLogic.Action.invitationsLeft
+          ScrollView {
+            LazyVStack(spacing: 0) {
+              if viewStore.searchResult.isEmpty {
+                IfLetStore(
+                  store.scope(state: \.friendRequestPanel, action: AddLogic.Action.friendRequestPanel),
+                  then: FriendRequestsView.init(store:)
                 )
-              )
-            } else {
-              ForEachStore(
-                store.scope(state: \.searchResult, action: AddLogic.Action.searchResult)
-              ) {
-                FriendRowCardView(store: $0)
+                IfLetStore(
+                  store.scope(state: \.friendsOfFriendsPanel, action: AddLogic.Action.friendsOfFriendsPanel),
+                  then: FriendsOfFriendsPanelView.init(store:)
+                )
+                IfLetStore(
+                  store.scope(state: \.fromSchoolPanel, action: AddLogic.Action.fromSchoolPanel),
+                  then: FromSchoolPanelView.init(store:)
+                )
+                InvitationsLeftView(
+                  store: store.scope(
+                    state: \.invitationsLeft,
+                    action: AddLogic.Action.invitationsLeft
+                  )
+                )
+              } else {
+                ForEachStore(
+                  store.scope(state: \.searchResult, action: AddLogic.Action.searchResult)
+                ) {
+                  FriendRowCardView(store: $0)
+                }
               }
             }
           }
@@ -379,6 +430,25 @@ public struct AddView: View {
           ProfileExternalView(store: store)
         }
       }
+    }
+  }
+  
+  
+  @ViewBuilder
+  func instagramStoryView(
+    profileImageData: Data?,
+    schoolImageData: Data?,
+    fragment: God.ProfileStoryFragment?
+  ) -> some View {
+    if let fragment {
+      ProfileStoryView(
+        profileImageData: profileImageData,
+        firstName: fragment.firstName,
+        displayName: fragment.displayName.ja,
+        username: fragment.username,
+        schoolImageData: schoolImageData,
+        schoolName: fragment.school?.name
+      )
     }
   }
 }
