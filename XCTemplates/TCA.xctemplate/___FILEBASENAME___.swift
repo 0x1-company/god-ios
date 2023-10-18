@@ -38,7 +38,7 @@ public struct ___VARIABLE_productName:identifier___View: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       List {
         Text("___VARIABLE_productName:identifier___", bundle: .module)
       }

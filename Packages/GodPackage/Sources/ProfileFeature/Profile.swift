@@ -45,7 +45,7 @@ public struct ProfileLogic: Reducer {
             await currentUserRequest(send: send)
           }
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "Profile", of: self)
         return .none

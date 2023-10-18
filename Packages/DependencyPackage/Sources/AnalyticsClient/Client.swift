@@ -39,14 +39,14 @@ public extension AnalyticsClient {
     parameters["name"] = name.rawValue
     logEvent("button_click", parameters)
   }
-  
+
   enum ButtonClickName: String {
     case storyShare = "story_share"
     case lineShare = "line_share"
     case smsShare = "sms_share"
     case editProfile = "edit_profile"
     case shareProfile = "share_profile"
-    case shop = "shop"
+    case shop
     case shareOnInstagram = "share_on_instagram"
     case copyLink = "copy_link"
   }

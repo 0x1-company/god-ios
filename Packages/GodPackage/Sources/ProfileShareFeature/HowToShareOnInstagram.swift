@@ -59,7 +59,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "HowToShareOnInstagram", of: self)
         return .none
