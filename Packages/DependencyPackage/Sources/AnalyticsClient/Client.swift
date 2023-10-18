@@ -44,5 +44,9 @@ public extension AnalyticsClient {
     case storyShare = "story_share"
     case lineShare = "line_share"
     case smsShare = "sms_share"
+    case editProfile = "edit_profile"
+    case shareProfile = "share_profile"
+    case shop = "shop"
+    case shareOnInstagram = "share_on_instagram"
   }
 }

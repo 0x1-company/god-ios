@@ -19,6 +19,7 @@ public struct ProfileLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
@@ -44,16 +45,23 @@ public struct ProfileLogic: Reducer {
             await currentUserRequest(send: send)
           }
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "Profile", of: self)
+        return .none
 
       case .editProfileButtonTapped:
+        analytics.buttonClick(name: .editProfile)
         state.destination = .profileEdit()
         return .none
 
       case .shareProfileButtonTapped:
+        analytics.buttonClick(name: .shareProfile)
         state.destination = .profileShare()
         return .none
 
       case .shopButtonTapped:
+        analytics.buttonClick(name: .shop)
         state.destination = .shop()
         return .none
 
@@ -199,6 +207,7 @@ public struct ProfileView: View {
       .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /ProfileLogic.Destination.State.profileEdit,
