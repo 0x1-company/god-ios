@@ -6,7 +6,7 @@ public struct SocialShare: View {
   let storyAction: () -> Void
   let lineAction: () -> Void
   let messageAction: () -> Void
-  
+
   public init(
     shareURL: URL,
     storyAction: @escaping () -> Void,
