@@ -1,5 +1,18 @@
 {
   "sourceLanguage" : "en",
-  "strings" : {},
+  "strings" : {
+    "LINE" : {
+
+    },
+    "Message" : {
+
+    },
+    "Other" : {
+
+    },
+    "Story" : {
+
+    }
+  },
   "version" : "1.0"
 }
