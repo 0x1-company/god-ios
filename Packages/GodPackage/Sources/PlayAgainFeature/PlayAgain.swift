@@ -143,6 +143,7 @@ public struct PlayAgainView: View {
 
         Text("New Polls in \(viewStore.countdown)", bundle: .module)
           .font(.system(.body, design: .rounded, weight: .bold))
+          .contentTransition(.numericText(countsDown: true))
 
         Text("OR", bundle: .module)
           .foregroundColor(.secondary)
