@@ -41,6 +41,10 @@ public extension AnalyticsClient {
   }
 
   enum ButtonClickName: String {
+    case vote = "vote"
+    case voteSlowDown = "vote_slow_down"
+    case shuffle = "shuffle"
+    case skip = "skip"
     case storyShare = "story_share"
     case lineShare = "line_share"
     case smsShare = "sms_share"
