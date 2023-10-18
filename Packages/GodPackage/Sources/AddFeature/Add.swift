@@ -1,3 +1,5 @@
+import AnalyticsClient
+import Constants
 import ComposableArchitecture
 import Contacts
 import ContactsClient
@@ -11,6 +13,7 @@ import Styleguide
 import ShareLinkBuilder
 import SwiftUI
 import UIApplicationClient
+import UIPasteboardClient
 
 public struct AddLogic: Reducer {
   public init() {}
@@ -62,8 +65,11 @@ public struct AddLogic: Reducer {
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.openURL) var openURL
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
+  @Dependency(\.pasteboard) var pasteboard
   @Dependency(\.contacts.authorizationStatus) var contactsAuthorizationStatus
 
   enum Cancel {
@@ -86,12 +92,38 @@ public struct AddLogic: Reducer {
           await addPlusRequest(send: send)
         }
       case let .storyButtonTapped(.some(profileCardImage)):
-        return .none
+        analytics.buttonClick(name: "story_share")
+        guard let imageData = profileCardImage.pngData() else {
+          return .none
+        }
+        let pasteboardItems: [String: Any] = [
+          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
+          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+        ]
+        pasteboard.setItems(
+          [pasteboardItems],
+          [.expirationDate: Date().addingTimeInterval(300)]
+        )
+        return .run { _ in
+          await openURL(Constants.storiesURL)
+        }
+
 
       case .lineButtonTapped:
-        return .none
+        analytics.buttonClick(name: "line_share")
+        guard let lineURL = ShareLinkBuilder.buildForLine(
+          path: .add,
+          username: state.currentUser?.username,
+          source: .line,
+          medium: .add
+        ) else { return .none }
+        return .run { _ in
+          await openURL(lineURL)
+        }
 
       case .messageButtonTapped:
+        analytics.buttonClick(name: "sms_share")
         guard let smsText = ShareLinkBuilder.buildShareText(
           path: .invite,
           username: state.currentUser?.username,
