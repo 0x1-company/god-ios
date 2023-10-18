@@ -50,5 +50,6 @@ public extension AnalyticsClient {
     case shareOnInstagram = "share_on_instagram"
     case copyLink = "copy_link"
     case addFriends = "add_friends"
+    case inviteFriend = "invite_friend"
   }
 }

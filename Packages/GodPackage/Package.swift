@@ -194,6 +194,7 @@ let package = Package(
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
