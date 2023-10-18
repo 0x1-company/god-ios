@@ -1,17 +1,17 @@
 import AnalyticsClient
-import ProfileStoryFeature
-import Constants
 import ComposableArchitecture
+import Constants
 import Contacts
 import ContactsClient
 import CupertinoMessageFeature
 import God
 import GodClient
 import ProfileFeature
-import SocialShare
+import ProfileStoryFeature
 import SearchField
-import Styleguide
 import ShareLinkBuilder
+import SocialShare
+import Styleguide
 import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
@@ -23,10 +23,12 @@ public struct AddLogic: Reducer {
       case profileExternal(ProfileExternalLogic.State)
       case message(CupertinoMessageLogic.State)
     }
+
     public enum Action: Equatable {
       case profileExternal(ProfileExternalLogic.Action)
       case message(CupertinoMessageLogic.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.profileExternal, action: /Action.profileExternal, child: ProfileExternalLogic.init)
       Scope(state: /State.message, action: /Action.message, child: CupertinoMessageLogic.init)
@@ -115,7 +117,6 @@ public struct AddLogic: Reducer {
           await openURL(Constants.storiesURL)
         }
 
-
       case .lineButtonTapped:
         analytics.buttonClick(name: "line_share")
         guard let lineURL = ShareLinkBuilder.buildForLine(
@@ -191,36 +192,36 @@ public struct AddLogic: Reducer {
           .edges
           .filter {
             $0.node.friendStatus.value == God.FriendStatus.canceled ||
-            $0.node.friendStatus.value == God.FriendStatus.unspecified
+              $0.node.friendStatus.value == God.FriendStatus.unspecified
           }
           .map {
-          FriendRowCardLogic.State(
-            id: $0.node.id,
-            imageURL: $0.node.imageURL,
-            displayName: $0.node.displayName.ja,
-            firstName: $0.node.firstName,
-            lastName: $0.node.lastName,
-            description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module),
-            friendStatus: $0.node.friendStatus.value
-          )
-        }
+            FriendRowCardLogic.State(
+              id: $0.node.id,
+              imageURL: $0.node.imageURL,
+              displayName: $0.node.displayName.ja,
+              firstName: $0.node.firstName,
+              lastName: $0.node.lastName,
+              description: String(localized: "\($0.node.mutualFriendsCount) mutual friends", bundle: .module),
+              friendStatus: $0.node.friendStatus.value
+            )
+          }
         let fromSchools = data.usersBySameSchool
           .edges
           .filter {
             $0.node.friendStatus.value == God.FriendStatus.canceled ||
-            $0.node.friendStatus.value == God.FriendStatus.unspecified
+              $0.node.friendStatus.value == God.FriendStatus.unspecified
           }
           .map {
-          FriendRowCardLogic.State(
-            id: $0.node.id,
-            imageURL: $0.node.imageURL,
-            displayName: $0.node.displayName.ja,
-            firstName: $0.node.firstName,
-            lastName: $0.node.lastName,
-            description: $0.node.grade ?? "",
-            friendStatus: $0.node.friendStatus.value
-          )
-        }
+            FriendRowCardLogic.State(
+              id: $0.node.id,
+              imageURL: $0.node.imageURL,
+              displayName: $0.node.displayName.ja,
+              firstName: $0.node.firstName,
+              lastName: $0.node.lastName,
+              description: $0.node.grade ?? "",
+              friendStatus: $0.node.friendStatus.value
+            )
+          }
         state.friendRequestPanel = friendRequests.isEmpty ? nil : .init(requests: .init(uniqueElements: friendRequests))
         state.friendsOfFriendsPanel = friendsOfFriends.isEmpty ? nil : .init(friendsOfFriends: .init(uniqueElements: friendsOfFriends))
         state.fromSchoolPanel = fromSchools.isEmpty ? nil : .init(users: .init(uniqueElements: fromSchools))
@@ -237,7 +238,7 @@ public struct AddLogic: Reducer {
         state.fromSchoolPanel = nil
         state.currentUser = nil
         return .none
-        
+
       case let .profileImageResponse(.success(data)):
         state.profileImageData = data
         return .none
@@ -312,7 +313,7 @@ public struct AddLogic: Reducer {
       await send(.addPlusResponse(.failure(error)))
     }
   }
-  
+
   private func profileImageRequest(send: Send<Action>, data: God.ProfileStoryFragment) async {
     await withTaskGroup(of: Void.self) { group in
       if let imageURL = URL(string: data.imageURL) {
@@ -362,7 +363,7 @@ public struct AddView: View {
           )
           SearchField(text: viewStore.$searchQuery)
           Divider()
-          
+
           SocialShare(
             shareURL: viewStore.shareURL,
             storyAction: {
@@ -379,7 +380,7 @@ public struct AddView: View {
           )
           .padding(.vertical, 12)
           .padding(.horizontal, 24)
-          
+
           Divider()
 
           ScrollView {
@@ -432,8 +433,7 @@ public struct AddView: View {
       }
     }
   }
-  
-  
+
   @ViewBuilder
   func instagramStoryView(
     profileImageData: Data?,
