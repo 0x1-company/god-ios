@@ -112,7 +112,7 @@ public struct GodLogic: Reducer {
           await currentPollRequest(send: send)
         }
         .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
-        
+
       case .child(.playAgain(.delegate(.loading))):
         updateChild(state: &state, child: .loading())
         return .none

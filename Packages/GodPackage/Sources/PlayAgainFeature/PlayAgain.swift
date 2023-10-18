@@ -28,7 +28,7 @@ public struct PlayAgainLogic: Reducer {
     case inviteFriendButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case loading
     }
@@ -40,7 +40,7 @@ public struct PlayAgainLogic: Reducer {
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
   @Dependency(\.continuousClock) var clock
-  
+
   enum Cancel {
     case timer
   }
@@ -109,7 +109,7 @@ public struct PlayAgainLogic: Reducer {
       case .currentUserResponse(.failure):
         state.currentUser = nil
         return .none
-        
+
       case .delegate:
         return .none
       }
