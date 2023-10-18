@@ -137,6 +137,7 @@ graph TD;
     ProfileShareFeature-->CupertinoMessageFeature;
     ProfileShareFeature-->Constants;
     ProfileShareFeature-->GodClient;
+    ProfileShareFeature-->AnalyticsClient;
     ProfileShareFeature-->ShareLinkBuilder;
     ProfileShareFeature-->UIPasteboardClient;
     ProfileShareFeature-->UIApplicationClient;
