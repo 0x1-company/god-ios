@@ -106,7 +106,8 @@ public struct PollQuestionLogic: Reducer {
         )
         analytics.logEvent("vote", [
           "voted_user_id": votedUserId,
-          "question": state.question.text.ja,
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja
         ])
         return .send(.delegate(.vote(input)))
 
