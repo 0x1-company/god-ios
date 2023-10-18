@@ -36,7 +36,9 @@ let package = Package(
     ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
-    .target(name: "SocialShare"),
+    .target(name: "SocialShare", dependencies: [
+      "Styleguide",
+    ]),
     .target(name: "Styleguide", resources: [
       .process("Fonts"),
     ]),
