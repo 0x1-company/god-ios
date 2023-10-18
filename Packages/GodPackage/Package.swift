@@ -168,6 +168,7 @@ let package = Package(
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
       .product(name: "PhotosClient", package: "CupertinoPackage"),
+      .product(name: "SocialShare", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
