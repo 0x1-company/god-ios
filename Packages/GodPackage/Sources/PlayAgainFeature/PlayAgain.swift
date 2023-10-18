@@ -108,23 +108,33 @@ public struct PlayAgainView: View {
           .rotationEffect(Angle(degrees: -10.0))
 
         Text("New Polls in \(viewStore.countdown)", bundle: .module)
-          .bold()
+          .font(.system(.body, design: .rounded, weight: .bold))
 
         Text("OR", bundle: .module)
           .foregroundColor(.secondary)
+          .font(.system(.body, design: .rounded))
 
         Text("Skip the wait", bundle: .module)
           .multilineTextAlignment(.center)
           .foregroundColor(.secondary)
-
+          .font(.system(.body, design: .rounded))
+        
         Button {
           viewStore.send(.inviteFriendButtonTapped)
         } label: {
           Text("Invite a friend", bundle: .module)
-            .bold()
             .frame(height: 54)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color.black)
+            .font(.system(.body, design: .rounded, weight: .bold))
+            .overlay(alignment: .leading) {
+              Image(.line)
+                .resizable()
+                .aspectRatio(1, contentMode: .fit)
+                .frame(width: 32, height: 32)
+                .clipped()
+            }
+            .padding(.horizontal, 16)
             .background(Color.white)
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.2), radius: 25)
@@ -149,4 +159,5 @@ public struct PlayAgainView: View {
       reducer: { PlayAgainLogic() }
     )
   )
+  .environment(\.locale, Locale(identifier: "ja-JP"))
 }
