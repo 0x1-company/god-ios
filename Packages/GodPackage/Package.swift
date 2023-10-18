@@ -230,6 +230,7 @@ let package = Package(
       "CupertinoMessageFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),

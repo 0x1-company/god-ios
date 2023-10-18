@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import SwiftUI
 
@@ -10,12 +11,19 @@ public struct ___VARIABLE_productName:identifier___Logic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
   }
+
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
+        return .none
+
+      case .onAppear:
+        analytics.logScreen(screenName: "___VARIABLE_productName:identifier___", of: self)
         return .none
       }
     }
@@ -36,7 +44,8 @@ public struct ___VARIABLE_productName:identifier___View: View {
       }
       .navigationTitle("___VARIABLE_productName:identifier___")
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

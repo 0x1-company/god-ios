@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AnimationDisableTransaction
 import BackgroundClearSheet
 import ComposableArchitecture
@@ -23,6 +24,7 @@ public struct ProfileShareLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case contentButtonTapped(Content)
     case closeButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
@@ -33,6 +35,7 @@ public struct ProfileShareLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -45,6 +48,10 @@ public struct ProfileShareLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileShare", of: self)
+        return .none
 
       case .contentButtonTapped(.instagram):
         state.destination = .shareProfileToInstagramPopup()
@@ -204,6 +211,7 @@ public struct ProfileShareView: View {
       .padding(.top, 24)
       .padding(.horizontal, 16)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$message, action: { .message($0) }),
         content: CupertinoMessageView.init
