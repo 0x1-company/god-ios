@@ -17,6 +17,7 @@ public struct GodLogic: Reducer {
       case share(ShareTheAppLogic.State = .init())
       case loading(GodLoadingLogic.State = .init())
     }
+
     public enum Action: Equatable {
       case poll(PollLogic.Action)
       case cashOut(CashOutLogic.Action)
@@ -24,6 +25,7 @@ public struct GodLogic: Reducer {
       case share(ShareTheAppLogic.Action)
       case loading(GodLoadingLogic.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.poll, action: /Action.poll, child: PollLogic.init)
       Scope(state: /State.cashOut, action: /Action.cashOut, child: CashOutLogic.init)
@@ -93,7 +95,7 @@ public struct GodLogic: Reducer {
 
       case .currentPollResponse(.failure):
         return .none
-        
+
       case .child(.poll(.delegate(.voted))):
         return .run { _ in
           await registerPollsAwaitYourInput()
@@ -166,7 +168,7 @@ public struct GodLogic: Reducer {
       print("\(#function): \(error)")
     }
   }
-  
+
   func registerPollsAwaitYourInput() async {
     let content = UNMutableNotificationContent()
     content.title = String(localized: "Polls await your input", bundle: .module)
