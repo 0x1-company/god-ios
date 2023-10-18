@@ -48,6 +48,8 @@ public extension God {
           .fragment(ProfileStoryFragment.self),
         ] }
 
+        /// user id
+        public var id: God.ID { __data["id"] }
         /// プロフィール画像のURL
         public var imageURL: String { __data["imageURL"] }
         /// first name

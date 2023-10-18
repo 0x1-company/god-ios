@@ -1,4 +1,5 @@
 fragment ProfileStoryFragment on User {
+  id
   imageURL
   firstName
   username

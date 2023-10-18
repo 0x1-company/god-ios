@@ -279,7 +279,7 @@ public struct AddFriendsView: View {
 
             Divider()
 
-            SocialShareView(
+            SocialShare(
               shareURL: viewStore.shareURL,
               storyAction: {
                 let renderer = ImageRenderer(content: instagramStoryView)
