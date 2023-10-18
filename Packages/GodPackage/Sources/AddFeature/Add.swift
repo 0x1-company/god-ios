@@ -116,7 +116,13 @@ public struct AddLogic: Reducer {
             description: String(localized: "\($0.node.user.mutualFriendsCount) mutual friends", bundle: .module)
           )
         }
-        let friendsOfFriends = data.friendsOfFriends.edges.map {
+        let friendsOfFriends = data.friendsOfFriends
+          .edges
+          .filter {
+            $0.node.friendStatus.value == God.FriendStatus.canceled ||
+            $0.node.friendStatus.value == God.FriendStatus.unspecified
+          }
+          .map {
           FriendRowCardLogic.State(
             id: $0.node.id,
             imageURL: $0.node.imageURL,
@@ -127,7 +133,13 @@ public struct AddLogic: Reducer {
             friendStatus: $0.node.friendStatus.value
           )
         }
-        let fromSchools = data.usersBySameSchool.edges.map {
+        let fromSchools = data.usersBySameSchool
+          .edges
+          .filter {
+            $0.node.friendStatus.value == God.FriendStatus.canceled || 
+            $0.node.friendStatus.value == God.FriendStatus.unspecified
+          }
+          .map {
           FriendRowCardLogic.State(
             id: $0.node.id,
             imageURL: $0.node.imageURL,
