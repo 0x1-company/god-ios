@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -22,6 +23,7 @@ public struct PlayAgainLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case timerTick
     case inviteFriendButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
@@ -31,6 +33,7 @@ public struct PlayAgainLogic: Reducer {
   @Dependency(\.openURL) var openURL
   @Dependency(\.calendar) var calendar
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.continuousClock) var clock
 
   public var body: some Reducer<State, Action> {
@@ -56,6 +59,10 @@ public struct PlayAgainLogic: Reducer {
             }
           }
         }
+      case .onAppear:
+        analytics.logScreen(screenName: "PlayAgain", of: self)
+        return .none
+
       case .timerTick:
         let difference = calendar.dateComponents([.minute, .second], from: now, to: state.until)
         let minute = String(format: "%02d", difference.minute ?? 0)
@@ -66,7 +73,14 @@ public struct PlayAgainLogic: Reducer {
       case .inviteFriendButtonTapped:
         guard let url = ShareLinkBuilder.buildForLine(path: .invite, username: state.currentUser?.username)
         else { return .none }
-
+        
+        analytics.buttonClick(
+          name: .inviteFriend,
+          parameters: [
+            "title": String(localized: "Invite a friend", bundle: .module),
+            "url": url
+          ]
+        )
         return .run { _ in
           await openURL(url)
         }
@@ -142,6 +156,7 @@ public struct PlayAgainView: View {
         .padding(.horizontal, 65)
         .buttonStyle(HoldDownButtonStyle())
       }
+      .onAppear { store.send(.onAppear) }
       .task {
         requestReview()
         await viewStore.send(.onTask).finish()
