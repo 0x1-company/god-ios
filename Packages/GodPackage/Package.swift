@@ -69,6 +69,7 @@ let package = Package(
       .product(name: "SearchField", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
+      .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),

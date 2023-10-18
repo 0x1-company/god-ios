@@ -4,8 +4,10 @@ import ContactsClient
 import God
 import GodClient
 import ProfileFeature
+import SocialShare
 import SearchField
 import Styleguide
+import ShareLinkBuilder
 import SwiftUI
 import UIApplicationClient
 
@@ -13,6 +15,7 @@ public struct AddLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    var shareURL = URL(string: "https://godapp.jp")!
     @BindingState var searchQuery = ""
     @PresentationState var destination: Destination.State?
 
@@ -29,6 +32,9 @@ public struct AddLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case storyButtonTapped(UIImage?)
+    case lineButtonTapped
+    case messageButtonTapped
     case searchResponse(TaskResult<God.UserSearchQuery.Data>)
     case addPlusResponse(TaskResult<God.AddPlusQuery.Data>)
     case binding(BindingAction<State>)
@@ -136,6 +142,9 @@ public struct AddLogic: Reducer {
         state.friendsOfFriendsPanel = friendsOfFriends.isEmpty ? nil : .init(friendsOfFriends: .init(uniqueElements: friendsOfFriends))
         state.fromSchoolPanel = fromSchools.isEmpty ? nil : .init(users: .init(uniqueElements: fromSchools))
         state.currentUser = data.currentUser
+        if let username = data.currentUser.username {
+          state.shareURL = ShareLinkBuilder.buildGodLink(path: .invite, username: username, source: .share, medium: .add)
+        }
         return .none
       case .addPlusResponse(.failure):
         state.friendRequestPanel = nil
@@ -243,6 +252,21 @@ public struct AddView: View {
           then: ContactsReEnableView.init(store:)
         )
         SearchField(text: viewStore.$searchQuery)
+        Divider()
+        
+        SocialShare(
+          shareURL: viewStore.shareURL,
+          storyAction: {
+            store.send(.storyButtonTapped(nil))
+          },
+          lineAction: {
+            store.send(.lineButtonTapped)
+          },
+          messageAction: {
+            store.send(.messageButtonTapped)
+          }
+        )
+        
         Divider()
 
         ScrollView {
