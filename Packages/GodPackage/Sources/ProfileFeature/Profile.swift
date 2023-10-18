@@ -19,6 +19,7 @@ public struct ProfileLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
@@ -44,16 +45,23 @@ public struct ProfileLogic: Reducer {
             await currentUserRequest(send: send)
           }
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "Profile", of: self)
+        return .none
 
       case .editProfileButtonTapped:
+        analytics.buttonClick(name: .editProfile)
         state.destination = .profileEdit()
         return .none
 
       case .shareProfileButtonTapped:
+        analytics.buttonClick(name: .shareProfile)
         state.destination = .profileShare()
         return .none
 
       case .shopButtonTapped:
+        analytics.buttonClick(name: .shop)
         state.destination = .shop()
         return .none
 
@@ -199,6 +207,7 @@ public struct ProfileView: View {
       .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /ProfileLogic.Destination.State.profileEdit,
@@ -223,8 +232,7 @@ public struct ProfileView: View {
         action: ProfileLogic.Destination.Action.profileShare
       ) { store in
         ProfileShareView(store: store)
-          .presentationDetents([.height(ProfileShareView.heightForPresentationDetents)])
-          .presentationCornerRadiusIfPossible(24)
+          .presentationBackground(Color.clear)
       }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
@@ -235,17 +243,6 @@ public struct ProfileView: View {
           ProfileExternalView(store: store)
         }
       }
-    }
-  }
-}
-
-extension View {
-  @ViewBuilder
-  func presentationCornerRadiusIfPossible(_ cornerRadius: CGFloat) -> some View {
-    if #available(iOS 16.4, *) {
-      self.presentationCornerRadius(cornerRadius)
-    } else {
-      self
     }
   }
 }

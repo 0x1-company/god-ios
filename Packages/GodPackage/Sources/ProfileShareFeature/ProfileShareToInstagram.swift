@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AnimationDisableTransaction
 import ComposableArchitecture
 import God
@@ -18,6 +19,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case copyLinkButtonTapped
     case closeButtonTapped
@@ -31,6 +33,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
@@ -44,6 +47,10 @@ public struct ProfileShareToInstagramLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileShareToInstagram", of: self)
+        return .none
 
       case let .currentUserResponse(.success(data)):
         state.username = data.currentUser.username
@@ -66,6 +73,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
         )
         pasteboard.url(shareLink)
         state.isProfileLinkCopied = true
+        analytics.buttonClick(name: .copyLink, parameters: ["url": shareLink.absoluteString])
         return .none
 
       case .closeButtonTapped:
@@ -172,6 +180,7 @@ public struct ProfileShareToInstagramView: View {
       .background(Color.godWhite)
       .cornerRadius(24)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

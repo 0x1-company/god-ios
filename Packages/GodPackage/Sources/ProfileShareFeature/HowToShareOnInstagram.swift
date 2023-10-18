@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Constants
 import God
@@ -25,6 +26,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case stepButtonTapped(Step)
     case primaryButtonTapped(profileCardImage: UIImage? = nil)
     case closeButtonTapped
@@ -42,6 +44,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.pasteboard) var pasteboard
   @Dependency(\.urlSession) var urlSession
 
@@ -56,12 +59,17 @@ public struct HowToShareOnInstagramLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "HowToShareOnInstagram", of: self)
+        return .none
 
       case let .stepButtonTapped(step):
         state.currentStep = step
         return .none
 
       case let .primaryButtonTapped(profileCardImage) where state.currentStep == Step.allCases.last:
+        analytics.buttonClick(name: .shareOnInstagram)
         guard
           let profileCardImage,
           let imageData = profileCardImage.pngData(),
@@ -275,6 +283,7 @@ public struct HowToShareOnInstagramView: View {
         .cornerRadius(24)
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }
