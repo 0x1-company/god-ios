@@ -121,9 +121,7 @@ public struct AddLogic: Reducer {
         analytics.buttonClick(name: "line_share")
         guard let lineURL = ShareLinkBuilder.buildForLine(
           path: .add,
-          username: state.currentUser?.username,
-          source: .line,
-          medium: .add
+          username: state.currentUser?.username
         ) else { return .none }
         return .run { _ in
           await openURL(lineURL)
@@ -351,8 +349,8 @@ public struct AddView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       let instagramStoryView = instagramStoryView(
-        profileImageData: nil,
-        schoolImageData: nil,
+        profileImageData: viewStore.profileImageData,
+        schoolImageData: viewStore.schoolImageData,
         fragment: viewStore.currentUser?.fragments.profileStoryFragment
       )
       ZStack {
@@ -362,29 +360,30 @@ public struct AddView: View {
             then: ContactsReEnableView.init(store:)
           )
           SearchField(text: viewStore.$searchQuery)
-          Divider()
-
-          SocialShare(
-            shareURL: viewStore.shareURL,
-            storyAction: {
-              let renderer = ImageRenderer(content: instagramStoryView)
-              renderer.scale = displayScale
-              store.send(.storyButtonTapped(renderer.uiImage))
-            },
-            lineAction: {
-              store.send(.lineButtonTapped)
-            },
-            messageAction: {
-              store.send(.messageButtonTapped)
-            }
-          )
-          .padding(.vertical, 12)
-          .padding(.horizontal, 24)
 
           Divider()
 
           ScrollView {
             LazyVStack(spacing: 0) {
+              SocialShare(
+                shareURL: viewStore.shareURL,
+                storyAction: {
+                  let renderer = ImageRenderer(content: instagramStoryView)
+                  renderer.scale = displayScale
+                  store.send(.storyButtonTapped(renderer.uiImage))
+                },
+                lineAction: {
+                  store.send(.lineButtonTapped)
+                },
+                messageAction: {
+                  store.send(.messageButtonTapped)
+                }
+              )
+              .padding(.vertical, 12)
+              .padding(.horizontal, 24)
+
+              Divider()
+
               if viewStore.searchResult.isEmpty {
                 IfLetStore(
                   store.scope(state: \.friendRequestPanel, action: AddLogic.Action.friendRequestPanel),
