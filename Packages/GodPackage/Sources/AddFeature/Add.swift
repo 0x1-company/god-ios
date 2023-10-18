@@ -266,6 +266,8 @@ public struct AddView: View {
             store.send(.messageButtonTapped)
           }
         )
+        .padding(.vertical, 12)
+        .padding(.horizontal, 24)
         
         Divider()
 
