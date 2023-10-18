@@ -121,9 +121,7 @@ public struct AddLogic: Reducer {
         analytics.buttonClick(name: "line_share")
         guard let lineURL = ShareLinkBuilder.buildForLine(
           path: .add,
-          username: state.currentUser?.username,
-          source: .line,
-          medium: .add
+          username: state.currentUser?.username
         ) else { return .none }
         return .run { _ in
           await openURL(lineURL)
