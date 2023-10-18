@@ -6,7 +6,7 @@
 public extension God {
   struct ProfileStoryFragment: God.SelectionSet, Fragment {
     public static var fragmentDefinition: StaticString {
-      #"fragment ProfileStoryFragment on User { __typename imageURL firstName username displayName { __typename ja } school { __typename id name profileImageURL } }"#
+      #"fragment ProfileStoryFragment on User { __typename id imageURL firstName username displayName { __typename ja } school { __typename id name profileImageURL } }"#
     }
 
     public let __data: DataDict
@@ -15,6 +15,7 @@ public extension God {
     public static var __parentType: ApolloAPI.ParentType { God.Objects.User }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
+      .field("id", God.ID.self),
       .field("imageURL", String.self),
       .field("firstName", String.self),
       .field("username", String?.self),
@@ -22,6 +23,8 @@ public extension God {
       .field("school", School?.self),
     ] }
 
+    /// user id
+    public var id: God.ID { __data["id"] }
     /// プロフィール画像のURL
     public var imageURL: String { __data["imageURL"] }
     /// first name

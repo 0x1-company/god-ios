@@ -1,7 +1,11 @@
 # import '../fragments/AddPlusCardFragment'
+# import '../fragments/ProfileStoryFragment'
 # import '../fragments/FriendRequestCardFragment'
 
 query AddPlus($first: Int!) {
+  currentUser {
+    ...ProfileStoryFragment
+  }
   friendRequests(first: 100) {
     edges {
       node {
