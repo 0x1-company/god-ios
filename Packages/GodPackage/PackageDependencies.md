@@ -85,6 +85,7 @@ graph TD;
     OnboardFeature-->Constants;
     OnboardFeature-->AsyncValue;
     OnboardFeature-->PhotosClient;
+    OnboardFeature-->SocialShare;
     OnboardFeature-->ProfileImage;
     OnboardFeature-->StringHelpers;
     OnboardFeature-->ContactsClient;
