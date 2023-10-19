@@ -115,8 +115,9 @@ public struct GodLogic: Reducer {
 
       case .child(.playAgain(.delegate(.loading))):
         updateChild(state: &state, child: .loading())
-        return .none
-
+        return .run { send in
+          await currentPollRequest(send: send)
+        }
       case .child:
         return .none
       }
