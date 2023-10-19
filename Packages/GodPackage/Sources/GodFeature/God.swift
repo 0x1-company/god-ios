@@ -64,7 +64,6 @@ public struct GodLogic: Reducer {
           try await mainQueue.sleep(for: .seconds(1))
           await currentPollRequest(send: send)
         }
-        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .coolDown:
         guard
@@ -111,7 +110,6 @@ public struct GodLogic: Reducer {
         return .run { send in
           await currentPollRequest(send: send)
         }
-        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
       case .child(.playAgain(.delegate(.loading))):
         updateChild(state: &state, child: .loading())
@@ -140,12 +138,14 @@ public struct GodLogic: Reducer {
   }
 
   func currentPollRequest(send: Send<Action>) async {
-    do {
-      for try await data in godClient.currentPoll() {
-        await send(.currentPollResponse(.success(data)))
+    await withTaskCancellation(id: Cancel.currentPoll, cancelInFlight: true) {
+      do {
+        for try await data in godClient.currentPoll() {
+          await send(.currentPollResponse(.success(data)))
+        }
+      } catch {
+        await send(.currentPollResponse(.failure(error)))
       }
-    } catch {
-      await send(.currentPollResponse(.failure(error)))
     }
   }
 
