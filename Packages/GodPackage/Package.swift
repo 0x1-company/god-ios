@@ -22,6 +22,7 @@ let package = Package(
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
+    .library(name: "InAppWebFeature", targets: ["InAppWebFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
     .library(name: "LaunchFeature", targets: ["LaunchFeature"]),
     .library(name: "MaintenanceFeature", targets: ["MaintenanceFeature"]),
@@ -136,6 +137,11 @@ let package = Package(
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ], resources: [.copy("Onboarding.json")]),
+    .target(name: "InAppWebFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "InboxFeature", dependencies: [
       "RevealFeature",
       "GodModeFeature",
