@@ -99,11 +99,12 @@ public struct ShopLogic: Reducer {
 
       case let .pickFriend(.presented(.delegate(.purchase(userId)))):
         state.pickFriend = nil
-        guard let item = state.items.first(where: { $0.coinAmount == 300 })
+        guard
+          let crushPoll = state.items.first(where: { $0.itemType == .putYourNameInYourCrushsPoll })
         else { return .none }
         let input = God.PurchaseInput(
-          coinAmount: item.coinAmount,
-          storeItemId: item.id,
+          coinAmount: crushPoll.coinAmount,
+          storeItemId: crushPoll.id,
           targetUserId: .init(stringLiteral: userId)
         )
         return .run { send in
