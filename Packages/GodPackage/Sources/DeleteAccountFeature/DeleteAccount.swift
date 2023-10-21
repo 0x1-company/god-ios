@@ -1,9 +1,9 @@
 import AnalyticsClient
 import ComposableArchitecture
 import DeleteAccountReasonClient
+import FirebaseAuthClient
 import Styleguide
 import SwiftUI
-import FirebaseAuthClient
 
 public struct DeleteAccountLogic: Reducer {
   public init() {}
@@ -45,7 +45,7 @@ public struct DeleteAccountLogic: Reducer {
       case .onAppear:
         analytics.logScreen(screenName: "DeleteAccount", of: self)
         return .none
-        
+
       case .closeButtonTapped:
         analytics.buttonClick(name: .close)
         return .run { _ in
@@ -68,7 +68,7 @@ public struct DeleteAccountLogic: Reducer {
         guard let currentUser = firebaseAuth.currentUser()
         else { return .none }
         let reasons = state.selectedReasons + [state.otherReason].filter { !$0.isEmpty }
-  
+
         let param = DeleteAccountReasonClient.InsertParam(
           uid: currentUser.uid,
           reasons: reasons
@@ -79,7 +79,7 @@ public struct DeleteAccountLogic: Reducer {
           try await deleteAccountReasons.insert(param)
           try await currentUser.delete()
         }
-        
+
       default:
         return .none
       }
@@ -105,7 +105,7 @@ public struct DeleteAccountView: View {
             Text("All account information will be deleted, including friends, stars, and coin.", bundle: .module)
           }
           Text("This **cannot** be undone or recovered.", bundle: .module)
-          
+
           VStack(spacing: 0) {
             ForEach(viewStore.reasons, id: \.self) { reason in
               Button {
@@ -116,12 +116,12 @@ public struct DeleteAccountView: View {
                     .foregroundStyle(Color.black)
                     .font(.system(.body, design: .rounded))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                  
+
                   Rectangle()
                     .fill(
                       viewStore.selectedReasons.contains(reason)
-                      ? Color.godService
-                      : Color.white
+                        ? Color.godService
+                        : Color.white
                     )
                     .frame(width: 18, height: 18)
                     .clipShape(Circle())
@@ -129,8 +129,8 @@ public struct DeleteAccountView: View {
                       RoundedRectangle(cornerRadius: 18 / 2)
                         .stroke(
                           viewStore.selectedReasons.contains(reason)
-                          ? Color.godService
-                          : Color.godTextSecondaryLight,
+                            ? Color.godService
+                            : Color.godTextSecondaryLight,
                           lineWidth: 2
                         )
                     )
@@ -140,13 +140,13 @@ public struct DeleteAccountView: View {
               }
               Divider()
             }
-            
+
             TextField(
               String(localized: "Other Reason", bundle: .module),
               text: viewStore.$otherReason,
               axis: .vertical
             )
-            .lineLimit(1...10)
+            .lineLimit(1 ... 10)
             .frame(minHeight: 54)
             .padding(.horizontal, 16)
             .multilineTextAlignment(.leading)
@@ -158,7 +158,7 @@ public struct DeleteAccountView: View {
             RoundedRectangle(cornerRadius: 16)
               .stroke(Color.godSeparator)
           )
-          
+
           Button {
             store.send(.deleteButtonTapped)
           } label: {
@@ -171,7 +171,7 @@ public struct DeleteAccountView: View {
               .clipShape(Capsule())
           }
           .buttonStyle(HoldDownButtonStyle())
-          
+
           Button {
             store.send(.notNowButtonTapped)
           } label: {

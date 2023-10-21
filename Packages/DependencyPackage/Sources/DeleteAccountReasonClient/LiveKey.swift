@@ -10,7 +10,7 @@ extension DeleteAccountReasonClient: DependencyKey {
         .document()
         .setData([
           "uid": param.uid,
-          "reasons": param.reasons
+          "reasons": param.reasons,
         ])
     }
   )
