@@ -64,7 +64,6 @@ let package = Package(
     ]),
     .target(name: "AddFeature", dependencies: [
       "ProfileFeature",
-      "ProfileStoryFeature",
       "FriendRequestFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
