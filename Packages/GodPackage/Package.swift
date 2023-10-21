@@ -53,6 +53,7 @@ let package = Package(
     .target(name: "AboutFeature", dependencies: [
       "EmailFeature",
       "HowItWorksFeature",
+      "DeleteAccountFeature",
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
