@@ -216,16 +216,17 @@ public struct ProfileView: View {
       .task { await viewStore.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileEdit,
         action: ProfileLogic.Destination.Action.profileEdit
       ) { store in
         NavigationStack {
           ProfileEditView(store: store)
         }
+        .interactiveDismissDisabled()
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.shop,
         action: ProfileLogic.Destination.Action.shop
       ) { store in
@@ -234,7 +235,7 @@ public struct ProfileView: View {
         }
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileShare,
         action: ProfileLogic.Destination.Action.profileShare
       ) { store in
@@ -242,7 +243,7 @@ public struct ProfileView: View {
           .presentationBackground(Color.clear)
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.external,
         action: ProfileLogic.Destination.Action.external
       ) { store in
