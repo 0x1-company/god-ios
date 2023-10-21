@@ -12,7 +12,6 @@ graph TD;
     AddFeature-->ProfileFeature;
     AddFeature-->ProfileStoryFeature;
     AddFeature-->FriendRequestFeature;
-    AddFeature-->CupertinoMessageFeature;
     AppFeature-->LaunchFeature;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
