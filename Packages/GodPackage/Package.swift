@@ -16,6 +16,7 @@ let package = Package(
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
+    .library(name: "DeleteAccountFeature", targets: ["DeleteAccountFeature"]),
     .library(name: "EmailFeature", targets: ["EmailFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "FriendRequestFeature", targets: ["FriendRequestFeature"]),
@@ -100,6 +101,13 @@ let package = Package(
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "DeleteAccountFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "FirebaseAuthClient", package: "DependencyPackage"),
+      .product(name: "DeleteAccountReasonClient", package: "DependencyPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "EmailFeature", dependencies: [
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
@@ -163,7 +171,9 @@ let package = Package(
     ]),
     .target(name: "ManageAccountFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "LabeledButton", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "NavigationFeature", dependencies: [

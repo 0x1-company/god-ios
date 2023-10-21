@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "ApolloClientHelpers", targets: ["ApolloClientHelpers"]),
     .library(name: "AsyncValue", targets: ["AsyncValue"]),
     .library(name: "Constants", targets: ["Constants"]),
+    .library(name: "DeleteAccountReasonClient", targets: ["DeleteAccountReasonClient"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
     .library(name: "FirebaseDynamicLinkClient", targets: ["FirebaseDynamicLinkClient"]),
@@ -50,6 +51,11 @@ let package = Package(
     ]),
     .target(name: "AsyncValue"),
     .target(name: "Constants"),
+    .target(name: "DeleteAccountReasonClient", dependencies: [
+      .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+      .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "FirebaseAuthClient", dependencies: [
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
