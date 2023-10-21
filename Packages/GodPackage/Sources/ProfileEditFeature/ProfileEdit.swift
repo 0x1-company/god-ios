@@ -1,5 +1,6 @@
 import AsyncValue
 import ComposableArchitecture
+import DeleteAccountFeature
 import FirebaseAuthClient
 import FirebaseStorage
 import FirebaseStorageClient
@@ -15,11 +16,25 @@ import UserDefaultsClient
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case manageAccount(ManageAccountLogic.State = .init())
+      case deleteAccount(DeleteAccountLogic.State = .init())
+    }
+    public enum Action: Equatable {
+      case manageAccount(ManageAccountLogic.Action)
+      case deleteAccount(DeleteAccountLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.manageAccount, action: /Action.manageAccount, child: ManageAccountLogic.init)
+      Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     public init() {}
 
-    @PresentationState var manageAccount: ManageAccountLogic.State?
+    @PresentationState var destination: Destination.State?
     @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var photoPickerItems: [PhotosPickerItem] = []
     @BindingState var firstName: String = ""
@@ -65,9 +80,10 @@ public struct ProfileEditLogic: Reducer {
 
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
+    case deleteAccountButtonTapped
     case logoutButtonTapped
     case closeButtonTapped
-    case manageAccount(PresentationAction<ManageAccountLogic.Action>)
+    case destination(PresentationAction<Destination.Action>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
 
@@ -174,7 +190,11 @@ public struct ProfileEditLogic: Reducer {
         return .none
 
       case .manageAccountButtonTapped:
-        state.manageAccount = .init()
+        state.destination = .manageAccount()
+        return .none
+        
+      case .deleteAccountButtonTapped:
+        state.destination = .deleteAccount()
         return .none
 
       case .logoutButtonTapped:
@@ -218,8 +238,8 @@ public struct ProfileEditLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$manageAccount, action: /Action.manageAccount) {
-      ManageAccountLogic()
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
     }
   }
 
@@ -378,7 +398,11 @@ public struct ProfileEditView: View {
 //            }
 
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
-              viewStore.send(.logoutButtonTapped)
+              store.send(.logoutButtonTapped)
+            }
+            
+            CornerRadiusBorderButton("Delete Account", systemImage: "trash") {
+              store.send(.deleteAccountButtonTapped)
             }
           }
         }
@@ -416,18 +440,25 @@ public struct ProfileEditView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
-      .sheet(
-        store: store.scope(
-          state: \.$manageAccount,
-          action: ProfileEditLogic.Action.manageAccount
-        ),
-        content: { store in
-          NavigationStack {
-            ManageAccountView(store: store)
-          }
-        }
-      )
       .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
+      .sheet(
+        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+        state: /ProfileEditLogic.Destination.State.manageAccount,
+        action: ProfileEditLogic.Destination.Action.manageAccount
+      ) { store in
+        NavigationStack {
+          ManageAccountView(store: store)
+        }
+      }
+      .sheet(
+        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+        state: /ProfileEditLogic.Destination.State.deleteAccount,
+        action: ProfileEditLogic.Destination.Action.deleteAccount
+      ) { store in
+        NavigationStack {
+          DeleteAccountView(store: store)
+        }
+      }
     }
   }
 
