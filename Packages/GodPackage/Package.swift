@@ -66,7 +66,6 @@ let package = Package(
       "ProfileFeature",
       "ProfileStoryFeature",
       "FriendRequestFeature",
-      "CupertinoMessageFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
