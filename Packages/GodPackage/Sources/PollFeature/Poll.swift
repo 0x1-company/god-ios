@@ -2,20 +2,24 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import FeedbackGeneratorClient
 
 public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var pollId: String
+    let poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
+    var skipAvailableCount: Int
     var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
-    var currentId: String
-    var currentPosition = 1
+    var currentPollQuestionId: String
+    var currentPollQuestionPosition = 1
+    @PresentationState var alert: AlertState<Action.Alert>?
 
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     ) {
-      pollId = poll.id
+      self.poll = poll
+      skipAvailableCount = poll.skipAvailableCount
       pollQuestions = .init(
         uniqueElements: poll.pollQuestions.enumerated().map {
           PollQuestionLogic.State(
@@ -24,7 +28,7 @@ public struct PollLogic: Reducer {
           )
         }
       )
-      currentId = pollQuestions[0].id
+      currentPollQuestionId = pollQuestions[0].id
     }
   }
 
@@ -33,7 +37,12 @@ public struct PollLogic: Reducer {
     case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
     case createVoteResponse(TaskResult<God.CreateVoteMutation.Data>)
     case completePollResponse(TaskResult<God.CompletePollMutation.Data>)
+    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
 
     public enum Delegate: Equatable {
       case voted
@@ -43,6 +52,7 @@ public struct PollLogic: Reducer {
 
   @Dependency(\.godClient.createVote) var createVote
   @Dependency(\.godClient.completePoll) var completePoll
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -59,18 +69,23 @@ public struct PollLogic: Reducer {
         }
 
       case let .pollQuestions(id, .delegate(.nextPollQuestion)):
-        guard let index = state.pollQuestions.index(id: id) else { return .none }
-        let afterIndex = state.pollQuestions.index(after: index)
-
-        guard afterIndex < state.pollQuestions.count else {
-          return .run { [pollId = state.pollId] send in
-            await completePollRequest(pollId: pollId, send: send)
+        return nextPollQuestion(state: &state, id: id)
+        
+      case let .pollQuestions(id, .delegate(.skip)) where state.skipAvailableCount > 0:
+        state.skipAvailableCount -= 1
+        return nextPollQuestion(state: &state, id: id)
+        
+      case .pollQuestions(_, .delegate(.skip)):
+        state.alert = AlertState {
+          TextState("You cannot skip questions", bundle: .module)
+        } actions: {
+          ButtonState {
+            TextState("OK", bundle: .module)
           }
         }
-        let element = state.pollQuestions.elements[afterIndex]
-        state.currentId = element.id
-        state.currentPosition = afterIndex + 1
-        return .none
+        return .run { _ in
+          await feedbackGenerator.notificationOccurred(.error)
+        }
 
       case .pollQuestions:
         return .none
@@ -87,6 +102,29 @@ public struct PollLogic: Reducer {
         return .send(.delegate(.finish(earnedCoinAmount: earnedCoinAmount)), animation: .default)
 
       case .completePollResponse(.failure):
+        state.alert = AlertState {
+          TextState("You cannot skip all questions.", bundle: .module)
+        } actions: {
+          ButtonState(action: .send(.confirmOkay, animation: .default)) {
+            TextState("OK", bundle: .module)
+          }
+        } message: {
+          TextState("Please start over from the beginning.", bundle: .module)
+        }
+        return .none
+        
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
+        let element = state.pollQuestions.elements[0]
+        state.currentPollQuestionId = element.id
+        state.currentPollQuestionPosition = 1
+        return .none
+        
+      case .alert(.dismiss):
+        state.alert = nil
+        return .none
+        
+      case .alert:
         return .none
 
       case .delegate:
@@ -96,6 +134,21 @@ public struct PollLogic: Reducer {
     .forEach(\.pollQuestions, action: /Action.pollQuestions) {
       PollQuestionLogic()
     }
+  }
+  
+  func nextPollQuestion(state: inout State, id: PollQuestionLogic.State.ID) -> Effect<Action> {
+    guard let index = state.pollQuestions.index(id: id) else { return .none }
+    let afterIndex = state.pollQuestions.index(after: index)
+
+    guard afterIndex < state.pollQuestions.count else {
+      return .run { [pollId = state.poll.id] send in
+        await completePollRequest(pollId: pollId, send: send)
+      }
+    }
+    let element = state.pollQuestions.elements[afterIndex]
+    state.currentPollQuestionId = element.id
+    state.currentPollQuestionPosition = afterIndex + 1
+    return .none
   }
 
   func completePollRequest(pollId: String, send: Send<Action>) async {
@@ -130,7 +183,7 @@ public struct PollView: View {
             }
           }
           .scrollDisabled(true)
-          .onChange(of: viewStore.currentId) { newValue in
+          .onChange(of: viewStore.currentPollQuestionId) { newValue in
             withAnimation {
               proxy.scrollTo(newValue)
             }
@@ -140,18 +193,19 @@ public struct PollView: View {
 
         VStack(spacing: 18) {
           ProgressView(
-            value: Double(viewStore.currentPosition),
+            value: Double(viewStore.currentPollQuestionPosition),
             total: Double(viewStore.pollQuestions.count)
           )
           .tint(Color.white)
 
-          Text("\(viewStore.currentPosition) of \(viewStore.pollQuestions.count)", bundle: .module)
+          Text("\(viewStore.currentPollQuestionPosition) of \(viewStore.pollQuestions.count)", bundle: .module)
             .bold()
             .foregroundStyle(.white)
         }
         .padding(.top, 52)
       }
       .task { await viewStore.send(.onTask).finish() }
+      .alert(store: store.scope(state: \.$alert, action: PollLogic.Action.alert))
     }
   }
 }

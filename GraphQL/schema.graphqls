@@ -314,6 +314,9 @@ type Poll {
 
   """12の質問"""
   pollQuestions: [PollQuestion!]!
+
+  """スキップ可能数"""
+  skipAvailableCount: Int!
 }
 
 type PollQuestion {

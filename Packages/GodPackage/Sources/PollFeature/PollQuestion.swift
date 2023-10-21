@@ -59,6 +59,7 @@ public struct PollQuestionLogic: Reducer {
     public enum Delegate: Equatable {
       case vote(God.CreateVoteInput)
       case nextPollQuestion
+      case skip
     }
   }
 
@@ -140,10 +141,7 @@ public struct PollQuestionLogic: Reducer {
           "question_id": state.question.id,
           "question_text": state.question.text.ja,
         ])
-        return .run { send in
-          await feedbackGenerator.impactOccurred()
-          await send(.delegate(.nextPollQuestion), animation: .default)
-        }
+        return .send(.delegate(.skip), animation: .default)
       case .continueButtonTapped:
         return .run { send in
           await feedbackGenerator.impactOccurred()
@@ -232,22 +230,23 @@ public struct PollQuestionView: View {
                 String(localized: "Shuffle", bundle: .module),
                 systemImage: "shuffle"
               ) {
-                viewStore.send(.shuffleButtonTapped)
+                store.send(.shuffleButtonTapped, animation: .default)
               }
               LabeledButton(
                 String(localized: "Skip", bundle: .module),
                 systemImage: "forward.fill"
               ) {
-                viewStore.send(.skipButtonTapped)
+                store.send(.skipButtonTapped, animation: .default)
               }
             }
             .buttonStyle(HoldDownButtonStyle())
           }
         }
         .frame(height: 50)
-        .animation(.default, value: !viewStore.voteChoices.isEmpty)
         .foregroundColor(.white)
         .padding(.vertical, 64)
+        .font(.system(.body, design: .rounded, weight: .bold))
+        .animation(.default, value: !viewStore.voteChoices.isEmpty)
       }
       .padding(.top, 80)
       .padding(.horizontal, 36)

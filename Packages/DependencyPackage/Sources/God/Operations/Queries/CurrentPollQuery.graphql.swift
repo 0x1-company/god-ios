@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "CurrentPoll"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentPoll { currentPoll { __typename status coolDown { __typename until } poll { __typename id pollQuestions { __typename id question { __typename id imageURL text { __typename ja } } choiceGroups { __typename signature { __typename digest } choices { __typename userId text } } } } } }"#
+        #"query CurrentPoll { currentPoll { __typename status coolDown { __typename until } poll { __typename id skipAvailableCount pollQuestions { __typename id question { __typename id imageURL text { __typename ja } } choiceGroups { __typename signature { __typename digest } choices { __typename userId text } } } } } }"#
       ))
 
     public init() {}
@@ -75,10 +75,13 @@ public extension God {
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
             .field("id", God.ID.self),
+            .field("skipAvailableCount", Int.self),
             .field("pollQuestions", [PollQuestion].self),
           ] }
 
           public var id: God.ID { __data["id"] }
+          /// スキップ可能数
+          public var skipAvailableCount: Int { __data["skipAvailableCount"] }
           /// 12の質問
           public var pollQuestions: [PollQuestion] { __data["pollQuestions"] }
 
