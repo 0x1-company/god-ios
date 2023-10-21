@@ -12,16 +12,19 @@ public class Poll: MockObject {
   public struct MockFields {
     @Field<God.ID>("id") public var id
     @Field<[PollQuestion]>("pollQuestions") public var pollQuestions
+    @Field<Int>("skipAvailableCount") public var skipAvailableCount
   }
 }
 
 public extension Mock where O == Poll {
   convenience init(
     id: God.ID? = nil,
-    pollQuestions: [Mock<PollQuestion>]? = nil
+    pollQuestions: [Mock<PollQuestion>]? = nil,
+    skipAvailableCount: Int? = nil
   ) {
     self.init()
     _setScalar(id, for: \.id)
     _setList(pollQuestions, for: \.pollQuestions)
+    _setScalar(skipAvailableCount, for: \.skipAvailableCount)
   }
 }

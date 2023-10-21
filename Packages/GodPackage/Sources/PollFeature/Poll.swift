@@ -9,8 +9,8 @@ public struct PollLogic: Reducer {
   public struct State: Equatable {
     var pollId: String
     var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
-    var currentId: String
-    var currentPosition = 1
+    var currentPollQuestionId: String
+    var currentPollQuestionPosition = 1
 
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
@@ -24,7 +24,7 @@ public struct PollLogic: Reducer {
           )
         }
       )
-      currentId = pollQuestions[0].id
+      currentPollQuestionId = pollQuestions[0].id
     }
   }
 
@@ -68,8 +68,8 @@ public struct PollLogic: Reducer {
           }
         }
         let element = state.pollQuestions.elements[afterIndex]
-        state.currentId = element.id
-        state.currentPosition = afterIndex + 1
+        state.currentPollQuestionId = element.id
+        state.currentPollQuestionPosition = afterIndex + 1
         return .none
 
       case .pollQuestions:
@@ -130,7 +130,7 @@ public struct PollView: View {
             }
           }
           .scrollDisabled(true)
-          .onChange(of: viewStore.currentId) { newValue in
+          .onChange(of: viewStore.currentPollQuestionId) { newValue in
             withAnimation {
               proxy.scrollTo(newValue)
             }
@@ -140,12 +140,12 @@ public struct PollView: View {
 
         VStack(spacing: 18) {
           ProgressView(
-            value: Double(viewStore.currentPosition),
+            value: Double(viewStore.currentPollQuestionPosition),
             total: Double(viewStore.pollQuestions.count)
           )
           .tint(Color.white)
 
-          Text("\(viewStore.currentPosition) of \(viewStore.pollQuestions.count)", bundle: .module)
+          Text("\(viewStore.currentPollQuestionPosition) of \(viewStore.pollQuestions.count)", bundle: .module)
             .bold()
             .foregroundStyle(.white)
         }
