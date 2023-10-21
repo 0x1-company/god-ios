@@ -2,6 +2,7 @@
 graph TD;
     AboutFeature-->EmailFeature;
     AboutFeature-->HowItWorksFeature;
+    AboutFeature-->DeleteAccountFeature;
     AboutFeature-->Build;
     AboutFeature-->Constants;
     AboutFeature-->SwiftUIMessage;
