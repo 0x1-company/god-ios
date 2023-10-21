@@ -47,10 +47,12 @@ public struct DeleteAccountLogic: Reducer {
         return .none
         
       case .closeButtonTapped:
+        analytics.buttonClick(name: .close)
         return .run { _ in
           await dismiss()
         }
       case .notNowButtonTapped:
+        analytics.buttonClick(name: .notNow)
         return .run { _ in
           await dismiss()
         }

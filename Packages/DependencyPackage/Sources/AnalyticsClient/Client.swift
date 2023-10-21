@@ -41,6 +41,7 @@ public extension AnalyticsClient {
   }
 
   enum ButtonClickName: String {
+    case close
     case vote
     case voteSlowDown = "vote_slow_down"
     case shuffle
@@ -55,5 +56,6 @@ public extension AnalyticsClient {
     case copyLink = "copy_link"
     case addFriends = "add_friends"
     case inviteFriend = "invite_friend"
+    case notNow = "not_now"
   }
 }
