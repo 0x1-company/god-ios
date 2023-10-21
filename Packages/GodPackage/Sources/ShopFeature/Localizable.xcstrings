@@ -89,7 +89,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの名前は友だちに表示されます"
+            "value" : "あなたの名前は友だちの質問に表示されます"
           }
         }
       }
