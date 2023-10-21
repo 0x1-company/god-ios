@@ -7,7 +7,7 @@ public struct DeleteAccountReasonClient {
   public struct InsertParam: Equatable {
     let uid: String
     let reasons: [String]
-    
+
     public init(uid: String, reasons: [String]) {
       self.uid = uid
       self.reasons = reasons

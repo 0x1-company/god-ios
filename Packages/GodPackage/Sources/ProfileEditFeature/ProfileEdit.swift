@@ -21,10 +21,12 @@ public struct ProfileEditLogic: Reducer {
       case manageAccount(ManageAccountLogic.State = .init())
       case deleteAccount(DeleteAccountLogic.State = .init())
     }
+
     public enum Action: Equatable {
       case manageAccount(ManageAccountLogic.Action)
       case deleteAccount(DeleteAccountLogic.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.manageAccount, action: /Action.manageAccount, child: ManageAccountLogic.init)
       Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
@@ -192,7 +194,7 @@ public struct ProfileEditLogic: Reducer {
       case .manageAccountButtonTapped:
         state.destination = .manageAccount()
         return .none
-        
+
       case .deleteAccountButtonTapped:
         state.destination = .deleteAccount()
         return .none
@@ -400,7 +402,7 @@ public struct ProfileEditView: View {
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
               store.send(.logoutButtonTapped)
             }
-            
+
             CornerRadiusBorderButton("Delete Account", systemImage: "trash") {
               store.send(.deleteAccountButtonTapped)
             }
