@@ -30,7 +30,7 @@ public struct DeleteAccountLogic: Reducer {
     case notNowButtonTapped
     case binding(BindingAction<State>)
     case confirmationDialog(PresentationAction<ConfirmationDialog>)
-    
+
     public enum ConfirmationDialog: Equatable {
       case confirm
     }
@@ -69,7 +69,7 @@ public struct DeleteAccountLogic: Reducer {
           state.selectedReasons.append(reason)
         }
         return .none
-        
+
       case .deleteButtonTapped:
         state.confirmationDialog = ConfirmationDialogState {
           TextState("Delete Account", bundle: .module)
@@ -81,7 +81,7 @@ public struct DeleteAccountLogic: Reducer {
           TextState("Are you sure you want to delete your account?", bundle: .module)
         }
         return .none
-        
+
       case .confirmationDialog(.presented(.confirm)):
         guard let currentUser = firebaseAuth.currentUser()
         else { return .none }
