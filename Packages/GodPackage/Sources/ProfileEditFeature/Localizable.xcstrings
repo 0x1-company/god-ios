@@ -45,7 +45,14 @@
       }
     },
     "Delete Account" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント削除"
+          }
+        }
+      }
     },
     "Discard Changes" : {
       "localizations" : {

@@ -404,6 +404,7 @@ public struct ProfileEditView: View {
             CornerRadiusBorderButton("Delete Account", systemImage: "trash") {
               store.send(.deleteAccountButtonTapped)
             }
+            .foregroundStyle(Color.red)
           }
         }
         .padding(.all, 24)
