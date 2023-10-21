@@ -215,7 +215,7 @@ public struct ProfileView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .fullScreenCover(
+      .sheet(
         store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileEdit,
         action: ProfileLogic.Destination.Action.profileEdit

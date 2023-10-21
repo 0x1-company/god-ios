@@ -9,6 +9,7 @@ public struct DeleteAccountLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    @PresentationState var confirmationDialog: ConfirmationDialogState<Action.ConfirmationDialog>?
     @BindingState var otherReason = ""
     var selectedReasons: [String] = []
     let reasons = [
@@ -28,6 +29,11 @@ public struct DeleteAccountLogic: Reducer {
     case deleteButtonTapped
     case notNowButtonTapped
     case binding(BindingAction<State>)
+    case confirmationDialog(PresentationAction<ConfirmationDialog>)
+    
+    public enum ConfirmationDialog: Equatable {
+      case confirm
+    }
   }
 
   @Dependency(\.dismiss) var dismiss
@@ -63,8 +69,20 @@ public struct DeleteAccountLogic: Reducer {
           state.selectedReasons.append(reason)
         }
         return .none
-
+        
       case .deleteButtonTapped:
+        state.confirmationDialog = ConfirmationDialogState {
+          TextState("Delete Account", bundle: .module)
+        } actions: {
+          ButtonState(role: .destructive, action: .confirm) {
+            TextState("Confirm", bundle: .module)
+          }
+        } message: {
+          TextState("Are you sure you want to delete your account?", bundle: .module)
+        }
+        return .none
+        
+      case .confirmationDialog(.presented(.confirm)):
         guard let currentUser = firebaseAuth.currentUser()
         else { return .none }
         let reasons = state.selectedReasons + [state.otherReason].filter { !$0.isEmpty }
@@ -205,6 +223,12 @@ public struct DeleteAccountView: View {
           }
         }
       }
+      .confirmationDialog(
+        store: store.scope(
+          state: \.$confirmationDialog,
+          action: DeleteAccountLogic.Action.confirmationDialog
+        )
+      )
     }
   }
 }

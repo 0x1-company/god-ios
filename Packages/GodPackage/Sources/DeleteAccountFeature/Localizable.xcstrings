@@ -31,6 +31,16 @@
         }
       }
     },
+    "Confirm" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除を実行する"
+          }
+        }
+      }
+    },
     "Delete Account" : {
       "localizations" : {
         "ja" : {
@@ -96,7 +106,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "削除を実行する"
+            "value" : "削除する"
           }
         }
       }
