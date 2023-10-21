@@ -11,7 +11,6 @@ graph TD;
     AddFeature-->ProfileFeature;
     AddFeature-->ProfileStoryFeature;
     AddFeature-->FriendRequestFeature;
-    AddFeature-->CupertinoMessageFeature;
     AddFeature-->Constants;
     AddFeature-->GodClient;
     AddFeature-->Styleguide;
