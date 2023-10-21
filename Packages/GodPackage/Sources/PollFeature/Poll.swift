@@ -8,7 +8,7 @@ public struct PollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var pollId: String
+    let poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     var skipAvailableCount: Int
     var pollQuestions: IdentifiedArrayOf<PollQuestionLogic.State>
     var currentPollQuestionId: String
@@ -18,9 +18,8 @@ public struct PollLogic: Reducer {
     public init(
       poll: God.CurrentPollQuery.Data.CurrentPoll.Poll
     ) {
-      pollId = poll.id
-//      skipAvailableCount = poll.skipAvailableCount
-      skipAvailableCount = 12
+      self.poll = poll
+      skipAvailableCount = poll.skipAvailableCount
       pollQuestions = .init(
         uniqueElements: poll.pollQuestions.enumerated().map {
           PollQuestionLogic.State(
@@ -73,9 +72,17 @@ public struct PollLogic: Reducer {
         return nextPollQuestion(state: &state, id: id)
         
       case let .pollQuestions(id, .delegate(.skip)) where state.skipAvailableCount > 0:
+        state.skipAvailableCount -= 1
         return nextPollQuestion(state: &state, id: id)
         
       case .pollQuestions(_, .delegate(.skip)):
+        state.alert = AlertState {
+          TextState("You cannot skip questions", bundle: .module)
+        } actions: {
+          ButtonState {
+            TextState("OK", bundle: .module)
+          }
+        }
         return .run { _ in
           await feedbackGenerator.notificationOccurred(.error)
         }
@@ -113,6 +120,10 @@ public struct PollLogic: Reducer {
         state.currentPollQuestionPosition = 1
         return .none
         
+      case .alert(.dismiss):
+        state.alert = nil
+        return .none
+        
       case .alert:
         return .none
 
@@ -130,7 +141,7 @@ public struct PollLogic: Reducer {
     let afterIndex = state.pollQuestions.index(after: index)
 
     guard afterIndex < state.pollQuestions.count else {
-      return .run { [pollId = state.pollId] send in
+      return .run { [pollId = state.poll.id] send in
         await completePollRequest(pollId: pollId, send: send)
       }
     }

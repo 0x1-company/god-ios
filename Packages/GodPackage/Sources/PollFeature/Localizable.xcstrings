@@ -87,6 +87,16 @@
         }
       }
     },
+    "You cannot skip questions" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "質問をスキップできません🥲"
+          }
+        }
+      }
+    },
     "You're voting too fast" : {
       "localizations" : {
         "ja" : {

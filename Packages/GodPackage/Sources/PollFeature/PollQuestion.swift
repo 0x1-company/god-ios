@@ -236,7 +236,7 @@ public struct PollQuestionView: View {
                 String(localized: "Skip", bundle: .module),
                 systemImage: "forward.fill"
               ) {
-                store.send(.skipButtonTapped)
+                store.send(.skipButtonTapped, animation: .default)
               }
             }
             .buttonStyle(HoldDownButtonStyle())
