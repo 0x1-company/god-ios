@@ -442,7 +442,7 @@ public struct ProfileEditView: View {
       .task { await viewStore.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
       .sheet(
-        store: store.scope(state: \.$destination, action: { $0.destination }),
+        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
         state: /ProfileEditLogic.Destination.State.manageAccount,
         action: ProfileEditLogic.Destination.Action.manageAccount
       ) { store
@@ -451,7 +451,7 @@ public struct ProfileEditView: View {
         }
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { $0.destination }),
+        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
         state: /ProfileEditLogic.Destination.State.deleteAccount,
         action: ProfileEditLogic.Destination.Action.deleteAccount
       ) { store
