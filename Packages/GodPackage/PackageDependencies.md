@@ -9,7 +9,6 @@ graph TD;
     AboutFeature-->UIPasteboardClient;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
-    AddFeature-->ProfileStoryFeature;
     AddFeature-->FriendRequestFeature;
     AddFeature-->Constants;
     AddFeature-->GodClient;

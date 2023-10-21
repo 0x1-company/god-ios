@@ -10,7 +10,6 @@ graph TD;
     AboutFeature-->DeleteAccountFeature;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
-    AddFeature-->ProfileStoryFeature;
     AddFeature-->FriendRequestFeature;
     AppFeature-->LaunchFeature;
     AppFeature-->OnboardFeature;
