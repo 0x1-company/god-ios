@@ -225,6 +225,7 @@ let package = Package(
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
       "ManageAccountFeature",
+      "DeleteAccountFeature",
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
