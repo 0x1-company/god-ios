@@ -230,13 +230,13 @@ public struct PollQuestionView: View {
                 String(localized: "Shuffle", bundle: .module),
                 systemImage: "shuffle"
               ) {
-                viewStore.send(.shuffleButtonTapped)
+                store.send(.shuffleButtonTapped, animation: .default)
               }
               LabeledButton(
                 String(localized: "Skip", bundle: .module),
                 systemImage: "forward.fill"
               ) {
-                viewStore.send(.skipButtonTapped)
+                store.send(.skipButtonTapped)
               }
             }
             .buttonStyle(HoldDownButtonStyle())

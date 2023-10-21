@@ -98,7 +98,7 @@ public struct PollLogic: Reducer {
         state.alert = AlertState {
           TextState("You cannot skip all questions.", bundle: .module)
         } actions: {
-          ButtonState(action: .confirmOkay) {
+          ButtonState(action: .send(.confirmOkay, animation: .default)) {
             TextState("OK", bundle: .module)
           }
         } message: {
