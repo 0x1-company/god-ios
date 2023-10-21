@@ -118,6 +118,7 @@ public struct PollLogic: Reducer {
         let element = state.pollQuestions.elements[0]
         state.currentPollQuestionId = element.id
         state.currentPollQuestionPosition = 1
+        state.skipAvailableCount = state.poll.skipAvailableCount
         return .none
 
       case .alert(.dismiss):
