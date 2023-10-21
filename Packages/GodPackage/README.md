@@ -7,6 +7,7 @@ Only XxxFeature in GodPackage
 graph TD;
     AboutFeature-->EmailFeature;
     AboutFeature-->HowItWorksFeature;
+    AboutFeature-->DeleteAccountFeature;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
     AddFeature-->ProfileStoryFeature;
