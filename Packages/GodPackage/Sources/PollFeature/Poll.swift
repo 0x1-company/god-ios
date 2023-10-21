@@ -1,8 +1,8 @@
 import ComposableArchitecture
+import FeedbackGeneratorClient
 import God
 import GodClient
 import SwiftUI
-import FeedbackGeneratorClient
 
 public struct PollLogic: Reducer {
   public init() {}
@@ -39,7 +39,7 @@ public struct PollLogic: Reducer {
     case completePollResponse(TaskResult<God.CompletePollMutation.Data>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-    
+
     public enum Alert: Equatable {
       case confirmOkay
     }
@@ -70,11 +70,11 @@ public struct PollLogic: Reducer {
 
       case let .pollQuestions(id, .delegate(.nextPollQuestion)):
         return nextPollQuestion(state: &state, id: id)
-        
+
       case let .pollQuestions(id, .delegate(.skip)) where state.skipAvailableCount > 0:
         state.skipAvailableCount -= 1
         return nextPollQuestion(state: &state, id: id)
-        
+
       case .pollQuestions(_, .delegate(.skip)):
         state.alert = AlertState {
           TextState("You cannot skip questions", bundle: .module)
@@ -112,18 +112,18 @@ public struct PollLogic: Reducer {
           TextState("Please start over from the beginning.", bundle: .module)
         }
         return .none
-        
+
       case .alert(.presented(.confirmOkay)):
         state.alert = nil
         let element = state.pollQuestions.elements[0]
         state.currentPollQuestionId = element.id
         state.currentPollQuestionPosition = 1
         return .none
-        
+
       case .alert(.dismiss):
         state.alert = nil
         return .none
-        
+
       case .alert:
         return .none
 
@@ -135,7 +135,7 @@ public struct PollLogic: Reducer {
       PollQuestionLogic()
     }
   }
-  
+
   func nextPollQuestion(state: inout State, id: PollQuestionLogic.State.ID) -> Effect<Action> {
     guard let index = state.pollQuestions.index(id: id) else { return .none }
     let afterIndex = state.pollQuestions.index(after: index)
