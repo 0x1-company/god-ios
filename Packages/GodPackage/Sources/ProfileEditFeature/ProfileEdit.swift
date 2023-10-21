@@ -445,7 +445,7 @@ public struct ProfileEditView: View {
         store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
         state: /ProfileEditLogic.Destination.State.manageAccount,
         action: ProfileEditLogic.Destination.Action.manageAccount
-      ) { store
+      ) { store in
         NavigationStack {
           ManageAccountView(store: store)
         }
@@ -454,7 +454,7 @@ public struct ProfileEditView: View {
         store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
         state: /ProfileEditLogic.Destination.State.deleteAccount,
         action: ProfileEditLogic.Destination.Action.deleteAccount
-      ) { store
+      ) { store in
         NavigationStack {
           DeleteAccountView(store: store)
         }

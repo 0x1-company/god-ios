@@ -1,12 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "All account information will be deleted, including friends, stars, and coin." : {
-
-    },
-    "Are you sure you want to delete your account?" : {
-
-    },
     "Are you sure you want to reset your block list?" : {
       "localizations" : {
         "ja" : {
@@ -50,15 +44,6 @@
         }
       }
     },
-    "I don't know how to use it" : {
-
-    },
-    "I don't use god anymore" : {
-
-    },
-    "I want to create a new account" : {
-
-    },
     "Manage Account" : {
       "localizations" : {
         "ja" : {
@@ -68,15 +53,6 @@
           }
         }
       }
-    },
-    "Not Now" : {
-
-    },
-    "Other Reason" : {
-
-    },
-    "Proceed with Deletion" : {
-
     },
     "Reset Block List" : {
       "localizations" : {
@@ -97,12 +73,6 @@
           }
         }
       }
-    },
-    "Safety or privacy conerns" : {
-
-    },
-    "This **cannot** be undone or recovered." : {
-
     },
     "Unblock all accounts" : {
       "localizations" : {
