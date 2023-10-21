@@ -2,9 +2,9 @@ import AnalyticsClient
 import Build
 import ComposableArchitecture
 import Constants
+import DeleteAccountFeature
 import EmailFeature
 import HowItWorksFeature
-import DeleteAccountFeature
 import Styleguide
 import SwiftUI
 
