@@ -32,6 +32,7 @@ graph TD;
     OnboardFeature-->ProfileStoryFeature;
     OnboardFeature-->CupertinoMessageFeature;
     ProfileEditFeature-->ManageAccountFeature;
+    ProfileEditFeature-->DeleteAccountFeature;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
     ProfileFeature-->ProfileShareFeature;
