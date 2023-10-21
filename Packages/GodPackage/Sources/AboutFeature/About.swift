@@ -1,3 +1,4 @@
+import AnalyticsClient
 import Build
 import ComposableArchitecture
 import Constants
@@ -43,6 +44,7 @@ public struct AboutLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case howItWorksButtonTapped
     case faqButtonTapped
     case shareFeedbackButtonTapped
@@ -64,11 +66,15 @@ public struct AboutLogic: Reducer {
   }
 
   @Dependency(\.openURL) var openURL
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .none
+      case .onAppear:
+        analytics.logScreen(screenName: "About", of: self)
         return .none
       case .howItWorksButtonTapped:
         state.destination = .howItWorks()
@@ -203,6 +209,7 @@ public struct AboutView: View {
         .tint(.secondary)
       }
       .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
