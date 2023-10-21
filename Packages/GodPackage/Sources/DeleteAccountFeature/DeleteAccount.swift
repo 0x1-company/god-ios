@@ -68,13 +68,14 @@ public struct DeleteAccountLogic: Reducer {
         guard let currentUser = firebaseAuth.currentUser()
         else { return .none }
         let reasons = state.selectedReasons + [state.otherReason].filter { !$0.isEmpty }
-        
+  
         let param = DeleteAccountReasonClient.InsertParam(
           uid: currentUser.uid,
           reasons: reasons
         )
 
         return .run { _ in
+          analytics.buttonClick(name: .delete, parameters: ["reasons": reasons])
           try await deleteAccountReasons.insert(param)
           try await currentUser.delete()
         }
