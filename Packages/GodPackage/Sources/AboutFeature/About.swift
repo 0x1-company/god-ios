@@ -3,6 +3,7 @@ import ComposableArchitecture
 import Constants
 import EmailFeature
 import HowItWorksFeature
+import DeleteAccountFeature
 import Styleguide
 import SwiftUI
 
@@ -12,16 +13,19 @@ public struct AboutLogic: Reducer {
     public enum State: Equatable {
       case howItWorks(HowItWorksLogic.State = .init())
       case emailSheet(EmailSheetLogic.State)
+      case deleteAccount(DeleteAccountLogic.State = .init())
     }
 
     public enum Action: Equatable {
       case howItWorks(HowItWorksLogic.Action)
       case emailSheet(EmailSheetLogic.Action)
+      case deleteAccount(DeleteAccountLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
       Scope(state: /State.howItWorks, action: /Action.howItWorks, child: HowItWorksLogic.init)
       Scope(state: /State.emailSheet, action: /Action.emailSheet, child: EmailSheetLogic.init)
+      Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
     }
   }
 
@@ -90,42 +94,24 @@ public struct AboutLogic: Reducer {
         }
 
       case let .confirmationDialog(.presented(action)):
-        let emailState: EmailSheetLogic.State
         switch action {
         case .addMySchoolToMyProfile:
-          emailState = .init(
-            title: String(localized: "Add my school to my profile", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Add my school to my profile", bundle: .module)))
         case .changeMyGrade:
-          emailState = .init(
-            title: String(localized: "Change my grade", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Change my grade", bundle: .module)))
         case .changeMyGender:
-          emailState = .init(
-            title: String(localized: "Change my gender", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Change my gender", bundle: .module)))
         case .changeMyName:
-          emailState = .init(
-            title: String(localized: "Change my name", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Change my name", bundle: .module)))
         case .deleteMyAccount:
-          emailState = .init(
-            title: String(localized: "Delete my account", bundle: .module)
-          )
+          state.destination = .deleteAccount()
         case .purchasesAndGodMode:
-          emailState = .init(
-            title: String(localized: "Purchases & God Mode", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Purchases & God Mode", bundle: .module)))
         case .reportBug:
-          emailState = .init(
-            title: String(localized: "Report a bug", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Report a bug", bundle: .module)))
         case .somethingElse:
-          emailState = .init(
-            title: String(localized: "Something else", bundle: .module)
-          )
+          state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Something else", bundle: .module)))
         }
-        state.destination = .emailSheet(emailState)
         return .none
       case .confirmationDialog(.dismiss):
         state.confirmationDialog = nil
@@ -218,20 +204,29 @@ public struct AboutView: View {
       }
       .task { await store.send(.onTask).finish() }
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
+        state: /AboutLogic.Destination.State.howItWorks,
+        action: AboutLogic.Destination.Action.howItWorks,
+        content: HowItWorksView.init(store:)
+      )
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
         state: /AboutLogic.Destination.State.emailSheet,
         action: AboutLogic.Destination.Action.emailSheet
       ) { store in
         EmailSheetView(store: store)
           .presentationBackground(Color.clear)
       }
-      .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /AboutLogic.Destination.State.howItWorks,
-        action: AboutLogic.Destination.Action.howItWorks,
-        content: HowItWorksView.init(store:)
-      )
+      .sheet(
+        store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
+        state: /AboutLogic.Destination.State.deleteAccount,
+        action: AboutLogic.Destination.Action.deleteAccount
+      ) { store in
+        NavigationStack {
+          DeleteAccountView(store: store)
+        }
+      }
     }
   }
 }

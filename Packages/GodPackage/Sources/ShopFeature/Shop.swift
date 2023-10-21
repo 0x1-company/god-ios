@@ -175,6 +175,7 @@ public struct ShopView: View {
           Text("Use coins to get featured in polls", bundle: .module)
             .foregroundColor(Color.gray)
         }
+        .multilineTextAlignment(.center)
 
         Spacer()
           .frame(height: 18)
