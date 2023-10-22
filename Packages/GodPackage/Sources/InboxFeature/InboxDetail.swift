@@ -233,7 +233,7 @@ public struct InboxDetailView: View {
             viewStore.send(.closeButtonTapped)
           }
 
-          if viewStore.isInGodMode == false {
+          if viewStore.isInGodMode {
             Button {
               viewStore.send(.seeWhoSentItButtonTapped)
             } label: {
