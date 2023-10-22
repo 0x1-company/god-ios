@@ -233,19 +233,23 @@ public struct InboxDetailView: View {
             viewStore.send(.closeButtonTapped)
           }
 
-          if viewStore.isInGodMode {
+          if viewStore.isInGodMode == false {
             Button {
               viewStore.send(.seeWhoSentItButtonTapped)
             } label: {
-              Label("See who sent it", systemImage: "lock.fill")
-                .font(.system(.body, design: .rounded, weight: .bold))
-                .frame(height: 50)
-                .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
-                .background(Color.godGray)
-                .clipShape(Capsule())
-                .padding(.horizontal, 16)
-                .padding(.top, 8)
+              Label {
+                Text("See who sent it", bundle: .module)
+              } icon: {
+                Image(systemName: "lock.fill")
+              }
+              .font(.system(.body, design: .rounded, weight: .bold))
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
+              .foregroundColor(.white)
+              .background(Color.godGray)
+              .clipShape(Capsule())
+              .padding(.horizontal, 16)
+              .padding(.top, 8)
             }
             .buttonStyle(HoldDownButtonStyle())
           }
