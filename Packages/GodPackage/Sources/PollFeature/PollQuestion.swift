@@ -141,7 +141,10 @@ public struct PollQuestionLogic: Reducer {
           "question_id": state.question.id,
           "question_text": state.question.text.ja,
         ])
-        return .send(.delegate(.skip), animation: .default)
+        return .run { send in
+          await feedbackGenerator.impactOccurred()
+          await send(.delegate(.skip), animation: .default)
+        }
       case .continueButtonTapped:
         return .run { send in
           await feedbackGenerator.impactOccurred()
