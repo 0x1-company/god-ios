@@ -132,7 +132,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "誰が送ったか見る"
+            "value" : "誰に投票されたか見る"
           }
         }
       }
