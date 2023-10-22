@@ -97,7 +97,7 @@ public struct DeleteAccountLogic: Reducer {
           try await deleteAccountReasons.insert(param)
           try await currentUser.delete()
         }
-        
+
       case .confirmationDialog(.dismiss):
         state.confirmationDialog = nil
         return .none
