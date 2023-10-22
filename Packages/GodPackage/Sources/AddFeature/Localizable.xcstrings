@@ -72,7 +72,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "友だちかも？"
+            "value" : "フレンドのフレンド"
           }
         }
       }
@@ -82,7 +82,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "学校の友だち"
+            "value" : "同じ学校"
           }
         }
       }
