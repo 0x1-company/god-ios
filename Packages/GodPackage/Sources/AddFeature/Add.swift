@@ -365,6 +365,7 @@ public struct AddView: View {
 
           ScrollView {
             LazyVStack(spacing: 0) {
+              FriendHeader(title: "SHARE PROFILE")
               SocialShare(
                 shareURL: viewStore.shareURL,
                 storyAction: {
