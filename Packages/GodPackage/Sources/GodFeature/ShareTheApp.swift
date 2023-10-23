@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -15,11 +16,13 @@ public struct ShareTheAppLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
   }
 
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -32,6 +35,10 @@ public struct ShareTheAppLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ShareTheApp", of: self)
+        return .none
 
       case let .currentUserResponse(.success(data)):
         guard let username = data.currentUser.username
@@ -83,6 +90,7 @@ public struct ShareTheAppView: View {
         .multilineTextAlignment(.center)
       }
       .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

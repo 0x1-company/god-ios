@@ -94,6 +94,7 @@ let package = Package(
     .target(name: "CashOutFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-ios"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ], resources: [.copy("Coin.json")]),
     .target(name: "CupertinoMessageFeature", dependencies: [
@@ -262,6 +263,7 @@ let package = Package(
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "StoreKitHelpers", package: "DependencyPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ShareScreenshotFeature", dependencies: [

@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
@@ -10,14 +11,20 @@ public struct FromGodTeamLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onAppear
     case closeButtonTapped
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "FromGodTeam", of: self)
+        return .none
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -80,6 +87,7 @@ public struct FromGodTeamView: View {
     .onTapGesture {
       store.send(.closeButtonTapped)
     }
+    .onAppear { store.send(.onAppear) }
   }
 }
 

@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Lottie
 import Styleguide
@@ -14,6 +15,7 @@ public struct CashOutLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onAppear
     case cashOutButtonTapped
     case delegate(Delegate)
 
@@ -21,10 +23,16 @@ public struct CashOutLogic: Reducer {
       case finish
     }
   }
+  
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
+      case .onAppear:
+        analytics.logScreen(screenName: "CashOut", of: self)
+        return .none
+
       case .cashOutButtonTapped:
         return .send(.delegate(.finish), animation: .default)
 
@@ -82,6 +90,7 @@ public struct CashOutView: View {
           .resizable()
           .padding(.bottom, 320)
       }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }
