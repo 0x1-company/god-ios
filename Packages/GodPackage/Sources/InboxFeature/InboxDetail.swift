@@ -296,21 +296,21 @@ public struct InboxDetailView: View {
       }
       .task { await viewStore.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .sheet(
+      .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
         state: /InboxDetailLogic.Destination.State.reveal,
         action: InboxDetailLogic.Destination.Action.reveal
       ) { store in
         RevealView(store: store)
-          .presentationDetents([.fraction(0.4)])
+          .presentationBackground(Color.clear)
       }
-      .sheet(
+      .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
         state: /InboxDetailLogic.Destination.State.fullName,
         action: InboxDetailLogic.Destination.Action.fullName
       ) { store in
         FullNameView(store: store)
-          .presentationDetents([.height(180)])
+          .presentationBackground(Color.clear)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
