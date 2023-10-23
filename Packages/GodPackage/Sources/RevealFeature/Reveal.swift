@@ -242,6 +242,7 @@ public struct RevealView: View {
             .foregroundColor(.godTextSecondaryLight)
           }
         }
+        .background(Color.white)
         .padding(.horizontal, 16)
         .multilineTextAlignment(.center)
       }

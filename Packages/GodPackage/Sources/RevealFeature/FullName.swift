@@ -69,6 +69,7 @@ public struct FullNameView: View {
               .foregroundColor(.white)
               .background(Color.godService)
               .clipShape(Capsule())
+              .font(.system(.body, design: .rounded, weight: .bold))
           }
           .padding(.horizontal, 16)
           .buttonStyle(HoldDownButtonStyle())
@@ -92,16 +93,21 @@ public struct FullNameView: View {
 }
 
 #Preview {
-  Color.red
-    .sheet(isPresented: .constant(true)) {
-      FullNameView(
-        store: .init(
-          initialState: FullNameLogic.State(
-            fulName: "Tomoki Tsukiyama"
-          ),
-          reducer: { FullNameLogic() }
-        )
-      )
-      .presentationBackground(Color.clear)
+  Color.black
+    .ignoresSafeArea()
+    .fullScreenCover(isPresented: .constant(true)) {
+      Color.blue
+        .ignoresSafeArea()
+        .fullScreenCover(isPresented: .constant(true)) {
+          FullNameView(
+            store: .init(
+              initialState: FullNameLogic.State(
+                fulName: "Tomoki Tsukiyama"
+              ),
+              reducer: { FullNameLogic() }
+            )
+          )
+          .presentationBackground(Material.ultraThinMaterial)
+        }
     }
 }
