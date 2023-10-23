@@ -35,7 +35,7 @@ public struct MaintenanceView: View {
       VStack(spacing: 24) {
         Text("メンテナンス中", bundle: .module)
           .font(.system(.title, design: .rounded, weight: .bold))
-        
+
         Text("サービス再開までしばらくお待ち下さい。", bundle: .module)
           .font(.system(.body, design: .rounded, weight: .bold))
       }
