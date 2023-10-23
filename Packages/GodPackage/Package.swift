@@ -261,6 +261,7 @@ let package = Package(
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "StoreKitHelpers", package: "DependencyPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),

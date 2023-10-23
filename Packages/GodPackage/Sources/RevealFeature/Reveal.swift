@@ -25,6 +25,7 @@ public struct RevealLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case closeButtonTapped
     case seeFullNameButtonTapped
     case productsResponse(TaskResult<[StoreKit.Product]>)
     case purchaseResponse(TaskResult<StoreKit.Transaction>)
@@ -69,6 +70,11 @@ public struct RevealLogic: Reducer {
               }))
             }
           }
+        }
+        
+      case .closeButtonTapped:
+        return .run { _ in
+          await dismiss()
         }
 
       case let .productsResponse(.success(products)):
@@ -188,51 +194,58 @@ public struct RevealView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 16) {
+      VStack(spacing: 0) {
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture {
+            store.send(.closeButtonTapped)
+          }
         VStack(spacing: 16) {
-          Text("The first letter in their name is...", bundle: .module)
-            .font(.title3)
-            .bold()
+          VStack(spacing: 16) {
+            Text("The first letter in their name is...", bundle: .module)
+              .font(.title3)
+              .bold()
 
-          Text(viewStore.activity.initial ?? "")
-            .font(.system(size: 40))
-            .bold()
-            .foregroundColor(Color.godService)
-        }
-        VStack(spacing: 12) {
-          Button {
-            viewStore.send(.seeFullNameButtonTapped)
-          } label: {
+            Text(viewStore.activity.initial ?? "")
+              .font(.system(size: 40))
+              .bold()
+              .foregroundColor(Color.godService)
+          }
+          VStack(spacing: 12) {
+            Button {
+              store.send(.seeFullNameButtonTapped)
+            } label: {
+              Group {
+                if viewStore.isActivityIndicatorVisible {
+                  ProgressView()
+                    .progressViewStyle(.circular)
+                } else {
+                  Text("See Full Name", bundle: .module)
+                }
+              }
+              .bold()
+              .frame(height: 56)
+              .frame(maxWidth: .infinity)
+              .foregroundColor(.white)
+              .background(Color.godService)
+              .clipShape(Capsule())
+            }
+            .buttonStyle(HoldDownButtonStyle())
+
             Group {
-              if viewStore.isActivityIndicatorVisible {
-                ProgressView()
-                  .progressViewStyle(.circular)
-              } else {
-                Text("See Full Name", bundle: .module)
+              if viewStore.revealFullNameLimit > 0 {
+                Text("You have \(viewStore.revealFullNameLimit) reveals", bundle: .module)
+              } else if let product = viewStore.product {
+                Text("\(product.displayPrice) per reveal", bundle: .module)
               }
             }
-            .bold()
-            .frame(height: 56)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
-            .background(Color.godService)
-            .clipShape(Capsule())
+            .foregroundColor(.godTextSecondaryLight)
           }
-          .buttonStyle(HoldDownButtonStyle())
-
-          Group {
-            if viewStore.revealFullNameLimit > 0 {
-              Text("You have \(viewStore.revealFullNameLimit) reveals", bundle: .module)
-            } else if let product = viewStore.product {
-              Text("\(product.displayPrice) per reveal", bundle: .module)
-            }
-          }
-          .foregroundColor(.godTextSecondaryLight)
         }
+        .padding(.horizontal, 16)
+        .multilineTextAlignment(.center)
       }
-      .padding(.horizontal, 16)
-      .multilineTextAlignment(.center)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

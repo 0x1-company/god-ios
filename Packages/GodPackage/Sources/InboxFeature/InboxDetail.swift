@@ -1,24 +1,43 @@
 import AnalyticsClient
+import Build
 import ComposableArchitecture
 import Constants
 import God
 import GodClient
+import GodModeFeature
 import NotificationCenterClient
-import Photos
-import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
 import Styleguide
 import SwiftUI
+import StoreKitClient
+import StoreKit
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case reveal(RevealLogic.State)
+      case fullName(FullNameLogic.State)
+      case godMode(GodModeLogic.State)
+    }
+    public enum Action: Equatable {
+      case reveal(RevealLogic.Action)
+      case fullName(FullNameLogic.Action)
+      case godMode(GodModeLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
+      Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
+      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     let activity: God.InboxFragment
 
+    var isInGodMode: Bool
     @PresentationState var destination: Destination.State?
-    let isInGodMode: Bool
 
     public init(activity: God.InboxFragment, isInGodMode: Bool) {
       self.activity = activity
@@ -33,29 +52,52 @@ public struct InboxDetailLogic: Reducer {
     case closeButtonTapped
     case shareOnInstagramButtonTapped(UIImage?)
     case showFullName(String)
+    case productsResponse(TaskResult<[Product]>)
+    case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.build) var build
   @Dependency(\.dismiss) var dismiss
-  @Dependency(\.photos) var photos
-  @Dependency(\.notificationCenter) var notificationCenter
   @Dependency(\.openURL) var openURL
+  @Dependency(\.store) var storeClient
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
+  @Dependency(\.godClient) var godClient
+  @Dependency(\.notificationCenter) var notificationCenter
+  
+  enum Cancel {
+    case activeSubscription
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await activeSubscriptionRequest(send: send)
+            }
+          }
+        }
 
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none
-
-      case .seeWhoSentItButtonTapped:
+        
+      case .seeWhoSentItButtonTapped where state.isInGodMode:
         state.destination = .reveal(.init(activity: state.activity))
         return .none
+        
+      case .seeWhoSentItButtonTapped where !state.isInGodMode:
+        guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
+        else { return .none }
+        return .run { send in
+          await send(.productsResponse(TaskResult {
+            try await storeClient.products([id])
+          }))
+        }
 
       case .closeButtonTapped:
         return .run { _ in
@@ -81,6 +123,20 @@ public struct InboxDetailLogic: Reducer {
         return .run { _ in
           await openURL(Constants.storiesURL)
         }
+        
+      case let .productsResponse(.success(products)):
+        guard
+          let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
+          let product = products.first(where: { $0.id == id })
+        else { return .none }
+        state.destination = .godMode(
+          GodModeLogic.State(product: product)
+        )
+        return .none
+        
+      case let .activeSubscriptionResponse(.success(data)):
+        state.isInGodMode = data.activeSubscription != nil
+        return .none
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = nil
@@ -103,29 +159,15 @@ public struct InboxDetailLogic: Reducer {
       Destination()
     }
   }
-
-  public struct Destination: Reducer {
-    public enum State: Equatable {
-      case reveal(RevealLogic.State)
-      case fullName(FullNameLogic.State)
-      case shareScreenshot(ShareScreenshotLogic.State)
-    }
-
-    public enum Action: Equatable {
-      case reveal(RevealLogic.Action)
-      case fullName(FullNameLogic.Action)
-      case shareScreenshot(ShareScreenshotLogic.Action)
-    }
-
-    public var body: some Reducer<State, Action> {
-      Scope(state: /State.reveal, action: /Action.reveal) {
-        RevealLogic()
-      }
-      Scope(state: /State.fullName, action: /Action.fullName) {
-        FullNameLogic()
-      }
-      Scope(state: /State.shareScreenshot, action: /Action.shareScreenshot) {
-        ShareScreenshotLogic()
+  
+  func activeSubscriptionRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.activeSubscription, cancelInFlight: true) {
+      do {
+        for try await data in godClient.activeSubscription() {
+          await send(.activeSubscriptionResponse(.success(data)))
+        }
+      } catch {
+        await send(.activeSubscriptionResponse(.failure(error)))
       }
     }
   }
@@ -197,12 +239,12 @@ public struct InboxDetailView: View {
 
               Group {
                 if let grade = viewStore.activity.voteUser.grade {
-                  Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value))\nin \(grade)", bundle: .module)
+                  Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value)) in \(grade)", bundle: .module)
                 } else {
                   Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
                 }
               }
-              .font(.system(.body, design: .rounded, weight: .regular))
+              .font(.system(.body, design: .rounded, weight: .bold))
             }
 
             VStack(spacing: 32) {
@@ -237,66 +279,45 @@ public struct InboxDetailView: View {
           .foregroundColor(.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           }
 
-          if viewStore.isInGodMode {
-            Button {
-              viewStore.send(.seeWhoSentItButtonTapped)
-            } label: {
-              Label {
-                Text("See who sent it", bundle: .module)
-              } icon: {
-                Image(systemName: "lock.fill")
-              }
-              .font(.system(.body, design: .rounded, weight: .bold))
-              .frame(height: 50)
-              .frame(maxWidth: .infinity)
-              .foregroundColor(.white)
-              .background(Color.godGray)
-              .clipShape(Capsule())
-              .padding(.horizontal, 16)
-              .padding(.top, 8)
+          Button {
+            store.send(.seeWhoSentItButtonTapped)
+          } label: {
+            Label {
+              Text("See who sent it", bundle: .module)
+            } icon: {
+              Image(systemName: "lock.fill")
             }
-            .buttonStyle(HoldDownButtonStyle())
           }
+          .buttonStyle(SeeWhoSentItButtonStyle())
         }
       }
       .task { await viewStore.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) })
-      ) { initialState in
-        SwitchStore(initialState) {
-          switch $0 {
-          case .reveal:
-            CaseLet(
-              /InboxDetailLogic.Destination.State.reveal,
-              action: InboxDetailLogic.Destination.Action.reveal
-            ) { store in
-              RevealView(store: store)
-                .presentationDetents([.fraction(0.4)])
-            }
-          case .fullName:
-            CaseLet(
-              /InboxDetailLogic.Destination.State.fullName,
-              action: InboxDetailLogic.Destination.Action.fullName
-            ) { store in
-              FullNameView(store: store)
-                .presentationDetents([.height(180)])
-            }
-          case .shareScreenshot:
-            CaseLet(
-              /InboxDetailLogic.Destination.State.shareScreenshot,
-              action: InboxDetailLogic.Destination.Action.shareScreenshot
-            ) { store in
-              ShareScreenshotView(store: store)
-                .presentationDetents([.fraction(0.3)])
-                .presentationDragIndicator(.visible)
-            }
-          }
-        }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.reveal,
+        action: InboxDetailLogic.Destination.Action.reveal
+      ) { store in
+        RevealView(store: store)
+          .presentationBackground(Color.clear)
       }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.fullName,
+        action: InboxDetailLogic.Destination.Action.fullName
+      ) { store in
+        FullNameView(store: store)
+          .presentationBackground(Color.clear)
+      }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.godMode,
+        action: InboxDetailLogic.Destination.Action.godMode,
+        content: GodModeView.init(store:)
+      )
     }
   }
 }

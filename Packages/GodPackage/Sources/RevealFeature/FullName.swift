@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
+import ProfileImage
 
 public struct FullNameLogic: Reducer {
   public init() {}
@@ -45,23 +46,45 @@ public struct FullNameView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 24) {
-        Text(verbatim: viewStore.fulName)
-          .bold()
-          .font(.title2)
+      VStack(spacing: 0) {
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture {
+            store.send(.closeButtonTapped)
+          }
+        
+        VStack(spacing: 24) {
+          Spacer()
 
-        Button {
-          viewStore.send(.closeButtonTapped)
-        } label: {
-          Text("Close", bundle: .module)
-            .frame(height: 56)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
-            .background(Color.godService)
-            .clipShape(Capsule())
+          Text(verbatim: viewStore.fulName)
+            .bold()
+            .font(.title2)
+
+          Button {
+            viewStore.send(.closeButtonTapped)
+          } label: {
+            Text("Close", bundle: .module)
+              .frame(height: 56)
+              .frame(maxWidth: .infinity)
+              .foregroundColor(.white)
+              .background(Color.godService)
+              .clipShape(Capsule())
+          }
+          .padding(.horizontal, 16)
+          .buttonStyle(HoldDownButtonStyle())
         }
-        .padding(.horizontal, 16)
-        .buttonStyle(HoldDownButtonStyle())
+        .frame(height: 150)
+        .background(Color.white)
+//        .overlay(alignment: .top) {
+//          Color.red
+//            .frame(width: 66, height: 66)
+//            .clipShape(Circle())
+//          .overlay {
+//            RoundedRectangle(cornerRadius: 66 / 2)
+//              .stroke(Color.white, lineWidth: 8)
+//          }
+//          .offset(y: -33)
+//        }
       }
       .task { await viewStore.send(.onTask).finish() }
     }
@@ -69,12 +92,16 @@ public struct FullNameView: View {
 }
 
 #Preview {
-  FullNameView(
-    store: .init(
-      initialState: FullNameLogic.State(
-        fulName: "Tomoki Tsukiyama"
-      ),
-      reducer: { FullNameLogic() }
-    )
-  )
+  Color.red
+    .sheet(isPresented: .constant(true)) {
+      FullNameView(
+        store: .init(
+          initialState: FullNameLogic.State(
+            fulName: "Tomoki Tsukiyama"
+          ),
+          reducer: { FullNameLogic() }
+        )
+      )
+      .presentationBackground(Color.clear)
+    }
 }

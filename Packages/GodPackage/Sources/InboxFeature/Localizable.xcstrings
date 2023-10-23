@@ -37,12 +37,18 @@
         }
       }
     },
-    "From %@\nin %@" : {
+    "From %@ in %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From %1$@ in %2$@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "%2$@の%1$@より"
+            "state" : "translated",
+            "value" : "%2$@の%1$@があなたを選びました"
           }
         }
       }
@@ -52,7 +58,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@より"
+            "value" : "%@に投票されました"
           }
         }
       }
