@@ -27,7 +27,7 @@ public struct NextButton: View {
           Text("Next", bundle: .module)
         }
       }
-      .bold()
+      .font(.system(.body, design: .rounded, weight: .bold))
       .frame(height: 54)
       .frame(maxWidth: .infinity)
       .foregroundColor(Color.black)

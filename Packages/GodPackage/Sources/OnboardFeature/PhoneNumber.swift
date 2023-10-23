@@ -129,13 +129,12 @@ public struct PhoneNumberView: View {
         VStack(spacing: 12) {
           Spacer()
           Text("Enter your phone Number", bundle: .module)
-            .bold()
-            .font(.title3)
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           TextField(text: viewStore.$phoneNumber) {
             Text("080 8478 4955", bundle: .module)
           }
-          .font(.title)
+          .font(.system(.title, design: .rounded))
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
           .focused($focus)

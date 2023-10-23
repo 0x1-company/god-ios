@@ -345,18 +345,17 @@ public struct ProfileEditView: View {
 
           VStack(alignment: .leading, spacing: 8) {
             Text("SCHOOL", bundle: .module)
-              .font(.caption)
-              .bold()
               .foregroundColor(.godTextSecondaryLight)
+              .font(.system(.caption, design: .rounded, weight: .bold))
 
             VStack(alignment: .center, spacing: 0) {
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "house.fill"))
                   .foregroundColor(.godTextSecondaryLight)
-                  .font(.body)
+                  .font(.system(.body, design: .rounded, weight: .bold))
 
                 Text(viewStore.currentUser?.school?.name ?? "")
-                  .font(.body)
+                  .font(.system(.body, design: .rounded, weight: .bold))
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
@@ -369,10 +368,10 @@ public struct ProfileEditView: View {
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
                   .foregroundColor(.godTextSecondaryLight)
-                  .font(.body)
+                  .font(.system(.body, design: .rounded, weight: .bold))
 
                 Text(viewStore.currentUser?.grade ?? "")
-                  .font(.body)
+                  .font(.system(.body, design: .rounded, weight: .bold))
                   .foregroundColor(.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
@@ -388,8 +387,7 @@ public struct ProfileEditView: View {
 
           VStack(alignment: .leading, spacing: 8) {
             Text("ACCOUNT SETTING", bundle: .module)
-              .font(.caption)
-              .bold()
+              .font(.system(.caption, design: .rounded, weight: .bold))
               .foregroundColor(.godTextSecondaryLight)
 //            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
 //              viewStore.send(.restorePurchasesButtonTapped)
@@ -420,6 +418,7 @@ public struct ProfileEditView: View {
               viewStore.send(.cancelEditButtonTapped)
             } label: {
               Text("Cancel", bundle: .module)
+                .font(.system(.body, design: .rounded))
             }
             .foregroundColor(.primary)
           }
@@ -428,6 +427,7 @@ public struct ProfileEditView: View {
               viewStore.send(.saveButtonTapped)
             } label: {
               Text("Save", bundle: .module)
+                .font(.system(.body, design: .rounded))
             }
             .foregroundColor(.primary)
           }
@@ -437,6 +437,7 @@ public struct ProfileEditView: View {
               viewStore.send(.closeButtonTapped)
             } label: {
               Text("Close", bundle: .module)
+                .font(.system(.body, design: .rounded))
             }
             .foregroundColor(.primary)
           }

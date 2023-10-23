@@ -150,7 +150,7 @@ public struct GodModeView: View {
           }
 
           Text("\(viewStore.product.displayPrice)/week", bundle: .module)
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
 
           Button {
             store.send(.continueButtonTapped)
@@ -161,10 +161,10 @@ public struct GodModeView: View {
                   .progressViewStyle(.circular)
               } else {
                 Text("Continue", bundle: .module)
-                  .bold()
+                  .font(.system(.body, design: .rounded, weight: .bold))
               }
             }
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
             .frame(height: 56)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color.white)

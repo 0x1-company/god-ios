@@ -53,14 +53,16 @@ public struct PhoneNumberHelpView: View {
         .cornerRadius(12)
 
       Text("Create an account.", bundle: .module)
-        .bold()
+        .font(.system(.body, design: .rounded, weight: .bold))
 
       Text("God cares intensely about your privacy.\nWe will not share your personal information with outside parties or use it for private purposes without your permission.", bundle: .module)
+        .font(.system(.body, design: .rounded))
 
       Button {
         store.send(.okayButtonTapped)
       } label: {
         Text("OK", bundle: .module)
+          .font(.system(.body, design: .rounded))
           .frame(height: 56)
           .frame(maxWidth: .infinity)
           .foregroundColor(.white)
@@ -71,6 +73,7 @@ public struct PhoneNumberHelpView: View {
       Link(destination: Constants.privacyPolicyURL) {
         Text("Privacy Policy", bundle: .module)
           .foregroundColor(.godTextSecondaryLight)
+          .font(.system(.body, design: .rounded))
       }
     }
     .padding(.horizontal, 24)

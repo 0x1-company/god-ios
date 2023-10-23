@@ -113,9 +113,9 @@ public struct GradeSettingView: View {
   ) -> some View {
     Button(action: action) {
       Text(title, bundle: .module)
-        .bold()
         .frame(height: 65)
         .frame(maxWidth: .infinity)
+        .font(.system(.body, design: .rounded, weight: .bold))
     }
   }
 

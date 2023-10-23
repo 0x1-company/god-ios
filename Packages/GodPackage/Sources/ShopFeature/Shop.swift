@@ -159,8 +159,7 @@ public struct ShopView: View {
             .frame(width: 38, height: 38)
 
           Text(verbatim: viewStore.coinBalance.description)
-            .font(.system(size: 40, weight: .black))
-            .bold()
+            .font(.system(size: 40, weight: .black, design: .rounded))
             .contentTransition(.numericText(countsDown: true))
         }
         .foregroundColor(Color.yellow)

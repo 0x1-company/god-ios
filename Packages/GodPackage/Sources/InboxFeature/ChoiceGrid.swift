@@ -30,8 +30,7 @@ struct ChoiceGrid: View {
             Text(choice.text)
           }
         }
-        .font(.callout)
-        .bold()
+        .font(.system(.callout, design: .rounded, weight: .bold))
         .lineLimit(2)
         .multilineTextAlignment(.center)
         .padding(.horizontal, 16)

@@ -60,7 +60,7 @@ public struct FromGodTeamView: View {
           .frame(width: 30, height: 30)
         Text("A girl in 9th grade\npicked you", bundle: .module)
       }
-      .bold()
+      .font(.system(.body, design: .rounded, weight: .bold))
       .frame(height: 48)
       .padding(.horizontal, 12)
       .background(Color.godWhite)
@@ -70,14 +70,15 @@ public struct FromGodTeamView: View {
       .cornerRadius(8)
 
       Text("This is your inbox", bundle: .module)
-        .font(.title3)
-        .bold()
+        .font(.system(.title3, design: .rounded, weight: .bold))
 
       Text("When people pick you\nyou will get a message here.", bundle: .module)
+        .font(.system(.body, design: .rounded))
 
       Spacer()
 
       Text("Tap anywhere to close", bundle: .module)
+        .font(.system(.body, design: .rounded))
     }
     .padding(.vertical, 40)
     .foregroundColor(Color.godWhite)

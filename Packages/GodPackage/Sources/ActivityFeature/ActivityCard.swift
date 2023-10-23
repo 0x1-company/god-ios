@@ -48,10 +48,9 @@ public struct ActivityCard: View {
         VStack(alignment: .leading, spacing: 4) {
           HStack(spacing: 4) {
             Text(activity.node.user.displayName.ja)
-              .bold()
-              .font(.callout)
+              .font(.system(.callout, design: .rounded, weight: .bold))
             Text("received", bundle: .module)
-              .font(.footnote)
+              .font(.system(.footnote, design: .rounded))
           }
 
           Text(activity.node.question.text.ja)

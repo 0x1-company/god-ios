@@ -184,8 +184,7 @@ public struct OneTimeCodeView: View {
         VStack(spacing: 12) {
           Spacer()
           Text("We sent you a code to verify\nyour number", bundle: .module)
-            .bold()
-            .font(.title3)
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           TextField(
             text: viewStore.$oneTimeCode,
@@ -193,7 +192,7 @@ public struct OneTimeCodeView: View {
               Text("000000", bundle: .module)
             }
           )
-          .font(.title)
+          .font(.system(.title, design: .rounded))
           .textContentType(.oneTimeCode)
           .keyboardType(.numberPad)
           .focused($focus)

@@ -25,16 +25,14 @@ struct InstagramStoryView: View {
             Text(verbatim: "\(gender)より")
           }
         }
-        .font(.callout)
-        .bold()
+        .font(.system(.callout, design: .rounded, weight: .bold))
         .lineLimit(2)
         .foregroundColor(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
 
         if let schoolName {
           Text(schoolName)
-            .font(.body)
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
             .foregroundColor(.godWhite)
             .frame(height: 32)
             .padding(.horizontal, 8)
@@ -44,8 +42,7 @@ struct InstagramStoryView: View {
       }
       VStack(spacing: 8) {
         Text(question)
-          .font(.callout)
-          .bold()
+          .font(.system(.callout, design: .rounded, weight: .bold))
           .foregroundColor(.godWhite)
           .lineLimit(2)
           .frame(height: 80, alignment: .center)
@@ -64,8 +61,7 @@ struct InstagramStoryView: View {
           .padding(.bottom, 4)
 
         Text(verbatim: "godapp.jp")
-          .font(.callout)
-          .bold()
+          .font(.system(.callout, design: .rounded, weight: .bold))
           .foregroundColor(.godWhite)
       }
       .padding(.horizontal, 16)

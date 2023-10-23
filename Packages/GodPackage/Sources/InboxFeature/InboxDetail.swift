@@ -267,8 +267,7 @@ public struct InboxDetailView: View {
                 )
 
                 Text(verbatim: "godapp.jp")
-                  .bold()
-                  .font(.title3)
+                  .font(.system(.title3, design: .rounded, weight: .bold))
               }
             }
             .padding(.horizontal, 36)

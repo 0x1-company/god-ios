@@ -21,7 +21,7 @@ public struct ShareShopSection: View {
       Button(action: shareAction) {
         HStack(spacing: 8) {
           Text("Share Profile", bundle: .module)
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
           Image(systemName: "square.and.arrow.up")
         }
         .foregroundStyle(Color.godTextSecondaryLight)
@@ -36,12 +36,10 @@ public struct ShareShopSection: View {
       Button(action: shopAction) {
         HStack(spacing: 8) {
           Text(coinBalance.description)
-            .bold()
-            .font(.title2)
+            .font(.system(.title2, design: .rounded, weight: .bold))
 
           Text("SHOP")
-            .bold()
-            .font(.caption)
+            .font(.system(.caption, design: .rounded, weight: .bold))
             .frame(width: 57, height: 26)
             .foregroundStyle(Color.white)
             .background(Color.godYellow.gradient)
@@ -55,8 +53,7 @@ public struct ShareShopSection: View {
         )
         .overlay(alignment: .top) {
           Text("COINS", bundle: .module)
-            .font(.caption)
-            .bold()
+            .font(.system(.caption, design: .rounded, weight: .bold))
             .padding(.horizontal, 8)
             .foregroundStyle(Color.godTextSecondaryLight)
             .background(Color.godBackgroundWhite)

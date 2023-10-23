@@ -44,7 +44,7 @@ public struct ContactsReEnableView: View {
           .font(.system(size: 30))
         VStack(alignment: .leading, spacing: 4) {
           Text("Contacts are disabled", bundle: .module)
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
           Text("Tap to re-enable", bundle: .module)
             .foregroundStyle(Color.white.opacity(0.6))
         }

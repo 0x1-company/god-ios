@@ -8,9 +8,9 @@ public struct FriendHeader: View {
       Divider()
 
       Text(title, bundle: .module)
-        .bold()
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 34)
+        .font(.system(.body, design: .rounded, weight: .bold))
         .padding(.horizontal, 16)
         .foregroundColor(.secondary)
         .background(Color(uiColor: .quaternarySystemFill))

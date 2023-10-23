@@ -111,8 +111,7 @@ public struct ProfileShareToInstagramView: View {
             .clipShape(Circle())
 
           Text("Share Profile on\nInstagram", bundle: .module)
-            .font(.title)
-            .bold()
+            .font(.system(.title, design: .rounded, weight: .bold))
             .foregroundColor(.godBlack)
             .multilineTextAlignment(.center)
         }
@@ -120,15 +119,13 @@ public struct ProfileShareToInstagramView: View {
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 8) {
             Text("Step 1", bundle: .module)
-              .bold()
-              .font(.title2)
+              .font(.system(.title2, design: .rounded, weight: .bold))
             Text("Copy your God link", bundle: .module)
-              .bold()
-              .font(.headline)
+              .font(.system(.headline, design: .rounded, weight: .bold))
           }
 
           Text(verbatim: "godapp.jp/@\(viewStore.username ?? "")")
-            .font(.body)
+            .font(.system(.body, design: .rounded, weight: .bold))
             .foregroundColor(.godTextSecondaryDark)
             .frame(maxWidth: .infinity, alignment: .center)
             .frame(height: 52)
@@ -139,7 +136,7 @@ public struct ProfileShareToInstagramView: View {
             viewStore.send(.copyLinkButtonTapped)
           } label: {
             Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .foregroundColor(.godService)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
@@ -155,18 +152,16 @@ public struct ProfileShareToInstagramView: View {
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 8) {
             Text("Step 2", bundle: .module)
-              .bold()
-              .font(.title2)
+              .font(.system(.title2, design: .rounded, weight: .bold))
             Text("Post on your story", bundle: .module)
-              .bold()
-              .font(.headline)
+              .font(.system(.headline, design: .rounded, weight: .bold))
           }
 
           Button {
             viewStore.send(.shareButtonTapped)
           } label: {
             Text("Share", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .foregroundColor(.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
