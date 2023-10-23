@@ -3,6 +3,7 @@ import ComposableArchitecture
 import Constants
 import God
 import GodClient
+import GodModeFeature
 import NotificationCenterClient
 import Photos
 import PhotosClient
@@ -17,14 +18,17 @@ public struct InboxDetailLogic: Reducer {
     public enum State: Equatable {
       case reveal(RevealLogic.State)
       case fullName(FullNameLogic.State)
+      case godMode(GodModeLogic.State)
     }
     public enum Action: Equatable {
       case reveal(RevealLogic.Action)
       case fullName(FullNameLogic.Action)
+      case godMode(GodModeLogic.Action)
     }
     public var body: some Reducer<State, Action> {
       Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
       Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
+      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
     }
   }
 
@@ -260,6 +264,12 @@ public struct InboxDetailView: View {
         FullNameView(store: store)
           .presentationDetents([.height(180)])
       }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.godMode,
+        action: InboxDetailLogic.Destination.Action.godMode,
+        content: GodModeView.init(store:)
+      )
     }
   }
 }
