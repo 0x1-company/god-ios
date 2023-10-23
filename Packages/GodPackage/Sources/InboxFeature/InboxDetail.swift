@@ -239,12 +239,12 @@ public struct InboxDetailView: View {
 
               Group {
                 if let grade = viewStore.activity.voteUser.grade {
-                  Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value))\nin \(grade)", bundle: .module)
+                  Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value)) in \(grade)", bundle: .module)
                 } else {
                   Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
                 }
               }
-              .font(.system(.body, design: .rounded, weight: .regular))
+              .font(.system(.body, design: .rounded, weight: .bold))
             }
 
             VStack(spacing: 32) {

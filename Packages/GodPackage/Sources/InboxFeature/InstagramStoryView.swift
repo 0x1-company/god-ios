@@ -20,9 +20,9 @@ struct InstagramStoryView: View {
 
         Group {
           if let grade {
-            Text("\(grade)の\(gender)より", bundle: .module)
+            Text(verbatim: "\(grade)の\(gender)より")
           } else {
-            Text("\(gender)より", bundle: .module)
+            Text(verbatim: "\(gender)より")
           }
         }
         .font(.callout)
