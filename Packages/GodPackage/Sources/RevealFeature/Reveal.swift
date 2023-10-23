@@ -12,14 +12,16 @@ public struct RevealLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var activity: God.InboxFragment
+    let activityId: String
+    let initialName: String
     var isActivityIndicatorVisible = false
     var revealFullNameLimit = 0
     var product: StoreKit.Product?
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
 
-    public init(activity: God.InboxFragment) {
-      self.activity = activity
+    public init(activityId: String, initialName: String) {
+      self.activityId = activityId
+      self.initialName = initialName
     }
   }
 
@@ -89,7 +91,7 @@ public struct RevealLogic: Reducer {
         }
 
       case .seeFullNameButtonTapped where state.revealFullNameLimit > 0:
-        let input = God.RevealFullNameInput(activityId: state.activity.id)
+        let input = God.RevealFullNameInput(activityId: state.activityId)
         return .run { send in
           await revealFullNameRequest(send: send, input: input)
         }
@@ -133,7 +135,7 @@ public struct RevealLogic: Reducer {
         return .none
 
       case let .transactionFinish(transaction):
-        let input = God.RevealFullNameInput(activityId: state.activity.id)
+        let input = God.RevealFullNameInput(activityId: state.activityId)
         return .run { send in
           await transaction.finish()
           await revealFullNameRequest(send: send, input: input)
@@ -201,15 +203,26 @@ public struct RevealView: View {
             store.send(.closeButtonTapped)
           }
         VStack(spacing: 16) {
-          VStack(spacing: 16) {
-            Text("The first letter in their name is...", bundle: .module)
-              .font(.title3)
-              .bold()
+          HStack {
+            Spacer()
+            
+            Button {
+              store.send(.closeButtonTapped)
+            } label: {
+              Image(systemName: "xmark")
+                .frame(width: 52, height: 52)
+                .foregroundStyle(Color.secondary)
+            }
+          }
+          Spacer()
 
-            Text(viewStore.activity.initial ?? "")
-              .font(.system(size: 40))
-              .bold()
+          VStack(spacing: 16) {
+            Text("The first letter in their\nname is...", bundle: .module)
+              .font(.system(.title3, design: .rounded, weight: .bold))
+
+            Text(viewStore.initialName)
               .foregroundColor(Color.godService)
+              .font(.system(size: 60, weight: .black, design: .rounded))
           }
           VStack(spacing: 12) {
             Button {
@@ -223,9 +236,9 @@ public struct RevealView: View {
                   Text("See Full Name", bundle: .module)
                 }
               }
-              .bold()
               .frame(height: 56)
               .frame(maxWidth: .infinity)
+              .font(.system(.body, design: .rounded, weight: .black))
               .foregroundColor(.white)
               .background(Color.godService)
               .clipShape(Capsule())
@@ -240,13 +253,43 @@ public struct RevealView: View {
               }
             }
             .foregroundColor(.godTextSecondaryLight)
+            .font(.system(.body, design: .rounded))
           }
+          .padding(.horizontal, 16)
         }
+        .frame(height: 280)
         .background(Color.white)
-        .padding(.horizontal, 16)
         .multilineTextAlignment(.center)
+        .overlay(alignment: .top) {
+          Image(ImageResource.womanDetective)
+            .resizable()
+            .aspectRatio(1, contentMode: .fit)
+            .frame(width: 96, height: 96)
+            .offset(y: -48)
+        }
       }
       .task { await store.send(.onTask).finish() }
     }
   }
+}
+
+#Preview {
+  Color.black
+    .ignoresSafeArea()
+    .fullScreenCover(isPresented: .constant(true)) {
+      Color.blue
+        .ignoresSafeArea()
+        .fullScreenCover(isPresented: .constant(true)) {
+          RevealView(
+            store: .init(
+              initialState: RevealLogic.State(
+                activityId: "1",
+                initialName: "S"
+              ),
+              reducer: { RevealLogic() }
+            )
+          )
+          .presentationBackground(Material.ultraThinMaterial)
+        }
+    }
 }

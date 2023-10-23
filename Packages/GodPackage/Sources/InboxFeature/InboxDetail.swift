@@ -89,7 +89,13 @@ public struct InboxDetailLogic: Reducer {
         return .none
 
       case .seeWhoSentItButtonTapped where state.isInGodMode:
-        state.destination = .reveal(.init(activity: state.activity))
+        guard let initialName = state.activity.initial else { return .none }
+        state.destination = .reveal(
+          RevealLogic.State(
+            activityId: state.activity.id,
+            initialName: initialName
+          )
+        )
         return .none
 
       case .seeWhoSentItButtonTapped where !state.isInGodMode:
