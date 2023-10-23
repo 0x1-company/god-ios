@@ -8,10 +8,10 @@ import GodModeFeature
 import NotificationCenterClient
 import RevealFeature
 import ShareScreenshotFeature
+import StoreKit
+import StoreKitClient
 import Styleguide
 import SwiftUI
-import StoreKitClient
-import StoreKit
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
@@ -21,11 +21,13 @@ public struct InboxDetailLogic: Reducer {
       case fullName(FullNameLogic.State)
       case godMode(GodModeLogic.State)
     }
+
     public enum Action: Equatable {
       case reveal(RevealLogic.Action)
       case fullName(FullNameLogic.Action)
       case godMode(GodModeLogic.Action)
     }
+
     public var body: some Reducer<State, Action> {
       Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
       Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
@@ -65,7 +67,7 @@ public struct InboxDetailLogic: Reducer {
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.notificationCenter) var notificationCenter
-  
+
   enum Cancel {
     case activeSubscription
   }
@@ -85,11 +87,11 @@ public struct InboxDetailLogic: Reducer {
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none
-        
+
       case .seeWhoSentItButtonTapped where state.isInGodMode:
         state.destination = .reveal(.init(activity: state.activity))
         return .none
-        
+
       case .seeWhoSentItButtonTapped where !state.isInGodMode:
         guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
         else { return .none }
@@ -123,7 +125,7 @@ public struct InboxDetailLogic: Reducer {
         return .run { _ in
           await openURL(Constants.storiesURL)
         }
-        
+
       case let .productsResponse(.success(products)):
         guard
           let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
@@ -133,7 +135,7 @@ public struct InboxDetailLogic: Reducer {
           GodModeLogic.State(product: product)
         )
         return .none
-        
+
       case let .activeSubscriptionResponse(.success(data)):
         state.isInGodMode = data.activeSubscription != nil
         return .none
@@ -159,7 +161,7 @@ public struct InboxDetailLogic: Reducer {
       Destination()
     }
   }
-  
+
   func activeSubscriptionRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.activeSubscription, cancelInFlight: true) {
       do {
