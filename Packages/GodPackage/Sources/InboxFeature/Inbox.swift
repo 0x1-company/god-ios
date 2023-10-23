@@ -1,4 +1,5 @@
 import AnimationDisableTransaction
+import AnalyticsClient
 import Build
 import ComposableArchitecture
 import God
@@ -27,6 +28,7 @@ public struct InboxLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case activityButtonTapped(id: String)
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
@@ -43,6 +45,7 @@ public struct InboxLogic: Reducer {
   @Dependency(\.build) var build
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.userNotifications) var userNotifications
 
   enum Cancel {
@@ -83,6 +86,9 @@ public struct InboxLogic: Reducer {
             }
           }
         }
+      case .onAppear:
+        analytics.logScreen(screenName: "Inbox", of: self)
+        return .none
       case let .activityButtonTapped(activityId):
         return Effect<Action>.merge(
           Effect<Action>.run(operation: { send in
@@ -291,6 +297,7 @@ public struct InboxView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxLogic.Destination.State.activatedGodMode,

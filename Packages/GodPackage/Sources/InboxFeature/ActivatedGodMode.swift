@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
@@ -11,16 +12,23 @@ public struct ActivatedGodModeLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case okayButtonTapped
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
         return .none
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ActivatedGodMode", of: self)
+        return .none
+
       case .okayButtonTapped:
         return .run { _ in
           await dismiss()
@@ -67,6 +75,7 @@ public struct ActivatedGodModeView: View {
       .frame(maxHeight: .infinity)
       .background(.black)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

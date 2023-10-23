@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Constants
 import God
@@ -27,6 +28,7 @@ public struct InboxDetailLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case seeWhoSentItButtonTapped
     case closeButtonTapped
     case shareOnInstagramButtonTapped(UIImage?)
@@ -39,11 +41,16 @@ public struct InboxDetailLogic: Reducer {
   @Dependency(\.notificationCenter) var notificationCenter
   @Dependency(\.openURL) var openURL
   @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none
 
       case .seeWhoSentItButtonTapped:
@@ -256,6 +263,7 @@ public struct InboxDetailView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) })
       ) { initialState in

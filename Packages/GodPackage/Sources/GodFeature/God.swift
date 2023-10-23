@@ -41,7 +41,7 @@ public struct GodLogic: Reducer {
   }
 
   public enum Action: Equatable {
-    case onTask
+    case onTask    
     case currentPollResponse(TaskResult<God.CurrentPollQuery.Data>)
     case child(Child.Action)
   }
