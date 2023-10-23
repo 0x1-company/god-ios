@@ -13,12 +13,12 @@ struct HoldDownButtonStylePreviews: PreviewProvider {
   static var previews: some View {
     Button(action: {}) {
       Text("Next")
-        .bold()
         .frame(height: 54)
         .frame(maxWidth: .infinity)
         .foregroundColor(.white)
         .background(Color.orange)
         .clipShape(Capsule())
+        .font(.system(.body, design: .rounded, weight: .bold))
     }
     .padding()
     .buttonStyle(HoldDownButtonStyle())

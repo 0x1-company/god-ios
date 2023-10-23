@@ -57,15 +57,14 @@ public struct FindFriendView: View {
         Spacer()
 
         Text("God uses your contacts\nto find friends", bundle: .module)
-          .bold()
           .foregroundColor(Color.godWhite)
+          .font(.system(.body, design: .rounded, weight: .bold))
 
         Button {
           viewStore.send(.findButtonTapped)
         } label: {
           Text("Find My Friends", bundle: .module)
-            .bold()
-            .font(.title3)
+            .font(.system(.title3, design: .rounded, weight: .bold))
             .frame(height: 54)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color.black)

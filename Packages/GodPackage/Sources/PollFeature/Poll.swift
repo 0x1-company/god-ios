@@ -200,8 +200,8 @@ public struct PollView: View {
           .tint(Color.white)
 
           Text("\(viewStore.currentPollQuestionPosition) of \(viewStore.pollQuestions.count)", bundle: .module)
-            .bold()
             .foregroundStyle(.white)
+            .font(.system(.body, design: .rounded, weight: .bold))
         }
         .padding(.top, 52)
       }

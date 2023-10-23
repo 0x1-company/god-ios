@@ -369,7 +369,7 @@ public struct AddFriendsView: View {
                   store.send(.inviteButtonTapped(contact))
                 } label: {
                   Text("INVITE", bundle: .module)
-                    .bold()
+                    .font(.system(.body, design: .rounded, weight: .bold))
                     .frame(height: 34)
                     .foregroundColor(.godService)
                     .padding(.horizontal, 12)
@@ -405,8 +405,8 @@ public struct AddFriendsView: View {
         Button("Next") {
           viewStore.send(.nextButtonTapped)
         }
-        .bold()
         .foregroundColor(Color.white)
+        .font(.system(.body, design: .rounded, weight: .bold))
       }
     }
   }

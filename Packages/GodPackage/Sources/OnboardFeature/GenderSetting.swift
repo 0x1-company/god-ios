@@ -69,8 +69,8 @@ public struct GenderSettingView: View {
 
         VStack(spacing: 24) {
           Text("What's your gender?", bundle: .module)
-            .bold()
             .foregroundColor(Color.white)
+            .font(.system(.body, design: .rounded, weight: .bold))
 
           HStack(spacing: 24) {
             ChoiceView(gender: .male) {

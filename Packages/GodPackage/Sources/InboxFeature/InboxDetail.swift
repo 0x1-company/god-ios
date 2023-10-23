@@ -267,8 +267,7 @@ public struct InboxDetailView: View {
                 )
 
                 Text(verbatim: "godapp.jp")
-                  .bold()
-                  .font(.title3)
+                  .font(.system(.title3, design: .rounded, weight: .bold))
               }
             }
             .padding(.horizontal, 36)
@@ -310,7 +309,7 @@ public struct InboxDetailView: View {
         action: InboxDetailLogic.Destination.Action.reveal
       ) { store in
         RevealView(store: store)
-          .presentationBackground(Material.ultraThinMaterial)
+          .presentationBackground(Color.clear)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
@@ -318,7 +317,7 @@ public struct InboxDetailView: View {
         action: InboxDetailLogic.Destination.Action.fullName
       ) { store in
         FullNameView(store: store)
-          .presentationBackground(Material.ultraThinMaterial)
+          .presentationBackground(Color.clear)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),

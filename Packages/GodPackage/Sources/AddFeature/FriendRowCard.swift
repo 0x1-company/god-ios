@@ -85,11 +85,11 @@ public struct FriendRowCardView: View {
 
         VStack(alignment: .leading) {
           Text(verbatim: viewStore.displayName)
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
 
           Text(verbatim: viewStore.description)
             .foregroundStyle(.secondary)
-            .font(.footnote)
+            .font(.system(.footnote, design: .rounded))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -113,8 +113,7 @@ public struct FriendRowCardView: View {
                 EmptyView()
               default:
                 Text("ADD", bundle: .module)
-                  .font(.callout)
-                  .bold()
+                  .font(.system(.callout, design: .rounded, weight: .bold))
                   .foregroundStyle(Color.white)
                   .frame(height: 34)
                   .padding(.horizontal, 12)

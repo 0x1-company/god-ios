@@ -81,8 +81,7 @@ public struct ShareScreenshotView: View {
 
         VStack(spacing: 36) {
           Text("Share Screenshot", bundle: .module)
-            .font(.title3)
-            .bold()
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           HStack(spacing: 8) {
             Button {

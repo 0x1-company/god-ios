@@ -154,8 +154,7 @@ public struct ProfileShareView: View {
 
         VStack(alignment: .center, spacing: 28) {
           Text("Share Profile", bundle: .module)
-            .font(.title3)
-            .bold()
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           HStack {
             Spacer()
@@ -178,9 +177,8 @@ public struct ProfileShareView: View {
                       .clipShape(Circle())
 
                     Text(content.name, bundle: .module)
-                      .font(.callout)
-                      .bold()
                       .foregroundColor(.godBlack)
+                      .font(.system(.callout, design: .rounded, weight: .bold))
                   }
                 }
               case .other:
@@ -192,9 +190,8 @@ public struct ProfileShareView: View {
                       .clipShape(Circle())
 
                     Text(content.name, bundle: .module)
-                      .font(.callout)
-                      .bold()
                       .foregroundColor(.godBlack)
+                      .font(.system(.callout, design: .rounded, weight: .bold))
                   }
                 }
               }
@@ -206,7 +203,7 @@ public struct ProfileShareView: View {
             viewStore.send(.closeButtonTapped)
           } label: {
             Text("Close", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .frame(height: 52)
               .frame(maxWidth: .infinity)
               .foregroundColor(.black)
@@ -269,8 +266,7 @@ public struct ProfileShareView: View {
           }
 
           Text(content.name, bundle: .module)
-            .font(.callout)
-            .bold()
+            .font(.system(.callout, design: .rounded, weight: .bold))
             .foregroundColor(.godBlack)
         }
       }

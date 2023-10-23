@@ -87,8 +87,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         Text("Pick a friend to add\nyour name to their polls", bundle: .module)
-          .bold()
-          .font(.title2)
+          .font(.system(.title2, design: .rounded, weight: .bold))
           .foregroundStyle(Color.godWhite)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
@@ -148,8 +147,8 @@ public struct PickFriendToAddYourNameTheirPollView: View {
             viewStore.send(.nextButtonTapped)
           } label: {
             Text("Next", bundle: .module)
-              .bold()
               .foregroundStyle(.white)
+              .font(.system(.body, design: .rounded, weight: .bold))
               .disabled(viewStore.selection == nil)
           }
           .buttonStyle(HoldDownButtonStyle())

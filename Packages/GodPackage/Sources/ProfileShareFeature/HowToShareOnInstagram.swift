@@ -228,8 +228,7 @@ public struct HowToShareOnInstagramView: View {
 
         VStack(alignment: .center, spacing: 24) {
           Text("How to add the\nlink to your Story", bundle: .module)
-            .font(.title)
-            .bold()
+            .font(.system(.title, design: .rounded, weight: .bold))
             .foregroundColor(.godBlack)
             .multilineTextAlignment(.center)
 
@@ -269,7 +268,7 @@ public struct HowToShareOnInstagramView: View {
             viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
           } label: {
             Text(viewStore.currentStep.primaryButtonText, bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .foregroundColor(.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)

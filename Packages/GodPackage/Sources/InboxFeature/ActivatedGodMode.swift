@@ -64,7 +64,7 @@ public struct ActivatedGodModeView: View {
           Text("OK", bundle: .module)
             .frame(height: 50)
             .frame(maxWidth: .infinity)
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
             .foregroundColor(.white)
             .background(Color.godGray)
             .clipShape(Capsule())

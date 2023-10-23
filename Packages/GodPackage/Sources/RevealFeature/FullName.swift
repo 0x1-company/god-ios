@@ -57,8 +57,7 @@ public struct FullNameView: View {
           Spacer()
 
           Text(verbatim: viewStore.fulName)
-            .bold()
-            .font(.title2)
+            .font(.system(.title2, design: .rounded, weight: .bold))
 
           Button {
             viewStore.send(.closeButtonTapped)

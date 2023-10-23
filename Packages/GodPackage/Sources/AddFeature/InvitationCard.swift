@@ -26,13 +26,13 @@ public struct InvitationCardView: View {
 
       VStack(alignment: .leading, spacing: 4) {
         Text(verbatim: displayName)
-          .bold()
+          .font(.system(.body, design: .rounded, weight: .bold))
       }
       .frame(maxWidth: .infinity, alignment: .leading)
 
       Button(action: action) {
         Text("INVITE", bundle: .module)
-          .bold()
+          .font(.system(.body, design: .rounded, weight: .bold))
           .frame(height: 34)
           .foregroundColor(.godService)
           .padding(.horizontal, 12)

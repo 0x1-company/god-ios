@@ -80,7 +80,7 @@ public struct ShareTheAppView: View {
             item: viewStore.shareURL
           ) {
             Text("Share the app", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .frame(width: 188, height: 54)
               .background(Color.white)
               .clipShape(Capsule())

@@ -92,8 +92,7 @@ public struct FirstNameSettingView: View {
       VStack(spacing: 8) {
         Spacer()
         Text("What's your first name?", bundle: .module)
-          .bold()
-          .font(.title3)
+          .font(.system(.title3, design: .rounded, weight: .bold))
 
         Text("Only hiragana can be set", bundle: .module)
 
@@ -102,11 +101,12 @@ public struct FirstNameSettingView: View {
         }
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
-        .font(.title)
+        .font(.system(.title, design: .rounded))
         .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts", bundle: .module)
+            .font(.system(.body, design: .rounded, weight: .bold))
         }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {

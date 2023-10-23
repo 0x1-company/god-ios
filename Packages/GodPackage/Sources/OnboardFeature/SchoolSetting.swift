@@ -89,7 +89,7 @@ public struct SchoolSettingView: View {
 
                 VStack(alignment: .leading) {
                   Text(school.name)
-                    .bold()
+                    .font(.system(.body, design: .rounded, weight: .bold))
                     .lineLimit(1)
 
                   Text(school.shortName)
@@ -100,12 +100,12 @@ public struct SchoolSettingView: View {
 
                 VStack(spacing: 0) {
                   Text(school.usersCount.description)
-                    .bold()
+                    .font(.system(.footnote, design: .rounded, weight: .bold))
                     .foregroundColor(Color.godService)
                   Text("MEMBERS", bundle: .module)
                     .foregroundColor(Color.godTextSecondaryLight)
+                    .font(.system(.footnote, design: .rounded))
                 }
-                .font(.footnote)
               }
             }
           }

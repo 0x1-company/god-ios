@@ -43,7 +43,7 @@ public struct GodModeFunctions: View {
       }
       .padding(.horizontal, 100)
     }
-    .bold()
+    .font(.system(.body, design: .rounded, weight: .bold))
     .frame(height: 260)
     .tabViewStyle(.page)
     .multilineTextAlignment(.center)

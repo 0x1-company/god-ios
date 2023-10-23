@@ -62,9 +62,8 @@ public struct ProfileStoryView: View {
             .foregroundStyle(Color.godWhite)
             .padding(.bottom, 4)
           Text(verbatim: "godapp.jp")
-            .font(.callout)
-            .bold()
             .foregroundColor(.godWhite)
+            .font(.system(.callout, design: .rounded, weight: .bold))
         }
         .padding(.bottom, 8)
 
@@ -87,11 +86,12 @@ public struct ProfileStoryView: View {
 
           VStack(spacing: 0) {
             Text(schoolName ?? "")
+              .font(.system(.body, design: .rounded))
           }
           .foregroundStyle(Color.godWhite)
-          .font(.footnote)
           .lineLimit(2)
           .multilineTextAlignment(.leading)
+          .font(.system(.footnote, design: .rounded, weight: .bold))
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .frame(height: 48)

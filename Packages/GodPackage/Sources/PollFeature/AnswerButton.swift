@@ -25,7 +25,7 @@ public struct AnswerButton: View {
       action()
     } label: {
       Text(verbatim: title)
-        .bold()
+        .font(.system(.body, design: .rounded, weight: .bold))
         .lineLimit(2)
         .multilineTextAlignment(.center)
         .frame(height: 64)
