@@ -1,16 +1,17 @@
 import AnalyticsClient
+import Build
 import ComposableArchitecture
 import Constants
 import God
 import GodClient
 import GodModeFeature
 import NotificationCenterClient
-import Photos
-import PhotosClient
 import RevealFeature
 import ShareScreenshotFeature
 import Styleguide
 import SwiftUI
+import StoreKitClient
+import StoreKit
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
@@ -35,8 +36,8 @@ public struct InboxDetailLogic: Reducer {
   public struct State: Equatable {
     let activity: God.InboxFragment
 
+    var isInGodMode: Bool
     @PresentationState var destination: Destination.State?
-    let isInGodMode: Bool
 
     public init(activity: God.InboxFragment, isInGodMode: Bool) {
       self.activity = activity
@@ -51,29 +52,52 @@ public struct InboxDetailLogic: Reducer {
     case closeButtonTapped
     case shareOnInstagramButtonTapped(UIImage?)
     case showFullName(String)
+    case productsResponse(TaskResult<[Product]>)
+    case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.build) var build
   @Dependency(\.dismiss) var dismiss
-  @Dependency(\.photos) var photos
-  @Dependency(\.notificationCenter) var notificationCenter
   @Dependency(\.openURL) var openURL
+  @Dependency(\.store) var storeClient
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
+  @Dependency(\.godClient) var godClient
+  @Dependency(\.notificationCenter) var notificationCenter
+  
+  enum Cancel {
+    case activeSubscription
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await activeSubscriptionRequest(send: send)
+            }
+          }
+        }
 
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none
-
-      case .seeWhoSentItButtonTapped:
+        
+      case .seeWhoSentItButtonTapped where state.isInGodMode:
         state.destination = .reveal(.init(activity: state.activity))
         return .none
+        
+      case .seeWhoSentItButtonTapped where !state.isInGodMode:
+        guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
+        else { return .none }
+        return .run { send in
+          await send(.productsResponse(TaskResult {
+            try await storeClient.products([id])
+          }))
+        }
 
       case .closeButtonTapped:
         return .run { _ in
@@ -99,6 +123,20 @@ public struct InboxDetailLogic: Reducer {
         return .run { _ in
           await openURL(Constants.storiesURL)
         }
+        
+      case let .productsResponse(.success(products)):
+        guard
+          let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
+          let product = products.first(where: { $0.id == id })
+        else { return .none }
+        state.destination = .godMode(
+          GodModeLogic.State(product: product)
+        )
+        return .none
+        
+      case let .activeSubscriptionResponse(.success(data)):
+        state.isInGodMode = data.activeSubscription != nil
+        return .none
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = nil
@@ -119,6 +157,18 @@ public struct InboxDetailLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
+    }
+  }
+  
+  func activeSubscriptionRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.activeSubscription, cancelInFlight: true) {
+      do {
+        for try await data in godClient.activeSubscription() {
+          await send(.activeSubscriptionResponse(.success(data)))
+        }
+      } catch {
+        await send(.activeSubscriptionResponse(.failure(error)))
+      }
     }
   }
 }
@@ -232,18 +282,16 @@ public struct InboxDetailView: View {
             store.send(.closeButtonTapped)
           }
 
-          if viewStore.isInGodMode {
-            Button {
-              store.send(.seeWhoSentItButtonTapped)
-            } label: {
-              Label {
-                Text("See who sent it", bundle: .module)
-              } icon: {
-                Image(systemName: "lock.fill")
-              }
+          Button {
+            store.send(.seeWhoSentItButtonTapped)
+          } label: {
+            Label {
+              Text("See who sent it", bundle: .module)
+            } icon: {
+              Image(systemName: "lock.fill")
             }
-            .buttonStyle(SeeWhoSentItButtonStyle())
           }
+          .buttonStyle(SeeWhoSentItButtonStyle())
         }
       }
       .task { await viewStore.send(.onTask).finish() }
