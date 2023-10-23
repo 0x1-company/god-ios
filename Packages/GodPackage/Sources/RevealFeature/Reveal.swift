@@ -205,7 +205,7 @@ public struct RevealView: View {
         VStack(spacing: 16) {
           HStack {
             Spacer()
-            
+
             Button {
               store.send(.closeButtonTapped)
             } label: {
