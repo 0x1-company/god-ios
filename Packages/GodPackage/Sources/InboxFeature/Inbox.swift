@@ -274,23 +274,15 @@ public struct InboxView: View {
           ZStack(alignment: .top) {
             Color.white.blur(radius: 1.0)
             Button {
-              viewStore.send(.seeWhoLikesYouButtonTapped)
+              store.send(.seeWhoLikesYouButtonTapped)
             } label: {
               Label {
                 Text("See who likes you", bundle: .module)
               } icon: {
                 Image(systemName: "lock.fill")
               }
-              .frame(height: 56)
-              .frame(maxWidth: .infinity)
-              .font(.system(.body, design: .rounded, weight: .bold))
-              .foregroundColor(.white)
-              .background(Color.black)
-              .clipShape(Capsule())
-              .padding(.horizontal, 16)
-              .padding(.top, 8)
             }
-            .buttonStyle(HoldDownButtonStyle())
+            .buttonStyle(SeeWhoLikesYouButtonStyle())
           }
           .ignoresSafeArea()
           .frame(height: 64)

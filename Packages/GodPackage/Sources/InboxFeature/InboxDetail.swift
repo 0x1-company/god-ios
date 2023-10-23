@@ -13,6 +13,20 @@ import SwiftUI
 
 public struct InboxDetailLogic: Reducer {
   public init() {}
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case reveal(RevealLogic.State)
+      case fullName(FullNameLogic.State)
+    }
+    public enum Action: Equatable {
+      case reveal(RevealLogic.Action)
+      case fullName(FullNameLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
+      Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     let activity: God.InboxFragment
@@ -101,32 +115,6 @@ public struct InboxDetailLogic: Reducer {
     }
     .ifLet(\.$destination, action: /Action.destination) {
       Destination()
-    }
-  }
-
-  public struct Destination: Reducer {
-    public enum State: Equatable {
-      case reveal(RevealLogic.State)
-      case fullName(FullNameLogic.State)
-      case shareScreenshot(ShareScreenshotLogic.State)
-    }
-
-    public enum Action: Equatable {
-      case reveal(RevealLogic.Action)
-      case fullName(FullNameLogic.Action)
-      case shareScreenshot(ShareScreenshotLogic.Action)
-    }
-
-    public var body: some Reducer<State, Action> {
-      Scope(state: /State.reveal, action: /Action.reveal) {
-        RevealLogic()
-      }
-      Scope(state: /State.fullName, action: /Action.fullName) {
-        FullNameLogic()
-      }
-      Scope(state: /State.shareScreenshot, action: /Action.shareScreenshot) {
-        ShareScreenshotLogic()
-      }
     }
   }
 }
@@ -237,65 +225,40 @@ public struct InboxDetailView: View {
           .foregroundColor(.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           }
 
           if viewStore.isInGodMode {
             Button {
-              viewStore.send(.seeWhoSentItButtonTapped)
+              store.send(.seeWhoSentItButtonTapped)
             } label: {
               Label {
                 Text("See who sent it", bundle: .module)
               } icon: {
                 Image(systemName: "lock.fill")
               }
-              .font(.system(.body, design: .rounded, weight: .bold))
-              .frame(height: 50)
-              .frame(maxWidth: .infinity)
-              .foregroundColor(.white)
-              .background(Color.godGray)
-              .clipShape(Capsule())
-              .padding(.horizontal, 16)
-              .padding(.top, 8)
             }
-            .buttonStyle(HoldDownButtonStyle())
+            .buttonStyle(SeeWhoSentItButtonStyle())
           }
         }
       }
       .task { await viewStore.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) })
-      ) { initialState in
-        SwitchStore(initialState) {
-          switch $0 {
-          case .reveal:
-            CaseLet(
-              /InboxDetailLogic.Destination.State.reveal,
-              action: InboxDetailLogic.Destination.Action.reveal
-            ) { store in
-              RevealView(store: store)
-                .presentationDetents([.fraction(0.4)])
-            }
-          case .fullName:
-            CaseLet(
-              /InboxDetailLogic.Destination.State.fullName,
-              action: InboxDetailLogic.Destination.Action.fullName
-            ) { store in
-              FullNameView(store: store)
-                .presentationDetents([.height(180)])
-            }
-          case .shareScreenshot:
-            CaseLet(
-              /InboxDetailLogic.Destination.State.shareScreenshot,
-              action: InboxDetailLogic.Destination.Action.shareScreenshot
-            ) { store in
-              ShareScreenshotView(store: store)
-                .presentationDetents([.fraction(0.3)])
-                .presentationDragIndicator(.visible)
-            }
-          }
-        }
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.reveal,
+        action: InboxDetailLogic.Destination.Action.reveal
+      ) { store in
+        RevealView(store: store)
+          .presentationDetents([.fraction(0.4)])
+      }
+      .sheet(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.fullName,
+        action: InboxDetailLogic.Destination.Action.fullName
+      ) { store in
+        FullNameView(store: store)
+          .presentationDetents([.height(180)])
       }
     }
   }
