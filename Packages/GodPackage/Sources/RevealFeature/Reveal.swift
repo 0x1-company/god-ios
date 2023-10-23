@@ -71,7 +71,7 @@ public struct RevealLogic: Reducer {
             }
           }
         }
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()

@@ -1,7 +1,7 @@
 import ComposableArchitecture
+import ProfileImage
 import Styleguide
 import SwiftUI
-import ProfileImage
 
 public struct FullNameLogic: Reducer {
   public init() {}
@@ -52,7 +52,7 @@ public struct FullNameView: View {
           .onTapGesture {
             store.send(.closeButtonTapped)
           }
-        
+
         VStack(spacing: 24) {
           Spacer()
 
