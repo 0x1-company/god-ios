@@ -31,7 +31,11 @@
         }
       }
     },
+    "The first letter in their\nname is..." : {
+
+    },
     "The first letter in their name is..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
