@@ -42,7 +42,6 @@ public extension AnalyticsClient {
 
   enum ButtonClickName: String {
     case close
-    case vote
     case voteSlowDown = "vote_slow_down"
     case shuffle
     case skip

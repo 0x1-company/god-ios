@@ -112,10 +112,10 @@ public struct PollQuestionLogic: Reducer {
           pollQuestionId: state.id,
           votedUserId: votedUserId
         )
-        analytics.buttonClick(name: .vote, parameters: [
+        analytics.logEvent("vote", [
           "voted_user_id": votedUserId,
           "question_id": state.question.id,
-          "question_text": state.question.text.ja,
+          "question": state.question.text.ja,
         ])
         return .run { send in
           await feedbackGenerator.impactOccurred()
