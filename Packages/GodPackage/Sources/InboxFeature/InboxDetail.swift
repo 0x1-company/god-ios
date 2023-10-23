@@ -304,7 +304,7 @@ public struct InboxDetailView: View {
         action: InboxDetailLogic.Destination.Action.reveal
       ) { store in
         RevealView(store: store)
-          .presentationBackground(Color.clear)
+          .presentationBackground(Material.ultraThinMaterial)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
@@ -312,7 +312,7 @@ public struct InboxDetailView: View {
         action: InboxDetailLogic.Destination.Action.fullName
       ) { store in
         FullNameView(store: store)
-          .presentationBackground(Color.clear)
+          .presentationBackground(Material.ultraThinMaterial)
       }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
