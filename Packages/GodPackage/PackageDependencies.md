@@ -158,6 +158,7 @@ graph TD;
     RevealFeature-->Build;
     RevealFeature-->GodClient;
     RevealFeature-->Styleguide;
+    RevealFeature-->ProfileImage;
     RevealFeature-->StoreKitClient;
     RevealFeature-->StoreKitHelpers;
     RevealFeature-->AnalyticsClient;
