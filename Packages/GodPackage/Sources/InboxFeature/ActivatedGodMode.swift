@@ -24,7 +24,7 @@ public struct ActivatedGodModeLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ActivatedGodMode", of: self)
         return .none

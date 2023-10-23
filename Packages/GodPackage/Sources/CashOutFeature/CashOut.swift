@@ -23,7 +23,7 @@ public struct CashOutLogic: Reducer {
       case finish
     }
   }
-  
+
   @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {

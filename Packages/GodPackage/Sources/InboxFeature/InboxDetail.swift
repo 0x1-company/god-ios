@@ -48,7 +48,7 @@ public struct InboxDetailLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none

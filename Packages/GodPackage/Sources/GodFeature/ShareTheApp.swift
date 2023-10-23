@@ -35,7 +35,7 @@ public struct ShareTheAppLogic: Reducer {
         } catch: { error, send in
           await send(.currentUserResponse(.failure(error)))
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ShareTheApp", of: self)
         return .none
