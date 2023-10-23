@@ -57,6 +57,7 @@ public struct FromGodTeamCard: View {
           Label {
             Text("From God Team", bundle: .module)
               .frame(maxWidth: .infinity, alignment: .leading)
+              .font(.system(.body, design: .rounded))
           } icon: {
             Image(viewStore.isRead ? ImageResource.unreadIcon : ImageResource.godTeamIcon)
               .resizable()

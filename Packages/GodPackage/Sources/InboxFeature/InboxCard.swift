@@ -45,6 +45,7 @@ public struct InboxCard: View {
         } label: {
           Label {
             Text("From a \(gender)", bundle: .module)
+              .font(.system(.body, design: .rounded))
           } icon: {
             Image(inbox.isRead ? ImageResource.unreadIcon : genderIcon)
               .resizable()

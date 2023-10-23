@@ -52,7 +52,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@より"
+            "value" : "%@に投票されました"
           }
         }
       }
