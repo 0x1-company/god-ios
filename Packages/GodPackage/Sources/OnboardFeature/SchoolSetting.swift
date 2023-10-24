@@ -135,6 +135,8 @@ public struct SchoolSettingView: View {
         .overlay {
           if viewStore.schools.isEmpty {
             ProgressView()
+            .tint(Color.black)
+              .progressViewStyle(.circular)
           }
         }
       }
