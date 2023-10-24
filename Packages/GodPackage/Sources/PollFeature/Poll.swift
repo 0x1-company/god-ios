@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import FeedbackGeneratorClient
 import God
@@ -34,6 +35,7 @@ public struct PollLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
     case createVoteResponse(TaskResult<God.CreateVoteMutation.Data>)
     case completePollResponse(TaskResult<God.CompletePollMutation.Data>)
@@ -50,6 +52,7 @@ public struct PollLogic: Reducer {
     }
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient.createVote) var createVote
   @Dependency(\.godClient.completePoll) var completePoll
   @Dependency(\.feedbackGenerator) var feedbackGenerator
@@ -58,6 +61,10 @@ public struct PollLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        return .none
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "Poll", of: self)
         return .none
 
       case let .pollQuestions(_, .delegate(.vote(input))):
@@ -205,7 +212,8 @@ public struct PollView: View {
         }
         .padding(.top, 52)
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: PollLogic.Action.alert))
     }
   }
