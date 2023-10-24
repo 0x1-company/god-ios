@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AsyncValue
 import ComposableArchitecture
 import God
@@ -21,6 +22,7 @@ public struct ProfileExternalLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case closeButtonTapped
     case blockButtonTapped
     case reportButtonTapped
@@ -44,8 +46,9 @@ public struct ProfileExternalLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
-  enum Cancel { case currentUser }
+  enum Cancel { case user }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -60,7 +63,13 @@ public struct ProfileExternalLogic: Reducer {
         } catch: { error, send in
           await send(.userResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.currentUser)
+        .cancellable(id: Cancel.user, cancelInFlight: true)
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileExternal", of: self, parameters: [
+          "userId": state.userId,
+        ])
+        return .none
 
       case .closeButtonTapped:
         return .run { _ in
@@ -87,10 +96,7 @@ public struct ProfileExternalLogic: Reducer {
         state.confirmationDialog = .report
         return .none
 
-      case .alert:
-        return .none
-
-      case .confirmationDialog:
+      default:
         return .none
       }
     }

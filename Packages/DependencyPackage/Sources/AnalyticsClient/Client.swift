@@ -8,13 +8,13 @@ public struct AnalyticsClient {
 }
 
 public extension AnalyticsClient {
-  func logScreen(screenName: String, of value: some Any) {
+  func logScreen(screenName: String, of value: some Any, parameters: [String: Any] = [:]) {
+    var parameters = parameters
+    parameters[AnalyticsParameterScreenName] = screenName
+    parameters[AnalyticsParameterScreenClass] = String(describing: type(of: value))
     logEvent(
       AnalyticsEventScreenView,
-      [
-        AnalyticsParameterScreenName: screenName,
-        AnalyticsParameterScreenClass: String(describing: type(of: value)),
-      ]
+      parameters
     )
   }
 }
