@@ -62,7 +62,7 @@ public struct PollLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "Poll", of: self)
         return .none

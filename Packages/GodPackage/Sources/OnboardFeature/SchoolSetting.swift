@@ -1,7 +1,7 @@
 import AnalyticsClient
-import Constants
 import CachedAsyncImage
 import ComposableArchitecture
+import Constants
 import God
 import GodClient
 import RoundedCorner
@@ -10,12 +10,12 @@ import SwiftUI
 
 public struct SchoolSettingLogic: Reducer {
   public init() {}
-  
+
   public struct State: Equatable {
     var schools: [God.SchoolsQuery.Data.Schools.Edge.Node] = []
     public init() {}
   }
-  
+
   public enum Action: Equatable {
     case onTask
     case onAppear
@@ -23,16 +23,16 @@ public struct SchoolSettingLogic: Reducer {
     case schoolButtonTapped(id: String)
     case schoolsResponse(TaskResult<God.SchoolsQuery.Data>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextScreen(id: String?)
     }
   }
-  
+
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
-  
+
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
@@ -44,27 +44,27 @@ public struct SchoolSettingLogic: Reducer {
         } catch: { error, send in
           await send(.schoolsResponse(.failure(error)))
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "SchoolSetting", of: self)
         return .none
-        
+
       case .addSchoolRequestButtonTapped:
         return .run { _ in
           await openURL(Constants.addSchoolRequestURL)
         }
-        
+
       case let .schoolButtonTapped(id):
         return .send(.delegate(.nextScreen(id: id)))
-        
+
       case let .schoolsResponse(.success(data)):
         state.schools = data.schools.edges.map(\.node)
         return .none
-        
+
       case .schoolsResponse(.failure):
         state.schools = []
         return .none
-        
+
       case .delegate:
         return .none
       }
@@ -74,16 +74,16 @@ public struct SchoolSettingLogic: Reducer {
 
 public struct SchoolSettingView: View {
   let store: StoreOf<SchoolSettingLogic>
-  
+
   public init(store: StoreOf<SchoolSettingLogic>) {
     self.store = store
   }
-  
+
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .center) {
         Color.godService
-        
+
         List {
           ForEach(viewStore.schools, id: \.self) { school in
             Button {
@@ -91,18 +91,18 @@ public struct SchoolSettingView: View {
             } label: {
               HStack(alignment: .center, spacing: 16) {
                 SchoolImage(urlString: school.profileImageURL)
-                
+
                 VStack(alignment: .leading) {
                   Text(school.name)
                     .font(.system(.body, design: .rounded, weight: .bold))
                     .lineLimit(1)
-                  
+
                   Text(school.shortName)
                     .foregroundColor(Color.godTextSecondaryLight)
                 }
                 .font(.footnote)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
+
                 VStack(spacing: 0) {
                   Text(school.usersCount.description)
                     .font(.system(.footnote, design: .rounded, weight: .bold))
@@ -135,7 +135,7 @@ public struct SchoolSettingView: View {
         .overlay {
           if viewStore.schools.isEmpty {
             ProgressView()
-            .tint(Color.black)
+              .tint(Color.black)
               .progressViewStyle(.circular)
           }
         }
@@ -149,7 +149,7 @@ public struct SchoolSettingView: View {
       .toolbarColorScheme(.dark, for: .navigationBar)
     }
   }
-  
+
   struct SchoolImage: View {
     let urlString: String
     var body: some View {
@@ -161,14 +161,14 @@ public struct SchoolSettingView: View {
             .frame(width: 40, height: 40)
             .background(Color.godBackgroundWhite)
             .clipShape(Circle())
-          
+
         case .failure:
           Image(ImageResource.school)
             .resizable()
             .frame(width: 40, height: 40)
             .scaledToFit()
             .clipped()
-          
+
         default:
           RoundedRectangle(cornerRadius: 40 / 2, style: .circular)
             .fill(Color.godBackgroundWhite)

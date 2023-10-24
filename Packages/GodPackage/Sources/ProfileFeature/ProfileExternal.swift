@@ -64,7 +64,7 @@ public struct ProfileExternalLogic: Reducer {
           await send(.userResponse(.failure(error)))
         }
         .cancellable(id: Cancel.user, cancelInFlight: true)
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ProfileExternal", of: self, parameters: [
           "userId": state.userId,
