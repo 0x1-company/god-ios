@@ -22,7 +22,7 @@ struct SeeWhoSentItButtonStyle: ButtonStyle {
       .font(.system(.body, design: .rounded, weight: .bold))
       .frame(height: 50)
       .frame(maxWidth: .infinity)
-      .foregroundColor(.white)
+      .foregroundStyle(.white)
       .background(Color.godGray)
       .clipShape(Capsule())
       .padding(.horizontal, 16)

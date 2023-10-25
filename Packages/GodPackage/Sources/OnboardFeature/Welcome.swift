@@ -96,7 +96,7 @@ public struct WelcomeView: View {
             if case .none = viewStore.age {
               Text("By entering your age you agree to our [Terms](https://docs.godapp.jp/terms-of-use) and [Privacy Policy](https://docs.godapp.jp/privacy-policy)", bundle: .module)
                 .frame(height: 54)
-                .foregroundColor(Color.godTextSecondaryDark)
+                .foregroundStyle(Color.godTextSecondaryDark)
                 .tint(Color.godTextSecondaryDark)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
@@ -108,7 +108,7 @@ public struct WelcomeView: View {
                   .font(.system(.body, design: .rounded, weight: .bold))
                   .frame(height: 54)
                   .frame(maxWidth: .infinity)
-                  .foregroundColor(Color.white)
+                  .foregroundStyle(Color.white)
                   .background(Color.godService)
                   .clipShape(Capsule())
               }
@@ -124,7 +124,7 @@ public struct WelcomeView: View {
               Text("Enter your age", bundle: .module)
             }
           }
-          .foregroundColor(Color.godService)
+          .foregroundStyle(Color.godService)
           .font(.system(.body, design: .rounded, weight: .bold))
 
           Picker("", selection: viewStore.$selection) {
@@ -144,7 +144,7 @@ public struct WelcomeView: View {
           store.send(.loginButtonTapped)
         } label: {
           Text("Log In", bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
         }
       }
     }

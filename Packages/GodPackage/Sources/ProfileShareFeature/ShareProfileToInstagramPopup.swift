@@ -81,7 +81,7 @@ public struct ShareProfileToInstagramPopupView: View {
               Image(systemName: "xmark")
                 .resizable()
                 .frame(width: 16, height: 16)
-                .foregroundColor(Color.white)
+                .foregroundStyle(Color.white)
             }
             .offset(x: -24, y: 60)
           }

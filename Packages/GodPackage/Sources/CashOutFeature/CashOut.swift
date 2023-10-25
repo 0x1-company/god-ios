@@ -69,7 +69,7 @@ public struct CashOutView: View {
               .font(.system(.title3, design: .rounded, weight: .bold))
               .frame(height: 54)
               .frame(maxWidth: .infinity)
-              .foregroundColor(Color.black)
+              .foregroundStyle(Color.black)
               .overlay(alignment: .leading) {
                 Image(.moneyMouthFace)
                   .resizable()

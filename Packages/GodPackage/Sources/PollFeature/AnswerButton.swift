@@ -30,7 +30,7 @@ public struct AnswerButton: View {
         .multilineTextAlignment(.center)
         .frame(height: 64)
         .frame(maxWidth: .infinity)
-        .foregroundColor(.black)
+        .foregroundStyle(.black)
         .padding(.horizontal, 8)
         .background(
           GeometryReader { proxy in

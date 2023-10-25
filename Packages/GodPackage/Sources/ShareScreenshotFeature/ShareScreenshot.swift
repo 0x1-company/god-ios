@@ -117,7 +117,7 @@ public struct ShareScreenshotView: View {
               }
             }
           }
-          .foregroundColor(.primary)
+          .foregroundStyle(.primary)
 
           Spacer()
         }

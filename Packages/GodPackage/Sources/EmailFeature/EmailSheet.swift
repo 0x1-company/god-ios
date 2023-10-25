@@ -148,7 +148,7 @@ public struct EmailSheetView: View {
                   }
 
                 Text("Mail", bundle: .module)
-                  .foregroundColor(.godBlack)
+                  .foregroundStyle(Color.godBlack)
                   .font(.system(.body, design: .rounded, weight: .bold))
               }
             }
@@ -168,7 +168,7 @@ public struct EmailSheetView: View {
                       .aspectRatio(contentMode: .fit)
                   }
                 Text("Gmail", bundle: .module)
-                  .foregroundColor(.godBlack)
+                  .foregroundStyle(Color.godBlack)
                   .font(.system(.body, design: .rounded, weight: .bold))
               }
             }
@@ -188,7 +188,7 @@ public struct EmailSheetView: View {
                       .foregroundStyle(Color.white)
                   }
                 Text("Copy", bundle: .module)
-                  .foregroundColor(.godBlack)
+                  .foregroundStyle(Color.godBlack)
                   .font(.system(.body, design: .rounded, weight: .bold))
               }
             }
@@ -205,7 +205,7 @@ public struct EmailSheetView: View {
               .frame(height: 48)
               .background {
                 Text("Close", bundle: .module)
-                  .foregroundColor(.black)
+                  .foregroundStyle(.black)
                   .frame(height: 48)
                   .frame(maxWidth: .infinity)
                   .font(.system(.body, design: .rounded, weight: .bold))

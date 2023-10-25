@@ -64,7 +64,7 @@ public struct FromGodTeamView: View {
       .frame(height: 48)
       .padding(.horizontal, 12)
       .background(Color.godWhite)
-      .foregroundColor(Color.godTextPrimary)
+      .foregroundStyle(Color.godTextPrimary)
       .multilineTextAlignment(.leading)
       .font(.caption)
       .cornerRadius(8)
@@ -81,7 +81,7 @@ public struct FromGodTeamView: View {
         .font(.system(.body, design: .rounded))
     }
     .padding(.vertical, 40)
-    .foregroundColor(Color.godWhite)
+    .foregroundStyle(Color.godWhite)
     .multilineTextAlignment(.center)
     .frame(maxWidth: .infinity)
     .background(Color.godService)

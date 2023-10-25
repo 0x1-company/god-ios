@@ -15,7 +15,18 @@ public struct ProfileSection: View {
   let grade: String?
   let editProfile: (() -> Void)?
 
-  public init(imageURL: String, friendsCount: Int, votedCount: Int, username: String, firstName: String, lastName: String, displayName: String, schoolShortName: String?, grade: String?, editProfile: (() -> Void)? = nil) {
+  public init(
+    imageURL: String,
+    friendsCount: Int,
+    votedCount: Int,
+    username: String,
+    firstName: String,
+    lastName: String,
+    displayName: String,
+    schoolShortName: String?,
+    grade: String?,
+    editProfile: (() -> Void)? = nil
+  ) {
     self.imageURL = imageURL
     self.friendsCount = friendsCount
     self.votedCount = votedCount
@@ -59,7 +70,7 @@ public struct ProfileSection: View {
             Button(action: editProfile) {
               Text("EDIT PROFILE", bundle: .module)
                 .font(.system(.body, design: .rounded, weight: .bold))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .frame(height: 32)
                 .padding(.horizontal, 12)
                 .overlay(
@@ -91,7 +102,7 @@ public struct ProfileSection: View {
           }
         }
       }
-      .foregroundColor(.secondary)
+      .foregroundStyle(.secondary)
       .font(.system(.body, design: .rounded))
     }
     .frame(maxWidth: .infinity, alignment: .leading)

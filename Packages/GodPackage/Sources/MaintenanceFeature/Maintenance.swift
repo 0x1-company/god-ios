@@ -42,7 +42,7 @@ public struct MaintenanceView: View {
       .padding(.horizontal, 24)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color.godService)
-      .foregroundColor(Color.white)
+      .foregroundStyle(Color.white)
       .multilineTextAlignment(.center)
     }
   }

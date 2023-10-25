@@ -112,7 +112,7 @@ public struct ProfileShareToInstagramView: View {
 
           Text("Share Profile on\nInstagram", bundle: .module)
             .font(.system(.title, design: .rounded, weight: .bold))
-            .foregroundColor(.godBlack)
+            .foregroundStyle(Color.godBlack)
             .multilineTextAlignment(.center)
         }
 
@@ -126,7 +126,7 @@ public struct ProfileShareToInstagramView: View {
 
           Text(verbatim: "godapp.jp/@\(viewStore.username ?? "")")
             .font(.system(.body, design: .rounded, weight: .bold))
-            .foregroundColor(.godTextSecondaryDark)
+            .foregroundStyle(Color.godTextSecondaryDark)
             .frame(maxWidth: .infinity, alignment: .center)
             .frame(height: 52)
             .background(Color(red: 243 / 255, green: 243 / 255, blue: 243 / 255))
@@ -137,7 +137,7 @@ public struct ProfileShareToInstagramView: View {
           } label: {
             Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
-              .foregroundColor(.godService)
+              .foregroundStyle(Color.godService)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .cornerRadius(26)
@@ -162,7 +162,7 @@ public struct ProfileShareToInstagramView: View {
           } label: {
             Text("Share", bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
-              .foregroundColor(.godWhite)
+              .foregroundStyle(Color.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .background(Color.godService)

@@ -62,7 +62,7 @@ public struct ProfileStoryView: View {
             .foregroundStyle(Color.godWhite)
             .padding(.bottom, 4)
           Text(verbatim: "godapp.jp")
-            .foregroundColor(.godWhite)
+            .foregroundStyle(Color.godWhite)
             .font(.system(.callout, design: .rounded, weight: .bold))
         }
         .padding(.bottom, 8)

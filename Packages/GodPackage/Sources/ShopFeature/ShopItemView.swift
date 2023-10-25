@@ -19,7 +19,7 @@ struct ShopItemView: View {
         Text(name)
           .font(.callout)
           .frame(maxWidth: .infinity, alignment: .leading)
-          .foregroundColor(Color.white)
+          .foregroundStyle(Color.white)
 
         if let description {
           Text(description)
@@ -38,7 +38,7 @@ struct ShopItemView: View {
             .frame(width: 18, height: 18)
         }
         .frame(width: 76, height: 36)
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .background(Color.godYellow.gradient)
         .clipShape(Capsule())
       }

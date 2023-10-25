@@ -125,7 +125,7 @@ public struct HowItWorksView: View {
               .font(.system(.body, design: .rounded, weight: .bold))
               .frame(height: 54)
               .frame(maxWidth: .infinity)
-              .foregroundColor(Color.white)
+              .foregroundStyle(Color.white)
               .background(Color.godService)
               .clipShape(Capsule())
           }

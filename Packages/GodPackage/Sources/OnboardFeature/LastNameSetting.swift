@@ -112,7 +112,7 @@ public struct LastNameSettingView: View {
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .foregroundColor(Color.white)
+      .foregroundStyle(Color.white)
       .background(Color.godService)
       .navigationBarBackButtonHidden()
       .task { await viewStore.send(.onTask).finish() }

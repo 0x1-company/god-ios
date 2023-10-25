@@ -69,7 +69,7 @@ public struct GenderSettingView: View {
 
         VStack(spacing: 24) {
           Text("What's your gender?", bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
             .font(.system(.body, design: .rounded, weight: .bold))
 
           HStack(spacing: 24) {
@@ -130,7 +130,7 @@ public struct GenderSettingView: View {
             )
 
           Text(textGender, bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
         }
       }
       .buttonStyle(HoldDownButtonStyle())

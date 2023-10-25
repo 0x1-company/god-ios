@@ -57,7 +57,7 @@ public struct FindFriendView: View {
         Spacer()
 
         Text("God uses your contacts\nto find friends", bundle: .module)
-          .foregroundColor(Color.godWhite)
+          .foregroundStyle(Color.godWhite)
           .font(.system(.body, design: .rounded, weight: .bold))
 
         Button {
@@ -67,7 +67,7 @@ public struct FindFriendView: View {
             .font(.system(.title3, design: .rounded, weight: .bold))
             .frame(height: 54)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
+            .foregroundStyle(Color.black)
             .padding(.horizontal, 16)
             .background(Color.white)
             .clipShape(Capsule())
@@ -78,7 +78,7 @@ public struct FindFriendView: View {
         Spacer()
 
         Text("God cares intensely about your privacy.\nWeb will never text or spam your contacts.", bundle: .module)
-          .foregroundColor(Color.godWhite)
+          .foregroundStyle(Color.godWhite)
       }
       .multilineTextAlignment(.center)
       .background(Color.godService)

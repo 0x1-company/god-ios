@@ -139,7 +139,7 @@ public struct ProfilePhotoSettingView: View {
 
         Text("Add a profile photo", bundle: .module)
           .font(.system(.title3, design: .rounded, weight: .bold))
-          .foregroundColor(Color.white)
+          .foregroundStyle(Color.white)
 
         PhotosPicker(
           selection: viewStore.$photoPickerItems,
@@ -166,7 +166,7 @@ public struct ProfilePhotoSettingView: View {
         }
 
         Text("Add a photo so your friends can find you", bundle: .module)
-          .foregroundColor(Color.white.opacity(0.7))
+          .foregroundStyle(Color.white.opacity(0.7))
           .font(.system(.body, design: .rounded))
 
         Spacer()
@@ -183,7 +183,7 @@ public struct ProfilePhotoSettingView: View {
             bundle: .module
           )
           .font(.system(.body, design: .rounded, weight: .bold))
-          .foregroundColor(Color.white)
+          .foregroundStyle(Color.white)
           .frame(height: 56)
           .frame(maxWidth: .infinity)
           .overlay(

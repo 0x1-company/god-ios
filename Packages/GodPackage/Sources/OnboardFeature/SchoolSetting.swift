@@ -98,7 +98,7 @@ public struct SchoolSettingView: View {
                     .lineLimit(1)
 
                   Text(school.shortName)
-                    .foregroundColor(Color.godTextSecondaryLight)
+                    .foregroundStyle(Color.godTextSecondaryLight)
                 }
                 .font(.footnote)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,9 +106,9 @@ public struct SchoolSettingView: View {
                 VStack(spacing: 0) {
                   Text(school.usersCount.description)
                     .font(.system(.footnote, design: .rounded, weight: .bold))
-                    .foregroundColor(Color.godService)
+                    .foregroundStyle(Color.godService)
                   Text("MEMBERS", bundle: .module)
-                    .foregroundColor(Color.godTextSecondaryLight)
+                    .foregroundStyle(Color.godTextSecondaryLight)
                     .font(.system(.footnote, design: .rounded))
                 }
               }
@@ -127,7 +127,7 @@ public struct SchoolSettingView: View {
           }
         }
         .listStyle(.plain)
-        .foregroundColor(.primary)
+        .foregroundStyle(.primary)
         .background(Color.white)
         .multilineTextAlignment(.center)
         .cornerRadius(12, corners: [.topLeft, .topRight])

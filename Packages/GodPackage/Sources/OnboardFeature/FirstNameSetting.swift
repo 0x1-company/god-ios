@@ -99,7 +99,7 @@ public struct FirstNameSettingView: View {
         TextField(text: viewStore.$firstName) {
           Text("First Name", bundle: .module)
         }
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .multilineTextAlignment(.center)
         .font(.system(.title, design: .rounded))
         .focused($focus)

@@ -65,14 +65,14 @@ public struct PhoneNumberHelpView: View {
           .font(.system(.body, design: .rounded))
           .frame(height: 56)
           .frame(maxWidth: .infinity)
-          .foregroundColor(.white)
+          .foregroundStyle(.white)
           .background(Color.godService)
           .clipShape(Capsule())
       }
 
       Link(destination: Constants.privacyPolicyURL) {
         Text("Privacy Policy", bundle: .module)
-          .foregroundColor(.godTextSecondaryLight)
+          .foregroundStyle(Color.godTextSecondaryLight)
           .font(.system(.body, design: .rounded))
       }
     }

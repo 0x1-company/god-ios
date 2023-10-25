@@ -202,7 +202,7 @@ public struct PollQuestionView: View {
         Spacer().frame(height: 24)
 
         Text(viewStore.question.text.ja)
-          .foregroundColor(.white)
+          .foregroundStyle(.white)
           .multilineTextAlignment(.center)
           .font(.system(.title2, design: .rounded, weight: .bold))
 
@@ -246,7 +246,7 @@ public struct PollQuestionView: View {
           }
         }
         .frame(height: 50)
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .padding(.vertical, 64)
         .font(.system(.body, design: .rounded, weight: .bold))
         .animation(.default, value: !viewStore.voteChoices.isEmpty)

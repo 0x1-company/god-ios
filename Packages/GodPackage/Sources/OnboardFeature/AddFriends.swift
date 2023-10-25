@@ -271,7 +271,7 @@ public struct AddFriendsView: View {
               .frame(height: 34)
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.horizontal, 16)
-              .foregroundColor(.secondary)
+              .foregroundStyle(.secondary)
               .background(Color(uiColor: .quaternarySystemFill))
               .font(.system(.body, design: .rounded, weight: .bold))
 
@@ -300,7 +300,7 @@ public struct AddFriendsView: View {
               .frame(height: 34)
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.horizontal, 16)
-              .foregroundColor(.secondary)
+              .foregroundStyle(.secondary)
               .background(Color(uiColor: .quaternarySystemFill))
               .font(.system(.body, design: .rounded, weight: .bold))
 
@@ -371,7 +371,7 @@ public struct AddFriendsView: View {
                   Text("INVITE", bundle: .module)
                     .font(.system(.body, design: .rounded, weight: .bold))
                     .frame(height: 34)
-                    .foregroundColor(.godService)
+                    .foregroundStyle(Color.godService)
                     .padding(.horizontal, 12)
                     .overlay(
                       RoundedRectangle(cornerRadius: 34 / 2)
@@ -405,7 +405,7 @@ public struct AddFriendsView: View {
         Button("Next") {
           viewStore.send(.nextButtonTapped)
         }
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .font(.system(.body, design: .rounded, weight: .bold))
       }
     }

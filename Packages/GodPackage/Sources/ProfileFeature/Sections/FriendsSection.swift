@@ -43,7 +43,7 @@ public struct FriendsSection: View {
             .frame(height: 56)
             .padding(.horizontal, 48)
             .font(.system(.body, design: .rounded, weight: .bold))
-            .foregroundColor(.godWhite)
+            .foregroundStyle(Color.godWhite)
             .overlay(alignment: .leading) {
               Image(.line)
                 .resizable()
