@@ -1,10 +1,10 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
 import Lottie
 import Styleguide
 import SwiftUI
-import AnalyticsClient
 
 public struct HowItWorksLogic: Reducer {
   public init() {}
@@ -54,7 +54,7 @@ public struct HowItWorksLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "HowItWorks", of: self)
         return .none

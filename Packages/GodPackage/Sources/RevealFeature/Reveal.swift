@@ -76,7 +76,7 @@ public struct RevealLogic: Reducer {
             }
           }
         }
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "Reveal", of: self)
         return .none

@@ -58,7 +58,7 @@ public struct GodModeLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "GodMode", of: self)
         return .none
