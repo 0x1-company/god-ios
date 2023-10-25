@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import ProfileImage
 import Styleguide
@@ -18,16 +19,23 @@ public struct FullNameLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case closeButtonTapped
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
         return .none
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "FullName", of: self)
+        return .none
+        
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
@@ -87,6 +95,7 @@ public struct FullNameView: View {
 //        }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

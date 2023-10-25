@@ -4,6 +4,7 @@ import GodClient
 import Lottie
 import Styleguide
 import SwiftUI
+import AnalyticsClient
 
 public struct HowItWorksLogic: Reducer {
   public init() {}
@@ -20,6 +21,7 @@ public struct HowItWorksLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case startButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case binding(BindingAction<State>)
@@ -32,6 +34,7 @@ public struct HowItWorksLogic: Reducer {
   }
 
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   enum Cancel {
     case currentUser
@@ -51,6 +54,10 @@ public struct HowItWorksLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "HowItWorks", of: self)
+        return .none
 
       case .startButtonTapped where state.currentStep == .voted:
         return .send(.delegate(.start), animation: .default)
@@ -134,6 +141,7 @@ public struct HowItWorksView: View {
         .buttonStyle(HoldDownButtonStyle())
       }
       .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

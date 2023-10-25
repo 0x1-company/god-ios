@@ -1,3 +1,4 @@
+import AnalyticsClient
 import Build
 import ComposableArchitecture
 import God
@@ -27,6 +28,7 @@ public struct RevealLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case closeButtonTapped
     case seeFullNameButtonTapped
     case productsResponse(TaskResult<[StoreKit.Product]>)
@@ -46,6 +48,7 @@ public struct RevealLogic: Reducer {
   @Dependency(\.store) var storeClient
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   enum Cancel {
     case id
@@ -73,6 +76,10 @@ public struct RevealLogic: Reducer {
             }
           }
         }
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "Reveal", of: self)
+        return .none
 
       case .closeButtonTapped:
         return .run { _ in
@@ -218,6 +225,7 @@ public struct RevealView: View {
 
           VStack(spacing: 16) {
             Text("The first letter in their\nname is...", bundle: .module)
+              .lineLimit(2)
               .font(.system(.title3, design: .rounded, weight: .bold))
 
             Text(viewStore.initialName)
@@ -269,6 +277,7 @@ public struct RevealView: View {
         }
       }
       .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }
