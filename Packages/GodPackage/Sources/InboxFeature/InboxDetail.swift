@@ -148,6 +148,12 @@ public struct InboxDetailLogic: Reducer {
 
       case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
         state.destination = nil
+        analytics.logEvent("reveal", [
+          "question_id": state.activity.question.id,
+          "question_text": state.activity.question.text.ja,
+          "activity_id": state.activity.id,
+          "vote_user_gender": state.activity.voteUser.gender.value ?? "NULL"
+        ])
         return .run { send in
           try await mainQueue.sleep(for: .seconds(1))
           await send(.showFullName(fullName))
