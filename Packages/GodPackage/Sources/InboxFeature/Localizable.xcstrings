@@ -58,7 +58,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@に投票されました"
+            "value" : "%@に褒められました"
           }
         }
       }
@@ -138,7 +138,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "誰に投票されたか見る"
+            "value" : "誰に褒められたか見る"
           }
         }
       }
@@ -168,7 +168,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "通知タブにきたメッセージから、自分に投票した人の名前を見ることができます！"
+            "value" : "自分を褒めてくれた人の名前を見ることができます！"
           }
         }
       }
@@ -208,7 +208,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたが投票されると\nここにメッセージが届きます。"
+            "value" : "あなたが褒められると\nここにメッセージが届きます。"
           }
         }
       }
