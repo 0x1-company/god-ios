@@ -46,7 +46,7 @@ let package = Package(
     .package(path: "../DependencyPackage"),
     .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
     .package(url: "https://github.com/edonv/SwiftUIMessage", from: "0.0.3"),
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.3.0"),
     .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
   ],
   targets: [
