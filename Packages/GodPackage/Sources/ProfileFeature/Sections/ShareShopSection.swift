@@ -38,7 +38,7 @@ public struct ShareShopSection: View {
           Text(coinBalance.description)
             .font(.system(.title2, design: .rounded, weight: .bold))
 
-          Text("SHOP")
+          Text("SHOP", bundle: .module)
             .font(.system(.caption, design: .rounded, weight: .bold))
             .frame(width: 57, height: 26)
             .foregroundStyle(Color.white)
