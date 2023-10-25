@@ -293,7 +293,7 @@ public struct ProfileEditView: View {
               Image(systemName: "camera.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .foregroundStyle(.godWhite)
+                .foregroundStyle(Color.godWhite)
                 .frame(width: 40, height: 40)
                 .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
             )
@@ -325,14 +325,14 @@ public struct ProfileEditView: View {
             HStack(alignment: .center, spacing: 0) {
               Text("Gender", bundle: .module)
                 .font(.body)
-                .foregroundStyle(.godTextSecondaryLight)
+                .foregroundStyle(Color.godTextSecondaryLight)
                 .frame(width: 108, alignment: .leading)
 
               Text(viewStore.gender, bundle: .module)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.body)
-                .foregroundStyle(.godBlack)
+                .foregroundStyle(Color.godBlack)
             }
             .padding(.horizontal, 12)
             .frame(maxWidth: .infinity)
@@ -345,18 +345,18 @@ public struct ProfileEditView: View {
 
           VStack(alignment: .leading, spacing: 8) {
             Text("SCHOOL", bundle: .module)
-              .foregroundStyle(.godTextSecondaryLight)
+              .foregroundStyle(Color.godTextSecondaryLight)
               .font(.system(.caption, design: .rounded, weight: .bold))
 
             VStack(alignment: .center, spacing: 0) {
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "house.fill"))
-                  .foregroundStyle(.godTextSecondaryLight)
+                  .foregroundStyle(Color.godTextSecondaryLight)
                   .font(.system(.body, design: .rounded, weight: .bold))
 
                 Text(viewStore.currentUser?.school?.name ?? "")
                   .font(.system(.body, design: .rounded, weight: .bold))
-                  .foregroundStyle(.godBlack)
+                  .foregroundStyle(Color.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
               .padding(.horizontal, 12)
@@ -367,12 +367,12 @@ public struct ProfileEditView: View {
 
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
-                  .foregroundStyle(.godTextSecondaryLight)
+                  .foregroundStyle(Color.godTextSecondaryLight)
                   .font(.system(.body, design: .rounded, weight: .bold))
 
                 Text(viewStore.currentUser?.grade ?? "")
                   .font(.system(.body, design: .rounded, weight: .bold))
-                  .foregroundStyle(.godBlack)
+                  .foregroundStyle(Color.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
               .padding(.horizontal, 12)
@@ -388,7 +388,7 @@ public struct ProfileEditView: View {
           VStack(alignment: .leading, spacing: 8) {
             Text("ACCOUNT SETTING", bundle: .module)
               .font(.system(.caption, design: .rounded, weight: .bold))
-              .foregroundStyle(.godTextSecondaryLight)
+              .foregroundStyle(Color.godTextSecondaryLight)
 //            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
 //              viewStore.send(.restorePurchasesButtonTapped)
 //            }
@@ -482,14 +482,14 @@ public struct ProfileEditView: View {
       HStack(alignment: .center, spacing: 0) {
         Text(fieldName, bundle: .module)
           .font(.body)
-          .foregroundStyle(.godTextSecondaryLight)
+          .foregroundStyle(Color.godTextSecondaryLight)
           .frame(width: 108, alignment: .leading)
 
         TextField("", text: $text)
           .multilineTextAlignment(.leading)
           .textFieldStyle(PlainTextFieldStyle())
           .font(.body)
-          .foregroundStyle(.godBlack)
+          .foregroundStyle(Color.godBlack)
       }
       .padding(.horizontal, 12)
       .frame(maxWidth: .infinity)

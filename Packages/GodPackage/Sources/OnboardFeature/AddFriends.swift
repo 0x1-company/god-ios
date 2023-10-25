@@ -371,7 +371,7 @@ public struct AddFriendsView: View {
                   Text("INVITE", bundle: .module)
                     .font(.system(.body, design: .rounded, weight: .bold))
                     .frame(height: 34)
-                    .foregroundStyle(.godService)
+                    .foregroundStyle(Color.godService)
                     .padding(.horizontal, 12)
                     .overlay(
                       RoundedRectangle(cornerRadius: 34 / 2)

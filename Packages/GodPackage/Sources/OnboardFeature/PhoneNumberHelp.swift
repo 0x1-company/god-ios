@@ -72,7 +72,7 @@ public struct PhoneNumberHelpView: View {
 
       Link(destination: Constants.privacyPolicyURL) {
         Text("Privacy Policy", bundle: .module)
-          .foregroundStyle(.godTextSecondaryLight)
+          .foregroundStyle(Color.godTextSecondaryLight)
           .font(.system(.body, design: .rounded))
       }
     }

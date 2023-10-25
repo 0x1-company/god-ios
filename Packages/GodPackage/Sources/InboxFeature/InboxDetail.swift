@@ -283,7 +283,7 @@ public struct InboxDetailView: View {
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
-          .foregroundStyle(.godWhite)
+          .foregroundStyle(Color.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
             store.send(.closeButtonTapped)

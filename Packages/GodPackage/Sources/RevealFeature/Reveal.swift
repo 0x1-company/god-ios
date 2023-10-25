@@ -252,7 +252,7 @@ public struct RevealView: View {
                 Text("\(product.displayPrice) per reveal", bundle: .module)
               }
             }
-            .foregroundStyle(.godTextSecondaryLight)
+            .foregroundStyle(Color.godTextSecondaryLight)
             .font(.system(.body, design: .rounded))
           }
           .padding(.horizontal, 16)

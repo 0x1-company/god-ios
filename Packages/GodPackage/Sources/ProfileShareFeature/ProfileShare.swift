@@ -177,7 +177,7 @@ public struct ProfileShareView: View {
                       .clipShape(Circle())
 
                     Text(content.name, bundle: .module)
-                      .foregroundStyle(.godBlack)
+                      .foregroundStyle(Color.godBlack)
                       .font(.system(.callout, design: .rounded, weight: .bold))
                   }
                 }
@@ -190,7 +190,7 @@ public struct ProfileShareView: View {
                       .clipShape(Circle())
 
                     Text(content.name, bundle: .module)
-                      .foregroundStyle(.godBlack)
+                      .foregroundStyle(Color.godBlack)
                       .font(.system(.callout, design: .rounded, weight: .bold))
                   }
                 }
@@ -267,7 +267,7 @@ public struct ProfileShareView: View {
 
           Text(content.name, bundle: .module)
             .font(.system(.callout, design: .rounded, weight: .bold))
-            .foregroundStyle(.godBlack)
+            .foregroundStyle(Color.godBlack)
         }
       }
       .buttonStyle(HoldDownButtonStyle())

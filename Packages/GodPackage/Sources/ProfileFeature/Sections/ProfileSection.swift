@@ -15,7 +15,18 @@ public struct ProfileSection: View {
   let grade: String?
   let editProfile: (() -> Void)?
 
-  public init(imageURL: String, friendsCount: Int, votedCount: Int, username: String, firstName: String, lastName: String, displayName: String, schoolShortName: String?, grade: String?, editProfile: (() -> Void)? = nil) {
+  public init(
+    imageURL: String,
+    friendsCount: Int,
+    votedCount: Int,
+    username: String,
+    firstName: String,
+    lastName: String,
+    displayName: String,
+    schoolShortName: String?,
+    grade: String?,
+    editProfile: (() -> Void)? = nil
+  ) {
     self.imageURL = imageURL
     self.friendsCount = friendsCount
     self.votedCount = votedCount
@@ -40,19 +51,19 @@ public struct ProfileSection: View {
         VStack(alignment: .leading, spacing: 16) {
           HStack(spacing: 16) {
             Text(friendsCount.description)
-              .foregroundStyle(.primary)
+              .foregroundColor(.primary)
               .font(.system(.body, design: .rounded, weight: .bold))
               +
               Text(" friends", bundle: .module)
-              .foregroundStyle(.secondary)
+              .foregroundColor(.secondary)
               .font(.system(.body, design: .rounded))
 
             Text(votedCount.description)
-              .foregroundStyle(.primary)
+              .foregroundColor(.primary)
               .font(.system(.body, design: .rounded, weight: .bold))
               +
               Text(" stars", bundle: .module)
-              .foregroundStyle(.secondary)
+              .foregroundColor(.secondary)
               .font(.system(.body, design: .rounded))
           }
           if let editProfile {

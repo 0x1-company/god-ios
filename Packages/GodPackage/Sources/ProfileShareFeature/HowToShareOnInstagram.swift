@@ -229,7 +229,7 @@ public struct HowToShareOnInstagramView: View {
         VStack(alignment: .center, spacing: 24) {
           Text("How to add the\nlink to your Story", bundle: .module)
             .font(.system(.title, design: .rounded, weight: .bold))
-            .foregroundStyle(.godBlack)
+            .foregroundStyle(Color.godBlack)
             .multilineTextAlignment(.center)
 
           HStack(alignment: .center, spacing: 12) {
@@ -239,7 +239,7 @@ public struct HowToShareOnInstagramView: View {
               } label: {
                 Text(String(step.rawValue))
                   .font(.subheadline)
-                  .foregroundStyle(viewStore.state.currentStep == step ? .godWhite : .godBlack)
+                  .foregroundStyle(viewStore.state.currentStep == step ? Color.godWhite : Color.godBlack)
                   .frame(width: 36, height: 36)
                   .background(viewStore.state.currentStep == step ? Color.godBlack : Color.godWhite)
                   .cornerRadius(18)
@@ -269,7 +269,7 @@ public struct HowToShareOnInstagramView: View {
           } label: {
             Text(viewStore.currentStep.primaryButtonText, bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
-              .foregroundStyle(.godWhite)
+              .foregroundStyle(Color.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .background(Color.godService)
