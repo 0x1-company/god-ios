@@ -218,7 +218,7 @@ public struct ProfileShareView: View {
         .background(Color.white)
         .buttonStyle(HoldDownButtonStyle())
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$message, action: { .message($0) }),

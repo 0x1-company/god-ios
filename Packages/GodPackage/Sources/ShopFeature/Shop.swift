@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -16,6 +17,7 @@ public struct ShopLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case storeResponse(TaskResult<God.StoreQuery.Data>)
     case purchaseButtonTapped(id: String)
     case purchaseResponse(TaskResult<God.PurchaseMutation.Data>)
@@ -30,6 +32,7 @@ public struct ShopLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   enum Cancel {
     case store
@@ -43,6 +46,11 @@ public struct ShopLogic: Reducer {
           await storeRequest(send: send)
         }
         .cancellable(id: Cancel.store, cancelInFlight: true)
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "Shop", of: self)
+        return .none
+
       case let .storeResponse(.success(data)):
         state.items = data.store.items
         state.coinBalance = data.currentUser.wallet?.coinBalance ?? 0
@@ -207,6 +215,7 @@ public struct ShopView: View {
       .navigationTitle(Text("Shop", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: ShopLogic.Action.alert))
       .fullScreenCover(
         store: store.scope(
