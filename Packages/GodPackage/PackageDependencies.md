@@ -68,6 +68,7 @@ graph TD;
     HowItWorksFeature-->Lottie;
     HowItWorksFeature-->GodClient;
     HowItWorksFeature-->Styleguide;
+    HowItWorksFeature-->AnalyticsClient;
     HowItWorksFeature-->ComposableArchitecture;
     InAppWebFeature-->Styleguide;
     InAppWebFeature-->AnalyticsClient;
@@ -170,5 +171,6 @@ graph TD;
     ShopFeature-->Styleguide;
     ShopFeature-->SearchField;
     ShopFeature-->ProfileImage;
+    ShopFeature-->AnalyticsClient;
     ShopFeature-->ComposableArchitecture;
 ```
