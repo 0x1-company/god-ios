@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -22,6 +23,7 @@ public struct GodModeLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case maybeLaterButtonTapped
     case continueButtonTapped
     case purchaseResponse(TaskResult<StoreKit.Transaction>)
@@ -37,6 +39,7 @@ public struct GodModeLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   enum Cancel {
     case id
@@ -55,6 +58,10 @@ public struct GodModeLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "GodMode", of: self)
+        return .none
 
       case .maybeLaterButtonTapped:
         return .run { _ in
@@ -198,6 +205,7 @@ public struct GodModeView: View {
       }
       .background(Color.godBlack)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }
