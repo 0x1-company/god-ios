@@ -225,6 +225,7 @@ public struct RevealView: View {
 
           VStack(spacing: 16) {
             Text("The first letter in their\nname is...", bundle: .module)
+              .lineLimit(2)
               .font(.system(.title3, design: .rounded, weight: .bold))
 
             Text(viewStore.initialName)
