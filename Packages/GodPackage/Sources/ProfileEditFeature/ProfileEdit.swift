@@ -352,10 +352,10 @@ public struct ProfileEditView: View {
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "house.fill"))
                   .foregroundStyle(Color.godTextSecondaryLight)
-                  .font(.system(.body, design: .rounded, weight: .bold))
+                  .font(.system(.body, design: .rounded))
 
                 Text(viewStore.currentUser?.school?.name ?? "")
-                  .font(.system(.body, design: .rounded, weight: .bold))
+                  .font(.system(.body, design: .rounded))
                   .foregroundStyle(Color.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
@@ -368,10 +368,10 @@ public struct ProfileEditView: View {
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
                   .foregroundStyle(Color.godTextSecondaryLight)
-                  .font(.system(.body, design: .rounded, weight: .bold))
+                  .font(.system(.body, design: .rounded))
 
                 Text(viewStore.currentUser?.grade ?? "")
-                  .font(.system(.body, design: .rounded, weight: .bold))
+                  .font(.system(.body, design: .rounded))
                   .foregroundStyle(Color.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }

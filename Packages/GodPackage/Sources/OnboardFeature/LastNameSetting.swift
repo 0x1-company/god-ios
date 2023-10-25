@@ -98,7 +98,7 @@ public struct LastNameSettingView: View {
           Text("Last Name", bundle: .module)
         }
         .multilineTextAlignment(.center)
-        .font(.system(.title, design: .rounded, weight: .bold))
+        .font(.system(.title, design: .rounded))
         .focused($focus)
 
         if viewStore.isImport {
