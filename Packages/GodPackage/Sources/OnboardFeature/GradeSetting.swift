@@ -66,7 +66,7 @@ public struct GradeSettingView: View {
             .frame(height: 33)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
             .background(Color(uiColor: .quaternarySystemFill))
 
           Divider()
@@ -91,7 +91,7 @@ public struct GradeSettingView: View {
           }
           Spacer()
         }
-        .foregroundColor(.primary)
+        .foregroundStyle(.primary)
         .background(Color.white)
         .multilineTextAlignment(.center)
         .cornerRadius(12, corners: [.topLeft, .topRight])
@@ -130,7 +130,7 @@ public struct GradeSettingView: View {
         Text(year, bundle: .module)
           .font(.footnote)
           .padding(.horizontal, 24)
-          .foregroundColor(.secondary)
+          .foregroundStyle(.secondary)
       }
   }
 }

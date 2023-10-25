@@ -148,7 +148,7 @@ public struct ShopView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         Text("YOUR BALANCE", bundle: .module)
-          .foregroundColor(Color.gray)
+          .foregroundStyle(Color.gray)
 
         Spacer()
           .frame(height: 18)
@@ -162,17 +162,17 @@ public struct ShopView: View {
             .font(.system(size: 40, weight: .black, design: .rounded))
             .contentTransition(.numericText(countsDown: true))
         }
-        .foregroundColor(Color.yellow)
+        .foregroundStyle(Color.yellow)
 
         Spacer()
           .frame(height: 34)
 
         VStack(spacing: 8) {
           Text("Boost Your Name in Polls", bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
 
           Text("Use coins to get featured in polls", bundle: .module)
-            .foregroundColor(Color.gray)
+            .foregroundStyle(Color.gray)
         }
         .multilineTextAlignment(.center)
 
@@ -197,9 +197,9 @@ public struct ShopView: View {
 
         VStack(spacing: 8) {
           Text("How do I get more coins?", bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
           Text("Answer polls about your friends to win coins.", bundle: .module)
-            .foregroundColor(Color.gray)
+            .foregroundStyle(Color.gray)
         }
       }
       .frame(maxWidth: .infinity)
@@ -224,7 +224,7 @@ public struct ShopView: View {
             viewStore.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
-              .foregroundColor(.primary)
+              .foregroundStyle(.primary)
           }
         }
       }

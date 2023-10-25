@@ -55,7 +55,7 @@ public struct ActivatedGodModeView: View {
           .padding(.top, 20)
 
         Text("Tap a message in your inbox to reveal the sender", bundle: .module)
-          .foregroundColor(.white)
+          .foregroundStyle(.white)
           .multilineTextAlignment(.center)
 
         Button {
@@ -65,7 +65,7 @@ public struct ActivatedGodModeView: View {
             .frame(height: 50)
             .frame(maxWidth: .infinity)
             .font(.system(.body, design: .rounded, weight: .bold))
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .background(Color.godGray)
             .clipShape(Capsule())
         }

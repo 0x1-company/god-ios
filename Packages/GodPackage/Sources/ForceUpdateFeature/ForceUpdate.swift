@@ -51,13 +51,13 @@ public struct ForceUpdateView: View {
             .padding(.horizontal, 32)
         }
         .background(Color.white)
-        .foregroundColor(Color.black)
+        .foregroundStyle(Color.black)
         .clipShape(Capsule())
       }
       .padding(.horizontal, 24)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color.godService)
-      .foregroundColor(Color.white)
+      .foregroundStyle(Color.white)
       .multilineTextAlignment(.center)
     }
   }

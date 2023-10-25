@@ -40,26 +40,26 @@ public struct ProfileSection: View {
         VStack(alignment: .leading, spacing: 16) {
           HStack(spacing: 16) {
             Text(friendsCount.description)
-              .foregroundColor(.primary)
+              .foregroundStyle(.primary)
               .font(.system(.body, design: .rounded, weight: .bold))
               +
               Text(" friends", bundle: .module)
-              .foregroundColor(.secondary)
+              .foregroundStyle(.secondary)
               .font(.system(.body, design: .rounded))
 
             Text(votedCount.description)
-              .foregroundColor(.primary)
+              .foregroundStyle(.primary)
               .font(.system(.body, design: .rounded, weight: .bold))
               +
               Text(" stars", bundle: .module)
-              .foregroundColor(.secondary)
+              .foregroundStyle(.secondary)
               .font(.system(.body, design: .rounded))
           }
           if let editProfile {
             Button(action: editProfile) {
               Text("EDIT PROFILE", bundle: .module)
                 .font(.system(.body, design: .rounded, weight: .bold))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .frame(height: 32)
                 .padding(.horizontal, 12)
                 .overlay(
@@ -91,7 +91,7 @@ public struct ProfileSection: View {
           }
         }
       }
-      .foregroundColor(.secondary)
+      .foregroundStyle(.secondary)
       .font(.system(.body, design: .rounded))
     }
     .frame(maxWidth: .infinity, alignment: .leading)

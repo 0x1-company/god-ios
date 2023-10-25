@@ -205,7 +205,7 @@ public struct AboutView: View {
           Text(viewStore.appVersion)
             .font(.system(.footnote, design: .rounded))
         }
-        .foregroundColor(.secondary)
+        .foregroundStyle(.secondary)
         .tint(.secondary)
       }
       .task { await store.send(.onTask).finish() }

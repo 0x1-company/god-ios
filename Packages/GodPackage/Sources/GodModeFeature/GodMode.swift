@@ -136,7 +136,7 @@ public struct GodModeView: View {
         }
         .font(.caption)
         .padding(.horizontal, 24)
-        .foregroundColor(Color.gray)
+        .foregroundStyle(Color.gray)
         .multilineTextAlignment(.center)
 
         VStack(spacing: 16) {
@@ -167,7 +167,7 @@ public struct GodModeView: View {
             .font(.system(.body, design: .rounded, weight: .bold))
             .frame(height: 56)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
             .tint(Color.white)
             .background(Color.orange.gradient)
             .clipShape(Capsule())
@@ -179,12 +179,12 @@ public struct GodModeView: View {
             store.send(.maybeLaterButtonTapped)
           } label: {
             Text("Maybe Later", bundle: .module)
-              .foregroundColor(Color.gray)
+              .foregroundStyle(Color.gray)
           }
           .buttonStyle(HoldDownButtonStyle())
         }
         .disabled(viewStore.isActivityIndicatorVisible)
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .padding(.vertical, 24)
         .background(Color.black.gradient)
         .cornerRadius(32 / 2)

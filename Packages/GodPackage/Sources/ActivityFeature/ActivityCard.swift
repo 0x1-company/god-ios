@@ -76,7 +76,7 @@ public struct ActivityCard: View {
 
 //        if let createdAt {
 //          Text(createdAt, style: .relative)
-//            .foregroundColor(.secondary)
+//            .foregroundStyle(.secondary)
 //        }
       }
       .padding(.vertical, 8)

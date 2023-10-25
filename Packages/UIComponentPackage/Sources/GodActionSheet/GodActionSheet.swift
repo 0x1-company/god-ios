@@ -42,7 +42,7 @@ public struct GodActionSheet<Actions: View>: View {
             Text("Close", bundle: .module)
               .frame(height: 48)
               .frame(maxWidth: .infinity)
-              .foregroundColor(.black)
+              .foregroundStyle(.black)
               .font(.system(.body, design: .rounded, weight: .bold))
           }
       }

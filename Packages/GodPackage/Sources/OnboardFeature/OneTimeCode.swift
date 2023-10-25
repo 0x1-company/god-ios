@@ -208,7 +208,7 @@ public struct OneTimeCodeView: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .multilineTextAlignment(.center)
       }
       .alert(store: store.scope(state: \.$alert, action: OneTimeCodeLogic.Action.alert))

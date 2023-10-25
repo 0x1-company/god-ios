@@ -15,7 +15,7 @@ struct HoldDownButtonStylePreviews: PreviewProvider {
       Text("Next")
         .frame(height: 54)
         .frame(maxWidth: .infinity)
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .background(Color.orange)
         .clipShape(Capsule())
         .font(.system(.body, design: .rounded, weight: .bold))

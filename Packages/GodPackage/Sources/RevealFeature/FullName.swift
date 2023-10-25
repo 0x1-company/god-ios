@@ -65,7 +65,7 @@ public struct FullNameView: View {
             Text("Close", bundle: .module)
               .frame(height: 56)
               .frame(maxWidth: .infinity)
-              .foregroundColor(.white)
+              .foregroundStyle(.white)
               .background(Color.godService)
               .clipShape(Capsule())
               .font(.system(.body, design: .rounded, weight: .bold))

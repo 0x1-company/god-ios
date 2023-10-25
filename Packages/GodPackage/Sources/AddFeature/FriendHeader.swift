@@ -12,7 +12,7 @@ public struct FriendHeader: View {
         .frame(height: 34)
         .font(.system(.body, design: .rounded, weight: .bold))
         .padding(.horizontal, 16)
-        .foregroundColor(.secondary)
+        .foregroundStyle(.secondary)
         .background(Color(uiColor: .quaternarySystemFill))
 
       Divider()

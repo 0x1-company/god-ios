@@ -88,7 +88,7 @@ public struct ManageAccountView: View {
           ) {
             viewStore.send(.deleteButtonTapped)
           }
-          .foregroundColor(.red)
+          .foregroundStyle(.red)
         }
       }
       .navigationTitle(Text("Manage Account", bundle: .module))

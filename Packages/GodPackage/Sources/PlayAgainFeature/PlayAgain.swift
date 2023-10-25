@@ -146,12 +146,12 @@ public struct PlayAgainView: View {
           .contentTransition(.numericText(countsDown: true))
 
         Text("OR", bundle: .module)
-          .foregroundColor(.secondary)
+          .foregroundStyle(.secondary)
           .font(.system(.body, design: .rounded))
 
         Text("Skip the wait", bundle: .module)
           .multilineTextAlignment(.center)
-          .foregroundColor(.secondary)
+          .foregroundStyle(.secondary)
           .font(.system(.body, design: .rounded))
 
         Button {
@@ -160,7 +160,7 @@ public struct PlayAgainView: View {
           Text("Invite a friend", bundle: .module)
             .frame(height: 54)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
+            .foregroundStyle(Color.black)
             .font(.system(.body, design: .rounded, weight: .bold))
             .overlay(alignment: .leading) {
               Image(.line)

@@ -10,7 +10,7 @@ public struct SearchField: View {
   public var body: some View {
     HStack {
       Image(systemName: "magnifyingglass")
-        .foregroundColor(.secondary)
+        .foregroundStyle(.secondary)
       TextField(text: $text) {
         Text("Search...", bundle: .module)
       }

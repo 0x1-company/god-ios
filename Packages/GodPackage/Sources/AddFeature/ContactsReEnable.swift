@@ -53,7 +53,7 @@ public struct ContactsReEnableView: View {
       }
       .frame(height: 70)
       .padding(.horizontal, 16)
-      .foregroundColor(.white)
+      .foregroundStyle(.white)
       .background(Color.godService)
     }
     .onTapGesture {

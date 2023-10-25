@@ -30,7 +30,7 @@ public struct NextButton: View {
       .font(.system(.body, design: .rounded, weight: .bold))
       .frame(height: 54)
       .frame(maxWidth: .infinity)
-      .foregroundColor(Color.black)
+      .foregroundStyle(Color.black)
       .background(Color.white)
       .clipShape(Capsule())
       .opacity(isLoading || isDisabled ? 0.5 : 1.0)

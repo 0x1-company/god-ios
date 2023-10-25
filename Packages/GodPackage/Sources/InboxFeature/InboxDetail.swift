@@ -257,7 +257,7 @@ public struct InboxDetailView: View {
 
             VStack(spacing: 32) {
               Text(viewStore.activity.question.text.ja)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .font(.system(.title2, design: .rounded, weight: .bold))
 
               VStack(spacing: 20) {
@@ -283,7 +283,7 @@ public struct InboxDetailView: View {
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
-          .foregroundColor(.godWhite)
+          .foregroundStyle(.godWhite)
           .multilineTextAlignment(.center)
           .onTapGesture {
             store.send(.closeButtonTapped)

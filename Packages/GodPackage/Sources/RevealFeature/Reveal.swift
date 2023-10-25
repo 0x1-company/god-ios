@@ -221,7 +221,7 @@ public struct RevealView: View {
               .font(.system(.title3, design: .rounded, weight: .bold))
 
             Text(viewStore.initialName)
-              .foregroundColor(Color.godService)
+              .foregroundStyle(Color.godService)
               .font(.system(size: 60, weight: .black, design: .rounded))
           }
           VStack(spacing: 12) {
@@ -239,7 +239,7 @@ public struct RevealView: View {
               .frame(height: 56)
               .frame(maxWidth: .infinity)
               .font(.system(.body, design: .rounded, weight: .black))
-              .foregroundColor(.white)
+              .foregroundStyle(.white)
               .background(Color.godService)
               .clipShape(Capsule())
             }
@@ -252,7 +252,7 @@ public struct RevealView: View {
                 Text("\(product.displayPrice) per reveal", bundle: .module)
               }
             }
-            .foregroundColor(.godTextSecondaryLight)
+            .foregroundStyle(.godTextSecondaryLight)
             .font(.system(.body, design: .rounded))
           }
           .padding(.horizontal, 16)
