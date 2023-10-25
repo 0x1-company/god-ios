@@ -46,7 +46,7 @@ public struct ShopLogic: Reducer {
           await storeRequest(send: send)
         }
         .cancellable(id: Cancel.store, cancelInFlight: true)
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "Shop", of: self)
         return .none

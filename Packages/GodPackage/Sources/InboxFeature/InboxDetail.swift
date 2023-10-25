@@ -152,7 +152,7 @@ public struct InboxDetailLogic: Reducer {
           "question_id": state.activity.question.id,
           "question_text": state.activity.question.text.ja,
           "activity_id": state.activity.id,
-          "vote_user_gender": state.activity.voteUser.gender.value ?? "NULL"
+          "vote_user_gender": state.activity.voteUser.gender.value ?? "NULL",
         ])
         return .run { send in
           try await mainQueue.sleep(for: .seconds(1))

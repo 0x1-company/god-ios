@@ -31,11 +31,11 @@ public struct FullNameLogic: Reducer {
       switch action {
       case .onTask:
         return .none
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "FullName", of: self)
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss()
