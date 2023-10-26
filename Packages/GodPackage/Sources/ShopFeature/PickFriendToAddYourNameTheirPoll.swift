@@ -9,7 +9,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @BindingState var searchQuery = String.init()
+    @BindingState var searchQuery = String()
     var friends: [God.FriendFragment] = []
     var selection: God.FriendFragment?
     public init() {}
