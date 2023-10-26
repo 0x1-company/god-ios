@@ -169,7 +169,6 @@ graph TD;
     ShareScreenshotFeature-->ComposableArchitecture;
     ShopFeature-->GodClient;
     ShopFeature-->Styleguide;
-    ShopFeature-->SearchField;
     ShopFeature-->ProfileImage;
     ShopFeature-->AnalyticsClient;
     ShopFeature-->ComposableArchitecture;
