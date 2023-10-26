@@ -144,7 +144,7 @@ public struct InboxLogic: Reducer {
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
         return .none
-        
+
       case let .bannersResponse(.success(data)):
         state.banners = data.banners
           .map(\.fragments.bannerCardFragment)
@@ -242,7 +242,7 @@ public struct InboxLogic: Reducer {
       await send(.activeSubscriptionResponse(.failure(error)))
     }
   }
-  
+
   func bannersRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.banners, cancelInFlight: true) {
       do {

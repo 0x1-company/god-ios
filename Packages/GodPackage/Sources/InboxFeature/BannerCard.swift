@@ -1,6 +1,6 @@
-import SwiftUI
-import Styleguide
 import God
+import Styleguide
+import SwiftUI
 
 struct BannerCard: View {
   let banner: God.BannerCardFragment
@@ -43,7 +43,7 @@ struct BannerCard: View {
           "description": "Godをさらに楽しくするために、ご協力していただける方を募集しています。",
           "url": "https://godapp.jp",
           "startAt": "",
-          "endAt": ""
+          "endAt": "",
         ],
         fulfilledFragments: []
       )
