@@ -34,6 +34,19 @@ input ApproveFriendRequestInput {
   id: String!
 }
 
+type Banner {
+  description: String
+
+  """掲載終了時間"""
+  endAt: Date!
+  id: ID!
+
+  """掲載開始時間"""
+  startAt: Date!
+  title: String!
+  url: String!
+}
+
 type Choice {
   """表示する名前"""
   text: String!
@@ -364,6 +377,9 @@ input PurchaseInput {
 type Query {
   """有効な購読情報を取得"""
   activeSubscription: Subscription
+
+  """バナー一覧"""
+  banners: [Banner!]!
 
   """現在のPollを取得"""
   currentPoll: CurrentPoll!

@@ -69,6 +69,7 @@ public extension God {
       case "SchoolConnection": return God.Objects.SchoolConnection
       case "SchoolEdge": return God.Objects.SchoolEdge
       case "VoteChoice": return God.Objects.VoteChoice
+      case "Banner": return God.Objects.Banner
       default: return nil
       }
     }

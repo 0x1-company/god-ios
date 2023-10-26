@@ -19,6 +19,7 @@ public struct InboxLogic: Reducer {
     @PresentationState var destination: Destination.State?
     var notificationsReEnable: NotificationsReEnableLogic.State?
 
+    var banners: [God.BannerCardFragment] = []
     var inboxActivities: [God.InboxCardFragment] = []
     var products: [Product] = []
     var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
@@ -36,6 +37,7 @@ public struct InboxLogic: Reducer {
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case inboxActivityResponse(TaskResult<God.InboxActivityQuery.Data>)
     case readActivityResponse(TaskResult<God.ReadActivityMutation.Data>)
+    case bannersResponse(TaskResult<God.BannersQuery.Data>)
     case notificationSettings(TaskResult<UserNotificationClient.Notification.Settings>)
     case destination(PresentationAction<Destination.Action>)
     case fromGodTeamCard(FromGodTeamCardLogic.Action)
@@ -43,15 +45,18 @@ public struct InboxLogic: Reducer {
   }
 
   @Dependency(\.build) var build
+  @Dependency(\.date.now) var now
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
   @Dependency(\.userNotifications) var userNotifications
 
   enum Cancel {
+    case products
     case readActivity
     case inboxActivity
     case inboxActivities
+    case banners
   }
 
   public var body: some Reducer<State, Action> {
@@ -76,6 +81,9 @@ public struct InboxLogic: Reducer {
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
+              await bannersRequest(send: send)
+            }
+            group.addTask {
               await productsRequest(send: send, ids: [id])
             }
             group.addTask {
@@ -90,17 +98,16 @@ public struct InboxLogic: Reducer {
         analytics.logScreen(screenName: "Inbox", of: self)
         return .none
       case let .activityButtonTapped(activityId):
-        return Effect<Action>.merge(
-          Effect<Action>.run(operation: { send in
-            await inboxActivityRequest(send: send, id: activityId)
-          })
-          .cancellable(id: Cancel.inboxActivity, cancelInFlight: true),
-
-          Effect<Action>.run(operation: { send in
-            await readActivityRequest(send: send, activityId: activityId)
-          })
-          .cancellable(id: Cancel.readActivity, cancelInFlight: true)
-        )
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await inboxActivityRequest(send: send, id: activityId)
+            }
+            group.addTask {
+              await readActivityRequest(send: send, activityId: activityId)
+            }
+          }
+        }
 
       case .seeWhoLikesYouButtonTapped:
         guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
@@ -137,6 +144,20 @@ public struct InboxLogic: Reducer {
       case let .activeSubscriptionResponse(.success(data)):
         state.subscription = data.activeSubscription
         return .none
+        
+      case let .bannersResponse(.success(data)):
+        state.banners = data.banners
+          .map(\.fragments.bannerCardFragment)
+          .filter { banner in
+            guard
+              let startAtTimeInterval = TimeInterval(banner.startAt),
+              let endAtTimeInterval = TimeInterval(banner.endAt)
+            else { return false }
+            let startAt = Date(timeIntervalSince1970: startAtTimeInterval / 1000.0)
+            let endAt = Date(timeIntervalSince1970: endAtTimeInterval / 1000.0)
+            return startAt < now && now < endAt
+          }
+        return .none
 
       case let .inboxActivityResponse(.success(data)):
         let activity = data.inboxActivity.fragments.inboxFragment
@@ -150,7 +171,6 @@ public struct InboxLogic: Reducer {
         return .run { send in
           await inboxActivitiesRequest(send: send)
         }
-        .cancellable(id: Cancel.inboxActivities, cancelInFlight: true)
 
       case let .notificationSettings(.success(settings)):
         let isAuthorized = settings.authorizationStatus == .authorized
@@ -174,35 +194,43 @@ public struct InboxLogic: Reducer {
   }
 
   func productsRequest(send: Send<Action>, ids: [String]) async {
-    await send(.productsResponse(TaskResult {
-      try await storeClient.products(ids)
-    }))
+    await withTaskCancellation(id: Cancel.products, cancelInFlight: true) {
+      await send(.productsResponse(TaskResult {
+        try await storeClient.products(ids)
+      }))
+    }
   }
 
   func inboxActivitiesRequest(send: Send<Action>) async {
-    do {
-      for try await data in godClient.inboxActivities() {
-        await send(.inboxActivitiesResponse(.success(data)))
+    await withTaskCancellation(id: Cancel.inboxActivities, cancelInFlight: true) {
+      do {
+        for try await data in godClient.inboxActivities() {
+          await send(.inboxActivitiesResponse(.success(data)))
+        }
+      } catch {
+        await send(.inboxActivitiesResponse(.failure(error)))
       }
-    } catch {
-      await send(.inboxActivitiesResponse(.failure(error)))
     }
   }
 
   func inboxActivityRequest(send: Send<Action>, id: String) async {
-    do {
-      for try await data in godClient.inboxActivity(id) {
-        await send(.inboxActivityResponse(.success(data)), transaction: .animationDisable)
+    await withTaskCancellation(id: Cancel.inboxActivity, cancelInFlight: true) {
+      do {
+        for try await data in godClient.inboxActivity(id) {
+          await send(.inboxActivityResponse(.success(data)), transaction: .animationDisable)
+        }
+      } catch {
+        await send(.inboxActivityResponse(.failure(error)))
       }
-    } catch {
-      await send(.inboxActivityResponse(.failure(error)))
     }
   }
 
   func readActivityRequest(send: Send<Action>, activityId: String) async {
-    await send(.readActivityResponse(TaskResult {
-      try await godClient.readActivity(activityId)
-    }))
+    await withTaskCancellation(id: Cancel.readActivity, cancelInFlight: true) {
+      await send(.readActivityResponse(TaskResult {
+        try await godClient.readActivity(activityId)
+      }))
+    }
   }
 
   func activeSubscriptionRequest(send: Send<Action>) async {
@@ -212,6 +240,18 @@ public struct InboxLogic: Reducer {
       }
     } catch {
       await send(.activeSubscriptionResponse(.failure(error)))
+    }
+  }
+  
+  func bannersRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.banners, cancelInFlight: true) {
+      do {
+        for try await data in godClient.banners() {
+          await send(.bannersResponse(.success(data)))
+        }
+      } catch {
+        await send(.bannersResponse(.failure(error)))
+      }
     }
   }
 
@@ -250,6 +290,9 @@ public struct InboxView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack(alignment: .bottom) {
         VStack(spacing: 0) {
+          ForEach(viewStore.banners, id: \.id) { banner in
+            BannerCard(banner: banner)
+          }
           IfLetStore(
             store.scope(state: \.notificationsReEnable, action: InboxLogic.Action.notificationsReEnable),
             then: NotificationsReEnableView.init(store:)
