@@ -1,4 +1,5 @@
 import AnalyticsClient
+import AnimationDisableTransaction
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
@@ -27,7 +28,7 @@ public struct FromGodTeamLogic: Reducer {
 
       case .closeButtonTapped:
         return .run { _ in
-          await dismiss()
+          await dismiss(transaction: .animationDisable)
         }
       }
     }
