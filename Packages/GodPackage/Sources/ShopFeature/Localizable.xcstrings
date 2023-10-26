@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "Answer polls about your friends to win coins." : {
       "localizations" : {
         "ja" : {
@@ -20,6 +17,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "友だちの質問に\n自分の名前をもっと表示させる"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラー"
           }
         }
       }
