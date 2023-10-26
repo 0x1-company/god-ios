@@ -109,7 +109,7 @@ public struct InboxDetailLogic: Reducer {
 
       case .closeButtonTapped:
         return .run { _ in
-          await dismiss()
+          await dismiss(transaction: .animationDisable)
         }
 
       case .destination(.dismiss):
