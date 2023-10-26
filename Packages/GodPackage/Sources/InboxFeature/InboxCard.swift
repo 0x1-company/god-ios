@@ -5,11 +5,11 @@ import SwiftUI
 public struct InboxCard: View {
   let inbox: God.InboxCardFragment
   let action: () -> Void
-  
+
   var text: String {
-    return inbox.isRead
-    ? inbox.question.text.ja
-    : String(localized: "From a \(gender)", bundle: .module)
+    inbox.isRead
+      ? inbox.question.text.ja
+      : String(localized: "From a \(gender)", bundle: .module)
   }
 
   var gender: String {
@@ -33,7 +33,7 @@ public struct InboxCard: View {
       return ImageResource.otherIcon
     }
   }
-  
+
   var genderColor: Color {
     switch inbox.voteUser.gender.value {
     case .male:
