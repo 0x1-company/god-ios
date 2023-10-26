@@ -124,14 +124,16 @@ public struct PollQuestionLogic: Reducer {
 
       case .shuffleButtonTapped:
         let maxPageIndex = state.choiceGroups.count - 1
-        let nextIndex = state.currentIndex + 1
+        var nextIndex = state.currentIndex + 1
         analytics.buttonClick(name: .shuffle, parameters: [
           "question_id": state.question.id,
           "question_text": state.question.text.ja,
           "current_index": state.currentIndex,
           "next_index": nextIndex,
         ])
-        guard nextIndex <= maxPageIndex else { return .none }
+        if nextIndex > maxPageIndex {
+          nextIndex = 0
+        }
         state.currentIndex = nextIndex
         return .run { _ in
           await feedbackGenerator.impactOccurred()
