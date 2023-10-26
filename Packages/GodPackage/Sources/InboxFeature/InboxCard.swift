@@ -5,6 +5,12 @@ import SwiftUI
 public struct InboxCard: View {
   let inbox: God.InboxCardFragment
   let action: () -> Void
+  
+  var text: String {
+    return inbox.isRead
+    ? inbox.question.text.ja
+    : String(localized: "From a \(gender)", bundle: .module)
+  }
 
   var gender: String {
     switch inbox.voteUser.gender.value {
@@ -27,6 +33,15 @@ public struct InboxCard: View {
       return ImageResource.otherIcon
     }
   }
+  
+  var genderColor: Color {
+    switch inbox.voteUser.gender.value {
+    case .male:
+      return Color.godBlue
+    default:
+      return Color.godPink
+    }
+  }
 
   var createdAt: Date? {
     guard let interval = TimeInterval(inbox.createdAt)
@@ -41,13 +56,16 @@ public struct InboxCard: View {
           if let createdAt {
             Text(createdAt, style: .relative)
               .font(.footnote)
+              .foregroundStyle(inbox.isRead ? Color.godTextSecondaryLight : Color.primary)
           }
         } label: {
           Label {
-            Text("From a \(gender)", bundle: .module)
-              .font(.system(.body, design: .rounded))
+            Text(text)
+              .multilineTextAlignment(.leading)
+              .font(.system(.body, design: .rounded, weight: .bold))
+              .foregroundStyle(inbox.isRead ? Color.godTextSecondaryLight : genderColor)
           } icon: {
-            Image(inbox.isRead ? ImageResource.unreadIcon : genderIcon)
+            Image(genderIcon)
               .resizable()
               .scaledToFit()
               .frame(width: 56)
@@ -56,7 +74,6 @@ public struct InboxCard: View {
         .padding(.horizontal, 16)
       }
       .frame(height: 72)
-      .foregroundStyle(inbox.isRead ? Color.godTextSecondaryLight : Color.primary)
       .background(inbox.isRead ? Color.godBackgroundWhite : Color.white)
       .cornerRadius(8)
       .compositingGroup()
