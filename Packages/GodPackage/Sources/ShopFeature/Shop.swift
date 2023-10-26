@@ -233,7 +233,7 @@ public struct ShopView: View {
             viewStore.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
-              .foregroundStyle(.primary)
+              .foregroundStyle(Color.white)
           }
         }
       }
