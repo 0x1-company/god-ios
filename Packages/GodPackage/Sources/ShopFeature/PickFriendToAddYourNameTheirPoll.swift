@@ -2,7 +2,6 @@ import ComposableArchitecture
 import God
 import GodClient
 import ProfileImage
-import SearchField
 import Styleguide
 import SwiftUI
 
@@ -10,7 +9,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @BindingState var searchQuery = ""
+    @BindingState var searchQuery = String.init()
     var friends: [God.FriendFragment] = []
     var selection: God.FriendFragment?
     public init() {}
@@ -93,8 +92,6 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           .frame(maxWidth: .infinity)
           .padding(.bottom, 46)
           .background(Color.godService)
-
-//        SearchField(text: viewStore.$searchQuery)
 
         Divider()
 

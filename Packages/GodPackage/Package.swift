@@ -276,7 +276,6 @@ let package = Package(
     .target(name: "ShopFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
-      .product(name: "SearchField", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
