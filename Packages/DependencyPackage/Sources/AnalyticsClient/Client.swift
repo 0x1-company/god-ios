@@ -17,6 +17,10 @@ public extension AnalyticsClient {
       parameters
     )
   }
+  
+  func signUp() {
+    logEvent(AnalyticsEventSignUp, [:])
+  }
 }
 
 public extension AnalyticsClient {
