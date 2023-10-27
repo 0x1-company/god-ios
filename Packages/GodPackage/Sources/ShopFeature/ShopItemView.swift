@@ -1,6 +1,6 @@
+import CachedAsyncImage
 import Styleguide
 import SwiftUI
-import CachedAsyncImage
 
 struct ShopItemView: View {
   let id: String
