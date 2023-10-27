@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AsyncValue
 import ComposableArchitecture
 import God
@@ -18,11 +19,13 @@ public struct ActivityLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
     case activityButtonTapped(God.ActivitiesQuery.Data.ListActivities.Edge)
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient.activities) var activitiesStream
 
   enum Cancel { case activities }
@@ -40,6 +43,10 @@ public struct ActivityLogic: Reducer {
           await send(.activitiesResponse(.failure(error)))
         }
         .cancellable(id: Cancel.activities)
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "Activity", of: self)
+        return .none
 
       case let .activitiesResponse(.success(data)):
         state.edges = data.listActivities.edges
@@ -107,6 +114,7 @@ public struct ActivityView: View {
       }
       .listStyle(.plain)
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /ActivityLogic.Destination.State.profile,
