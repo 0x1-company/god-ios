@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AsyncValue
 import ComposableArchitecture
 import DeleteAccountFeature
@@ -71,6 +72,7 @@ public struct ProfileEditLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case cancelEditButtonTapped
     case saveButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
@@ -101,6 +103,7 @@ public struct ProfileEditLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
   @Dependency(\.firebaseStorage) var firebaseStorage
@@ -118,6 +121,10 @@ public struct ProfileEditLogic: Reducer {
           await currentUserRequest(send: send)
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+        
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileEdit", of: self)
+        return .none
 
       case .cancelEditButtonTapped:
         state.alert = .changesNotSaved()
@@ -200,6 +207,7 @@ public struct ProfileEditLogic: Reducer {
         return .none
 
       case .logoutButtonTapped:
+        analytics.logEvent("sign_out", [:])
         return .run { _ in
           await userDefaults.setOnboardCompleted(false)
           try signOut()
@@ -444,6 +452,7 @@ public struct ProfileEditView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
       .sheet(
         store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
