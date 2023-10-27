@@ -83,6 +83,7 @@ public struct ProfileLogic: Reducer {
       case let .profileResponse(.success(data)):
         state.profile = data
         analytics.setUserProperty(key: .schoolId, value: data.currentUser.schoolId)
+        analytics.setUserId(data.currentUser.id)
         return .none
       case .profileResponse(.failure):
         state.profile = nil
