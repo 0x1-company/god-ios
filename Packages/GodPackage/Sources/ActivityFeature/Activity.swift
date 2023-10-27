@@ -43,7 +43,7 @@ public struct ActivityLogic: Reducer {
           await send(.activitiesResponse(.failure(error)))
         }
         .cancellable(id: Cancel.activities)
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "Activity", of: self)
         return .none
