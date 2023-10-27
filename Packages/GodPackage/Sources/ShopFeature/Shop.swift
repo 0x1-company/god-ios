@@ -139,6 +139,10 @@ public struct ShopLogic: Reducer {
   }
 
   private func purchaseRequest(send: Send<Action>, input: God.PurchaseInput) async {
+    analytics.logEvent("store_item_purchase", [
+      "store_item_id": input.storeItemId,
+      "coin_amount": input.coinAmount
+    ])
     await send(.purchaseResponse(TaskResult {
       try await godClient.purchase(input)
     }))
