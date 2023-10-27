@@ -13,6 +13,7 @@ public class StoreItem: MockObject {
     @Field<Int>("coinAmount") public var coinAmount
     @Field<LocalizableString>("description") public var description
     @Field<God.ID>("id") public var id
+    @Field<String>("imageURL") public var imageURL
     @Field<GraphQLEnum<God.ItemType>>("itemType") public var itemType
     @Field<LocalizableString>("title") public var title
   }
@@ -23,6 +24,7 @@ public extension Mock where O == StoreItem {
     coinAmount: Int? = nil,
     description: Mock<LocalizableString>? = nil,
     id: God.ID? = nil,
+    imageURL: String? = nil,
     itemType: GraphQLEnum<God.ItemType>? = nil,
     title: Mock<LocalizableString>? = nil
   ) {
@@ -30,6 +32,7 @@ public extension Mock where O == StoreItem {
     _setScalar(coinAmount, for: \.coinAmount)
     _setEntity(description, for: \.description)
     _setScalar(id, for: \.id)
+    _setScalar(imageURL, for: \.imageURL)
     _setScalar(itemType, for: \.itemType)
     _setEntity(title, for: \.title)
   }

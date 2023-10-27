@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -17,6 +18,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case nextButtonTapped
     case closeButtonTapped
     case friendButtonTapped(God.FriendFragment)
@@ -31,6 +33,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
@@ -44,6 +47,10 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
         } catch: { error, send in
           await send(.friendsResponse(.failure(error)))
         }
+      case .onAppear:
+        analytics.logScreen(screenName: "PickFriendToAddYourNameTheirPoll", of: self)
+        return .none
+
       case .nextButtonTapped:
         guard let userId = state.selection?.id
         else { return .none }
@@ -129,6 +136,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
