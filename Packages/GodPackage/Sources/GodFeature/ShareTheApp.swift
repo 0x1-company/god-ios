@@ -72,6 +72,7 @@ public struct ShareTheAppView: View {
             .resizable()
             .aspectRatio(1, contentMode: .fit)
             .frame(width: 120)
+
           Text("Get more\nfriends to play", bundle: .module)
             .font(.title2)
             .foregroundStyle(Color.white)
