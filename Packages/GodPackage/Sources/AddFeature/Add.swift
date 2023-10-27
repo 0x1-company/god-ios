@@ -55,6 +55,7 @@ public struct AddLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case storyButtonTapped(UIImage?)
     case lineButtonTapped
     case messageButtonTapped
@@ -99,6 +100,10 @@ public struct AddLogic: Reducer {
         return .run { send in
           await addPlusRequest(send: send)
         }
+      case .onAppear:
+        analytics.logScreen(screenName: "AddPlus", of: self)
+
+        return .none
       case let .storyButtonTapped(.some(profileCardImage)):
         analytics.buttonClick(name: .storyShare)
         guard let imageData = profileCardImage.pngData() else {
@@ -416,6 +421,7 @@ public struct AddView: View {
         }
       }
       .task { await viewStore.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: AddLogic.Action.destination),
         state: /AddLogic.Destination.State.message,
