@@ -121,7 +121,7 @@ public struct ProfileEditLogic: Reducer {
           await currentUserRequest(send: send)
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
-        
+
       case .onAppear:
         analytics.logScreen(screenName: "ProfileEdit", of: self)
         return .none
