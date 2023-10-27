@@ -492,6 +492,9 @@ type StoreItem {
   description: LocalizableString
   id: ID!
 
+  """画像URL"""
+  imageURL: String!
+
   """アイテムの種類"""
   itemType: ItemType!
 

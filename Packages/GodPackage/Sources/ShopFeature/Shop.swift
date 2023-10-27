@@ -193,7 +193,8 @@ public struct ShopView: View {
               id: item.id,
               name: item.title.ja,
               description: item.description?.ja,
-              amount: item.coinAmount
+              amount: item.coinAmount,
+              imageURL: item.imageURL
             ) {
               viewStore.send(.purchaseButtonTapped(id: item.id))
             }
