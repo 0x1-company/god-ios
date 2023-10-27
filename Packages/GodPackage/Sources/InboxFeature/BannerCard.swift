@@ -24,8 +24,8 @@ struct BannerCard: View {
 
           Image(systemName: "chevron.right")
         }
-        .frame(height: 70)
         .padding(.horizontal, 16)
+        .padding(.vertical, 8)
         .foregroundStyle(.white)
         .background(Color.godService)
       }
@@ -39,8 +39,8 @@ struct BannerCard: View {
       _dataDict: DataDict(
         data: [
           "id": "1",
-          "title": "【スタバギフト500円プレゼント】",
-          "description": "Godをさらに楽しくするために、ご協力していただける方を募集しています。",
+          "title": "【スタバギフトプレゼント】ヒアリングご協力の依頼",
+          "description": "Godアプリをさらに楽しく改善するために、オンラインでの30分間のヒアリングにご協力していただける方を募集しています。",
           "url": "https://godapp.jp",
           "startAt": "",
           "endAt": "",
