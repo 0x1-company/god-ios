@@ -13,7 +13,7 @@ public struct GodModeLogic: Reducer {
 
   public struct State: Equatable {
     let product: Product
-    
+
     var isEligibleForIntroOffer = false
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     var isActivityIndicatorVisible = false
@@ -58,11 +58,11 @@ public struct GodModeLogic: Reducer {
             group.addTask {
               await currentUserRequest(send: send)
             }
-            
+
             if let subscription = product.subscription {
               group.addTask {
                 await send(.isEligibleForIntroOffer(
-                  await subscription.isEligibleForIntroOffer
+                  subscription.isEligibleForIntroOffer
                 ))
               }
             }
@@ -100,7 +100,7 @@ public struct GodModeLogic: Reducer {
           await send(.purchaseResponse(.failure(error)))
         }
         .cancellable(id: Cancel.purchase, cancelInFlight: true)
-        
+
       case let .isEligibleForIntroOffer(isEligibleForIntroOffer):
         state.isEligibleForIntroOffer = isEligibleForIntroOffer
         return .none
@@ -149,7 +149,7 @@ public struct GodModeLogic: Reducer {
       }
     }
   }
-  
+
   func currentUserRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.currentUser, cancelInFlight: true) {
       do {
@@ -197,7 +197,7 @@ public struct GodModeView: View {
               Text("3-day free trial", bundle: .module)
                 .foregroundStyle(Color.orange.gradient)
                 .font(.system(.title2, design: .rounded, weight: .bold))
-              
+
               Text("Renews at \(viewStore.product.displayPrice)/week", bundle: .module)
                 .foregroundStyle(Color.godTextSecondaryDark)
                 .font(.system(.footnote, design: .rounded, weight: .bold))
