@@ -125,7 +125,7 @@ public struct InboxLogic: Reducer {
         return .run { send in
           guard let subscription = product.subscription else { return }
           await send(.isEligibleForIntroOffer(
-            await subscription.isEligibleForIntroOffer
+            subscription.isEligibleForIntroOffer
           ))
         }
 
@@ -331,7 +331,7 @@ public struct InboxView: View {
               Label {
                 HStack(spacing: 8) {
                   Text("See who likes you", bundle: .module)
-                  
+
                   if viewStore.isEligibleForIntroOffer {
                     Text("free", bundle: .module)
                       .frame(height: 24)

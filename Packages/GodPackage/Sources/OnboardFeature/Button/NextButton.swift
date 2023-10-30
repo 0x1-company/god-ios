@@ -39,4 +39,3 @@ public struct NextButton: View {
     .buttonStyle(HoldDownButtonStyle())
   }
 }
-
