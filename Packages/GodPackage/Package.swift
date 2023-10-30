@@ -163,6 +163,7 @@ let package = Package(
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
       .product(name: "UserNotificationClient", package: "CupertinoPackage"),
+      .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
       .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),

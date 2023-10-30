@@ -10,6 +10,7 @@ import StoreKitClient
 import Styleguide
 import SwiftUI
 import UserNotificationClient
+import FeedbackGeneratorClient
 
 public struct InboxLogic: Reducer {
   public init() {}
@@ -51,6 +52,7 @@ public struct InboxLogic: Reducer {
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
   @Dependency(\.userNotifications) var userNotifications
 
   enum Cancel {
@@ -99,6 +101,7 @@ public struct InboxLogic: Reducer {
       case .onAppear:
         analytics.logScreen(screenName: "Inbox", of: self)
         return .none
+
       case let .activityButtonTapped(activityId):
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
@@ -107,6 +110,9 @@ public struct InboxLogic: Reducer {
             }
             group.addTask {
               await readActivityRequest(send: send, activityId: activityId)
+            }
+            group.addTask {
+              await feedbackGenerator.impactOccurred()
             }
           }
         }
