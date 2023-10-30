@@ -142,15 +142,13 @@ public struct UsernameSettingView: View {
   }
 }
 
-struct UsernameSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      UsernameSettingView(
-        store: .init(
-          initialState: UsernameSettingLogic.State(),
-          reducer: { UsernameSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    UsernameSettingView(
+      store: .init(
+        initialState: UsernameSettingLogic.State(),
+        reducer: { UsernameSettingLogic() }
       )
-    }
+    )
   }
 }

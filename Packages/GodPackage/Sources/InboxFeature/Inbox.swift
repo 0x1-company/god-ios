@@ -363,13 +363,11 @@ public struct InboxView: View {
   }
 }
 
-struct InboxViewPreviews: PreviewProvider {
-  static var previews: some View {
-    InboxView(
-      store: .init(
-        initialState: InboxLogic.State(),
-        reducer: { InboxLogic() }
-      )
+#Preview {
+  InboxView(
+    store: .init(
+      initialState: InboxLogic.State(),
+      reducer: { InboxLogic() }
     )
-  }
+  )
 }

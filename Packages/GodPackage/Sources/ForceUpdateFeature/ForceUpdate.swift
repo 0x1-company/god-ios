@@ -72,13 +72,11 @@ public struct ForceUpdateView: View {
   }
 }
 
-struct ForceUpdateViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ForceUpdateView(
-      store: .init(
-        initialState: ForceUpdateLogic.State(),
-        reducer: { ForceUpdateLogic() }
-      )
+#Preview {
+  ForceUpdateView(
+    store: .init(
+      initialState: ForceUpdateLogic.State(),
+      reducer: { ForceUpdateLogic() }
     )
-  }
+  )
 }

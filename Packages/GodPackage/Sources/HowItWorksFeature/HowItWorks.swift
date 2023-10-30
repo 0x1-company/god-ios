@@ -146,13 +146,11 @@ public struct HowItWorksView: View {
   }
 }
 
-struct HowItWorksViewPreviews: PreviewProvider {
-  static var previews: some View {
-    HowItWorksView(
-      store: .init(
-        initialState: HowItWorksLogic.State(),
-        reducer: { HowItWorksLogic() }
-      )
+#Preview {
+  HowItWorksView(
+    store: .init(
+      initialState: HowItWorksLogic.State(),
+      reducer: { HowItWorksLogic() }
     )
-  }
+  )
 }

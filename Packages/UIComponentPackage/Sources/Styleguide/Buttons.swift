@@ -9,18 +9,16 @@ public struct HoldDownButtonStyle: ButtonStyle {
   }
 }
 
-struct HoldDownButtonStylePreviews: PreviewProvider {
-  static var previews: some View {
-    Button(action: {}) {
-      Text("Next")
-        .frame(height: 54)
-        .frame(maxWidth: .infinity)
-        .foregroundStyle(.white)
-        .background(Color.orange)
-        .clipShape(Capsule())
-        .font(.system(.body, design: .rounded, weight: .bold))
-    }
-    .padding()
-    .buttonStyle(HoldDownButtonStyle())
+#Preview {
+  Button(action: {}) {
+    Text("Next")
+      .frame(height: 54)
+      .frame(maxWidth: .infinity)
+      .foregroundStyle(.white)
+      .background(Color.orange)
+      .clipShape(Capsule())
+      .font(.system(.body, design: .rounded, weight: .bold))
   }
+  .padding()
+  .buttonStyle(HoldDownButtonStyle())
 }

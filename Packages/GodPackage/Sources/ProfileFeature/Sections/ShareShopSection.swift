@@ -68,12 +68,10 @@ public struct ShareShopSection: View {
   }
 }
 
-struct ShareShopSectionPreviews: PreviewProvider {
-  static var previews: some View {
-    ShareShopSection(
-      coinBalance: 90,
-      shareAction: {},
-      shopAction: {}
-    )
-  }
+#Preview {
+  ShareShopSection(
+    coinBalance: 90,
+    shareAction: {},
+    shopAction: {}
+  )
 }

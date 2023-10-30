@@ -82,15 +82,13 @@ public struct FriendRequestsView: View {
   }
 }
 
-struct FriendRequestsViewPreviews: PreviewProvider {
-  static var previews: some View {
-    FriendRequestsView(
-      store: .init(
-        initialState: FriendRequestsLogic.State(
-          requests: []
-        ),
-        reducer: { FriendRequestsLogic() }
-      )
+#Preview {
+  FriendRequestsView(
+    store: .init(
+      initialState: FriendRequestsLogic.State(
+        requests: []
+      ),
+      reducer: { FriendRequestsLogic() }
     )
-  }
+  )
 }

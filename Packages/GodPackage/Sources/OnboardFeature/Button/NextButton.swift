@@ -40,16 +40,13 @@ public struct NextButton: View {
   }
 }
 
-struct NextButtonPreviews: PreviewProvider {
-  static var previews: some View {
-    VStack {
-      NextButton(isLoading: false, isDisabled: false, action: {})
-      NextButton(isLoading: true, isDisabled: false, action: {})
-      NextButton(isLoading: false, isDisabled: true, action: {})
-      NextButton(isLoading: true, isDisabled: true, action: {})
-    }
-    .padding()
-    .background(Color.orange)
-    .previewLayout(.sizeThatFits)
+#Preview(traits: .sizeThatFitsLayout) {
+  VStack {
+    NextButton(isLoading: false, isDisabled: false, action: {})
+    NextButton(isLoading: true, isDisabled: false, action: {})
+    NextButton(isLoading: false, isDisabled: true, action: {})
+    NextButton(isLoading: true, isDisabled: true, action: {})
   }
+  .padding()
+  .background(Color.orange)
 }

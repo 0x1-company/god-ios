@@ -128,13 +128,11 @@ public struct ActivityView: View {
   }
 }
 
-struct ActivityViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ActivityView(
-      store: .init(
-        initialState: ActivityLogic.State(),
-        reducer: { ActivityLogic() }
-      )
+#Preview {
+  ActivityView(
+    store: .init(
+      initialState: ActivityLogic.State(),
+      reducer: { ActivityLogic() }
     )
-  }
+  )
 }

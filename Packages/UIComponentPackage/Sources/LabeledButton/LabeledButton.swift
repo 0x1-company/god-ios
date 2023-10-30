@@ -24,14 +24,12 @@ public struct LabeledButton: View {
   }
 }
 
-struct LabeledButton_Previews: PreviewProvider {
-  static var previews: some View {
-    LabeledButton(
-      "Logout",
-      systemImage: "rectangle.portrait.and.arrow.right",
-      action: {}
-    )
-    .padding()
-    .previewLayout(.sizeThatFits)
-  }
+#Preview {
+  LabeledButton(
+    "Logout",
+    systemImage: "rectangle.portrait.and.arrow.right",
+    action: {}
+  )
+  .padding()
+  .previewLayout(.sizeThatFits)
 }
