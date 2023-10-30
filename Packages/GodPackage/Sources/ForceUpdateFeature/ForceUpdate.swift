@@ -44,7 +44,7 @@ public struct ForceUpdateView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 24) {
         Text("お知らせ", bundle: .module)
           .font(.system(.title, design: .rounded, weight: .bold))

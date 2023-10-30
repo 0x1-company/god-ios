@@ -44,7 +44,7 @@ public struct EmailSheetLogic: Reducer {
       case .mailButtonTapped:
         analytics.buttonClick(name: .email, parameters: [
           "subject": state.title,
-          "title": String(localized: "Mail", bundle: .module)
+          "title": String(localized: "Mail", bundle: .module),
         ])
         guard let url = generateEmail(subject: state.title)
         else { return .none }
@@ -56,7 +56,7 @@ public struct EmailSheetLogic: Reducer {
       case .gmailButtonTapped:
         analytics.buttonClick(name: .gmail, parameters: [
           "subject": state.title,
-          "title": String(localized: "Gmail", bundle: .module)
+          "title": String(localized: "Gmail", bundle: .module),
         ])
         guard let url = generateGmail(subject: state.title)
         else { return .none }
@@ -69,7 +69,7 @@ public struct EmailSheetLogic: Reducer {
         pasteboard.string(Constants.helpEmailAddress)
         analytics.buttonClick(name: .copyLink, parameters: [
           "subject": state.title,
-          "title": String(localized: "Copy", bundle: .module)
+          "title": String(localized: "Copy", bundle: .module),
         ])
         return .none
       }

@@ -71,7 +71,7 @@ public struct ShareProfileToInstagramPopupView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack(alignment: .center) {
         Color.godBlack.opacity(0.6)
           .overlay(alignment: .topTrailing) {

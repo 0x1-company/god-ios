@@ -64,7 +64,7 @@ public struct ManageAccountView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       List {
         Section {
           Button {
