@@ -3,6 +3,23 @@ import ComposableArchitecture
 import Lottie
 import Styleguide
 import SwiftUI
+import CoreHaptics
+import FeedbackGeneratorClient
+
+class HapticClient {
+  private let engine: CHHapticEngine
+
+  init() throws {
+    engine = try CHHapticEngine()
+    try engine.start()
+  }
+  
+  func play(_ events: [CHHapticEvent], at time: TimeInterval = 0) throws {
+    let pattern = try CHHapticPattern(events: events, parameters: [])
+    let player = try engine.makePlayer(with: pattern)
+    try player.start(atTime: time)
+  }
+}
 
 public struct CashOutLogic: Reducer {
   public init() {}
@@ -28,6 +45,7 @@ public struct CashOutLogic: Reducer {
   
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -38,8 +56,19 @@ public struct CashOutLogic: Reducer {
         
       case .cashOutButtonTapped:
         state.isPlaying = true
+        let events = Array(repeating: "", count: 20).enumerated().map { index, _ in
+          return CHHapticEvent(
+            eventType: .hapticTransient,
+            parameters: [],
+            relativeTime: TimeInterval(floatLiteral: Double(index) * 0.13)
+          )
+        }
         return .run { send in
-          try await mainQueue.sleep(for: .seconds(5))
+          try await mainQueue.sleep(for: .seconds(0.8))
+          try feedbackGenerator.play(events)
+          try await mainQueue.sleep(for: .seconds(3.2))
+          await send(.delegate(.finish), animation: .default)
+        } catch: { _, send in
           await send(.delegate(.finish), animation: .default)
         }
 
@@ -88,6 +117,7 @@ public struct CashOutView: View {
               .background(Color.white)
               .clipShape(Capsule())
           }
+          .disabled(viewStore.isPlaying)
           .shadow(color: .black.opacity(0.2), radius: 25)
           .buttonStyle(HoldDownButtonStyle())
           .padding(.horizontal, 65)

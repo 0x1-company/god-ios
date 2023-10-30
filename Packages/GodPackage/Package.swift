@@ -95,6 +95,7 @@ let package = Package(
       .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ], resources: [.copy("Coin.json")]),
     .target(name: "CupertinoMessageFeature", dependencies: [
