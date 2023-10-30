@@ -102,7 +102,7 @@ public struct WelcomeView: View {
                 .padding(.horizontal, 32)
             } else {
               Button {
-                viewStore.send(.getStartedButtonTapped)
+                store.send(.getStartedButtonTapped)
               } label: {
                 Text("Get Started", bundle: .module)
                   .font(.system(.body, design: .rounded, weight: .bold))

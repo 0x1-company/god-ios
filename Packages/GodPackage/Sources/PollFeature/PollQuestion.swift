@@ -220,7 +220,7 @@ public struct PollQuestionView: View {
               progress: viewStore.voteChoices[choice.userId] ?? 0.0,
               color: viewStore.backgroundColor
             ) {
-              viewStore.send(.voteButtonTapped(votedUserId: choice.userId))
+              store.send(.voteButtonTapped(votedUserId: choice.userId))
             }
             .disabled(!viewStore.voteChoices.isEmpty)
           }
@@ -256,12 +256,12 @@ public struct PollQuestionView: View {
       .padding(.top, 80)
       .padding(.horizontal, 36)
       .background(viewStore.backgroundColor)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
       .frame(height: UIScreen.main.bounds.height)
       .onTapGesture {
         if !viewStore.voteChoices.isEmpty {
-          viewStore.send(.continueButtonTapped)
+          store.send(.continueButtonTapped)
         }
       }
     }

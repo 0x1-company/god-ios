@@ -68,7 +68,7 @@ public struct FullNameView: View {
             .font(.system(.title2, design: .rounded, weight: .bold))
 
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Text("Close", bundle: .module)
               .frame(height: 56)
@@ -94,7 +94,7 @@ public struct FullNameView: View {
 //          .offset(y: -33)
 //        }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

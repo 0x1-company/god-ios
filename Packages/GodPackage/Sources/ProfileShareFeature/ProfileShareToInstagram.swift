@@ -133,7 +133,7 @@ public struct ProfileShareToInstagramView: View {
             .cornerRadius(26)
 
           Button {
-            viewStore.send(.copyLinkButtonTapped)
+            store.send(.copyLinkButtonTapped)
           } label: {
             Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
@@ -158,7 +158,7 @@ public struct ProfileShareToInstagramView: View {
           }
 
           Button {
-            viewStore.send(.shareButtonTapped)
+            store.send(.shareButtonTapped)
           } label: {
             Text("Share", bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
@@ -174,7 +174,7 @@ public struct ProfileShareToInstagramView: View {
       .padding(20)
       .background(Color.godWhite)
       .cornerRadius(24)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

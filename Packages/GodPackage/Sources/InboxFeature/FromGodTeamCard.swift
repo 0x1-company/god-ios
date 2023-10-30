@@ -51,7 +51,7 @@ public struct FromGodTeamCard: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       Button {
-        viewStore.send(.cardButtonTapped)
+        store.send(.cardButtonTapped)
       } label: {
         HStack(spacing: 0) {
           Label {

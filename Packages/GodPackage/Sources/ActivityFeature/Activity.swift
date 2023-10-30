@@ -108,12 +108,12 @@ public struct ActivityView: View {
       List {
         ForEach(viewStore.edges, id: \.cursor) { edge in
           ActivityCard(activity: edge) { activity in
-            viewStore.send(.activityButtonTapped(activity))
+            store.send(.activityButtonTapped(activity))
           }
         }
       }
       .listStyle(.plain)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),

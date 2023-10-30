@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Lottie
 import SwiftUI
@@ -12,11 +13,14 @@ public struct GodLoadingLogic: Reducer {
   public enum Action: Equatable {
     case onTask
   }
+  
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
+        analytics.logScreen(screenName: "GodLoading", of: self)
         return .none
       }
     }
@@ -43,6 +47,7 @@ public struct GodLoadingView: View {
         .padding(.horizontal, 120)
         .offset(y: 60)
     }
+    .task { await store.send(.onTask).finish() }
   }
 }
 

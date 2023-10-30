@@ -235,7 +235,7 @@ public struct HowToShareOnInstagramView: View {
           HStack(alignment: .center, spacing: 12) {
             ForEach(viewStore.allSteps, id: \.rawValue) { step in
               Button {
-                viewStore.send(.stepButtonTapped(step))
+                store.send(.stepButtonTapped(step))
               } label: {
                 Text(String(step.rawValue))
                   .font(.subheadline)
@@ -265,7 +265,7 @@ public struct HowToShareOnInstagramView: View {
           Button {
             let renderer = ImageRenderer(content: instagramStoryView)
             renderer.scale = displayScale
-            viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
+            store.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
           } label: {
             Text(viewStore.currentStep.primaryButtonText, bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
@@ -281,7 +281,7 @@ public struct HowToShareOnInstagramView: View {
         .background(Color.godWhite)
         .cornerRadius(24)
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

@@ -61,7 +61,7 @@ public struct FindFriendView: View {
           .font(.system(.body, design: .rounded, weight: .bold))
 
         Button {
-          viewStore.send(.findButtonTapped)
+          store.send(.findButtonTapped)
         } label: {
           Text("Find My Friends", bundle: .module)
             .font(.system(.title3, design: .rounded, weight: .bold))

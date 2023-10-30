@@ -23,7 +23,6 @@ public struct DeleteAccountLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
-    case onAppear
     case closeButtonTapped
     case reasonButtonTapped(String)
     case deleteButtonTapped
@@ -46,9 +45,6 @@ public struct DeleteAccountLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
-
-      case .onAppear:
         analytics.logScreen(screenName: "DeleteAccount", of: self)
         return .none
 
@@ -215,7 +211,6 @@ public struct DeleteAccountView: View {
       .navigationTitle(Text("Delete Account", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
       .task { await store.send(.onTask).finish() }
-      .onAppear { store.send(.onAppear) }
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {

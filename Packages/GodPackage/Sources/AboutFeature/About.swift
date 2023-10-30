@@ -152,19 +152,19 @@ public struct AboutView: View {
       VStack(spacing: 32) {
         VStack(alignment: .center, spacing: 24) {
           IconButton("How It Works", image: .womanTeacher) {
-            viewStore.send(.howItWorksButtonTapped)
+            store.send(.howItWorksButtonTapped)
           }
           IconButton("FAQ", image: .clipboard) {
-            viewStore.send(.faqButtonTapped)
+            store.send(.faqButtonTapped)
           }
           IconButton("Share Feedback", image: .megaphone) {
-            viewStore.send(.shareFeedbackButtonTapped)
+            store.send(.shareFeedbackButtonTapped)
           }
           IconButton("Get Help", image: .rescueWorkersHelmet) {
-            viewStore.send(.getHelpButtonTapped)
+            store.send(.getHelpButtonTapped)
           }
           IconButton("Safety Center", image: .shield) {
-            viewStore.send(.safetyCenterButtonTapped)
+            store.send(.safetyCenterButtonTapped)
           }
         }
         .padding(.top, 24)

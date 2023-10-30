@@ -74,15 +74,15 @@ public struct GenderSettingView: View {
 
           HStack(spacing: 24) {
             ChoiceView(gender: .male) {
-              viewStore.send(.genderButtonTapped(.male))
+              store.send(.genderButtonTapped(.male))
             }
             ChoiceView(gender: .female) {
-              viewStore.send(.genderButtonTapped(.female))
+              store.send(.genderButtonTapped(.female))
             }
           }
           HStack(spacing: 24) {
             ChoiceView(gender: .other) {
-              viewStore.send(.genderButtonTapped(.other))
+              store.send(.genderButtonTapped(.other))
             }
           }
         }

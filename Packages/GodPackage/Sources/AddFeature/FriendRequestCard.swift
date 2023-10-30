@@ -90,7 +90,7 @@ public struct FriendRequestCardView: View {
 
         HStack(spacing: 0) {
           Button {
-            viewStore.send(.approveButtonTapped)
+            store.send(.approveButtonTapped)
           } label: {
             Text("APPROVE", bundle: .module)
               .font(.system(.callout, design: .rounded, weight: .bold))

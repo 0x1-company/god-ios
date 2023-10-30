@@ -107,7 +107,7 @@ public struct LastNameSettingView: View {
         }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
-          viewStore.send(.nextButtonTapped)
+          store.send(.nextButtonTapped)
         }
       }
       .padding(.horizontal, 24)
@@ -115,7 +115,7 @@ public struct LastNameSettingView: View {
       .foregroundStyle(Color.white)
       .background(Color.godService)
       .navigationBarBackButtonHidden()
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear {
         focus = true
         store.send(.onAppear)

@@ -200,7 +200,7 @@ public struct ProfileShareView: View {
           }
 
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Text("Close", bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))

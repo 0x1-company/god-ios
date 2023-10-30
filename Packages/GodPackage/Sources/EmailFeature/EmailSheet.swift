@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Constants
 import Styleguide
@@ -25,12 +26,14 @@ public struct EmailSheetLogic: Reducer {
 
   @Dependency(\.openURL) var openURL
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.analytics) var analytics
   @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        analytics.logScreen(screenName: "EmailSheet", of: self)
         return .none
 
       case .dismissButtonTapped:
@@ -39,6 +42,10 @@ public struct EmailSheetLogic: Reducer {
         }
 
       case .mailButtonTapped:
+        analytics.buttonClick(name: .email, parameters: [
+          "subject": state.title,
+          "title": String(localized: "Mail", bundle: .module)
+        ])
         guard let url = generateEmail(subject: state.title)
         else { return .none }
         return .run { _ in
@@ -47,6 +54,10 @@ public struct EmailSheetLogic: Reducer {
         }
 
       case .gmailButtonTapped:
+        analytics.buttonClick(name: .gmail, parameters: [
+          "subject": state.title,
+          "title": String(localized: "Gmail", bundle: .module)
+        ])
         guard let url = generateGmail(subject: state.title)
         else { return .none }
         return .run { _ in
@@ -56,6 +67,10 @@ public struct EmailSheetLogic: Reducer {
 
       case .copyButtonTapped:
         pasteboard.string(Constants.helpEmailAddress)
+        analytics.buttonClick(name: .copyLink, parameters: [
+          "subject": state.title,
+          "title": String(localized: "Copy", bundle: .module)
+        ])
         return .none
       }
     }
@@ -219,7 +234,7 @@ public struct EmailSheetView: View {
         .background(Color.white)
         .multilineTextAlignment(.center)
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

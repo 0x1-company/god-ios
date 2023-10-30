@@ -193,7 +193,7 @@ public struct ProfilePhotoSettingView: View {
         }
         if viewStore.image != nil {
           Button {
-            viewStore.send(.nextButtonTapped)
+            store.send(.nextButtonTapped)
           } label: {
             Text("Next", bundle: .module)
               .font(.system(.body, design: .rounded, weight: .bold))
@@ -210,7 +210,7 @@ public struct ProfilePhotoSettingView: View {
       .toolbar {
         if viewStore.photoPickerItems.isEmpty {
           Button {
-            viewStore.send(.skipButtonTapped)
+            store.send(.skipButtonTapped)
           } label: {
             Text("Skip", bundle: .module)
               .foregroundStyle(Color.white)
@@ -218,7 +218,7 @@ public struct ProfilePhotoSettingView: View {
         }
       }
       .buttonStyle(HoldDownButtonStyle())
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

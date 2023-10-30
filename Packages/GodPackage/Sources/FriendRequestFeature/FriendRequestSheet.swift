@@ -1,3 +1,4 @@
+import AnalyticsClient
 import BackgroundClearSheet
 import ComposableArchitecture
 import God
@@ -26,11 +27,13 @@ public struct FriendRequestSheetLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
+        analytics.logScreen(screenName: "FriendRequestSheet", of: self)
         return .none
 
       case .dismissButtonTapped:
@@ -160,7 +163,7 @@ public struct FriendRequestSheetView: View {
         }
       }
       .buttonStyle(HoldDownButtonStyle())
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

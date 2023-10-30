@@ -59,7 +59,7 @@ public struct GradeSettingView: View {
 
         VStack(spacing: 0) {
           selectButton("Not in High School") {
-            viewStore.send(.generationButtonTapped(nil))
+            store.send(.generationButtonTapped(nil))
           }
           Divider()
           Text("HIGH SCHOOL", bundle: .module)
@@ -73,19 +73,19 @@ public struct GradeSettingView: View {
 
           VStack(spacing: 0) {
             gradeButton("Grade 10", year: "CLASS OF\n2025") {
-              viewStore.send(.generationButtonTapped(2007))
+              store.send(.generationButtonTapped(2007))
             }
             Divider()
             gradeButton("Grade 11", year: "CLASS OF\n2024") {
-              viewStore.send(.generationButtonTapped(2006))
+              store.send(.generationButtonTapped(2006))
             }
             Divider()
             gradeButton("Grade 12", year: "CLASS OF\n2023") {
-              viewStore.send(.generationButtonTapped(2005))
+              store.send(.generationButtonTapped(2005))
             }
             Divider()
             selectButton("Finished High School") {
-              viewStore.send(.generationButtonTapped(nil))
+              store.send(.generationButtonTapped(nil))
             }
             Divider()
           }
