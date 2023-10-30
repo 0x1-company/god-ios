@@ -1,5 +1,5 @@
-import UIKit
 import CoreHaptics
+import UIKit
 
 public struct FeedbackGeneratorClient {
   public var prepare: @Sendable () async -> Void
