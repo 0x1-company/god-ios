@@ -61,7 +61,6 @@ public struct GodLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          try await mainQueue.sleep(for: .seconds(1))
           await currentPollRequest(send: send)
         }
 
@@ -243,13 +242,11 @@ public struct GodView: View {
   }
 }
 
-struct GodViewPreviews: PreviewProvider {
-  static var previews: some View {
-    GodView(
-      store: .init(
-        initialState: GodLogic.State(),
-        reducer: { GodLogic() }
-      )
+#Preview {
+  GodView(
+    store: .init(
+      initialState: GodLogic.State(),
+      reducer: { GodLogic() }
     )
-  }
+  )
 }
