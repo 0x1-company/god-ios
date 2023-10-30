@@ -21,7 +21,8 @@ public struct InboxLogic: Reducer {
 
     var banners: [God.BannerCardFragment] = []
     var inboxActivities: [God.InboxCardFragment] = []
-    var products: [Product] = []
+    var product: StoreKit.Product?
+    var isEligibleForIntroOffer = false
     var subscription: God.ActiveSubscriptionQuery.Data.ActiveSubscription?
 
     public init() {}
@@ -33,6 +34,7 @@ public struct InboxLogic: Reducer {
     case activityButtonTapped(id: String)
     case seeWhoLikesYouButtonTapped
     case productsResponse(TaskResult<[Product]>)
+    case isEligibleForIntroOffer(Bool)
     case inboxActivitiesResponse(TaskResult<God.InboxActivitiesQuery.Data>)
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case inboxActivityResponse(TaskResult<God.InboxActivityQuery.Data>)
@@ -110,18 +112,25 @@ public struct InboxLogic: Reducer {
         }
 
       case .seeWhoLikesYouButtonTapped:
-        guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
-        else { return .none }
-        guard let product = state.products.first(where: { $0.id == id })
-        else { return .none }
+        guard let product = state.product else { return .none }
         state.destination = .godMode(.init(product: product))
         return .none
 
       case let .productsResponse(.success(products)):
-        state.products = products
-        return .none
+        guard
+          let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
+          let product = products.first(where: { $0.id == id })
+        else { return .none }
+        state.product = product
+        return .run { send in
+          guard let subscription = product.subscription else { return }
+          await send(.isEligibleForIntroOffer(
+            await subscription.isEligibleForIntroOffer
+          ))
+        }
 
-      case .productsResponse(.failure):
+      case let .isEligibleForIntroOffer(isEligibleForIntroOffer):
+        state.isEligibleForIntroOffer = isEligibleForIntroOffer
         return .none
 
       case .destination(.presented(.godMode(.delegate(.activated)))):
@@ -313,14 +322,26 @@ public struct InboxView: View {
           .listStyle(.plain)
         }
 
-        if !viewStore.products.isEmpty, viewStore.subscription == nil {
+        if viewStore.product != nil, viewStore.subscription == nil {
           ZStack(alignment: .top) {
             Color.white.blur(radius: 1.0)
             Button {
               store.send(.seeWhoLikesYouButtonTapped)
             } label: {
               Label {
-                Text("See who likes you", bundle: .module)
+                HStack(spacing: 8) {
+                  Text("See who likes you", bundle: .module)
+                  
+                  if viewStore.isEligibleForIntroOffer {
+                    Text("free", bundle: .module)
+                      .frame(height: 24)
+                      .padding(.horizontal, 4)
+                      .background(Color.yellow.gradient)
+                      .foregroundStyle(Color.black)
+                      .cornerRadius(4)
+                  }
+                }
+                .font(.system(.body, design: .rounded, weight: .bold))
               } icon: {
                 Image(systemName: "lock.fill")
               }

@@ -37,6 +37,16 @@
         }
       }
     },
+    "free" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無料"
+          }
+        }
+      }
+    },
     "From %@ in %@" : {
       "localizations" : {
         "en" : {
