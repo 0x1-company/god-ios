@@ -40,13 +40,3 @@ public struct NextButton: View {
   }
 }
 
-#Preview(traits: .sizeThatFitsLayout) {
-  VStack {
-    NextButton(isLoading: false, isDisabled: false, action: {})
-    NextButton(isLoading: true, isDisabled: false, action: {})
-    NextButton(isLoading: false, isDisabled: true, action: {})
-    NextButton(isLoading: true, isDisabled: true, action: {})
-  }
-  .padding()
-  .background(Color.orange)
-}
