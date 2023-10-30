@@ -45,7 +45,7 @@ public struct GodModeLogic: Reducer {
   @Dependency(\.analytics) var analytics
 
   enum Cancel {
-    case id
+    case purchase
     case currentUser
   }
 
@@ -99,7 +99,7 @@ public struct GodModeLogic: Reducer {
         } catch: { error, send in
           await send(.purchaseResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.purchase, cancelInFlight: true)
         
       case let .isEligibleForIntroOffer(isEligibleForIntroOffer):
         state.isEligibleForIntroOffer = isEligibleForIntroOffer
