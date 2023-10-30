@@ -50,6 +50,10 @@ public struct LastNameSettingLogic: Reducer {
         else { return .none }
         state.lastName = transformedLastName
         state.isImport = true
+        analytics.log(name: "import_from_contacts", parameters: [
+          "phonetic_family_name": contact.phoneticFamilyName,
+          "transformed_family_name": transformedLastName
+        ])
         return .none
 
       case .onAppear:

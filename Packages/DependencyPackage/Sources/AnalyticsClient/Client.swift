@@ -24,6 +24,14 @@ public extension AnalyticsClient {
 }
 
 public extension AnalyticsClient {
+  func log(name: String, parameters: [String: Any]) {
+    var parameters = parameters
+    parameters["name"] = name
+    logEvent("log", parameters)
+  }
+}
+
+public extension AnalyticsClient {
   func setUserProperty(key: UserProperty, value: String?) {
     setUserProperty(key.rawValue, value)
     print("[AnalyticsClient][setUserProperty] Changed [key: \(key.rawValue), value: \(value ?? "NULL")]")
