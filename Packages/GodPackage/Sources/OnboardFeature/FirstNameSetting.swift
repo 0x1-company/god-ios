@@ -53,7 +53,7 @@ public struct FirstNameSettingLogic: Reducer {
         state.isImport = true
         analytics.log(name: "import_from_contacts", parameters: [
           "phonetic_given_name": contact.phoneticGivenName,
-          "transformed_given_name": transformedFirstName
+          "transformed_given_name": transformedFirstName,
         ])
         return .none
 
