@@ -92,23 +92,11 @@ public struct ProfilePhotoSettingLogic: Reducer {
           }))
         }
 
-      case .loadTransferableResponse:
-        return .none
-
-      case .uploadResponse(.success):
-        return .none
-
-      case .uploadResponse:
-        return .none
-
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
 
-      case .currentUserResponse(.failure):
-        return .none
-
-      case .delegate:
+      default:
         return .none
       }
     }
