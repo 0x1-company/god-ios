@@ -36,6 +36,7 @@ graph TD;
     CashOutFeature-->Lottie;
     CashOutFeature-->Styleguide;
     CashOutFeature-->AnalyticsClient;
+    CashOutFeature-->FeedbackGeneratorClient;
     CashOutFeature-->ComposableArchitecture;
     CupertinoMessageFeature-->SwiftUIMessage;
     CupertinoMessageFeature-->ComposableArchitecture;
