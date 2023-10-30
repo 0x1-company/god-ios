@@ -44,7 +44,7 @@ let package = Package(
     .package(path: "../CupertinoPackage"),
     .package(path: "../UIComponentPackage"),
     .package(path: "../DependencyPackage"),
-    .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
+    .package(url: "https://github.com/airbnb/lottie-spm", from: "4.3.3"),
     .package(url: "https://github.com/edonv/SwiftUIMessage", from: "0.0.3"),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.3.0"),
     .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
@@ -92,7 +92,7 @@ let package = Package(
       .product(name: "FirebaseMessagingClient", package: "DependencyPackage"),
     ]),
     .target(name: "CashOutFeature", dependencies: [
-      .product(name: "Lottie", package: "lottie-ios"),
+      .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -143,7 +143,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
-      .product(name: "Lottie", package: "lottie-ios"),
+      .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
