@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Constants
 import Styleguide
@@ -11,15 +12,22 @@ public struct ForceUpdateLogic: Reducer {
   }
 
   public enum Action: Equatable {
+    case onTask
     case updateButtonTapped
   }
 
   @Dependency(\.openURL) var openURL
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
+      case .onTask:
+        analytics.logScreen(screenName: "ForceUpdate", of: self)
+        return .none
+
       case .updateButtonTapped:
+        analytics.buttonClick(name: .forceUpdate)
         return .run { _ in
           await openURL(Constants.appStoreURL)
         }
@@ -59,6 +67,7 @@ public struct ForceUpdateView: View {
       .background(Color.godService)
       .foregroundStyle(Color.white)
       .multilineTextAlignment(.center)
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

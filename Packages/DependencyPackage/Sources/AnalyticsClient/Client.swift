@@ -61,5 +61,8 @@ public extension AnalyticsClient {
     case inviteFriend = "invite_friend"
     case notNow = "not_now"
     case delete
+    case gmail
+    case email
+    case forceUpdate = "force_update"
   }
 }

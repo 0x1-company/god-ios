@@ -15,7 +15,7 @@ public struct CashOutLogic: Reducer {
   }
 
   public enum Action: Equatable {
-    case onAppear
+    case onTask
     case cashOutButtonTapped
     case delegate(Delegate)
 
@@ -29,7 +29,7 @@ public struct CashOutLogic: Reducer {
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { _, action in
       switch action {
-      case .onAppear:
+      case .onTask:
         analytics.logScreen(screenName: "CashOut", of: self)
         return .none
 
@@ -90,7 +90,7 @@ public struct CashOutView: View {
           .resizable()
           .padding(.bottom, 320)
       }
-      .onAppear { store.send(.onAppear) }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }
