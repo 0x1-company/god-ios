@@ -84,6 +84,7 @@ graph TD;
     InboxFeature-->UserDefaultsClient;
     InboxFeature-->UIApplicationClient;
     InboxFeature-->UserNotificationClient;
+    InboxFeature-->FeedbackGeneratorClient;
     InboxFeature-->NotificationCenterClient;
     InboxFeature-->AnimationDisableTransaction;
     LaunchFeature-->Styleguide;
