@@ -155,7 +155,7 @@ public struct PlayAgainView: View {
           .font(.system(.body, design: .rounded))
 
         Button {
-          viewStore.send(.inviteFriendButtonTapped)
+          store.send(.inviteFriendButtonTapped)
         } label: {
           Text("Invite a friend", bundle: .module)
             .frame(height: 54)
@@ -180,7 +180,7 @@ public struct PlayAgainView: View {
       .onAppear { store.send(.onAppear) }
       .task {
         requestReview()
-        await viewStore.send(.onTask).finish()
+        await store.send(.onTask).finish()
       }
     }
   }

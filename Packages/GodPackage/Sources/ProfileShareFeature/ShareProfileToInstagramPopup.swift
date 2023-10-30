@@ -76,7 +76,7 @@ public struct ShareProfileToInstagramPopupView: View {
         Color.godBlack.opacity(0.6)
           .overlay(alignment: .topTrailing) {
             Button {
-              viewStore.send(.closeButtonTapped)
+              store.send(.closeButtonTapped)
             } label: {
               Image(systemName: "xmark")
                 .resizable()

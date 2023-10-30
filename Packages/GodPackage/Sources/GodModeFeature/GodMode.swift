@@ -204,7 +204,7 @@ public struct GodModeView: View {
         Spacer()
       }
       .background(Color.godBlack)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

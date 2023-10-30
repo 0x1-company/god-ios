@@ -300,7 +300,7 @@ public struct InboxView: View {
           List {
             ForEach(viewStore.inboxActivities, id: \.self) { inbox in
               InboxCard(inbox: inbox) {
-                viewStore.send(.activityButtonTapped(id: inbox.id))
+                store.send(.activityButtonTapped(id: inbox.id))
               }
             }
 
@@ -331,7 +331,7 @@ public struct InboxView: View {
           .frame(height: 64)
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),

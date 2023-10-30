@@ -308,7 +308,7 @@ public struct AddFriendsView: View {
 
             ForEach(viewStore.users, id: \.self) { user in
               Button {
-                viewStore.send(.selectButtonTapped(user.id))
+                store.send(.selectButtonTapped(user.id))
               } label: {
                 HStack(alignment: .center, spacing: 16) {
                   ProfileImage(
@@ -395,7 +395,7 @@ public struct AddFriendsView: View {
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$message, action: { .message($0) }),
@@ -403,7 +403,7 @@ public struct AddFriendsView: View {
       )
       .toolbar {
         Button("Next") {
-          viewStore.send(.nextButtonTapped)
+          store.send(.nextButtonTapped)
         }
         .foregroundStyle(Color.white)
         .font(.system(.body, design: .rounded, weight: .bold))

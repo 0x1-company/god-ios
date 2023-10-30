@@ -398,11 +398,11 @@ public struct ProfileEditView: View {
               .font(.system(.caption, design: .rounded, weight: .bold))
               .foregroundStyle(Color.godTextSecondaryLight)
 //            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
-//              viewStore.send(.restorePurchasesButtonTapped)
+//              store.send(.restorePurchasesButtonTapped)
 //            }
 //
 //            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
-//              viewStore.send(.manageAccountButtonTapped)
+//              store.send(.manageAccountButtonTapped)
 //            }
 
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
@@ -423,7 +423,7 @@ public struct ProfileEditView: View {
         if viewStore.isUserProfileChanges {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
-              viewStore.send(.cancelEditButtonTapped)
+              store.send(.cancelEditButtonTapped)
             } label: {
               Text("Cancel", bundle: .module)
                 .font(.system(.body, design: .rounded))
@@ -432,7 +432,7 @@ public struct ProfileEditView: View {
           }
           ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-              viewStore.send(.saveButtonTapped)
+              store.send(.saveButtonTapped)
             } label: {
               Text("Save", bundle: .module)
                 .font(.system(.body, design: .rounded))
@@ -442,7 +442,7 @@ public struct ProfileEditView: View {
         } else {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
-              viewStore.send(.closeButtonTapped)
+              store.send(.closeButtonTapped)
             } label: {
               Text("Close", bundle: .module)
                 .font(.system(.body, design: .rounded))
@@ -451,7 +451,7 @@ public struct ProfileEditView: View {
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
       .sheet(

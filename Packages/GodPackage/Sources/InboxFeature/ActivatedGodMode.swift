@@ -59,7 +59,7 @@ public struct ActivatedGodModeView: View {
           .multilineTextAlignment(.center)
 
         Button {
-          viewStore.send(.okayButtonTapped)
+          store.send(.okayButtonTapped)
         } label: {
           Text("OK", bundle: .module)
             .frame(height: 50)
@@ -74,7 +74,7 @@ public struct ActivatedGodModeView: View {
       .padding(.horizontal, 16)
       .frame(maxHeight: .infinity)
       .background(.black)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

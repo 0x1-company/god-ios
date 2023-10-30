@@ -234,7 +234,7 @@ public struct EmailSheetView: View {
         .background(Color.white)
         .multilineTextAlignment(.center)
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

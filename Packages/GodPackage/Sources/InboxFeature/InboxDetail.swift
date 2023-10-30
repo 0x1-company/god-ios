@@ -307,7 +307,7 @@ public struct InboxDetailView: View {
           .buttonStyle(SeeWhoSentItButtonStyle())
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),

@@ -174,7 +174,7 @@ public struct ProfileView: View {
               schoolShortName: data.currentUser.school?.shortName,
               grade: data.currentUser.grade
             ) {
-              viewStore.send(.editProfileButtonTapped)
+              store.send(.editProfileButtonTapped)
             }
 
             Divider()
@@ -182,10 +182,10 @@ public struct ProfileView: View {
             ShareShopSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
               shareAction: {
-                viewStore.send(.shareProfileButtonTapped)
+                store.send(.shareProfileButtonTapped)
               },
               shopAction: {
-                viewStore.send(.shopButtonTapped)
+                store.send(.shopButtonTapped)
               }
             )
 
@@ -214,7 +214,7 @@ public struct ProfileView: View {
       .listStyle(.plain)
       .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),

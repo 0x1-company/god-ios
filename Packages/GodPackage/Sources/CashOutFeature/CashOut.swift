@@ -63,7 +63,7 @@ public struct CashOutView: View {
           }
 
           Button {
-            viewStore.send(.cashOutButtonTapped)
+            store.send(.cashOutButtonTapped)
           } label: {
             Text("Cash Out", bundle: .module)
               .font(.system(.title3, design: .rounded, weight: .bold))

@@ -163,7 +163,7 @@ public struct FriendRequestSheetView: View {
         }
       }
       .buttonStyle(HoldDownButtonStyle())
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

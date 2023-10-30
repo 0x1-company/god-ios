@@ -51,7 +51,7 @@ public struct ForceUpdateView: View {
         Text("...おや？！Godのようすが...！\n最新バージョンへのアップデートをお願いします。", bundle: .module)
 
         Button {
-          viewStore.send(.updateButtonTapped)
+          store.send(.updateButtonTapped)
         } label: {
           Text("アップデート", bundle: .module)
             .font(.system(.body, design: .rounded, weight: .bold))

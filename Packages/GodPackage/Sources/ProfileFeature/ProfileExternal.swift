@@ -142,12 +142,12 @@ public struct ProfileExternalView: View {
         ToolbarItem(placement: .topBarLeading) {
           Menu {
             Button {
-              viewStore.send(.blockButtonTapped)
+              store.send(.blockButtonTapped)
             } label: {
               Text("Block User", bundle: .module)
             }
             Button {
-              viewStore.send(.reportButtonTapped)
+              store.send(.reportButtonTapped)
             } label: {
               Text("Report User", bundle: .module)
             }
@@ -158,7 +158,7 @@ public struct ProfileExternalView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
               .foregroundStyle(Color.secondary)

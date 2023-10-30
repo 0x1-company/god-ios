@@ -95,7 +95,7 @@ public struct FriendRowCardView: View {
 
         HStack(spacing: 0) {
           Button {
-            viewStore.send(.addButtonTapped)
+            store.send(.addButtonTapped)
           } label: {
             Group {
               switch viewStore.friendStatus {

@@ -87,7 +87,7 @@ public struct SchoolSettingView: View {
         List {
           ForEach(viewStore.schools, id: \.self) { school in
             Button {
-              viewStore.send(.schoolButtonTapped(id: school.id))
+              store.send(.schoolButtonTapped(id: school.id))
             } label: {
               HStack(alignment: .center, spacing: 16) {
                 SchoolImage(urlString: school.profileImageURL)
@@ -140,7 +140,7 @@ public struct SchoolSettingView: View {
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .navigationTitle(Text("Pick your school", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)

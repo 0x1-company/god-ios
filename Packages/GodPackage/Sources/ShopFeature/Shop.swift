@@ -200,7 +200,7 @@ public struct ShopView: View {
               amount: item.coinAmount,
               imageURL: item.imageURL
             ) {
-              viewStore.send(.purchaseButtonTapped(id: item.id))
+              store.send(.purchaseButtonTapped(id: item.id))
             }
           }
         }
@@ -219,7 +219,7 @@ public struct ShopView: View {
       .background(Color.black)
       .navigationTitle(Text("Shop", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: ShopLogic.Action.alert))
       .fullScreenCover(
@@ -235,7 +235,7 @@ public struct ShopView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
               .foregroundStyle(Color.white)

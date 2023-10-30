@@ -106,7 +106,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           LazyVStack(spacing: 0) {
             ForEach(viewStore.friends, id: \.self) { friend in
               Button {
-                viewStore.send(.friendButtonTapped(friend))
+                store.send(.friendButtonTapped(friend))
               } label: {
                 HStack(spacing: 16) {
                   ProfileImage(
@@ -135,12 +135,12 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
               .foregroundStyle(.white)
@@ -149,7 +149,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            viewStore.send(.nextButtonTapped)
+            store.send(.nextButtonTapped)
           } label: {
             Text("Next", bundle: .module)
               .foregroundStyle(.white)

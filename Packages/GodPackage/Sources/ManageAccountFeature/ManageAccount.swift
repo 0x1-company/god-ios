@@ -68,12 +68,12 @@ public struct ManageAccountView: View {
       List {
         Section {
           Button {
-            viewStore.send(.resetBlockButtonTapped)
+            store.send(.resetBlockButtonTapped)
           } label: {
             Label("Reset Block List", systemImage: "eye.slash.fill")
           }
           Button {
-            viewStore.send(.resetHideButtonTapped)
+            store.send(.resetHideButtonTapped)
           } label: {
             Label("Reset Hide List", systemImage: "eye.slash.fill")
           }
@@ -86,7 +86,7 @@ public struct ManageAccountView: View {
             String(localized: "Delete Account", bundle: .module),
             systemImage: "trash"
           ) {
-            viewStore.send(.deleteButtonTapped)
+            store.send(.deleteButtonTapped)
           }
           .foregroundStyle(.red)
         }
@@ -97,7 +97,7 @@ public struct ManageAccountView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Text("Close", bundle: .module)
               .foregroundStyle(.primary)

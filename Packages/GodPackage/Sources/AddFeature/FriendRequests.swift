@@ -77,7 +77,7 @@ public struct FriendRequestsView: View {
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

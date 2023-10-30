@@ -110,14 +110,14 @@ public struct FirstNameSettingView: View {
         }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
-          viewStore.send(.nextButtonTapped)
+          store.send(.nextButtonTapped)
         }
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .foregroundStyle(Color.white)
       .background(Color.godService)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear {
         focus = true
         store.send(.onAppear)

@@ -145,7 +145,7 @@ public struct PhoneNumberView: View {
             isLoading: viewStore.isActivityIndicatorVisible,
             isDisabled: viewStore.isDisabled
           ) {
-            viewStore.send(.nextButtonTapped)
+            store.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
