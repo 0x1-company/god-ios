@@ -126,15 +126,13 @@ public struct FirstNameSettingView: View {
   }
 }
 
-struct FirstNameSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      FirstNameSettingView(
-        store: .init(
-          initialState: FirstNameSettingLogic.State(),
-          reducer: { FirstNameSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    FirstNameSettingView(
+      store: .init(
+        initialState: FirstNameSettingLogic.State(),
+        reducer: { FirstNameSettingLogic() }
       )
-    }
+    )
   }
 }

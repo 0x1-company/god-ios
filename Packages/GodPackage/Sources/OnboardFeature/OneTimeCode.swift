@@ -220,15 +220,13 @@ public struct OneTimeCodeView: View {
   }
 }
 
-struct OneTimeCodeViewPreviews: PreviewProvider {
-  static var previews: some View {
-    OneTimeCodeView(
-      store: .init(
-        initialState: OneTimeCodeLogic.State(
-          inviterUserId: nil
-        ),
-        reducer: { OneTimeCodeLogic() }
-      )
+#Preview {
+  OneTimeCodeView(
+    store: .init(
+      initialState: OneTimeCodeLogic.State(
+        inviterUserId: nil
+      ),
+      reducer: { OneTimeCodeLogic() }
     )
-  }
+  )
 }

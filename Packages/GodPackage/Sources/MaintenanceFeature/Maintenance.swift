@@ -48,13 +48,11 @@ public struct MaintenanceView: View {
   }
 }
 
-struct MaintenanceViewPreviews: PreviewProvider {
-  static var previews: some View {
-    MaintenanceView(
-      store: .init(
-        initialState: MaintenanceLogic.State(),
-        reducer: { MaintenanceLogic() }
-      )
+#Preview {
+  MaintenanceView(
+    store: .init(
+      initialState: MaintenanceLogic.State(),
+      reducer: { MaintenanceLogic() }
     )
-  }
+  )
 }

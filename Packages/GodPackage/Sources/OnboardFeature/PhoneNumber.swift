@@ -181,15 +181,13 @@ public struct PhoneNumberView: View {
   }
 }
 
-struct PhoneNumberViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      PhoneNumberView(
-        store: .init(
-          initialState: PhoneNumberLogic.State(),
-          reducer: { PhoneNumberLogic() }
-        )
+#Preview {
+  NavigationStack {
+    PhoneNumberView(
+      store: .init(
+        initialState: PhoneNumberLogic.State(),
+        reducer: { PhoneNumberLogic() }
       )
-    }
+    )
   }
 }

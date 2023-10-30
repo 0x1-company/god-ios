@@ -93,13 +93,11 @@ public struct FromGodTeamView: View {
   }
 }
 
-struct FromGodTeamViewPreviews: PreviewProvider {
-  static var previews: some View {
-    FromGodTeamView(
-      store: .init(
-        initialState: FromGodTeamLogic.State(),
-        reducer: { FromGodTeamLogic() }
-      )
+#Preview {
+  FromGodTeamView(
+    store: .init(
+      initialState: FromGodTeamLogic.State(),
+      reducer: { FromGodTeamLogic() }
     )
-  }
+  )
 }

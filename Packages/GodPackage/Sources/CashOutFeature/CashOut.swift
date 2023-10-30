@@ -95,15 +95,13 @@ public struct CashOutView: View {
   }
 }
 
-struct CashOutViewPreviews: PreviewProvider {
-  static var previews: some View {
-    CashOutView(
-      store: .init(
-        initialState: CashOutLogic.State(
-          earnedCoinAmount: 20
-        ),
-        reducer: { CashOutLogic() }
-      )
+#Preview {
+  CashOutView(
+    store: .init(
+      initialState: CashOutLogic.State(
+        earnedCoinAmount: 20
+      ),
+      reducer: { CashOutLogic() }
     )
-  }
+  )
 }

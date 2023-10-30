@@ -88,13 +88,11 @@ public struct FindFriendView: View {
   }
 }
 
-struct FindFriendViewPreviews: PreviewProvider {
-  static var previews: some View {
-    FindFriendView(
-      store: .init(
-        initialState: FindFriendLogic.State(),
-        reducer: { FindFriendLogic() }
-      )
+#Preview {
+  FindFriendView(
+    store: .init(
+      initialState: FindFriendLogic.State(),
+      reducer: { FindFriendLogic() }
     )
-  }
+  )
 }

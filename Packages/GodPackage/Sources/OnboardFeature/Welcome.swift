@@ -151,15 +151,13 @@ public struct WelcomeView: View {
   }
 }
 
-struct WelcomeViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      WelcomeView(
-        store: .init(
-          initialState: WelcomeLogic.State(),
-          reducer: { WelcomeLogic() }
-        )
+#Preview {
+  NavigationStack {
+    WelcomeView(
+      store: .init(
+        initialState: WelcomeLogic.State(),
+        reducer: { WelcomeLogic() }
       )
-    }
+    )
   }
 }

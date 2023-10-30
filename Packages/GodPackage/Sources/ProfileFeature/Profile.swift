@@ -256,13 +256,11 @@ public struct ProfileView: View {
   }
 }
 
-struct ProfileViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ProfileView(
-      store: .init(
-        initialState: ProfileLogic.State(),
-        reducer: { ProfileLogic() }
-      )
+#Preview {
+  ProfileView(
+    store: .init(
+      initialState: ProfileLogic.State(),
+      reducer: { ProfileLogic() }
     )
-  }
+  )
 }

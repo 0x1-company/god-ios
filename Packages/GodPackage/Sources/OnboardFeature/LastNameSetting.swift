@@ -124,15 +124,13 @@ public struct LastNameSettingView: View {
   }
 }
 
-struct LastNameSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      LastNameSettingView(
-        store: .init(
-          initialState: LastNameSettingLogic.State(),
-          reducer: { LastNameSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    LastNameSettingView(
+      store: .init(
+        initialState: LastNameSettingLogic.State(),
+        reducer: { LastNameSettingLogic() }
       )
-    }
+    )
   }
 }

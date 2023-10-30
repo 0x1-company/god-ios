@@ -80,17 +80,15 @@ public struct ActivatedGodModeView: View {
   }
 }
 
-struct ActivatedGodModeViewPreviews: PreviewProvider {
-  static var previews: some View {
-    Text("")
-      .sheet(isPresented: .constant(true)) {
-        ActivatedGodModeView(
-          store: .init(
-            initialState: ActivatedGodModeLogic.State(),
-            reducer: { ActivatedGodModeLogic() }
-          )
+#Preview {
+  Text("")
+    .sheet(isPresented: .constant(true)) {
+      ActivatedGodModeView(
+        store: .init(
+          initialState: ActivatedGodModeLogic.State(),
+          reducer: { ActivatedGodModeLogic() }
         )
-        .presentationDetents([.fraction(0.4)])
-      }
-  }
+      )
+      .presentationDetents([.fraction(0.4)])
+    }
 }
