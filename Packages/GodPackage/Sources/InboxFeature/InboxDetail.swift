@@ -299,7 +299,10 @@ public struct InboxDetailView: View {
             store.send(.seeWhoSentItButtonTapped)
           } label: {
             Label {
-              Text("See who sent it", bundle: .module)
+              HStack(spacing: 8) {
+                Text("See who sent it", bundle: .module)
+              }
+              .font(.system(.body, design: .rounded, weight: .bold))
             } icon: {
               Image(systemName: "lock.fill")
             }

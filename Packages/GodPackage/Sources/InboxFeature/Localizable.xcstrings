@@ -37,6 +37,16 @@
         }
       }
     },
+    "free" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無料"
+          }
+        }
+      }
+    },
     "From %@ in %@" : {
       "localizations" : {
         "en" : {
@@ -138,7 +148,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "誰に褒められたか見る"
+            "value" : "誰から届いたか見る？👀"
           }
         }
       }
