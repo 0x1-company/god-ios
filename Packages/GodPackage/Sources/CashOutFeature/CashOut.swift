@@ -6,21 +6,6 @@ import SwiftUI
 import CoreHaptics
 import FeedbackGeneratorClient
 
-class HapticClient {
-  private let engine: CHHapticEngine
-
-  init() throws {
-    engine = try CHHapticEngine()
-    try engine.start()
-  }
-  
-  func play(_ events: [CHHapticEvent], at time: TimeInterval = 0) throws {
-    let pattern = try CHHapticPattern(events: events, parameters: [])
-    let player = try engine.makePlayer(with: pattern)
-    try player.start(atTime: time)
-  }
-}
-
 public struct CashOutLogic: Reducer {
   public init() {}
 
