@@ -301,13 +301,6 @@ public struct InboxDetailView: View {
             Label {
               HStack(spacing: 8) {
                 Text("See who sent it", bundle: .module)
-                
-                Text("free", bundle: .module)
-                  .frame(height: 24)
-                  .padding(.horizontal, 4)
-                  .background(Color.yellow.gradient)
-                  .foregroundStyle(Color.black)
-                  .cornerRadius(4)
               }
               .font(.system(.body, design: .rounded, weight: .bold))
             } icon: {
