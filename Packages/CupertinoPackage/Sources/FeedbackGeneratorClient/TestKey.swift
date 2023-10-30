@@ -12,6 +12,7 @@ extension FeedbackGeneratorClient: TestDependencyKey {
   public static let testValue = Self(
     prepare: unimplemented("\(Self.self).prepare"),
     impactOccurred: unimplemented("\(Self.self).mediumImpact"),
-    notificationOccurred: unimplemented("\(Self.self).notificationOccurred")
+    notificationOccurred: unimplemented("\(Self.self).notificationOccurred"),
+    play: unimplemented("\(Self.self).play")
   )
 }
