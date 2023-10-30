@@ -13,7 +13,7 @@ public struct GodLoadingLogic: Reducer {
   public enum Action: Equatable {
     case onTask
   }
-  
+
   @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {

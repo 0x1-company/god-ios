@@ -52,7 +52,7 @@ public struct FindFriendView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 28) {
         Spacer()
 
