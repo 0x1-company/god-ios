@@ -157,6 +157,10 @@ public struct AddFriendsLogic: Reducer {
 
       case let .usersResponse(.success(data)):
         state.users = data.usersBySameSchool.edges.map(\.node)
+        state.selectUserIds = data.usersBySameSchool.edges.map(\.node)
+          .filter { $0.generation == data.currentUser.generation }
+          .map(\.id)
+
         state.profileStoryFragment = data.currentUser.fragments.profileStoryFragment
         if let username = data.currentUser.username {
           state.shareURL = ShareLinkBuilder.buildGodLink(path: .add, username: username, source: .share, medium: .onboard)
