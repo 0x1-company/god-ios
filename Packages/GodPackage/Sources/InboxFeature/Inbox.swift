@@ -2,6 +2,7 @@ import AnalyticsClient
 import AnimationDisableTransaction
 import Build
 import ComposableArchitecture
+import FeedbackGeneratorClient
 import God
 import GodClient
 import GodModeFeature
@@ -10,7 +11,6 @@ import StoreKitClient
 import Styleguide
 import SwiftUI
 import UserNotificationClient
-import FeedbackGeneratorClient
 
 public struct InboxLogic: Reducer {
   public init() {}
