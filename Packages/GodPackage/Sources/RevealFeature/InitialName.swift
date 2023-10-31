@@ -9,7 +9,7 @@ import StoreKitHelpers
 import Styleguide
 import SwiftUI
 
-public struct RevealLogic: Reducer {
+public struct InitialNameLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
@@ -78,7 +78,7 @@ public struct RevealLogic: Reducer {
         }
 
       case .onAppear:
-        analytics.logScreen(screenName: "Reveal", of: self)
+        analytics.logScreen(screenName: "InitialName", of: self)
         return .none
 
       case .closeButtonTapped:
@@ -194,10 +194,10 @@ public struct RevealLogic: Reducer {
   }
 }
 
-public struct RevealView: View {
-  let store: StoreOf<RevealLogic>
+public struct InitialNameView: View {
+  let store: StoreOf<InitialNameLogic>
 
-  public init(store: StoreOf<RevealLogic>) {
+  public init(store: StoreOf<InitialNameLogic>) {
     self.store = store
   }
 
@@ -289,13 +289,13 @@ public struct RevealView: View {
       Color.blue
         .ignoresSafeArea()
         .fullScreenCover(isPresented: .constant(true)) {
-          RevealView(
+          InitialNameView(
             store: .init(
-              initialState: RevealLogic.State(
+              initialState: InitialNameLogic.State(
                 activityId: "1",
                 initialName: "S"
               ),
-              reducer: { RevealLogic() }
+              reducer: { InitialNameLogic() }
             )
           )
           .presentationBackground(Material.ultraThinMaterial)
