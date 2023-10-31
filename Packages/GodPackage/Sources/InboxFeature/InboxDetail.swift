@@ -17,19 +17,19 @@ public struct InboxDetailLogic: Reducer {
   public init() {}
   public struct Destination: Reducer {
     public enum State: Equatable {
-      case reveal(RevealLogic.State)
+      case initialName(InitialNameLogic.State)
       case fullName(FullNameLogic.State)
       case godMode(GodModeLogic.State)
     }
 
     public enum Action: Equatable {
-      case reveal(RevealLogic.Action)
+      case initialName(InitialNameLogic.Action)
       case fullName(FullNameLogic.Action)
       case godMode(GodModeLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.reveal, action: /Action.reveal, child: RevealLogic.init)
+      Scope(state: /State.initialName, action: /Action.initialName, child: InitialNameLogic.init)
       Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
       Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
     }
@@ -90,8 +90,8 @@ public struct InboxDetailLogic: Reducer {
 
       case .seeWhoSentItButtonTapped where state.isInGodMode:
         guard let initialName = state.activity.initial else { return .none }
-        state.destination = .reveal(
-          RevealLogic.State(
+        state.destination = .initialName(
+          InitialNameLogic.State(
             activityId: state.activity.id,
             initialName: initialName
           )
@@ -146,7 +146,7 @@ public struct InboxDetailLogic: Reducer {
         state.isInGodMode = data.activeSubscription != nil
         return .none
 
-      case let .destination(.presented(.reveal(.delegate(.fullName(fullName))))):
+      case let .destination(.presented(.initialName(.delegate(.fullName(fullName))))):
         state.destination = nil
         analytics.logEvent("reveal", [
           "question_id": state.activity.question.id,
@@ -314,10 +314,10 @@ public struct InboxDetailView: View {
       .onAppear { store.send(.onAppear) }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
-        state: /InboxDetailLogic.Destination.State.reveal,
-        action: InboxDetailLogic.Destination.Action.reveal
+        state: /InboxDetailLogic.Destination.State.initialName,
+        action: InboxDetailLogic.Destination.Action.initialName
       ) { store in
-        RevealView(store: store)
+        InitialNameView(store: store)
           .presentationBackground(Color.clear)
       }
       .fullScreenCover(
