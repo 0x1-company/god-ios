@@ -21,7 +21,7 @@ public struct NameImage: View {
 
   public var body: some View {
     Text(initialName)
-      .font(.system(size: size / 3, weight: .bold, design: .rounded))
+      .font(.custom(size: size / 3, weight: .bold, design: .rounded))
       .frame(width: size, height: size)
       .background(Color.godBackgroundWhite)
       .foregroundStyle(Color.godTextSecondaryLight)

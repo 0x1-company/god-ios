@@ -30,7 +30,7 @@ public struct SocialShare: View {
             .clipShape(Circle())
 
           Text("Story", bundle: .module)
-            .font(.system(.callout, design: .rounded, weight: .bold))
+            .font(.custom(.callout, design: .rounded, weight: .bold))
         }
       }
 
@@ -45,7 +45,7 @@ public struct SocialShare: View {
             .clipShape(Circle())
 
           Text("LINE", bundle: .module)
-            .font(.system(.callout, design: .rounded, weight: .bold))
+            .font(.custom(.callout, design: .rounded, weight: .bold))
         }
       }
 
@@ -61,7 +61,7 @@ public struct SocialShare: View {
             .clipShape(Circle())
 
           Text("Message", bundle: .module)
-            .font(.system(.callout, design: .rounded, weight: .bold))
+            .font(.custom(.callout, design: .rounded, weight: .bold))
         }
       }
 
@@ -75,7 +75,7 @@ public struct SocialShare: View {
             .clipShape(Circle())
 
           Text("Other", bundle: .module)
-            .font(.system(.callout, design: .rounded, weight: .bold))
+            .font(.custom(.callout, design: .rounded, weight: .bold))
         }
       }
     }

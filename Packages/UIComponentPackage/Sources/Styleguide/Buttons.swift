@@ -17,7 +17,7 @@ public struct HoldDownButtonStyle: ButtonStyle {
       .foregroundStyle(.white)
       .background(Color.orange)
       .clipShape(Capsule())
-      .font(.system(.body, design: .rounded, weight: .bold))
+      .font(.custom(.body, design: .rounded, weight: .bold))
   }
   .padding()
   .buttonStyle(HoldDownButtonStyle())
