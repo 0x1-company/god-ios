@@ -41,6 +41,7 @@ extension GodClient: TestDependencyKey {
     createTransaction: unimplemented("\(Self.self).createTransaction"),
     activeSubscription: unimplemented("\(Self.self).activeSubscription"),
     revealFullNameLimit: unimplemented("\(Self.self).revealFullNameLimit"),
-    revealFullName: unimplemented("\(Self.self).revealFullName")
+    revealFullName: unimplemented("\(Self.self).revealFullName"),
+    banners: unimplemented("\(Self.self).banners")
   )
 }

@@ -53,45 +53,45 @@ public struct GradeSettingView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack(alignment: .center) {
         Color.godService
 
         VStack(spacing: 0) {
           selectButton("Not in High School") {
-            viewStore.send(.generationButtonTapped(nil))
+            store.send(.generationButtonTapped(nil))
           }
           Divider()
           Text("HIGH SCHOOL", bundle: .module)
             .frame(height: 33)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
             .background(Color(uiColor: .quaternarySystemFill))
 
           Divider()
 
           VStack(spacing: 0) {
             gradeButton("Grade 10", year: "CLASS OF\n2025") {
-              viewStore.send(.generationButtonTapped(2007))
+              store.send(.generationButtonTapped(2007))
             }
             Divider()
             gradeButton("Grade 11", year: "CLASS OF\n2024") {
-              viewStore.send(.generationButtonTapped(2006))
+              store.send(.generationButtonTapped(2006))
             }
             Divider()
             gradeButton("Grade 12", year: "CLASS OF\n2023") {
-              viewStore.send(.generationButtonTapped(2005))
+              store.send(.generationButtonTapped(2005))
             }
             Divider()
             selectButton("Finished High School") {
-              viewStore.send(.generationButtonTapped(nil))
+              store.send(.generationButtonTapped(nil))
             }
             Divider()
           }
           Spacer()
         }
-        .foregroundColor(.primary)
+        .foregroundStyle(.primary)
         .background(Color.white)
         .multilineTextAlignment(.center)
         .cornerRadius(12, corners: [.topLeft, .topRight])
@@ -113,9 +113,9 @@ public struct GradeSettingView: View {
   ) -> some View {
     Button(action: action) {
       Text(title, bundle: .module)
-        .bold()
         .frame(height: 65)
         .frame(maxWidth: .infinity)
+        .font(.system(.body, design: .rounded, weight: .bold))
     }
   }
 
@@ -130,7 +130,7 @@ public struct GradeSettingView: View {
         Text(year, bundle: .module)
           .font(.footnote)
           .padding(.horizontal, 24)
-          .foregroundColor(.secondary)
+          .foregroundStyle(.secondary)
       }
   }
 }

@@ -107,9 +107,10 @@ public struct AppLogic: Reducer {
       View()
     }
     AuthLogic()
-    FirestoreLogic()
     StoreLogic()
+    FirestoreLogic()
     QuickActionLogic()
+    UserSettingsLogic()
   }
 
   public struct View: Reducer {

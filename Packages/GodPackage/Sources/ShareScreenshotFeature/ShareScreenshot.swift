@@ -81,12 +81,11 @@ public struct ShareScreenshotView: View {
 
         VStack(spacing: 36) {
           Text("Share Screenshot", bundle: .module)
-            .font(.title3)
-            .bold()
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           HStack(spacing: 8) {
             Button {
-              viewStore.send(.instagramButtonTapped)
+              store.send(.instagramButtonTapped)
             } label: {
               VStack(spacing: 8) {
                 Color.red
@@ -97,7 +96,7 @@ public struct ShareScreenshotView: View {
             }
 
             Button {
-              viewStore.send(.lineButtonTapped)
+              store.send(.lineButtonTapped)
             } label: {
               VStack(spacing: 8) {
                 Color.green
@@ -108,7 +107,7 @@ public struct ShareScreenshotView: View {
             }
 
             Button {
-              viewStore.send(.messagesButtonTapped)
+              store.send(.messagesButtonTapped)
             } label: {
               VStack(spacing: 8) {
                 Color.green
@@ -118,13 +117,13 @@ public struct ShareScreenshotView: View {
               }
             }
           }
-          .foregroundColor(.primary)
+          .foregroundStyle(.primary)
 
           Spacer()
         }
       }
       .padding(.top, 24)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }

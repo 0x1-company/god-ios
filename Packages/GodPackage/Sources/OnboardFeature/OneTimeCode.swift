@@ -13,6 +13,7 @@ public struct OneTimeCodeLogic: Reducer {
   public struct State: Equatable {
     var inviterUserId: String?
     var phoneNumber = ""
+    var isDisabled = true
     var isActivityIndicatorVisible = false
     @BindingState var oneTimeCode = ""
     @PresentationState var alert: AlertState<Action.Alert>?
@@ -155,11 +156,9 @@ public struct OneTimeCodeLogic: Reducer {
           await dismiss()
         }
 
-//      case .binding(\.$oneTimeCode):
-//        guard state.oneTimeCode.count >= 6 else {
-//          return .none
-//        }
-//        return .send(.nextButtonTapped)
+      case .binding(\.$oneTimeCode):
+        state.isDisabled = state.oneTimeCode.count != 6
+        return .none
 
       default:
         return .none
@@ -185,8 +184,7 @@ public struct OneTimeCodeView: View {
         VStack(spacing: 12) {
           Spacer()
           Text("We sent you a code to verify\nyour number", bundle: .module)
-            .bold()
-            .font(.title3)
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           TextField(
             text: viewStore.$oneTimeCode,
@@ -194,22 +192,23 @@ public struct OneTimeCodeView: View {
               Text("000000", bundle: .module)
             }
           )
-          .font(.title)
+          .font(.system(.title, design: .rounded))
           .textContentType(.oneTimeCode)
           .keyboardType(.numberPad)
           .focused($focus)
 
           Spacer()
 
-          VStack(spacing: 24) {
-            NextButton(isLoading: viewStore.isActivityIndicatorVisible) {
-              viewStore.send(.nextButtonTapped)
-            }
+          NextButton(
+            isLoading: viewStore.isActivityIndicatorVisible,
+            isDisabled: viewStore.isDisabled
+          ) {
+            store.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .multilineTextAlignment(.center)
       }
       .alert(store: store.scope(state: \.$alert, action: OneTimeCodeLogic.Action.alert))
@@ -221,15 +220,13 @@ public struct OneTimeCodeView: View {
   }
 }
 
-struct OneTimeCodeViewPreviews: PreviewProvider {
-  static var previews: some View {
-    OneTimeCodeView(
-      store: .init(
-        initialState: OneTimeCodeLogic.State(
-          inviterUserId: nil
-        ),
-        reducer: { OneTimeCodeLogic() }
-      )
+#Preview {
+  OneTimeCodeView(
+    store: .init(
+      initialState: OneTimeCodeLogic.State(
+        inviterUserId: nil
+      ),
+      reducer: { OneTimeCodeLogic() }
     )
-  }
+  )
 }

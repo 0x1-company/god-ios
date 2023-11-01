@@ -8,14 +8,26 @@ public struct AnalyticsClient {
 }
 
 public extension AnalyticsClient {
-  func logScreen(screenName: String, of value: some Any) {
+  func logScreen(screenName: String, of value: some Any, parameters: [String: Any] = [:]) {
+    var parameters = parameters
+    parameters[AnalyticsParameterScreenName] = screenName
+    parameters[AnalyticsParameterScreenClass] = String(describing: type(of: value))
     logEvent(
       AnalyticsEventScreenView,
-      [
-        AnalyticsParameterScreenName: screenName,
-        AnalyticsParameterScreenClass: String(describing: type(of: value)),
-      ]
+      parameters
     )
+  }
+
+  func signUp() {
+    logEvent(AnalyticsEventSignUp, [:])
+  }
+}
+
+public extension AnalyticsClient {
+  func log(name: String, parameters: [String: Any]) {
+    var parameters = parameters
+    parameters["name"] = name
+    logEvent("log", parameters)
   }
 }
 
@@ -30,5 +42,35 @@ public extension AnalyticsClient {
     case gender
     case generation
     case schoolId = "school_id"
+  }
+}
+
+public extension AnalyticsClient {
+  func buttonClick(name: ButtonClickName, parameters: [String: Any] = [:]) {
+    var parameters = parameters
+    parameters["name"] = name.rawValue
+    logEvent("button_click", parameters)
+  }
+
+  enum ButtonClickName: String {
+    case close
+    case voteSlowDown = "vote_slow_down"
+    case shuffle
+    case skip
+    case storyShare = "story_share"
+    case lineShare = "line_share"
+    case smsShare = "sms_share"
+    case editProfile = "edit_profile"
+    case shareProfile = "share_profile"
+    case shop
+    case shareOnInstagram = "share_on_instagram"
+    case copyLink = "copy_link"
+    case addFriends = "add_friends"
+    case inviteFriend = "invite_friend"
+    case notNow = "not_now"
+    case delete
+    case gmail
+    case email
+    case forceUpdate = "force_update"
   }
 }

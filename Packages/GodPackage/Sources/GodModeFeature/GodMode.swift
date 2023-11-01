@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -11,7 +12,9 @@ public struct GodModeLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var product: Product
+    let product: Product
+
+    var isEligibleForIntroOffer = false
     var currentUser: God.CurrentUserQuery.Data.CurrentUser?
     var isActivityIndicatorVisible = false
 
@@ -22,8 +25,10 @@ public struct GodModeLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case maybeLaterButtonTapped
     case continueButtonTapped
+    case isEligibleForIntroOffer(Bool)
     case purchaseResponse(TaskResult<StoreKit.Transaction>)
     case transactionFinish(StoreKit.Transaction)
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
@@ -37,9 +42,10 @@ public struct GodModeLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   enum Cancel {
-    case id
+    case purchase
     case currentUser
   }
 
@@ -47,19 +53,31 @@ public struct GodModeLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .run { send in
-          for try await data in godClient.currentUser() {
-            await send(.currentUserResponse(.success(data)))
+        return .run { [product = state.product] send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await currentUserRequest(send: send)
+            }
+
+            if let subscription = product.subscription {
+              group.addTask {
+                await send(.isEligibleForIntroOffer(
+                  subscription.isEligibleForIntroOffer
+                ))
+              }
+            }
           }
-        } catch: { error, send in
-          await send(.currentUserResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+
+      case .onAppear:
+        analytics.logScreen(screenName: "GodMode", of: self)
+        return .none
 
       case .maybeLaterButtonTapped:
         return .run { _ in
           await dismiss()
         }
+
       case .continueButtonTapped:
         guard let userId = state.currentUser?.id else { return .none }
         guard let token = UUID(uuidString: userId) else { return .none }
@@ -81,22 +99,35 @@ public struct GodModeLogic: Reducer {
         } catch: { error, send in
           await send(.purchaseResponse(.failure(error)))
         }
-        .cancellable(id: Cancel.id)
+        .cancellable(id: Cancel.purchase, cancelInFlight: true)
+
+      case let .isEligibleForIntroOffer(isEligibleForIntroOffer):
+        state.isEligibleForIntroOffer = isEligibleForIntroOffer
+        return .none
+
       case let .purchaseResponse(.success(transaction)):
         state.isActivityIndicatorVisible = false
+        if transaction.environment == .xcode {
+          return .run { send in
+            await send(.transactionFinish(transaction))
+          }
+        }
         return .run { send in
           let data = try await godClient.createTransaction(transaction.id.description)
           guard data.createTransaction else { return }
           await send(.transactionFinish(transaction))
         }
+
       case let .purchaseResponse(.failure(error as VerificationResult<StoreKit.Transaction>.VerificationError)):
         state.isActivityIndicatorVisible = false
         print(error)
         return .none
+
       case let .purchaseResponse(.failure(error as InAppPurchaseError)):
         state.isActivityIndicatorVisible = false
         print(error)
         return .none
+
       case .purchaseResponse(.failure):
         state.isActivityIndicatorVisible = false
         return .none
@@ -118,6 +149,18 @@ public struct GodModeLogic: Reducer {
       }
     }
   }
+
+  func currentUserRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.currentUser, cancelInFlight: true) {
+      do {
+        for try await data in godClient.currentUser() {
+          await send(.currentUserResponse(.success(data)))
+        }
+      } catch {
+        await send(.currentUserResponse(.failure(error)))
+      }
+    }
+  }
 }
 
 public struct GodModeView: View {
@@ -136,7 +179,7 @@ public struct GodModeView: View {
         }
         .font(.caption)
         .padding(.horizontal, 24)
-        .foregroundColor(Color.gray)
+        .foregroundStyle(Color.gray)
         .multilineTextAlignment(.center)
 
         VStack(spacing: 16) {
@@ -149,8 +192,20 @@ public struct GodModeView: View {
             GodModeFunctions()
           }
 
-          Text("\(viewStore.product.displayPrice)/week", bundle: .module)
-            .bold()
+          VStack(spacing: 12) {
+            if viewStore.isEligibleForIntroOffer {
+              Text("3-day free trial", bundle: .module)
+                .foregroundStyle(Color.orange.gradient)
+                .font(.system(.title2, design: .rounded, weight: .bold))
+
+              Text("Renews at \(viewStore.product.displayPrice)/week", bundle: .module)
+                .foregroundStyle(Color.godTextSecondaryDark)
+                .font(.system(.footnote, design: .rounded, weight: .bold))
+            } else {
+              Text("\(viewStore.product.displayPrice)/week", bundle: .module)
+                .font(.system(.body, design: .rounded, weight: .bold))
+            }
+          }
 
           Button {
             store.send(.continueButtonTapped)
@@ -161,13 +216,13 @@ public struct GodModeView: View {
                   .progressViewStyle(.circular)
               } else {
                 Text("Continue", bundle: .module)
-                  .bold()
+                  .font(.system(.body, design: .rounded, weight: .bold))
               }
             }
-            .bold()
+            .font(.system(.body, design: .rounded, weight: .bold))
             .frame(height: 56)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
             .tint(Color.white)
             .background(Color.orange.gradient)
             .clipShape(Capsule())
@@ -179,12 +234,12 @@ public struct GodModeView: View {
             store.send(.maybeLaterButtonTapped)
           } label: {
             Text("Maybe Later", bundle: .module)
-              .foregroundColor(Color.gray)
+              .foregroundStyle(Color.gray)
           }
           .buttonStyle(HoldDownButtonStyle())
         }
         .disabled(viewStore.isActivityIndicatorVisible)
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .padding(.vertical, 24)
         .background(Color.black.gradient)
         .cornerRadius(32 / 2)
@@ -197,7 +252,8 @@ public struct GodModeView: View {
         Spacer()
       }
       .background(Color.godBlack)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

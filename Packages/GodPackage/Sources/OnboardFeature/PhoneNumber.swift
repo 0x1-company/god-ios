@@ -129,13 +129,12 @@ public struct PhoneNumberView: View {
         VStack(spacing: 12) {
           Spacer()
           Text("Enter your phone Number", bundle: .module)
-            .bold()
-            .font(.title3)
+            .font(.system(.title3, design: .rounded, weight: .bold))
 
           TextField(text: viewStore.$phoneNumber) {
             Text("080 8478 4955", bundle: .module)
           }
-          .font(.title)
+          .font(.system(.title, design: .rounded))
           .textContentType(.telephoneNumber)
           .keyboardType(.phonePad)
           .focused($focus)
@@ -146,12 +145,12 @@ public struct PhoneNumberView: View {
             isLoading: viewStore.isActivityIndicatorVisible,
             isDisabled: viewStore.isDisabled
           ) {
-            viewStore.send(.nextButtonTapped)
+            store.send(.nextButtonTapped)
           }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .foregroundColor(Color.godWhite)
+        .foregroundStyle(Color.godWhite)
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
@@ -182,15 +181,13 @@ public struct PhoneNumberView: View {
   }
 }
 
-struct PhoneNumberViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      PhoneNumberView(
-        store: .init(
-          initialState: PhoneNumberLogic.State(),
-          reducer: { PhoneNumberLogic() }
-        )
+#Preview {
+  NavigationStack {
+    PhoneNumberView(
+      store: .init(
+        initialState: PhoneNumberLogic.State(),
+        reducer: { PhoneNumberLogic() }
       )
-    }
+    )
   }
 }

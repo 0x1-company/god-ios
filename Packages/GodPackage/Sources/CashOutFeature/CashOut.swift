@@ -1,5 +1,9 @@
+import AnalyticsClient
 import ComposableArchitecture
+import CoreHaptics
+import FeedbackGeneratorClient
 import Lottie
+import Styleguide
 import SwiftUI
 
 public struct CashOutLogic: Reducer {
@@ -7,12 +11,15 @@ public struct CashOutLogic: Reducer {
 
   public struct State: Equatable {
     let earnedCoinAmount: Int
+    var isPlaying = false
+
     public init(earnedCoinAmount: Int) {
       self.earnedCoinAmount = earnedCoinAmount
     }
   }
 
   public enum Action: Equatable {
+    case onTask
     case cashOutButtonTapped
     case delegate(Delegate)
 
@@ -21,11 +28,34 @@ public struct CashOutLogic: Reducer {
     }
   }
 
+  @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.analytics) var analytics
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
+
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
+      case .onTask:
+        analytics.logScreen(screenName: "CashOut", of: self)
+        return .none
+
       case .cashOutButtonTapped:
-        return .send(.delegate(.finish), animation: .default)
+        state.isPlaying = true
+        let events = Array(repeating: "", count: 20).enumerated().map { index, _ in
+          CHHapticEvent(
+            eventType: .hapticTransient,
+            parameters: [],
+            relativeTime: TimeInterval(floatLiteral: Double(index) * 0.13)
+          )
+        }
+        return .run { send in
+          try await mainQueue.sleep(for: .seconds(0.8))
+          try feedbackGenerator.play(events)
+          try await mainQueue.sleep(for: .seconds(3.2))
+          await send(.delegate(.finish), animation: .default)
+        } catch: { _, send in
+          await send(.delegate(.finish), animation: .default)
+        }
 
       case .delegate:
         return .none
@@ -54,13 +84,13 @@ public struct CashOutView: View {
           }
 
           Button {
-            viewStore.send(.cashOutButtonTapped)
+            store.send(.cashOutButtonTapped)
           } label: {
             Text("Cash Out", bundle: .module)
               .font(.system(.title3, design: .rounded, weight: .bold))
               .frame(height: 54)
               .frame(maxWidth: .infinity)
-              .foregroundColor(Color.black)
+              .foregroundStyle(Color.black)
               .overlay(alignment: .leading) {
                 Image(.moneyMouthFace)
                   .resizable()
@@ -69,30 +99,40 @@ public struct CashOutView: View {
                   .clipped()
               }
               .padding(.horizontal, 16)
+              .background(Color.white)
+              .clipShape(Capsule())
           }
-          .background(Color.white)
-          .clipShape(Capsule())
+          .disabled(viewStore.isPlaying)
           .shadow(color: .black.opacity(0.2), radius: 25)
+          .buttonStyle(HoldDownButtonStyle())
           .padding(.horizontal, 65)
         }
 
-        LottieView(animation: LottieAnimation.named("Coin", bundle: .module))
-          .resizable()
-          .padding(.bottom, 320)
+        Group {
+          if viewStore.isPlaying {
+            LottieView(animation: LottieAnimation.named("Coin", bundle: .module))
+              .playing(loopMode: .playOnce)
+              .resizable()
+          } else {
+            LottieView(animation: LottieAnimation.named("Coin", bundle: .module))
+              .resizable()
+          }
+        }
+        .scaleEffect(1.5)
+        .padding(.bottom, 400)
       }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }
 
-struct CashOutViewPreviews: PreviewProvider {
-  static var previews: some View {
-    CashOutView(
-      store: .init(
-        initialState: CashOutLogic.State(
-          earnedCoinAmount: 20
-        ),
-        reducer: { CashOutLogic() }
-      )
+#Preview {
+  CashOutView(
+    store: .init(
+      initialState: CashOutLogic.State(
+        earnedCoinAmount: 20
+      ),
+      reducer: { CashOutLogic() }
     )
-  }
+  )
 }

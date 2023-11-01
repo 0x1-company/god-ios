@@ -1,3 +1,4 @@
+import CachedAsyncImage
 import Styleguide
 import SwiftUI
 
@@ -6,20 +7,30 @@ struct ShopItemView: View {
   let name: String
   let description: String?
   let amount: Int
+  let imageURL: String
   let action: () -> Void
 
   var body: some View {
     HStack(alignment: .center, spacing: 16) {
-      Image(id, bundle: .module)
-        .resizable()
-        .aspectRatio(contentMode: .fill)
-        .frame(width: 60, height: 60)
+      CachedAsyncImage(
+        url: URL(string: imageURL)!,
+        content: { image in
+          image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 60, height: 60)
+        },
+        placeholder: {
+          ProgressView()
+            .progressViewStyle(.circular)
+        }
+      )
 
       VStack(spacing: 4) {
         Text(name)
           .font(.callout)
           .frame(maxWidth: .infinity, alignment: .leading)
-          .foregroundColor(Color.white)
+          .foregroundStyle(Color.white)
 
         if let description {
           Text(description)
@@ -38,7 +49,7 @@ struct ShopItemView: View {
             .frame(width: 18, height: 18)
         }
         .frame(width: 76, height: 36)
-        .foregroundColor(Color.white)
+        .foregroundStyle(Color.white)
         .background(Color.godYellow.gradient)
         .clipShape(Capsule())
       }
@@ -57,6 +68,7 @@ struct ShopItemView: View {
     name: "Put Your Name in Your Crush's Poll",
     description: "Your name remains secret",
     amount: 300,
+    imageURL: "https://storage.googleapis.com/god-production.appspot.com/store_items/GET_YOUR_NAME_ON_RANDOM_POLL.png",
     action: {}
   )
 }

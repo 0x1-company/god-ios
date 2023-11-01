@@ -12,8 +12,7 @@ public struct FriendsSection: View {
     VStack(alignment: .leading, spacing: 0) {
       Divider()
       Text("Friends", bundle: .module)
-        .font(.headline)
-        .bold()
+        .font(.system(.headline, design: .rounded, weight: .bold))
         .frame(height: 32)
         .padding(.horizontal, 16)
 
@@ -37,20 +36,28 @@ public struct FriendsSection: View {
       VStack(spacing: 20) {
         Text("You have no friends", bundle: .module)
           .foregroundStyle(Color.godTextSecondaryLight)
+          .frame(maxWidth: .infinity)
 
         Button(action: emptyAction) {
           Text("Add Friends", bundle: .module)
-            .bold()
             .frame(height: 56)
             .padding(.horizontal, 48)
-            .foregroundColor(.godWhite)
+            .font(.system(.body, design: .rounded, weight: .bold))
+            .foregroundStyle(Color.godWhite)
+            .overlay(alignment: .leading) {
+              Image(.line)
+                .resizable()
+                .aspectRatio(1, contentMode: .fit)
+                .frame(width: 32, height: 32)
+                .clipped()
+            }
+            .padding(.horizontal, 16)
             .background(Color.godService)
             .clipShape(Capsule())
         }
         .buttonStyle(HoldDownButtonStyle())
       }
       .frame(height: 256)
-      .frame(maxWidth: .infinity)
     }
   }
 
@@ -82,4 +89,5 @@ public struct FriendsSection: View {
 
 #Preview {
   FriendsSection(friends: [], emptyAction: {}, action: { _ in })
+    .environment(\.locale, Locale(identifier: "ja-JP"))
 }

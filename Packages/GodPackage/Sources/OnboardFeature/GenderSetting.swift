@@ -62,27 +62,27 @@ public struct GenderSettingView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack {
         Color.godService
           .ignoresSafeArea()
 
         VStack(spacing: 24) {
           Text("What's your gender?", bundle: .module)
-            .bold()
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
+            .font(.system(.body, design: .rounded, weight: .bold))
 
           HStack(spacing: 24) {
             ChoiceView(gender: .male) {
-              viewStore.send(.genderButtonTapped(.male))
+              store.send(.genderButtonTapped(.male))
             }
             ChoiceView(gender: .female) {
-              viewStore.send(.genderButtonTapped(.female))
+              store.send(.genderButtonTapped(.female))
             }
           }
           HStack(spacing: 24) {
             ChoiceView(gender: .other) {
-              viewStore.send(.genderButtonTapped(.other))
+              store.send(.genderButtonTapped(.other))
             }
           }
         }
@@ -130,23 +130,10 @@ public struct GenderSettingView: View {
             )
 
           Text(textGender, bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
         }
       }
       .buttonStyle(HoldDownButtonStyle())
-    }
-  }
-}
-
-struct GenderSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      GenderSettingView(
-        store: .init(
-          initialState: GenderSettingLogic.State(),
-          reducer: { GenderSettingLogic() }
-        )
-      )
     }
   }
 }

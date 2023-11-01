@@ -104,20 +104,19 @@ public struct UsernameSettingView: View {
       VStack(spacing: 8) {
         Spacer()
         Text("Choose a username", bundle: .module)
-          .bold()
-          .font(.title3)
+          .font(.system(.title3, design: .rounded, weight: .bold))
 
         TextField(text: viewStore.$username) {
           Text("godappteam", bundle: .module)
         }
         .textInputAutocapitalization(.never)
         .textContentType(.username)
-        .font(.title)
+        .font(.system(.title, design: .rounded))
         .focused($focus)
 
         if viewStore.isDisabled {
           Text("Usernames can only use Roman latters (a-z, A-Z), numbers, underscores and periods", bundle: .module)
-            .font(.footnote)
+            .font(.system(.footnote, design: .rounded))
         }
 
         Spacer()
@@ -126,7 +125,7 @@ public struct UsernameSettingView: View {
           isLoading: viewStore.isActivityIndicatorVisible,
           isDisabled: viewStore.isDisabled
         ) {
-          viewStore.send(.nextButtonTapped)
+          store.send(.nextButtonTapped)
         }
       }
       .padding(.horizontal, 24)
@@ -143,15 +142,13 @@ public struct UsernameSettingView: View {
   }
 }
 
-struct UsernameSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      UsernameSettingView(
-        store: .init(
-          initialState: UsernameSettingLogic.State(),
-          reducer: { UsernameSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    UsernameSettingView(
+      store: .init(
+        initialState: UsernameSettingLogic.State(),
+        reducer: { UsernameSettingLogic() }
       )
-    }
+    )
   }
 }

@@ -50,6 +50,10 @@ public struct LastNameSettingLogic: Reducer {
         else { return .none }
         state.lastName = transformedLastName
         state.isImport = true
+        analytics.log(name: "import_from_contacts", parameters: [
+          "phonetic_family_name": contact.phoneticFamilyName,
+          "transformed_family_name": transformedLastName,
+        ])
         return .none
 
       case .onAppear:
@@ -90,8 +94,7 @@ public struct LastNameSettingView: View {
       VStack(spacing: 8) {
         Spacer()
         Text("What's your last name?", bundle: .module)
-          .bold()
-          .font(.title3)
+          .font(.system(.title3, design: .rounded, weight: .bold))
 
         Text("Only hiragana can be set", bundle: .module)
 
@@ -99,23 +102,24 @@ public struct LastNameSettingView: View {
           Text("Last Name", bundle: .module)
         }
         .multilineTextAlignment(.center)
-        .font(.title)
+        .font(.system(.title, design: .rounded))
         .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts", bundle: .module)
+            .font(.system(.body, design: .rounded, weight: .bold))
         }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
-          viewStore.send(.nextButtonTapped)
+          store.send(.nextButtonTapped)
         }
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
-      .foregroundColor(Color.white)
+      .foregroundStyle(Color.white)
       .background(Color.godService)
       .navigationBarBackButtonHidden()
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear {
         focus = true
         store.send(.onAppear)
@@ -124,15 +128,13 @@ public struct LastNameSettingView: View {
   }
 }
 
-struct LastNameSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      LastNameSettingView(
-        store: .init(
-          initialState: LastNameSettingLogic.State(),
-          reducer: { LastNameSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    LastNameSettingView(
+      store: .init(
+        initialState: LastNameSettingLogic.State(),
+        reducer: { LastNameSettingLogic() }
       )
-    }
+    )
   }
 }

@@ -52,23 +52,22 @@ public struct FindFriendView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 28) {
         Spacer()
 
         Text("God uses your contacts\nto find friends", bundle: .module)
-          .bold()
-          .foregroundColor(Color.godWhite)
+          .foregroundStyle(Color.godWhite)
+          .font(.system(.body, design: .rounded, weight: .bold))
 
         Button {
-          viewStore.send(.findButtonTapped)
+          store.send(.findButtonTapped)
         } label: {
           Text("Find My Friends", bundle: .module)
-            .bold()
-            .font(.title3)
+            .font(.system(.title3, design: .rounded, weight: .bold))
             .frame(height: 54)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
+            .foregroundStyle(Color.black)
             .padding(.horizontal, 16)
             .background(Color.white)
             .clipShape(Capsule())
@@ -79,7 +78,7 @@ public struct FindFriendView: View {
         Spacer()
 
         Text("God cares intensely about your privacy.\nWeb will never text or spam your contacts.", bundle: .module)
-          .foregroundColor(Color.godWhite)
+          .foregroundStyle(Color.godWhite)
       }
       .multilineTextAlignment(.center)
       .background(Color.godService)
@@ -89,13 +88,11 @@ public struct FindFriendView: View {
   }
 }
 
-struct FindFriendViewPreviews: PreviewProvider {
-  static var previews: some View {
-    FindFriendView(
-      store: .init(
-        initialState: FindFriendLogic.State(),
-        reducer: { FindFriendLogic() }
-      )
+#Preview {
+  FindFriendView(
+    store: .init(
+      initialState: FindFriendLogic.State(),
+      reducer: { FindFriendLogic() }
     )
-  }
+  )
 }

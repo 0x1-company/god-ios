@@ -1,5 +1,7 @@
+import AnalyticsClient
 import AsyncValue
 import ComposableArchitecture
+import DeleteAccountFeature
 import FirebaseAuthClient
 import FirebaseStorage
 import FirebaseStorageClient
@@ -15,11 +17,27 @@ import UserDefaultsClient
 
 public struct ProfileEditLogic: Reducer {
   public init() {}
+  public struct Destination: Reducer {
+    public enum State: Equatable {
+      case manageAccount(ManageAccountLogic.State = .init())
+      case deleteAccount(DeleteAccountLogic.State = .init())
+    }
+
+    public enum Action: Equatable {
+      case manageAccount(ManageAccountLogic.Action)
+      case deleteAccount(DeleteAccountLogic.Action)
+    }
+
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.manageAccount, action: /Action.manageAccount, child: ManageAccountLogic.init)
+      Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     public init() {}
 
-    @PresentationState var manageAccount: ManageAccountLogic.State?
+    @PresentationState var destination: Destination.State?
     @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var photoPickerItems: [PhotosPickerItem] = []
     @BindingState var firstName: String = ""
@@ -54,6 +72,7 @@ public struct ProfileEditLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case cancelEditButtonTapped
     case saveButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
@@ -65,9 +84,10 @@ public struct ProfileEditLogic: Reducer {
 
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
+    case deleteAccountButtonTapped
     case logoutButtonTapped
     case closeButtonTapped
-    case manageAccount(PresentationAction<ManageAccountLogic.Action>)
+    case destination(PresentationAction<Destination.Action>)
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
 
@@ -83,6 +103,7 @@ public struct ProfileEditLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseAuth.signOut) var signOut
   @Dependency(\.firebaseStorage) var firebaseStorage
@@ -100,6 +121,10 @@ public struct ProfileEditLogic: Reducer {
           await currentUserRequest(send: send)
         }
         .cancellable(id: Cancel.currentUser, cancelInFlight: true)
+
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileEdit", of: self)
+        return .none
 
       case .cancelEditButtonTapped:
         state.alert = .changesNotSaved()
@@ -174,10 +199,15 @@ public struct ProfileEditLogic: Reducer {
         return .none
 
       case .manageAccountButtonTapped:
-        state.manageAccount = .init()
+        state.destination = .manageAccount()
+        return .none
+
+      case .deleteAccountButtonTapped:
+        state.destination = .deleteAccount()
         return .none
 
       case .logoutButtonTapped:
+        analytics.logEvent("sign_out", [:])
         return .run { _ in
           await userDefaults.setOnboardCompleted(false)
           try signOut()
@@ -218,8 +248,8 @@ public struct ProfileEditLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$manageAccount, action: /Action.manageAccount) {
-      ManageAccountLogic()
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
     }
   }
 
@@ -271,7 +301,7 @@ public struct ProfileEditView: View {
               Image(systemName: "camera.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .foregroundColor(.godWhite)
+                .foregroundStyle(Color.godWhite)
                 .frame(width: 40, height: 40)
                 .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
             )
@@ -303,14 +333,14 @@ public struct ProfileEditView: View {
             HStack(alignment: .center, spacing: 0) {
               Text("Gender", bundle: .module)
                 .font(.body)
-                .foregroundColor(.godTextSecondaryLight)
+                .foregroundStyle(Color.godTextSecondaryLight)
                 .frame(width: 108, alignment: .leading)
 
               Text(viewStore.gender, bundle: .module)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.body)
-                .foregroundColor(.godBlack)
+                .foregroundStyle(Color.godBlack)
             }
             .padding(.horizontal, 12)
             .frame(maxWidth: .infinity)
@@ -323,19 +353,18 @@ public struct ProfileEditView: View {
 
           VStack(alignment: .leading, spacing: 8) {
             Text("SCHOOL", bundle: .module)
-              .font(.caption)
-              .bold()
-              .foregroundColor(.godTextSecondaryLight)
+              .foregroundStyle(Color.godTextSecondaryLight)
+              .font(.system(.caption, design: .rounded, weight: .bold))
 
             VStack(alignment: .center, spacing: 0) {
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "house.fill"))
-                  .foregroundColor(.godTextSecondaryLight)
-                  .font(.body)
+                  .foregroundStyle(Color.godTextSecondaryLight)
+                  .font(.system(.body, design: .rounded))
 
                 Text(viewStore.currentUser?.school?.name ?? "")
-                  .font(.body)
-                  .foregroundColor(.godBlack)
+                  .font(.system(.body, design: .rounded))
+                  .foregroundStyle(Color.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
               .padding(.horizontal, 12)
@@ -346,12 +375,12 @@ public struct ProfileEditView: View {
 
               HStack(alignment: .center, spacing: 8) {
                 Text(Image(systemName: "graduationcap.fill"))
-                  .foregroundColor(.godTextSecondaryLight)
-                  .font(.body)
+                  .foregroundStyle(Color.godTextSecondaryLight)
+                  .font(.system(.body, design: .rounded))
 
                 Text(viewStore.currentUser?.grade ?? "")
-                  .font(.body)
-                  .foregroundColor(.godBlack)
+                  .font(.system(.body, design: .rounded))
+                  .foregroundStyle(Color.godBlack)
                   .frame(maxWidth: .infinity, alignment: .leading)
               }
               .padding(.horizontal, 12)
@@ -366,20 +395,24 @@ public struct ProfileEditView: View {
 
           VStack(alignment: .leading, spacing: 8) {
             Text("ACCOUNT SETTING", bundle: .module)
-              .font(.caption)
-              .bold()
-              .foregroundColor(.godTextSecondaryLight)
+              .font(.system(.caption, design: .rounded, weight: .bold))
+              .foregroundStyle(Color.godTextSecondaryLight)
 //            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
-//              viewStore.send(.restorePurchasesButtonTapped)
+//              store.send(.restorePurchasesButtonTapped)
 //            }
 //
 //            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
-//              viewStore.send(.manageAccountButtonTapped)
+//              store.send(.manageAccountButtonTapped)
 //            }
 
             CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
-              viewStore.send(.logoutButtonTapped)
+              store.send(.logoutButtonTapped)
             }
+
+            CornerRadiusBorderButton("Delete Account", systemImage: "trash") {
+              store.send(.deleteAccountButtonTapped)
+            }
+            .foregroundStyle(Color.red)
           }
         }
         .padding(.all, 24)
@@ -390,44 +423,55 @@ public struct ProfileEditView: View {
         if viewStore.isUserProfileChanges {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
-              viewStore.send(.cancelEditButtonTapped)
+              store.send(.cancelEditButtonTapped)
             } label: {
               Text("Cancel", bundle: .module)
+                .font(.system(.body, design: .rounded))
             }
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
           }
           ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-              viewStore.send(.saveButtonTapped)
+              store.send(.saveButtonTapped)
             } label: {
               Text("Save", bundle: .module)
+                .font(.system(.body, design: .rounded))
             }
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
           }
         } else {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
-              viewStore.send(.closeButtonTapped)
+              store.send(.closeButtonTapped)
             } label: {
               Text("Close", bundle: .module)
+                .font(.system(.body, design: .rounded))
             }
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
-      .sheet(
-        store: store.scope(
-          state: \.$manageAccount,
-          action: ProfileEditLogic.Action.manageAccount
-        ),
-        content: { store in
-          NavigationStack {
-            ManageAccountView(store: store)
-          }
-        }
-      )
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
+      .sheet(
+        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+        state: /ProfileEditLogic.Destination.State.manageAccount,
+        action: ProfileEditLogic.Destination.Action.manageAccount
+      ) { store in
+        NavigationStack {
+          ManageAccountView(store: store)
+        }
+      }
+      .sheet(
+        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+        state: /ProfileEditLogic.Destination.State.deleteAccount,
+        action: ProfileEditLogic.Destination.Action.deleteAccount
+      ) { store in
+        NavigationStack {
+          DeleteAccountView(store: store)
+        }
+      }
     }
   }
 
@@ -447,14 +491,14 @@ public struct ProfileEditView: View {
       HStack(alignment: .center, spacing: 0) {
         Text(fieldName, bundle: .module)
           .font(.body)
-          .foregroundColor(.godTextSecondaryLight)
+          .foregroundStyle(Color.godTextSecondaryLight)
           .frame(width: 108, alignment: .leading)
 
         TextField("", text: $text)
           .multilineTextAlignment(.leading)
           .textFieldStyle(PlainTextFieldStyle())
           .font(.body)
-          .foregroundColor(.godBlack)
+          .foregroundStyle(Color.godBlack)
       }
       .padding(.horizontal, 12)
       .frame(maxWidth: .infinity)

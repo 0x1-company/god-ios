@@ -1,9 +1,11 @@
+import AnalyticsClient
 import AnimationDisableTransaction
 import BackgroundClearSheet
 import ComposableArchitecture
 import CupertinoMessageFeature
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
@@ -22,6 +24,7 @@ public struct ProfileShareLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case contentButtonTapped(Content)
     case closeButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
@@ -32,6 +35,7 @@ public struct ProfileShareLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -45,16 +49,23 @@ public struct ProfileShareLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileShare", of: self)
+        return .none
+
       case .contentButtonTapped(.instagram):
+        analytics.buttonClick(name: .storyShare)
         state.destination = .shareProfileToInstagramPopup()
         return .none
 
       case .contentButtonTapped(.line):
+        analytics.buttonClick(name: .lineShare)
         return .run { [url = state.lineURL] _ in
           await openURL(url)
         }
 
       case .contentButtonTapped(.messages):
+        analytics.buttonClick(name: .smsShare)
         state.message = .init(recipients: [], body: state.smsText)
         return .none
 
@@ -64,25 +75,19 @@ public struct ProfileShareLogic: Reducer {
         }
 
       case let .currentUserResponse(.success(data)):
-        guard
-          let username = data.currentUser.username,
-          let schoolName = data.currentUser.school?.name,
-          let shareURL = URL(string: "https://godapp.jp/add/\(username)?utm_source=share&utm_campaign=profile")
-        else { return .none }
-        state.shareURL = shareURL
-        state.smsText = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/add/\(username)?utm_source=sms&utm_campaign=profile
-        """
-        let lineText = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/add/\(username)
-        """
-        guard
-          let text = lineText.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-          let lineURL = URL(string: "https://line.me/R/share?text=\(text)")
-        else { return .none }
-        state.lineURL = lineURL
+        guard let username = data.currentUser.username else { return .none }
+        state.shareURL = ShareLinkBuilder.buildGodLink(
+          path: .add,
+          username: username,
+          source: .share,
+          medium: .profile
+        )
+        if let smsText = ShareLinkBuilder.buildShareText(path: .add, username: username, source: .sms, medium: .profile) {
+          state.smsText = smsText
+        }
+        if let lineURL = ShareLinkBuilder.buildForLine(path: .add, username: username) {
+          state.lineURL = lineURL
+        }
         return .none
 
       default:
@@ -140,75 +145,81 @@ public struct ProfileShareView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(alignment: .center, spacing: 28) {
-        Text("Share Profile", bundle: .module)
-          .font(.title3)
-          .bold()
-
-        HStack {
-          Spacer()
-          ForEach(ProfileShareLogic.Content.allCases, id: \.self) { content in
-            switch content {
-            case .instagram, .line:
-              ShareButton(content: content) {
-                store.send(.contentButtonTapped(content))
-              }
-            case .messages:
-              Button {
-                store.send(.contentButtonTapped(content))
-              } label: {
-                VStack(spacing: 12) {
-                  Image(systemName: "message.fill")
-                    .font(.system(size: 34))
-                    .frame(width: 60, height: 60)
-                    .foregroundStyle(Color.white)
-                    .background(Color.green.gradient)
-                    .clipShape(Circle())
-
-                  Text(content.name, bundle: .module)
-                    .font(.callout)
-                    .bold()
-                    .foregroundColor(.godBlack)
-                }
-              }
-            case .other:
-              ShareLink(item: viewStore.shareURL) {
-                VStack(spacing: 12) {
-                  Image(systemName: "square.and.arrow.up")
-                    .font(.system(size: 40))
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-
-                  Text(content.name, bundle: .module)
-                    .font(.callout)
-                    .bold()
-                    .foregroundColor(.godBlack)
-                }
-              }
-            }
-            Spacer()
+      VStack(spacing: 0) {
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture {
+            store.send(.closeButtonTapped)
           }
-          .buttonStyle(HoldDownButtonStyle())
-        }
 
-        Button {
-          viewStore.send(.closeButtonTapped)
-        } label: {
-          Text("Close", bundle: .module)
-            .bold()
-            .frame(height: 52)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.black)
-            .overlay(
-              RoundedRectangle(cornerRadius: 52 / 2)
-                .stroke(Color.primary, lineWidth: 1)
-            )
+        VStack(alignment: .center, spacing: 28) {
+          Text("Share Profile", bundle: .module)
+            .font(.system(.title3, design: .rounded, weight: .bold))
+
+          HStack {
+            Spacer()
+            ForEach(ProfileShareLogic.Content.allCases, id: \.self) { content in
+              switch content {
+              case .instagram, .line:
+                ShareButton(content: content) {
+                  store.send(.contentButtonTapped(content), transaction: .animationDisable)
+                }
+              case .messages:
+                Button {
+                  store.send(.contentButtonTapped(content))
+                } label: {
+                  VStack(spacing: 12) {
+                    Image(systemName: "message.fill")
+                      .font(.system(size: 34))
+                      .frame(width: 60, height: 60)
+                      .foregroundStyle(Color.white)
+                      .background(Color.green.gradient)
+                      .clipShape(Circle())
+
+                    Text(content.name, bundle: .module)
+                      .foregroundStyle(Color.godBlack)
+                      .font(.system(.callout, design: .rounded, weight: .bold))
+                  }
+                }
+              case .other:
+                ShareLink(item: viewStore.shareURL) {
+                  VStack(spacing: 12) {
+                    Image(systemName: "square.and.arrow.up")
+                      .font(.system(size: 40))
+                      .frame(width: 60, height: 60)
+                      .clipShape(Circle())
+
+                    Text(content.name, bundle: .module)
+                      .foregroundStyle(Color.godBlack)
+                      .font(.system(.callout, design: .rounded, weight: .bold))
+                  }
+                }
+              }
+              Spacer()
+            }
+          }
+
+          Button {
+            store.send(.closeButtonTapped)
+          } label: {
+            Text("Close", bundle: .module)
+              .font(.system(.body, design: .rounded, weight: .bold))
+              .frame(height: 52)
+              .frame(maxWidth: .infinity)
+              .foregroundStyle(.black)
+              .overlay(
+                RoundedRectangle(cornerRadius: 52 / 2)
+                  .stroke(Color.primary, lineWidth: 1)
+              )
+          }
         }
+        .padding(.top, 24)
+        .padding(.horizontal, 16)
+        .background(Color.white)
         .buttonStyle(HoldDownButtonStyle())
       }
-      .padding(.top, 24)
-      .padding(.horizontal, 16)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$message, action: { .message($0) }),
         content: CupertinoMessageView.init
@@ -255,9 +266,8 @@ public struct ProfileShareView: View {
           }
 
           Text(content.name, bundle: .module)
-            .font(.callout)
-            .bold()
-            .foregroundColor(.godBlack)
+            .font(.system(.callout, design: .rounded, weight: .bold))
+            .foregroundStyle(Color.godBlack)
         }
       }
       .buttonStyle(HoldDownButtonStyle())
@@ -276,7 +286,6 @@ public struct ProfileShareView: View {
           reducer: { ProfileShareLogic() }
         )
       )
-      .presentationDetents([.fraction(0.3)])
-      .presentationDragIndicator(.visible)
+      .presentationBackground(Color.clear)
     }
 }

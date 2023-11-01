@@ -23,7 +23,57 @@
   "settings" : {
     "_applicationInternalID" : "6457261598",
     "_developerTeamID" : "Q7NP395GC3",
-    "_lastSynchronizedDate" : 715434434.25576699
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 720334857.16057396,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
   },
   "subscriptionGroups" : [
     {
@@ -44,9 +94,18 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "6464129409",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "E7804144",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
           "localizations" : [
-
+            {
+              "description" : "神モード",
+              "displayName" : "神モード",
+              "locale" : "ja"
+            }
           ],
           "productID" : "jp.godapp.ios.staging.god_mode.default",
           "recurringSubscriptionPeriod" : "P1W",
@@ -58,7 +117,7 @@
     }
   ],
   "version" : {
-    "major" : 2,
+    "major" : 3,
     "minor" : 0
   }
 }

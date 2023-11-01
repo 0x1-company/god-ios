@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "Answer polls about your friends to win coins." : {
       "localizations" : {
         "ja" : {
@@ -19,7 +16,17 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "相手の質問の選択肢に自分の名前を追加しよう！"
+            "value" : "友だちの質問に\n自分の名前をもっと表示させる"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラー"
           }
         }
       }
@@ -89,7 +96,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの名前は友だちに表示されます"
+            "value" : "あなたの名前は友だちの質問に表示されます"
           }
         }
       }

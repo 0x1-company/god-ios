@@ -1,12 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "🏆 Take the 12-polls challenge and earn some coins" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12回投票してコインを獲得しよう"
+          }
+        }
+      }
+    },
     "🏆 Tap to vote" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "🏆 タップして投票する"
+            "value" : "🏆 タップして褒める"
           }
         }
       }
@@ -16,7 +26,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "より多くの\n遊ぶ友だちを増やす"
+            "value" : "4人フレンドがいると遊べるようになるよ！"
           }
         }
       }
@@ -27,6 +37,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新しい質問があります"
+          }
+        }
+      }
+    },
+    "Polls await your input" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投票が途中かも...？🥲"
           }
         }
       }

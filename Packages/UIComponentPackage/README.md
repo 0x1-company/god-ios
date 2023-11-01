@@ -8,4 +8,5 @@ graph TD;
     GodActionSheet-->Styleguide;
     NameImage-->Styleguide;
     ProfileImage-->NameImage;
+    SocialShare-->Styleguide;
 ```

@@ -7,7 +7,7 @@ let package = Package(
   name: "DependencyPackage",
   defaultLocalization: "en",
   platforms: [
-    .iOS(.v16),
+    .iOS("16.4"),
     .macOS(.v13),
   ],
   products: [
@@ -15,6 +15,7 @@ let package = Package(
     .library(name: "ApolloClientHelpers", targets: ["ApolloClientHelpers"]),
     .library(name: "AsyncValue", targets: ["AsyncValue"]),
     .library(name: "Constants", targets: ["Constants"]),
+    .library(name: "DeleteAccountReasonClient", targets: ["DeleteAccountReasonClient"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
     .library(name: "FirebaseDynamicLinkClient", targets: ["FirebaseDynamicLinkClient"]),
@@ -25,16 +26,18 @@ let package = Package(
     .library(name: "GodClient", targets: ["GodClient"]),
     .library(name: "GodTestMock", targets: ["GodTestMock"]),
     .library(name: "PhoneNumberDependencies", targets: ["PhoneNumberDependencies"]),
+    .library(name: "ShareLinkBuilder", targets: ["ShareLinkBuilder"]),
     .library(name: "StoreKitHelpers", targets: ["StoreKitHelpers"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
+    .library(name: "UserSettingsClient", targets: ["UserSettingsClient"]),
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.3.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.16.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.7.4"),
-    .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.0"),
+    .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.1"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
@@ -48,6 +51,11 @@ let package = Package(
     ]),
     .target(name: "AsyncValue"),
     .target(name: "Constants"),
+    .target(name: "DeleteAccountReasonClient", dependencies: [
+      .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+      .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "FirebaseAuthClient", dependencies: [
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -90,6 +98,10 @@ let package = Package(
       .product(name: "PhoneNumberKit", package: "PhoneNumberKit"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "ShareLinkBuilder"),
+    .testTarget(name: "ShareLinkBuilderTests", dependencies: [
+      "ShareLinkBuilder",
+    ]),
     .target(name: "StoreKitHelpers", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
@@ -98,6 +110,11 @@ let package = Package(
       "StringHelpers",
     ]),
     .target(name: "TcaHelpers", dependencies: [
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "UserSettingsClient", dependencies: [
+      .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+      .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
   ]

@@ -51,6 +51,10 @@ public struct FirstNameSettingLogic: Reducer {
         else { return .none }
         state.firstName = transformedFirstName
         state.isImport = true
+        analytics.log(name: "import_from_contacts", parameters: [
+          "phonetic_given_name": contact.phoneticGivenName,
+          "transformed_given_name": transformedFirstName,
+        ])
         return .none
 
       case .onAppear:
@@ -92,32 +96,32 @@ public struct FirstNameSettingView: View {
       VStack(spacing: 8) {
         Spacer()
         Text("What's your first name?", bundle: .module)
-          .bold()
-          .font(.title3)
+          .font(.system(.title3, design: .rounded, weight: .bold))
 
         Text("Only hiragana can be set", bundle: .module)
 
         TextField(text: viewStore.$firstName) {
           Text("First Name", bundle: .module)
         }
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .multilineTextAlignment(.center)
-        .font(.title)
+        .font(.system(.title, design: .rounded))
         .focused($focus)
 
         if viewStore.isImport {
           Text("Imported from Contacts", bundle: .module)
+            .font(.system(.body, design: .rounded, weight: .bold))
         }
         Spacer()
         NextButton(isDisabled: viewStore.isDisabled) {
-          viewStore.send(.nextButtonTapped)
+          store.send(.nextButtonTapped)
         }
       }
       .padding(.horizontal, 24)
       .padding(.bottom, 16)
       .foregroundStyle(Color.white)
       .background(Color.godService)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear {
         focus = true
         store.send(.onAppear)
@@ -126,15 +130,13 @@ public struct FirstNameSettingView: View {
   }
 }
 
-struct FirstNameSettingViewPreviews: PreviewProvider {
-  static var previews: some View {
-    NavigationStack {
-      FirstNameSettingView(
-        store: .init(
-          initialState: FirstNameSettingLogic.State(),
-          reducer: { FirstNameSettingLogic() }
-        )
+#Preview {
+  NavigationStack {
+    FirstNameSettingView(
+      store: .init(
+        initialState: FirstNameSettingLogic.State(),
+        reducer: { FirstNameSettingLogic() }
       )
-    }
+    )
   }
 }

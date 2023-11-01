@@ -1,6 +1,8 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
+import ShareLinkBuilder
 import StoreKit
 import Styleguide
 import SwiftUI
@@ -21,16 +23,27 @@ public struct PlayAgainLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case timerTick
     case inviteFriendButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case delegate(Delegate)
+
+    public enum Delegate: Equatable {
+      case loading
+    }
   }
 
   @Dependency(\.date.now) var now
   @Dependency(\.openURL) var openURL
   @Dependency(\.calendar) var calendar
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.continuousClock) var clock
+
+  enum Cancel {
+    case timer
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -39,10 +52,12 @@ public struct PlayAgainLogic: Reducer {
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
-              await send(.timerTick)
+              await send(.timerTick, animation: .default)
             }
             group.addTask {
-              await startTimer(send: send)
+              await withTaskCancellation(id: Cancel.timer, cancelInFlight: true) {
+                await startTimer(send: send)
+              }
             }
             group.addTask {
               do {
@@ -55,6 +70,16 @@ public struct PlayAgainLogic: Reducer {
             }
           }
         }
+      case .onAppear:
+        analytics.logScreen(screenName: "PlayAgain", of: self)
+        return .none
+
+      case .timerTick where state.until < now:
+        return .run { send in
+          Task.cancel(id: Cancel.timer)
+          await send(.delegate(.loading), animation: .default)
+        }
+
       case .timerTick:
         let difference = calendar.dateComponents([.minute, .second], from: now, to: state.until)
         let minute = String(format: "%02d", difference.minute ?? 0)
@@ -63,19 +88,16 @@ public struct PlayAgainLogic: Reducer {
         return .none
 
       case .inviteFriendButtonTapped:
-        guard
-          let schoolName = state.currentUser?.school?.name,
-          let username = state.currentUser?.username
-        else { return .none }
-        let text = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)
-        """
-        guard
-          let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-          let url = URL(string: "https://line.me/R/share?text=\(encodedText)")
+        guard let url = ShareLinkBuilder.buildForLine(path: .invite, username: state.currentUser?.username)
         else { return .none }
 
+        analytics.buttonClick(
+          name: .inviteFriend,
+          parameters: [
+            "title": String(localized: "Invite a friend", bundle: .module),
+            "url": url,
+          ]
+        )
         return .run { _ in
           await openURL(url)
         }
@@ -87,13 +109,16 @@ public struct PlayAgainLogic: Reducer {
       case .currentUserResponse(.failure):
         state.currentUser = nil
         return .none
+
+      case .delegate:
+        return .none
       }
     }
   }
 
   private func startTimer(send: Send<Action>) async {
     for await _ in clock.timer(interval: .seconds(1)) {
-      await send(.timerTick)
+      await send(.timerTick, animation: .default)
     }
   }
 }
@@ -117,23 +142,34 @@ public struct PlayAgainView: View {
           .rotationEffect(Angle(degrees: -10.0))
 
         Text("New Polls in \(viewStore.countdown)", bundle: .module)
-          .bold()
+          .font(.system(.body, design: .rounded, weight: .bold))
+          .contentTransition(.numericText(countsDown: true))
 
         Text("OR", bundle: .module)
-          .foregroundColor(.secondary)
+          .foregroundStyle(.secondary)
+          .font(.system(.body, design: .rounded))
 
         Text("Skip the wait", bundle: .module)
           .multilineTextAlignment(.center)
-          .foregroundColor(.secondary)
+          .foregroundStyle(.secondary)
+          .font(.system(.body, design: .rounded))
 
         Button {
-          viewStore.send(.inviteFriendButtonTapped)
+          store.send(.inviteFriendButtonTapped)
         } label: {
           Text("Invite a friend", bundle: .module)
-            .bold()
             .frame(height: 54)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color.black)
+            .foregroundStyle(Color.black)
+            .font(.system(.body, design: .rounded, weight: .bold))
+            .overlay(alignment: .leading) {
+              Image(.line)
+                .resizable()
+                .aspectRatio(1, contentMode: .fit)
+                .frame(width: 32, height: 32)
+                .clipped()
+            }
+            .padding(.horizontal, 16)
             .background(Color.white)
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.2), radius: 25)
@@ -141,9 +177,10 @@ public struct PlayAgainView: View {
         .padding(.horizontal, 65)
         .buttonStyle(HoldDownButtonStyle())
       }
+      .onAppear { store.send(.onAppear) }
       .task {
         requestReview()
-        await viewStore.send(.onTask).finish()
+        await store.send(.onTask).finish()
       }
     }
   }
@@ -158,4 +195,5 @@ public struct PlayAgainView: View {
       reducer: { PlayAgainLogic() }
     )
   )
+  .environment(\.locale, Locale(identifier: "ja-JP"))
 }

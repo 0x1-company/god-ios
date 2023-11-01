@@ -5,10 +5,12 @@ Only XxxFeature in GodPackage
 ## Package Dependencies
 ```mermaid
 graph TD;
+    AboutFeature-->EmailFeature;
     AboutFeature-->HowItWorksFeature;
+    AboutFeature-->DeleteAccountFeature;
     ActivityFeature-->ProfileFeature;
     AddFeature-->ProfileFeature;
-    AddFeature-->CupertinoMessageFeature;
+    AddFeature-->FriendRequestFeature;
     AppFeature-->LaunchFeature;
     AppFeature-->OnboardFeature;
     AppFeature-->NavigationFeature;
@@ -26,10 +28,13 @@ graph TD;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
     OnboardFeature-->HowItWorksFeature;
+    OnboardFeature-->ProfileStoryFeature;
     OnboardFeature-->CupertinoMessageFeature;
     ProfileEditFeature-->ManageAccountFeature;
+    ProfileEditFeature-->DeleteAccountFeature;
     ProfileFeature-->ShopFeature;
     ProfileFeature-->ProfileEditFeature;
     ProfileFeature-->ProfileShareFeature;
+    ProfileShareFeature-->ProfileStoryFeature;
     ProfileShareFeature-->CupertinoMessageFeature;
 ```

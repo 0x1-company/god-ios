@@ -4,6 +4,7 @@ import ContactsClient
 import CupertinoMessageFeature
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 import SwiftUIMessage
@@ -70,14 +71,11 @@ public struct InvitationsLeftLogic: Reducer {
           MessageComposeView.canSendText(),
           let phoneNumber = contact.phoneNumbers.first?.value.stringValue,
           let username = state.currentUser?.username,
-          let schoolName = state.currentUser?.school?.name
+          let shareText = ShareLinkBuilder.buildShareText(path: .invite, username: username, source: .sms, medium: .add)
         else { return .none }
         state.message = .init(
           recipient: phoneNumber,
-          body: """
-          \(schoolName)向けの新しいアプリダウンロードしてみて！
-          https://godapp.jp/add/\(username)?utm_source=sms&utm_campaign=add
-          """
+          body: shareText
         )
         return .none
 

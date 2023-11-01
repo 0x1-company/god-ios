@@ -20,22 +20,20 @@ struct InstagramStoryView: View {
 
         Group {
           if let grade {
-            Text("\(grade)の\(gender)より", bundle: .module)
+            Text(verbatim: "\(grade)の\(gender)より")
           } else {
-            Text("\(gender)より", bundle: .module)
+            Text(verbatim: "\(gender)より")
           }
         }
-        .font(.callout)
-        .bold()
+        .font(.system(.callout, design: .rounded, weight: .bold))
         .lineLimit(2)
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
 
         if let schoolName {
           Text(schoolName)
-            .font(.body)
-            .bold()
-            .foregroundColor(.godWhite)
+            .font(.system(.body, design: .rounded, weight: .bold))
+            .foregroundStyle(Color.godWhite)
             .frame(height: 32)
             .padding(.horizontal, 8)
             .background(Color.godGray)
@@ -44,9 +42,8 @@ struct InstagramStoryView: View {
       }
       VStack(spacing: 8) {
         Text(question)
-          .font(.callout)
-          .bold()
-          .foregroundColor(.godWhite)
+          .font(.system(.callout, design: .rounded, weight: .bold))
+          .foregroundStyle(Color.godWhite)
           .lineLimit(2)
           .frame(height: 80, alignment: .center)
 
@@ -64,9 +61,8 @@ struct InstagramStoryView: View {
           .padding(.bottom, 4)
 
         Text(verbatim: "godapp.jp")
-          .font(.callout)
-          .bold()
-          .foregroundColor(.godWhite)
+          .font(.system(.callout, design: .rounded, weight: .bold))
+          .foregroundStyle(Color.godWhite)
       }
       .padding(.horizontal, 16)
       .padding(.bottom, 16)

@@ -9,8 +9,7 @@ public struct TopStarsSection: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       Text("Top Stars", bundle: .module)
-        .font(.headline)
-        .bold()
+        .font(.system(.headline, design: .rounded, weight: .bold))
         .frame(height: 32)
         .padding(.horizontal, 16)
 

@@ -77,20 +77,18 @@ public struct FriendRequestsView: View {
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
     }
   }
 }
 
-struct FriendRequestsViewPreviews: PreviewProvider {
-  static var previews: some View {
-    FriendRequestsView(
-      store: .init(
-        initialState: FriendRequestsLogic.State(
-          requests: []
-        ),
-        reducer: { FriendRequestsLogic() }
-      )
+#Preview {
+  FriendRequestsView(
+    store: .init(
+      initialState: FriendRequestsLogic.State(
+        requests: []
+      ),
+      reducer: { FriendRequestsLogic() }
     )
-  }
+  )
 }

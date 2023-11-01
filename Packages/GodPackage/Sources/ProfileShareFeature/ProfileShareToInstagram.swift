@@ -1,7 +1,9 @@
+import AnalyticsClient
 import AnimationDisableTransaction
 import ComposableArchitecture
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 import UIPasteboardClient
@@ -17,6 +19,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case copyLinkButtonTapped
     case closeButtonTapped
@@ -30,6 +33,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.pasteboard) var pasteboard
 
   public var body: some Reducer<State, Action> {
@@ -44,6 +48,10 @@ public struct ProfileShareToInstagramLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
+      case .onAppear:
+        analytics.logScreen(screenName: "ProfileShareToInstagram", of: self)
+        return .none
+
       case let .currentUserResponse(.success(data)):
         state.username = data.currentUser.username
         return .none
@@ -57,8 +65,15 @@ public struct ProfileShareToInstagramLogic: Reducer {
         guard let username = state.username else {
           return .none
         }
-        pasteboard.url(URL(string: "https://www.godapp.jp/add/\(username)?utm_source=instagram&utm_campaign=profile"))
+        let shareLink = ShareLinkBuilder.buildGodLink(
+          path: .add,
+          username: username,
+          source: .instagram,
+          medium: .profile
+        )
+        pasteboard.url(shareLink)
         state.isProfileLinkCopied = true
+        analytics.buttonClick(name: .copyLink, parameters: ["url": shareLink.absoluteString])
         return .none
 
       case .closeButtonTapped:
@@ -96,36 +111,33 @@ public struct ProfileShareToInstagramView: View {
             .clipShape(Circle())
 
           Text("Share Profile on\nInstagram", bundle: .module)
-            .font(.title)
-            .bold()
-            .foregroundColor(.godBlack)
+            .font(.system(.title, design: .rounded, weight: .bold))
+            .foregroundStyle(Color.godBlack)
             .multilineTextAlignment(.center)
         }
 
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 8) {
             Text("Step 1", bundle: .module)
-              .bold()
-              .font(.title2)
+              .font(.system(.title2, design: .rounded, weight: .bold))
             Text("Copy your God link", bundle: .module)
-              .bold()
-              .font(.headline)
+              .font(.system(.headline, design: .rounded, weight: .bold))
           }
 
           Text(verbatim: "godapp.jp/@\(viewStore.username ?? "")")
-            .font(.body)
-            .foregroundColor(.godTextSecondaryDark)
+            .font(.system(.body, design: .rounded, weight: .bold))
+            .foregroundStyle(Color.godTextSecondaryDark)
             .frame(maxWidth: .infinity, alignment: .center)
             .frame(height: 52)
             .background(Color(red: 243 / 255, green: 243 / 255, blue: 243 / 255))
             .cornerRadius(26)
 
           Button {
-            viewStore.send(.copyLinkButtonTapped)
+            store.send(.copyLinkButtonTapped)
           } label: {
             Text(viewStore.state.isProfileLinkCopied ? "Link Copied!" : "Copy Link", bundle: .module)
-              .bold()
-              .foregroundColor(.godService)
+              .font(.system(.body, design: .rounded, weight: .bold))
+              .foregroundStyle(Color.godService)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .cornerRadius(26)
@@ -140,19 +152,17 @@ public struct ProfileShareToInstagramView: View {
         VStack(alignment: .center, spacing: 16) {
           VStack(alignment: .center, spacing: 8) {
             Text("Step 2", bundle: .module)
-              .bold()
-              .font(.title2)
+              .font(.system(.title2, design: .rounded, weight: .bold))
             Text("Post on your story", bundle: .module)
-              .bold()
-              .font(.headline)
+              .font(.system(.headline, design: .rounded, weight: .bold))
           }
 
           Button {
-            viewStore.send(.shareButtonTapped)
+            store.send(.shareButtonTapped)
           } label: {
             Text("Share", bundle: .module)
-              .bold()
-              .foregroundColor(.godWhite)
+              .font(.system(.body, design: .rounded, weight: .bold))
+              .foregroundStyle(Color.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .background(Color.godService)
@@ -164,7 +174,8 @@ public struct ProfileShareToInstagramView: View {
       .padding(20)
       .background(Color.godWhite)
       .cornerRadius(24)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

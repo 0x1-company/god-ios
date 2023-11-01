@@ -19,6 +19,7 @@ public struct ProfileLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
@@ -45,15 +46,25 @@ public struct ProfileLogic: Reducer {
           }
         }
 
+      case .onAppear:
+        analytics.logScreen(screenName: "Profile", of: self)
+        return .none
+
       case .editProfileButtonTapped:
+        analytics.buttonClick(name: .editProfile)
         state.destination = .profileEdit()
         return .none
 
       case .shareProfileButtonTapped:
         state.destination = .profileShare()
+        analytics.buttonClick(
+          name: .shareProfile,
+          parameters: ["title": String(localized: "Share Profile", bundle: .module)]
+        )
         return .none
 
       case .shopButtonTapped:
+        analytics.buttonClick(name: .shop)
         state.destination = .shop()
         return .none
 
@@ -63,11 +74,16 @@ public struct ProfileLogic: Reducer {
 
       case .friendEmptyButtonTapped:
         state.destination = .profileShare()
+        analytics.buttonClick(
+          name: .addFriends,
+          parameters: ["title": String(localized: "Add Friends", bundle: .module)]
+        )
         return .none
 
       case let .profileResponse(.success(data)):
         state.profile = data
         analytics.setUserProperty(key: .schoolId, value: data.currentUser.schoolId)
+        analytics.setUserId(data.currentUser.id)
         return .none
       case .profileResponse(.failure):
         state.profile = nil
@@ -158,7 +174,7 @@ public struct ProfileView: View {
               schoolShortName: data.currentUser.school?.shortName,
               grade: data.currentUser.grade
             ) {
-              viewStore.send(.editProfileButtonTapped)
+              store.send(.editProfileButtonTapped)
             }
 
             Divider()
@@ -166,10 +182,10 @@ public struct ProfileView: View {
             ShareShopSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
               shareAction: {
-                viewStore.send(.shareProfileButtonTapped)
+                store.send(.shareProfileButtonTapped)
               },
               shopAction: {
-                viewStore.send(.shopButtonTapped)
+                store.send(.shopButtonTapped)
               }
             )
 
@@ -198,18 +214,20 @@ public struct ProfileView: View {
       .listStyle(.plain)
       .navigationTitle(Text("Profile", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
-      .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
+      .sheet(
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileEdit,
         action: ProfileLogic.Destination.Action.profileEdit
       ) { store in
         NavigationStack {
           ProfileEditView(store: store)
         }
+        .interactiveDismissDisabled()
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.shop,
         action: ProfileLogic.Destination.Action.shop
       ) { store in
@@ -218,16 +236,15 @@ public struct ProfileView: View {
         }
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileShare,
         action: ProfileLogic.Destination.Action.profileShare
       ) { store in
         ProfileShareView(store: store)
-          .presentationDetents([.height(ProfileShareView.heightForPresentationDetents)])
-          .presentationCornerRadiusIfPossible(24)
+          .presentationBackground(Color.clear)
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.external,
         action: ProfileLogic.Destination.Action.external
       ) { store in
@@ -239,24 +256,11 @@ public struct ProfileView: View {
   }
 }
 
-extension View {
-  @ViewBuilder
-  func presentationCornerRadiusIfPossible(_ cornerRadius: CGFloat) -> some View {
-    if #available(iOS 16.4, *) {
-      self.presentationCornerRadius(cornerRadius)
-    } else {
-      self
-    }
-  }
-}
-
-struct ProfileViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ProfileView(
-      store: .init(
-        initialState: ProfileLogic.State(),
-        reducer: { ProfileLogic() }
-      )
+#Preview {
+  ProfileView(
+    store: .init(
+      initialState: ProfileLogic.State(),
+      reducer: { ProfileLogic() }
     )
-  }
+  )
 }

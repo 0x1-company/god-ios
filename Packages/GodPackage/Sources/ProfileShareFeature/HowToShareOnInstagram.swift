@@ -1,8 +1,11 @@
+import AnalyticsClient
 import ComposableArchitecture
 import Constants
 import God
 import GodClient
 import ProfileImage
+import ProfileStoryFeature
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 import UIApplicationClient
@@ -23,6 +26,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case stepButtonTapped(Step)
     case primaryButtonTapped(profileCardImage: UIImage? = nil)
     case closeButtonTapped
@@ -40,6 +44,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
   @Dependency(\.pasteboard) var pasteboard
   @Dependency(\.urlSession) var urlSession
 
@@ -55,11 +60,16 @@ public struct HowToShareOnInstagramLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
+      case .onAppear:
+        analytics.logScreen(screenName: "HowToShareOnInstagram", of: self)
+        return .none
+
       case let .stepButtonTapped(step):
         state.currentStep = step
         return .none
 
       case let .primaryButtonTapped(profileCardImage) where state.currentStep == Step.allCases.last:
+        analytics.buttonClick(name: .shareOnInstagram)
         guard
           let profileCardImage,
           let imageData = profileCardImage.pngData(),
@@ -74,10 +84,16 @@ public struct HowToShareOnInstagramLogic: Reducer {
           [pasteboardItems],
           [.expirationDate: Date().addingTimeInterval(300)]
         )
+        let shareLink = ShareLinkBuilder.buildGodLink(
+          path: .add,
+          username: username,
+          source: .instagram,
+          medium: .profile
+        )
         return .run { send in
           await openURL(Constants.storiesURL)
           try await mainQueue.sleep(for: .seconds(0.5))
-          pasteboard.url(URL(string: "https://godapp.jp/add/\(username)?utm_source=instagram&utm_campaign=profile"))
+          pasteboard.url(shareLink)
           await send(.delegate(.showdStories))
         }
 
@@ -189,9 +205,8 @@ public struct HowToShareOnInstagramView: View {
     user: God.CurrentUserQuery.Data.CurrentUser?
   ) -> some View {
     if let user {
-      InstagramStoryView(
+      ProfileStoryView(
         profileImageData: profileImageData,
-        lastName: user.lastName,
         firstName: user.firstName,
         displayName: user.displayName.ja,
         username: user.username,
@@ -213,19 +228,18 @@ public struct HowToShareOnInstagramView: View {
 
         VStack(alignment: .center, spacing: 24) {
           Text("How to add the\nlink to your Story", bundle: .module)
-            .font(.title)
-            .bold()
-            .foregroundColor(.godBlack)
+            .font(.system(.title, design: .rounded, weight: .bold))
+            .foregroundStyle(Color.godBlack)
             .multilineTextAlignment(.center)
 
           HStack(alignment: .center, spacing: 12) {
             ForEach(viewStore.allSteps, id: \.rawValue) { step in
               Button {
-                viewStore.send(.stepButtonTapped(step))
+                store.send(.stepButtonTapped(step))
               } label: {
                 Text(String(step.rawValue))
                   .font(.subheadline)
-                  .foregroundColor(viewStore.state.currentStep == step ? .godWhite : .godBlack)
+                  .foregroundStyle(viewStore.state.currentStep == step ? Color.godWhite : Color.godBlack)
                   .frame(width: 36, height: 36)
                   .background(viewStore.state.currentStep == step ? Color.godBlack : Color.godWhite)
                   .cornerRadius(18)
@@ -251,11 +265,11 @@ public struct HowToShareOnInstagramView: View {
           Button {
             let renderer = ImageRenderer(content: instagramStoryView)
             renderer.scale = displayScale
-            viewStore.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
+            store.send(.primaryButtonTapped(profileCardImage: renderer.uiImage))
           } label: {
             Text(viewStore.currentStep.primaryButtonText, bundle: .module)
-              .bold()
-              .foregroundColor(.godWhite)
+              .font(.system(.body, design: .rounded, weight: .bold))
+              .foregroundStyle(Color.godWhite)
               .frame(maxWidth: .infinity)
               .frame(height: 52)
               .background(Color.godService)
@@ -267,7 +281,8 @@ public struct HowToShareOnInstagramView: View {
         .background(Color.godWhite)
         .cornerRadius(24)
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

@@ -7,7 +7,7 @@ let package = Package(
   name: "UIComponentPackage",
   defaultLocalization: "en",
   platforms: [
-    .iOS(.v16),
+    .iOS("16.4"),
   ],
   products: [
     .library(name: "AnimationDisableTransaction", targets: ["AnimationDisableTransaction"]),
@@ -18,6 +18,7 @@ let package = Package(
     .library(name: "ProfileImage", targets: ["ProfileImage"]),
     .library(name: "RoundedCorner", targets: ["RoundedCorner"]),
     .library(name: "SearchField", targets: ["SearchField"]),
+    .library(name: "SocialShare", targets: ["SocialShare"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
   ],
   dependencies: [
@@ -35,6 +36,9 @@ let package = Package(
     ]),
     .target(name: "RoundedCorner"),
     .target(name: "SearchField"),
+    .target(name: "SocialShare", dependencies: [
+      "Styleguide",
+    ]),
     .target(name: "Styleguide", resources: [
       .process("Fonts"),
     ]),

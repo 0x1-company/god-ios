@@ -92,23 +92,11 @@ public struct ProfilePhotoSettingLogic: Reducer {
           }))
         }
 
-      case .loadTransferableResponse:
-        return .none
-
-      case .uploadResponse(.success):
-        return .none
-
-      case .uploadResponse:
-        return .none
-
       case let .currentUserResponse(.success(data)):
         state.currentUser = data.currentUser
         return .none
 
-      case .currentUserResponse(.failure):
-        return .none
-
-      case .delegate:
+      default:
         return .none
       }
     }
@@ -138,9 +126,8 @@ public struct ProfilePhotoSettingView: View {
         Spacer()
 
         Text("Add a profile photo", bundle: .module)
-          .bold()
-          .font(.title3)
-          .foregroundColor(Color.white)
+          .font(.system(.title3, design: .rounded, weight: .bold))
+          .foregroundStyle(Color.white)
 
         PhotosPicker(
           selection: viewStore.$photoPickerItems,
@@ -167,7 +154,8 @@ public struct ProfilePhotoSettingView: View {
         }
 
         Text("Add a photo so your friends can find you", bundle: .module)
-          .foregroundColor(Color.white.opacity(0.7))
+          .foregroundStyle(Color.white.opacity(0.7))
+          .font(.system(.body, design: .rounded))
 
         Spacer()
 
@@ -182,8 +170,8 @@ public struct ProfilePhotoSettingView: View {
             viewStore.image == nil ? "Choose a photo" : "Change photo",
             bundle: .module
           )
-          .bold()
-          .foregroundColor(Color.white)
+          .font(.system(.body, design: .rounded, weight: .bold))
+          .foregroundStyle(Color.white)
           .frame(height: 56)
           .frame(maxWidth: .infinity)
           .overlay(
@@ -193,10 +181,10 @@ public struct ProfilePhotoSettingView: View {
         }
         if viewStore.image != nil {
           Button {
-            viewStore.send(.nextButtonTapped)
+            store.send(.nextButtonTapped)
           } label: {
             Text("Next", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .frame(height: 56)
               .frame(maxWidth: .infinity)
               .background(Color.white)
@@ -210,7 +198,7 @@ public struct ProfilePhotoSettingView: View {
       .toolbar {
         if viewStore.photoPickerItems.isEmpty {
           Button {
-            viewStore.send(.skipButtonTapped)
+            store.send(.skipButtonTapped)
           } label: {
             Text("Skip", bundle: .module)
               .foregroundStyle(Color.white)
@@ -218,7 +206,7 @@ public struct ProfilePhotoSettingView: View {
         }
       }
       .buttonStyle(HoldDownButtonStyle())
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }

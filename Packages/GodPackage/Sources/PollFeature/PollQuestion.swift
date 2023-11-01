@@ -1,3 +1,4 @@
+import AnalyticsClient
 import CachedAsyncImage
 import ComposableArchitecture
 import FeedbackGeneratorClient
@@ -18,6 +19,7 @@ public struct PollQuestionLogic: Reducer {
     @PresentationState var alert: AlertState<Action.Alert>?
     var voteChoices: [String: Double] = [:]
     var currentIndex = 0
+    var isPollAvailable = false
 
     var currentChoiceGroup: God.CurrentPollQuery.Data.CurrentPoll.Poll.PollQuestion.ChoiceGroup {
       choiceGroups[currentIndex]
@@ -46,6 +48,7 @@ public struct PollQuestionLogic: Reducer {
     case shuffleButtonTapped
     case skipButtonTapped
     case continueButtonTapped
+    case pollAvailable
     case alert(PresentationAction<Alert>)
     case delegate(Delegate)
 
@@ -56,18 +59,42 @@ public struct PollQuestionLogic: Reducer {
     public enum Delegate: Equatable {
       case vote(God.CreateVoteInput)
       case nextPollQuestion
+      case skip
     }
   }
 
+  @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.analytics) var analytics
   @Dependency(\.feedbackGenerator) var feedbackGenerator
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          await sleepPollAvailable(send: send)
+        }
 
-      case let .voteButtonTapped(votedUserId):
+      case let .voteButtonTapped(votedUserId) where !state.isPollAvailable:
+        analytics.buttonClick(name: .voteSlowDown, parameters: [
+          "voted_user_id": votedUserId,
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja,
+        ])
+        state.alert = AlertState {
+          TextState("Woah, slow down!🐎", bundle: .module)
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK", bundle: .module)
+          }
+        } message: {
+          TextState("You're voting too fast", bundle: .module)
+        }
+        return .run { _ in
+          await feedbackGenerator.notificationOccurred(.error)
+        }
+
+      case let .voteButtonTapped(votedUserId) where state.isPollAvailable:
         var voteChoices: [God.ID: Double] = [:]
         state.currentChoiceGroup.choices.forEach { choice in
           voteChoices[choice.userId] = choice.userId == votedUserId ? Double.random(in: 0.4 ..< 0.6) : Double.random(in: 0.01 ..< 0.4)
@@ -85,41 +112,65 @@ public struct PollQuestionLogic: Reducer {
           pollQuestionId: state.id,
           votedUserId: votedUserId
         )
-        return .send(.delegate(.vote(input)))
+        analytics.logEvent("vote", [
+          "voted_user_id": votedUserId,
+          "question_id": state.question.id,
+          "question": state.question.text.ja,
+        ])
+        return .run { send in
+          await feedbackGenerator.impactOccurred()
+          await send(.delegate(.vote(input)))
+        }
 
       case .shuffleButtonTapped:
         let maxPageIndex = state.choiceGroups.count - 1
-        let nextIndex = state.currentIndex + 1
-        guard nextIndex <= maxPageIndex else { return .none }
+        var nextIndex = state.currentIndex + 1
+        analytics.buttonClick(name: .shuffle, parameters: [
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja,
+          "current_index": state.currentIndex,
+          "next_index": nextIndex,
+        ])
+        if nextIndex > maxPageIndex {
+          nextIndex = 0
+        }
         state.currentIndex = nextIndex
         return .run { _ in
-          await feedbackGenerator.mediumImpact()
+          await feedbackGenerator.impactOccurred()
         }
       case .skipButtonTapped:
+        analytics.buttonClick(name: .skip, parameters: [
+          "question_id": state.question.id,
+          "question_text": state.question.text.ja,
+        ])
         return .run { send in
-          await feedbackGenerator.mediumImpact()
-          await send(.delegate(.nextPollQuestion), animation: .default)
+          await feedbackGenerator.impactOccurred()
+          await send(.delegate(.skip), animation: .default)
         }
       case .continueButtonTapped:
         return .run { send in
-          await feedbackGenerator.mediumImpact()
+          await feedbackGenerator.impactOccurred()
           await send(.delegate(.nextPollQuestion), animation: .default)
         }
-      case .alert:
-        state.alert = AlertState {
-          TextState("Woah, slow down!🐎", bundle: .module)
-        } actions: {
-          ButtonState(action: .confirmOkay) {
-            TextState("OK", bundle: .module)
-          }
-        } message: {
-          TextState("You're voting too fast", bundle: .module)
-        }
+      case .pollAvailable:
+        state.isPollAvailable = true
         return .none
-      case .delegate:
+
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
+        return .none
+
+      default:
         return .none
       }
     }
+  }
+
+  func sleepPollAvailable(send: Send<Action>) async {
+    do {
+      try await mainQueue.sleep(for: .seconds(1))
+      await send(.pollAvailable)
+    } catch {}
   }
 }
 
@@ -153,7 +204,7 @@ public struct PollQuestionView: View {
         Spacer().frame(height: 24)
 
         Text(viewStore.question.text.ja)
-          .foregroundColor(.white)
+          .foregroundStyle(.white)
           .multilineTextAlignment(.center)
 //          .font(.system(.title2, design: .rounded, weight: .bold))
           .font(.custom(.title2, weight: .bold))
@@ -170,7 +221,7 @@ public struct PollQuestionView: View {
               progress: viewStore.voteChoices[choice.userId] ?? 0.0,
               color: viewStore.backgroundColor
             ) {
-              viewStore.send(.voteButtonTapped(votedUserId: choice.userId))
+              store.send(.voteButtonTapped(votedUserId: choice.userId))
             }
             .disabled(!viewStore.voteChoices.isEmpty)
           }
@@ -185,32 +236,33 @@ public struct PollQuestionView: View {
                 String(localized: "Shuffle", bundle: .module),
                 systemImage: "shuffle"
               ) {
-                viewStore.send(.shuffleButtonTapped)
+                store.send(.shuffleButtonTapped, animation: .default)
               }
               LabeledButton(
                 String(localized: "Skip", bundle: .module),
                 systemImage: "forward.fill"
               ) {
-                viewStore.send(.skipButtonTapped)
+                store.send(.skipButtonTapped, animation: .default)
               }
             }
             .buttonStyle(HoldDownButtonStyle())
           }
         }
         .frame(height: 50)
-        .animation(.default, value: !viewStore.voteChoices.isEmpty)
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .padding(.vertical, 64)
+        .font(.system(.body, design: .rounded, weight: .bold))
+        .animation(.default, value: !viewStore.voteChoices.isEmpty)
       }
       .padding(.top, 80)
       .padding(.horizontal, 36)
       .background(viewStore.backgroundColor)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
       .frame(height: UIScreen.main.bounds.height)
       .onTapGesture {
         if !viewStore.voteChoices.isEmpty {
-          viewStore.send(.continueButtonTapped)
+          store.send(.continueButtonTapped)
         }
       }
     }

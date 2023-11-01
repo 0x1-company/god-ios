@@ -1,3 +1,4 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
@@ -16,6 +17,7 @@ public struct ShopLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case storeResponse(TaskResult<God.StoreQuery.Data>)
     case purchaseButtonTapped(id: String)
     case purchaseResponse(TaskResult<God.PurchaseMutation.Data>)
@@ -30,6 +32,7 @@ public struct ShopLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   enum Cancel {
     case store
@@ -43,6 +46,11 @@ public struct ShopLogic: Reducer {
           await storeRequest(send: send)
         }
         .cancellable(id: Cancel.store, cancelInFlight: true)
+
+      case .onAppear:
+        analytics.logScreen(screenName: "Shop", of: self)
+        return .none
+
       case let .storeResponse(.success(data)):
         state.items = data.store.items
         state.coinBalance = data.currentUser.wallet?.coinBalance ?? 0
@@ -99,11 +107,12 @@ public struct ShopLogic: Reducer {
 
       case let .pickFriend(.presented(.delegate(.purchase(userId)))):
         state.pickFriend = nil
-        guard let item = state.items.first(where: { $0.coinAmount == 300 })
+        guard
+          let crushPoll = state.items.first(where: { $0.itemType == .putYourNameInYourCrushsPoll })
         else { return .none }
         let input = God.PurchaseInput(
-          coinAmount: item.coinAmount,
-          storeItemId: item.id,
+          coinAmount: crushPoll.coinAmount,
+          storeItemId: crushPoll.id,
           targetUserId: .init(stringLiteral: userId)
         )
         return .run { send in
@@ -130,6 +139,10 @@ public struct ShopLogic: Reducer {
   }
 
   private func purchaseRequest(send: Send<Action>, input: God.PurchaseInput) async {
+    analytics.logEvent("store_item_purchase", [
+      "store_item_id": input.storeItemId,
+      "coin_amount": input.coinAmount,
+    ])
     await send(.purchaseResponse(TaskResult {
       try await godClient.purchase(input)
     }))
@@ -147,7 +160,7 @@ public struct ShopView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         Text("YOUR BALANCE", bundle: .module)
-          .foregroundColor(Color.gray)
+          .foregroundStyle(Color.gray)
 
         Spacer()
           .frame(height: 18)
@@ -158,22 +171,22 @@ public struct ShopView: View {
             .frame(width: 38, height: 38)
 
           Text(verbatim: viewStore.coinBalance.description)
-            .font(.system(size: 40, weight: .black))
-            .bold()
+            .font(.system(size: 40, weight: .black, design: .rounded))
             .contentTransition(.numericText(countsDown: true))
         }
-        .foregroundColor(Color.yellow)
+        .foregroundStyle(Color.yellow)
 
         Spacer()
           .frame(height: 34)
 
         VStack(spacing: 8) {
           Text("Boost Your Name in Polls", bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
 
           Text("Use coins to get featured in polls", bundle: .module)
-            .foregroundColor(Color.gray)
+            .foregroundStyle(Color.gray)
         }
+        .multilineTextAlignment(.center)
 
         Spacer()
           .frame(height: 18)
@@ -184,9 +197,10 @@ public struct ShopView: View {
               id: item.id,
               name: item.title.ja,
               description: item.description?.ja,
-              amount: item.coinAmount
+              amount: item.coinAmount,
+              imageURL: item.imageURL
             ) {
-              viewStore.send(.purchaseButtonTapped(id: item.id))
+              store.send(.purchaseButtonTapped(id: item.id))
             }
           }
         }
@@ -196,16 +210,17 @@ public struct ShopView: View {
 
         VStack(spacing: 8) {
           Text("How do I get more coins?", bundle: .module)
-            .foregroundColor(Color.white)
+            .foregroundStyle(Color.white)
           Text("Answer polls about your friends to win coins.", bundle: .module)
-            .foregroundColor(Color.gray)
+            .foregroundStyle(Color.gray)
         }
       }
       .frame(maxWidth: .infinity)
       .background(Color.black)
       .navigationTitle(Text("Shop", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: ShopLogic.Action.alert))
       .fullScreenCover(
         store: store.scope(
@@ -220,10 +235,10 @@ public struct ShopView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
-              .foregroundColor(.primary)
+              .foregroundStyle(Color.white)
           }
         }
       }
@@ -244,7 +259,7 @@ public struct ShopView: View {
 
 extension AlertState where Action == ShopLogic.Action.Alert {
   static let insufficientFundsForCoin = Self {
-    TextState("")
+    TextState("Error")
   } actions: {
     ButtonState(action: .confirmOkay) {
       TextState("OK")

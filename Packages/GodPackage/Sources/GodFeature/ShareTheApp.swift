@@ -1,6 +1,8 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
+import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
@@ -14,11 +16,13 @@ public struct ShareTheAppLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
   }
 
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -32,19 +36,15 @@ public struct ShareTheAppLogic: Reducer {
           await send(.currentUserResponse(.failure(error)))
         }
 
+      case .onAppear:
+        analytics.logScreen(screenName: "ShareTheApp", of: self)
+        return .none
+
       case let .currentUserResponse(.success(data)):
-        guard
-          let schoolName = data.currentUser.school?.name,
-          let username = data.currentUser.username
-        else { return .none }
-        let text = """
-        \(schoolName)向けの新しいアプリダウンロードしてみて！
-        https://godapp.jp/invite/\(username)
-        """
-        guard let shareURL = URL(string: "https://line.me/R/share?text=\(text)")
+        guard let username = data.currentUser.username
         else { return .none }
 
-        state.shareURL = shareURL
+        state.shareURL = ShareLinkBuilder.buildGodLink(path: .invite, username: username)
 
         return .none
 
@@ -72,6 +72,7 @@ public struct ShareTheAppView: View {
             .resizable()
             .aspectRatio(1, contentMode: .fit)
             .frame(width: 120)
+
           Text("Get more\nfriends to play", bundle: .module)
             .font(.title2)
             .foregroundStyle(Color.white)
@@ -80,7 +81,7 @@ public struct ShareTheAppView: View {
             item: viewStore.shareURL
           ) {
             Text("Share the app", bundle: .module)
-              .bold()
+              .font(.system(.body, design: .rounded, weight: .bold))
               .frame(width: 188, height: 54)
               .background(Color.white)
               .clipShape(Capsule())
@@ -90,6 +91,7 @@ public struct ShareTheAppView: View {
         .multilineTextAlignment(.center)
       }
       .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }

@@ -133,6 +133,10 @@ public extension GodClient {
       revealFullName: { input in
         let mutation = God.RevealFullNameMutation(input: input)
         return try await apolloClient.perform(mutation: mutation)
+      },
+      banners: {
+        let query = God.BannersQuery()
+        return apolloClient.watch(query: query)
       }
     )
   }

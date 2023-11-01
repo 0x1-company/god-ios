@@ -1,3 +1,4 @@
+import AnalyticsClient
 import AsyncValue
 import ComposableArchitecture
 import God
@@ -18,11 +19,13 @@ public struct ActivityLogic: Reducer {
 
   public enum Action: Equatable {
     case onTask
+    case onAppear
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
     case activityButtonTapped(God.ActivitiesQuery.Data.ListActivities.Edge)
     case destination(PresentationAction<Destination.Action>)
   }
 
+  @Dependency(\.analytics) var analytics
   @Dependency(\.godClient.activities) var activitiesStream
 
   enum Cancel { case activities }
@@ -40,6 +43,10 @@ public struct ActivityLogic: Reducer {
           await send(.activitiesResponse(.failure(error)))
         }
         .cancellable(id: Cancel.activities)
+
+      case .onAppear:
+        analytics.logScreen(screenName: "Activity", of: self)
+        return .none
 
       case let .activitiesResponse(.success(data)):
         state.edges = data.listActivities.edges
@@ -101,12 +108,13 @@ public struct ActivityView: View {
       List {
         ForEach(viewStore.edges, id: \.cursor) { edge in
           ActivityCard(activity: edge) { activity in
-            viewStore.send(.activityButtonTapped(activity))
+            store.send(.activityButtonTapped(activity))
           }
         }
       }
       .listStyle(.plain)
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .sheet(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /ActivityLogic.Destination.State.profile,
@@ -120,13 +128,11 @@ public struct ActivityView: View {
   }
 }
 
-struct ActivityViewPreviews: PreviewProvider {
-  static var previews: some View {
-    ActivityView(
-      store: .init(
-        initialState: ActivityLogic.State(),
-        reducer: { ActivityLogic() }
-      )
+#Preview {
+  ActivityView(
+    store: .init(
+      initialState: ActivityLogic.State(),
+      reducer: { ActivityLogic() }
     )
-  }
+  )
 }

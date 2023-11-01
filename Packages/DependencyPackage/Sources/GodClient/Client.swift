@@ -42,6 +42,8 @@ public struct GodClient: Sendable {
   public var activeSubscription: @Sendable () -> AsyncThrowingStream<God.ActiveSubscriptionQuery.Data, Error>
   public var revealFullNameLimit: @Sendable () -> AsyncThrowingStream<God.RevealFullNameLimitQuery.Data, Error>
   public var revealFullName: @Sendable (God.RevealFullNameInput) async throws -> God.RevealFullNameMutation.Data
+
+  public var banners: @Sendable () -> AsyncThrowingStream<God.BannersQuery.Data, Error>
 }
 
 public struct GodServerError: Error {

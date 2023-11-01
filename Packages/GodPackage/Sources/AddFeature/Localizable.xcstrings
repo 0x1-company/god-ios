@@ -8,6 +8,12 @@
             "state" : "new",
             "value" : "%1$@ %2$@"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
         }
       }
     },
@@ -27,17 +33,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "友だちになる"
-          }
-        }
-      }
-    },
-    "ADDED" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だち"
           }
         }
       }
@@ -77,7 +72,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "友だちかも？"
+            "value" : "友だちの友だち"
           }
         }
       }
@@ -87,7 +82,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "学校の友だち"
+            "value" : "同じ学校"
           }
         }
       }
@@ -118,6 +113,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "リクエスト中"
+          }
+        }
+      }
+    },
+    "SHARE PROFILE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちをGodに招待しよう"
           }
         }
       }

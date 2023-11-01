@@ -144,6 +144,12 @@
         }
       }
     },
+    "Enable Contacts" : {
+
+    },
+    "Enable Notify" : {
+
+    },
     "Enter your age" : {
       "localizations" : {
         "ja" : {
@@ -224,6 +230,9 @@
         }
       }
     },
+    "God cares intensely about your privacy.\nWe will never text or spam your contacts." : {
+
+    },
     "God cares intensely about your privacy.\nWe will not share your personal information with outside parties or use it for private purposes without your permission." : {
       "localizations" : {
         "ja" : {
@@ -239,10 +248,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godはあなたのプライバシーを非常に大切にします。\nあなたの連絡先にメールやスパムを送ることは決してありません。"
+            "value" : "あなたの個人情報は安全に管理されます。\nメールやスパムを送ることはありません。"
           }
         }
       }
+    },
+    "God needs to find your school and suggest friends." : {
+
     },
     "God uses your contacts\nto find friends" : {
       "localizations" : {
@@ -300,6 +312,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "高校"
+          }
+        }
+      }
+    },
+    "If your school is not found, add it here" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学校が見つからない場合はここから追加する"
           }
         }
       }
@@ -409,7 +431,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "友だち候補"
+            "value" : "同じ学校"
           }
         }
       }
@@ -424,12 +446,25 @@
         }
       }
     },
+    "Please allow access" : {
+
+    },
     "Privacy Policy" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "プライバシーポリシーを見る"
+          }
+        }
+      }
+    },
+    "SHARE PROFILE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちをGodに招待しよう"
           }
         }
       }

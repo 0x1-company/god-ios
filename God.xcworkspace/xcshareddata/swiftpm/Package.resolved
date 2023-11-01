@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apollographql/apollo-ios",
       "state" : {
-        "revision" : "2da396e6934f98606b085e19156bc54c03a188c1",
-        "version" : "1.6.0"
+        "revision" : "7bbdce4bebb0b3978e69f8a34f26227ab733d96d",
+        "version" : "1.6.1"
       }
     },
     {
@@ -100,12 +100,12 @@
       }
     },
     {
-      "identity" : "lottie-ios",
+      "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-ios",
+      "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
-        "branch" : "master",
-        "revision" : "70ef458c2a2169f41d13c91fa8df4d172465b764"
+        "revision" : "3e7eb8281ff9ac67e64a3a58a80c0aa9fa388b04",
+        "version" : "4.3.3"
       }
     },
     {
@@ -176,8 +176,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-composable-architecture",
       "state" : {
-        "revision" : "a7c1f799b55ecb418f85094b142565834f7ee7c7",
-        "version" : "1.2.0"
+        "revision" : "9b0f600253f467f61cbd53f60ccc243cc4ff27cd",
+        "version" : "1.3.0"
       }
     },
     {

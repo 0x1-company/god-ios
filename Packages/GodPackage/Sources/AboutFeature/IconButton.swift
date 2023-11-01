@@ -22,7 +22,7 @@ struct IconButton: View {
         .font(.system(.headline, design: .rounded, weight: .bold))
         .frame(height: 54)
         .frame(maxWidth: .infinity)
-        .foregroundColor(Color.black)
+        .foregroundStyle(Color.black)
         .overlay(alignment: .leading) {
           Image(image)
             .resizable()

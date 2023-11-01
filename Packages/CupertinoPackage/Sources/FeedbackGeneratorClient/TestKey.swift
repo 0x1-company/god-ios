@@ -9,17 +9,10 @@ public extension DependencyValues {
 }
 
 extension FeedbackGeneratorClient: TestDependencyKey {
-  public static let previewValue = Self.noop
-
   public static let testValue = Self(
     prepare: unimplemented("\(Self.self).prepare"),
-    mediumImpact: unimplemented("\(Self.self).mediumImpact")
-  )
-}
-
-public extension FeedbackGeneratorClient {
-  static let noop = Self(
-    prepare: {},
-    mediumImpact: {}
+    impactOccurred: unimplemented("\(Self.self).mediumImpact"),
+    notificationOccurred: unimplemented("\(Self.self).notificationOccurred"),
+    play: unimplemented("\(Self.self).play")
   )
 }

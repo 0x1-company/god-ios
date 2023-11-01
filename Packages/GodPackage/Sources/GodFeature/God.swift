@@ -9,6 +9,31 @@ import UserNotificationClient
 
 public struct GodLogic: Reducer {
   public init() {}
+  public struct Child: Reducer {
+    public enum State: Equatable {
+      case poll(PollLogic.State)
+      case cashOut(CashOutLogic.State)
+      case playAgain(PlayAgainLogic.State)
+      case share(ShareTheAppLogic.State = .init())
+      case loading(GodLoadingLogic.State = .init())
+    }
+
+    public enum Action: Equatable {
+      case poll(PollLogic.Action)
+      case cashOut(CashOutLogic.Action)
+      case playAgain(PlayAgainLogic.Action)
+      case share(ShareTheAppLogic.Action)
+      case loading(GodLoadingLogic.Action)
+    }
+
+    public var body: some Reducer<State, Action> {
+      Scope(state: /State.poll, action: /Action.poll, child: PollLogic.init)
+      Scope(state: /State.cashOut, action: /Action.cashOut, child: CashOutLogic.init)
+      Scope(state: /State.playAgain, action: /Action.playAgain, child: PlayAgainLogic.init)
+      Scope(state: /State.share, action: /Action.share, child: ShareTheAppLogic.init)
+      Scope(state: /State.loading, action: /Action.loading, child: GodLoadingLogic.init)
+    }
+  }
 
   public struct State: Equatable {
     var child = Child.State.loading()
@@ -36,10 +61,8 @@ public struct GodLogic: Reducer {
       switch action {
       case .onTask:
         return .run { send in
-          try await mainQueue.sleep(for: .seconds(1))
           await currentPollRequest(send: send)
         }
-        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .coolDown:
         guard
@@ -51,7 +74,7 @@ public struct GodLogic: Reducer {
         let until = Date(timeIntervalSince1970: untilTimeInterval / 1000.0)
         updateChild(state: &state, child: .playAgain(.init(until: until)))
         return .run { _ in
-          await registerLocalNotification(until: until)
+          await registerNewPollsAvailable(until: until)
         }
 
       case let .currentPollResponse(.success(data)) where data.currentPoll.status == .active:
@@ -71,16 +94,27 @@ public struct GodLogic: Reducer {
       case .currentPollResponse(.failure):
         return .none
 
+      case .child(.poll(.delegate(.voted))):
+        return .run { _ in
+          await registerPollsAwaitYourInput()
+        }
+
       case let .child(.poll(.delegate(.finish(earnedCoinAmount)))):
         updateChild(state: &state, child: .cashOut(.init(earnedCoinAmount: earnedCoinAmount)))
-        return .none
+        return .run { _ in
+          await userNotifications.removePendingNotificationRequestsWithIdentifiers(["polls-await-your-input"])
+        }
 
       case .child(.cashOut(.delegate(.finish))):
         return .run { send in
           await currentPollRequest(send: send)
         }
-        .cancellable(id: Cancel.currentPoll, cancelInFlight: true)
 
+      case .child(.playAgain(.delegate(.loading))):
+        updateChild(state: &state, child: .loading())
+        return .run { send in
+          await currentPollRequest(send: send)
+        }
       case .child:
         return .none
       }
@@ -103,16 +137,18 @@ public struct GodLogic: Reducer {
   }
 
   func currentPollRequest(send: Send<Action>) async {
-    do {
-      for try await data in godClient.currentPoll() {
-        await send(.currentPollResponse(.success(data)))
+    await withTaskCancellation(id: Cancel.currentPoll, cancelInFlight: true) {
+      do {
+        for try await data in godClient.currentPoll() {
+          await send(.currentPollResponse(.success(data)))
+        }
+      } catch {
+        await send(.currentPollResponse(.failure(error)))
       }
-    } catch {
-      await send(.currentPollResponse(.failure(error)))
     }
   }
 
-  func registerLocalNotification(until: Date) async {
+  func registerNewPollsAvailable(until: Date) async {
     let content = UNMutableNotificationContent()
     content.title = String(localized: "New polls available", bundle: .module)
     content.body = String(localized: "🏆 Tap to vote", bundle: .module)
@@ -130,42 +166,32 @@ public struct GodLogic: Reducer {
       content: content,
       trigger: trigger
     )
-    try? await userNotifications.add(request)
+    do {
+      try await userNotifications.add(request)
+    } catch {
+      print("\(#function): \(error)")
+    }
   }
 
-  public struct Child: Reducer {
-    public enum State: Equatable {
-      case poll(PollLogic.State)
-      case cashOut(CashOutLogic.State)
-      case playAgain(PlayAgainLogic.State)
-      case share(ShareTheAppLogic.State = .init())
-      case loading(GodLoadingLogic.State = .init())
-    }
+  func registerPollsAwaitYourInput() async {
+    let content = UNMutableNotificationContent()
+    content.title = String(localized: "Polls await your input", bundle: .module)
+    content.body = String(localized: "🏆 Take the 12-polls challenge and earn some coins", bundle: .module)
+    content.sound = UNNotificationSound.default
 
-    public enum Action: Equatable {
-      case poll(PollLogic.Action)
-      case cashOut(CashOutLogic.Action)
-      case playAgain(PlayAgainLogic.Action)
-      case share(ShareTheAppLogic.Action)
-      case loading(GodLoadingLogic.Action)
-    }
-
-    public var body: some Reducer<State, Action> {
-      Scope(state: /State.poll, action: /Action.poll) {
-        PollLogic()
-      }
-      Scope(state: /State.cashOut, action: /Action.cashOut) {
-        CashOutLogic()
-      }
-      Scope(state: /State.playAgain, action: /Action.playAgain) {
-        PlayAgainLogic()
-      }
-      Scope(state: /State.share, action: /Action.share) {
-        ShareTheAppLogic()
-      }
-      Scope(state: /State.loading, action: /Action.loading) {
-        GodLoadingLogic()
-      }
+    let trigger = UNTimeIntervalNotificationTrigger(
+      timeInterval: 60 * 3,
+      repeats: false
+    )
+    let request = UNNotificationRequest(
+      identifier: "polls-await-your-input",
+      content: content,
+      trigger: trigger
+    )
+    do {
+      try await userNotifications.add(request)
+    } catch {
+      print("\(#function): \(error)")
     }
   }
 }
@@ -216,13 +242,11 @@ public struct GodView: View {
   }
 }
 
-struct GodViewPreviews: PreviewProvider {
-  static var previews: some View {
-    GodView(
-      store: .init(
-        initialState: GodLogic.State(),
-        reducer: { GodLogic() }
-      )
+#Preview {
+  GodView(
+    store: .init(
+      initialState: GodLogic.State(),
+      reducer: { GodLogic() }
     )
-  }
+  )
 }

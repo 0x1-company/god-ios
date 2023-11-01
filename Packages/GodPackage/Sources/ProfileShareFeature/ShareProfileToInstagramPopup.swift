@@ -71,17 +71,17 @@ public struct ShareProfileToInstagramPopupView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: { $0 }) { _ in
       ZStack(alignment: .center) {
         Color.godBlack.opacity(0.6)
           .overlay(alignment: .topTrailing) {
             Button {
-              viewStore.send(.closeButtonTapped)
+              store.send(.closeButtonTapped)
             } label: {
               Image(systemName: "xmark")
                 .resizable()
                 .frame(width: 16, height: 16)
-                .foregroundColor(Color.white)
+                .foregroundStyle(Color.white)
             }
             .offset(x: -24, y: 60)
           }

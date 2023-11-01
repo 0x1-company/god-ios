@@ -20,6 +20,8 @@ public enum Constants {
   public static let instagramURL = URL(string: "https://instagram.com/\(Self.godappteam)")!
   public static let tiktokURL = URL(string: "https://tiktok.com/@\(Self.godappteam)")!
 
+  public static let addSchoolRequestURL = URL(string: "https://forms.gle/bbq6Qfq8EspXiQoK8")!
+
   public static let docsURL = URL(string: "https://docs.godapp.jp")!
   public static let faqURL = URL(string: "\(Self.docsURL)/faq")!
   public static let safetyCenterURL = URL(string: "\(Self.docsURL)/safety-center")!

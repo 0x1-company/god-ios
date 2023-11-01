@@ -1,7 +1,7 @@
 import AnalyticsClient
-import AsyncValue
 import CachedAsyncImage
 import ComposableArchitecture
+import Constants
 import God
 import GodClient
 import RoundedCorner
@@ -12,13 +12,14 @@ public struct SchoolSettingLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    var schools = AsyncValue<[God.SchoolsQuery.Data.Schools.Edge.Node]>.none
+    var schools: [God.SchoolsQuery.Data.Schools.Edge.Node] = []
     public init() {}
   }
 
   public enum Action: Equatable {
     case onTask
     case onAppear
+    case addSchoolRequestButtonTapped
     case schoolButtonTapped(id: String)
     case schoolsResponse(TaskResult<God.SchoolsQuery.Data>)
     case delegate(Delegate)
@@ -28,6 +29,7 @@ public struct SchoolSettingLogic: Reducer {
     }
   }
 
+  @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
 
@@ -35,7 +37,6 @@ public struct SchoolSettingLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        state.schools = .loading
         return .run { send in
           for try await data in godClient.schools() {
             await send(.schoolsResponse(.success(data)))
@@ -48,15 +49,20 @@ public struct SchoolSettingLogic: Reducer {
         analytics.logScreen(screenName: "SchoolSetting", of: self)
         return .none
 
+      case .addSchoolRequestButtonTapped:
+        return .run { _ in
+          await openURL(Constants.addSchoolRequestURL)
+        }
+
       case let .schoolButtonTapped(id):
         return .send(.delegate(.nextScreen(id: id)))
 
       case let .schoolsResponse(.success(data)):
-        state.schools = .success(data.schools.edges.map(\.node))
+        state.schools = data.schools.edges.map(\.node)
         return .none
 
-      case let .schoolsResponse(.failure(error)):
-        state.schools = .failure(error)
+      case .schoolsResponse(.failure):
+        state.schools = []
         return .none
 
       case .delegate:
@@ -78,59 +84,63 @@ public struct SchoolSettingView: View {
       ZStack(alignment: .center) {
         Color.godService
 
-        switch viewStore.schools {
-        case let .success(schools):
-          List(schools, id: \.self) { school in
+        List {
+          ForEach(viewStore.schools, id: \.self) { school in
             Button {
-              viewStore.send(.schoolButtonTapped(id: school.id))
+              store.send(.schoolButtonTapped(id: school.id))
             } label: {
               HStack(alignment: .center, spacing: 16) {
                 SchoolImage(urlString: school.profileImageURL)
 
                 VStack(alignment: .leading) {
                   Text(school.name)
-                    .bold()
+                    .font(.system(.body, design: .rounded, weight: .bold))
                     .lineLimit(1)
 
                   Text(school.shortName)
-                    .foregroundColor(Color.godTextSecondaryLight)
+                    .foregroundStyle(Color.godTextSecondaryLight)
                 }
                 .font(.footnote)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 0) {
                   Text(school.usersCount.description)
-                    .bold()
-                    .foregroundColor(Color.godService)
+                    .font(.system(.footnote, design: .rounded, weight: .bold))
+                    .foregroundStyle(Color.godService)
                   Text("MEMBERS", bundle: .module)
-                    .foregroundColor(Color.godTextSecondaryLight)
+                    .foregroundStyle(Color.godTextSecondaryLight)
+                    .font(.system(.footnote, design: .rounded))
                 }
-                .font(.footnote)
               }
             }
           }
-          .listStyle(.plain)
-          .foregroundColor(.primary)
-          .background(Color.white)
-          .multilineTextAlignment(.center)
-          .cornerRadius(12, corners: [.topLeft, .topRight])
-          .edgesIgnoringSafeArea(.bottom)
-
-        case .loading:
-          Color.white
-            .ignoresSafeArea()
-            .overlay {
-              ProgressView()
-                .progressViewStyle(.circular)
-                .tint(Color.black)
+          Button {
+            store.send(.addSchoolRequestButtonTapped)
+          } label: {
+            Label {
+              Text("If your school is not found, add it here", bundle: .module)
+            } icon: {
+              Image(systemName: "info.circle")
             }
-
-        default:
-          Color.white
-            .ignoresSafeArea()
+            .foregroundStyle(.secondary)
+            .font(.system(.footnote, design: .rounded))
+          }
+        }
+        .listStyle(.plain)
+        .foregroundStyle(.primary)
+        .background(Color.white)
+        .multilineTextAlignment(.center)
+        .cornerRadius(12, corners: [.topLeft, .topRight])
+        .edgesIgnoringSafeArea(.bottom)
+        .overlay {
+          if viewStore.schools.isEmpty {
+            ProgressView()
+              .tint(Color.black)
+              .progressViewStyle(.circular)
+          }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .navigationTitle(Text("Pick your school", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
@@ -182,4 +192,5 @@ public struct SchoolSettingView: View {
       )
     )
   }
+  .environment(\.locale, Locale(identifier: "ja-JP"))
 }

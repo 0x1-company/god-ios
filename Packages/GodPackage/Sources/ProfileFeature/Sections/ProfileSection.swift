@@ -15,7 +15,18 @@ public struct ProfileSection: View {
   let grade: String?
   let editProfile: (() -> Void)?
 
-  public init(imageURL: String, friendsCount: Int, votedCount: Int, username: String, firstName: String, lastName: String, displayName: String, schoolShortName: String?, grade: String?, editProfile: (() -> Void)? = nil) {
+  public init(
+    imageURL: String,
+    friendsCount: Int,
+    votedCount: Int,
+    username: String,
+    firstName: String,
+    lastName: String,
+    displayName: String,
+    schoolShortName: String?,
+    grade: String?,
+    editProfile: (() -> Void)? = nil
+  ) {
     self.imageURL = imageURL
     self.friendsCount = friendsCount
     self.votedCount = votedCount
@@ -40,24 +51,26 @@ public struct ProfileSection: View {
         VStack(alignment: .leading, spacing: 16) {
           HStack(spacing: 16) {
             Text(friendsCount.description)
-              .bold()
               .foregroundColor(.primary)
+              .font(.system(.body, design: .rounded, weight: .bold))
               +
               Text(" friends", bundle: .module)
               .foregroundColor(.secondary)
+              .font(.system(.body, design: .rounded))
 
             Text(votedCount.description)
-              .bold()
               .foregroundColor(.primary)
+              .font(.system(.body, design: .rounded, weight: .bold))
               +
               Text(" stars", bundle: .module)
               .foregroundColor(.secondary)
+              .font(.system(.body, design: .rounded))
           }
           if let editProfile {
             Button(action: editProfile) {
               Text("EDIT PROFILE", bundle: .module)
-                .bold()
-                .foregroundColor(.secondary)
+                .font(.system(.body, design: .rounded, weight: .bold))
+                .foregroundStyle(.secondary)
                 .frame(height: 32)
                 .padding(.horizontal, 12)
                 .overlay(
@@ -71,7 +84,7 @@ public struct ProfileSection: View {
       }
       VStack(alignment: .leading, spacing: 4) {
         Text(displayName)
-          .bold()
+          .font(.system(.body, design: .rounded, weight: .bold))
 
         Text(verbatim: "@\(username)")
       }
@@ -89,7 +102,8 @@ public struct ProfileSection: View {
           }
         }
       }
-      .foregroundColor(.secondary)
+      .foregroundStyle(.secondary)
+      .font(.system(.body, design: .rounded))
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(.horizontal, 16)

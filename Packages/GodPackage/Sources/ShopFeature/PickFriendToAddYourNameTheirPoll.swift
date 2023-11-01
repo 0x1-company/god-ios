@@ -1,8 +1,8 @@
+import AnalyticsClient
 import ComposableArchitecture
 import God
 import GodClient
 import ProfileImage
-import SearchField
 import Styleguide
 import SwiftUI
 
@@ -10,7 +10,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
-    @BindingState var searchQuery = ""
+    @BindingState var searchQuery = String()
     var friends: [God.FriendFragment] = []
     var selection: God.FriendFragment?
     public init() {}
@@ -18,6 +18,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
   public enum Action: Equatable, BindableAction {
     case onTask
+    case onAppear
     case nextButtonTapped
     case closeButtonTapped
     case friendButtonTapped(God.FriendFragment)
@@ -32,6 +33,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
 
   @Dependency(\.dismiss) var dismiss
   @Dependency(\.godClient) var godClient
+  @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
@@ -45,6 +47,10 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
         } catch: { error, send in
           await send(.friendsResponse(.failure(error)))
         }
+      case .onAppear:
+        analytics.logScreen(screenName: "PickFriendToAddYourNameTheirPoll", of: self)
+        return .none
+
       case .nextButtonTapped:
         guard let userId = state.selection?.id
         else { return .none }
@@ -87,15 +93,12 @@ public struct PickFriendToAddYourNameTheirPollView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       VStack(spacing: 0) {
         Text("Pick a friend to add\nyour name to their polls", bundle: .module)
-          .bold()
-          .font(.title2)
+          .font(.system(.title2, design: .rounded, weight: .bold))
           .foregroundStyle(Color.godWhite)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
           .padding(.bottom, 46)
           .background(Color.godService)
-
-//        SearchField(text: viewStore.$searchQuery)
 
         Divider()
 
@@ -103,7 +106,7 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           LazyVStack(spacing: 0) {
             ForEach(viewStore.friends, id: \.self) { friend in
               Button {
-                viewStore.send(.friendButtonTapped(friend))
+                store.send(.friendButtonTapped(friend))
               } label: {
                 HStack(spacing: 16) {
                   ProfileImage(
@@ -132,11 +135,12 @@ public struct PickFriendToAddYourNameTheirPollView: View {
           }
         }
       }
-      .task { await viewStore.send(.onTask).finish() }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
-            viewStore.send(.closeButtonTapped)
+            store.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
               .foregroundStyle(.white)
@@ -145,11 +149,11 @@ public struct PickFriendToAddYourNameTheirPollView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            viewStore.send(.nextButtonTapped)
+            store.send(.nextButtonTapped)
           } label: {
             Text("Next", bundle: .module)
-              .bold()
               .foregroundStyle(.white)
+              .font(.system(.body, design: .rounded, weight: .bold))
               .disabled(viewStore.selection == nil)
           }
           .buttonStyle(HoldDownButtonStyle())

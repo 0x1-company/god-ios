@@ -51,12 +51,13 @@ public struct FromGodTeamCard: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       Button {
-        viewStore.send(.cardButtonTapped)
+        store.send(.cardButtonTapped)
       } label: {
         HStack(spacing: 0) {
           Label {
             Text("From God Team", bundle: .module)
               .frame(maxWidth: .infinity, alignment: .leading)
+              .font(.system(.body, design: .rounded))
           } icon: {
             Image(viewStore.isRead ? ImageResource.unreadIcon : ImageResource.godTeamIcon)
               .resizable()

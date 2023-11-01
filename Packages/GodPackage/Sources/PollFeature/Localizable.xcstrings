@@ -27,6 +27,16 @@
         }
       }
     },
+    "Please start over from the beginning." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最初からやり直してください。"
+          }
+        }
+      }
+    },
     "Shuffle" : {
       "localizations" : {
         "ja" : {
@@ -63,6 +73,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "うわぁ、ゆっくり！🐎"
+          }
+        }
+      }
+    },
+    "You cannot skip all questions." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべての質問をスキップすることはできません🥲"
+          }
+        }
+      }
+    },
+    "You cannot skip questions" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "質問をスキップできません🥲"
           }
         }
       }

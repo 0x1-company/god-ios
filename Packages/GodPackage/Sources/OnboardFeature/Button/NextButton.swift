@@ -27,29 +27,15 @@ public struct NextButton: View {
           Text("Next", bundle: .module)
         }
       }
-      .bold()
+      .font(.system(.body, design: .rounded, weight: .bold))
       .frame(height: 54)
       .frame(maxWidth: .infinity)
-      .foregroundColor(Color.black)
+      .foregroundStyle(Color.black)
       .background(Color.white)
       .clipShape(Capsule())
       .opacity(isLoading || isDisabled ? 0.5 : 1.0)
     }
     .disabled(isLoading || isDisabled)
     .buttonStyle(HoldDownButtonStyle())
-  }
-}
-
-struct NextButtonPreviews: PreviewProvider {
-  static var previews: some View {
-    VStack {
-      NextButton(isLoading: false, isDisabled: false, action: {})
-      NextButton(isLoading: true, isDisabled: false, action: {})
-      NextButton(isLoading: false, isDisabled: true, action: {})
-      NextButton(isLoading: true, isDisabled: true, action: {})
-    }
-    .padding()
-    .background(Color.orange)
-    .previewLayout(.sizeThatFits)
   }
 }

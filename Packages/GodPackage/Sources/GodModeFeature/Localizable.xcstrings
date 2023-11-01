@@ -11,12 +11,22 @@
         }
       }
     },
+    "3-day free trial" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3日間無料！！"
+          }
+        }
+      }
+    },
     "Continue" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "はじめる"
+            "value" : "ロック解除🔓"
           }
         }
       }
@@ -57,6 +67,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "定期課金。いつでもキャンセルできます。"
+          }
+        }
+      }
+    },
+    "Renews at %@/week" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "終了後は%@/週"
           }
         }
       }

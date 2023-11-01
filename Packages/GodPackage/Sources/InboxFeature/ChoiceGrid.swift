@@ -30,8 +30,7 @@ struct ChoiceGrid: View {
             Text(choice.text)
           }
         }
-        .font(.callout)
-        .bold()
+        .font(.system(.callout, design: .rounded, weight: .bold))
         .lineLimit(2)
         .multilineTextAlignment(.center)
         .padding(.horizontal, 16)
@@ -66,16 +65,16 @@ struct ChoiceGrid: View {
   }
 }
 
-#Preview {
-  ChoiceGrid(
-    color: Color.blue,
-    choices: [
-      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Apple", "isSelected": false], fulfilledFragments: [])),
-      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Orange", "isSelected": true], fulfilledFragments: [])),
-      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Banana", "isSelected": false], fulfilledFragments: [])),
-      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "", "isSelected": false], fulfilledFragments: [])),
-    ]
-  )
-  .padding()
-  .background(Color.blue)
-}
+// #Preview {
+//  ChoiceGrid(
+//    color: Color.blue,
+//    choices: [
+//      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Apple", "isSelected": false], fulfilledFragments: [])),
+//      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Orange", "isSelected": true], fulfilledFragments: [])),
+//      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "Banana", "isSelected": false], fulfilledFragments: [])),
+//      God.InboxFragment.Choice(_dataDict: DataDict(data: ["text": "", "isSelected": false], fulfilledFragments: [])),
+//    ]
+//  )
+//  .padding()
+//  .background(Color.blue)
+// }

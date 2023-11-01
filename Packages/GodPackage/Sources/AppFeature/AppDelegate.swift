@@ -13,12 +13,13 @@ public struct AppDelegateLogic: Reducer {
   public struct State: Equatable {}
   public enum Action: Equatable {
     case didFinishLaunching
+    case dynamicLink(URL?)
     case didReceiveRemoteNotification([AnyHashable: Any])
     case didRegisterForRemoteNotifications(TaskResult<Data>)
+    case configurationForConnecting(UIApplicationShortcutItem?)
     case userNotifications(UserNotificationClient.DelegateEvent)
     case messaging(FirebaseMessagingClient.DelegateAction)
-    case configurationForConnecting(UIApplicationShortcutItem?)
-    case dynamicLink(URL?)
+    case createFirebaseRegistrationTokenResponse(TaskResult<God.CreateFirebaseRegistrationTokenMutation.Data>)
     case delegate(Delegate)
 
     public enum Delegate: Equatable {
@@ -47,14 +48,9 @@ public struct AppDelegateLogic: Reducer {
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .didFinishLaunching:
+      firebaseCore.configure()
       return .run { @MainActor send in
-        firebaseCore.configure()
         await withThrowingTaskGroup(of: Void.self) { group in
-          group.addTask {
-            guard try await userNotifications.requestAuthorization([.alert, .sound, .badge])
-            else { return }
-            await registerForRemoteNotifications()
-          }
           group.addTask {
             for await event in userNotifications.delegate() {
               await send(.userNotifications(event))
@@ -80,14 +76,14 @@ public struct AppDelegateLogic: Reducer {
       return .none
 
     case let .didRegisterForRemoteNotifications(.success(tokenData)):
-      return .run { _ in
+      return .run { send in
         #if DEBUG
           firebaseAuth.setAPNSToken(tokenData, .sandbox)
         #else
           firebaseAuth.setAPNSToken(tokenData, .prod)
         #endif
         firebaseMessaging.setAPNSToken(tokenData)
-        await createFirebaseRegistrationTokenRequest()
+        await createFirebaseRegistrationTokenRequest(send: send)
       }
 
     case let .userNotifications(.willPresentNotification(notification, completionHandler)):
@@ -103,8 +99,8 @@ public struct AppDelegateLogic: Reducer {
       }
 
     case .messaging(.didReceiveRegistrationToken):
-      return .run { _ in
-        await createFirebaseRegistrationTokenRequest()
+      return .run { send in
+        await createFirebaseRegistrationTokenRequest(send: send)
       }
 
     case let .dynamicLink(.some(url)):
@@ -120,11 +116,13 @@ public struct AppDelegateLogic: Reducer {
     }
   }
 
-  func createFirebaseRegistrationTokenRequest() async {
+  func createFirebaseRegistrationTokenRequest(send: Send<Action>) async {
     do {
       let token = try await firebaseMessaging.token()
       let input = God.CreateFirebaseRegistrationTokenInput(token: token)
-      _ = try await createFirebaseRegistrationToken(input)
+      await send(.createFirebaseRegistrationTokenResponse(TaskResult {
+        try await createFirebaseRegistrationToken(input)
+      }))
     } catch {
       print("createFirebaseRegistrationTokenRequest: \(error)")
     }
