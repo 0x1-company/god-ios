@@ -23,11 +23,11 @@ public struct GodActionSheet<Actions: View>: View {
     VStack(alignment: .center, spacing: 28) {
       VStack(alignment: .center, spacing: 12) {
         Text(title)
-          .font(.system(.title3, design: .rounded, weight: .bold))
+          .font(.custom(.title3, design: .rounded, weight: .bold))
         if let description {
           Text(description)
             .foregroundStyle(.secondary)
-            .font(.system(.body, design: .rounded))
+            .font(.custom(.body, design: .rounded))
         }
       }
       .multilineTextAlignment(.center)
@@ -43,7 +43,7 @@ public struct GodActionSheet<Actions: View>: View {
               .frame(height: 48)
               .frame(maxWidth: .infinity)
               .foregroundStyle(.black)
-              .font(.system(.body, design: .rounded, weight: .bold))
+              .font(.custom(.body, design: .rounded, weight: .bold))
           }
       }
       .buttonStyle(HoldDownButtonStyle())

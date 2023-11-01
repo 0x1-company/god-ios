@@ -3,8 +3,9 @@ import UIKit
 @discardableResult
 public func registerFonts() -> Bool {
   [
-    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Regular", fontExtension: "ttf"),
+    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Black", fontExtension: "ttf"),
     UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Bold", fontExtension: "ttf"),
+    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Regular", fontExtension: "ttf"),
   ]
   .allSatisfy { $0 }
 }
@@ -12,16 +13,13 @@ public func registerFonts() -> Bool {
 extension UIFont {
   static func registerFont(bundle: Bundle, fontName: String, fontExtension: String) -> Bool {
     guard let fontURL = bundle.url(forResource: fontName, withExtension: fontExtension) else {
-      print("Couldn't find font \(fontName)")
-      return false
+      fatalError("Couldn't find font \(fontName)")
     }
     guard let fontDataProvider = CGDataProvider(url: fontURL as CFURL) else {
-      print("Couldn't load data from the font \(fontName)")
-      return false
+      fatalError("Couldn't load data from the font \(fontName)")
     }
     guard let font = CGFont(fontDataProvider) else {
-      print("Couldn't create font from data")
-      return false
+      fatalError("Couldn't create font from data")
     }
 
     var error: Unmanaged<CFError>?

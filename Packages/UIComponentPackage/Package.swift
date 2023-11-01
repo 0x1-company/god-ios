@@ -40,7 +40,9 @@ let package = Package(
       "Styleguide",
     ]),
     .target(name: "Styleguide", resources: [
-      .process("Fonts"),
+      .copy("Fonts/MPLUSRounded1c-Black.ttf"),
+      .copy("Fonts/MPLUSRounded1c-Bold.ttf"),
+      .copy("Fonts/MPLUSRounded1c-Regular.ttf"),
     ]),
   ]
 )
