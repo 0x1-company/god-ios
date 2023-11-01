@@ -12,7 +12,7 @@ private func getFontName(weight: Font.Weight) -> String {
 }
 
 public extension Font {
-  func custom(_ style: Font.TextStyle, weight: Font.Weight = .regular) -> Font {
+  static func custom(_ style: Font.TextStyle = .body, weight: Font.Weight = .regular) -> Font {
     let fontName = getFontName(weight: weight)
     return Font.custom(fontName, size: style.size, relativeTo: style)
   }

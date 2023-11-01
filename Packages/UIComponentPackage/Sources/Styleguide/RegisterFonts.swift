@@ -3,8 +3,8 @@ import UIKit
 @discardableResult
 public func registerFonts() -> Bool {
   [
-    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Regular", fontExtension: "otf"),
-    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Bold", fontExtension: "otf"),
+    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Regular", fontExtension: "ttf"),
+    UIFont.registerFont(bundle: .module, fontName: "MPLUSRounded1c-Bold", fontExtension: "ttf"),
   ]
   .allSatisfy { $0 }
 }
