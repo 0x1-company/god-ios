@@ -8,7 +8,7 @@ private func getFontName(weight: Font.Weight) -> String {
     return "MPLUSRounded1c-Bold"
   case .black:
     return "MPLUSRounded1c-Black"
- default:
+  default:
     fatalError("Not found \(weight)")
   }
 }
@@ -18,7 +18,7 @@ public extension Font {
     let fontName = getFontName(weight: weight)
     return Font.custom(fontName, size: style.size, relativeTo: style)
   }
-  
+
   static func custom(size: CGFloat, weight: Font.Weight = .regular, design: Design?) -> Font {
     let fontName = getFontName(weight: weight)
     return Font.custom(fontName, size: size)
