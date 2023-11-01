@@ -10,8 +10,8 @@ import FirebaseAuthClient
 import FirebaseDynamicLinks
 import FirebaseMessaging
 import GodClient
-import SwiftUI
 import Styleguide
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   @Dependency(\.firebaseAuth) var firebaseAuth
@@ -115,7 +115,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct GodApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-  
+
   init() {
     Styleguide.registerFonts()
   }
