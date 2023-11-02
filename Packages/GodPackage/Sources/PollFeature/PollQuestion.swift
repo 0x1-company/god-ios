@@ -206,8 +206,7 @@ public struct PollQuestionView: View {
         Text(viewStore.question.text.ja)
           .foregroundStyle(.white)
           .multilineTextAlignment(.center)
-//          .font(.system(.title2, design: .rounded, weight: .bold))
-          .font(.custom(.title2, weight: .bold))
+          .font(.system(.title2, design: .rounded, weight: .bold))
 
         Spacer()
 
