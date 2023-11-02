@@ -73,28 +73,36 @@ public struct AboutLogic: Reducer {
       switch action {
       case .onTask:
         return .none
+
       case .onAppear:
         analytics.logScreen(screenName: "About", of: self)
         return .none
+
       case .howItWorksButtonTapped:
         state.destination = .howItWorks()
+        analytics.buttonClick(name: .howItWorks)
         return .none
 
       case .faqButtonTapped:
+        analytics.buttonClick(name: .faq)
         return .run { _ in
           await openURL(Constants.faqURL)
         }
+
       case .shareFeedbackButtonTapped:
+        analytics.buttonClick(name: .shareFeedback)
         state.destination = .emailSheet(
           EmailSheetLogic.State(title: String(localized: "Email us", bundle: .module))
         )
         return .none
 
       case .getHelpButtonTapped:
+        analytics.buttonClick(name: .getHelp)
         state.confirmationDialog = .getHelp
         return .none
 
       case .safetyCenterButtonTapped:
+        analytics.buttonClick(name: .safetyCenter)
         return .run { _ in
           await openURL(Constants.safetyCenterURL)
         }
@@ -102,20 +110,28 @@ public struct AboutLogic: Reducer {
       case let .confirmationDialog(.presented(action)):
         switch action {
         case .addMySchoolToMyProfile:
+          analytics.buttonClick("add_my_school_to_my_profile")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Add my school to my profile", bundle: .module)))
         case .changeMyGrade:
+          analytics.buttonClick("change_my_grade")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Change my grade", bundle: .module)))
         case .changeMyGender:
+          analytics.buttonClick("change_my_gender")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Change my gender", bundle: .module)))
         case .changeMyName:
+          analytics.buttonClick("change_my_name")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Change my name", bundle: .module)))
         case .deleteMyAccount:
+          analytics.buttonClick("delete_my_account")
           state.destination = .deleteAccount()
         case .purchasesAndGodMode:
+          analytics.buttonClick("purchases_and_god_mode")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Purchases & God Mode", bundle: .module)))
         case .reportBug:
+          analytics.buttonClick("report_bug")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Report a bug", bundle: .module)))
         case .somethingElse:
+          analytics.buttonClick("something_else")
           state.destination = .emailSheet(EmailSheetLogic.State(title: String(localized: "Something else", bundle: .module)))
         }
         return .none
