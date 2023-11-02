@@ -47,8 +47,12 @@ public extension AnalyticsClient {
 
 public extension AnalyticsClient {
   func buttonClick(name: ButtonClickName, parameters: [String: Any] = [:]) {
+    buttonClick(name.rawValue, parameters: parameters)
+  }
+  
+  func buttonClick(_ name: String, parameters: [String: Any] = [:]) {
     var parameters = parameters
-    parameters["name"] = name.rawValue
+    parameters["name"] = name
     logEvent("button_click", parameters)
   }
 
@@ -72,5 +76,10 @@ public extension AnalyticsClient {
     case gmail
     case email
     case forceUpdate = "force_update"
+    case howItWorks = "how_it_works"
+    case faq
+    case shareFeedback = "share_feedback"
+    case getHelp = "get_help"
+    case safetyCenter = "safety_center"
   }
 }
