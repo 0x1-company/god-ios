@@ -49,7 +49,7 @@ public extension AnalyticsClient {
   func buttonClick(name: ButtonClickName, parameters: [String: Any] = [:]) {
     buttonClick(name.rawValue, parameters: parameters)
   }
-  
+
   func buttonClick(_ name: String, parameters: [String: Any] = [:]) {
     var parameters = parameters
     parameters["name"] = name
