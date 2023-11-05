@@ -134,6 +134,9 @@
         }
       }
     },
+    "ClubActivitySetting" : {
+
+    },
     "Create an account." : {
       "localizations" : {
         "ja" : {
@@ -380,7 +383,7 @@
       "localizations" : {
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "次へ"
           }
         }
@@ -432,6 +435,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "同じ学校"
+          }
+        }
+      }
+    },
+    "Pick your club activity" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの部活動を選択"
           }
         }
       }

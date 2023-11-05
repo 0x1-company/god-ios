@@ -137,6 +137,10 @@ public extension GodClient {
       banners: {
         let query = God.BannersQuery()
         return apolloClient.watch(query: query)
+      },
+      clubActivities: {
+        let query = God.ClubActivitiesQuery()
+        return apolloClient.watch(query: query)
       }
     )
   }
