@@ -199,6 +199,7 @@ let package = Package(
       .product(name: "PhotosClient", package: "CupertinoPackage"),
       .product(name: "SocialShare", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
+      .product(name: "ActivityView", package: "UIComponentPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),

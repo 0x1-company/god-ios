@@ -10,6 +10,7 @@ let package = Package(
     .iOS("16.4"),
   ],
   products: [
+    .library(name: "ActivityView", targets: ["ActivityView"]),
     .library(name: "AnimationDisableTransaction", targets: ["AnimationDisableTransaction"]),
     .library(name: "BackgroundClearSheet", targets: ["BackgroundClearSheet"]),
     .library(name: "GodActionSheet", targets: ["GodActionSheet"]),
@@ -25,6 +26,7 @@ let package = Package(
     .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
   ],
   targets: [
+    .target(name: "ActivityView"),
     .target(name: "AnimationDisableTransaction"),
     .target(name: "BackgroundClearSheet"),
     .target(name: "GodActionSheet", dependencies: ["Styleguide"]),

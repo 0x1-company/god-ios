@@ -112,6 +112,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
   }
 }
 
+import OnboardFeature
+
 @main
 struct GodApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
@@ -122,7 +124,16 @@ struct GodApp: App {
 
   var body: some Scene {
     WindowGroup {
-      AppView(store: appDelegate.store)
+//      AppView(store: appDelegate.store)
+      NavigationStack {
+        InviteFriendView(
+          store: .init(
+            initialState: InviteFriendLogic.State(),
+            reducer: { InviteFriendLogic()._printChanges() }
+          )
+        )
+      }
+      .environment(\.locale, Locale(identifier: "ja-JP"))
     }
   }
 }

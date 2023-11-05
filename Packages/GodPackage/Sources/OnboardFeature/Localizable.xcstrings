@@ -183,6 +183,16 @@
         }
       }
     },
+    "Finally, please invite your friends\nInvite your friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最後に友だちを\n招待してください"
+          }
+        }
+      }
+    },
     "Find My Friends" : {
       "localizations" : {
         "ja" : {
@@ -359,6 +369,36 @@
         }
       }
     },
+    "Invite %lld best friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを%lld人招待する"
+          }
+        }
+      }
+    },
+    "INVITE %lld FRIENDS" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待リンクをあと%lld人に送ろう"
+          }
+        }
+      }
+    },
+    "Invite Friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち招待"
+          }
+        }
+      }
+    },
     "INVITE FRIENDS" : {
       "localizations" : {
         "ja" : {
@@ -405,6 +445,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "次へ"
+          }
+        }
+      }
+    },
+    "No friend\ninvited yet" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ招待\nしていません"
           }
         }
       }
@@ -478,17 +528,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プライバシーポリシーを見る"
-          }
-        }
-      }
-    },
-    "SAME CLUB ACTIVITY" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "同じ部活動"
           }
         }
       }
@@ -589,6 +628,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あなたの苗字は？"
+          }
+        }
+      }
+    },
+    "Why 3 friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "なぜ招待が必要ですか？"
           }
         }
       }
