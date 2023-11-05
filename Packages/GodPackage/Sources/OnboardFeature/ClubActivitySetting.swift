@@ -1,10 +1,10 @@
-import RoundedCorner
 import AnalyticsClient
 import ComposableArchitecture
-import Styleguide
-import SwiftUI
 import God
 import GodClient
+import RoundedCorner
+import Styleguide
+import SwiftUI
 
 public struct ClubActivitySettingLogic: Reducer {
   public init() {}
@@ -21,7 +21,7 @@ public struct ClubActivitySettingLogic: Reducer {
     case clubActivityButtonTapped(String)
     case clubActivitiesResponse(TaskResult<God.ClubActivitiesQuery.Data>)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextScreen(id: String?)
     }
@@ -29,7 +29,7 @@ public struct ClubActivitySettingLogic: Reducer {
 
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
-  
+
   enum Cancel {
     case clubActivities
   }
@@ -45,10 +45,10 @@ public struct ClubActivitySettingLogic: Reducer {
       case .onAppear:
         analytics.logScreen(screenName: "ClubActivitySetting", of: self)
         return .none
-        
+
       case .skipButtonTapped:
         return .send(.delegate(.nextScreen(id: nil)))
-        
+
       case let .clubActivityButtonTapped(id):
         return .send(.delegate(.nextScreen(id: id)))
 
@@ -57,13 +57,13 @@ public struct ClubActivitySettingLogic: Reducer {
           .map(\.fragments.clubActivityCardFragment)
           .sorted(by: { $0.position < $1.position })
         return .none
-        
+
       default:
         return .none
       }
     }
   }
-  
+
   func clubActivitiesRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.clubActivities, cancelInFlight: true) {
       do {
@@ -88,7 +88,7 @@ public struct ClubActivitySettingView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
         Color.godService
-        
+
         List(viewStore.clubActivities, id: \.self) { clubActivity in
           ClubActivityCard(clubActivity: clubActivity) {
             store.send(.clubActivityButtonTapped(clubActivity.id))
@@ -119,7 +119,7 @@ public struct ClubActivitySettingView: View {
       }
     }
   }
-  
+
   struct ClubActivityCard: View {
     let clubActivity: God.ClubActivityCardFragment
     let action: () -> Void
