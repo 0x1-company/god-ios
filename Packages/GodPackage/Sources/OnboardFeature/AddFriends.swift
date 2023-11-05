@@ -20,8 +20,12 @@ public struct AddFriendsLogic: Reducer {
   public init() {}
 
   public struct State: Equatable {
+    typealias User = God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node
+    var clubActivity: God.PeopleYouMayKnowQuery.Data.CurrentUser.ClubActivity?
     var selectUserIds: [String] = []
-    var users: [God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node] = []
+    var usersBySameClub: [User] = []
+    var usersBySameGeneration: [User] = []
+    var usersByOther: [User] = []
     var contacts: [CNContact] = []
     @PresentationState var message: CupertinoMessageLogic.State?
 
@@ -156,18 +160,24 @@ public struct AddFriendsLogic: Reducer {
         return .none
 
       case let .usersResponse(.success(data)):
-        state.users = data.usersBySameSchool.edges.map(\.node)
-        state.selectUserIds = data.usersBySameSchool.edges.map(\.node)
-          .filter { $0.generation == data.currentUser.generation }
-          .map(\.id)
+        let currentUser = data.currentUser
+        let users = data.usersBySameSchool.edges.map(\.node)
 
-        state.profileStoryFragment = data.currentUser.fragments.profileStoryFragment
-        if let username = data.currentUser.username {
+        if currentUser.clubActivityId != nil {
+          state.usersBySameClub = users.filter { $0.clubActivityId == currentUser.clubActivityId }
+        }
+        state.usersBySameGeneration = users.filter { $0.generation == currentUser.generation }
+        let usersByFiltered = state.usersBySameClub + state.usersBySameGeneration
+        state.usersByOther = users.filter { !usersByFiltered.contains($0) }
+
+        state.clubActivity = currentUser.clubActivity
+        state.profileStoryFragment = currentUser.fragments.profileStoryFragment
+        if let username = currentUser.username {
           state.shareURL = ShareLinkBuilder.buildGodLink(path: .add, username: username, source: .share, medium: .onboard)
         }
         return .run { send in
           await withTaskGroup(of: Void.self) { group in
-            if let imageURL = URL(string: data.currentUser.imageURL) {
+            if let imageURL = URL(string: currentUser.imageURL) {
               group.addTask {
                 do {
                   let (data, _) = try await urlSession.data(from: imageURL)
@@ -177,7 +187,7 @@ public struct AddFriendsLogic: Reducer {
                 }
               }
             }
-            if let imageURL = URL(string: data.currentUser.school?.profileImageURL ?? "") {
+            if let imageURL = URL(string: currentUser.school?.profileImageURL ?? "") {
               group.addTask {
                 do {
                   let (data, _) = try await urlSession.data(from: imageURL)
@@ -189,10 +199,6 @@ public struct AddFriendsLogic: Reducer {
             }
           }
         }
-
-      case .usersResponse(.failure):
-        state.users = []
-        return .none
 
       case let .profileImageResponse(.success(data)):
         state.profileImageData = data
@@ -271,13 +277,7 @@ public struct AddFriendsView: View {
         instagramStoryView
         ScrollView {
           LazyVStack(spacing: 0) {
-            Text("SHARE PROFILE", bundle: .module)
-              .frame(height: 34)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.horizontal, 16)
-              .foregroundStyle(.secondary)
-              .background(Color(uiColor: .quaternarySystemFill))
-              .font(.system(.body, design: .rounded, weight: .bold))
+            listHeader(String(localized: "SHARE PROFILE", bundle: .module))
 
             Divider()
 
@@ -299,59 +299,55 @@ public struct AddFriendsView: View {
             .padding(.horizontal, 24)
 
             Divider()
+            
+            if let clubActivity = viewStore.clubActivity {
+              listHeader(clubActivity.name)
 
-            Text("PEOPLE YOU MAY KNOW", bundle: .module)
-              .frame(height: 34)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.horizontal, 16)
-              .foregroundStyle(.secondary)
-              .background(Color(uiColor: .quaternarySystemFill))
-              .font(.system(.body, design: .rounded, weight: .bold))
+              Divider()
+
+              ForEach(viewStore.usersBySameClub, id: \.self) { user in
+                UserCard(
+                  user: user,
+                  isSelected: viewStore.selectUserIds.contains(user.id)
+                ) {
+                  store.send(.selectButtonTapped(user.id))
+                }
+                Divider()
+              }
+            }
+            
+            listHeader(String(localized: "SAME GRADE", bundle: .module))
 
             Divider()
 
-            ForEach(viewStore.users, id: \.self) { user in
-              Button {
+            ForEach(viewStore.usersBySameGeneration, id: \.self) { user in
+              UserCard(
+                user: user,
+                isSelected: viewStore.selectUserIds.contains(user.id)
+              ) {
                 store.send(.selectButtonTapped(user.id))
-              } label: {
-                HStack(alignment: .center, spacing: 16) {
-                  ProfileImage(
-                    urlString: user.imageURL,
-                    name: user.firstName,
-                    size: 40
-                  )
-
-                  VStack(alignment: .leading) {
-                    Text(user.displayName.ja)
-                      .foregroundStyle(Color.black)
-                  }
-                  .frame(maxWidth: .infinity, alignment: .leading)
-
-                  Rectangle()
-                    .fill(
-                      viewStore.selectUserIds.contains(user.id)
-                        ? Color.godService
-                        : Color.white
-                    )
-                    .frame(width: 26, height: 26)
-                    .clipShape(Circle())
-                    .overlay(
-                      RoundedRectangle(cornerRadius: 26 / 2)
-                        .stroke(
-                          viewStore.selectUserIds.contains(user.id)
-                            ? Color.godService
-                            : Color.godTextSecondaryLight,
-                          lineWidth: 2
-                        )
-                    )
-                }
-                .padding(.horizontal, 16)
-                .frame(height: 72)
-                .background(Color.white)
               }
-
               Divider()
             }
+            
+            listHeader(String(localized: "FROM SCHOOL", bundle: .module))
+
+            Divider()
+
+            ForEach(viewStore.usersByOther, id: \.self) { user in
+              UserCard(
+                user: user,
+                isSelected: viewStore.selectUserIds.contains(user.id)
+              ) {
+                store.send(.selectButtonTapped(user.id))
+              }
+              Divider()
+            }
+            
+            listHeader(String(localized: "INVITE FRIENDS", bundle: .module))
+
+            Divider()
+            
             ForEach(viewStore.contacts, id: \.identifier) { contact in
               HStack(alignment: .center, spacing: 16) {
                 if let imageData = contact.imageData, let image = UIImage(data: imageData) {
@@ -406,11 +402,13 @@ public struct AddFriendsView: View {
         content: CupertinoMessageView.init
       )
       .toolbar {
-        Button("Next") {
+        Button {
           store.send(.nextButtonTapped)
+        } label: {
+          Text("Next", bundle: .module)
+            .foregroundStyle(Color.white)
+            .font(.system(.body, design: .rounded, weight: .bold))
         }
-        .foregroundStyle(Color.white)
-        .font(.system(.body, design: .rounded, weight: .bold))
       }
     }
   }
@@ -430,6 +428,56 @@ public struct AddFriendsView: View {
         schoolImageData: schoolImageData,
         schoolName: fragment.school?.name
       )
+    }
+  }
+  
+  @ViewBuilder
+  func listHeader(_ title: String) -> some View {
+    Text(title)
+      .frame(height: 34)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(.horizontal, 16)
+      .foregroundStyle(.secondary)
+      .background(Color(uiColor: .quaternarySystemFill))
+      .font(.system(.body, design: .rounded, weight: .bold))
+  }
+  
+  struct UserCard: View {
+    let user: AddFriendsLogic.State.User
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+      Button(action: action) {
+        HStack(alignment: .center, spacing: 16) {
+          ProfileImage(
+            urlString: user.imageURL,
+            name: user.firstName,
+            size: 40
+          )
+
+          VStack(alignment: .leading) {
+            Text(user.displayName.ja)
+              .foregroundStyle(Color.black)
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
+
+          Rectangle()
+            .fill(isSelected ? Color.godService : Color.white)
+            .frame(width: 26, height: 26)
+            .clipShape(Circle())
+            .overlay(
+              RoundedRectangle(cornerRadius: 26 / 2)
+                .stroke(
+                  isSelected ? Color.godService : Color.godTextSecondaryLight,
+                  lineWidth: 2
+                )
+            )
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 72)
+        .background(Color.white)
+      }
     }
   }
 }

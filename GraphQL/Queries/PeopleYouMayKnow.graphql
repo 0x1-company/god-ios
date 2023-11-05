@@ -4,6 +4,11 @@ query PeopleYouMayKnow($first: Int!) {
   currentUser {
     ...ProfileStoryFragment
     generation
+    clubActivityId
+    clubActivity {
+      id
+      name
+    }
   }
   usersBySameSchool(first: $first) {
     edges {
@@ -13,10 +18,11 @@ query PeopleYouMayKnow($first: Int!) {
         firstName
         lastName
         generation
+        clubActivityId
+        grade
         displayName {
           ja
         }
-        grade
       }
     }
   }

@@ -213,6 +213,16 @@
         }
       }
     },
+    "FROM SCHOOL" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同じ学校"
+          }
+        }
+      }
+    },
     "Get Started" : {
       "localizations" : {
         "ja" : {
@@ -349,6 +359,16 @@
         }
       }
     },
+    "INVITE FRIENDS" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを招待"
+          }
+        }
+      }
+    },
     "Last Name" : {
       "localizations" : {
         "ja" : {
@@ -429,16 +449,6 @@
         }
       }
     },
-    "PEOPLE YOU MAY KNOW" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "同じ学校"
-          }
-        }
-      }
-    },
     "Pick your club activity" : {
       "localizations" : {
         "ja" : {
@@ -468,6 +478,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プライバシーポリシーを見る"
+          }
+        }
+      }
+    },
+    "SAME CLUB ACTIVITY" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同じ部活動"
+          }
+        }
+      }
+    },
+    "SAME GRADE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同じ学年"
           }
         }
       }
