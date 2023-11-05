@@ -299,7 +299,7 @@ public struct AddFriendsView: View {
             .padding(.horizontal, 24)
 
             Divider()
-            
+
             if let clubActivity = viewStore.clubActivity {
               listHeader(clubActivity.name)
 
@@ -315,7 +315,7 @@ public struct AddFriendsView: View {
                 Divider()
               }
             }
-            
+
             listHeader(String(localized: "SAME GRADE", bundle: .module))
 
             Divider()
@@ -329,7 +329,7 @@ public struct AddFriendsView: View {
               }
               Divider()
             }
-            
+
             listHeader(String(localized: "FROM SCHOOL", bundle: .module))
 
             Divider()
@@ -343,11 +343,11 @@ public struct AddFriendsView: View {
               }
               Divider()
             }
-            
+
             listHeader(String(localized: "INVITE FRIENDS", bundle: .module))
 
             Divider()
-            
+
             ForEach(viewStore.contacts, id: \.identifier) { contact in
               HStack(alignment: .center, spacing: 16) {
                 if let imageData = contact.imageData, let image = UIImage(data: imageData) {
@@ -430,7 +430,7 @@ public struct AddFriendsView: View {
       )
     }
   }
-  
+
   @ViewBuilder
   func listHeader(_ title: String) -> some View {
     Text(title)
@@ -441,7 +441,7 @@ public struct AddFriendsView: View {
       .background(Color(uiColor: .quaternarySystemFill))
       .font(.system(.body, design: .rounded, weight: .bold))
   }
-  
+
   struct UserCard: View {
     let user: AddFriendsLogic.State.User
     let isSelected: Bool
