@@ -134,6 +134,9 @@
         }
       }
     },
+    "ClubActivitySetting" : {
+
+    },
     "Create an account." : {
       "localizations" : {
         "ja" : {
@@ -435,6 +438,9 @@
           }
         }
       }
+    },
+    "Pick your club activity" : {
+
     },
     "Pick your school" : {
       "localizations" : {
