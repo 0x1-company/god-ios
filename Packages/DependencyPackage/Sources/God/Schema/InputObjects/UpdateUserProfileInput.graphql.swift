@@ -12,6 +12,7 @@ public extension God {
     }
 
     public init(
+      clubActivityId: GraphQLNullable<String> = nil,
       firstName: GraphQLNullable<String> = nil,
       gender: GraphQLNullable<GraphQLEnum<Gender>> = nil,
       generation: GraphQLNullable<Int> = nil,
@@ -19,12 +20,19 @@ public extension God {
       schoolId: GraphQLNullable<String> = nil
     ) {
       __data = InputDict([
+        "clubActivityId": clubActivityId,
         "firstName": firstName,
         "gender": gender,
         "generation": generation,
         "lastName": lastName,
         "schoolId": schoolId
       ])
+    }
+
+    /// 部活動。nullの場合は更新しない
+    public var clubActivityId: GraphQLNullable<String> {
+      get { __data["clubActivityId"] }
+      set { __data["clubActivityId"] = newValue }
     }
 
     /// 名前。nullの場合は更新しない

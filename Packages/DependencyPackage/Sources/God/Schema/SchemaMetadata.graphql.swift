@@ -50,6 +50,7 @@ public extension God {
       case "UserConnection": return God.Objects.UserConnection
       case "PageInfo": return God.Objects.PageInfo
       case "UserEdge": return God.Objects.UserEdge
+      case "ClubActivity": return God.Objects.ClubActivity
       case "InboxActivityConnection": return God.Objects.InboxActivityConnection
       case "InboxActivityEdge": return God.Objects.InboxActivityEdge
       case "PublicVoteUser": return God.Objects.PublicVoteUser
