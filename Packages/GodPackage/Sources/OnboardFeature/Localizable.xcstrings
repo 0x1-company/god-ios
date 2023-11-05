@@ -483,6 +483,7 @@
       }
     },
     "SAME CLUB ACTIVITY" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

@@ -5,6 +5,10 @@ query PeopleYouMayKnow($first: Int!) {
     ...ProfileStoryFragment
     generation
     clubActivityId
+    clubActivity {
+      id
+      name
+    }
   }
   usersBySameSchool(first: $first) {
     edges {

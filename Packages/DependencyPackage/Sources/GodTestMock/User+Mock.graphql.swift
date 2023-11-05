@@ -10,6 +10,7 @@ public class User: MockObject {
   public typealias MockValueCollectionType = Array<Mock<User>>
 
   public struct MockFields {
+    @Field<ClubActivity>("clubActivity") public var clubActivity
     @Field<String>("clubActivityId") public var clubActivityId
     @Field<LocalizableString>("displayName") public var displayName
     @Field<String>("firstName") public var firstName
@@ -32,6 +33,7 @@ public class User: MockObject {
 
 public extension Mock where O == User {
   convenience init(
+    clubActivity: Mock<ClubActivity>? = nil,
     clubActivityId: String? = nil,
     displayName: Mock<LocalizableString>? = nil,
     firstName: String? = nil,
@@ -51,6 +53,7 @@ public extension Mock where O == User {
     wallet: Mock<Wallet>? = nil
   ) {
     self.init()
+    _setEntity(clubActivity, for: \.clubActivity)
     _setScalar(clubActivityId, for: \.clubActivityId)
     _setEntity(displayName, for: \.displayName)
     _setScalar(firstName, for: \.firstName)

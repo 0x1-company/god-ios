@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "PeopleYouMayKnow"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query PeopleYouMayKnow($first: Int!) { currentUser { __typename ...ProfileStoryFragment generation clubActivityId } usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName generation clubActivityId grade displayName { __typename ja } } } } }"#,
+        #"query PeopleYouMayKnow($first: Int!) { currentUser { __typename ...ProfileStoryFragment generation clubActivityId clubActivity { __typename id name } } usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName generation clubActivityId grade displayName { __typename ja } } } } }"#,
         fragments: [ProfileStoryFragment.self]
       ))
 
@@ -47,6 +47,7 @@ public extension God {
           .field("__typename", String.self),
           .field("generation", Int?.self),
           .field("clubActivityId", String?.self),
+          .field("clubActivity", ClubActivity?.self),
           .fragment(ProfileStoryFragment.self),
         ] }
 
@@ -54,6 +55,8 @@ public extension God {
         public var generation: Int? { __data["generation"] }
         /// 部活動ID
         public var clubActivityId: String? { __data["clubActivityId"] }
+        /// 部活動
+        public var clubActivity: ClubActivity? { __data["clubActivity"] }
         /// user id
         public var id: God.ID { __data["id"] }
         /// プロフィール画像のURL
@@ -72,6 +75,24 @@ public extension God {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var profileStoryFragment: ProfileStoryFragment { _toFragment() }
+        }
+
+        /// CurrentUser.ClubActivity
+        ///
+        /// Parent Type: `ClubActivity`
+        public struct ClubActivity: God.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { God.Objects.ClubActivity }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("id", God.ID.self),
+            .field("name", String.self),
+          ] }
+
+          public var id: God.ID { __data["id"] }
+          public var name: String { __data["name"] }
         }
       }
 

@@ -21,6 +21,7 @@ public struct AddFriendsLogic: Reducer {
 
   public struct State: Equatable {
     typealias User = God.PeopleYouMayKnowQuery.Data.UsersBySameSchool.Edge.Node
+    var clubActivity: God.PeopleYouMayKnowQuery.Data.CurrentUser.ClubActivity?
     var selectUserIds: [String] = []
     var usersBySameClub: [User] = []
     var usersBySameGeneration: [User] = []
@@ -169,6 +170,7 @@ public struct AddFriendsLogic: Reducer {
         let usersByFiltered = state.usersBySameClub + state.usersBySameGeneration
         state.usersByOther = users.filter { !usersByFiltered.contains($0) }
 
+        state.clubActivity = currentUser.clubActivity
         state.profileStoryFragment = currentUser.fragments.profileStoryFragment
         if let username = currentUser.username {
           state.shareURL = ShareLinkBuilder.buildGodLink(path: .add, username: username, source: .share, medium: .onboard)
@@ -275,7 +277,7 @@ public struct AddFriendsView: View {
         instagramStoryView
         ScrollView {
           LazyVStack(spacing: 0) {
-            listHeader("SHARE PROFILE")
+            listHeader(String(localized: "SHARE PROFILE", bundle: .module))
 
             Divider()
 
@@ -297,22 +299,24 @@ public struct AddFriendsView: View {
             .padding(.horizontal, 24)
 
             Divider()
+            
+            if let clubActivity = viewStore.clubActivity {
+              listHeader(clubActivity.name)
 
-            listHeader("SAME CLUB ACTIVITY")
-
-            Divider()
-
-            ForEach(viewStore.usersBySameClub, id: \.self) { user in
-              UserCard(
-                user: user,
-                isSelected: viewStore.selectUserIds.contains(user.id)
-              ) {
-                store.send(.selectButtonTapped(user.id))
-              }
               Divider()
+
+              ForEach(viewStore.usersBySameClub, id: \.self) { user in
+                UserCard(
+                  user: user,
+                  isSelected: viewStore.selectUserIds.contains(user.id)
+                ) {
+                  store.send(.selectButtonTapped(user.id))
+                }
+                Divider()
+              }
             }
             
-            listHeader("SAME GRADE")
+            listHeader(String(localized: "SAME GRADE", bundle: .module))
 
             Divider()
 
@@ -326,7 +330,7 @@ public struct AddFriendsView: View {
               Divider()
             }
             
-            listHeader("FROM SCHOOL")
+            listHeader(String(localized: "FROM SCHOOL", bundle: .module))
 
             Divider()
 
@@ -340,7 +344,7 @@ public struct AddFriendsView: View {
               Divider()
             }
             
-            listHeader("INVITE FRIENDS")
+            listHeader(String(localized: "INVITE FRIENDS", bundle: .module))
 
             Divider()
             
@@ -428,8 +432,8 @@ public struct AddFriendsView: View {
   }
   
   @ViewBuilder
-  func listHeader(_ title: LocalizedStringKey) -> some View {
-    Text(title, bundle: .module)
+  func listHeader(_ title: String) -> some View {
+    Text(title)
       .frame(height: 34)
       .frame(maxWidth: .infinity, alignment: .leading)
       .padding(.horizontal, 16)
