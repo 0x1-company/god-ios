@@ -10,6 +10,7 @@ public class User: MockObject {
   public typealias MockValueCollectionType = Array<Mock<User>>
 
   public struct MockFields {
+    @Field<String>("clubActivityId") public var clubActivityId
     @Field<LocalizableString>("displayName") public var displayName
     @Field<String>("firstName") public var firstName
     @Field<GraphQLEnum<God.FriendStatus>>("friendStatus") public var friendStatus
@@ -31,6 +32,7 @@ public class User: MockObject {
 
 public extension Mock where O == User {
   convenience init(
+    clubActivityId: String? = nil,
     displayName: Mock<LocalizableString>? = nil,
     firstName: String? = nil,
     friendStatus: GraphQLEnum<God.FriendStatus>? = nil,
@@ -49,6 +51,7 @@ public extension Mock where O == User {
     wallet: Mock<Wallet>? = nil
   ) {
     self.init()
+    _setScalar(clubActivityId, for: \.clubActivityId)
     _setEntity(displayName, for: \.displayName)
     _setScalar(firstName, for: \.firstName)
     _setScalar(friendStatus, for: \.friendStatus)

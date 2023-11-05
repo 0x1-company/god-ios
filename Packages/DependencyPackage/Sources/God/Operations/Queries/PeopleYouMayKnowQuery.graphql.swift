@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "PeopleYouMayKnow"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query PeopleYouMayKnow($first: Int!) { currentUser { __typename ...ProfileStoryFragment generation } usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName generation displayName { __typename ja } grade } } } }"#,
+        #"query PeopleYouMayKnow($first: Int!) { currentUser { __typename ...ProfileStoryFragment generation clubActivityId } usersBySameSchool(first: $first) { __typename edges { __typename node { __typename id imageURL firstName lastName generation clubActivityId grade displayName { __typename ja } } } } }"#,
         fragments: [ProfileStoryFragment.self]
       ))
 
@@ -46,11 +46,14 @@ public extension God {
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
           .field("generation", Int?.self),
+          .field("clubActivityId", String?.self),
           .fragment(ProfileStoryFragment.self),
         ] }
 
         /// 年代
         public var generation: Int? { __data["generation"] }
+        /// 部活動ID
+        public var clubActivityId: String? { __data["clubActivityId"] }
         /// user id
         public var id: God.ID { __data["id"] }
         /// プロフィール画像のURL
@@ -117,8 +120,9 @@ public extension God {
               .field("firstName", String.self),
               .field("lastName", String.self),
               .field("generation", Int?.self),
-              .field("displayName", DisplayName.self),
+              .field("clubActivityId", String?.self),
               .field("grade", String?.self),
+              .field("displayName", DisplayName.self),
             ] }
 
             /// user id
@@ -131,10 +135,12 @@ public extension God {
             public var lastName: String { __data["lastName"] }
             /// 年代
             public var generation: Int? { __data["generation"] }
-            /// 表示名
-            public var displayName: DisplayName { __data["displayName"] }
+            /// 部活動ID
+            public var clubActivityId: String? { __data["clubActivityId"] }
             /// 学年をテキストで返す
             public var grade: String? { __data["grade"] }
+            /// 表示名
+            public var displayName: DisplayName { __data["displayName"] }
 
             /// UsersBySameSchool.Edge.Node.DisplayName
             ///
