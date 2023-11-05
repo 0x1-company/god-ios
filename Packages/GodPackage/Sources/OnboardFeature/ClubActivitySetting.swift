@@ -17,8 +17,14 @@ public struct ClubActivitySettingLogic: Reducer {
   public enum Action: Equatable {
     case onTask
     case onAppear
+    case skipButtonTapped
     case clubActivityButtonTapped(String)
     case clubActivitiesResponse(TaskResult<God.ClubActivitiesQuery.Data>)
+    case delegate(Delegate)
+    
+    public enum Delegate: Equatable {
+      case nextScreen(id: String?)
+    }
   }
 
   @Dependency(\.analytics) var analytics
@@ -40,15 +46,17 @@ public struct ClubActivitySettingLogic: Reducer {
         analytics.logScreen(screenName: "ClubActivitySetting", of: self)
         return .none
         
+      case .skipButtonTapped:
+        return .send(.delegate(.nextScreen(id: nil)))
+        
       case let .clubActivityButtonTapped(id):
-        print(id)
-        return .none
+        return .send(.delegate(.nextScreen(id: id)))
 
       case let .clubActivitiesResponse(.success(data)):
         state.clubActivities = data.clubActivities.map(\.fragments.clubActivityCardFragment)
         return .none
         
-      case .clubActivitiesResponse(.failure):
+      default:
         return .none
       }
     }
@@ -98,6 +106,15 @@ public struct ClubActivitySettingView: View {
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)
+      .toolbar {
+        Button {
+          store.send(.skipButtonTapped)
+        } label: {
+          Text("Skip", bundle: .module)
+            .foregroundStyle(Color.white)
+            .font(.system(.body, design: .rounded, weight: .bold))
+        }
+      }
     }
   }
   
@@ -117,10 +134,13 @@ public struct ClubActivitySettingView: View {
 }
 
 #Preview {
-  ClubActivitySettingView(
-    store: .init(
-      initialState: ClubActivitySettingLogic.State(),
-      reducer: { ClubActivitySettingLogic() }
+  NavigationStack {
+    ClubActivitySettingView(
+      store: .init(
+        initialState: ClubActivitySettingLogic.State(),
+        reducer: { ClubActivitySettingLogic() }
+      )
     )
-  )
+  }
+  .environment(\.locale, Locale(identifier: "ja-JP"))
 }

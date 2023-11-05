@@ -383,7 +383,7 @@
       "localizations" : {
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "次へ"
           }
         }
@@ -440,7 +440,14 @@
       }
     },
     "Pick your club activity" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの部活動を選択"
+          }
+        }
+      }
     },
     "Pick your school" : {
       "localizations" : {
