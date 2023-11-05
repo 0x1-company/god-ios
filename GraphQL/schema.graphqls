@@ -77,6 +77,12 @@ input ChoiceInput {
   userId: ID!
 }
 
+type ClubActivity {
+  id: ID!
+  name: String!
+  position: Int!
+}
+
 input CompletePollInput {
   pollId: String!
 }
@@ -238,6 +244,12 @@ type InboxActivityEdge {
   node: InboxActivity!
 }
 
+type InvitationCode {
+  """招待コード"""
+  code: String!
+  id: ID!
+}
+
 enum ItemType {
   GET_YOUR_NAME_ON_RANDOM_POLL
   PUT_YOUR_NAME_IN_YOUR_CRUSHS_POLL
@@ -381,6 +393,9 @@ type Query {
   """バナー一覧"""
   banners: [Banner!]!
 
+  """部活動の一覧を取得する"""
+  clubActivities: [ClubActivity!]!
+
   """現在のPollを取得"""
   currentPoll: CurrentPoll!
 
@@ -397,6 +412,9 @@ type Query {
   friendsOfFriends(after: String, first: Int!): UserConnection!
   getRedis(key: String!): String!
   inboxActivity(id: String!): InboxActivity!
+
+  """招待コードを取得"""
+  invitationCode: InvitationCode!
 
   """フレンドのActivityを一覧で取得する"""
   listActivities(after: String, first: Int!): ActivityConnection!
@@ -521,6 +539,9 @@ type Subscription {
 }
 
 input UpdateUserProfileInput {
+  """部活動。nullの場合は更新しない"""
+  clubActivityId: String
+
   """名前。nullの場合は更新しない"""
   firstName: String
 
@@ -544,6 +565,12 @@ input UpdateUsernameInput {
 type User {
   """有効な購読情報を取得"""
   activeSubscription: Subscription
+
+  """部活動"""
+  clubActivity: ClubActivity
+
+  """部活動ID"""
+  clubActivityId: String
 
   """表示名"""
   displayName: LocalizableString!
