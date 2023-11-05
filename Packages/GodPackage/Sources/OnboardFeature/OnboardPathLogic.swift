@@ -68,10 +68,10 @@ public struct OnboardPathLogic: Reducer {
         state.schoolId = schoolId
         state.path.append(.clubActivitySetting())
         return .none
-        
+
       case let .clubActivitySetting(.delegate(.nextScreen(clubActivityId))):
         state.clubActivityId = clubActivityId
-        
+
         if isFindFriendSkip {
           state.path.append(.phoneNumber())
           return .run(priority: .background) { send in
