@@ -66,7 +66,12 @@ public struct OnboardPathLogic: Reducer {
 
       case let .schoolSetting(.delegate(.nextScreen(schoolId))):
         state.schoolId = schoolId
-
+        state.path.append(.clubActivitySetting())
+        return .none
+        
+      case let .clubActivitySetting(.delegate(.nextScreen(clubActivityId))):
+        state.clubActivityId = clubActivityId
+        
         if isFindFriendSkip {
           state.path.append(.phoneNumber())
           return .run(priority: .background) { send in
@@ -98,6 +103,7 @@ public struct OnboardPathLogic: Reducer {
           return .none
         }
         let input = God.UpdateUserProfileInput(
+          clubActivityId: state.clubActivityId ?? .null,
           generation: state.generation ?? .null,
           schoolId: state.schoolId ?? .null
         )

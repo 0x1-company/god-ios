@@ -17,6 +17,7 @@ public struct OnboardLogic: Reducer {
     var path = StackState<Path.State>()
     var generation: Int?
     var schoolId: String?
+    var clubActivityId: String?
     var inviterUserId: String?
     var contacts: [God.ContactInput] = []
 
@@ -113,6 +114,7 @@ public struct OnboardLogic: Reducer {
     public enum State: Equatable {
       case gradeSetting(GradeSettingLogic.State = .init())
       case schoolSetting(SchoolSettingLogic.State = .init())
+      case clubActivitySetting(ClubActivitySettingLogic.State = .init())
       case findFriend(FindFriendLogic.State = .init())
       case phoneNumber(PhoneNumberLogic.State = .init())
       case oneTimeCode(OneTimeCodeLogic.State)
@@ -128,6 +130,7 @@ public struct OnboardLogic: Reducer {
     public enum Action: Equatable {
       case gradeSetting(GradeSettingLogic.Action)
       case schoolSetting(SchoolSettingLogic.Action)
+      case clubActivitySetting(ClubActivitySettingLogic.Action)
       case findFriend(FindFriendLogic.Action)
       case phoneNumber(PhoneNumberLogic.Action)
       case oneTimeCode(OneTimeCodeLogic.Action)
@@ -143,6 +146,7 @@ public struct OnboardLogic: Reducer {
     public var body: some Reducer<State, Action> {
       Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingLogic.init)
       Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingLogic.init)
+      Scope(state: /State.clubActivitySetting, action: /Action.clubActivitySetting, child: ClubActivitySettingLogic.init)
       Scope(state: /State.findFriend, action: /Action.findFriend, child: FindFriendLogic.init)
       Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberLogic.init)
       Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: OneTimeCodeLogic.init)
@@ -180,6 +184,12 @@ public struct OnboardView: View {
           /OnboardLogic.Path.State.schoolSetting,
           action: OnboardLogic.Path.Action.schoolSetting,
           then: SchoolSettingView.init(store:)
+        )
+      case .clubActivitySetting:
+        CaseLet(
+          /OnboardLogic.Path.State.clubActivitySetting,
+          action: OnboardLogic.Path.Action.clubActivitySetting,
+          then: ClubActivitySettingView.init(store:)
         )
       case .findFriend:
         CaseLet(

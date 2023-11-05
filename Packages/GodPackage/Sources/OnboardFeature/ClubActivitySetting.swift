@@ -53,7 +53,9 @@ public struct ClubActivitySettingLogic: Reducer {
         return .send(.delegate(.nextScreen(id: id)))
 
       case let .clubActivitiesResponse(.success(data)):
-        state.clubActivities = data.clubActivities.map(\.fragments.clubActivityCardFragment)
+        state.clubActivities = data.clubActivities
+          .map(\.fragments.clubActivityCardFragment)
+          .sorted(by: { $0.position < $1.position })
         return .none
         
       default:
