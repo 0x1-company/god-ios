@@ -276,6 +276,16 @@
         }
       }
     },
+    "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godは招待制です。3人に招待を送ることで、あなたは特別に招待されます。"
+          }
+        }
+      }
+    },
     "God needs to find your school and suggest friends." : {
 
     },
@@ -562,12 +572,32 @@
         }
       }
     },
+    "Start" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめる"
+          }
+        }
+      }
+    },
     "The username %@ is not available." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@というユーザーネームは使用できません。"
+          }
+        }
+      }
+    },
+    "To use God, you need friends from the same school 👥" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godを使うには同じ学校の友だちが必要です👥"
           }
         }
       }

@@ -15,6 +15,7 @@ public struct InviteFriendLogic: Reducer {
   public struct State: Equatable {
     var remainingInvitationCount = 3
     @BindingState var isPresented = false
+    @PresentationState var alert: AlertState<Action.Alert>?
 
     public init() {}
   }
@@ -22,9 +23,20 @@ public struct InviteFriendLogic: Reducer {
   public enum Action: Equatable, BindableAction {
     case onTask
     case onAppear
+    case whyFriendsButtonTapped
     case inviteFriendButtonTapped
     case onCompletion(CompletionWithItems)
     case binding(BindingAction<State>)
+    case alert(PresentationAction<Alert>)
+    case delegate(Delegate)
+    
+    public enum Alert: Equatable {
+      case confirmOkay
+    }
+    
+    public enum Delegate: Equatable {
+      case nextScreen
+    }
   }
 
   @Dependency(\.analytics) var analytics
@@ -40,6 +52,21 @@ public struct InviteFriendLogic: Reducer {
         analytics.logScreen(screenName: "InviteFriend", of: self)
         return .none
         
+      case .whyFriendsButtonTapped:
+        state.alert = AlertState {
+          TextState("To use God, you need friends from the same school 👥", bundle: .module)
+        } actions: {
+          ButtonState(action: .confirmOkay) {
+            TextState("OK", bundle: .module)
+          }
+        } message: {
+          TextState("God is by invitation only; send invitations to 3 people and you will be specifically invited.", bundle: .module)
+        }
+        return .none
+        
+      case .inviteFriendButtonTapped where state.remainingInvitationCount == 0:
+        return .send(.delegate(.nextScreen))
+        
       case .inviteFriendButtonTapped:
         state.isPresented = true
         return .none
@@ -51,6 +78,10 @@ public struct InviteFriendLogic: Reducer {
           state.remainingInvitationCount > 0
         else { return .none }
         state.remainingInvitationCount -= 1
+        return .none
+        
+      case .alert(.presented(.confirmOkay)):
+        state.alert = nil
         return .none
         
       default:
@@ -84,36 +115,52 @@ public struct InviteFriendView: View {
         
         HStack(spacing: 24) {
           ForEach(0..<3) { _ in
-            VStack(spacing: 12) {
-              Color.red
-                .frame(width: 80, height: 80)
-                .clipShape(Circle())
+            Button {
+              store.send(.inviteFriendButtonTapped)
+            } label: {
+              VStack(spacing: 12) {
+                Image(systemName: "person.crop.circle.badge.plus")
+                  .frame(width: 80, height: 80)
+                  .font(.system(size: 50))
+                  .clipShape(Circle())
 
-              Text("No friend\ninvited yet", bundle: .module)
-                .foregroundStyle(Color.godTextSecondaryDark)
-                .font(.system(.body, design: .rounded))
+                Text("No friend\ninvited yet", bundle: .module)
+                  .font(.system(.body, design: .rounded))
+              }
+              .foregroundStyle(Color.godTextSecondaryDark)
             }
           }
         }
         
-        Label {
-          Text("Why 3 friends", bundle: .module)
-            .font(.system(.body, design: .rounded))
-        } icon: {
-          Image(systemName: "info.circle.fill")
+        Button {
+          store.send(.whyFriendsButtonTapped)
+        } label: {
+          Label {
+            Text("Why 3 friends", bundle: .module)
+              .font(.system(.body, design: .rounded))
+          } icon: {
+            Image(systemName: "info.circle.fill")
+          }
+          .foregroundStyle(Color.yellow)
         }
-        .foregroundStyle(Color.yellow)
         
         Spacer()
         
         Button {
           store.send(.inviteFriendButtonTapped)
         } label: {
-          Label {
-            Text("Invite \(viewStore.remainingInvitationCount) best friends", bundle: .module)
-              .font(.system(.body, design: .rounded, weight: .bold))
-          } icon: {
-            Image(systemName: "square.and.arrow.up")
+          Group {
+            if viewStore.remainingInvitationCount == 0 {
+              Text("Start", bundle: .module)
+                .font(.system(.body, design: .rounded, weight: .bold))
+            } else {
+              Label {
+                Text("Invite \(viewStore.remainingInvitationCount) best friends", bundle: .module)
+                  .font(.system(.body, design: .rounded, weight: .bold))
+              } icon: {
+                Image(systemName: "square.and.arrow.up")
+              }
+            }
           }
           .frame(height: 54)
           .frame(maxWidth: .infinity)
@@ -133,6 +180,7 @@ public struct InviteFriendView: View {
       .toolbarColorScheme(.dark, for: .navigationBar)
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
+      .alert(store: store.scope(state: \.$alert, action: InviteFriendLogic.Action.alert))
       .sheet(isPresented: viewStore.$isPresented) {
         ActivityView(
           activityItems: [URL(string: "https://tomokisun.com")!],
