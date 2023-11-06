@@ -199,6 +199,7 @@ let package = Package(
       .product(name: "PhotosClient", package: "CupertinoPackage"),
       .product(name: "SocialShare", package: "UIComponentPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
+      .product(name: "ActivityView", package: "UIComponentPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "RoundedCorner", package: "UIComponentPackage"),
@@ -213,7 +214,7 @@ let package = Package(
       .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
       .product(name: "FirebaseDynamicLinkClient", package: "DependencyPackage"),
-    ], resources: [.copy("onboarding.json")]),
+    ], resources: [.copy("onboarding.json"), .copy("Invited.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),

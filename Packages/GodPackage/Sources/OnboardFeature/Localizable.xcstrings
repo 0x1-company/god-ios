@@ -183,6 +183,16 @@
         }
       }
     },
+    "Finally, please invite your friends\nInvite your friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最後に友だちを\n招待してください"
+          }
+        }
+      }
+    },
     "Find My Friends" : {
       "localizations" : {
         "ja" : {
@@ -262,6 +272,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あなたの個人情報は安全に管理されます。\nメールやスパムを送ることはありません。"
+          }
+        }
+      }
+    },
+    "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godは招待制です。3人に招待を送ることで、あなたは特別に招待されます。"
           }
         }
       }
@@ -359,12 +379,52 @@
         }
       }
     },
+    "Invite %lld best friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを%lld人招待する"
+          }
+        }
+      }
+    },
+    "INVITE %lld FRIENDS" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待リンクをあと%lld人に送ろう"
+          }
+        }
+      }
+    },
+    "Invite Friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち招待"
+          }
+        }
+      }
+    },
     "INVITE FRIENDS" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "友だちを招待"
+          }
+        }
+      }
+    },
+    "invited via\nother app" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待済み"
           }
         }
       }
@@ -405,6 +465,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "次へ"
+          }
+        }
+      }
+    },
+    "No friend\ninvited yet" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ招待\nしていません"
           }
         }
       }
@@ -482,17 +552,6 @@
         }
       }
     },
-    "SAME CLUB ACTIVITY" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "同じ部活動"
-          }
-        }
-      }
-    },
     "SAME GRADE" : {
       "localizations" : {
         "ja" : {
@@ -523,12 +582,32 @@
         }
       }
     },
+    "Start" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめる"
+          }
+        }
+      }
+    },
     "The username %@ is not available." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@というユーザーネームは使用できません。"
+          }
+        }
+      }
+    },
+    "To use God, you need friends from the same school 👥" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godを使うには同じ学校の友だちが必要です👥"
           }
         }
       }
@@ -589,6 +668,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あなたの苗字は？"
+          }
+        }
+      }
+    },
+    "Why 3 friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "なぜ招待が必要ですか？"
           }
         }
       }
