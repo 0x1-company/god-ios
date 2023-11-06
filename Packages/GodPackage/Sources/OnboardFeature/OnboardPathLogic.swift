@@ -143,6 +143,10 @@ public struct OnboardPathLogic: Reducer {
         return .none
 
       case .addFriends(.delegate(.nextScreen)):
+        state.path.append(.inviteFriend())
+        return .none
+        
+      case .inviteFriend(.delegate(.nextScreen)):
         state.path.append(.howItWorks())
         return .none
 

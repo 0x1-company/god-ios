@@ -124,6 +124,7 @@ public struct OnboardLogic: Reducer {
       case genderSetting(GenderSettingLogic.State = .init())
       case profilePhotoSetting(ProfilePhotoSettingLogic.State = .init())
       case addFriends(AddFriendsLogic.State = .init())
+      case inviteFriend(InviteFriendLogic.State = .init())
       case howItWorks(HowItWorksLogic.State = .init())
     }
 
@@ -140,6 +141,7 @@ public struct OnboardLogic: Reducer {
       case genderSetting(GenderSettingLogic.Action)
       case profilePhotoSetting(ProfilePhotoSettingLogic.Action)
       case addFriends(AddFriendsLogic.Action)
+      case inviteFriend(InviteFriendLogic.Action)
       case howItWorks(HowItWorksLogic.Action)
     }
 
@@ -156,6 +158,7 @@ public struct OnboardLogic: Reducer {
       Scope(state: /State.genderSetting, action: /Action.genderSetting, child: GenderSettingLogic.init)
       Scope(state: /State.profilePhotoSetting, action: /Action.profilePhotoSetting, child: ProfilePhotoSettingLogic.init)
       Scope(state: /State.addFriends, action: /Action.addFriends, child: AddFriendsLogic.init)
+      Scope(state: /State.inviteFriend, action: /Action.inviteFriend, child: InviteFriendLogic.init)
       Scope(state: /State.howItWorks, action: /Action.howItWorks, child: HowItWorksLogic.init)
     }
   }
@@ -244,6 +247,12 @@ public struct OnboardView: View {
           /OnboardLogic.Path.State.addFriends,
           action: OnboardLogic.Path.Action.addFriends,
           then: AddFriendsView.init(store:)
+        )
+      case .inviteFriend:
+        CaseLet(
+          /OnboardLogic.Path.State.inviteFriend,
+          action: OnboardLogic.Path.Action.inviteFriend,
+          then: InviteFriendView.init(store:)
         )
       case .howItWorks:
         CaseLet(
