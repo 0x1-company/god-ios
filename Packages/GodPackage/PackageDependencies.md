@@ -110,6 +110,7 @@ graph TD;
     OnboardFeature-->PhotosClient;
     OnboardFeature-->SocialShare;
     OnboardFeature-->ProfileImage;
+    OnboardFeature-->ActivityView;
     OnboardFeature-->StringHelpers;
     OnboardFeature-->ContactsClient;
     OnboardFeature-->RoundedCorner;
