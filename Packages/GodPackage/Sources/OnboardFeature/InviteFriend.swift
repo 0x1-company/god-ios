@@ -3,6 +3,7 @@ import AnalyticsClient
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
+import Lottie
 
 public struct InviteFriendLogic: Reducer {
   public init() {}
@@ -127,7 +128,15 @@ public struct InviteFriendView: View {
               store.send(.inviteFriendButtonTapped)
             } label: {
               VStack(spacing: 12) {
-                Image(systemName: "person.crop.circle.badge.plus")
+                Group {
+                  if isInvited {
+                    LottieView(animation: LottieAnimation.named("Invited", bundle: .module))
+                      .looping()
+                      .resizable()
+                  } else {
+                    Image(systemName: "person.crop.circle.badge.plus")
+                  }
+                }
                   .frame(width: 80, height: 80)
                   .font(.system(size: 50))
                   .clipShape(Circle())

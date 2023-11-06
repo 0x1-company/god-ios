@@ -214,7 +214,7 @@ let package = Package(
       .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
       .product(name: "FirebaseDynamicLinkClient", package: "DependencyPackage"),
-    ], resources: [.copy("onboarding.json")]),
+    ], resources: [.copy("onboarding.json"), .copy("Invited.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
