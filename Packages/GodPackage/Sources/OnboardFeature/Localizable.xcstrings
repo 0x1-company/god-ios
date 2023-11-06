@@ -419,6 +419,16 @@
         }
       }
     },
+    "invited via\nother app" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待済み"
+          }
+        }
+      }
+    },
     "Last Name" : {
       "localizations" : {
         "ja" : {

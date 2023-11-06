@@ -13,7 +13,10 @@ public struct InviteFriendLogic: Reducer {
   }
 
   public struct State: Equatable {
-    var remainingInvitationCount = 3
+    var remainingInvitationCount: Int {
+      return invites.filter { !$0 }.count
+    }
+    var invites = Array(repeating: false, count: 3)
     @BindingState var isPresented = false
     @PresentationState var alert: AlertState<Action.Alert>?
 
@@ -77,7 +80,12 @@ public struct InviteFriendLogic: Reducer {
           completion.result,
           state.remainingInvitationCount > 0
         else { return .none }
-        state.remainingInvitationCount -= 1
+        for i in 0..<state.invites.count {
+          if !state.invites[i] {
+            state.invites[i] = true
+            break
+          }
+        }
         return .none
         
       case .alert(.presented(.confirmOkay)):
@@ -113,8 +121,8 @@ public struct InviteFriendView: View {
           .background(Color.godService)
           .clipShape(Capsule())
         
-        HStack(spacing: 24) {
-          ForEach(0..<3) { _ in
+        HStack(alignment: .top, spacing: 24) {
+          ForEach(viewStore.invites, id: \.self) { isInvited in
             Button {
               store.send(.inviteFriendButtonTapped)
             } label: {
@@ -123,8 +131,8 @@ public struct InviteFriendView: View {
                   .frame(width: 80, height: 80)
                   .font(.system(size: 50))
                   .clipShape(Circle())
-
-                Text("No friend\ninvited yet", bundle: .module)
+                
+                Text(isInvited ? "invited via\nother app" : "No friend\ninvited yet", bundle: .module)
                   .font(.system(.body, design: .rounded))
               }
               .foregroundStyle(Color.godTextSecondaryDark)
