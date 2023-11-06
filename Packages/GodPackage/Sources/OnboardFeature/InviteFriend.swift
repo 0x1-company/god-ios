@@ -1,9 +1,12 @@
 import ActivityView
 import AnalyticsClient
 import ComposableArchitecture
+import God
+import GodClient
 import Styleguide
 import SwiftUI
 import Lottie
+import ShareLinkBuilder
 
 public struct InviteFriendLogic: Reducer {
   public init() {}
@@ -14,6 +17,7 @@ public struct InviteFriendLogic: Reducer {
   }
 
   public struct State: Equatable {
+    var shareURL = URL(string: "https://godapp.jp")!
     var remainingInvitationCount: Int {
       return invites.filter { !$0 }.count
     }
@@ -29,6 +33,7 @@ public struct InviteFriendLogic: Reducer {
     case onAppear
     case whyFriendsButtonTapped
     case inviteFriendButtonTapped
+    case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case onCompletion(CompletionWithItems)
     case binding(BindingAction<State>)
     case alert(PresentationAction<Alert>)
@@ -43,14 +48,26 @@ public struct InviteFriendLogic: Reducer {
     }
   }
 
+  @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
+  
+  enum Cancel {
+    case currentUser
+  }
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          for try await data in godClient.currentUser() {
+            await send(.currentUserResponse(.success(data)))
+          }
+        } catch: { error, send in
+          await send(.currentUserResponse(.failure(error)))
+        }
+        .cancellable(id: Cancel.currentUser, cancelInFlight: true)
 
       case .onAppear:
         analytics.logScreen(screenName: "InviteFriend", of: self)
@@ -73,6 +90,17 @@ public struct InviteFriendLogic: Reducer {
         
       case .inviteFriendButtonTapped:
         state.isPresented = true
+        return .none
+        
+      case let .currentUserResponse(.success(data)):
+        guard let username = data.currentUser.username
+        else { return .none }
+        state.shareURL = ShareLinkBuilder.buildGodLink(
+          path: .add,
+          username: username,
+          source: .share,
+          medium: .requiredInvite
+        )
         return .none
         
       case let .onCompletion(completion):
@@ -200,7 +228,7 @@ public struct InviteFriendView: View {
       .alert(store: store.scope(state: \.$alert, action: InviteFriendLogic.Action.alert))
       .sheet(isPresented: viewStore.$isPresented) {
         ActivityView(
-          activityItems: [URL(string: "https://tomokisun.com")!],
+          activityItems: [viewStore.shareURL],
           applicationActivities: nil
         ) { activityType, result, _, _ in
           store.send(

@@ -15,4 +15,5 @@ public enum UtmMedium: String {
   case invite
   case profile
   case onboard
+  case requiredInvite = "required_invite"
 }

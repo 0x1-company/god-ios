@@ -52,8 +52,7 @@ public struct OnboardLogic: Reducer {
     Reduce<State, Action> { state, action in
       switch action {
       case .welcome(.getStartedButtonTapped):
-//        state.path.append(.gradeSetting())
-        state.path.append(.inviteFriend())
+        state.path.append(.gradeSetting())
         guard
           let deepLink = userDefaults.dynamicLinkURL(),
           let inviterUserId = getInviterUserId(from: deepLink)
