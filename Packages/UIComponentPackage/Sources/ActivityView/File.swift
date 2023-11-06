@@ -2,9 +2,9 @@ import SwiftUI
 
 public struct ActivityView: UIViewControllerRepresentable {
   public typealias UIViewControllerType = UIActivityViewController
-  
+
   let activityViewController: UIActivityViewController
-  
+
   public init(
     activityItemsConfiguration: UIActivityItemsConfigurationReading,
     completionWithItemsHandler: UIActivityViewController.CompletionWithItemsHandler?
@@ -13,7 +13,7 @@ public struct ActivityView: UIViewControllerRepresentable {
     activityViewController.completionWithItemsHandler = completionWithItemsHandler
     self.activityViewController = activityViewController
   }
-  
+
   public init(
     activityItems: [Any],
     applicationActivities: [UIActivity]?,
@@ -23,13 +23,12 @@ public struct ActivityView: UIViewControllerRepresentable {
     activityViewController.completionWithItemsHandler = completionWithItemsHandler
     self.activityViewController = activityViewController
   }
-  
+
   public func makeUIViewController(context: Context) -> UIActivityViewController {
-    return activityViewController
+    activityViewController
   }
-  
-  public func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-  }
+
+  public func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 #Preview {
@@ -37,10 +36,10 @@ public struct ActivityView: UIViewControllerRepresentable {
     .sheet(isPresented: .constant(true)) {
       ActivityView(
         activityItems: [
-          "tomokisun"
+          "tomokisun",
         ],
         applicationActivities: nil
-      ) { activityType, result, _, error in
+      ) { activityType, _, _, _ in
         print(activityType)
       }
       .presentationDetents([.medium, .large])
