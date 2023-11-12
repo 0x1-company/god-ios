@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InAppWebFeature", targets: ["InAppWebFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
+    .library(name: "InviteFriendFeature", targets: ["InviteFriendFeature"]),
     .library(name: "LaunchFeature", targets: ["LaunchFeature"]),
     .library(name: "MaintenanceFeature", targets: ["MaintenanceFeature"]),
     .library(name: "ManageAccountFeature", targets: ["ManageAccountFeature"]),
@@ -167,6 +168,14 @@ let package = Package(
       .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
+    .target(name: "InviteFriendFeature", dependencies: [
+      .product(name: "Lottie", package: "lottie-spm"),
+      .product(name: "GodClient", package: "DependencyPackage"),
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ActivityView", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
+    ], resources: [.copy("Invited.json")]),
     .target(name: "LaunchFeature", dependencies: [
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -193,6 +202,7 @@ let package = Package(
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
       "ProfileStoryFeature",
+      "InviteFriendFeature",
       "CupertinoMessageFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "AsyncValue", package: "DependencyPackage"),
@@ -214,7 +224,7 @@ let package = Package(
       .product(name: "PhoneNumberDependencies", package: "DependencyPackage"),
       .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image"),
       .product(name: "FirebaseDynamicLinkClient", package: "DependencyPackage"),
-    ], resources: [.copy("onboarding.json"), .copy("Invited.json")]),
+    ], resources: [.copy("onboarding.json")]),
     .target(name: "PlayAgainFeature", dependencies: [
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),

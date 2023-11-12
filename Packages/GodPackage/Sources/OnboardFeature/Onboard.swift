@@ -6,6 +6,7 @@ import FirebaseDynamicLinkClient
 import FirebaseDynamicLinks
 import God
 import HowItWorksFeature
+import InviteFriendFeature
 import SwiftUI
 import UserDefaultsClient
 

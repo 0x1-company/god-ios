@@ -39,8 +39,7 @@ public struct ActivityView: UIViewControllerRepresentable {
           "tomokisun",
         ],
         applicationActivities: nil
-      ) { activityType, _, _, _ in
-        print(activityType)
+      ) { _, _, _, _ in
       }
       .presentationDetents([.medium, .large])
     }
