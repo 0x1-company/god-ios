@@ -1,4 +1,5 @@
 import AnalyticsClient
+import InviteFriendFeature
 import ComposableArchitecture
 import Contacts
 import ContactsClient
