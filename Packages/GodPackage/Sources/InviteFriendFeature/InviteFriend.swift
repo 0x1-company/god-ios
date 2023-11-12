@@ -15,31 +15,35 @@ public struct InviteFriendLogic: Reducer {
     public let activityType: UIActivity.ActivityType?
     public let result: Bool
   }
-  
+
   public struct Destination: Reducer {
     public struct Activity: Reducer {
       public struct State: Equatable {
         public init() {}
       }
+
       public enum Action: Equatable {}
       public var body: some ReducerOf<Self> {
         EmptyReducer()
       }
     }
+
     public enum State: Equatable {
       case activity(Activity.State = .init())
       case alert(AlertState<Action.Alert>)
     }
+
     public enum Action: Equatable {
       case activity(Activity.Action)
       case alert(Alert)
-      
+
       public enum Alert: Equatable {
         case confirmOkay
       }
     }
+
     public func reduce(into state: inout State, action: Action) -> Effect<Action> {
-      return .none
+      .none
     }
   }
 
@@ -162,7 +166,7 @@ public struct InviteFriendView: View {
 
   public init(store: StoreOf<InviteFriendLogic>) {
     self.store = store
-    self._viewStore = StateObject(
+    _viewStore = StateObject(
       wrappedValue: ViewStore(store, observe: { $0 })
     )
   }
