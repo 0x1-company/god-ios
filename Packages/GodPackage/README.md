@@ -29,6 +29,7 @@ graph TD;
     NavigationFeature-->InboxFeature;
     OnboardFeature-->HowItWorksFeature;
     OnboardFeature-->ProfileStoryFeature;
+    OnboardFeature-->InviteFriendFeature;
     OnboardFeature-->CupertinoMessageFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileEditFeature-->DeleteAccountFeature;
