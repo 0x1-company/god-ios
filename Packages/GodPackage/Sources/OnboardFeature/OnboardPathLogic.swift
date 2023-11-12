@@ -1,10 +1,10 @@
 import AnalyticsClient
-import InviteFriendFeature
 import ComposableArchitecture
 import Contacts
 import ContactsClient
 import God
 import GodClient
+import InviteFriendFeature
 import UIApplicationClient
 import UserDefaultsClient
 import UserNotificationClient
