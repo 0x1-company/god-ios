@@ -81,5 +81,6 @@ public extension AnalyticsClient {
     case shareFeedback = "share_feedback"
     case getHelp = "get_help"
     case safetyCenter = "safety_center"
+    case requiredInviteFriend = "required_invite_friend"
   }
 }

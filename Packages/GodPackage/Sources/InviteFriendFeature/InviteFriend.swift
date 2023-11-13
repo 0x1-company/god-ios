@@ -114,10 +114,17 @@ public struct InviteFriendLogic: Reducer {
         )
         return .none
 
-      case .inviteFriendButtonTapped where state.remainingInvitationCount == 0:
-        return .send(.delegate(.nextScreen))
-
       case .inviteFriendButtonTapped:
+        let remainingInvitationCount = state.remainingInvitationCount
+        analytics.buttonClick(
+          name: .requiredInviteFriend,
+          parameters: [
+            "remaining_invitation_count": remainingInvitationCount
+          ]
+        )
+        if remainingInvitationCount == 0 {
+          return .send(.delegate(.nextScreen))
+        }
         state.destination = .activity()
         return .none
 
