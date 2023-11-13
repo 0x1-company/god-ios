@@ -119,7 +119,7 @@ public struct InviteFriendLogic: Reducer {
         analytics.buttonClick(
           name: .requiredInviteFriend,
           parameters: [
-            "remaining_invitation_count": remainingInvitationCount
+            "remaining_invitation_count": remainingInvitationCount,
           ]
         )
         if remainingInvitationCount == 0 {
