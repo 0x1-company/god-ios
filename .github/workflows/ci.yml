@@ -33,10 +33,9 @@ jobs:
       - uses: actions/checkout@v4
       - run: ls /Applications
       - run: sudo xcode-select -s /Applications/Xcode_15.0.1.app
-      - run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
       - uses: irgaly/xcode-cache@v1
         with:
           key: xcode-cache-deriveddata-${{ github.workflow }}-${{ github.sha }}
           restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-
       - run: make bootstrap
-      - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator
+      - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -skipMacroValidation
