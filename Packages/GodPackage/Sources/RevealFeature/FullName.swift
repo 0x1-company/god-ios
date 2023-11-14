@@ -4,7 +4,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct FullNameLogic: Reducer {
+@Reducer
+public struct FullNameLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -17,7 +18,7 @@ public struct FullNameLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case closeButtonTapped

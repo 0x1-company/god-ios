@@ -5,7 +5,8 @@ import Styleguide
 import SwiftUI
 import UserNotificationClient
 
-public struct AllowAccessLogic: Reducer {
+@Reducer
+public struct AllowAccessLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +15,7 @@ public struct AllowAccessLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
   }

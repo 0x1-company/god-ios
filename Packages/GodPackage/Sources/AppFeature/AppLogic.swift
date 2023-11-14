@@ -12,7 +12,8 @@ import SwiftUI
 import TcaHelpers
 import UserDefaultsClient
 
-public struct AppLogic: Reducer {
+@Reducer
+public struct AppLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -34,7 +35,7 @@ public struct AppLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case appDelegate(AppDelegateLogic.Action)
     case sceneDelegate(SceneDelegateLogic.Action)
     case view(View.Action)
@@ -97,13 +98,13 @@ public struct AppLogic: Reducer {
 
   @ReducerBuilder<State, Action>
   var core: some Reducer<State, Action> {
-    Scope(state: \.appDelegate, action: /Action.appDelegate) {
+    Scope(state: \.appDelegate, action: \.appDelegate) {
       AppDelegateLogic()
     }
-    Scope(state: \.sceneDelegate, action: /Action.sceneDelegate) {
+    Scope(state: \.sceneDelegate, action: \.sceneDelegate) {
       SceneDelegateLogic()
     }
-    Scope(state: \.view, action: /Action.view) {
+    Scope(state: \.view, action: \.view) {
       View()
     }
     AuthLogic()
@@ -113,7 +114,8 @@ public struct AppLogic: Reducer {
     UserSettingsLogic()
   }
 
-  public struct View: Reducer {
+  @Reducer
+  public struct View {
     public enum State: Equatable {
       case launch(LaunchLogic.State = .init())
       case onboard(OnboardLogic.State = .init())
@@ -122,7 +124,7 @@ public struct AppLogic: Reducer {
       case maintenance(MaintenanceLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case launch(LaunchLogic.Action)
       case onboard(OnboardLogic.Action)
       case navigation(RootNavigationLogic.Action)
@@ -131,11 +133,11 @@ public struct AppLogic: Reducer {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.launch, action: /Action.launch, child: LaunchLogic.init)
-      Scope(state: /State.onboard, action: /Action.onboard, child: OnboardLogic.init)
-      Scope(state: /State.navigation, action: /Action.navigation, child: RootNavigationLogic.init)
-      Scope(state: /State.forceUpdate, action: /Action.forceUpdate, child: ForceUpdateLogic.init)
-      Scope(state: /State.maintenance, action: /Action.maintenance, child: MaintenanceLogic.init)
+      Scope(state: \.launch, action: \.launch, child: LaunchLogic.init)
+      Scope(state: \.onboard, action: \.onboard, child: OnboardLogic.init)
+      Scope(state: \.navigation, action: \.navigation, child: RootNavigationLogic.init)
+      Scope(state: \.forceUpdate, action: \.forceUpdate, child: ForceUpdateLogic.init)
+      Scope(state: \.maintenance, action: \.maintenance, child: MaintenanceLogic.init)
     }
   }
 }

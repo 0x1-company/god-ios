@@ -10,7 +10,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct FirstNameSettingLogic: Reducer {
+@Reducer
+public struct FirstNameSettingLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -20,7 +21,7 @@ public struct FirstNameSettingLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case nextButtonTapped

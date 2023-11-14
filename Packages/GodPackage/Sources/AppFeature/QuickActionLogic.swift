@@ -2,7 +2,8 @@ import AnalyticsClient
 import ComposableArchitecture
 import Constants
 
-public struct QuickActionLogic: Reducer {
+@Reducer
+public struct QuickActionLogic {
   @Dependency(\.openURL) var openURL
   @Dependency(\.analytics) var analytics
 

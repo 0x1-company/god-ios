@@ -7,7 +7,8 @@ import StringHelpers
 import Styleguide
 import SwiftUI
 
-public struct UsernameSettingLogic: Reducer {
+@Reducer
+public struct UsernameSettingLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -18,7 +19,7 @@ public struct UsernameSettingLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onAppear
     case nextButtonTapped
     case binding(BindingAction<State>)

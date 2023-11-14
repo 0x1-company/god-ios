@@ -4,7 +4,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct ShopLogic: Reducer {
+@Reducer
+public struct ShopLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -15,7 +16,7 @@ public struct ShopLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case storeResponse(TaskResult<God.StoreQuery.Data>)
@@ -123,7 +124,7 @@ public struct ShopLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$pickFriend, action: /Action.pickFriend) {
+    .ifLet(\.$pickFriend, action: \.pickFriend) {
       PickFriendToAddYourNameTheirPollLogic()
     }
   }

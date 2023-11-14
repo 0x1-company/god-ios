@@ -4,7 +4,8 @@ import GodClient
 import Styleguide
 import SwiftUI
 
-public struct FriendRequestsLogic: Reducer {
+@Reducer
+public struct FriendRequestsLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -15,7 +16,7 @@ public struct FriendRequestsLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
     case cardButtonTapped(String)
@@ -48,7 +49,7 @@ public struct FriendRequestsLogic: Reducer {
         return .none
       }
     }
-    .forEach(\.requests, action: /Action.requests) {
+    .forEach(\.requests, action: \.requests) {
       FriendRequestCardLogic()
     }
   }

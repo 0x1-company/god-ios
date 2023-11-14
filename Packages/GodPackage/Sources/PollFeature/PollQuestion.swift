@@ -7,7 +7,8 @@ import LabeledButton
 import Styleguide
 import SwiftUI
 
-public struct PollQuestionLogic: Reducer {
+@Reducer
+public struct PollQuestionLogic {
   public init() {}
 
   public struct State: Equatable, Identifiable {
@@ -42,7 +43,7 @@ public struct PollQuestionLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case voteButtonTapped(votedUserId: String)
     case shuffleButtonTapped

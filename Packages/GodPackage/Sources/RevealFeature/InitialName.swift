@@ -9,7 +9,8 @@ import StoreKitHelpers
 import Styleguide
 import SwiftUI
 
-public struct InitialNameLogic: Reducer {
+@Reducer
+public struct InitialNameLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -26,7 +27,7 @@ public struct InitialNameLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case closeButtonTapped

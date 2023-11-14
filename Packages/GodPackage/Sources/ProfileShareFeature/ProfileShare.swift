@@ -9,7 +9,8 @@ import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
-public struct ProfileShareLogic: Reducer {
+@Reducer
+public struct ProfileShareLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -22,7 +23,7 @@ public struct ProfileShareLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case contentButtonTapped(Content)
@@ -94,25 +95,26 @@ public struct ProfileShareLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
-    .ifLet(\.$message, action: /Action.message) {
+    .ifLet(\.$message, action: \.message) {
       CupertinoMessageLogic()
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case shareProfileToInstagramPopup(ShareProfileToInstagramPopupLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case shareProfileToInstagramPopup(ShareProfileToInstagramPopupLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.shareProfileToInstagramPopup, action: /Action.shareProfileToInstagramPopup) {
+      Scope(state: \.shareProfileToInstagramPopup, action: \.shareProfileToInstagramPopup) {
         ShareProfileToInstagramPopupLogic()
       }
     }

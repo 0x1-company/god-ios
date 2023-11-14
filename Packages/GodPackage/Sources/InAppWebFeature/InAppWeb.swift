@@ -4,7 +4,8 @@ import Styleguide
 import SwiftUI
 import WebKit
 
-public struct InAppWebLogic: Reducer {
+@Reducer
+public struct InAppWebLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -15,7 +16,7 @@ public struct InAppWebLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case closeButtonTapped

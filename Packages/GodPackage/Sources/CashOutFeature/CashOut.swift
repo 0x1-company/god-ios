@@ -6,7 +6,8 @@ import Lottie
 import Styleguide
 import SwiftUI
 
-public struct CashOutLogic: Reducer {
+@Reducer
+public struct CashOutLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -18,7 +19,7 @@ public struct CashOutLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case cashOutButtonTapped
     case delegate(Delegate)

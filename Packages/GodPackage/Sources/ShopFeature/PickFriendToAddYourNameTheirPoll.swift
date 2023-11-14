@@ -6,7 +6,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
+@Reducer
+public struct PickFriendToAddYourNameTheirPollLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -16,7 +17,7 @@ public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case nextButtonTapped

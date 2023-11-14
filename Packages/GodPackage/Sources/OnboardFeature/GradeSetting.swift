@@ -4,14 +4,15 @@ import RoundedCorner
 import Styleguide
 import SwiftUI
 
-public struct GradeSettingLogic: Reducer {
+@Reducer
+public struct GradeSettingLogic {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case generationButtonTapped(Int?)

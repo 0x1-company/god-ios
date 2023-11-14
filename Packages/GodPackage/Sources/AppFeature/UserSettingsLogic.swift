@@ -4,7 +4,8 @@ import FirebaseAuthClient
 import UserNotificationClient
 import UserSettingsClient
 
-public struct UserSettingsLogic: Reducer {
+@Reducer
+public struct UserSettingsLogic {
   @Dependency(\.contacts) var contacts
   @Dependency(\.userSettings) var userSettings
   @Dependency(\.firebaseAuth) var firebaseAuth

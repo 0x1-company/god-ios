@@ -7,7 +7,8 @@ import StoreKit
 import Styleguide
 import SwiftUI
 
-public struct PlayAgainLogic: Reducer {
+@Reducer
+public struct PlayAgainLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -21,7 +22,7 @@ public struct PlayAgainLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case timerTick

@@ -16,22 +16,25 @@ import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
 
-public struct AddLogic: Reducer {
+@Reducer
+public struct AddLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case profileExternal(ProfileExternalLogic.State)
       case message(CupertinoMessageLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profileExternal(ProfileExternalLogic.Action)
       case message(CupertinoMessageLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileExternal, action: /Action.profileExternal, child: ProfileExternalLogic.init)
-      Scope(state: /State.message, action: /Action.message, child: CupertinoMessageLogic.init)
+      Scope(state: \.profileExternal, action: \.profileExternal, child: ProfileExternalLogic.init)
+      Scope(state: \.message, action: \.message, child: CupertinoMessageLogic.init)
     }
   }
 
@@ -53,7 +56,7 @@ public struct AddLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case storyButtonTapped(UIImage?)
@@ -87,7 +90,7 @@ public struct AddLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
+    Scope(state: \.invitationsLeft, action: \.invitationsLeft) {
       InvitationsLeftLogic()
     }
     Reduce<State, Action> { state, _ in
@@ -287,22 +290,22 @@ public struct AddLogic: Reducer {
         return .none
       }
     }
-    .forEach(\.searchResult, action: /Action.searchResult) {
+    .forEach(\.searchResult, action: \.searchResult) {
       FriendRowCardLogic()
     }
-    .ifLet(\.contactsReEnable, action: /Action.contactsReEnable) {
+    .ifLet(\.contactsReEnable, action: \.contactsReEnable) {
       ContactsReEnableLogic()
     }
-    .ifLet(\.friendsOfFriendsPanel, action: /Action.friendsOfFriendsPanel) {
+    .ifLet(\.friendsOfFriendsPanel, action: \.friendsOfFriendsPanel) {
       FriendsOfFriendsPanelLogic()
     }
-    .ifLet(\.friendRequestPanel, action: /Action.friendRequestPanel) {
+    .ifLet(\.friendRequestPanel, action: \.friendRequestPanel) {
       FriendRequestsLogic()
     }
-    .ifLet(\.fromSchoolPanel, action: /Action.fromSchoolPanel) {
+    .ifLet(\.fromSchoolPanel, action: \.fromSchoolPanel) {
       FromSchoolPanelLogic()
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }

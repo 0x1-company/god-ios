@@ -6,7 +6,8 @@ import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
-public struct ShareTheAppLogic: Reducer {
+@Reducer
+public struct ShareTheAppLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +15,7 @@ public struct ShareTheAppLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)

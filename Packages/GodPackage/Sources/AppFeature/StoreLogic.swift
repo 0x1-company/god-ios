@@ -4,7 +4,8 @@ import GodClient
 import StoreKitClient
 import StoreKitHelpers
 
-public struct StoreLogic: Reducer {
+@Reducer
+public struct StoreLogic {
   @Dependency(\.store) var storeClient
   @Dependency(\.godClient) var godClient
 

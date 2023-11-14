@@ -5,7 +5,8 @@ import Lottie
 import Styleguide
 import SwiftUI
 
-public struct WelcomeLogic: Reducer {
+@Reducer
+public struct WelcomeLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -21,7 +22,7 @@ public struct WelcomeLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onAppear
     case loginButtonTapped
     case getStartedButtonTapped

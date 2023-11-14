@@ -8,7 +8,8 @@ import Styleguide
 import SwiftUI
 import UIPasteboardClient
 
-public struct ProfileShareToInstagramLogic: Reducer {
+@Reducer
+public struct ProfileShareToInstagramLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -17,7 +18,7 @@ public struct ProfileShareToInstagramLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)

@@ -8,7 +8,8 @@ import RoundedCorner
 import Styleguide
 import SwiftUI
 
-public struct SchoolSettingLogic: Reducer {
+@Reducer
+public struct SchoolSettingLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -16,7 +17,7 @@ public struct SchoolSettingLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case addSchoolRequestButtonTapped

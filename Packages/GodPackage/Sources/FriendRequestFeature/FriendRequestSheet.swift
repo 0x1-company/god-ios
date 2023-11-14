@@ -7,7 +7,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct FriendRequestSheetLogic: Reducer {
+@Reducer
+public struct FriendRequestSheetLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -18,7 +19,7 @@ public struct FriendRequestSheetLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case dismissButtonTapped
     case approveButtonTapped

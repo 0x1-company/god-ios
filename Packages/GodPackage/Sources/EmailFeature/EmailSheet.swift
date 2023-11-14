@@ -5,7 +5,8 @@ import Styleguide
 import SwiftUI
 import UIPasteboardClient
 
-public struct EmailSheetLogic: Reducer {
+@Reducer
+public struct EmailSheetLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -16,7 +17,7 @@ public struct EmailSheetLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case dismissButtonTapped
     case mailButtonTapped

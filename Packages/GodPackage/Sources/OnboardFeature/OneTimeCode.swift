@@ -9,7 +9,8 @@ import PhoneNumberDependencies
 import SwiftUI
 import UserDefaultsClient
 
-public struct OneTimeCodeLogic: Reducer {
+@Reducer
+public struct OneTimeCodeLogic {
   public struct State: Equatable {
     var inviterUserId: String?
     var phoneNumber = ""
@@ -23,7 +24,7 @@ public struct OneTimeCodeLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case resendButtonTapped

@@ -3,7 +3,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct FriendsOfFriendsPanelLogic: Reducer {
+@Reducer
+public struct FriendsOfFriendsPanelLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +15,7 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case friendsOfFriends(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
     case cardButtonTapped(String)
     case delegate(Delegate)
@@ -37,7 +38,7 @@ public struct FriendsOfFriendsPanelLogic: Reducer {
         return .none
       }
     }
-    .forEach(\.friendsOfFriends, action: /Action.friendsOfFriends) {
+    .forEach(\.friendsOfFriends, action: \.friendsOfFriends) {
       FriendRowCardLogic()
     }
   }

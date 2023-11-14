@@ -14,7 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo xcode-select -s /Applications/Xcode_15.0.1.app
-      - run: xcodebuild -workspace God.xcworkspace -resolvePackageDependencies -scheme "App (Staging project)"
+      - run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+      - run: xcodebuild -workspace God.xcworkspace -resolvePackageDependencies -scheme "App (Staging project)" -skipMacroValidation
       - run: swift build -c release --package-path ./BuildTools/ApolloTool
       - run: swift build -c release --package-path ./BuildTools/DependenciesGraph --product dgraph
       - run: swift build -c release --package-path ./BuildTools/SwiftFormatTool --product swiftformat

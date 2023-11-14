@@ -9,7 +9,8 @@ import Styleguide
 import SwiftUI
 import SwiftUIMessage
 
-public struct InvitationsLeftLogic: Reducer {
+@Reducer
+public struct InvitationsLeftLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -18,7 +19,7 @@ public struct InvitationsLeftLogic: Reducer {
     @PresentationState var message: CupertinoMessageLogic.State?
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case inviteButtonTapped(CNContact)
     case contactResponse(TaskResult<CNContact>)
@@ -98,7 +99,7 @@ public struct InvitationsLeftLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$message, action: /Action.message) {
+    .ifLet(\.$message, action: \.message) {
       CupertinoMessageLogic()
     }
   }

@@ -8,7 +8,8 @@ import ShopFeature
 import Styleguide
 import SwiftUI
 
-public struct ProfileLogic: Reducer {
+@Reducer
+public struct ProfileLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -17,7 +18,7 @@ public struct ProfileLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case editProfileButtonTapped
@@ -104,7 +105,7 @@ public struct ProfileLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }
@@ -119,7 +120,8 @@ public struct ProfileLogic: Reducer {
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case profileEdit(ProfileEditLogic.State = .init())
       case shop(ShopLogic.State = .init())
@@ -127,7 +129,7 @@ public struct ProfileLogic: Reducer {
       case external(ProfileExternalLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profileEdit(ProfileEditLogic.Action)
       case shop(ShopLogic.Action)
       case profileShare(ProfileShareLogic.Action)
@@ -135,16 +137,16 @@ public struct ProfileLogic: Reducer {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileEdit, action: /Action.profileEdit) {
+      Scope(state: \.profileEdit, action: \.profileEdit) {
         ProfileEditLogic()
       }
-      Scope(state: /State.shop, action: /Action.shop) {
+      Scope(state: \.shop, action: \.shop) {
         ShopLogic()
       }
-      Scope(state: /State.profileShare, action: /Action.profileShare) {
+      Scope(state: \.profileShare, action: \.profileShare) {
         ProfileShareLogic()
       }
-      Scope(state: /State.external, action: /Action.external) {
+      Scope(state: \.external, action: \.external) {
         ProfileExternalLogic()
       }
     }

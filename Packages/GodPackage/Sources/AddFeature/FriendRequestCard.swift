@@ -5,7 +5,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct FriendRequestCardLogic: Reducer {
+@Reducer
+public struct FriendRequestCardLogic {
   public init() {}
 
   public struct State: Equatable, Identifiable {
@@ -22,7 +23,7 @@ public struct FriendRequestCardLogic: Reducer {
     var description: String
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case approveButtonTapped
     case hideButtonTapped
     case approveResponse(TaskResult<God.ApproveFriendRequestMutation.Data>)

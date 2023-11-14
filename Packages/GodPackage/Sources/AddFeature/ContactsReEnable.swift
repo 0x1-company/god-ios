@@ -1,14 +1,15 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct ContactsReEnableLogic: Reducer {
+@Reducer
+public struct ContactsReEnableLogic {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTapGesture
   }
 

@@ -5,7 +5,8 @@ import FirebaseAuthClient
 import Styleguide
 import SwiftUI
 
-public struct DeleteAccountLogic: Reducer {
+@Reducer
+public struct DeleteAccountLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -21,7 +22,7 @@ public struct DeleteAccountLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case closeButtonTapped
     case reasonButtonTapped(String)

@@ -3,7 +3,8 @@ import MessageUI
 import SwiftUI
 import SwiftUIMessage
 
-public struct CupertinoMessageLogic: Reducer {
+@Reducer
+public struct CupertinoMessageLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -21,7 +22,7 @@ public struct CupertinoMessageLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {}
+  public enum Action {}
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {}
 }

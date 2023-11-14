@@ -8,25 +8,28 @@ import HowItWorksFeature
 import Styleguide
 import SwiftUI
 
-public struct AboutLogic: Reducer {
+@Reducer
+public struct AboutLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case howItWorks(HowItWorksLogic.State = .init())
       case emailSheet(EmailSheetLogic.State)
       case deleteAccount(DeleteAccountLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case howItWorks(HowItWorksLogic.Action)
       case emailSheet(EmailSheetLogic.Action)
       case deleteAccount(DeleteAccountLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.howItWorks, action: /Action.howItWorks, child: HowItWorksLogic.init)
-      Scope(state: /State.emailSheet, action: /Action.emailSheet, child: EmailSheetLogic.init)
-      Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
+      Scope(state: \.howItWorks, action: \.howItWorks, child: HowItWorksLogic.init)
+      Scope(state: \.emailSheet, action: \.emailSheet, child: EmailSheetLogic.init)
+      Scope(state: \.deleteAccount, action: \.deleteAccount, child: DeleteAccountLogic.init)
     }
   }
 
@@ -42,7 +45,7 @@ public struct AboutLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case howItWorksButtonTapped
@@ -150,7 +153,7 @@ public struct AboutLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }

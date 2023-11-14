@@ -4,12 +4,13 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct FromGodTeamCardLogic: Reducer {
+@Reducer
+public struct FromGodTeamCardLogic {
   public struct State: Equatable {
     var isRead = false
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case cardButtonTapped
     case delegate(Delegate)

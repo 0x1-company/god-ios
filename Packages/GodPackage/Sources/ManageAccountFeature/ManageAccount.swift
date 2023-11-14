@@ -4,7 +4,8 @@ import GodClient
 import LabeledButton
 import SwiftUI
 
-public struct ManageAccountLogic: Reducer {
+@Reducer
+public struct ManageAccountLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -12,7 +13,7 @@ public struct ManageAccountLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case closeButtonTapped
     case resetBlockButtonTapped
     case resetHideButtonTapped

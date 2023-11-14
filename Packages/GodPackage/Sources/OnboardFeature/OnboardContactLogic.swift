@@ -3,7 +3,8 @@ import ContactsClient
 import God
 import PhoneNumberDependencies
 
-public struct OnboardContactLogic: Reducer {
+@Reducer
+public struct OnboardContactLogic {
   @Dependency(\.phoneNumberParse) var phoneNumberParse
   @Dependency(\.phoneNumberFormat) var phoneNumberFormat
   @Dependency(\.contacts.enumerateContacts) var enumerateContacts

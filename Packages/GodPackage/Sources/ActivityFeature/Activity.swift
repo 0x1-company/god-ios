@@ -7,7 +7,8 @@ import ProfileFeature
 import ProfileImage
 import SwiftUI
 
-public struct ActivityLogic: Reducer {
+@Reducer
+public struct ActivityLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -17,7 +18,7 @@ public struct ActivityLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
@@ -74,22 +75,23 @@ public struct ActivityLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case profile(ProfileExternalLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profile(ProfileExternalLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profile, action: /Action.profile) {
+      Scope(state: \.profile, action: \.profile) {
         ProfileExternalLogic()
       }
     }

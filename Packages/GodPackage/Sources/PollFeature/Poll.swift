@@ -5,7 +5,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct PollLogic: Reducer {
+@Reducer
+public struct PollLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -33,7 +34,7 @@ public struct PollLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
@@ -139,7 +140,7 @@ public struct PollLogic: Reducer {
         return .none
       }
     }
-    .forEach(\.pollQuestions, action: /Action.pollQuestions) {
+    .forEach(\.pollQuestions, action: \.pollQuestions) {
       PollQuestionLogic()
     }
   }

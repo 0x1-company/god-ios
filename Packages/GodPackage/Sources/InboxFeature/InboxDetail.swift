@@ -13,25 +13,28 @@ import StoreKitClient
 import Styleguide
 import SwiftUI
 
-public struct InboxDetailLogic: Reducer {
+@Reducer
+public struct InboxDetailLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case initialName(InitialNameLogic.State)
       case fullName(FullNameLogic.State)
       case godMode(GodModeLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case initialName(InitialNameLogic.Action)
       case fullName(FullNameLogic.Action)
       case godMode(GodModeLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.initialName, action: /Action.initialName, child: InitialNameLogic.init)
-      Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
-      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
+      Scope(state: \.initialName, action: \.initialName, child: InitialNameLogic.init)
+      Scope(state: \.fullName, action: \.fullName, child: FullNameLogic.init)
+      Scope(state: \.godMode, action: \.godMode, child: GodModeLogic.init)
     }
   }
 
@@ -47,7 +50,7 @@ public struct InboxDetailLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case seeWhoSentItButtonTapped
@@ -169,7 +172,7 @@ public struct InboxDetailLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }

@@ -5,7 +5,8 @@ import GodClient
 import Styleguide
 import SwiftUI
 
-public struct ShareProfileToInstagramPopupLogic: Reducer {
+@Reducer
+public struct ShareProfileToInstagramPopupLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -13,7 +14,7 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case closeButtonTapped
     case page(Page.Action)
   }
@@ -22,7 +23,7 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
-    Scope(state: \.currentPage, action: /Action.page, child: Page.init)
+    Scope(state: \.currentPage, action: \.page, child: Page.init)
     Reduce { state, action in
       switch action {
       case .closeButtonTapped:
@@ -44,20 +45,21 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
     }
   }
 
-  public struct Page: Reducer {
+  @Reducer
+  public struct Page {
     public enum State: Equatable {
       case profileShareToInstagram(ProfileShareToInstagramLogic.State = .init())
       case howToShareOnInstagram(HowToShareOnInstagramLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profileShareToInstagram(ProfileShareToInstagramLogic.Action)
       case howToShareOnInstagram(HowToShareOnInstagramLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileShareToInstagram, action: /Action.profileShareToInstagram, child: ProfileShareToInstagramLogic.init)
-      Scope(state: /State.howToShareOnInstagram, action: /Action.howToShareOnInstagram, child: HowToShareOnInstagramLogic.init)
+      Scope(state: \.profileShareToInstagram, action: \.profileShareToInstagram, child: ProfileShareToInstagramLogic.init)
+      Scope(state: \.howToShareOnInstagram, action: \.howToShareOnInstagram, child: HowToShareOnInstagramLogic.init)
     }
   }
 }

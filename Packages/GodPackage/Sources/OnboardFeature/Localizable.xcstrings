@@ -184,6 +184,7 @@
       }
     },
     "Finally, please invite your friends\nInvite your friends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -277,6 +278,7 @@
       }
     },
     "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -380,6 +382,7 @@
       }
     },
     "Invite %lld best friends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -390,6 +393,7 @@
       }
     },
     "INVITE %lld FRIENDS" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -400,6 +404,7 @@
       }
     },
     "Invite Friends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -420,6 +425,7 @@
       }
     },
     "invited via\nother app" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -470,6 +476,7 @@
       }
     },
     "No friend\ninvited yet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -583,6 +590,7 @@
       }
     },
     "Start" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -603,6 +611,7 @@
       }
     },
     "To use God, you need friends from the same school 👥" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -673,6 +682,7 @@
       }
     },
     "Why 3 friends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

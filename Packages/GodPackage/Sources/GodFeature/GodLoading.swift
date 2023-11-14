@@ -3,14 +3,15 @@ import ComposableArchitecture
 import Lottie
 import SwiftUI
 
-public struct GodLoadingLogic: Reducer {
+@Reducer
+public struct GodLoadingLogic {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
   }
 

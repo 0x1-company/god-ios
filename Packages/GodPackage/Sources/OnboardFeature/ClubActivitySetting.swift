@@ -6,7 +6,8 @@ import RoundedCorner
 import Styleguide
 import SwiftUI
 
-public struct ClubActivitySettingLogic: Reducer {
+@Reducer
+public struct ClubActivitySettingLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -14,7 +15,7 @@ public struct ClubActivitySettingLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case skipButtonTapped

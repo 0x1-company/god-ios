@@ -10,7 +10,8 @@ import InboxFeature
 import ProfileFeature
 import SwiftUI
 
-public struct RootNavigationLogic: Reducer {
+@Reducer
+public struct RootNavigationLogic {
   public init() {}
 
   public enum Tab: LocalizedStringKey, Equatable, CaseIterable {
@@ -35,7 +36,7 @@ public struct RootNavigationLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case friendRequestResponse(TaskResult<God.FriendRequestsQuery.Data>)
     case performAfterFriendRequestSheetDismiss
@@ -58,12 +59,12 @@ public struct RootNavigationLogic: Reducer {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.add, action: /Action.add, child: AddLogic.init)
-    Scope(state: \.activity, action: /Action.activity, child: ActivityLogic.init)
-    Scope(state: \.inbox, action: /Action.inbox, child: InboxLogic.init)
-    Scope(state: \.god, action: /Action.god, child: GodLogic.init)
-    Scope(state: \.profile, action: /Action.profile, child: ProfileLogic.init)
-    Scope(state: \.about, action: /Action.about, child: AboutLogic.init)
+    Scope(state: \.add, action: \.add, child: AddLogic.init)
+    Scope(state: \.activity, action: \.activity, child: ActivityLogic.init)
+    Scope(state: \.inbox, action: \.inbox, child: InboxLogic.init)
+    Scope(state: \.god, action: \.god, child: GodLogic.init)
+    Scope(state: \.profile, action: \.profile, child: ProfileLogic.init)
+    Scope(state: \.about, action: \.about, child: AboutLogic.init)
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
@@ -107,7 +108,7 @@ public struct RootNavigationLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$friendRequestSheet, action: /Action.friendRequestSheet) {
+    .ifLet(\.$friendRequestSheet, action: \.friendRequestSheet) {
       FriendRequestSheetLogic()
     }
   }

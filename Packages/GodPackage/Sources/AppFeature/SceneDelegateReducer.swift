@@ -1,9 +1,10 @@
 import ComposableArchitecture
 import UIKit
 
-public struct SceneDelegateLogic: Reducer {
+@Reducer
+public struct SceneDelegateLogic {
   public struct State: Equatable {}
-  public enum Action: Equatable {
+  public enum Action {
     case shortcutItem(UIApplicationShortcutItem)
   }
 

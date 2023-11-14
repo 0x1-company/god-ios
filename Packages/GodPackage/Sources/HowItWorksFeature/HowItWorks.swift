@@ -6,7 +6,8 @@ import Lottie
 import Styleguide
 import SwiftUI
 
-public struct HowItWorksLogic: Reducer {
+@Reducer
+public struct HowItWorksLogic {
   public init() {}
 
   enum Step: Int, CaseIterable {
@@ -19,7 +20,7 @@ public struct HowItWorksLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case startButtonTapped

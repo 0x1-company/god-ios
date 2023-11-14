@@ -8,7 +8,8 @@ import StoreKitHelpers
 import Styleguide
 import SwiftUI
 
-public struct GodModeLogic: Reducer {
+@Reducer
+public struct GodModeLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -23,7 +24,7 @@ public struct GodModeLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case maybeLaterButtonTapped

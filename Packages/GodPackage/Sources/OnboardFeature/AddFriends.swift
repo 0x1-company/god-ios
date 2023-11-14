@@ -16,7 +16,8 @@ import SwiftUI
 import SwiftUIMessage
 import UIPasteboardClient
 
-public struct AddFriendsLogic: Reducer {
+@Reducer
+public struct AddFriendsLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -37,7 +38,7 @@ public struct AddFriendsLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case storyButtonTapped(UIImage?)
@@ -224,7 +225,7 @@ public struct AddFriendsLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$message, action: /Action.message) {
+    .ifLet(\.$message, action: \.message) {
       CupertinoMessageLogic()
     }
   }

@@ -15,22 +15,25 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct ProfileEditLogic: Reducer {
+@Reducer
+public struct ProfileEditLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case manageAccount(ManageAccountLogic.State = .init())
       case deleteAccount(DeleteAccountLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case manageAccount(ManageAccountLogic.Action)
       case deleteAccount(DeleteAccountLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.manageAccount, action: /Action.manageAccount, child: ManageAccountLogic.init)
-      Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
+      Scope(state: \.manageAccount, action: \.manageAccount, child: ManageAccountLogic.init)
+      Scope(state: \.deleteAccount, action: \.deleteAccount, child: DeleteAccountLogic.init)
     }
   }
 
@@ -70,7 +73,7 @@ public struct ProfileEditLogic: Reducer {
     }
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case cancelEditButtonTapped
@@ -248,7 +251,7 @@ public struct ProfileEditLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }

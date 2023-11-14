@@ -11,7 +11,8 @@ import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
 
-public struct HowToShareOnInstagramLogic: Reducer {
+@Reducer
+public struct HowToShareOnInstagramLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -24,7 +25,7 @@ public struct HowToShareOnInstagramLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case stepButtonTapped(Step)

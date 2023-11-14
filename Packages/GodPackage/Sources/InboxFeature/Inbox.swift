@@ -12,7 +12,8 @@ import Styleguide
 import SwiftUI
 import UserNotificationClient
 
-public struct InboxLogic: Reducer {
+@Reducer
+public struct InboxLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -29,7 +30,7 @@ public struct InboxLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case activityButtonTapped(id: String)
@@ -64,7 +65,7 @@ public struct InboxLogic: Reducer {
   }
 
   public var body: some Reducer<State, Action> {
-    Scope(state: \.fromGodTeamCard, action: /Action.fromGodTeamCard) {
+    Scope(state: \.fromGodTeamCard, action: \.fromGodTeamCard) {
       FromGodTeamCardLogic()
     }
     Reduce<State, Action> { _, action in
@@ -200,10 +201,10 @@ public struct InboxLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
-    .ifLet(\.notificationsReEnable, action: /Action.notificationsReEnable) {
+    .ifLet(\.notificationsReEnable, action: \.notificationsReEnable) {
       NotificationsReEnableLogic()
     }
   }
@@ -270,7 +271,8 @@ public struct InboxLogic: Reducer {
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case godMode(GodModeLogic.State)
       case fromGodTeam(FromGodTeamLogic.State)
@@ -278,7 +280,7 @@ public struct InboxLogic: Reducer {
       case activatedGodMode(ActivatedGodModeLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case godMode(GodModeLogic.Action)
       case fromGodTeam(FromGodTeamLogic.Action)
       case inboxDetail(InboxDetailLogic.Action)
@@ -286,10 +288,10 @@ public struct InboxLogic: Reducer {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
-      Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamLogic.init)
-      Scope(state: /State.inboxDetail, action: /Action.inboxDetail, child: InboxDetailLogic.init)
-      Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeLogic.init)
+      Scope(state: \.godMode, action: \.godMode, child: GodModeLogic.init)
+      Scope(state: \.fromGodTeam, action: \.fromGodTeam, child: FromGodTeamLogic.init)
+      Scope(state: \.inboxDetail, action: \.inboxDetail, child: InboxDetailLogic.init)
+      Scope(state: \.activatedGodMode, action: \.activatedGodMode, child: ActivatedGodModeLogic.init)
     }
   }
 }

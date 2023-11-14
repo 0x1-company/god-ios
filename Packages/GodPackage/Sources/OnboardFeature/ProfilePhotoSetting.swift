@@ -11,7 +11,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct ProfilePhotoSettingLogic: Reducer {
+@Reducer
+public struct ProfilePhotoSettingLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -22,7 +23,7 @@ public struct ProfilePhotoSettingLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case skipButtonTapped

@@ -5,14 +5,15 @@ import GodClient
 import Styleguide
 import SwiftUI
 
-public struct GenderSettingLogic: Reducer {
+@Reducer
+public struct GenderSettingLogic {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onAppear
     case genderButtonTapped(God.Gender)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)

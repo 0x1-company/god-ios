@@ -4,14 +4,15 @@ import Constants
 import Styleguide
 import SwiftUI
 
-public struct ForceUpdateLogic: Reducer {
+@Reducer
+public struct ForceUpdateLogic {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case updateButtonTapped
   }

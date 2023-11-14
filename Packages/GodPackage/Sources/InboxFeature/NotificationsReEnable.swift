@@ -2,14 +2,15 @@ import ComposableArchitecture
 import SwiftUI
 import UIApplicationClient
 
-public struct NotificationsReEnableLogic: Reducer {
+@Reducer
+public struct NotificationsReEnableLogic {
   public init() {}
 
   public struct State: Equatable {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTapGesture
   }
 

@@ -8,7 +8,8 @@ import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
-public struct InviteFriendLogic: Reducer {
+@Reducer
+public struct InviteFriendLogic {
   public init() {}
 
   public struct CompletionWithItems: Equatable {
@@ -16,13 +17,15 @@ public struct InviteFriendLogic: Reducer {
     public let result: Bool
   }
 
-  public struct Destination: Reducer {
-    public struct Activity: Reducer {
+  @Reducer
+  public struct Destination {
+    @Reducer
+    public struct Activity {
       public struct State: Equatable {
         public init() {}
       }
 
-      public enum Action: Equatable {}
+      public enum Action {}
       public var body: some ReducerOf<Self> {
         EmptyReducer()
       }
@@ -33,7 +36,7 @@ public struct InviteFriendLogic: Reducer {
       case alert(AlertState<Action.Alert>)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case activity(Activity.Action)
       case alert(Alert)
 
@@ -59,7 +62,7 @@ public struct InviteFriendLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case whyFriendsButtonTapped
@@ -161,7 +164,7 @@ public struct InviteFriendLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }

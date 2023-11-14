@@ -1,14 +1,15 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FromSchoolPanelLogic: Reducer {
+@Reducer
+public struct FromSchoolPanelLogic {
   public init() {}
 
   public struct State: Equatable {
     var users: IdentifiedArrayOf<FriendRowCardLogic.State>
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case users(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
     case cardButtonTapped(String)
     case delegate(Delegate)
@@ -31,7 +32,7 @@ public struct FromSchoolPanelLogic: Reducer {
         return .none
       }
     }
-    .forEach(\.users, action: /Action.users) {
+    .forEach(\.users, action: \.users) {
       FriendRowCardLogic()
     }
   }

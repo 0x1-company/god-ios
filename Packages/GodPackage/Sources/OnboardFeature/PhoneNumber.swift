@@ -7,7 +7,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct PhoneNumberLogic: Reducer {
+@Reducer
+public struct PhoneNumberLogic {
   public struct State: Equatable {
     @BindingState var phoneNumber = ""
     var isDisabled = true
@@ -17,7 +18,7 @@ public struct PhoneNumberLogic: Reducer {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onAppear
     case infoButtonTapped
     case nextButtonTapped
@@ -106,7 +107,7 @@ public struct PhoneNumberLogic: Reducer {
         return .none
       }
     }
-    .ifLet(\.$help, action: /Action.help) {
+    .ifLet(\.$help, action: \.help) {
       PhoneNumberHelpLogic()
     }
   }
