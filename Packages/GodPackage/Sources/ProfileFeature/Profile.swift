@@ -137,16 +137,16 @@ public struct ProfileLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileEdit, action: /Action.profileEdit) {
+      Scope(state: \.profileEdit, action: \.profileEdit) {
         ProfileEditLogic()
       }
-      Scope(state: /State.shop, action: /Action.shop) {
+      Scope(state: \.shop, action: \.shop) {
         ShopLogic()
       }
-      Scope(state: /State.profileShare, action: /Action.profileShare) {
+      Scope(state: \.profileShare, action: \.profileShare) {
         ProfileShareLogic()
       }
-      Scope(state: /State.external, action: /Action.external) {
+      Scope(state: \.external, action: \.external) {
         ProfileExternalLogic()
       }
     }

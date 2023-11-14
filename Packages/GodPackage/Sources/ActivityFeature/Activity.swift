@@ -91,7 +91,7 @@ public struct ActivityLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profile, action: /Action.profile) {
+      Scope(state: \.profile, action: \.profile) {
         ProfileExternalLogic()
       }
     }

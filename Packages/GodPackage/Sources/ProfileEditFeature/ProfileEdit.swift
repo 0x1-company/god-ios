@@ -32,8 +32,8 @@ public struct ProfileEditLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.manageAccount, action: /Action.manageAccount, child: ManageAccountLogic.init)
-      Scope(state: /State.deleteAccount, action: /Action.deleteAccount, child: DeleteAccountLogic.init)
+      Scope(state: \.manageAccount, action: \.manageAccount, child: ManageAccountLogic.init)
+      Scope(state: \.deleteAccount, action: \.deleteAccount, child: DeleteAccountLogic.init)
     }
   }
 

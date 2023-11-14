@@ -23,7 +23,7 @@ public struct ShareProfileToInstagramPopupLogic {
   @Dependency(\.dismiss) var dismiss
 
   public var body: some Reducer<State, Action> {
-    Scope(state: \.currentPage, action: /Action.page, child: Page.init)
+    Scope(state: \.currentPage, action: \.page, child: Page.init)
     Reduce { state, action in
       switch action {
       case .closeButtonTapped:
@@ -58,8 +58,8 @@ public struct ShareProfileToInstagramPopupLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileShareToInstagram, action: /Action.profileShareToInstagram, child: ProfileShareToInstagramLogic.init)
-      Scope(state: /State.howToShareOnInstagram, action: /Action.howToShareOnInstagram, child: HowToShareOnInstagramLogic.init)
+      Scope(state: \.profileShareToInstagram, action: \.profileShareToInstagram, child: ProfileShareToInstagramLogic.init)
+      Scope(state: \.howToShareOnInstagram, action: \.howToShareOnInstagram, child: HowToShareOnInstagramLogic.init)
     }
   }
 }

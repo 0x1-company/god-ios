@@ -114,7 +114,7 @@ public struct ProfileShareLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.shareProfileToInstagramPopup, action: /Action.shareProfileToInstagramPopup) {
+      Scope(state: \.shareProfileToInstagramPopup, action: \.shareProfileToInstagramPopup) {
         ShareProfileToInstagramPopupLogic()
       }
     }

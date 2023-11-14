@@ -30,11 +30,11 @@ public struct GodLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.poll, action: /Action.poll, child: PollLogic.init)
-      Scope(state: /State.cashOut, action: /Action.cashOut, child: CashOutLogic.init)
-      Scope(state: /State.playAgain, action: /Action.playAgain, child: PlayAgainLogic.init)
-      Scope(state: /State.share, action: /Action.share, child: ShareTheAppLogic.init)
-      Scope(state: /State.loading, action: /Action.loading, child: GodLoadingLogic.init)
+      Scope(state: \.poll, action: \.poll, child: PollLogic.init)
+      Scope(state: \.cashOut, action: \.cashOut, child: CashOutLogic.init)
+      Scope(state: \.playAgain, action: \.playAgain, child: PlayAgainLogic.init)
+      Scope(state: \.share, action: \.share, child: ShareTheAppLogic.init)
+      Scope(state: \.loading, action: \.loading, child: GodLoadingLogic.init)
     }
   }
 
@@ -59,7 +59,7 @@ public struct GodLogic {
   }
 
   public var body: some Reducer<State, Action> {
-    Scope(state: \.child, action: /Action.child, child: Child.init)
+    Scope(state: \.child, action: \.child, child: Child.init)
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:

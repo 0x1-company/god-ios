@@ -33,8 +33,8 @@ public struct AddLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.profileExternal, action: /Action.profileExternal, child: ProfileExternalLogic.init)
-      Scope(state: /State.message, action: /Action.message, child: CupertinoMessageLogic.init)
+      Scope(state: \.profileExternal, action: \.profileExternal, child: ProfileExternalLogic.init)
+      Scope(state: \.message, action: \.message, child: CupertinoMessageLogic.init)
     }
   }
 
@@ -90,7 +90,7 @@ public struct AddLogic {
 
   public var body: some Reducer<State, Action> {
     BindingReducer()
-    Scope(state: \.invitationsLeft, action: /Action.invitationsLeft) {
+    Scope(state: \.invitationsLeft, action: \.invitationsLeft) {
       InvitationsLeftLogic()
     }
     Reduce<State, Action> { state, _ in
@@ -290,7 +290,7 @@ public struct AddLogic {
         return .none
       }
     }
-    .forEach(\.searchResult, action: /Action.searchResult) {
+    .forEach(\.searchResult, action: \.searchResult) {
       FriendRowCardLogic()
     }
     .ifLet(\.contactsReEnable, action: \.contactsReEnable) {

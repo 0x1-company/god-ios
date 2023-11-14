@@ -48,7 +48,7 @@ public struct OnboardLogic {
   public var body: some Reducer<State, Action> {
     OnboardPathLogic()
     OnboardContactLogic()
-    Scope(state: \.welcome, action: /Action.welcome) {
+    Scope(state: \.welcome, action: \.welcome) {
       WelcomeLogic()
     }
     Reduce<State, Action> { state, action in
@@ -90,7 +90,7 @@ public struct OnboardLogic {
         return .none
       }
     }
-    .forEach(\.path, action: /Action.path) {
+    .forEach(\.path, action: \.path) {
       Path()
     }
   }
@@ -149,20 +149,20 @@ public struct OnboardLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.gradeSetting, action: /Action.gradeSetting, child: GradeSettingLogic.init)
-      Scope(state: /State.schoolSetting, action: /Action.schoolSetting, child: SchoolSettingLogic.init)
-      Scope(state: /State.clubActivitySetting, action: /Action.clubActivitySetting, child: ClubActivitySettingLogic.init)
-      Scope(state: /State.findFriend, action: /Action.findFriend, child: FindFriendLogic.init)
-      Scope(state: /State.phoneNumber, action: /Action.phoneNumber, child: PhoneNumberLogic.init)
-      Scope(state: /State.oneTimeCode, action: /Action.oneTimeCode, child: OneTimeCodeLogic.init)
-      Scope(state: /State.firstNameSetting, action: /Action.firstNameSetting, child: FirstNameSettingLogic.init)
-      Scope(state: /State.lastNameSetting, action: /Action.lastNameSetting, child: LastNameSettingLogic.init)
-      Scope(state: /State.usernameSetting, action: /Action.usernameSetting, child: UsernameSettingLogic.init)
-      Scope(state: /State.genderSetting, action: /Action.genderSetting, child: GenderSettingLogic.init)
-      Scope(state: /State.profilePhotoSetting, action: /Action.profilePhotoSetting, child: ProfilePhotoSettingLogic.init)
-      Scope(state: /State.addFriends, action: /Action.addFriends, child: AddFriendsLogic.init)
-      Scope(state: /State.inviteFriend, action: /Action.inviteFriend, child: InviteFriendLogic.init)
-      Scope(state: /State.howItWorks, action: /Action.howItWorks, child: HowItWorksLogic.init)
+      Scope(state: \.gradeSetting, action: \.gradeSetting, child: GradeSettingLogic.init)
+      Scope(state: \.schoolSetting, action: \.schoolSetting, child: SchoolSettingLogic.init)
+      Scope(state: \.clubActivitySetting, action: \.clubActivitySetting, child: ClubActivitySettingLogic.init)
+      Scope(state: \.findFriend, action: \.findFriend, child: FindFriendLogic.init)
+      Scope(state: \.phoneNumber, action: \.phoneNumber, child: PhoneNumberLogic.init)
+      Scope(state: \.oneTimeCode, action: \.oneTimeCode, child: OneTimeCodeLogic.init)
+      Scope(state: \.firstNameSetting, action: \.firstNameSetting, child: FirstNameSettingLogic.init)
+      Scope(state: \.lastNameSetting, action: \.lastNameSetting, child: LastNameSettingLogic.init)
+      Scope(state: \.usernameSetting, action: \.usernameSetting, child: UsernameSettingLogic.init)
+      Scope(state: \.genderSetting, action: \.genderSetting, child: GenderSettingLogic.init)
+      Scope(state: \.profilePhotoSetting, action: \.profilePhotoSetting, child: ProfilePhotoSettingLogic.init)
+      Scope(state: \.addFriends, action: \.addFriends, child: AddFriendsLogic.init)
+      Scope(state: \.inviteFriend, action: \.inviteFriend, child: InviteFriendLogic.init)
+      Scope(state: \.howItWorks, action: \.howItWorks, child: HowItWorksLogic.init)
     }
   }
 }

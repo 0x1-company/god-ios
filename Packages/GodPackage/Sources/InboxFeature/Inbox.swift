@@ -65,7 +65,7 @@ public struct InboxLogic {
   }
 
   public var body: some Reducer<State, Action> {
-    Scope(state: \.fromGodTeamCard, action: /Action.fromGodTeamCard) {
+    Scope(state: \.fromGodTeamCard, action: \.fromGodTeamCard) {
       FromGodTeamCardLogic()
     }
     Reduce<State, Action> { _, action in
@@ -288,10 +288,10 @@ public struct InboxLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
-      Scope(state: /State.fromGodTeam, action: /Action.fromGodTeam, child: FromGodTeamLogic.init)
-      Scope(state: /State.inboxDetail, action: /Action.inboxDetail, child: InboxDetailLogic.init)
-      Scope(state: /State.activatedGodMode, action: /Action.activatedGodMode, child: ActivatedGodModeLogic.init)
+      Scope(state: \.godMode, action: \.godMode, child: GodModeLogic.init)
+      Scope(state: \.fromGodTeam, action: \.fromGodTeam, child: FromGodTeamLogic.init)
+      Scope(state: \.inboxDetail, action: \.inboxDetail, child: InboxDetailLogic.init)
+      Scope(state: \.activatedGodMode, action: \.activatedGodMode, child: ActivatedGodModeLogic.init)
     }
   }
 }

@@ -38,7 +38,7 @@ public struct FriendsOfFriendsPanelLogic {
         return .none
       }
     }
-    .forEach(\.friendsOfFriends, action: /Action.friendsOfFriends) {
+    .forEach(\.friendsOfFriends, action: \.friendsOfFriends) {
       FriendRowCardLogic()
     }
   }

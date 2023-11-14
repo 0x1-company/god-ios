@@ -140,7 +140,7 @@ public struct PollLogic {
         return .none
       }
     }
-    .forEach(\.pollQuestions, action: /Action.pollQuestions) {
+    .forEach(\.pollQuestions, action: \.pollQuestions) {
       PollQuestionLogic()
     }
   }

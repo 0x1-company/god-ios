@@ -98,13 +98,13 @@ public struct AppLogic {
 
   @ReducerBuilder<State, Action>
   var core: some Reducer<State, Action> {
-    Scope(state: \.appDelegate, action: /Action.appDelegate) {
+    Scope(state: \.appDelegate, action: \.appDelegate) {
       AppDelegateLogic()
     }
-    Scope(state: \.sceneDelegate, action: /Action.sceneDelegate) {
+    Scope(state: \.sceneDelegate, action: \.sceneDelegate) {
       SceneDelegateLogic()
     }
-    Scope(state: \.view, action: /Action.view) {
+    Scope(state: \.view, action: \.view) {
       View()
     }
     AuthLogic()
@@ -133,11 +133,11 @@ public struct AppLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.launch, action: /Action.launch, child: LaunchLogic.init)
-      Scope(state: /State.onboard, action: /Action.onboard, child: OnboardLogic.init)
-      Scope(state: /State.navigation, action: /Action.navigation, child: RootNavigationLogic.init)
-      Scope(state: /State.forceUpdate, action: /Action.forceUpdate, child: ForceUpdateLogic.init)
-      Scope(state: /State.maintenance, action: /Action.maintenance, child: MaintenanceLogic.init)
+      Scope(state: \.launch, action: \.launch, child: LaunchLogic.init)
+      Scope(state: \.onboard, action: \.onboard, child: OnboardLogic.init)
+      Scope(state: \.navigation, action: \.navigation, child: RootNavigationLogic.init)
+      Scope(state: \.forceUpdate, action: \.forceUpdate, child: ForceUpdateLogic.init)
+      Scope(state: \.maintenance, action: \.maintenance, child: MaintenanceLogic.init)
     }
   }
 }

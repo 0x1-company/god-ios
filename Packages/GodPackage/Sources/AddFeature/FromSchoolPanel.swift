@@ -32,7 +32,7 @@ public struct FromSchoolPanelLogic {
         return .none
       }
     }
-    .forEach(\.users, action: /Action.users) {
+    .forEach(\.users, action: \.users) {
       FriendRowCardLogic()
     }
   }

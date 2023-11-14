@@ -32,9 +32,9 @@ public struct InboxDetailLogic {
     }
 
     public var body: some Reducer<State, Action> {
-      Scope(state: /State.initialName, action: /Action.initialName, child: InitialNameLogic.init)
-      Scope(state: /State.fullName, action: /Action.fullName, child: FullNameLogic.init)
-      Scope(state: /State.godMode, action: /Action.godMode, child: GodModeLogic.init)
+      Scope(state: \.initialName, action: \.initialName, child: InitialNameLogic.init)
+      Scope(state: \.fullName, action: \.fullName, child: FullNameLogic.init)
+      Scope(state: \.godMode, action: \.godMode, child: GodModeLogic.init)
     }
   }
 

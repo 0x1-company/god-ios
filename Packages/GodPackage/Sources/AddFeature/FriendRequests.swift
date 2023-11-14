@@ -49,7 +49,7 @@ public struct FriendRequestsLogic {
         return .none
       }
     }
-    .forEach(\.requests, action: /Action.requests) {
+    .forEach(\.requests, action: \.requests) {
       FriendRequestCardLogic()
     }
   }
