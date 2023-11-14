@@ -10,7 +10,7 @@ import UserNotificationClient
 @Reducer
 public struct GodLogic {
   public init() {}
-  
+
   @Reducer
   public struct Child {
     public enum State: Equatable {
