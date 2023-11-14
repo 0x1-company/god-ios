@@ -2,7 +2,8 @@ import AnalyticsClient
 import ComposableArchitecture
 import SwiftUI
 
-public struct ___VARIABLE_productName:identifier___Logic: Reducer {
+@Reducer
+public struct ___VARIABLE_productName:identifier___Logic {
   public init() {}
 
   public struct State: Equatable {
@@ -38,7 +39,7 @@ public struct ___VARIABLE_productName:identifier___View: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { _ in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       List {
         Text("___VARIABLE_productName:identifier___", bundle: .module)
       }
