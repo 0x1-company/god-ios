@@ -34,7 +34,7 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.3.0"),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.4.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.16.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.7.4"),
     .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.1"),
