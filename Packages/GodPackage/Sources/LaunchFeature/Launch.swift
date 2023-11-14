@@ -10,7 +10,7 @@ public struct LaunchLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
   }
 

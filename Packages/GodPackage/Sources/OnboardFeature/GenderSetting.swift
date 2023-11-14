@@ -13,7 +13,7 @@ public struct GenderSettingLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onAppear
     case genderButtonTapped(God.Gender)
     case updateUserProfileResponse(TaskResult<God.UpdateUserProfileMutation.Data>)

@@ -10,7 +10,7 @@ public struct FromGodTeamCardLogic {
     var isRead = false
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case cardButtonTapped
     case delegate(Delegate)

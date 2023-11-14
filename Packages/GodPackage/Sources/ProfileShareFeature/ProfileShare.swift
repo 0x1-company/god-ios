@@ -23,7 +23,7 @@ public struct ProfileShareLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case contentButtonTapped(Content)
@@ -109,7 +109,7 @@ public struct ProfileShareLogic {
       case shareProfileToInstagramPopup(ShareProfileToInstagramPopupLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case shareProfileToInstagramPopup(ShareProfileToInstagramPopupLogic.Action)
     }
 

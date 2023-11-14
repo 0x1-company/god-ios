@@ -19,7 +19,7 @@ public struct FriendRowCardLogic {
     var friendStatus: God.FriendStatus?
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case addButtonTapped
     case hideButtonTapped
     case friendRequestResponse(TaskResult<God.CreateFriendRequestMutation.Data>)

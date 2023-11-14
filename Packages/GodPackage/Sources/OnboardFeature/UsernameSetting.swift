@@ -19,7 +19,7 @@ public struct UsernameSettingLogic {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onAppear
     case nextButtonTapped
     case binding(BindingAction<State>)

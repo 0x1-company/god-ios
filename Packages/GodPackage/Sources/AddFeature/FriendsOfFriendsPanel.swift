@@ -15,7 +15,7 @@ public struct FriendsOfFriendsPanelLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case friendsOfFriends(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
     case cardButtonTapped(String)
     case delegate(Delegate)

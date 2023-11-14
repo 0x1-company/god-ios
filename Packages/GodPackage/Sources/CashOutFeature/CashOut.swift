@@ -19,7 +19,7 @@ public struct CashOutLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case cashOutButtonTapped
     case delegate(Delegate)

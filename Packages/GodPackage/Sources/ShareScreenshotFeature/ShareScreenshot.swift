@@ -16,7 +16,7 @@ public struct ShareScreenshotLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case lineButtonTapped
     case instagramButtonTapped

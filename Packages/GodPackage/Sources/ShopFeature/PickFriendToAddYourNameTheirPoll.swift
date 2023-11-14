@@ -17,7 +17,7 @@ public struct PickFriendToAddYourNameTheirPollLogic {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case nextButtonTapped

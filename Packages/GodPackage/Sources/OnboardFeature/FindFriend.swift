@@ -13,7 +13,7 @@ public struct FindFriendLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onAppear
     case findButtonTapped
     case delegate(Delegate)

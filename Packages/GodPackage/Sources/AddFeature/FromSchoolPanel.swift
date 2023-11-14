@@ -9,7 +9,7 @@ public struct FromSchoolPanelLogic {
     var users: IdentifiedArrayOf<FriendRowCardLogic.State>
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case users(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
     case cardButtonTapped(String)
     case delegate(Delegate)

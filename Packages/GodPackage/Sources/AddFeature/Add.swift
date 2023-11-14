@@ -27,7 +27,7 @@ public struct AddLogic {
       case message(CupertinoMessageLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profileExternal(ProfileExternalLogic.Action)
       case message(CupertinoMessageLogic.Action)
     }
@@ -56,7 +56,7 @@ public struct AddLogic {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case storyButtonTapped(UIImage?)

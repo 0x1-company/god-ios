@@ -17,7 +17,7 @@ public struct EmailSheetLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case dismissButtonTapped
     case mailButtonTapped

@@ -12,7 +12,7 @@ public struct FromGodTeamLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onAppear
     case closeButtonTapped
   }

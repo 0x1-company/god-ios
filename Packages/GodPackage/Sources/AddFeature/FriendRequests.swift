@@ -16,7 +16,7 @@ public struct FriendRequestsLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
     case cardButtonTapped(String)

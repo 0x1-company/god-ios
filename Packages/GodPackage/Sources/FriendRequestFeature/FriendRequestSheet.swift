@@ -19,7 +19,7 @@ public struct FriendRequestSheetLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case dismissButtonTapped
     case approveButtonTapped

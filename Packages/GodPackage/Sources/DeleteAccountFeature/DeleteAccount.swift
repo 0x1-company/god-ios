@@ -22,7 +22,7 @@ public struct DeleteAccountLogic {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case closeButtonTapped
     case reasonButtonTapped(String)

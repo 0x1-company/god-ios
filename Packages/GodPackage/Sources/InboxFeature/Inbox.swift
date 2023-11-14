@@ -30,7 +30,7 @@ public struct InboxLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case activityButtonTapped(id: String)
@@ -280,7 +280,7 @@ public struct InboxLogic {
       case activatedGodMode(ActivatedGodModeLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case godMode(GodModeLogic.Action)
       case fromGodTeam(FromGodTeamLogic.Action)
       case inboxDetail(InboxDetailLogic.Action)

@@ -43,7 +43,7 @@ public struct PollQuestionLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case voteButtonTapped(votedUserId: String)
     case shuffleButtonTapped

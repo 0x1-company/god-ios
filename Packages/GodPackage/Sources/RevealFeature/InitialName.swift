@@ -27,7 +27,7 @@ public struct InitialNameLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case closeButtonTapped

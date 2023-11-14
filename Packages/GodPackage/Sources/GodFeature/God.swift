@@ -21,7 +21,7 @@ public struct GodLogic {
       case loading(GodLoadingLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case poll(PollLogic.Action)
       case cashOut(CashOutLogic.Action)
       case playAgain(PlayAgainLogic.Action)
@@ -43,7 +43,7 @@ public struct GodLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case currentPollResponse(TaskResult<God.CurrentPollQuery.Data>)
     case child(Child.Action)

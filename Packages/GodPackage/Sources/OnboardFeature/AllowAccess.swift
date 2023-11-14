@@ -15,7 +15,7 @@ public struct AllowAccessLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
   }

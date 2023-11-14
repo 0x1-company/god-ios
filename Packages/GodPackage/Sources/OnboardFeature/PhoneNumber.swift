@@ -18,7 +18,7 @@ public struct PhoneNumberLogic {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onAppear
     case infoButtonTapped
     case nextButtonTapped

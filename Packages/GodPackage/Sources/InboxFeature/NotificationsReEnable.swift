@@ -10,7 +10,7 @@ public struct NotificationsReEnableLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTapGesture
   }
 

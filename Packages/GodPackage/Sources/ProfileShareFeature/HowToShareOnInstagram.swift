@@ -25,7 +25,7 @@ public struct HowToShareOnInstagramLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case stepButtonTapped(Step)

@@ -12,7 +12,7 @@ public struct ForceUpdateLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case updateButtonTapped
   }

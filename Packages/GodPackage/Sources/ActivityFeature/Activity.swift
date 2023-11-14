@@ -18,7 +18,7 @@ public struct ActivityLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case activitiesResponse(TaskResult<God.ActivitiesQuery.Data>)
@@ -86,7 +86,7 @@ public struct ActivityLogic {
       case profile(ProfileExternalLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profile(ProfileExternalLogic.Action)
     }
 

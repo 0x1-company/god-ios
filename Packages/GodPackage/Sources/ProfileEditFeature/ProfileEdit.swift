@@ -26,7 +26,7 @@ public struct ProfileEditLogic {
       case deleteAccount(DeleteAccountLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case manageAccount(ManageAccountLogic.Action)
       case deleteAccount(DeleteAccountLogic.Action)
     }
@@ -73,7 +73,7 @@ public struct ProfileEditLogic {
     }
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case cancelEditButtonTapped

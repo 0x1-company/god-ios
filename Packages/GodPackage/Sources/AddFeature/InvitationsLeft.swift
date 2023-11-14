@@ -19,7 +19,7 @@ public struct InvitationsLeftLogic {
     @PresentationState var message: CupertinoMessageLogic.State?
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case inviteButtonTapped(CNContact)
     case contactResponse(TaskResult<CNContact>)

@@ -25,7 +25,7 @@ public struct InboxDetailLogic {
       case godMode(GodModeLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case initialName(InitialNameLogic.Action)
       case fullName(FullNameLogic.Action)
       case godMode(GodModeLogic.Action)
@@ -50,7 +50,7 @@ public struct InboxDetailLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case seeWhoSentItButtonTapped

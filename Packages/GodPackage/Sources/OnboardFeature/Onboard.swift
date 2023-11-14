@@ -26,7 +26,7 @@ public struct OnboardLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onOpenURL(URL)
     case welcome(WelcomeLogic.Action)
@@ -131,7 +131,7 @@ public struct OnboardLogic {
       case howItWorks(HowItWorksLogic.State = .init())
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case gradeSetting(GradeSettingLogic.Action)
       case schoolSetting(SchoolSettingLogic.Action)
       case clubActivitySetting(ClubActivitySettingLogic.Action)

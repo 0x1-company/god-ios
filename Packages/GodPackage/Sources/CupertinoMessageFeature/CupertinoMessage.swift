@@ -22,7 +22,7 @@ public struct CupertinoMessageLogic {
     }
   }
 
-  public enum Action: Equatable {}
+  public enum Action {}
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {}
 }

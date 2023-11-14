@@ -23,7 +23,7 @@ public struct FriendRequestCardLogic {
     var description: String
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case approveButtonTapped
     case hideButtonTapped
     case approveResponse(TaskResult<God.ApproveFriendRequestMutation.Data>)

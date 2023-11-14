@@ -12,7 +12,7 @@ public struct PhoneNumberHelpLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case okayButtonTapped

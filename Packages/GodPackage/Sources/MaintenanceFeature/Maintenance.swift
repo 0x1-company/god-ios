@@ -10,7 +10,7 @@ public struct MaintenanceLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
   }
 

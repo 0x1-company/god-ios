@@ -13,7 +13,7 @@ public struct ManageAccountLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case closeButtonTapped
     case resetBlockButtonTapped
     case resetHideButtonTapped

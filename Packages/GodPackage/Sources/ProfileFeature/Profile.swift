@@ -18,7 +18,7 @@ public struct ProfileLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case editProfileButtonTapped
@@ -129,7 +129,7 @@ public struct ProfileLogic {
       case external(ProfileExternalLogic.State)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case profileEdit(ProfileEditLogic.Action)
       case shop(ShopLogic.Action)
       case profileShare(ProfileShareLogic.Action)

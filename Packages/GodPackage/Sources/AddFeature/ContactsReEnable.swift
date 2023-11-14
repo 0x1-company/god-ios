@@ -9,7 +9,7 @@ public struct ContactsReEnableLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTapGesture
   }
 

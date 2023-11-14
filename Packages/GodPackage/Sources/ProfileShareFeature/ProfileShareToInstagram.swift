@@ -18,7 +18,7 @@ public struct ProfileShareToInstagramLogic {
     public init() {}
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)

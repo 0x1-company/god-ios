@@ -25,7 +25,7 @@ public struct InviteFriendLogic {
         public init() {}
       }
 
-      public enum Action: Equatable {}
+      public enum Action {}
       public var body: some ReducerOf<Self> {
         EmptyReducer()
       }
@@ -36,7 +36,7 @@ public struct InviteFriendLogic {
       case alert(AlertState<Action.Alert>)
     }
 
-    public enum Action: Equatable {
+    public enum Action {
       case activity(Activity.Action)
       case alert(Alert)
 
@@ -62,7 +62,7 @@ public struct InviteFriendLogic {
     public init() {}
   }
 
-  public enum Action: Equatable, BindableAction {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case whyFriendsButtonTapped

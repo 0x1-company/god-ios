@@ -34,7 +34,7 @@ public struct PollLogic {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case onTask
     case onAppear
     case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)

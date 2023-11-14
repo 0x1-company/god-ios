@@ -12,7 +12,7 @@ import UserNotificationClient
 @Reducer
 public struct AppDelegateLogic {
   public struct State: Equatable {}
-  public enum Action: Equatable {
+  public enum Action {
     case didFinishLaunching
     case dynamicLink(URL?)
     case didReceiveRemoteNotification([AnyHashable: Any])
