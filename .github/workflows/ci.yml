@@ -18,7 +18,7 @@ on:
       - .github/workflows/ci.yml
 
 env:
-  PLATFORM_IOS: iOS Simulator,name=iPhone 15 Pro,OS=17.0
+  PLATFORM_IOS: iOS Simulator,name=iPhone 15 Pro,OS=17.0.1
   FILE_FIREBASE_STAGING: ${{ secrets.FILE_FIREBASE_STAGING }}
   FILE_FIREBASE_PRODUCTION: ${{ secrets.FILE_FIREBASE_PRODUCTION }}
 
@@ -38,4 +38,4 @@ jobs:
           key: xcode-cache-deriveddata-${{ github.workflow }}-${{ github.sha }}
           restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-
       - run: make bootstrap
-      - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -sdk iphonesimulator -skipMacroValidation
+      - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -skipMacroValidation -destination platform="${{ env.PLATFORM_IOS }}"
