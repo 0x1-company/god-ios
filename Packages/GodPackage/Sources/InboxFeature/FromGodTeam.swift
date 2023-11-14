@@ -4,7 +4,8 @@ import ComposableArchitecture
 import Styleguide
 import SwiftUI
 
-public struct FromGodTeamLogic: Reducer {
+@Reducer
+public struct FromGodTeamLogic {
   public init() {}
 
   public struct State: Equatable {

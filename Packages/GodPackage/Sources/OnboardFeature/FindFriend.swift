@@ -5,7 +5,8 @@ import ContactsClient
 import Styleguide
 import SwiftUI
 
-public struct FindFriendLogic: Reducer {
+@Reducer
+public struct FindFriendLogic {
   public init() {}
 
   public struct State: Equatable {

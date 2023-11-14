@@ -1,7 +1,8 @@
 import ComposableArchitecture
 import FirebaseAuthClient
 
-public struct AuthLogic: Reducer {
+@Reducer
+public struct AuthLogic {
   @Dependency(\.firebaseAuth.addStateDidChangeListener) var addStateDidChangeListener
 
   public func reduce(

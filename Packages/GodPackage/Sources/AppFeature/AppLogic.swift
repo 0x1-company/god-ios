@@ -12,7 +12,8 @@ import SwiftUI
 import TcaHelpers
 import UserDefaultsClient
 
-public struct AppLogic: Reducer {
+@Reducer
+public struct AppLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -113,7 +114,8 @@ public struct AppLogic: Reducer {
     UserSettingsLogic()
   }
 
-  public struct View: Reducer {
+  @Reducer
+  public struct View {
     public enum State: Equatable {
       case launch(LaunchLogic.State = .init())
       case onboard(OnboardLogic.State = .init())

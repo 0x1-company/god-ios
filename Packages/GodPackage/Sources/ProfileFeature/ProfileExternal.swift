@@ -5,7 +5,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct ProfileExternalLogic: Reducer {
+@Reducer
+public struct ProfileExternalLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -6,7 +6,8 @@ import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
-public struct ShareTheAppLogic: Reducer {
+@Reducer
+public struct ShareTheAppLogic {
   public init() {}
 
   public struct State: Equatable {

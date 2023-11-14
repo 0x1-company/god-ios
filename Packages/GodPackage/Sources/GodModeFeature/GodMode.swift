@@ -8,7 +8,8 @@ import StoreKitHelpers
 import Styleguide
 import SwiftUI
 
-public struct GodModeLogic: Reducer {
+@Reducer
+public struct GodModeLogic {
   public init() {}
 
   public struct State: Equatable {

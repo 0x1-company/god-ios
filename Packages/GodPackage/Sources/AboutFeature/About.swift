@@ -8,9 +8,12 @@ import HowItWorksFeature
 import Styleguide
 import SwiftUI
 
-public struct AboutLogic: Reducer {
+@Reducer
+public struct AboutLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case howItWorks(HowItWorksLogic.State = .init())
       case emailSheet(EmailSheetLogic.State)

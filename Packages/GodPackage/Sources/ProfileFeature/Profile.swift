@@ -8,7 +8,8 @@ import ShopFeature
 import Styleguide
 import SwiftUI
 
-public struct ProfileLogic: Reducer {
+@Reducer
+public struct ProfileLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -119,7 +120,8 @@ public struct ProfileLogic: Reducer {
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case profileEdit(ProfileEditLogic.State = .init())
       case shop(ShopLogic.State = .init())

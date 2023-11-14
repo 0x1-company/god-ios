@@ -5,7 +5,8 @@ import GodClient
 import Styleguide
 import SwiftUI
 
-public struct ShareProfileToInstagramPopupLogic: Reducer {
+@Reducer
+public struct ShareProfileToInstagramPopupLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -44,7 +45,8 @@ public struct ShareProfileToInstagramPopupLogic: Reducer {
     }
   }
 
-  public struct Page: Reducer {
+  @Reducer
+  public struct Page {
     public enum State: Equatable {
       case profileShareToInstagram(ProfileShareToInstagramLogic.State = .init())
       case howToShareOnInstagram(HowToShareOnInstagramLogic.State = .init())

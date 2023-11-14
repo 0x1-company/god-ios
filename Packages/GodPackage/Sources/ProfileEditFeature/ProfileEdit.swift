@@ -15,9 +15,12 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct ProfileEditLogic: Reducer {
+@Reducer
+public struct ProfileEditLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case manageAccount(ManageAccountLogic.State = .init())
       case deleteAccount(DeleteAccountLogic.State = .init())

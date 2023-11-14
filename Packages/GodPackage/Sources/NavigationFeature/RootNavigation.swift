@@ -10,7 +10,8 @@ import InboxFeature
 import ProfileFeature
 import SwiftUI
 
-public struct RootNavigationLogic: Reducer {
+@Reducer
+public struct RootNavigationLogic {
   public init() {}
 
   public enum Tab: LocalizedStringKey, Equatable, CaseIterable {

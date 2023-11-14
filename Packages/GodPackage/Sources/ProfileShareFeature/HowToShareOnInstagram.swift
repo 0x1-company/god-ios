@@ -11,7 +11,8 @@ import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
 
-public struct HowToShareOnInstagramLogic: Reducer {
+@Reducer
+public struct HowToShareOnInstagramLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -4,7 +4,8 @@ import RoundedCorner
 import Styleguide
 import SwiftUI
 
-public struct GradeSettingLogic: Reducer {
+@Reducer
+public struct GradeSettingLogic {
   public init() {}
 
   public struct State: Equatable {

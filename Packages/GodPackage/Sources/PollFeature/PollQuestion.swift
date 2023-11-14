@@ -7,7 +7,8 @@ import LabeledButton
 import Styleguide
 import SwiftUI
 
-public struct PollQuestionLogic: Reducer {
+@Reducer
+public struct PollQuestionLogic {
   public init() {}
 
   public struct State: Equatable, Identifiable {

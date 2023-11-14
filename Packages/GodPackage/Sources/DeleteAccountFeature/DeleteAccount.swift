@@ -5,7 +5,8 @@ import FirebaseAuthClient
 import Styleguide
 import SwiftUI
 
-public struct DeleteAccountLogic: Reducer {
+@Reducer
+public struct DeleteAccountLogic {
   public init() {}
 
   public struct State: Equatable {

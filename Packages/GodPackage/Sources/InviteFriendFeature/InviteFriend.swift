@@ -8,7 +8,8 @@ import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
-public struct InviteFriendLogic: Reducer {
+@Reducer
+public struct InviteFriendLogic {
   public init() {}
 
   public struct CompletionWithItems: Equatable {
@@ -16,8 +17,10 @@ public struct InviteFriendLogic: Reducer {
     public let result: Bool
   }
 
-  public struct Destination: Reducer {
-    public struct Activity: Reducer {
+  @Reducer
+  public struct Destination {
+    @Reducer
+    public struct Activity {
       public struct State: Equatable {
         public init() {}
       }

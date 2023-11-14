@@ -16,9 +16,12 @@ import SwiftUI
 import UIApplicationClient
 import UIPasteboardClient
 
-public struct AddLogic: Reducer {
+@Reducer
+public struct AddLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case profileExternal(ProfileExternalLogic.State)
       case message(CupertinoMessageLogic.State)

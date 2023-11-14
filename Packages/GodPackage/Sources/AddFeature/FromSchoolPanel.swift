@@ -1,7 +1,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FromSchoolPanelLogic: Reducer {
+@Reducer
+public struct FromSchoolPanelLogic {
   public init() {}
 
   public struct State: Equatable {

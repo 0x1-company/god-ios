@@ -9,7 +9,8 @@ import ShareLinkBuilder
 import Styleguide
 import SwiftUI
 
-public struct ProfileShareLogic: Reducer {
+@Reducer
+public struct ProfileShareLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -102,7 +103,8 @@ public struct ProfileShareLogic: Reducer {
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case shareProfileToInstagramPopup(ShareProfileToInstagramPopupLogic.State = .init())
     }

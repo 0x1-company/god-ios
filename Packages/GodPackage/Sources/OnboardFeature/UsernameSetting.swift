@@ -7,7 +7,8 @@ import StringHelpers
 import Styleguide
 import SwiftUI
 
-public struct UsernameSettingLogic: Reducer {
+@Reducer
+public struct UsernameSettingLogic {
   public init() {}
 
   public struct State: Equatable {

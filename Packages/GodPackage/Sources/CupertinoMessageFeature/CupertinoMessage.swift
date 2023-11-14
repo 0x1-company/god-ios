@@ -3,7 +3,8 @@ import MessageUI
 import SwiftUI
 import SwiftUIMessage
 
-public struct CupertinoMessageLogic: Reducer {
+@Reducer
+public struct CupertinoMessageLogic {
   public init() {}
 
   public struct State: Equatable {

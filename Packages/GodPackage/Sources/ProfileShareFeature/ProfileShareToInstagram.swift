@@ -8,7 +8,8 @@ import Styleguide
 import SwiftUI
 import UIPasteboardClient
 
-public struct ProfileShareToInstagramLogic: Reducer {
+@Reducer
+public struct ProfileShareToInstagramLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -7,7 +7,8 @@ import StoreKit
 import Styleguide
 import SwiftUI
 
-public struct PlayAgainLogic: Reducer {
+@Reducer
+public struct PlayAgainLogic {
   public init() {}
 
   public struct State: Equatable {

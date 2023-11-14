@@ -9,7 +9,8 @@ import Styleguide
 import SwiftUI
 import SwiftUIMessage
 
-public struct InvitationsLeftLogic: Reducer {
+@Reducer
+public struct InvitationsLeftLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -8,7 +8,8 @@ import RoundedCorner
 import Styleguide
 import SwiftUI
 
-public struct SchoolSettingLogic: Reducer {
+@Reducer
+public struct SchoolSettingLogic {
   public init() {}
 
   public struct State: Equatable {

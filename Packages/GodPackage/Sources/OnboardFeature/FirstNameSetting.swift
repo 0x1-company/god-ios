@@ -10,7 +10,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct FirstNameSettingLogic: Reducer {
+@Reducer
+public struct FirstNameSettingLogic {
   public init() {}
 
   public struct State: Equatable {

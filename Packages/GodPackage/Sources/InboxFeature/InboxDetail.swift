@@ -13,9 +13,12 @@ import StoreKitClient
 import Styleguide
 import SwiftUI
 
-public struct InboxDetailLogic: Reducer {
+@Reducer
+public struct InboxDetailLogic {
   public init() {}
-  public struct Destination: Reducer {
+
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case initialName(InitialNameLogic.State)
       case fullName(FullNameLogic.State)

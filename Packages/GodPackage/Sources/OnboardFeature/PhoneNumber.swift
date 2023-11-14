@@ -7,7 +7,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct PhoneNumberLogic: Reducer {
+@Reducer
+public struct PhoneNumberLogic {
   public struct State: Equatable {
     @BindingState var phoneNumber = ""
     var isDisabled = true

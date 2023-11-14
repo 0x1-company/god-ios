@@ -10,7 +10,8 @@ import InviteFriendFeature
 import SwiftUI
 import UserDefaultsClient
 
-public struct OnboardLogic: Reducer {
+@Reducer
+public struct OnboardLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -111,7 +112,8 @@ public struct OnboardLogic: Reducer {
     return nil
   }
 
-  public struct Path: Reducer {
+  @Reducer
+  public struct Path {
     public enum State: Equatable {
       case gradeSetting(GradeSettingLogic.State = .init())
       case schoolSetting(SchoolSettingLogic.State = .init())

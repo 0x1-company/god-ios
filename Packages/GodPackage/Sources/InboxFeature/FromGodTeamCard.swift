@@ -4,7 +4,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct FromGodTeamCardLogic: Reducer {
+@Reducer
+public struct FromGodTeamCardLogic {
   public struct State: Equatable {
     var isRead = false
   }

@@ -4,7 +4,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct FullNameLogic: Reducer {
+@Reducer
+public struct FullNameLogic {
   public init() {}
 
   public struct State: Equatable {

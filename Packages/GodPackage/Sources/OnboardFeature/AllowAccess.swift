@@ -5,7 +5,8 @@ import Styleguide
 import SwiftUI
 import UserNotificationClient
 
-public struct AllowAccessLogic: Reducer {
+@Reducer
+public struct AllowAccessLogic {
   public init() {}
 
   public struct State: Equatable {

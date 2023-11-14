@@ -4,7 +4,8 @@ import GodClient
 import LabeledButton
 import SwiftUI
 
-public struct ManageAccountLogic: Reducer {
+@Reducer
+public struct ManageAccountLogic {
   public init() {}
 
   public struct State: Equatable {

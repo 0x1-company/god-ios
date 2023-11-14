@@ -5,7 +5,8 @@ import Lottie
 import Styleguide
 import SwiftUI
 
-public struct WelcomeLogic: Reducer {
+@Reducer
+public struct WelcomeLogic {
   public init() {}
 
   public struct State: Equatable {

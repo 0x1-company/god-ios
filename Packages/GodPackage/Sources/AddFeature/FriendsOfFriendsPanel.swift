@@ -3,7 +3,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct FriendsOfFriendsPanelLogic: Reducer {
+@Reducer
+public struct FriendsOfFriendsPanelLogic {
   public init() {}
 
   public struct State: Equatable {

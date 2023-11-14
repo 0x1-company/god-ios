@@ -2,7 +2,8 @@ import ComposableArchitecture
 import Styleguide
 import SwiftUI
 
-public struct LaunchLogic: Reducer {
+@Reducer
+public struct LaunchLogic {
   public init() {}
 
   public struct State: Equatable {

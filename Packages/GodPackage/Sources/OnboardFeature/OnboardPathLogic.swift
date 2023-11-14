@@ -9,7 +9,8 @@ import UIApplicationClient
 import UserDefaultsClient
 import UserNotificationClient
 
-public struct OnboardPathLogic: Reducer {
+@Reducer
+public struct OnboardPathLogic {
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
   @Dependency(\.userDefaults) var userDefaults

@@ -12,7 +12,8 @@ import Styleguide
 import SwiftUI
 import UserNotificationClient
 
-public struct InboxLogic: Reducer {
+@Reducer
+public struct InboxLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -270,7 +271,8 @@ public struct InboxLogic: Reducer {
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case godMode(GodModeLogic.State)
       case fromGodTeam(FromGodTeamLogic.State)

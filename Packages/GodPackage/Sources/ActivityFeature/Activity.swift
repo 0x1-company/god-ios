@@ -7,7 +7,8 @@ import ProfileFeature
 import ProfileImage
 import SwiftUI
 
-public struct ActivityLogic: Reducer {
+@Reducer
+public struct ActivityLogic {
   public init() {}
 
   public struct State: Equatable {
@@ -79,7 +80,8 @@ public struct ActivityLogic: Reducer {
     }
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
     public enum State: Equatable {
       case profile(ProfileExternalLogic.State)
     }

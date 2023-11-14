@@ -7,9 +7,12 @@ import PollFeature
 import SwiftUI
 import UserNotificationClient
 
-public struct GodLogic: Reducer {
+@Reducer
+public struct GodLogic {
   public init() {}
-  public struct Child: Reducer {
+  
+  @Reducer
+  public struct Child {
     public enum State: Equatable {
       case poll(PollLogic.State)
       case cashOut(CashOutLogic.State)

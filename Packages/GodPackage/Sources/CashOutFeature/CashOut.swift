@@ -6,7 +6,8 @@ import Lottie
 import Styleguide
 import SwiftUI
 
-public struct CashOutLogic: Reducer {
+@Reducer
+public struct CashOutLogic {
   public init() {}
 
   public struct State: Equatable {

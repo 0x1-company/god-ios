@@ -5,7 +5,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct FriendRowCardLogic: Reducer {
+@Reducer
+public struct FriendRowCardLogic {
   public init() {}
 
   public struct State: Equatable, Identifiable {

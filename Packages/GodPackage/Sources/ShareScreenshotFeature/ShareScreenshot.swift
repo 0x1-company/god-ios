@@ -4,7 +4,8 @@ import Photos
 import PhotosClient
 import SwiftUI
 
-public struct ShareScreenshotLogic: Reducer {
+@Reducer
+public struct ShareScreenshotLogic {
   public init() {}
 
   public struct State: Equatable {

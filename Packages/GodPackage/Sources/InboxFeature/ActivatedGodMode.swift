@@ -3,7 +3,8 @@ import ComposableArchitecture
 import Styleguide
 import SwiftUI
 
-public struct ActivatedGodModeLogic: Reducer {
+@Reducer
+public struct ActivatedGodModeLogic {
   public init() {}
 
   public struct State: Equatable {

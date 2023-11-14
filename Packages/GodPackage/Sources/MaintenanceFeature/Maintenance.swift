@@ -2,7 +2,8 @@ import ComposableArchitecture
 import Styleguide
 import SwiftUI
 
-public struct MaintenanceLogic: Reducer {
+@Reducer
+public struct MaintenanceLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -4,7 +4,8 @@ import Constants
 import Styleguide
 import SwiftUI
 
-public struct PhoneNumberHelpLogic: Reducer {
+@Reducer
+public struct PhoneNumberHelpLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -2,7 +2,8 @@ import Build
 import ComposableArchitecture
 import FirestoreClient
 
-public struct FirestoreLogic: Reducer {
+@Reducer
+public struct FirestoreLogic {
   @Dependency(\.firestore) var firestore
   @Dependency(\.build.bundleShortVersion) var bundleShortVersion
 

@@ -4,7 +4,8 @@ import GodClient
 import Styleguide
 import SwiftUI
 
-public struct FriendRequestsLogic: Reducer {
+@Reducer
+public struct FriendRequestsLogic {
   public init() {}
 
   public struct State: Equatable {

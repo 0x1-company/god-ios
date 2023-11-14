@@ -16,7 +16,8 @@ import SwiftUI
 import SwiftUIMessage
 import UIPasteboardClient
 
-public struct AddFriendsLogic: Reducer {
+@Reducer
+public struct AddFriendsLogic {
   public init() {}
 
   public struct State: Equatable {

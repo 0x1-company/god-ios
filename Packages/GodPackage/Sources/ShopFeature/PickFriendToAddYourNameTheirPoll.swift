@@ -6,7 +6,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct PickFriendToAddYourNameTheirPollLogic: Reducer {
+@Reducer
+public struct PickFriendToAddYourNameTheirPollLogic {
   public init() {}
 
   public struct State: Equatable {

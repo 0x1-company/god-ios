@@ -7,7 +7,8 @@ import ProfileImage
 import Styleguide
 import SwiftUI
 
-public struct FriendRequestSheetLogic: Reducer {
+@Reducer
+public struct FriendRequestSheetLogic {
   public init() {}
 
   public struct State: Equatable {

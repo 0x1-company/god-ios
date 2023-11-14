@@ -5,7 +5,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct PollLogic: Reducer {
+@Reducer
+public struct PollLogic {
   public init() {}
 
   public struct State: Equatable {

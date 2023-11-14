@@ -11,7 +11,8 @@ import Styleguide
 import SwiftUI
 import UserDefaultsClient
 
-public struct ProfilePhotoSettingLogic: Reducer {
+@Reducer
+public struct ProfilePhotoSettingLogic {
   public init() {}
 
   public struct State: Equatable {

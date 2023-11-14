@@ -2,7 +2,8 @@ import ComposableArchitecture
 import SwiftUI
 import UIApplicationClient
 
-public struct NotificationsReEnableLogic: Reducer {
+@Reducer
+public struct NotificationsReEnableLogic {
   public init() {}
 
   public struct State: Equatable {

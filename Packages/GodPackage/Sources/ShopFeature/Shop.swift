@@ -4,7 +4,8 @@ import God
 import GodClient
 import SwiftUI
 
-public struct ShopLogic: Reducer {
+@Reducer
+public struct ShopLogic {
   public init() {}
 
   public struct State: Equatable {

@@ -3,7 +3,8 @@ import ComposableArchitecture
 import Lottie
 import SwiftUI
 
-public struct GodLoadingLogic: Reducer {
+@Reducer
+public struct GodLoadingLogic {
   public init() {}
 
   public struct State: Equatable {

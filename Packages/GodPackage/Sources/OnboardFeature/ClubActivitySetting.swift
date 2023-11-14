@@ -6,7 +6,8 @@ import RoundedCorner
 import Styleguide
 import SwiftUI
 
-public struct ClubActivitySettingLogic: Reducer {
+@Reducer
+public struct ClubActivitySettingLogic {
   public init() {}
 
   public struct State: Equatable {
