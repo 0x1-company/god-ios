@@ -201,10 +201,10 @@ public struct InboxLogic {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
-    .ifLet(\.notificationsReEnable, action: /Action.notificationsReEnable) {
+    .ifLet(\.notificationsReEnable, action: \.notificationsReEnable) {
       NotificationsReEnableLogic()
     }
   }

@@ -108,7 +108,7 @@ public struct RootNavigationLogic {
         return .none
       }
     }
-    .ifLet(\.$friendRequestSheet, action: /Action.friendRequestSheet) {
+    .ifLet(\.$friendRequestSheet, action: \.friendRequestSheet) {
       FriendRequestSheetLogic()
     }
   }

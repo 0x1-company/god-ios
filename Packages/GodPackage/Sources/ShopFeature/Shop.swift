@@ -124,7 +124,7 @@ public struct ShopLogic {
         return .none
       }
     }
-    .ifLet(\.$pickFriend, action: /Action.pickFriend) {
+    .ifLet(\.$pickFriend, action: \.pickFriend) {
       PickFriendToAddYourNameTheirPollLogic()
     }
   }

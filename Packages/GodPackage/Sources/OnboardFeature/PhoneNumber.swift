@@ -107,7 +107,7 @@ public struct PhoneNumberLogic {
         return .none
       }
     }
-    .ifLet(\.$help, action: /Action.help) {
+    .ifLet(\.$help, action: \.help) {
       PhoneNumberHelpLogic()
     }
   }

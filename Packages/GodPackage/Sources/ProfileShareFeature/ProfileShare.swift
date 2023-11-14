@@ -95,10 +95,10 @@ public struct ProfileShareLogic {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
-    .ifLet(\.$message, action: /Action.message) {
+    .ifLet(\.$message, action: \.message) {
       CupertinoMessageLogic()
     }
   }

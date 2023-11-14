@@ -293,19 +293,19 @@ public struct AddLogic {
     .forEach(\.searchResult, action: /Action.searchResult) {
       FriendRowCardLogic()
     }
-    .ifLet(\.contactsReEnable, action: /Action.contactsReEnable) {
+    .ifLet(\.contactsReEnable, action: \.contactsReEnable) {
       ContactsReEnableLogic()
     }
-    .ifLet(\.friendsOfFriendsPanel, action: /Action.friendsOfFriendsPanel) {
+    .ifLet(\.friendsOfFriendsPanel, action: \.friendsOfFriendsPanel) {
       FriendsOfFriendsPanelLogic()
     }
-    .ifLet(\.friendRequestPanel, action: /Action.friendRequestPanel) {
+    .ifLet(\.friendRequestPanel, action: \.friendRequestPanel) {
       FriendRequestsLogic()
     }
-    .ifLet(\.fromSchoolPanel, action: /Action.fromSchoolPanel) {
+    .ifLet(\.fromSchoolPanel, action: \.fromSchoolPanel) {
       FromSchoolPanelLogic()
     }
-    .ifLet(\.$destination, action: /Action.destination) {
+    .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
   }

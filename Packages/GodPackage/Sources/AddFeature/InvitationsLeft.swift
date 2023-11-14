@@ -99,7 +99,7 @@ public struct InvitationsLeftLogic {
         return .none
       }
     }
-    .ifLet(\.$message, action: /Action.message) {
+    .ifLet(\.$message, action: \.message) {
       CupertinoMessageLogic()
     }
   }

@@ -225,7 +225,7 @@ public struct AddFriendsLogic {
         return .none
       }
     }
-    .ifLet(\.$message, action: /Action.message) {
+    .ifLet(\.$message, action: \.message) {
       CupertinoMessageLogic()
     }
   }
