@@ -68,6 +68,7 @@ graph TD;
     GodModeFeature-->Styleguide;
     GodModeFeature-->StoreKitClient;
     GodModeFeature-->StoreKitHelpers;
+    GodModeFeature-->AnalyticsClient;
     GodModeFeature-->ComposableArchitecture;
     HowItWorksFeature-->Lottie;
     HowItWorksFeature-->GodClient;
