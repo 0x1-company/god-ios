@@ -1,0 +1,116 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Finally, please invite your friends\nInvite your friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最後に友だちを\n招待してください"
+          }
+        }
+      }
+    },
+    "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godは招待制です。3人に招待を送ることで、あなたは特別に招待されます。"
+          }
+        }
+      }
+    },
+    "Invite %lld best friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを%lld人招待する"
+          }
+        }
+      }
+    },
+    "INVITE %lld FRIENDS" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待リンクをあと%lld人に送ろう"
+          }
+        }
+      }
+    },
+    "Invite Friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち招待"
+          }
+        }
+      }
+    },
+    "invited via\nother app" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち招待"
+          }
+        }
+      }
+    },
+    "No friend\ninvited yet" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ招待\nしていません"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめる"
+          }
+        }
+      }
+    },
+    "To use God, you need friends from the same school 👥" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godを使うには同じ学校の友だちが必要です👥vv"
+          }
+        }
+      }
+    },
+    "Why 3 friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "なぜ招待が必要ですか？"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
