@@ -1,4 +1,5 @@
 import AboutFeature
+import UserDefaultsClient
 import ActivityFeature
 import AddFeature
 import ComposableArchitecture
@@ -6,6 +7,7 @@ import FriendRequestFeature
 import God
 import GodClient
 import GodFeature
+import TutorialFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
@@ -32,8 +34,12 @@ public struct RootNavigationLogic {
     var god = GodLogic.State()
     var profile = ProfileLogic.State()
     var about = AboutLogic.State()
+    var tutorial: TutorialLogic.State?
     @BindingState var selectedTab = Tab.god
-    public init() {}
+    public init() {
+      @Dependency(\.userDefaults) var userDefaults
+      self.tutorial = userDefaults.tutorialFinished() ? nil : .init()
+    }
   }
 
   public enum Action: BindableAction {
@@ -46,12 +52,14 @@ public struct RootNavigationLogic {
     case god(GodLogic.Action)
     case profile(ProfileLogic.Action)
     case about(AboutLogic.Action)
+    case tutorial(TutorialLogic.Action)
     case binding(BindingAction<State>)
     case friendRequestSheet(PresentationAction<FriendRequestSheetLogic.Action>)
   }
 
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.godClient) var godClient
+  @Dependency(\.userDefaults) var userDefaults
 
   enum Cancel {
     case friendRequests
@@ -76,6 +84,12 @@ public struct RootNavigationLogic {
           await send(.friendRequestResponse(.failure(error)))
         }
         .cancellable(id: Cancel.friendRequests, cancelInFlight: true)
+        
+      case .tutorial(.delegate(.finish)):
+        state.tutorial = nil
+        return .run { _ in
+          await userDefaults.setTutorialFinish()
+        }
 
       case let .friendRequestResponse(.success(data)):
         let requests = data.friendRequests.edges.map(\.node.fragments.friendRequestSheetFragment)
@@ -110,6 +124,9 @@ public struct RootNavigationLogic {
     }
     .ifLet(\.$friendRequestSheet, action: \.friendRequestSheet) {
       FriendRequestSheetLogic()
+    }
+    .ifLet(\.tutorial, action: \.tutorial) {
+      TutorialLogic()
     }
   }
 }
@@ -184,6 +201,12 @@ public struct RootNavigationView: View {
         SlideTabMenuView(
           tabItems: RootNavigationLogic.Tab.allCases,
           selection: viewStore.$selectedTab
+        )
+      }
+      .overlay {
+        IfLetStore(
+          store.scope(state: \.tutorial, action: RootNavigationLogic.Action.tutorial),
+          then: TutorialView.init(store:)
         )
       }
       .sheet(

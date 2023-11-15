@@ -64,6 +64,14 @@ public extension UserDefaultsClient {
   func dynamicLinkURL() -> String? {
     stringForKey(keyDynamicLinkURL)
   }
+  
+  func setTutorialFinish() async {
+    await setBool(true, keyTutorialFinished)
+  }
+  
+  func tutorialFinished() -> Bool {
+    boolForKey(keyTutorialFinished)
+  }
 }
 
 private let keyPhoneNumber = "PHONE_NUMBER"
@@ -71,6 +79,7 @@ private let keyVerificationId = "VERIFICATION_ID"
 private let keyOnboardCompleted = "ONBOARD_COMPLETED"
 private let keyReadInitialGodTeamNotification = "READ_INITIAL_GOD_TEAM_NOTIFICATION"
 private let keyDynamicLinkURL = "DYNAMIC_LINK_URL"
+private let keyTutorialFinished = "TUTORIAL_FINISHED"
 
 private let decoder = JSONDecoder()
 private let encoder = JSONEncoder()

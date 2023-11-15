@@ -194,11 +194,12 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "NavigationFeature", dependencies: [
-      "AboutFeature",
-      "ActivityFeature",
       "AddFeature",
       "GodFeature",
       "InboxFeature",
+      "AboutFeature",
+      "ActivityFeature",
+      "TutorialFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
@@ -301,7 +302,6 @@ let package = Package(
     .target(name: "TutorialFeature", dependencies: [
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
-      .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ])
   ]
