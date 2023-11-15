@@ -6,10 +6,10 @@ struct Step3View: View {
       Image(ImageResource.bustsInSilhouette)
         .resizable()
         .frame(width: 40, height: 40)
-      
+
       Text("If the choice is too subtle. Add a friend!", bundle: .module)
         .font(.system(.title, design: .rounded, weight: .bold))
-      
+
       Text("The Add Friend screen is on the leftmost tab!", bundle: .module)
         .font(.system(.headline, design: .rounded))
     }

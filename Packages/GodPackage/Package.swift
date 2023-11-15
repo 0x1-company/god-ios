@@ -304,6 +304,6 @@ let package = Package(
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-    ])
+    ]),
   ]
 )

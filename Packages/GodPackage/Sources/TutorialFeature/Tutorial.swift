@@ -6,7 +6,7 @@ import SwiftUI
 @Reducer
 public struct TutorialLogic {
   public init() {}
-  
+
   public enum Step: Int {
     case first, second, third, fourth, fifth
   }
@@ -23,7 +23,7 @@ public struct TutorialLogic {
     case skipButtonTapped
     case finishButtonTapped
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case finish
     }
@@ -40,19 +40,19 @@ public struct TutorialLogic {
       case .onAppear:
         analytics.logScreen(screenName: "Tutorial", of: self)
         return .none
-        
+
       case .nextButtonTapped:
         guard let nextStep = Step(rawValue: state.currentStep.rawValue + 1)
         else { return .none }
         state.currentStep = nextStep
         return .none
-        
+
       case .skipButtonTapped:
         return .send(.delegate(.finish), animation: .default)
-        
+
       case .finishButtonTapped:
         return .send(.delegate(.finish), animation: .default)
-        
+
       case .delegate:
         return .none
       }
@@ -66,20 +66,20 @@ public struct TutorialView: View {
   public init(store: StoreOf<TutorialLogic>) {
     self.store = store
   }
-  
+
   struct ViewState: Equatable {
     let currentStep: TutorialLogic.Step
     let isSkipButtonHidden: Bool
     let isOnTapGestureDisabled: Bool
     let isNextButtonHidden: Bool
     let isFinishButtonHidden: Bool
-    
+
     init(state: TutorialLogic.State) {
-      self.currentStep = state.currentStep
-      self.isSkipButtonHidden = [TutorialLogic.Step.first, .fifth].contains(state.currentStep)
-      self.isOnTapGestureDisabled = state.currentStep == .fifth
-      self.isNextButtonHidden = state.currentStep != .first
-      self.isFinishButtonHidden = state.currentStep != .fifth
+      currentStep = state.currentStep
+      isSkipButtonHidden = [TutorialLogic.Step.first, .fifth].contains(state.currentStep)
+      isOnTapGestureDisabled = state.currentStep == .fifth
+      isNextButtonHidden = state.currentStep != .first
+      isFinishButtonHidden = state.currentStep != .fifth
     }
   }
 
@@ -87,7 +87,7 @@ public struct TutorialView: View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       VStack(spacing: 53) {
         Spacer()
-        
+
         switch viewStore.currentStep {
         case .first:
           Step1View()
@@ -100,7 +100,7 @@ public struct TutorialView: View {
         case .fifth:
           Step5View()
         }
-        
+
         if !viewStore.isNextButtonHidden {
           VStack(spacing: 24) {
             Button {
@@ -115,7 +115,7 @@ public struct TutorialView: View {
                 .clipShape(Capsule())
             }
             .buttonStyle(HoldDownButtonStyle())
-            
+
             Button {
               store.send(.skipButtonTapped)
             } label: {
@@ -125,7 +125,7 @@ public struct TutorialView: View {
             }
           }
         }
-        
+
         Spacer()
       }
       .frame(maxWidth: .infinity)

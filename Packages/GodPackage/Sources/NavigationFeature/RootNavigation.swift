@@ -1,5 +1,4 @@
 import AboutFeature
-import UserDefaultsClient
 import ActivityFeature
 import AddFeature
 import ComposableArchitecture
@@ -7,10 +6,11 @@ import FriendRequestFeature
 import God
 import GodClient
 import GodFeature
-import TutorialFeature
 import InboxFeature
 import ProfileFeature
 import SwiftUI
+import TutorialFeature
+import UserDefaultsClient
 
 @Reducer
 public struct RootNavigationLogic {
@@ -38,7 +38,7 @@ public struct RootNavigationLogic {
     @BindingState var selectedTab = Tab.god
     public init() {
       @Dependency(\.userDefaults) var userDefaults
-      self.tutorial = userDefaults.tutorialFinished() ? nil : .init()
+      tutorial = userDefaults.tutorialFinished() ? nil : .init()
     }
   }
 
@@ -84,7 +84,7 @@ public struct RootNavigationLogic {
           await send(.friendRequestResponse(.failure(error)))
         }
         .cancellable(id: Cancel.friendRequests, cancelInFlight: true)
-        
+
       case .tutorial(.delegate(.finish)):
         state.tutorial = nil
         return .run { _ in

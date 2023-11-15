@@ -13,7 +13,7 @@ struct Step5View: View {
           Text("If you want to choose another friend You can shuffle your friends.", bundle: .module)
             .font(.system(.headline, design: .rounded))
         }
-        
+
         VStack(spacing: 8) {
           Image(systemName: "forward.fill")
             .resizable()
@@ -22,7 +22,7 @@ struct Step5View: View {
           Text("If you don't want to answer a question You can skip it.", bundle: .module)
             .font(.system(.headline, design: .rounded))
         }
-        
+
         VStack(spacing: 8) {
           Image(ImageResource.coin)
             .resizable()
