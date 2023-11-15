@@ -64,11 +64,11 @@ public extension UserDefaultsClient {
   func dynamicLinkURL() -> String? {
     stringForKey(keyDynamicLinkURL)
   }
-  
+
   func setTutorialFinish() async {
     await setBool(true, keyTutorialFinished)
   }
-  
+
   func tutorialFinished() -> Bool {
     boolForKey(keyTutorialFinished)
   }
