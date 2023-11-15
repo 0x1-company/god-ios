@@ -40,6 +40,7 @@ let package = Package(
     .library(name: "RevealFeature", targets: ["RevealFeature"]),
     .library(name: "ShareScreenshotFeature", targets: ["ShareScreenshotFeature"]),
     .library(name: "ShopFeature", targets: ["ShopFeature"]),
+    .library(name: "TutorialFeature", targets: ["TutorialFeature"]),
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
@@ -194,11 +195,12 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "NavigationFeature", dependencies: [
-      "AboutFeature",
-      "ActivityFeature",
       "AddFeature",
       "GodFeature",
       "InboxFeature",
+      "AboutFeature",
+      "ActivityFeature",
+      "TutorialFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
       "HowItWorksFeature",
@@ -298,5 +300,10 @@ let package = Package(
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "TutorialFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ])
   ]
 )
