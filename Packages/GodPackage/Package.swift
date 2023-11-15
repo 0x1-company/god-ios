@@ -142,6 +142,7 @@ let package = Package(
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "StoreKitClient", package: "CupertinoPackage"),
       .product(name: "StoreKitHelpers", package: "DependencyPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "HowItWorksFeature", dependencies: [
