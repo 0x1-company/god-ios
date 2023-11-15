@@ -1,0 +1,146 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Answer questions and use coins to You can purchase items" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "質問に答えてコインで\nアイテムを購入できます"
+          }
+        }
+      }
+    },
+    "Get started" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "さっそくはじめる"
+          }
+        }
+      }
+    },
+    "God is an application to praise your friends in the same school." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godは同じ学校の友だちを\n褒めるアプリです"
+          }
+        }
+      }
+    },
+    "If the choice is too subtle. Add a friend!" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択肢が微妙だったら\nフレンドを追加してね"
+          }
+        }
+      }
+    },
+    "If you don't want to answer a question You can skip it." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "答えたくない質問のときは\nスキップできます"
+          }
+        }
+      }
+    },
+    "If you want to choose another friend You can shuffle your friends." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "別の友だちを選びたいときは\nシャッフルできます"
+          }
+        }
+      }
+    },
+    "It'll show up 12 times in a row. Send a star to someone you're interested in. You might be able to appeal to them...?" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12回連続で表示されるよ\n気になる人にスターを送って\nアピールできるかも...？"
+          }
+        }
+      }
+    },
+    "Let's get started!" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "さっそくはじめよう！"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次へ"
+          }
+        }
+      }
+    },
+    "Skip" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スキップ"
+          }
+        }
+      }
+    },
+    "The Add Friend screen is on the leftmost tab!" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド追加画面は\n一番左のタブにあるよ！"
+          }
+        }
+      }
+    },
+    "The perfect fit for your question. Choose a friend!" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "質問にピッタリの\n友だちを選ぼう"
+          }
+        }
+      }
+    },
+    "Your name, school name, and other important information is only to connect with friends." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前や学校名などの大切な情報は\n友だちと繋がるためだけに\n使用されます。"
+          }
+        }
+      }
+    },
+    "Your personal information is Securely managed" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの個人情報は\n安全に管理されています"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
