@@ -17,14 +17,14 @@ extension God.Gender {
   var color: Color {
     switch self {
     case .female:
-      return Color(0xFFE83392)
+      return Color(0xFFE8_3392)
     case .male:
-      return Color(0xFF00C7FE)
+      return Color(0xFF00_C7FE)
     case .other:
-      return Color(0xFF9435EA)
+      return Color(0xFF94_35EA)
     }
   }
-  
+
   var arrowRight: ImageResource {
     switch self {
     case .female:
