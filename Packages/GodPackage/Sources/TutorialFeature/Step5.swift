@@ -4,6 +4,9 @@ import SwiftUI
 struct Step5View: View {
   var body: some View {
     VStack(spacing: 40) {
+      Text("Other useful features.", bundle: .module)
+        .font(.system(.title, design: .rounded, weight: .bold))
+
       VStack(spacing: 24) {
         VStack(spacing: 8) {
           Image(systemName: "shuffle")
