@@ -2,6 +2,8 @@ import Styleguide
 import SwiftUI
 
 public struct ChoiceListStoryView: View {
+  public init() {}
+
   public var body: some View {
     VStack(spacing: 0) {
       ChoiceListSticker(

@@ -1,8 +1,10 @@
 import SwiftUI
 import Styleguide
 
-struct NormalStoryView: View {
-  var body: some View {
+public struct ReciveStoryView: View {
+  public init() {}
+
+  public var body: some View {
     VStack(spacing: 0) {
       ReciveSticker(
         questionText: "Your ideal study buddy"
@@ -32,5 +34,5 @@ struct NormalStoryView: View {
 }
 
 #Preview {
-  NormalStoryView()
+  ReciveStoryView()
 }
