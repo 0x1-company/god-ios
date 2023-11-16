@@ -7,7 +7,7 @@ public struct ChoiceListSticker: View {
   let gender: God.Gender
   let grade: String?
   let choices: [God.InboxFragment.Choice]
-  
+
   public init(
     questionText: String,
     gender: God.Gender,
@@ -32,7 +32,7 @@ public struct ChoiceListSticker: View {
         }
         .font(.system(.headline, design: .rounded, weight: .bold))
         .foregroundStyle(Color.white)
-        
+
         Text(questionText)
           .font(.system(.title3, design: .rounded, weight: .bold))
           .foregroundStyle(gender.color)
@@ -47,7 +47,7 @@ public struct ChoiceListSticker: View {
       .padding(.bottom, 12)
       .frame(maxWidth: .infinity)
       .background(gender.color)
-      
+
       VStack(spacing: 12) {
         ForEach(choices, id: \.self) { choice in
           Text(choice.text)
@@ -61,7 +61,7 @@ public struct ChoiceListSticker: View {
               } else {
                 GeometryReader { proxy in
                   HStack(spacing: 0) {
-                    Color(0xFFD1D5DB)
+                    Color(0xFFD1_D5DB)
                       .frame(width: proxy.size.width * Double.random(in: 0.1 ..< 0.4))
                     Color.white
                   }
@@ -72,7 +72,7 @@ public struct ChoiceListSticker: View {
             .overlay {
               if !choice.isSelected {
                 RoundedRectangle(cornerRadius: 48 / 2)
-                  .stroke(Color(0xFF9CA3AF), lineWidth: 1)
+                  .stroke(Color(0xFF9C_A3AF), lineWidth: 1)
               }
             }
         }
@@ -152,9 +152,9 @@ public struct ChoiceListSticker: View {
   .background(
     LinearGradient(
       colors: [
-        Color(0xFFB394FF),
-        Color(0xFFFFA3E5),
-        Color(0xFFFFE39B),
+        Color(0xFFB3_94FF),
+        Color(0xFFFF_A3E5),
+        Color(0xFFFF_E39B),
       ],
       startPoint: UnitPoint(x: 0.5, y: 0.0),
       endPoint: UnitPoint(x: 0.5, y: 1.0)

@@ -6,12 +6,12 @@ import FeedbackGeneratorClient
 import God
 import GodClient
 import GodModeFeature
+import InboxDetailFeature
 import StoreKit
 import StoreKitClient
 import Styleguide
 import SwiftUI
 import UserNotificationClient
-import InboxDetailFeature
 
 @Reducer
 public struct InboxLogic {

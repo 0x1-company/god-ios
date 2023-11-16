@@ -1,12 +1,12 @@
+import God
 import Styleguide
 import SwiftUI
-import God
 
 public struct ReceivedSticker: View {
   let questionText: String
   let gender: God.Gender
   let grade: String?
-  
+
   public init(
     questionText: String,
     gender: God.Gender,
@@ -16,7 +16,7 @@ public struct ReceivedSticker: View {
     self.gender = gender
     self.grade = grade
   }
-  
+
   public var body: some View {
     VStack(spacing: 0) {
       Group {
@@ -33,7 +33,7 @@ public struct ReceivedSticker: View {
       .frame(maxWidth: .infinity)
       .foregroundStyle(Color.white)
       .background(gender.color)
-      
+
       Text(questionText)
         .font(.system(.headline, design: .rounded, weight: .bold))
         .padding(.horizontal, 12)
@@ -68,10 +68,10 @@ public struct ReceivedSticker: View {
                   .stroke(gender.color, lineWidth: 2)
               )
           }
-        
+
         Image(gender.arrowRight)
           .offset(y: -4)
-        
+
         Color.red
           .frame(width: 64, height: 64)
           .clipShape(Circle())
@@ -98,9 +98,9 @@ public struct ReceivedSticker: View {
   .background(
     LinearGradient(
       colors: [
-        Color(0xFFB394FF),
-        Color(0xFFFFA3E5),
-        Color(0xFFFFE39B),
+        Color(0xFFB3_94FF),
+        Color(0xFFFF_A3E5),
+        Color(0xFFFF_E39B),
       ],
       startPoint: UnitPoint(x: 0.5, y: 0.0),
       endPoint: UnitPoint(x: 0.5, y: 1.0)

@@ -3,22 +3,22 @@ import AnimationDisableTransaction
 import Build
 import ComposableArchitecture
 import Constants
+import FeedbackGeneratorClient
 import God
 import GodClient
 import GodModeFeature
+import InboxStoryFeature
 import NotificationCenterClient
 import RevealFeature
 import StoreKit
 import StoreKitClient
 import Styleguide
 import SwiftUI
-import InboxStoryFeature
-import FeedbackGeneratorClient
 
 @Reducer
 public struct InboxDetailLogic {
   public init() {}
-  
+
   @Reducer
   public struct Destination {
     public enum State: Equatable {
@@ -73,7 +73,7 @@ public struct InboxDetailLogic {
   @Dependency(\.godClient) var godClient
   @Dependency(\.feedbackGenerator) var feedbackGenerator
   @Dependency(\.notificationCenter) var notificationCenter
-  
+
   enum Cancel {
     case activeSubscription
   }
@@ -93,12 +93,12 @@ public struct InboxDetailLogic {
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none
-        
+
       case .closeButtonTapped:
         return .run { _ in
           await dismiss(transaction: .animationDisable)
         }
-        
+
       case .seeWhoSentItButtonTapped where state.isInGodMode:
         guard let initialName = state.activity.initial else { return .none }
         state.destination = .initialName(
@@ -120,12 +120,12 @@ public struct InboxDetailLogic {
             try await storeClient.products([id])
           }))
         }
-        
+
       case let .storyButtonTapped(.some(image)):
         let backgroundImage = UIImage(resource: ImageResource.storyBackground)
         let pasteboardItems: [String: Any] = [
           "com.instagram.sharedSticker.stickerImage": image,
-          "com.instagram.sharedSticker.backgroundImage": backgroundImage
+          "com.instagram.sharedSticker.backgroundImage": backgroundImage,
         ]
         UIPasteboard.general.setItems(
           [pasteboardItems],
@@ -136,7 +136,7 @@ public struct InboxDetailLogic {
           await feedbackGenerator.impactOccurred()
           await openURL(Constants.storiesURL)
         }
-        
+
       case let .productsResponse(.success(products)):
         guard
           let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
@@ -146,15 +146,15 @@ public struct InboxDetailLogic {
           GodModeLogic.State(product: product)
         )
         return .none
-        
+
       case let .activeSubscriptionResponse(.success(data)):
         state.isInGodMode = data.activeSubscription != nil
         return .none
-        
+
       case .destination(.dismiss):
         state.destination = nil
         return .none
-        
+
       case let .destination(.presented(.initialName(.delegate(.fullName(fullName))))):
         state.destination = nil
         analytics.logEvent("reveal", [
@@ -167,13 +167,13 @@ public struct InboxDetailLogic {
           try await mainQueue.sleep(for: .seconds(1))
           await send(.showFullName(fullName))
         }
-        
+
       case let .showFullName(fullName):
         state.destination = .fullName(
           .init(fulName: fullName)
         )
         return .none
-        
+
       default:
         return .none
       }
@@ -182,7 +182,7 @@ public struct InboxDetailLogic {
       Destination()
     }
   }
-  
+
   func activeSubscriptionRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.activeSubscription, cancelInFlight: true) {
       do {
@@ -213,7 +213,7 @@ public struct InboxDetailView: View {
           grade: viewStore.activity.voteUser.grade
         )
         .frame(width: proxy.size.width - 96)
-        
+
         let choiceListSticker = ChoiceListSticker(
           questionText: viewStore.activity.question.text.ja,
           gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
@@ -221,18 +221,17 @@ public struct InboxDetailView: View {
           choices: viewStore.activity.choices
         )
         .frame(width: proxy.size.width - 96)
-        
+
         VStack(spacing: 0) {
           ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 32) {
               receivedSticker
                 .compositingGroup()
                 .shadow(radius: 12)
-              
+
               choiceListSticker
                 .compositingGroup()
                 .shadow(radius: 12)
-              
             }
             .padding(.top, 52)
             .padding(.bottom, 12)
@@ -254,14 +253,14 @@ public struct InboxDetailView: View {
                 .foregroundStyle(Color.black)
                 .background(
                   LinearGradient(
-                    colors: [Color(0xFFE8B423), Color(0xFFF5D068)],
+                    colors: [Color(0xFFE8_B423), Color(0xFFF5_D068)],
                     startPoint: UnitPoint(x: 0, y: 0.5),
                     endPoint: UnitPoint(x: 1, y: 0.5)
                   )
                 )
                 .clipShape(Capsule())
             }
-            
+
             Button {
               let renderer = ImageRenderer(
                 content: receivedSticker
