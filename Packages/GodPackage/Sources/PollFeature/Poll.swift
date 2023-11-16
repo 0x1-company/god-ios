@@ -67,7 +67,7 @@ public struct PollLogic {
       case .onAppear:
         analytics.logScreen(screenName: "Poll", of: self)
         return .none
-        
+
       case let .pollQuestions(.element(_, .delegate(.vote(input)))):
         return .run { send in
           await send(.delegate(.voted))
