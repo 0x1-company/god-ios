@@ -91,6 +91,16 @@
         }
       }
     },
+    "Other useful features." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "他にも便利な機能があるよ"
+          }
+        }
+      }
+    },
     "Skip" : {
       "localizations" : {
         "ja" : {
