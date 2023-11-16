@@ -18,7 +18,7 @@ public struct FriendRequestsLogic {
 
   public enum Action {
     case onTask
-    case requests(id: FriendRequestCardLogic.State.ID, action: FriendRequestCardLogic.Action)
+    case requests(IdentifiedActionOf<FriendRequestCardLogic>)
     case cardButtonTapped(String)
     case delegate(Delegate)
 

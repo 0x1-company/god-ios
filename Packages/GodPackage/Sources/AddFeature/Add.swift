@@ -72,7 +72,7 @@ public struct AddLogic {
     case friendRequestPanel(FriendRequestsLogic.Action)
     case friendsOfFriendsPanel(FriendsOfFriendsPanelLogic.Action)
     case fromSchoolPanel(FromSchoolPanelLogic.Action)
-    case searchResult(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case searchResult(IdentifiedActionOf<FriendRowCardLogic>)
     case destination(PresentationAction<Destination.Action>)
   }
 
