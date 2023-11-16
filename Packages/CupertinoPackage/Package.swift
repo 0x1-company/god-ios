@@ -24,7 +24,7 @@ let package = Package(
     .library(name: "WidgetClient", targets: ["WidgetClient"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.0"),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.1"),
   ],
   targets: [
     .target(name: "Build", dependencies: [
