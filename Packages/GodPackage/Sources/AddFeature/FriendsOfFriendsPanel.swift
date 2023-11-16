@@ -16,7 +16,7 @@ public struct FriendsOfFriendsPanelLogic {
   }
 
   public enum Action {
-    case friendsOfFriends(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case friendsOfFriends(IdentifiedActionOf<FriendRowCardLogic>)
     case cardButtonTapped(String)
     case delegate(Delegate)
 
