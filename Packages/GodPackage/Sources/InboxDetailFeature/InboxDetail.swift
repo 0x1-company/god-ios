@@ -202,17 +202,23 @@ public struct InboxDetailView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      VStack(spacing: 0) {
-        GeometryReader { proxy in
+      GeometryReader { proxy in
+        let receivedSticker = ReceivedSticker(questionText: viewStore.activity.question.text.ja)
+          .frame(width: proxy.size.width - 96)
+        
+        let choiceListSticker = ChoiceListSticker(questionText: viewStore.activity.question.text.ja)
+          .frame(width: proxy.size.width - 96)
+        
+        VStack(spacing: 0) {
+          Spacer()
+
           ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 32) {
-              ReceivedSticker(questionText: viewStore.activity.question.text.ja)
-                .frame(width: proxy.size.width - 96)
+              receivedSticker
                 .compositingGroup()
                 .shadow(radius: 12)
               
-              ChoiceListSticker(questionText: viewStore.activity.question.text.ja)
-                .frame(width: proxy.size.width - 96)
+              choiceListSticker
                 .compositingGroup()
                 .shadow(radius: 12)
               
@@ -221,60 +227,62 @@ public struct InboxDetailView: View {
             .padding(.horizontal, 48)
             .scrollTargetLayoutIfPossible()
           }
-          .frame(height: proxy.size.height)
+          .frame(maxWidth: .infinity)
           .scrollTargetBehaviorIfPossible()
-        }
-        .frame(maxWidth: .infinity)
-
-        VStack(spacing: 12) {
-          Button {
-            store.send(.seeWhoSentItButtonTapped)
-          } label: {
-            Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock")
-              .font(.system(.headline, design: .rounded, weight: .bold))
-              .frame(height: 56)
-              .frame(maxWidth: .infinity)
-              .foregroundStyle(Color.black)
-              .background(
-                LinearGradient(
-                  colors: [Color(0xFFE8B423), Color(0xFFF5D068)],
-                  startPoint: UnitPoint(x: 0, y: 0.5),
-                  endPoint: UnitPoint(x: 1, y: 0.5)
-                )
-              )
-              .clipShape(Capsule())
-          }
           
-          Button {
-            let receivedSticker = ReceivedSticker(questionText: viewStore.activity.question.text.ja)
-              .padding(.vertical, 36)
-              .padding(.horizontal, 4)
-            let renderer = ImageRenderer(content: receivedSticker)
-            renderer.scale = displayScale
-            store.send(.storyButtonTapped(renderer.uiImage))
-          } label: {
-            Label(String(localized: "Reply", bundle: .module), systemImage: "camera")
-              .font(.system(.headline, design: .rounded, weight: .bold))
-              .frame(height: 56)
-              .frame(maxWidth: .infinity)
-              .foregroundStyle(Color.white)
-              .background(Color.godBlack)
-              .clipShape(Capsule())
+          Spacer()
+
+          VStack(spacing: 12) {
+            Button {
+              store.send(.seeWhoSentItButtonTapped)
+            } label: {
+              Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock")
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .frame(height: 56)
+                .frame(maxWidth: .infinity)
+                .foregroundStyle(Color.black)
+                .background(
+                  LinearGradient(
+                    colors: [Color(0xFFE8B423), Color(0xFFF5D068)],
+                    startPoint: UnitPoint(x: 0, y: 0.5),
+                    endPoint: UnitPoint(x: 1, y: 0.5)
+                  )
+                )
+                .clipShape(Capsule())
+            }
+            
+            Button {
+              let renderer = ImageRenderer(
+                content: receivedSticker
+                  .padding(.vertical, 36)
+                  .padding(.horizontal, 4)
+              )
+              renderer.scale = displayScale
+              store.send(.storyButtonTapped(renderer.uiImage))
+            } label: {
+              Label(String(localized: "Reply", bundle: .module), systemImage: "camera")
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .frame(height: 56)
+                .frame(maxWidth: .infinity)
+                .foregroundStyle(Color.white)
+                .background(Color.godBlack)
+                .clipShape(Capsule())
+            }
           }
+          .padding(.horizontal, 16)
+          .buttonStyle(HoldDownButtonStyle())
         }
-        .padding(.horizontal, 16)
-        .buttonStyle(HoldDownButtonStyle())
-      }
-      .overlay(alignment: .topTrailing) {
-        Button {
-          store.send(.closeButtonTapped)
-        } label: {
-          Image(systemName: "xmark")
-            .font(.system(size: 28, weight: .bold, design: .rounded))
-            .foregroundStyle(Color.godTextSecondaryLight)
+        .overlay(alignment: .topTrailing) {
+          Button {
+            store.send(.closeButtonTapped)
+          } label: {
+            Image(systemName: "xmark")
+              .font(.system(size: 28, weight: .bold, design: .rounded))
+              .foregroundStyle(Color.godTextSecondaryLight)
+          }
+          .padding(.horizontal, 24)
+          .buttonStyle(HoldDownButtonStyle())
         }
-        .padding(.horizontal, 24)
-        .buttonStyle(HoldDownButtonStyle())
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
