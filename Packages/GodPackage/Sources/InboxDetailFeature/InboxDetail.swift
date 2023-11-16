@@ -274,6 +274,31 @@ public struct InboxDetailView: View {
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
+      .onTapGesture {
+        store.send(.closeButtonTapped)
+      }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.initialName,
+        action: InboxDetailLogic.Destination.Action.initialName
+      ) { store in
+        InitialNameView(store: store)
+          .presentationBackground(Color.clear)
+      }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.fullName,
+        action: InboxDetailLogic.Destination.Action.fullName
+      ) { store in
+        FullNameView(store: store)
+          .presentationBackground(Color.clear)
+      }
+      .fullScreenCover(
+        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
+        state: /InboxDetailLogic.Destination.State.godMode,
+        action: InboxDetailLogic.Destination.Action.godMode,
+        content: GodModeView.init(store:)
+      )
     }
   }
 }
