@@ -37,7 +37,7 @@ public struct PollLogic {
   public enum Action {
     case onTask
     case onAppear
-    case pollQuestions(id: PollQuestionLogic.State.ID, action: PollQuestionLogic.Action)
+    case pollQuestions(IdentifiedActionOf<PollQuestionLogic>)
     case createVoteResponse(TaskResult<God.CreateVoteMutation.Data>)
     case completePollResponse(TaskResult<God.CompletePollMutation.Data>)
     case alert(PresentationAction<Alert>)
@@ -67,8 +67,8 @@ public struct PollLogic {
       case .onAppear:
         analytics.logScreen(screenName: "Poll", of: self)
         return .none
-
-      case let .pollQuestions(_, .delegate(.vote(input))):
+        
+      case let .pollQuestions(.element(_, .delegate(.vote(input)))):
         return .run { send in
           await send(.delegate(.voted))
           await send(.createVoteResponse(TaskResult {
@@ -76,14 +76,14 @@ public struct PollLogic {
           }))
         }
 
-      case let .pollQuestions(id, .delegate(.nextPollQuestion)):
+      case let .pollQuestions(.element(id, .delegate(.nextPollQuestion))):
         return nextPollQuestion(state: &state, id: id)
 
-      case let .pollQuestions(id, .delegate(.skip)) where state.skipAvailableCount > 0:
+      case let .pollQuestions(.element(id, .delegate(.skip))) where state.skipAvailableCount > 0:
         state.skipAvailableCount -= 1
         return nextPollQuestion(state: &state, id: id)
 
-      case .pollQuestions(_, .delegate(.skip)):
+      case .pollQuestions(.element(_, .delegate(.skip))):
         state.alert = AlertState {
           TextState("You cannot skip questions", bundle: .module)
         } actions: {
