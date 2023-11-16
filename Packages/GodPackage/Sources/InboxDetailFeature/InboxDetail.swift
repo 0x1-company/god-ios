@@ -13,7 +13,7 @@ import StoreKitClient
 import Styleguide
 import SwiftUI
 import InboxStoryFeature
-
+import FeedbackGeneratorClient
 
 @Reducer
 public struct InboxDetailLogic {
@@ -71,6 +71,7 @@ public struct InboxDetailLogic {
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
   @Dependency(\.notificationCenter) var notificationCenter
   
   enum Cancel {
@@ -106,12 +107,15 @@ public struct InboxDetailLogic {
             initialName: initialName
           )
         )
-        return .none
+        return .run { _ in
+          await feedbackGenerator.impactOccurred()
+        }
 
       case .seeWhoSentItButtonTapped where !state.isInGodMode:
         guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
         else { return .none }
         return .run { send in
+          await feedbackGenerator.impactOccurred()
           await send(.productsResponse(TaskResult {
             try await storeClient.products([id])
           }))
@@ -121,8 +125,7 @@ public struct InboxDetailLogic {
         let backgroundImage = UIImage(resource: ImageResource.storyBackground)
         let pasteboardItems: [String: Any] = [
           "com.instagram.sharedSticker.stickerImage": image,
-          "com.instagram.sharedSticker.backgroundImage": backgroundImage,
-          "com.instagram.sharedSticker.contentURL": "https://godapp.jp"
+          "com.instagram.sharedSticker.backgroundImage": backgroundImage
         ]
         UIPasteboard.general.setItems(
           [pasteboardItems],
@@ -130,6 +133,7 @@ public struct InboxDetailLogic {
         )
 
         return .run { _ in
+          await feedbackGenerator.impactOccurred()
           await openURL(Constants.storiesURL)
         }
         
