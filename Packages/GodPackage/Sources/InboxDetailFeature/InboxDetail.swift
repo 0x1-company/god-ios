@@ -98,6 +98,7 @@ public struct InboxDetailLogic {
 }
 
 public struct InboxDetailView: View {
+  @Environment(\.displayScale) var displayScale
   let store: StoreOf<InboxDetailLogic>
 
   public init(store: StoreOf<InboxDetailLogic>) {
@@ -106,7 +107,12 @@ public struct InboxDetailView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
+      let receiveStory = ReciveStoryView()
+      let choiceListStory = ChoiceListStoryView()
       ZStack {
+        choiceListStory
+        receiveStory
+
         VStack(spacing: 0) {
           GeometryReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
@@ -127,7 +133,7 @@ public struct InboxDetailView: View {
           }
           .frame(maxWidth: .infinity)
 
-          VStack(spacing: 20) {
+          VStack(spacing: 12) {
             Button {
               store.send(.seeWhoSentItButtonTapped)
             } label: {
@@ -147,7 +153,9 @@ public struct InboxDetailView: View {
             }
             
             Button {
-              store.send(.storyButtonTapped(nil))
+              let renderer = ImageRenderer(content: receiveStory)
+              renderer.scale = displayScale
+              store.send(.storyButtonTapped(renderer.uiImage))
             } label: {
               Label("Reply", systemImage: "camera")
                 .font(.system(.headline, design: .rounded, weight: .bold))
@@ -161,21 +169,28 @@ public struct InboxDetailView: View {
           .padding(.horizontal, 16)
           .buttonStyle(HoldDownButtonStyle())
         }
+        .background(
+          LinearGradient(
+            colors: [
+              Color(0xFFB394FF),
+              Color(0xFFFFA3E5),
+              Color(0xFFFFE39B),
+            ],
+            startPoint: UnitPoint(x: 0.5, y: 0.0),
+            endPoint: UnitPoint(x: 0.5, y: 1.0)
+          )
+        )
         .overlay(alignment: .topTrailing) {
           Button {
             store.send(.closeButtonTapped)
           } label: {
             Image(systemName: "xmark")
               .font(.system(size: 28, weight: .bold, design: .rounded))
-              .foregroundStyle(Color.godTextSecondaryLight)
+              .foregroundStyle(Color.white)
           }
           .padding(.horizontal, 24)
           .buttonStyle(HoldDownButtonStyle())
         }
-        
-        ReciveStoryView()
-        
-        ChoiceListStoryView()
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
