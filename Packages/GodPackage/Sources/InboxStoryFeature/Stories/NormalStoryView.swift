@@ -4,8 +4,11 @@ import Styleguide
 struct NormalStoryView: View {
   var body: some View {
     VStack(spacing: 0) {
-      
+      ReciveSticker(
+        questionText: "Your ideal study buddy"
+      )
     }
+    .padding(.horizontal, 48)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(
       LinearGradient(
@@ -19,8 +22,10 @@ struct NormalStoryView: View {
       )
     )
     .overlay(alignment: .bottom) {
-      VStack(spacing: 12) {
-        Text(verbatim: "godapp.jp")
+      VStack(spacing: 4) {
+        Image(ImageResource.icon)
+        Text("See who likes you - God", bundle: .module)
+          .font(.system(.body, design: .rounded, weight: .medium))
       }
     }
   }

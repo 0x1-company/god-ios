@@ -1,0 +1,22 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "From a boy in 11th grade" : {
+
+    },
+    "See who likes you - God" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匿名投票アプリ - God"
+          }
+        }
+      }
+    },
+    "Your ideal study buddy" : {
+
+    }
+  },
+  "version" : "1.0"
+}
