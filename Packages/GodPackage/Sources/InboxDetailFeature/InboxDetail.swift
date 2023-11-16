@@ -206,12 +206,12 @@ public struct InboxDetailView: View {
         GeometryReader { proxy in
           ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 32) {
-              ReceivedSticker(questionText: "Your ideal study buddy")
+              ReceivedSticker(questionText: viewStore.activity.question.text.ja)
                 .frame(width: proxy.size.width - 96)
                 .compositingGroup()
                 .shadow(radius: 12)
               
-              ChoiceListSticker(questionText: "Your ideal study buddy")
+              ChoiceListSticker(questionText: viewStore.activity.question.text.ja)
                 .frame(width: proxy.size.width - 96)
                 .compositingGroup()
                 .shadow(radius: 12)
@@ -246,7 +246,7 @@ public struct InboxDetailView: View {
           }
           
           Button {
-            let receivedSticker = ReceivedSticker(questionText: "Your ideal study buddy")
+            let receivedSticker = ReceivedSticker(questionText: viewStore.activity.question.text.ja)
               .padding(.vertical, 36)
               .padding(.horizontal, 4)
             let renderer = ImageRenderer(content: receivedSticker)

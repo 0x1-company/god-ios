@@ -16,7 +16,7 @@ public struct ChoiceListSticker: View {
           .font(.system(.headline, design: .rounded, weight: .bold))
           .foregroundStyle(Color.white)
         
-        Text("Your ideal study buddy")
+        Text(questionText)
           .font(.system(.title3, design: .rounded, weight: .bold))
           .foregroundStyle(Color(0xFF00C7FE))
           .frame(maxWidth: .infinity)
