@@ -208,9 +208,13 @@ public struct InboxDetailView: View {
             HStack(spacing: 32) {
               ReceivedSticker(questionText: "Your ideal study buddy")
                 .frame(width: proxy.size.width - 96)
+                .compositingGroup()
+                .shadow(radius: 12)
               
               ChoiceListSticker(questionText: "Your ideal study buddy")
                 .frame(width: proxy.size.width - 96)
+                .compositingGroup()
+                .shadow(radius: 12)
               
             }
             .padding(.vertical, 32)
