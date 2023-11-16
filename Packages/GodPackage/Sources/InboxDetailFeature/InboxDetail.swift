@@ -217,7 +217,8 @@ public struct InboxDetailView: View {
         let choiceListSticker = ChoiceListSticker(
           questionText: viewStore.activity.question.text.ja,
           gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
-          grade: viewStore.activity.voteUser.grade
+          grade: viewStore.activity.voteUser.grade,
+          choices: viewStore.activity.choices
         )
         .frame(width: proxy.size.width - 96)
         
