@@ -29,6 +29,7 @@ public struct ReciveSticker: View {
     }
     .cornerRadius(24)
     .multilineTextAlignment(.center)
+    .shadow(radius: 12)
     .overlay {
       RoundedRectangle(cornerRadius: 24)
         .stroke(Color.white, lineWidth: 4)
