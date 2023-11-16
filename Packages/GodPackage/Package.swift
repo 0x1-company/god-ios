@@ -175,6 +175,7 @@ let package = Package(
     .target(name: "InboxFeature", dependencies: [
       "RevealFeature",
       "GodModeFeature",
+      "InboxDetailFeature",
       "ShareScreenshotFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "UserDefaultsClient", package: "CupertinoPackage"),

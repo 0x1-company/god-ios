@@ -1,7 +1,7 @@
 import Styleguide
 import SwiftUI
 
-public struct ReciveSticker: View {
+public struct ReceivedSticker: View {
   let questionText: String
   
   public init(
@@ -29,7 +29,6 @@ public struct ReciveSticker: View {
     }
     .cornerRadius(24)
     .multilineTextAlignment(.center)
-    .shadow(radius: 12)
     .overlay {
       RoundedRectangle(cornerRadius: 24)
         .stroke(Color.white, lineWidth: 4)
@@ -74,7 +73,7 @@ public struct ReciveSticker: View {
 }
 
 #Preview {
-  ReciveSticker(
+  ReceivedSticker(
     questionText: "Your ideal study buddy"
   )
 }

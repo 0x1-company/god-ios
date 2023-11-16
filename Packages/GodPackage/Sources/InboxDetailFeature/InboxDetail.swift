@@ -41,8 +41,15 @@ public struct InboxDetailLogic {
   }
 
   public struct State: Equatable {
+    let activity: God.InboxFragment
+    var isInGodMode: Bool
+
     @PresentationState var destination: Destination.State?
-    public init() {}
+
+    public init(activity: God.InboxFragment, isInGodMode: Bool) {
+      self.activity = activity
+      self.isInGodMode = isInGodMode
+    }
   }
 
   public enum Action {
@@ -51,18 +58,36 @@ public struct InboxDetailLogic {
     case closeButtonTapped
     case seeWhoSentItButtonTapped
     case storyButtonTapped(UIImage?)
+    case showFullName(String)
+    case productsResponse(TaskResult<[Product]>)
+    case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
-  @Dependency(\.openURL) var openURL
+  @Dependency(\.build) var build
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.openURL) var openURL
+  @Dependency(\.store) var storeClient
+  @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
+  @Dependency(\.godClient) var godClient
+  @Dependency(\.notificationCenter) var notificationCenter
+  
+  enum Cancel {
+    case activeSubscription
+  }
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
+    Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
-        return .none
+        return .run { send in
+          await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+              await activeSubscriptionRequest(send: send)
+            }
+          }
+        }
 
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
@@ -73,10 +98,31 @@ public struct InboxDetailLogic {
           await dismiss(transaction: .animationDisable)
         }
         
+      case .seeWhoSentItButtonTapped where state.isInGodMode:
+        guard let initialName = state.activity.initial else { return .none }
+        state.destination = .initialName(
+          InitialNameLogic.State(
+            activityId: state.activity.id,
+            initialName: initialName
+          )
+        )
+        return .none
+
+      case .seeWhoSentItButtonTapped where !state.isInGodMode:
+        guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
+        else { return .none }
+        return .run { send in
+          await send(.productsResponse(TaskResult {
+            try await storeClient.products([id])
+          }))
+        }
+        
       case let .storyButtonTapped(.some(image)):
-        guard let imageData = image.pngData() else { return .none }
+        let backgroundImage = UIImage(resource: ImageResource.storyBackground)
         let pasteboardItems: [String: Any] = [
-          "com.instagram.sharedSticker.stickerImage": imageData,
+          "com.instagram.sharedSticker.stickerImage": image,
+          "com.instagram.sharedSticker.backgroundImage": backgroundImage,
+          "com.instagram.sharedSticker.contentURL": "https://godapp.jp"
         ]
         UIPasteboard.general.setItems(
           [pasteboardItems],
@@ -87,12 +133,61 @@ public struct InboxDetailLogic {
           await openURL(Constants.storiesURL)
         }
         
+      case let .productsResponse(.success(products)):
+        guard
+          let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
+          let product = products.first(where: { $0.id == id })
+        else { return .none }
+        state.destination = .godMode(
+          GodModeLogic.State(product: product)
+        )
+        return .none
+        
+      case let .activeSubscriptionResponse(.success(data)):
+        state.isInGodMode = data.activeSubscription != nil
+        return .none
+        
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
+        
+      case let .destination(.presented(.initialName(.delegate(.fullName(fullName))))):
+        state.destination = nil
+        analytics.logEvent("reveal", [
+          "question_id": state.activity.question.id,
+          "question_text": state.activity.question.text.ja,
+          "activity_id": state.activity.id,
+          "vote_user_gender": state.activity.voteUser.gender.value ?? "NULL",
+        ])
+        return .run { send in
+          try await mainQueue.sleep(for: .seconds(1))
+          await send(.showFullName(fullName))
+        }
+        
+      case let .showFullName(fullName):
+        state.destination = .fullName(
+          .init(fulName: fullName)
+        )
+        return .none
+        
       default:
         return .none
       }
     }
     .ifLet(\.$destination, action: \.destination) {
       Destination()
+    }
+  }
+  
+  func activeSubscriptionRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.activeSubscription, cancelInFlight: true) {
+      do {
+        for try await data in godClient.activeSubscription() {
+          await send(.activeSubscriptionResponse(.success(data)))
+        }
+      } catch {
+        await send(.activeSubscriptionResponse(.failure(error)))
+      }
     }
   }
 }
@@ -107,102 +202,78 @@ public struct InboxDetailView: View {
 
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let receiveStory = ReciveStoryView()
-      let choiceListStory = ChoiceListStoryView()
-      ZStack {
-        choiceListStory
-        receiveStory
-
-        VStack(spacing: 0) {
-          GeometryReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-              HStack(spacing: 32) {
-                ReciveSticker(questionText: "Your ideal study buddy")
-                  .frame(width: proxy.size.width - 96)
-                
-                ChoiceListSticker(questionText: "Your ideal study buddy")
-                  .frame(width: proxy.size.width - 96)
-                
-              }
-              .padding(.vertical, 32)
-              .padding(.horizontal, 48)
-              .scrollTargetLayoutIfPossible()
+      VStack(spacing: 0) {
+        GeometryReader { proxy in
+          ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 32) {
+              ReceivedSticker(questionText: "Your ideal study buddy")
+                .frame(width: proxy.size.width - 96)
+              
+              ChoiceListSticker(questionText: "Your ideal study buddy")
+                .frame(width: proxy.size.width - 96)
+              
             }
-            .frame(height: proxy.size.height)
-            .scrollTargetBehaviorIfPossible()
+            .padding(.vertical, 32)
+            .padding(.horizontal, 48)
+            .scrollTargetLayoutIfPossible()
           }
-          .frame(maxWidth: .infinity)
-
-          VStack(spacing: 12) {
-            Button {
-              store.send(.seeWhoSentItButtonTapped)
-            } label: {
-              Label("See who sent it", systemImage: "lock")
-                .font(.system(.headline, design: .rounded, weight: .bold))
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.black)
-                .background(
-                  LinearGradient(
-                    colors: [Color(0xFFE8B423), Color(0xFFF5D068)],
-                    startPoint: UnitPoint(x: 0, y: 0.5),
-                    endPoint: UnitPoint(x: 1, y: 0.5)
-                  )
-                )
-                .clipShape(Capsule())
-            }
-            
-            Button {
-              let renderer = ImageRenderer(content: receiveStory)
-              renderer.scale = displayScale
-              store.send(.storyButtonTapped(renderer.uiImage))
-            } label: {
-              Label("Reply", systemImage: "camera")
-                .font(.system(.headline, design: .rounded, weight: .bold))
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.white)
-                .background(Color.godBlack)
-                .clipShape(Capsule())
-            }
-          }
-          .padding(.horizontal, 16)
-          .buttonStyle(HoldDownButtonStyle())
+          .frame(height: proxy.size.height)
+          .scrollTargetBehaviorIfPossible()
         }
-        .background(
-          LinearGradient(
-            colors: [
-              Color(0xFFB394FF),
-              Color(0xFFFFA3E5),
-              Color(0xFFFFE39B),
-            ],
-            startPoint: UnitPoint(x: 0.5, y: 0.0),
-            endPoint: UnitPoint(x: 0.5, y: 1.0)
-          )
-        )
-        .overlay(alignment: .topTrailing) {
+        .frame(maxWidth: .infinity)
+
+        VStack(spacing: 12) {
           Button {
-            store.send(.closeButtonTapped)
+            store.send(.seeWhoSentItButtonTapped)
           } label: {
-            Image(systemName: "xmark")
-              .font(.system(size: 28, weight: .bold, design: .rounded))
-              .foregroundStyle(Color.white)
+            Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock")
+              .font(.system(.headline, design: .rounded, weight: .bold))
+              .frame(height: 56)
+              .frame(maxWidth: .infinity)
+              .foregroundStyle(Color.black)
+              .background(
+                LinearGradient(
+                  colors: [Color(0xFFE8B423), Color(0xFFF5D068)],
+                  startPoint: UnitPoint(x: 0, y: 0.5),
+                  endPoint: UnitPoint(x: 1, y: 0.5)
+                )
+              )
+              .clipShape(Capsule())
           }
-          .padding(.horizontal, 24)
-          .buttonStyle(HoldDownButtonStyle())
+          
+          Button {
+            let receivedSticker = ReceivedSticker(questionText: "Your ideal study buddy")
+              .padding(.vertical, 36)
+              .padding(.horizontal, 4)
+            let renderer = ImageRenderer(content: receivedSticker)
+            renderer.scale = displayScale
+            store.send(.storyButtonTapped(renderer.uiImage))
+          } label: {
+            Label(String(localized: "Reply", bundle: .module), systemImage: "camera")
+              .font(.system(.headline, design: .rounded, weight: .bold))
+              .frame(height: 56)
+              .frame(maxWidth: .infinity)
+              .foregroundStyle(Color.white)
+              .background(Color.godBlack)
+              .clipShape(Capsule())
+          }
         }
+        .padding(.horizontal, 16)
+        .buttonStyle(HoldDownButtonStyle())
+      }
+      .overlay(alignment: .topTrailing) {
+        Button {
+          store.send(.closeButtonTapped)
+        } label: {
+          Image(systemName: "xmark")
+            .font(.system(size: 28, weight: .bold, design: .rounded))
+            .foregroundStyle(Color.godTextSecondaryLight)
+        }
+        .padding(.horizontal, 24)
+        .buttonStyle(HoldDownButtonStyle())
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
     }
   }
-}
-
-#Preview {
-  InboxDetailView(
-    store: .init(
-      initialState: InboxDetailLogic.State(),
-      reducer: { InboxDetailLogic() }
-    )
-  )
 }

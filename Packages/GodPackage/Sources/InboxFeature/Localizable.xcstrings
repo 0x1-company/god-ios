@@ -4,19 +4,6 @@
     "" : {
 
     },
-    "%@の%@より" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@の%2$@より"
-          }
-        }
-      }
-    },
-    "%@より" : {
-
-    },
     "A girl in 9th grade\npicked you" : {
       "localizations" : {
         "ja" : {
@@ -48,6 +35,7 @@
       }
     },
     "From %@ in %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -104,6 +92,7 @@
       }
     },
     "godapp.jp" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -144,6 +133,7 @@
       }
     },
     "See who sent it" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -154,6 +144,7 @@
       }
     },
     "Share Stories" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
