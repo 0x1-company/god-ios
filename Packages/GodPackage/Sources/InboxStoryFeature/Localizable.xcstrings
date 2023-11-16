@@ -1,0 +1,78 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "boy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
+    },
+    "From a %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に選ばれました"
+          }
+        }
+      }
+    },
+    "From a %@ in %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From a %1$@ in %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@の%1$@に\n選ばれました"
+          }
+        }
+      }
+    },
+    "girl" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
+          }
+        }
+      }
+    },
+    "See who likes you - God" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匿名投票アプリ - God"
+          }
+        }
+      }
+    },
+    "someone" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
+    },
+    "tomokisun" : {
+
+    },
+    "Your ideal study buddy" : {
+
+    }
+  },
+  "version" : "1.0"
+}

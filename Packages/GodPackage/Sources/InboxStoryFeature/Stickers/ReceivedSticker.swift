@@ -1,0 +1,117 @@
+import Styleguide
+import SwiftUI
+import God
+
+public struct ReceivedSticker: View {
+  let questionText: String
+  let gender: God.Gender
+  let grade: String?
+  
+  public init(
+    questionText: String,
+    gender: God.Gender,
+    grade: String?
+  ) {
+    self.questionText = questionText
+    self.gender = gender
+    self.grade = grade
+  }
+  
+  public var body: some View {
+    VStack(spacing: 0) {
+      Group {
+        if let grade {
+          Text("From a \(gender.text) in \(grade)", bundle: .module)
+        } else {
+          Text("From a \(gender.text)", bundle: .module)
+        }
+      }
+      .font(.system(.headline, design: .rounded, weight: .bold))
+      .padding(.horizontal, 12)
+      .padding(.top, 42)
+      .padding(.bottom, 12)
+      .frame(maxWidth: .infinity)
+      .foregroundStyle(Color.white)
+      .background(gender.color)
+      
+      Text(questionText)
+        .font(.system(.headline, design: .rounded, weight: .bold))
+        .padding(.horizontal, 12)
+        .frame(maxWidth: .infinity, minHeight: 90)
+        .background(Color.white)
+    }
+    .cornerRadius(24)
+    .multilineTextAlignment(.center)
+    .overlay {
+      RoundedRectangle(cornerRadius: 24)
+        .stroke(Color.white, lineWidth: 4)
+    }
+    .overlay(alignment: .top) {
+      HStack(spacing: 8) {
+        Color.white
+          .frame(width: 64, height: 64)
+          .clipShape(Circle())
+          .overlay {
+            Image(systemName: "person.fill")
+              .foregroundStyle(gender.color)
+              .font(.system(size: 42, weight: .bold))
+          }
+          .overlay(alignment: .bottomTrailing) {
+            Image(systemName: "questionmark")
+              .foregroundStyle(gender.color)
+              .frame(width: 24, height: 24)
+              .font(.system(size: 14, weight: .bold))
+              .background(Color.white)
+              .clipShape(Circle())
+              .overlay(
+                RoundedRectangle(cornerRadius: 24 / 2)
+                  .stroke(gender.color, lineWidth: 2)
+              )
+          }
+        
+        Image(gender.arrowRight)
+          .offset(y: -4)
+        
+        Color.red
+          .frame(width: 64, height: 64)
+          .clipShape(Circle())
+          .overlay(
+            RoundedRectangle(cornerRadius: 64 / 2)
+              .stroke(Color.white, lineWidth: 4)
+          )
+      }
+      .offset(y: -27)
+    }
+  }
+}
+
+#Preview {
+  VStack(spacing: 0) {
+    ReceivedSticker(
+      questionText: "Your ideal study buddy",
+      gender: God.Gender.female,
+      grade: "11th grade"
+    )
+  }
+  .padding(.horizontal, 48)
+  .frame(maxWidth: .infinity, maxHeight: .infinity)
+  .background(
+    LinearGradient(
+      colors: [
+        Color(0xFFB394FF),
+        Color(0xFFFFA3E5),
+        Color(0xFFFFE39B),
+      ],
+      startPoint: UnitPoint(x: 0.5, y: 0.0),
+      endPoint: UnitPoint(x: 0.5, y: 1.0)
+    )
+  )
+  .overlay(alignment: .bottom) {
+    VStack(spacing: 4) {
+      Image(ImageResource.icon)
+      Text("See who likes you - God", bundle: .module)
+        .font(.system(.body, design: .rounded, weight: .medium))
+    }
+  }
+  .environment(\.locale, Locale(identifier: "ja-JP"))
+}

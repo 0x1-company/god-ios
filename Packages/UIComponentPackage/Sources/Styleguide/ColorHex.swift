@@ -1,7 +1,6 @@
 import SwiftUI
 
 public extension Color {
-  @available(*, deprecated)
   init(_ hex: UInt, opacity: Double = 1.0) {
     self.init(
       .sRGB,

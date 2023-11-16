@@ -1,0 +1,29 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "InboxDetail" : {
+
+    },
+    "Reply" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "返信する"
+          }
+        }
+      }
+    },
+    "See who sent it" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前を見る👀"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

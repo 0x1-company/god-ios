@@ -1,4 +1,5 @@
 import AnalyticsClient
+import AnimationDisableTransaction
 import Build
 import ComposableArchitecture
 import Constants
@@ -7,16 +8,17 @@ import GodClient
 import GodModeFeature
 import NotificationCenterClient
 import RevealFeature
-import ShareScreenshotFeature
 import StoreKit
 import StoreKitClient
 import Styleguide
 import SwiftUI
+import InboxStoryFeature
+import FeedbackGeneratorClient
 
 @Reducer
 public struct InboxDetailLogic {
   public init() {}
-
+  
   @Reducer
   public struct Destination {
     public enum State: Equatable {
@@ -40,8 +42,8 @@ public struct InboxDetailLogic {
 
   public struct State: Equatable {
     let activity: God.InboxFragment
-
     var isInGodMode: Bool
+
     @PresentationState var destination: Destination.State?
 
     public init(activity: God.InboxFragment, isInGodMode: Bool) {
@@ -53,9 +55,9 @@ public struct InboxDetailLogic {
   public enum Action {
     case onTask
     case onAppear
-    case seeWhoSentItButtonTapped
     case closeButtonTapped
-    case shareOnInstagramButtonTapped(UIImage?)
+    case seeWhoSentItButtonTapped
+    case storyButtonTapped(UIImage?)
     case showFullName(String)
     case productsResponse(TaskResult<[Product]>)
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
@@ -69,8 +71,9 @@ public struct InboxDetailLogic {
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.feedbackGenerator) var feedbackGenerator
   @Dependency(\.notificationCenter) var notificationCenter
-
+  
   enum Cancel {
     case activeSubscription
   }
@@ -90,7 +93,12 @@ public struct InboxDetailLogic {
       case .onAppear:
         analytics.logScreen(screenName: "InboxDetail", of: self)
         return .none
-
+        
+      case .closeButtonTapped:
+        return .run { _ in
+          await dismiss(transaction: .animationDisable)
+        }
+        
       case .seeWhoSentItButtonTapped where state.isInGodMode:
         guard let initialName = state.activity.initial else { return .none }
         state.destination = .initialName(
@@ -99,32 +107,25 @@ public struct InboxDetailLogic {
             initialName: initialName
           )
         )
-        return .none
+        return .run { _ in
+          await feedbackGenerator.impactOccurred()
+        }
 
       case .seeWhoSentItButtonTapped where !state.isInGodMode:
         guard let id = build.infoDictionary("GOD_MODE_ID", for: String.self)
         else { return .none }
         return .run { send in
+          await feedbackGenerator.impactOccurred()
           await send(.productsResponse(TaskResult {
             try await storeClient.products([id])
           }))
         }
-
-      case .closeButtonTapped:
-        return .run { _ in
-          await dismiss(transaction: .animationDisable)
-        }
-
-      case .destination(.dismiss):
-        state.destination = nil
-        return .none
-
-      case let .shareOnInstagramButtonTapped(.some(stickerImage)):
-        guard let imageData = stickerImage.pngData() else { return .none }
+        
+      case let .storyButtonTapped(.some(image)):
+        let backgroundImage = UIImage(resource: ImageResource.storyBackground)
         let pasteboardItems: [String: Any] = [
-          "com.instagram.sharedSticker.stickerImage": imageData,
-          "com.instagram.sharedSticker.backgroundTopColor": "#000000",
-          "com.instagram.sharedSticker.backgroundBottomColor": "#000000",
+          "com.instagram.sharedSticker.stickerImage": image,
+          "com.instagram.sharedSticker.backgroundImage": backgroundImage
         ]
         UIPasteboard.general.setItems(
           [pasteboardItems],
@@ -132,9 +133,10 @@ public struct InboxDetailLogic {
         )
 
         return .run { _ in
+          await feedbackGenerator.impactOccurred()
           await openURL(Constants.storiesURL)
         }
-
+        
       case let .productsResponse(.success(products)):
         guard
           let id = build.infoDictionary("GOD_MODE_ID", for: String.self),
@@ -144,11 +146,15 @@ public struct InboxDetailLogic {
           GodModeLogic.State(product: product)
         )
         return .none
-
+        
       case let .activeSubscriptionResponse(.success(data)):
         state.isInGodMode = data.activeSubscription != nil
         return .none
-
+        
+      case .destination(.dismiss):
+        state.destination = nil
+        return .none
+        
       case let .destination(.presented(.initialName(.delegate(.fullName(fullName))))):
         state.destination = nil
         analytics.logEvent("reveal", [
@@ -161,13 +167,13 @@ public struct InboxDetailLogic {
           try await mainQueue.sleep(for: .seconds(1))
           await send(.showFullName(fullName))
         }
-
+        
       case let .showFullName(fullName):
         state.destination = .fullName(
           .init(fulName: fullName)
         )
         return .none
-
+        
       default:
         return .none
       }
@@ -176,7 +182,7 @@ public struct InboxDetailLogic {
       Destination()
     }
   }
-
+  
   func activeSubscriptionRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.activeSubscription, cancelInFlight: true) {
       do {
@@ -191,130 +197,109 @@ public struct InboxDetailLogic {
 }
 
 public struct InboxDetailView: View {
-  let store: StoreOf<InboxDetailLogic>
   @Environment(\.displayScale) var displayScale
+  let store: StoreOf<InboxDetailLogic>
 
   public init(store: StoreOf<InboxDetailLogic>) {
     self.store = store
   }
 
-  func genderColor(gender: God.Gender?) -> Color {
-    switch gender {
-    case .male:
-      return Color.godBlue
-    case .female:
-      return Color.godPink
-    default:
-      return Color.godPurple
-    }
-  }
-
-  func genderIcon(gender: God.Gender?) -> ImageResource {
-    switch gender {
-    case .male:
-      return ImageResource.boy
-    case .female:
-      return ImageResource.girl
-    default:
-      return ImageResource.other
-    }
-  }
-
-  func genderText(gender: God.Gender?) -> String {
-    switch gender {
-    case .male:
-      return String(localized: "boy", bundle: .module)
-    case .female:
-      return String(localized: "girl", bundle: .module)
-    default:
-      return String(localized: "someone", bundle: .module)
-    }
-  }
-
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      let instagramStoryView = InstagramStoryView(
-        question: viewStore.activity.question.text.ja,
-        color: genderColor(gender: viewStore.activity.voteUser.gender.value),
-        icon: genderIcon(gender: viewStore.activity.voteUser.gender.value),
-        gender: genderText(gender: viewStore.activity.voteUser.gender.value),
-        grade: viewStore.activity.voteUser.grade,
-        schoolName: nil,
-        choices: viewStore.activity.choices
-      )
-      ZStack {
-        instagramStoryView
-
-        VStack {
-          VStack(spacing: 50) {
-            Spacer()
-
-            VStack(spacing: 20) {
-              Image(genderIcon(gender: viewStore.activity.voteUser.gender.value))
-                .resizable()
-                .frame(width: 80, height: 80)
-
-              Group {
-                if let grade = viewStore.activity.voteUser.grade {
-                  Text("From \(genderText(gender: viewStore.activity.voteUser.gender.value)) in \(grade)", bundle: .module)
-                } else {
-                  Text("From a \(genderText(gender: viewStore.activity.voteUser.gender.value))", bundle: .module)
-                }
-              }
-              .font(.system(.body, design: .rounded, weight: .bold))
+      GeometryReader { proxy in
+        let receivedSticker = ReceivedSticker(
+          questionText: viewStore.activity.question.text.ja,
+          gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
+          grade: viewStore.activity.voteUser.grade
+        )
+        .frame(width: proxy.size.width - 96)
+        
+        let choiceListSticker = ChoiceListSticker(
+          questionText: viewStore.activity.question.text.ja,
+          gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
+          grade: viewStore.activity.voteUser.grade,
+          choices: viewStore.activity.choices
+        )
+        .frame(width: proxy.size.width - 96)
+        
+        VStack(spacing: 0) {
+          ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 32) {
+              receivedSticker
+                .compositingGroup()
+                .shadow(radius: 12)
+              
+              choiceListSticker
+                .compositingGroup()
+                .shadow(radius: 12)
+              
             }
-
-            VStack(spacing: 32) {
-              Text(viewStore.activity.question.text.ja)
-                .foregroundStyle(.white)
-                .font(.system(.title2, design: .rounded, weight: .bold))
-
-              VStack(spacing: 20) {
-                ChoiceGrid(
-                  color: genderColor(gender: viewStore.activity.voteUser.gender.value),
-                  choices: viewStore.activity.choices
-                )
-
-                Text(verbatim: "godapp.jp")
-                  .font(.system(.title3, design: .rounded, weight: .bold))
-              }
-            }
-            .padding(.horizontal, 36)
-
-            Spacer()
-
-            StoriesButton {
-              let renderer = ImageRenderer(content: instagramStoryView)
-              renderer.scale = displayScale
-              store.send(.shareOnInstagramButtonTapped(renderer.uiImage))
-            }
-            .padding(.all, 20)
+            .padding(.top, 52)
+            .padding(.bottom, 12)
+            .padding(.horizontal, 48)
+            .frame(maxHeight: .infinity)
+            .scrollTargetLayoutIfPossible()
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(genderColor(gender: viewStore.activity.voteUser.gender.value))
-          .foregroundStyle(Color.godWhite)
-          .multilineTextAlignment(.center)
-          .onTapGesture {
-            store.send(.closeButtonTapped)
-          }
+          .scrollTargetBehaviorIfPossible()
 
-          Button {
-            store.send(.seeWhoSentItButtonTapped)
-          } label: {
-            Label {
-              HStack(spacing: 8) {
-                Text("See who sent it", bundle: .module)
-              }
-              .font(.system(.body, design: .rounded, weight: .bold))
-            } icon: {
-              Image(systemName: "lock.fill")
+          VStack(spacing: 12) {
+            Button {
+              store.send(.seeWhoSentItButtonTapped)
+            } label: {
+              Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock")
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .frame(height: 56)
+                .frame(maxWidth: .infinity)
+                .foregroundStyle(Color.black)
+                .background(
+                  LinearGradient(
+                    colors: [Color(0xFFE8B423), Color(0xFFF5D068)],
+                    startPoint: UnitPoint(x: 0, y: 0.5),
+                    endPoint: UnitPoint(x: 1, y: 0.5)
+                  )
+                )
+                .clipShape(Capsule())
+            }
+            
+            Button {
+              let renderer = ImageRenderer(
+                content: receivedSticker
+                  .padding(.vertical, 36)
+                  .padding(.horizontal, 4)
+              )
+              renderer.scale = displayScale
+              store.send(.storyButtonTapped(renderer.uiImage))
+            } label: {
+              Label(String(localized: "Reply", bundle: .module), systemImage: "camera")
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .frame(height: 56)
+                .frame(maxWidth: .infinity)
+                .foregroundStyle(Color.white)
+                .background(Color.godBlack)
+                .clipShape(Capsule())
             }
           }
-          .buttonStyle(SeeWhoSentItButtonStyle())
+          .padding(.horizontal, 16)
+          .buttonStyle(HoldDownButtonStyle())
+        }
+        .overlay(alignment: .topTrailing) {
+          Button {
+            store.send(.closeButtonTapped)
+          } label: {
+            Image(systemName: "xmark")
+              .font(.system(size: 28, weight: .bold, design: .rounded))
+              .foregroundStyle(Color.godTextSecondaryLight)
+          }
+          .padding(.horizontal, 24)
+          .buttonStyle(HoldDownButtonStyle())
         }
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
+      .onTapGesture {
+        store.send(.closeButtonTapped)
+      }
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
         state: /InboxDetailLogic.Destination.State.initialName,

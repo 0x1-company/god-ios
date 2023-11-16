@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "arrow-right-female.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
