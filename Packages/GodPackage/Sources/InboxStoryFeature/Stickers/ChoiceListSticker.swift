@@ -1,4 +1,5 @@
 import God
+import Styleguide
 import SwiftUI
 
 public struct ChoiceListSticker: View {
@@ -49,23 +50,31 @@ public struct ChoiceListSticker: View {
       
       VStack(spacing: 12) {
         ForEach(choices, id: \.self) { choice in
-          Group {
-            if choice.text.isEmpty {
-              Color.white
-                .opacity(0.5)
-                .frame(height: 18)
-                .clipShape(Capsule())
-                .padding(.horizontal, 24)
-            } else {
-              Text(choice.text)
+          Text(choice.text)
+            .font(.system(.title3, design: .rounded, weight: .bold))
+            .frame(height: 48)
+            .frame(maxWidth: .infinity)
+            .foregroundStyle(choice.isSelected ? Color.white : Color.godBlack.opacity(0.5))
+            .background {
+              if choice.isSelected {
+                gender.color
+              } else {
+                GeometryReader { proxy in
+                  HStack(spacing: 0) {
+                    Color(0xFFD1D5DB)
+                      .frame(width: proxy.size.width * Double.random(in: 0.1 ..< 0.4))
+                    Color.white
+                  }
+                }
+              }
             }
-          }
-          .font(.system(.title3, design: .rounded, weight: .bold))
-          .frame(height: 48)
-          .frame(maxWidth: .infinity)
-          .foregroundStyle(Color.white)
-          .background(gender.color)
-          .clipShape(Capsule())
+            .clipShape(Capsule())
+            .overlay {
+              if !choice.isSelected {
+                RoundedRectangle(cornerRadius: 48 / 2)
+                  .stroke(Color(0xFF9CA3AF), lineWidth: 1)
+              }
+            }
         }
       }
       .padding(.vertical, 18)
