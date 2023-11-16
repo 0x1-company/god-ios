@@ -207,11 +207,19 @@ public struct InboxDetailView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       GeometryReader { proxy in
-        let receivedSticker = ReceivedSticker(questionText: viewStore.activity.question.text.ja)
-          .frame(width: proxy.size.width - 96)
+        let receivedSticker = ReceivedSticker(
+          questionText: viewStore.activity.question.text.ja,
+          gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
+          grade: viewStore.activity.voteUser.grade
+        )
+        .frame(width: proxy.size.width - 96)
         
-        let choiceListSticker = ChoiceListSticker(questionText: viewStore.activity.question.text.ja)
-          .frame(width: proxy.size.width - 96)
+        let choiceListSticker = ChoiceListSticker(
+          questionText: viewStore.activity.question.text.ja,
+          gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
+          grade: viewStore.activity.voteUser.grade
+        )
+        .frame(width: proxy.size.width - 96)
         
         VStack(spacing: 0) {
           ScrollView(.horizontal, showsIndicators: false) {

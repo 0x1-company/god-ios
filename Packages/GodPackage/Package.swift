@@ -186,6 +186,7 @@ let package = Package(
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
     .target(name: "InboxStoryFeature", dependencies: [
+      .product(name: "God", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
     ]),
     .target(name: "InviteFriendFeature", dependencies: [
