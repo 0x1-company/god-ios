@@ -5,15 +5,18 @@ public struct ChoiceListSticker: View {
   let questionText: String
   let gender: God.Gender
   let grade: String?
+  let choices: [God.InboxFragment.Choice]
   
   public init(
     questionText: String,
     gender: God.Gender,
-    grade: String?
+    grade: String?,
+    choices: [God.InboxFragment.Choice]
   ) {
     self.questionText = questionText
     self.gender = gender
     self.grade = grade
+    self.choices = choices
   }
 
   public var body: some View {
@@ -45,14 +48,24 @@ public struct ChoiceListSticker: View {
       .background(gender.color)
       
       VStack(spacing: 12) {
-        ForEach(0..<4, id: \.self) { _ in
-          Text("tomokisun")
-            .font(.system(.title3, design: .rounded, weight: .bold))
-            .frame(height: 48)
-            .frame(maxWidth: .infinity)
-            .foregroundStyle(Color.white)
-            .background(gender.color)
-            .clipShape(Capsule())
+        ForEach(choices, id: \.self) { choice in
+          Group {
+            if choice.text.isEmpty {
+              Color.white
+                .opacity(0.5)
+                .frame(height: 18)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+            } else {
+              Text(choice.text)
+            }
+          }
+          .font(.system(.title3, design: .rounded, weight: .bold))
+          .frame(height: 48)
+          .frame(maxWidth: .infinity)
+          .foregroundStyle(Color.white)
+          .background(gender.color)
+          .clipShape(Capsule())
         }
       }
       .padding(.vertical, 18)
@@ -84,7 +97,45 @@ public struct ChoiceListSticker: View {
     ChoiceListSticker(
       questionText: "かけてあるバックの持ち手が片方だけ外れてたら、そっと治す",
       gender: God.Gender.female,
-      grade: "11th grade"
+      grade: "11th grade",
+      choices: [
+        God.InboxFragment.Choice(
+          _dataDict: DataDict(
+            data: [
+              "isSelected": 1,
+              "text": "やまだ たろう",
+            ],
+            fulfilledFragments: []
+          )
+        ),
+        God.InboxFragment.Choice(
+          _dataDict: DataDict(
+            data: [
+              "isSelected": 0,
+              "text": "まつし れん",
+            ],
+            fulfilledFragments: []
+          )
+        ),
+        God.InboxFragment.Choice(
+          _dataDict: DataDict(
+            data: [
+              "isSelected": 0,
+              "text": "たんまつ てすと",
+            ],
+            fulfilledFragments: []
+          )
+        ),
+        God.InboxFragment.Choice(
+          _dataDict: DataDict(
+            data: [
+              "isSelected": 0,
+              "text": "",
+            ],
+            fulfilledFragments: []
+          )
+        ),
+      ]
     )
   }
   .padding(.horizontal, 48)
