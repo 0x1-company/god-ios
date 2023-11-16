@@ -135,7 +135,7 @@ public struct InviteFriendLogic {
         guard let username = data.currentUser.username
         else { return .none }
         state.shareURL = ShareLinkBuilder.buildGodLink(
-          path: .add,
+          path: .invite,
           username: username,
           source: .share,
           medium: .requiredInvite
