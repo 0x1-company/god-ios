@@ -10,7 +10,7 @@ public struct FromSchoolPanelLogic {
   }
 
   public enum Action {
-    case users(id: FriendRowCardLogic.State.ID, action: FriendRowCardLogic.Action)
+    case users(IdentifiedActionOf<FriendRowCardLogic>)
     case cardButtonTapped(String)
     case delegate(Delegate)
 
