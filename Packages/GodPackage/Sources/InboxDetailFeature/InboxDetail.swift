@@ -210,8 +210,6 @@ public struct InboxDetailView: View {
           .frame(width: proxy.size.width - 96)
         
         VStack(spacing: 0) {
-          Spacer()
-
           ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 32) {
               receivedSticker
@@ -223,14 +221,14 @@ public struct InboxDetailView: View {
                 .shadow(radius: 12)
               
             }
-            .padding(.vertical, 32)
+            .padding(.top, 52)
+            .padding(.bottom, 12)
             .padding(.horizontal, 48)
+            .frame(maxHeight: .infinity)
             .scrollTargetLayoutIfPossible()
           }
-          .frame(maxWidth: .infinity)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
           .scrollTargetBehaviorIfPossible()
-          
-          Spacer()
 
           VStack(spacing: 12) {
             Button {

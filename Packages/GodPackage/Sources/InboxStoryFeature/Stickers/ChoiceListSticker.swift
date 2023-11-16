@@ -21,6 +21,7 @@ public struct ChoiceListSticker: View {
           .foregroundStyle(Color(0xFF00C7FE))
           .frame(maxWidth: .infinity)
           .padding(.vertical, 8)
+          .padding(.horizontal, 12)
           .background(Color.white)
           .cornerRadius(8)
       }

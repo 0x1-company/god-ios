@@ -4,7 +4,7 @@ import SwiftUI
 #Preview {
   VStack(spacing: 0) {
     ChoiceListSticker(
-      questionText: "Your ideal study buddy"
+      questionText: "かけてあるバックの持ち手が片方だけ外れてたら、そっと治す"
     )
   }
   .padding(.horizontal, 48)
