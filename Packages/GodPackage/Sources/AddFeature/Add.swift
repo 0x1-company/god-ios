@@ -259,7 +259,7 @@ public struct AddLogic {
         )
         return .none
 
-      case .friendRequestPanel(.requests(_, .delegate(.approved))):
+      case .friendRequestPanel(.requests(.element(_, .delegate(.approved)))):
         return .run { send in
           await addPlusRequest(send: send)
         }
@@ -270,7 +270,7 @@ public struct AddLogic {
         )
         return .none
 
-      case .friendsOfFriendsPanel(.friendsOfFriends(_, .delegate(.requested))):
+      case .friendsOfFriendsPanel(.friendsOfFriends(.element(_, .delegate(.requested)))):
         return .run { send in
           await addPlusRequest(send: send)
         }
@@ -281,7 +281,7 @@ public struct AddLogic {
         )
         return .none
 
-      case .fromSchoolPanel(.users(_, .delegate(.requested))):
+      case .fromSchoolPanel(.users(.element(_, .delegate(.requested)))):
         return .run { send in
           await addPlusRequest(send: send)
         }
