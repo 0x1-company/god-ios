@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InAppWebFeature", targets: ["InAppWebFeature"]),
     .library(name: "InboxFeature", targets: ["InboxFeature"]),
+    .library(name: "InboxStoryFeature", targets: ["InboxStoryFeature"]),
     .library(name: "InviteFriendFeature", targets: ["InviteFriendFeature"]),
     .library(name: "LaunchFeature", targets: ["LaunchFeature"]),
     .library(name: "MaintenanceFeature", targets: ["MaintenanceFeature"]),
@@ -169,6 +170,9 @@ let package = Package(
       .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
       .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
+    ]),
+    .target(name: "InboxStoryFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
     ]),
     .target(name: "InviteFriendFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-spm"),
