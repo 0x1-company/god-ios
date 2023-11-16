@@ -173,17 +173,7 @@ let package = Package(
       .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
     .target(name: "InboxFeature", dependencies: [
-      "RevealFeature",
-      "GodModeFeature",
       "InboxDetailFeature",
-      "ShareScreenshotFeature",
-      .product(name: "Constants", package: "DependencyPackage"),
-      .product(name: "UserDefaultsClient", package: "CupertinoPackage"),
-      .product(name: "UIApplicationClient", package: "CupertinoPackage"),
-      .product(name: "UserNotificationClient", package: "CupertinoPackage"),
-      .product(name: "FeedbackGeneratorClient", package: "CupertinoPackage"),
-      .product(name: "NotificationCenterClient", package: "CupertinoPackage"),
-      .product(name: "AnimationDisableTransaction", package: "UIComponentPackage"),
     ]),
     .target(name: "InboxStoryFeature", dependencies: [
       .product(name: "God", package: "DependencyPackage"),
