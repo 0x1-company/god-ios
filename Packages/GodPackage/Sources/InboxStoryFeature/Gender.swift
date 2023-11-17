@@ -35,7 +35,7 @@ extension God.Gender {
       return ImageResource.arrowRightOther
     }
   }
-  
+
   var finger: ImageResource {
     switch self {
     case .female:
