@@ -386,11 +386,9 @@ public struct InboxView: View {
       .fullScreenCover(
         store: store.scope(state: \.$destination, action: { .destination($0) }),
         state: /InboxLogic.Destination.State.inboxDetail,
-        action: InboxLogic.Destination.Action.inboxDetail
-      ) { store in
-        InboxDetailView(store: store)
-          .presentationBackground(Material.ultraThinMaterial)
-      }
+        action: InboxLogic.Destination.Action.inboxDetail,
+        content: InboxDetailView.init(store:)
+      )
     }
   }
 }

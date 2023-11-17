@@ -291,6 +291,7 @@ public struct InboxDetailView: View {
                 content: receivedSticker
                   .padding(.vertical, 36)
                   .padding(.horizontal, 4)
+                  .environment(\.locale, Locale(identifier: "ja-JP"))
               )
               renderer.scale = displayScale
               store.send(.storyButtonTapped(renderer.uiImage))
