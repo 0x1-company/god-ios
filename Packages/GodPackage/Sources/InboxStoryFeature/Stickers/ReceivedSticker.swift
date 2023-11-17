@@ -77,7 +77,6 @@ public struct ReceivedSticker: View {
           }
 
         Image(gender.arrowRight)
-          .offset(y: -4)
 
         Group {
           if let avatarImageData, let image = UIImage(data: avatarImageData) {
