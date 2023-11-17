@@ -18,7 +18,7 @@ import SwiftUI
 @Reducer
 public struct InboxDetailLogic {
   public init() {}
-  
+
   public enum Sticker: Equatable {
     case received
     case choiceList
@@ -278,7 +278,7 @@ public struct InboxDetailView: View {
               .compositingGroup()
               .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
               .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
-            
+
             choiceListSticker
               .tag(InboxDetailLogic.Sticker.choiceList)
               .compositingGroup()
