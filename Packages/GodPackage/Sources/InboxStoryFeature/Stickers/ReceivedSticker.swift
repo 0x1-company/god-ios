@@ -1,4 +1,5 @@
 import God
+import NameImage
 import Styleguide
 import SwiftUI
 
@@ -6,15 +7,21 @@ public struct ReceivedSticker: View {
   let questionText: String
   let gender: God.Gender
   let grade: String?
+  let avatarImageData: Data?
+  let firstName: String
 
   public init(
     questionText: String,
     gender: God.Gender,
-    grade: String?
+    grade: String?,
+    avatarImageData: Data?,
+    firstName: String
   ) {
     self.questionText = questionText
     self.gender = gender
     self.grade = grade
+    self.avatarImageData = avatarImageData
+    self.firstName = firstName
   }
 
   public var body: some View {
@@ -72,13 +79,21 @@ public struct ReceivedSticker: View {
         Image(gender.arrowRight)
           .offset(y: -4)
 
-        Color.red
-          .frame(width: 64, height: 64)
-          .clipShape(Circle())
-          .overlay(
-            RoundedRectangle(cornerRadius: 64 / 2)
-              .stroke(Color.white, lineWidth: 4)
-          )
+        Group {
+          if let avatarImageData, let image = UIImage(data: avatarImageData) {
+            Image(uiImage: image)
+              .resizable()
+              .aspectRatio(contentMode: .fill)
+              .frame(width: 64, height: 64)
+          } else {
+            NameImage(name: firstName, size: 64)
+          }
+        }
+        .clipShape(Circle())
+        .overlay(
+          RoundedRectangle(cornerRadius: 64 / 2)
+            .stroke(Color.white, lineWidth: 4)
+        )
       }
       .offset(y: -27)
     }
@@ -90,7 +105,9 @@ public struct ReceivedSticker: View {
     ReceivedSticker(
       questionText: "Your ideal study buddy",
       gender: God.Gender.female,
-      grade: "11th grade"
+      grade: "11th grade",
+      avatarImageData: nil,
+      firstName: "TT"
     )
   }
   .padding(.horizontal, 48)
