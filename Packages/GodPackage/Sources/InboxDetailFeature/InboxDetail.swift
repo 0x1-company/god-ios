@@ -43,6 +43,9 @@ public struct InboxDetailLogic {
   public struct State: Equatable {
     let activity: God.InboxFragment
     var isInGodMode: Bool
+    
+    var firstName = ""
+    var avatarImageData: Data?
 
     @PresentationState var destination: Destination.State?
 
@@ -61,6 +64,8 @@ public struct InboxDetailLogic {
     case showFullName(String)
     case productsResponse(TaskResult<[Product]>)
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
+    case currentUserAvatarResponse(TaskResult<God.CurrentUserAvatarQuery.Data>)
+    case avatarImageResponse(TaskResult<Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -71,11 +76,13 @@ public struct InboxDetailLogic {
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.urlSession) var urlSession
   @Dependency(\.feedbackGenerator) var feedbackGenerator
   @Dependency(\.notificationCenter) var notificationCenter
 
   enum Cancel {
     case activeSubscription
+    case currentUserAvatar
   }
 
   public var body: some Reducer<State, Action> {
@@ -86,6 +93,9 @@ public struct InboxDetailLogic {
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
               await activeSubscriptionRequest(send: send)
+            }
+            group.addTask {
+              await currentUserAvatarRequest(send: send)
             }
           }
         }
@@ -150,6 +160,21 @@ public struct InboxDetailLogic {
       case let .activeSubscriptionResponse(.success(data)):
         state.isInGodMode = data.activeSubscription != nil
         return .none
+        
+      case let .currentUserAvatarResponse(.success(data)):
+        state.firstName = data.currentUser.firstName
+        return .run { send in
+          guard let imageURL = URL(string: data.currentUser.imageURL)
+          else { return }
+          let (data, _) = try await urlSession.data(from: imageURL)
+          await send(.avatarImageResponse(.success(data)))
+        } catch: { error, send in
+          await send(.avatarImageResponse(.failure(error)))
+        }
+        
+      case let .avatarImageResponse(.success(data)):
+        state.avatarImageData = data
+        return .none
 
       case .destination(.dismiss):
         state.destination = nil
@@ -194,6 +219,18 @@ public struct InboxDetailLogic {
       }
     }
   }
+  
+  func currentUserAvatarRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.currentUserAvatar, cancelInFlight: true) {
+      do {
+        for try await data in godClient.currentUserAvatar() {
+          await send(.currentUserAvatarResponse(.success(data)))
+        }
+      } catch {
+        await send(.currentUserAvatarResponse(.failure(error)))
+      }
+    }
+  }
 }
 
 public struct InboxDetailView: View {
@@ -210,7 +247,9 @@ public struct InboxDetailView: View {
         let receivedSticker = ReceivedSticker(
           questionText: viewStore.activity.question.text.ja,
           gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
-          grade: viewStore.activity.voteUser.grade
+          grade: viewStore.activity.voteUser.grade,
+          avatarImageData: viewStore.avatarImageData,
+          firstName: viewStore.firstName
         )
         .frame(width: proxy.size.width - 96)
 
@@ -218,6 +257,8 @@ public struct InboxDetailView: View {
           questionText: viewStore.activity.question.text.ja,
           gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
           grade: viewStore.activity.voteUser.grade,
+          avatarImageData: viewStore.avatarImageData,
+          firstName: viewStore.firstName,
           choices: viewStore.activity.choices
         )
         .frame(width: proxy.size.width - 96)
@@ -246,24 +287,6 @@ public struct InboxDetailView: View {
 
           VStack(spacing: 12) {
             Button {
-              store.send(.seeWhoSentItButtonTapped)
-            } label: {
-              Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock")
-                .font(.system(.headline, design: .rounded, weight: .bold))
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.black)
-                .background(
-                  LinearGradient(
-                    colors: [Color(0xFFE8_B423), Color(0xFFF5_D068)],
-                    startPoint: UnitPoint(x: 0, y: 0.5),
-                    endPoint: UnitPoint(x: 1, y: 0.5)
-                  )
-                )
-                .clipShape(Capsule())
-            }
-
-            Button {
               let renderer = ImageRenderer(
                 content: receivedSticker
                   .padding(.vertical, 36)
@@ -272,17 +295,22 @@ public struct InboxDetailView: View {
               renderer.scale = displayScale
               store.send(.storyButtonTapped(renderer.uiImage))
             } label: {
-              Label(String(localized: "Reply", bundle: .module), systemImage: "camera")
-                .font(.system(.headline, design: .rounded, weight: .bold))
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.white)
-                .background(Color.godBlack)
-                .clipShape(Capsule())
+              Label {
+                Text("Share Stories", bundle: .module)
+              } icon: {
+                Image(ImageResource.instagram)
+              }
             }
+            .buttonStyle(ShareStoriesButtonStyle())
+            
+            Button {
+              store.send(.seeWhoSentItButtonTapped)
+            } label: {
+              Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock.fill")
+            }
+            .buttonStyle(SeeWhoSentItButtonStyle())
           }
           .padding(.horizontal, 16)
-          .buttonStyle(HoldDownButtonStyle())
         }
         .overlay(alignment: .topTrailing) {
           Button {

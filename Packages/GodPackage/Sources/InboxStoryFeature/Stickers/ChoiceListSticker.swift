@@ -1,22 +1,31 @@
 import God
+import NameImage
 import Styleguide
 import SwiftUI
 
 public struct ChoiceListSticker: View {
+  @State var isAnimation = false
+
   let questionText: String
   let gender: God.Gender
   let grade: String?
+  let avatarImageData: Data?
+  let firstName: String
   let choices: [God.InboxFragment.Choice]
 
   public init(
     questionText: String,
     gender: God.Gender,
     grade: String?,
+    avatarImageData: Data?,
+    firstName: String,
     choices: [God.InboxFragment.Choice]
   ) {
     self.questionText = questionText
     self.gender = gender
     self.grade = grade
+    self.avatarImageData = avatarImageData
+    self.firstName = firstName
     self.choices = choices
   }
 
@@ -81,6 +90,14 @@ public struct ChoiceListSticker: View {
               if choice.isSelected {
                 Image(gender.finger)
                   .offset(x: 30, y: -24)
+                  .scaleEffect(isAnimation ? 1.0 : 0.9)
+                  .animation(
+                    .default.repeatForever(autoreverses: true).speed(0.5),
+                    value: isAnimation
+                  )
+                  .task {
+                    isAnimation = true
+                  }
               }
             }
         }
@@ -97,14 +114,22 @@ public struct ChoiceListSticker: View {
         .stroke(Color.white, lineWidth: 4)
     }
     .overlay(alignment: .top) {
-      Color.red
-        .frame(width: 64, height: 64)
-        .clipShape(Circle())
-        .overlay(
-          RoundedRectangle(cornerRadius: 64 / 2)
-            .stroke(Color.white, lineWidth: 4)
-        )
-        .offset(y: -27)
+      Group {
+        if let avatarImageData, let image = UIImage(data: avatarImageData) {
+          Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 64, height: 64)
+        } else {
+          NameImage(name: firstName, size: 64)
+        }
+      }
+      .clipShape(Circle())
+      .overlay(
+        RoundedRectangle(cornerRadius: 64 / 2)
+          .stroke(Color.white, lineWidth: 4)
+      )
+      .offset(y: -27)
     }
   }
 }
@@ -115,6 +140,8 @@ public struct ChoiceListSticker: View {
       questionText: "かけてあるバックの持ち手が片方だけ外れてたら、そっと治す",
       gender: God.Gender.female,
       grade: "1年生",
+      avatarImageData: nil,
+      firstName: "Tomoki",
       choices: [
         God.InboxFragment.Choice(
           _dataDict: DataDict(

@@ -9,6 +9,7 @@ public struct GodClient: Sendable {
   public var createUser: @Sendable (God.CreateUserInput) async throws -> God.CreateUserMutation.Data
   public var user: @Sendable (God.UserWhere) -> AsyncThrowingStream<God.UserQuery.Data, Error>
   public var currentUser: @Sendable () -> AsyncThrowingStream<God.CurrentUserQuery.Data, Error>
+  public var currentUserAvatar: @Sendable () -> AsyncThrowingStream<God.CurrentUserAvatarQuery.Data, Error>
   public var currentUserProfile: @Sendable () -> AsyncThrowingStream<God.CurrentUserProfileQuery.Data, Error>
   public var peopleYouMayKnow: @Sendable () -> AsyncThrowingStream<God.PeopleYouMayKnowQuery.Data, Error>
   public var userSearch: @Sendable (String) -> AsyncThrowingStream<God.UserSearchQuery.Data, Error>
