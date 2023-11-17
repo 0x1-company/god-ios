@@ -43,7 +43,7 @@ public struct InboxDetailLogic {
   public struct State: Equatable {
     let activity: God.InboxFragment
     var isInGodMode: Bool
-    
+
     var firstName = ""
     var avatarImageData: Data?
 
@@ -160,7 +160,7 @@ public struct InboxDetailLogic {
       case let .activeSubscriptionResponse(.success(data)):
         state.isInGodMode = data.activeSubscription != nil
         return .none
-        
+
       case let .currentUserAvatarResponse(.success(data)):
         state.firstName = data.currentUser.firstName
         return .run { send in
@@ -171,7 +171,7 @@ public struct InboxDetailLogic {
         } catch: { error, send in
           await send(.avatarImageResponse(.failure(error)))
         }
-        
+
       case let .avatarImageResponse(.success(data)):
         state.avatarImageData = data
         return .none
@@ -219,7 +219,7 @@ public struct InboxDetailLogic {
       }
     }
   }
-  
+
   func currentUserAvatarRequest(send: Send<Action>) async {
     await withTaskCancellation(id: Cancel.currentUserAvatar, cancelInFlight: true) {
       do {
@@ -302,7 +302,7 @@ public struct InboxDetailView: View {
               }
             }
             .buttonStyle(ShareStoriesButtonStyle())
-            
+
             Button {
               store.send(.seeWhoSentItButtonTapped)
             } label: {

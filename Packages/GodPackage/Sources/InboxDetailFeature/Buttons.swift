@@ -10,7 +10,7 @@ struct ShareStoriesButtonStyle: ButtonStyle {
       .foregroundStyle(Color.white)
       .background(
         LinearGradient(
-          colors: [Color(0xFFFF613B), Color(0xFFD60E9B)],
+          colors: [Color(0xFFFF_613B), Color(0xFFD6_0E9B)],
           startPoint: UnitPoint(x: 0, y: 0),
           endPoint: UnitPoint(x: 1, y: 1)
         )
