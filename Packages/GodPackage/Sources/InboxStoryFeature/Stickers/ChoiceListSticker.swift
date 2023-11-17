@@ -63,6 +63,7 @@ public struct ChoiceListSticker: View {
                   HStack(spacing: 0) {
                     Color(0xFFD1_D5DB)
                       .frame(width: proxy.size.width * Double.random(in: 0.1 ..< 0.4))
+                      .opacity(0.5)
                     Color.white
                   }
                 }
@@ -72,7 +73,8 @@ public struct ChoiceListSticker: View {
             .overlay {
               if !choice.isSelected {
                 RoundedRectangle(cornerRadius: 48 / 2)
-                  .stroke(Color(0xFF9C_A3AF), lineWidth: 1)
+                  .stroke(Color(0xFFD1_D5DB), lineWidth: 1)
+                  .opacity(0.5)
               }
             }
         }
