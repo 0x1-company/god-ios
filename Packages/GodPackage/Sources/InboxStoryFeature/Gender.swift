@@ -35,4 +35,15 @@ extension God.Gender {
       return ImageResource.arrowRightOther
     }
   }
+  
+  var finger: ImageResource {
+    switch self {
+    case .female:
+      return ImageResource.fingerFemale
+    case .male:
+      return ImageResource.fingerMale
+    case .other:
+      return ImageResource.fingerOther
+    }
+  }
 }

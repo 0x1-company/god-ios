@@ -77,6 +77,12 @@ public struct ChoiceListSticker: View {
                   .opacity(0.5)
               }
             }
+            .overlay(alignment: .topTrailing) {
+              if choice.isSelected {
+                Image(gender.finger)
+                  .offset(x: 30, y: -24)
+              }
+            }
         }
       }
       .padding(.vertical, 18)
