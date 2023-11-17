@@ -3,6 +3,8 @@ import Styleguide
 import SwiftUI
 
 public struct ChoiceListSticker: View {
+  @State var isAnimation = false
+
   let questionText: String
   let gender: God.Gender
   let grade: String?
@@ -81,6 +83,14 @@ public struct ChoiceListSticker: View {
               if choice.isSelected {
                 Image(gender.finger)
                   .offset(x: 30, y: -24)
+                  .scaleEffect(isAnimation ? 1.0 : 0.9)
+                  .animation(
+                    .default.repeatForever(autoreverses: true).speed(0.5),
+                    value: isAnimation
+                  )
+                  .task {
+                    isAnimation = true
+                  }
               }
             }
         }
