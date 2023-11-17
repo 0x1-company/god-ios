@@ -149,12 +149,12 @@ public struct InboxDetailLogic {
           [pasteboardItems],
           options: [.expirationDate: Date().addingTimeInterval(300)]
         )
-        
+
         analytics.buttonClick(name: .storyShare, parameters: [
           "sticker": state.sticker.rawValue,
           "question_id": state.activity.question.id,
           "question_text": state.activity.question.text.ja,
-          "activity_id": state.activity.id
+          "activity_id": state.activity.id,
         ])
 
         return .run { _ in
