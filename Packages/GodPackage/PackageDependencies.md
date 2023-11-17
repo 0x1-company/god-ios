@@ -90,6 +90,7 @@ graph TD;
     InboxDetailFeature-->AnimationDisableTransaction;
     InboxFeature-->InboxDetailFeature;
     InboxStoryFeature-->God;
+    InboxStoryFeature-->NameImage;
     InboxStoryFeature-->Styleguide;
     InviteFriendFeature-->Lottie;
     InviteFriendFeature-->GodClient;
