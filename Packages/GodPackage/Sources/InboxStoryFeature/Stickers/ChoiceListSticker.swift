@@ -25,7 +25,7 @@ public struct ChoiceListSticker: View {
       VStack(spacing: 8) {
         Group {
           if let grade {
-            Text("From a \(gender.text) in \(grade)", bundle: .module)
+            Text("single-from-\(gender.text)-in-\(grade)", bundle: .module)
           } else {
             Text("From a \(gender.text)", bundle: .module)
           }
@@ -114,7 +114,7 @@ public struct ChoiceListSticker: View {
     ChoiceListSticker(
       questionText: "かけてあるバックの持ち手が片方だけ外れてたら、そっと治す",
       gender: God.Gender.female,
-      grade: "11th grade",
+      grade: "1年生",
       choices: [
         God.InboxFragment.Choice(
           _dataDict: DataDict(
