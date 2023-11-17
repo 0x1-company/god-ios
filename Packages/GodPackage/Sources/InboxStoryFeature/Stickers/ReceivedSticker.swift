@@ -21,7 +21,7 @@ public struct ReceivedSticker: View {
     VStack(spacing: 0) {
       Group {
         if let grade {
-          Text("From a \(gender.text) in \(grade)", bundle: .module)
+          Text("multi-from-\(gender.text)-in-\(grade)", bundle: .module)
         } else {
           Text("From a \(gender.text)", bundle: .module)
         }

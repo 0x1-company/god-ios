@@ -21,22 +21,6 @@
         }
       }
     },
-    "From a %@ in %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "From a %1$@ in %2$@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$@の%1$@に\n選ばれました"
-          }
-        }
-      }
-    },
     "girl" : {
       "localizations" : {
         "ja" : {
@@ -47,12 +31,44 @@
         }
       }
     },
+    "multi-from-%@-in-%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From a %1$@ in %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%2$@の%1$@に\n選ばれました"
+          }
+        }
+      }
+    },
     "See who likes you - God" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "匿名投票アプリ - God"
+          }
+        }
+      }
+    },
+    "single-from-%@-in-%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From a %1$@ in %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%2$@の%1$@に選ばれました"
           }
         }
       }

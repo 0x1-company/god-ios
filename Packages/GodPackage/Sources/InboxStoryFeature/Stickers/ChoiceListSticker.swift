@@ -25,7 +25,7 @@ public struct ChoiceListSticker: View {
       VStack(spacing: 8) {
         Group {
           if let grade {
-            Text("From a \(gender.text) in \(grade)", bundle: .module)
+            Text("single-from-\(gender.text)-in-\(grade)", bundle: .module)
           } else {
             Text("From a \(gender.text)", bundle: .module)
           }
@@ -35,7 +35,7 @@ public struct ChoiceListSticker: View {
 
         Text(questionText)
           .font(.system(.title3, design: .rounded, weight: .bold))
-          .foregroundStyle(gender.color)
+          .foregroundStyle(Color.godBlack)
           .frame(maxWidth: .infinity)
           .padding(.vertical, 8)
           .padding(.horizontal, 12)
@@ -63,6 +63,7 @@ public struct ChoiceListSticker: View {
                   HStack(spacing: 0) {
                     Color(0xFFD1_D5DB)
                       .frame(width: proxy.size.width * Double.random(in: 0.1 ..< 0.4))
+                      .opacity(0.5)
                     Color.white
                   }
                 }
@@ -72,7 +73,14 @@ public struct ChoiceListSticker: View {
             .overlay {
               if !choice.isSelected {
                 RoundedRectangle(cornerRadius: 48 / 2)
-                  .stroke(Color(0xFF9C_A3AF), lineWidth: 1)
+                  .stroke(Color(0xFFD1_D5DB), lineWidth: 1)
+                  .opacity(0.5)
+              }
+            }
+            .overlay(alignment: .topTrailing) {
+              if choice.isSelected {
+                Image(gender.finger)
+                  .offset(x: 30, y: -24)
               }
             }
         }
@@ -106,7 +114,7 @@ public struct ChoiceListSticker: View {
     ChoiceListSticker(
       questionText: "かけてあるバックの持ち手が片方だけ外れてたら、そっと治す",
       gender: God.Gender.female,
-      grade: "11th grade",
+      grade: "1年生",
       choices: [
         God.InboxFragment.Choice(
           _dataDict: DataDict(
