@@ -43,7 +43,7 @@ public struct ChoiceListSticker: View {
           .cornerRadius(8)
       }
       .padding(.horizontal, 12)
-      .padding(.top, 42)
+      .padding(.top, 46)
       .padding(.bottom, 12)
       .frame(maxWidth: .infinity)
       .background(gender.color)

@@ -227,11 +227,13 @@ public struct InboxDetailView: View {
             HStack(spacing: 32) {
               receivedSticker
                 .compositingGroup()
-                .shadow(radius: 12)
+                .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
+                .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
 
               choiceListSticker
                 .compositingGroup()
-                .shadow(radius: 12)
+                .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
+                .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
             }
             .padding(.top, 52)
             .padding(.bottom, 12)

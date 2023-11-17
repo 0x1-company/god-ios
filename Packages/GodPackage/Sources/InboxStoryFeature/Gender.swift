@@ -6,9 +6,9 @@ extension God.Gender {
   var text: String {
     switch self {
     case .female:
-      return String(localized: "boy", bundle: .module)
-    case .male:
       return String(localized: "girl", bundle: .module)
+    case .male:
+      return String(localized: "boy", bundle: .module)
     case .other:
       return String(localized: "someone", bundle: .module)
     }
