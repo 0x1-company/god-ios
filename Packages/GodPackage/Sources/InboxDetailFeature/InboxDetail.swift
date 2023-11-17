@@ -246,24 +246,6 @@ public struct InboxDetailView: View {
 
           VStack(spacing: 12) {
             Button {
-              store.send(.seeWhoSentItButtonTapped)
-            } label: {
-              Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock")
-                .font(.system(.headline, design: .rounded, weight: .bold))
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.black)
-                .background(
-                  LinearGradient(
-                    colors: [Color(0xFFE8_B423), Color(0xFFF5_D068)],
-                    startPoint: UnitPoint(x: 0, y: 0.5),
-                    endPoint: UnitPoint(x: 1, y: 0.5)
-                  )
-                )
-                .clipShape(Capsule())
-            }
-
-            Button {
               let renderer = ImageRenderer(
                 content: receivedSticker
                   .padding(.vertical, 36)
@@ -272,17 +254,22 @@ public struct InboxDetailView: View {
               renderer.scale = displayScale
               store.send(.storyButtonTapped(renderer.uiImage))
             } label: {
-              Label(String(localized: "Reply", bundle: .module), systemImage: "camera")
-                .font(.system(.headline, design: .rounded, weight: .bold))
-                .frame(height: 56)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.white)
-                .background(Color.godBlack)
-                .clipShape(Capsule())
+              Label {
+                Text("Share Stories", bundle: .module)
+              } icon: {
+                Image(ImageResource.instagram)
+              }
             }
+            .buttonStyle(ShareStoriesButtonStyle())
+            
+            Button {
+              store.send(.seeWhoSentItButtonTapped)
+            } label: {
+              Label(String(localized: "See who sent it", bundle: .module), systemImage: "lock.fill")
+            }
+            .buttonStyle(SeeWhoSentItButtonStyle())
           }
           .padding(.horizontal, 16)
-          .buttonStyle(HoldDownButtonStyle())
         }
         .overlay(alignment: .topTrailing) {
           Button {
