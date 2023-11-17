@@ -26,7 +26,7 @@ public struct ReceivedSticker: View {
           Text("From a \(gender.text)", bundle: .module)
         }
       }
-      .font(.system(.headline, design: .rounded, weight: .bold))
+      .font(.system(.title3, design: .rounded, weight: .bold))
       .padding(.horizontal, 12)
       .padding(.top, 42)
       .padding(.bottom, 12)
@@ -35,7 +35,7 @@ public struct ReceivedSticker: View {
       .background(gender.color)
 
       Text(questionText)
-        .font(.system(.headline, design: .rounded, weight: .bold))
+        .font(.system(.title3, design: .rounded, weight: .bold))
         .padding(.horizontal, 12)
         .frame(maxWidth: .infinity, minHeight: 90)
         .background(Color.white)
