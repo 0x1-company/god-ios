@@ -95,7 +95,7 @@ public struct ReceivedSticker: View {
             .stroke(Color.white, lineWidth: 4)
         )
       }
-      .offset(y: -27)
+      .offset(y: -32)
     }
   }
 }
