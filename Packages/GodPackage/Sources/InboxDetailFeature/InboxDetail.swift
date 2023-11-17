@@ -43,6 +43,9 @@ public struct InboxDetailLogic {
   public struct State: Equatable {
     let activity: God.InboxFragment
     var isInGodMode: Bool
+    
+    var firstName = ""
+    var avatarImageData: Data?
 
     @PresentationState var destination: Destination.State?
 
@@ -61,6 +64,8 @@ public struct InboxDetailLogic {
     case showFullName(String)
     case productsResponse(TaskResult<[Product]>)
     case activeSubscriptionResponse(TaskResult<God.ActiveSubscriptionQuery.Data>)
+    case currentUserAvatarResponse(TaskResult<God.CurrentUserAvatarQuery.Data>)
+    case avatarImageResponse(TaskResult<Data>)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -71,11 +76,13 @@ public struct InboxDetailLogic {
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.urlSession) var urlSession
   @Dependency(\.feedbackGenerator) var feedbackGenerator
   @Dependency(\.notificationCenter) var notificationCenter
 
   enum Cancel {
     case activeSubscription
+    case currentUserAvatar
   }
 
   public var body: some Reducer<State, Action> {
@@ -86,6 +93,9 @@ public struct InboxDetailLogic {
           await withTaskGroup(of: Void.self) { group in
             group.addTask {
               await activeSubscriptionRequest(send: send)
+            }
+            group.addTask {
+              await currentUserAvatarRequest(send: send)
             }
           }
         }
@@ -150,6 +160,21 @@ public struct InboxDetailLogic {
       case let .activeSubscriptionResponse(.success(data)):
         state.isInGodMode = data.activeSubscription != nil
         return .none
+        
+      case let .currentUserAvatarResponse(.success(data)):
+        state.firstName = data.currentUser.firstName
+        return .run { send in
+          guard let imageURL = URL(string: data.currentUser.imageURL)
+          else { return }
+          let (data, _) = try await urlSession.data(from: imageURL)
+          await send(.avatarImageResponse(.success(data)))
+        } catch: { error, send in
+          await send(.avatarImageResponse(.failure(error)))
+        }
+        
+      case let .avatarImageResponse(.success(data)):
+        state.avatarImageData = data
+        return .none
 
       case .destination(.dismiss):
         state.destination = nil
@@ -194,6 +219,18 @@ public struct InboxDetailLogic {
       }
     }
   }
+  
+  func currentUserAvatarRequest(send: Send<Action>) async {
+    await withTaskCancellation(id: Cancel.currentUserAvatar, cancelInFlight: true) {
+      do {
+        for try await data in godClient.currentUserAvatar() {
+          await send(.currentUserAvatarResponse(.success(data)))
+        }
+      } catch {
+        await send(.currentUserAvatarResponse(.failure(error)))
+      }
+    }
+  }
 }
 
 public struct InboxDetailView: View {
@@ -211,8 +248,8 @@ public struct InboxDetailView: View {
           questionText: viewStore.activity.question.text.ja,
           gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
           grade: viewStore.activity.voteUser.grade,
-          avatarImageData: nil,
-          firstName: ""
+          avatarImageData: viewStore.avatarImageData,
+          firstName: viewStore.firstName
         )
         .frame(width: proxy.size.width - 96)
 
@@ -220,8 +257,8 @@ public struct InboxDetailView: View {
           questionText: viewStore.activity.question.text.ja,
           gender: viewStore.activity.voteUser.gender.value ?? God.Gender.other,
           grade: viewStore.activity.voteUser.grade,
-          avatarImageData: nil,
-          firstName: "",
+          avatarImageData: viewStore.avatarImageData,
+          firstName: viewStore.firstName,
           choices: viewStore.activity.choices
         )
         .frame(width: proxy.size.width - 96)
