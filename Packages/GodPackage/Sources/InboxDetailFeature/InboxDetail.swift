@@ -18,6 +18,11 @@ import SwiftUI
 @Reducer
 public struct InboxDetailLogic {
   public init() {}
+  
+  public enum Sticker: Equatable {
+    case received
+    case choiceList
+  }
 
   @Reducer
   public struct Destination {
@@ -43,6 +48,7 @@ public struct InboxDetailLogic {
   public struct State: Equatable {
     let activity: God.InboxFragment
     var isInGodMode: Bool
+    @BindingState var sticker = Sticker.received
 
     var firstName = ""
     var avatarImageData: Data?
@@ -55,7 +61,7 @@ public struct InboxDetailLogic {
     }
   }
 
-  public enum Action {
+  public enum Action: BindableAction {
     case onTask
     case onAppear
     case closeButtonTapped
@@ -67,6 +73,7 @@ public struct InboxDetailLogic {
     case currentUserAvatarResponse(TaskResult<God.CurrentUserAvatarQuery.Data>)
     case avatarImageResponse(TaskResult<Data>)
     case destination(PresentationAction<Destination.Action>)
+    case binding(BindingAction<State>)
   }
 
   @Dependency(\.build) var build
@@ -86,6 +93,7 @@ public struct InboxDetailLogic {
   }
 
   public var body: some Reducer<State, Action> {
+    BindingReducer()
     Reduce<State, Action> { state, action in
       switch action {
       case .onTask:
@@ -264,33 +272,37 @@ public struct InboxDetailView: View {
         .frame(width: proxy.size.width - 96)
 
         VStack(spacing: 0) {
-          ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 32) {
-              receivedSticker
-                .compositingGroup()
-                .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
-                .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
-
-              choiceListSticker
-                .compositingGroup()
-                .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
-                .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
-            }
-            .padding(.top, 52)
-            .padding(.bottom, 12)
-            .padding(.horizontal, 48)
-            .frame(maxHeight: .infinity)
-            .scrollTargetLayoutIfPossible()
+          TabView(selection: viewStore.$sticker) {
+            receivedSticker
+              .tag(InboxDetailLogic.Sticker.received)
+              .compositingGroup()
+              .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
+              .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
+            
+            choiceListSticker
+              .tag(InboxDetailLogic.Sticker.choiceList)
+              .compositingGroup()
+              .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
+              .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
           }
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .scrollTargetBehaviorIfPossible()
+          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+          .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
 
           VStack(spacing: 12) {
             Button {
+              @ViewBuilder func sticker() -> some View {
+                switch viewStore.sticker {
+                case InboxDetailLogic.Sticker.received:
+                  receivedSticker
+                case InboxDetailLogic.Sticker.choiceList:
+                  choiceListSticker
+                }
+              }
               let renderer = ImageRenderer(
-                content: receivedSticker
+                content: sticker()
                   .padding(.vertical, 36)
                   .padding(.horizontal, 4)
+                  .environment(\.locale, Locale(identifier: "ja-JP"))
               )
               renderer.scale = displayScale
               store.send(.storyButtonTapped(renderer.uiImage))
