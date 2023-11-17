@@ -293,16 +293,15 @@ public struct InboxDetailView: View {
               @ViewBuilder func sticker() -> some View {
                 switch viewStore.sticker {
                 case InboxDetailLogic.Sticker.received:
-                  receivedSticker
+                  receivedSticker.environment(\.locale, Locale(identifier: "ja-JP"))
                 case InboxDetailLogic.Sticker.choiceList:
-                  choiceListSticker
+                  choiceListSticker.environment(\.locale, Locale(identifier: "ja-JP"))
                 }
               }
               let renderer = ImageRenderer(
                 content: sticker()
                   .padding(.vertical, 36)
                   .padding(.horizontal, 4)
-                  .environment(\.locale, Locale(identifier: "ja-JP"))
               )
               renderer.scale = displayScale
               store.send(.storyButtonTapped(renderer.uiImage))
