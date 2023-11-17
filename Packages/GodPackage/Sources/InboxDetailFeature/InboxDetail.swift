@@ -264,26 +264,19 @@ public struct InboxDetailView: View {
         .frame(width: proxy.size.width - 96)
 
         VStack(spacing: 0) {
-          ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 32) {
-              receivedSticker
-                .compositingGroup()
-                .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
-                .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
-
-              choiceListSticker
-                .compositingGroup()
-                .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
-                .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
-            }
-            .padding(.top, 52)
-            .padding(.bottom, 12)
-            .padding(.horizontal, 48)
-            .frame(maxHeight: .infinity)
-            .scrollTargetLayoutIfPossible()
+          TabView {
+            receivedSticker
+              .compositingGroup()
+              .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
+              .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
+            
+            choiceListSticker
+              .compositingGroup()
+              .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
+              .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 0)
           }
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .scrollTargetBehaviorIfPossible()
+          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+          .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
 
           VStack(spacing: 12) {
             Button {
