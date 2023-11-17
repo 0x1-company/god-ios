@@ -35,7 +35,7 @@ public struct ChoiceListSticker: View {
 
         Text(questionText)
           .font(.system(.title3, design: .rounded, weight: .bold))
-          .foregroundStyle(gender.color)
+          .foregroundStyle(Color.godBlack)
           .frame(maxWidth: .infinity)
           .padding(.vertical, 8)
           .padding(.horizontal, 12)
