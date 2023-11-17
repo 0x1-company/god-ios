@@ -28,7 +28,7 @@ public struct ReceivedSticker: View {
       }
       .font(.system(.title3, design: .rounded, weight: .bold))
       .padding(.horizontal, 12)
-      .padding(.top, 42)
+      .padding(.top, 46)
       .padding(.bottom, 12)
       .frame(maxWidth: .infinity)
       .foregroundStyle(Color.white)
