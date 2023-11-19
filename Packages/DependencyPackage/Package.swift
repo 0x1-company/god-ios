@@ -81,6 +81,9 @@ let package = Package(
       .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .testTarget(name: "FirestoreClientTests", dependencies: [
+      "FirestoreClient"
+    ]),
     .target(name: "God", dependencies: [
       .product(name: "ApolloAPI", package: "apollo-ios"),
     ]),

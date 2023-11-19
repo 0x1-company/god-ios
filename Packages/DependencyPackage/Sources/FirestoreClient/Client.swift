@@ -13,7 +13,20 @@ public extension FirestoreClient {
     }
 
     public func isForceUpdate(_ packageVersion: String) -> Bool {
-      minimumSupportedAppVersion > packageVersion
+      let packageVersion = packageVersion
+        .split(separator: ".")
+        .map(String.init)
+        .compactMap(Int.init)
+      
+      return minimumSupportedAppVersion
+        .split(separator: ".")
+        .map(String.init)
+        .compactMap(Int.init)
+        .enumerated()
+        .map { index, element in
+          element > packageVersion[index]
+        }
+        .contains(true)
     }
   }
 }
