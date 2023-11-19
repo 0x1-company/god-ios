@@ -14,7 +14,21 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:..\/Packages\/DependencyPackage",
+        "containerPath" : "container:",
+        "identifier" : "FirestoreClientTests",
+        "name" : "FirestoreClientTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ShareLinkBuilderTests",
+        "name" : "ShareLinkBuilderTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "StringHelpersTests",
         "name" : "StringHelpersTests"
       }

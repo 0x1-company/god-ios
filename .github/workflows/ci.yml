@@ -52,3 +52,4 @@ jobs:
           restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-
       - run: make bootstrap
       - run: xcodebuild test -scheme FirestoreClientTests -destination platform="${{ env.PLATFORM_IOS }}" | xcpretty
+      - run: xcodebuild test -workspace caaaption.xcworkspace -scheme "App (Staging project)" -testPlan App -destination platform="${{ env.PLATFORM_IOS }}" | xcpretty
