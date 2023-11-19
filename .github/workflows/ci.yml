@@ -40,8 +40,7 @@ jobs:
       - run: make bootstrap
       - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -skipMacroValidation -destination platform="${{ env.PLATFORM_IOS }}" | xcpretty
 
-  test-firestore:
-    if: ${{ contains(github.event.head_commit.modified, 'FirestoreClientTests') }}
+  test:
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
