@@ -23,6 +23,7 @@ graph TD;
     InboxDetailFeature-->GodModeFeature;
     InboxDetailFeature-->InboxStoryFeature;
     InboxFeature-->InboxDetailFeature;
+    InboxFeature-->ActivatedGodModeFeature;
     NavigationFeature-->AddFeature;
     NavigationFeature-->GodFeature;
     NavigationFeature-->InboxFeature;
