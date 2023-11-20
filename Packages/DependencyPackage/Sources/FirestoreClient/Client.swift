@@ -17,7 +17,7 @@ public extension FirestoreClient {
         .split(separator: ".")
         .map(String.init)
         .compactMap(Int.init)
-      
+
       return minimumSupportedAppVersion
         .split(separator: ".")
         .map(String.init)
