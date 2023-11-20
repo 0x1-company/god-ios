@@ -11,6 +11,7 @@ let package = Package(
   ],
   products: [
     .library(name: "AboutFeature", targets: ["AboutFeature"]),
+    .library(name: "ActivatedGodModeFeature", targets: ["ActivatedGodModeFeature"]),
     .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
     .library(name: "AddFeature", targets: ["AddFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
@@ -62,6 +63,11 @@ let package = Package(
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "SwiftUIMessage", package: "SwiftUIMessage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
+    ]),
+    .target(name: "ActivatedGodModeFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
       "ProfileFeature",
@@ -174,6 +180,7 @@ let package = Package(
     ]),
     .target(name: "InboxFeature", dependencies: [
       "InboxDetailFeature",
+      "ActivatedGodModeFeature",
     ]),
     .target(name: "InboxStoryFeature", dependencies: [
       .product(name: "God", package: "DependencyPackage"),

@@ -34,23 +34,6 @@
         }
       }
     },
-    "From %@ in %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "From %1$@ in %2$@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$@の%1$@があなたを選びました"
-          }
-        }
-      }
-    },
     "From a %@" : {
       "localizations" : {
         "ja" : {
@@ -91,33 +74,12 @@
         }
       }
     },
-    "godapp.jp" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "godapp.jp"
-          }
-        }
-      }
-    },
     "Notifications are off" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "通知がオフになっています"
-          }
-        }
-      }
-    },
-    "OK" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
           }
         }
       }
@@ -132,44 +94,12 @@
         }
       }
     },
-    "See who sent it" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "誰から届いたか見る？👀"
-          }
-        }
-      }
-    },
-    "Share Stories" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ストーリーでシェアする"
-          }
-        }
-      }
-    },
     "someone" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "その他"
-          }
-        }
-      }
-    },
-    "Tap a message in your inbox to reveal the sender" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "自分を褒めてくれた人の名前を見ることができます！"
           }
         }
       }
