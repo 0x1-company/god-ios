@@ -10,17 +10,10 @@ public struct MaintenanceLogic {
     public init() {}
   }
 
-  public enum Action {
-    case onTask
-  }
+  public enum Action {}
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { _, action in
-      switch action {
-      case .onTask:
-        return .none
-      }
-    }
+    EmptyReducer()
   }
 }
 
@@ -34,10 +27,10 @@ public struct MaintenanceView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 24) {
-        Text("メンテナンス中", bundle: .module)
+        Text("Under Maintenance", bundle: .module)
           .font(.system(.title, design: .rounded, weight: .bold))
 
-        Text("サービス再開までしばらくお待ち下さい。", bundle: .module)
+        Text("Please wait for a while until service resumes.", bundle: .module)
           .font(.system(.body, design: .rounded, weight: .bold))
       }
       .padding(.horizontal, 24)
