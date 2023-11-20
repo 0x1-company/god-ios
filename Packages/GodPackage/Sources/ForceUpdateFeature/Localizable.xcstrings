@@ -1,14 +1,35 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "...おや？！Godのようすが...！\n最新バージョンへのアップデートをお願いします。" : {
-
+    "... Oh? ! ! Looks like God...! \nPlease update to the latest version." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "...おや？！Godのようすが...！\n最新バージョンへのアップデートをお願いします。"
+          }
+        }
+      }
     },
-    "アップデート" : {
-
+    "Notice" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お知らせ"
+          }
+        }
+      }
     },
-    "お知らせ" : {
-
+    "Update" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップデート"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
