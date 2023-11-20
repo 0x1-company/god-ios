@@ -47,14 +47,14 @@ public struct ForceUpdateView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { _ in
       VStack(spacing: 24) {
-        Text("お知らせ", bundle: .module)
+        Text("Notice", bundle: .module)
           .font(.system(.title, design: .rounded, weight: .bold))
-        Text("...おや？！Godのようすが...！\n最新バージョンへのアップデートをお願いします。", bundle: .module)
+        Text("... Oh? ! ! Looks like God...! \nPlease update to the latest version.", bundle: .module)
 
         Button {
           store.send(.updateButtonTapped)
         } label: {
-          Text("アップデート", bundle: .module)
+          Text("Update", bundle: .module)
             .font(.system(.body, design: .rounded, weight: .bold))
             .frame(height: 56)
             .padding(.horizontal, 32)
