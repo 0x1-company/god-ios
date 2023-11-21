@@ -33,6 +33,7 @@ graph TD;
     OnboardFeature-->HowItWorksFeature;
     OnboardFeature-->ProfileStoryFeature;
     OnboardFeature-->InviteFriendFeature;
+    OnboardFeature-->SchoolSettingFeature;
     OnboardFeature-->CupertinoMessageFeature;
     ProfileEditFeature-->ManageAccountFeature;
     ProfileEditFeature-->DeleteAccountFeature;
