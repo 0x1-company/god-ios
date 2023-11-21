@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import SchoolSettingFeature
 import Contacts
 import ContactsClient
 import FirebaseAuth
@@ -8,6 +7,7 @@ import FirebaseDynamicLinks
 import God
 import HowItWorksFeature
 import InviteFriendFeature
+import SchoolSettingFeature
 import SwiftUI
 import UserDefaultsClient
 
