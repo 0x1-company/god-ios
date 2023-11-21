@@ -33,6 +33,10 @@ public struct SchoolSettingLogic {
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
+  
+  enum Cancel {
+    case school
+  }
 
   public var body: some Reducer<State, Action> {
     Reduce<State, Action> { state, action in
@@ -45,6 +49,7 @@ public struct SchoolSettingLogic {
         } catch: { error, send in
           await send(.schoolsResponse(.failure(error)))
         }
+        .cancellable(id: Cancel.school, cancelInFlight: true)
 
       case .onAppear:
         analytics.logScreen(screenName: "SchoolSetting", of: self)
@@ -56,7 +61,10 @@ public struct SchoolSettingLogic {
         }
 
       case let .schoolButtonTapped(id):
-        return .send(.delegate(.nextScreen(id: id)))
+        return .run { send in
+          analytics.setUserProperty(key: .schoolId, value: id)
+          await send(.delegate(.nextScreen(id: id)))
+        }
 
       case let .schoolsResponse(.success(data)):
         state.schools = data.schools.edges.map(\.node)
