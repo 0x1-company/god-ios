@@ -33,7 +33,7 @@ public struct SchoolSettingLogic {
   @Dependency(\.openURL) var openURL
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
-  
+
   enum Cancel {
     case school
   }
