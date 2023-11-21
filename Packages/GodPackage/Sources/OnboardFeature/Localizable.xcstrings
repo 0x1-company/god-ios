@@ -329,16 +329,6 @@
         }
       }
     },
-    "If your school is not found, add it here" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "学校が見つからない場合はここから追加する"
-          }
-        }
-      }
-    },
     "Imported from Contacts" : {
       "localizations" : {
         "ja" : {
@@ -385,16 +375,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログイン"
-          }
-        }
-      }
-    },
-    "MEMBERS" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "人"
           }
         }
       }
@@ -455,16 +435,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あなたの部活動を選択"
-          }
-        }
-      }
-    },
-    "Pick your school" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "あなたの高校を選択"
           }
         }
       }

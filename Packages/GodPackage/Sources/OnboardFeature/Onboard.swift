@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import SchoolSettingFeature
 import Contacts
 import ContactsClient
 import FirebaseAuth
