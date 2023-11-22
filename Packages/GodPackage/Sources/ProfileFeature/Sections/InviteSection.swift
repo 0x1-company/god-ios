@@ -1,5 +1,5 @@
-import SwiftUI
 import Styleguide
+import SwiftUI
 
 struct InviteSection: View {
   let coinBalance: Int
@@ -13,7 +13,7 @@ struct InviteSection: View {
       VStack(spacing: 16) {
         InviteTicket(code: code)
           .onTapGesture(perform: codeCopyAction)
-        
+
         Button(action: inviteFriendAction) {
           Label {
             Text("Invite friend", bundle: .module)
@@ -32,7 +32,7 @@ struct InviteSection: View {
       .padding(.horizontal, 16)
       .background(Color.white)
       .cornerRadius(16)
-      
+
       Button(action: shopAction) {
         HStack(spacing: 8) {
           Text(coinBalance.description)

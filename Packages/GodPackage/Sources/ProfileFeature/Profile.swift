@@ -6,8 +6,8 @@ import ProfileEditFeature
 import ProfileShareFeature
 import ShopFeature
 import Styleguide
-import UIPasteboardClient
 import SwiftUI
+import UIPasteboardClient
 
 @Reducer
 public struct ProfileLogic {
@@ -71,7 +71,7 @@ public struct ProfileLogic {
         analytics.buttonClick(name: .shop)
         state.destination = .shop()
         return .none
-        
+
       case .invitationCodeCopyButtonTapped:
         guard let code = state.profile?.invitationCode.code
         else { return .none }
@@ -117,7 +117,7 @@ public struct ProfileLogic {
             await currentUserRequest(send: send)
           }
         }
-        
+
       case .destination(.presented(.alert(.confirmOkay))):
         state.destination = nil
         return .none
@@ -161,7 +161,7 @@ public struct ProfileLogic {
       case profileShare(ProfileShareLogic.Action)
       case external(ProfileExternalLogic.Action)
       case alert(Alert)
-      
+
       public enum Alert: Equatable {
         case confirmOkay
       }
@@ -211,7 +211,7 @@ public struct ProfileView: View {
             }
 
             Divider()
-            
+
             InviteSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
               code: data.invitationCode.code,
