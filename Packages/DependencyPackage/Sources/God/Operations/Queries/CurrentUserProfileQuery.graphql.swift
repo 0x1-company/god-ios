@@ -8,7 +8,7 @@ public extension God {
     public static let operationName: String = "CurrentUserProfile"
     public static let operationDocument: ApolloAPI.OperationDocument = .init(
       definition: .init(
-        #"query CurrentUserProfile { currentUser { __typename ...ProfileSectionFragment wallet { __typename id coinBalance } } friends { __typename ...FriendFragment } questionsOrderByVotedDesc(first: 3) { __typename id imageURL text { __typename ja } } }"#,
+        #"query CurrentUserProfile { currentUser { __typename ...ProfileSectionFragment wallet { __typename id coinBalance } } invitationCode { __typename id code } friends { __typename ...FriendFragment } questionsOrderByVotedDesc(first: 3) { __typename id imageURL text { __typename ja } } }"#,
         fragments: [ProfileSectionFragment.self, FriendFragment.self]
       ))
 
@@ -21,12 +21,15 @@ public extension God {
       public static var __parentType: ApolloAPI.ParentType { God.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("currentUser", CurrentUser.self),
+        .field("invitationCode", InvitationCode.self),
         .field("friends", [Friend].self),
         .field("questionsOrderByVotedDesc", [QuestionsOrderByVotedDesc].self, arguments: ["first": 3]),
       ] }
 
       /// ログイン中ユーザーを取得
       public var currentUser: CurrentUser { __data["currentUser"] }
+      /// 招待コードを取得
+      public var invitationCode: InvitationCode { __data["invitationCode"] }
       /// フレンドの一覧
       public var friends: [Friend] { __data["friends"] }
       public var questionsOrderByVotedDesc: [QuestionsOrderByVotedDesc] { __data["questionsOrderByVotedDesc"] }
@@ -96,6 +99,25 @@ public extension God {
           /// コイン枚数
           public var coinBalance: Int { __data["coinBalance"] }
         }
+      }
+
+      /// InvitationCode
+      ///
+      /// Parent Type: `InvitationCode`
+      public struct InvitationCode: God.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { God.Objects.InvitationCode }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .field("id", God.ID.self),
+          .field("code", String.self),
+        ] }
+
+        public var id: God.ID { __data["id"] }
+        /// 招待コード
+        public var code: String { __data["code"] }
       }
 
       /// Friend

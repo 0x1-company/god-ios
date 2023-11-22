@@ -44,6 +44,7 @@ public extension God {
       case "Query": return God.Objects.Query
       case "School": return God.Objects.School
       case "Wallet": return God.Objects.Wallet
+      case "InvitationCode": return God.Objects.InvitationCode
       case "Question": return God.Objects.Question
       case "Store": return God.Objects.Store
       case "StoreItem": return God.Objects.StoreItem

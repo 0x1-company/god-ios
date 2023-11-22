@@ -12,7 +12,7 @@ struct InviteTicket: View {
         Text(code)
           .foregroundStyle(Color(0xFFFF_CC00))
           .font(.system(.largeTitle, design: .rounded, weight: .bold))
-          .offset(x: -35, y: 6)
+          .offset(x: -35, y: 8)
       }
   }
 }

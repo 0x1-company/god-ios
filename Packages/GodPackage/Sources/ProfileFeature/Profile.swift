@@ -183,7 +183,7 @@ public struct ProfileView: View {
             
             InviteSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
-              code: "ABCDEF",
+              code: data.invitationCode.code,
               codeCopyAction: {},
               inviteFriendAction: {
                 store.send(.shareProfileButtonTapped)
