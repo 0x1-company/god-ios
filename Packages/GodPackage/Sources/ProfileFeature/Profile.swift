@@ -180,10 +180,12 @@ public struct ProfileView: View {
             }
 
             Divider()
-
-            ShareShopSection(
+            
+            InviteSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
-              shareAction: {
+              code: "ABCDEF",
+              codeCopyAction: {},
+              inviteFriendAction: {
                 store.send(.shareProfileButtonTapped)
               },
               shopAction: {

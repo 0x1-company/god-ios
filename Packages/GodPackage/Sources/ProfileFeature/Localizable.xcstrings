@@ -135,7 +135,14 @@
       }
     },
     "Invite friend" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを招待する"
+          }
+        }
+      }
     },
     "May be under 13 years old" : {
       "localizations" : {
