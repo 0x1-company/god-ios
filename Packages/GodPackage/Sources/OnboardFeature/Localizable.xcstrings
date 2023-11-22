@@ -24,6 +24,9 @@
         }
       }
     },
+    "ABCDEF" : {
+
+    },
     "Add a photo so your friends can find you" : {
       "localizations" : {
         "ja" : {
@@ -143,6 +146,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アカウントを作成します。"
+          }
+        }
+      }
+    },
+    "Do you have invitation code?" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待コードを持っていますか？"
           }
         }
       }
@@ -325,6 +338,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "高校"
+          }
+        }
+      }
+    },
+    "If you do not have it, you can skip it." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "持っていない場合はスキップ出来ます。"
           }
         }
       }
