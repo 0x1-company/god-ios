@@ -82,5 +82,6 @@ public extension AnalyticsClient {
     case getHelp = "get_help"
     case safetyCenter = "safety_center"
     case requiredInviteFriend = "required_invite_friend"
+    case invitationCodeCopy = "invitation_code_copy"
   }
 }

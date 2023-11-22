@@ -19,6 +19,7 @@ public class Query: MockObject {
     @Field<[User]>("friends") public var friends
     @Field<UserConnection>("friendsOfFriends") public var friendsOfFriends
     @Field<InboxActivity>("inboxActivity") public var inboxActivity
+    @Field<InvitationCode>("invitationCode") public var invitationCode
     @Field<ActivityConnection>("listActivities") public var listActivities
     @Field<InboxActivityConnection>("listInboxActivities") public var listInboxActivities
     @Field<[Question]>("questionsOrderByVotedDesc") public var questionsOrderByVotedDesc
@@ -42,6 +43,7 @@ public extension Mock where O == Query {
     friends: [Mock<User>]? = nil,
     friendsOfFriends: Mock<UserConnection>? = nil,
     inboxActivity: Mock<InboxActivity>? = nil,
+    invitationCode: Mock<InvitationCode>? = nil,
     listActivities: Mock<ActivityConnection>? = nil,
     listInboxActivities: Mock<InboxActivityConnection>? = nil,
     questionsOrderByVotedDesc: [Mock<Question>]? = nil,
@@ -62,6 +64,7 @@ public extension Mock where O == Query {
     _setList(friends, for: \.friends)
     _setEntity(friendsOfFriends, for: \.friendsOfFriends)
     _setEntity(inboxActivity, for: \.inboxActivity)
+    _setEntity(invitationCode, for: \.invitationCode)
     _setEntity(listActivities, for: \.listActivities)
     _setEntity(listInboxActivities, for: \.listInboxActivities)
     _setList(questionsOrderByVotedDesc, for: \.questionsOrderByVotedDesc)

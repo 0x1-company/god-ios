@@ -9,6 +9,10 @@ query CurrentUserProfile {
       coinBalance
     }
   }
+  invitationCode {
+    id
+    code
+  }
   friends {
     ...FriendFragment
   }

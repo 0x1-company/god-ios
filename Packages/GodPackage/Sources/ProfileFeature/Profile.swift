@@ -6,6 +6,7 @@ import ProfileEditFeature
 import ProfileShareFeature
 import ShopFeature
 import Styleguide
+import UIPasteboardClient
 import SwiftUI
 
 @Reducer
@@ -24,6 +25,7 @@ public struct ProfileLogic {
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
+    case invitationCodeCopyButtonTapped
     case friendButtonTapped(userId: String)
     case friendEmptyButtonTapped
     case profileResponse(TaskResult<God.CurrentUserProfileQuery.Data>)
@@ -32,6 +34,7 @@ public struct ProfileLogic {
 
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.pasteboard) var pasteboard
 
   enum Cancel {
     case profile
@@ -68,6 +71,24 @@ public struct ProfileLogic {
         analytics.buttonClick(name: .shop)
         state.destination = .shop()
         return .none
+        
+      case .invitationCodeCopyButtonTapped:
+        guard let code = state.profile?.invitationCode.code
+        else { return .none }
+
+        state.destination = .alert(
+          AlertState {
+            TextState("Copied the invitation code.", bundle: .module)
+          } actions: {
+            ButtonState(action: .confirmOkay) {
+              TextState("OK", bundle: .module)
+            }
+          }
+        )
+        return .run { _ in
+          analytics.buttonClick(name: .invitationCodeCopy)
+          pasteboard.string(code)
+        }
 
       case let .friendButtonTapped(userId):
         state.destination = .external(.init(userId: userId))
@@ -96,6 +117,10 @@ public struct ProfileLogic {
             await currentUserRequest(send: send)
           }
         }
+        
+      case .destination(.presented(.alert(.confirmOkay))):
+        state.destination = nil
+        return .none
 
       case .destination(.dismiss):
         state.destination = nil
@@ -127,6 +152,7 @@ public struct ProfileLogic {
       case shop(ShopLogic.State = .init())
       case profileShare(ProfileShareLogic.State = .init())
       case external(ProfileExternalLogic.State)
+      case alert(AlertState<Action.Alert>)
     }
 
     public enum Action {
@@ -134,6 +160,11 @@ public struct ProfileLogic {
       case shop(ShopLogic.Action)
       case profileShare(ProfileShareLogic.Action)
       case external(ProfileExternalLogic.Action)
+      case alert(Alert)
+      
+      public enum Alert: Equatable {
+        case confirmOkay
+      }
     }
 
     public var body: some Reducer<State, Action> {
@@ -180,10 +211,14 @@ public struct ProfileView: View {
             }
 
             Divider()
-
-            ShareShopSection(
+            
+            InviteSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
-              shareAction: {
+              code: data.invitationCode.code,
+              codeCopyAction: {
+                store.send(.invitationCodeCopyButtonTapped)
+              },
+              inviteFriendAction: {
                 store.send(.shareProfileButtonTapped)
               },
               shopAction: {
@@ -218,6 +253,11 @@ public struct ProfileView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
+      .alert(
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
+        state: /ProfileLogic.Destination.State.alert,
+        action: ProfileLogic.Destination.Action.alert
+      )
       .sheet(
         store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileEdit,
