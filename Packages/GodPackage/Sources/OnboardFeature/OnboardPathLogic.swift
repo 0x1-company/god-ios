@@ -88,7 +88,7 @@ public struct OnboardPathLogic {
         return .run(priority: .background) { send in
           await contactsRequest(send: send)
         }
-        
+
       case let .invitationCode(.delegate(.nextScreen(code))):
         state.invitationCode = code
         state.path.append(.phoneNumber())
