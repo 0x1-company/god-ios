@@ -12,15 +12,17 @@ import UserDefaultsClient
 @Reducer
 public struct OneTimeCodeLogic {
   public struct State: Equatable {
-    var inviterUserId: String?
+    let inviterUserId: String?
+    let invitationCode: String?
     var phoneNumber = ""
     var isDisabled = true
     var isActivityIndicatorVisible = false
     @BindingState var oneTimeCode = ""
     @PresentationState var alert: AlertState<Action.Alert>?
 
-    public init(inviterUserId: String?) {
+    public init(inviterUserId: String?, invitationCode: String?) {
       self.inviterUserId = inviterUserId
+      self.invitationCode = invitationCode
     }
   }
 
@@ -127,6 +129,7 @@ public struct OneTimeCodeLogic {
             numbers: format.replacing("+81", with: "")
           )
           let input = God.CreateUserInput(
+            invitationCode: state.invitationCode ?? .null,
             inviterUserId: state.inviterUserId ?? .null,
             phoneNumber: phoneNumber
           )
@@ -225,7 +228,8 @@ public struct OneTimeCodeView: View {
   OneTimeCodeView(
     store: .init(
       initialState: OneTimeCodeLogic.State(
-        inviterUserId: nil
+        inviterUserId: nil,
+        invitationCode: nil
       ),
       reducer: { OneTimeCodeLogic() }
     )
