@@ -6,6 +6,7 @@ import ProfileEditFeature
 import ProfileShareFeature
 import ShopFeature
 import Styleguide
+import UIPasteboardClient
 import SwiftUI
 
 @Reducer
@@ -24,6 +25,7 @@ public struct ProfileLogic {
     case editProfileButtonTapped
     case shareProfileButtonTapped
     case shopButtonTapped
+    case invitationCodeCopyButtonTapped
     case friendButtonTapped(userId: String)
     case friendEmptyButtonTapped
     case profileResponse(TaskResult<God.CurrentUserProfileQuery.Data>)
@@ -32,6 +34,7 @@ public struct ProfileLogic {
 
   @Dependency(\.analytics) var analytics
   @Dependency(\.godClient) var godClient
+  @Dependency(\.pasteboard) var pasteboard
 
   enum Cancel {
     case profile
@@ -68,6 +71,14 @@ public struct ProfileLogic {
         analytics.buttonClick(name: .shop)
         state.destination = .shop()
         return .none
+        
+      case .invitationCodeCopyButtonTapped:
+        guard let code = state.profile?.invitationCode.code
+        else { return .none }
+        return .run { _ in
+          analytics.buttonClick(name: .invitationCodeCopy)
+          pasteboard.string(code)
+        }
 
       case let .friendButtonTapped(userId):
         state.destination = .external(.init(userId: userId))
@@ -184,7 +195,9 @@ public struct ProfileView: View {
             InviteSection(
               coinBalance: data.currentUser.wallet?.coinBalance ?? 0,
               code: data.invitationCode.code,
-              codeCopyAction: {},
+              codeCopyAction: {
+                store.send(.invitationCodeCopyButtonTapped)
+              },
               inviteFriendAction: {
                 store.send(.shareProfileButtonTapped)
               },
