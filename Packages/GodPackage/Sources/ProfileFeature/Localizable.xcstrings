@@ -94,6 +94,16 @@
         }
       }
     },
+    "Copied the invitation code." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待コードをコピーしました。"
+          }
+        }
+      }
+    },
     "Does not go to my school" : {
       "localizations" : {
         "ja" : {
@@ -150,6 +160,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "13歳未満のユーザーである"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }

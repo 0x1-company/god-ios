@@ -75,6 +75,16 @@ public struct ProfileLogic {
       case .invitationCodeCopyButtonTapped:
         guard let code = state.profile?.invitationCode.code
         else { return .none }
+
+        state.destination = .alert(
+          AlertState {
+            TextState("Copied the invitation code.", bundle: .module)
+          } actions: {
+            ButtonState(action: .confirmOkay) {
+              TextState("OK", bundle: .module)
+            }
+          }
+        )
         return .run { _ in
           analytics.buttonClick(name: .invitationCodeCopy)
           pasteboard.string(code)
@@ -107,6 +117,10 @@ public struct ProfileLogic {
             await currentUserRequest(send: send)
           }
         }
+        
+      case .destination(.presented(.alert(.confirmOkay))):
+        state.destination = nil
+        return .none
 
       case .destination(.dismiss):
         state.destination = nil
@@ -138,6 +152,7 @@ public struct ProfileLogic {
       case shop(ShopLogic.State = .init())
       case profileShare(ProfileShareLogic.State = .init())
       case external(ProfileExternalLogic.State)
+      case alert(AlertState<Action.Alert>)
     }
 
     public enum Action {
@@ -145,6 +160,11 @@ public struct ProfileLogic {
       case shop(ShopLogic.Action)
       case profileShare(ProfileShareLogic.Action)
       case external(ProfileExternalLogic.Action)
+      case alert(Alert)
+      
+      public enum Alert: Equatable {
+        case confirmOkay
+      }
     }
 
     public var body: some Reducer<State, Action> {
@@ -233,6 +253,11 @@ public struct ProfileView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
+      .alert(
+        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
+        state: /ProfileLogic.Destination.State.alert,
+        action: ProfileLogic.Destination.Action.alert
+      )
       .sheet(
         store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileEdit,
