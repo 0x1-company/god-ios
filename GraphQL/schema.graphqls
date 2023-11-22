@@ -126,6 +126,9 @@ input CreateUserHideInput {
 }
 
 input CreateUserInput {
+  """招待コード"""
+  invitationCode: String
+
   """招待したユーザーのID"""
   inviterUserId: String
 
