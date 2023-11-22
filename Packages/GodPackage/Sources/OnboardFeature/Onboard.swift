@@ -22,6 +22,7 @@ public struct OnboardLogic {
     var schoolId: String?
     var clubActivityId: String?
     var inviterUserId: String?
+    var invitationCode: String?
     var contacts: [God.ContactInput] = []
 
     public init() {}
@@ -120,6 +121,7 @@ public struct OnboardLogic {
       case schoolSetting(SchoolSettingLogic.State = .init())
       case clubActivitySetting(ClubActivitySettingLogic.State = .init())
       case findFriend(FindFriendLogic.State = .init())
+      case invitationCode(InvitationCodeLogic.State = .init())
       case phoneNumber(PhoneNumberLogic.State = .init())
       case oneTimeCode(OneTimeCodeLogic.State)
       case firstNameSetting(FirstNameSettingLogic.State = .init())
@@ -137,6 +139,7 @@ public struct OnboardLogic {
       case schoolSetting(SchoolSettingLogic.Action)
       case clubActivitySetting(ClubActivitySettingLogic.Action)
       case findFriend(FindFriendLogic.Action)
+      case invitationCode(InvitationCodeLogic.Action)
       case phoneNumber(PhoneNumberLogic.Action)
       case oneTimeCode(OneTimeCodeLogic.Action)
       case firstNameSetting(FirstNameSettingLogic.Action)
@@ -154,6 +157,7 @@ public struct OnboardLogic {
       Scope(state: \.schoolSetting, action: \.schoolSetting, child: SchoolSettingLogic.init)
       Scope(state: \.clubActivitySetting, action: \.clubActivitySetting, child: ClubActivitySettingLogic.init)
       Scope(state: \.findFriend, action: \.findFriend, child: FindFriendLogic.init)
+      Scope(state: \.invitationCode, action: \.invitationCode, child: InvitationCodeLogic.init)
       Scope(state: \.phoneNumber, action: \.phoneNumber, child: PhoneNumberLogic.init)
       Scope(state: \.oneTimeCode, action: \.oneTimeCode, child: OneTimeCodeLogic.init)
       Scope(state: \.firstNameSetting, action: \.firstNameSetting, child: FirstNameSettingLogic.init)
@@ -203,6 +207,12 @@ public struct OnboardView: View {
           /OnboardLogic.Path.State.findFriend,
           action: OnboardLogic.Path.Action.findFriend,
           then: FindFriendView.init(store:)
+        )
+      case .invitationCode:
+        CaseLet(
+          /OnboardLogic.Path.State.invitationCode,
+          action: OnboardLogic.Path.Action.invitationCode,
+          then: InvitationCodeView.init(store:)
         )
       case .phoneNumber:
         CaseLet(

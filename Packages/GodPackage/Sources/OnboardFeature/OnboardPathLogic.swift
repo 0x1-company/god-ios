@@ -58,7 +58,7 @@ public struct OnboardPathLogic {
           return .none
 
         } else if isFindFriendSkip {
-          state.path.append(.phoneNumber())
+          state.path.append(.invitationCode())
           return .run(priority: .background) { send in
             await contactsRequest(send: send)
           }
@@ -75,7 +75,7 @@ public struct OnboardPathLogic {
         state.clubActivityId = clubActivityId
 
         if isFindFriendSkip {
-          state.path.append(.phoneNumber())
+          state.path.append(.invitationCode())
           return .run(priority: .background) { send in
             await contactsRequest(send: send)
           }
@@ -84,10 +84,15 @@ public struct OnboardPathLogic {
         return .none
 
       case .findFriend(.delegate(.nextScreen)):
-        state.path.append(.phoneNumber())
+        state.path.append(.invitationCode())
         return .run(priority: .background) { send in
           await contactsRequest(send: send)
         }
+        
+      case let .invitationCode(.delegate(.nextScreen(code))):
+        state.invitationCode = code
+        state.path.append(.phoneNumber())
+        return .none
 
       case .phoneNumber(.delegate(.nextScreen)):
         state.path.append(
