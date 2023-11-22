@@ -96,7 +96,12 @@ public struct OnboardPathLogic {
 
       case .phoneNumber(.delegate(.nextScreen)):
         state.path.append(
-          .oneTimeCode(.init(inviterUserId: state.inviterUserId))
+          .oneTimeCode(
+            .init(
+              inviterUserId: state.inviterUserId,
+              invitationCode: state.invitationCode
+            )
+          )
         )
         return .none
 
