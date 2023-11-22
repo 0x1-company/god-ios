@@ -163,6 +163,7 @@ graph TD;
     ProfileFeature-->ProfileShareFeature;
     ProfileFeature-->AsyncValue;
     ProfileFeature-->AnalyticsClient;
+    ProfileFeature-->UIPasteboardClient;
     ProfileFeature-->CachedAsyncImage;
     ProfileShareFeature-->ProfileStoryFeature;
     ProfileShareFeature-->CupertinoMessageFeature;
