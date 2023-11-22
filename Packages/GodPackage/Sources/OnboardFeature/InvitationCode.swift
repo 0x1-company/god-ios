@@ -37,18 +37,18 @@ public struct InvitationCodeLogic {
       case .onAppear:
         analytics.logScreen(screenName: "InvitationCode", of: self)
         return .none
-        
+
       case .nextButtonTapped:
         let code = state.invitationCode
         return .send(.delegate(.nextScreen(code)))
-        
+
       case .skipButtonTapped:
         return .send(.delegate(.nextScreen(nil)))
-        
+
       case .binding(\.$invitationCode):
         state.isDisabled = state.invitationCode.count != 6
         return .none
-        
+
       default:
         return .none
       }
@@ -87,7 +87,7 @@ public struct InvitationCodeView: View {
         NextButton(isDisabled: viewStore.isDisabled) {
           store.send(.nextButtonTapped)
         }
-        
+
         Button {
           store.send(.skipButtonTapped)
         } label: {
