@@ -4,6 +4,7 @@ import Styleguide
 struct InviteSection: View {
   let coinBalance: Int
   let code: String
+  let codeCopyAction: () -> Void
   let inviteFriendAction: () -> Void
   let shopAction: () -> Void
 
@@ -11,6 +12,7 @@ struct InviteSection: View {
     VStack(spacing: 16) {
       VStack(spacing: 16) {
         InviteTicket(code: code)
+          .onTapGesture(perform: codeCopyAction)
         
         Button(action: inviteFriendAction) {
           Label {
@@ -71,6 +73,7 @@ struct InviteSection: View {
   InviteSection(
     coinBalance: 100,
     code: "ABCDEF",
+    codeCopyAction: {},
     inviteFriendAction: {},
     shopAction: {}
   )
