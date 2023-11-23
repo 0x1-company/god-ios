@@ -6,7 +6,7 @@ import ContactsClient
 import CupertinoMessageFeature
 import God
 import GodClient
-import ProfileFeature
+import ProfileExternalFeature
 import ProfileStoryFeature
 import SearchField
 import ShareLinkBuilder

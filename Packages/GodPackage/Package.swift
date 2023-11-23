@@ -76,8 +76,8 @@ let package = Package(
       "ProfileExternalFeature",
     ]),
     .target(name: "AddFeature", dependencies: [
-      "ProfileFeature",
       "FriendRequestFeature",
+      "ProfileExternalFeature",
       .product(name: "Constants", package: "DependencyPackage"),
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
