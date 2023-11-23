@@ -7,6 +7,16 @@ public struct FriendsSection: View {
   let friends: [God.FriendFragment]
   let emptyAction: () -> Void
   let action: (God.FriendFragment) -> Void
+  
+  public init(
+    friends: [God.FriendFragment],
+    emptyAction: @escaping () -> Void,
+    action: @escaping (God.FriendFragment) -> Void
+  ) {
+    self.friends = friends
+    self.emptyAction = emptyAction
+    self.action = action
+  }
 
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {

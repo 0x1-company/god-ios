@@ -1,14 +1,28 @@
 import Styleguide
 import SwiftUI
 
-struct InviteSection: View {
+public struct InviteSection: View {
   let coinBalance: Int
   let code: String
   let codeCopyAction: () -> Void
   let inviteFriendAction: () -> Void
   let shopAction: () -> Void
+  
+  public init(
+    coinBalance: Int,
+    code: String,
+    codeCopyAction: @escaping () -> Void,
+    inviteFriendAction: @escaping () -> Void,
+    shopAction: @escaping () -> Void
+  ) {
+    self.coinBalance = coinBalance
+    self.code = code
+    self.codeCopyAction = codeCopyAction
+    self.inviteFriendAction = inviteFriendAction
+    self.shopAction = shopAction
+  }
 
-  var body: some View {
+  public var body: some View {
     VStack(spacing: 16) {
       VStack(spacing: 16) {
         InviteTicket(code: code)

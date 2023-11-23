@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import SwiftUI
+import ProfileSharedFeature
 
 @Reducer
 public struct ProfileExternalLogic {
