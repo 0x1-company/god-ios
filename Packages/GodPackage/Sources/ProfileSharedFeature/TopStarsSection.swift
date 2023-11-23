@@ -5,7 +5,7 @@ import SwiftUI
 
 public struct TopStarsSection: View {
   let questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
-  
+
   public init(
     questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
   ) {

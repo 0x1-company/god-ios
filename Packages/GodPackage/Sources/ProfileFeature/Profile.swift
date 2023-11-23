@@ -1,10 +1,10 @@
 import AnalyticsClient
-import ProfileExternalFeature
-import ProfileSharedFeature
 import ComposableArchitecture
 import God
 import GodClient
 import ProfileEditFeature
+import ProfileExternalFeature
+import ProfileSharedFeature
 import ProfileShareFeature
 import ShopFeature
 import Styleguide

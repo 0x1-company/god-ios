@@ -3,8 +3,8 @@ import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
-import SwiftUI
 import ProfileSharedFeature
+import SwiftUI
 
 @Reducer
 public struct ProfileExternalLogic {

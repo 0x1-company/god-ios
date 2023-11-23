@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct InviteTicket: View {
   let code: String
-  
+
   public init(
     code: String
   ) {

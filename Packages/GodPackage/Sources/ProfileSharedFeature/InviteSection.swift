@@ -7,7 +7,7 @@ public struct InviteSection: View {
   let codeCopyAction: () -> Void
   let inviteFriendAction: () -> Void
   let shopAction: () -> Void
-  
+
   public init(
     coinBalance: Int,
     code: String,
