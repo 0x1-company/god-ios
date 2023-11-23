@@ -4,92 +4,12 @@
     "" : {
 
     },
-    " friends" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フレンド"
-          }
-        }
-      }
-    },
-    " stars" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スター"
-          }
-        }
-      }
-    },
     "Add Friends" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "LINEで招待する"
-          }
-        }
-      }
-    },
-    "Are you sure?" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "本当に大丈夫？"
-          }
-        }
-      }
-    },
-    "Block" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ブロック"
-          }
-        }
-      }
-    },
-    "Block User" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ブロックする"
-          }
-        }
-      }
-    },
-    "Bullying" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "いじめの可能性がある"
-          }
-        }
-      }
-    },
-    "Cancel" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャンセル"
-          }
-        }
-      }
-    },
-    "COINS" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "コイン"
           }
         }
       }
@@ -104,102 +24,12 @@
         }
       }
     },
-    "Does not go to my school" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この学校の生徒ではない"
-          }
-        }
-      }
-    },
-    "EDIT PROFILE" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プロフィール編集"
-          }
-        }
-      }
-    },
-    "Friends" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フレンド"
-          }
-        }
-      }
-    },
-    "Inappropriate photo" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "不適切な写真を設定している"
-          }
-        }
-      }
-    },
-    "Invite friend" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だちを招待する"
-          }
-        }
-      }
-    },
-    "May be under 13 years old" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "13歳未満のユーザーである"
-          }
-        }
-      }
-    },
     "OK" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
-          }
-        }
-      }
-    },
-    "Other" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "その他"
-          }
-        }
-      }
-    },
-    "Please select a reason" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "理由を選択してください"
-          }
-        }
-      }
-    },
-    "Pretending to be someone else" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "なりすましをしている"
           }
         }
       }
@@ -214,62 +44,12 @@
         }
       }
     },
-    "Report User" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "報告する"
-          }
-        }
-      }
-    },
     "Share Profile" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "友だち招待"
-          }
-        }
-      }
-    },
-    "SHOP" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ショップ"
-          }
-        }
-      }
-    },
-    "Top Stars" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "褒められた質問ランキング"
-          }
-        }
-      }
-    },
-    "You have no friends" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だちがいません"
-          }
-        }
-      }
-    },
-    "You won't see this user again in the app." : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "このユーザーはアプリ内で二度と表示されません。"
           }
         }
       }
