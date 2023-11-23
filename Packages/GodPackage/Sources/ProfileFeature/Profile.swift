@@ -1,4 +1,6 @@
 import AnalyticsClient
+import ProfileExternalFeature
+import ProfileSharedFeature
 import ComposableArchitecture
 import God
 import GodClient

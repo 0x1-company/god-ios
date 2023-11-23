@@ -5,6 +5,12 @@ import SwiftUI
 
 public struct TopStarsSection: View {
   let questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
+  
+  public init(
+    questions: [God.CurrentUserProfileQuery.Data.QuestionsOrderByVotedDesc]
+  ) {
+    self.questions = questions
+  }
 
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {

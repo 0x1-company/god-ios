@@ -1,0 +1,149 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "Are you sure?" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当に大丈夫？"
+          }
+        }
+      }
+    },
+    "Block" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロック"
+          }
+        }
+      }
+    },
+    "Block User" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロックする"
+          }
+        }
+      }
+    },
+    "Bullying" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いじめの可能性がある"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
+    },
+    "Does not go to my school" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この学校の生徒ではない"
+          }
+        }
+      }
+    },
+    "Inappropriate photo" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不適切な写真を設定している"
+          }
+        }
+      }
+    },
+    "May be under 13 years old" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "13歳未満のユーザーである"
+          }
+        }
+      }
+    },
+    "Other" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
+    },
+    "Please select a reason" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "理由を選択してください"
+          }
+        }
+      }
+    },
+    "Pretending to be someone else" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "なりすましをしている"
+          }
+        }
+      }
+    },
+    "Profile" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール"
+          }
+        }
+      }
+    },
+    "Report User" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "報告する"
+          }
+        }
+      }
+    },
+    "You won't see this user again in the app." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このユーザーはアプリ内で二度と表示されません。"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,0 +1,116 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド"
+          }
+        }
+      }
+    },
+    " stars" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スター"
+          }
+        }
+      }
+    },
+    "Add Friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LINEで招待する"
+          }
+        }
+      }
+    },
+    "COINS" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コイン"
+          }
+        }
+      }
+    },
+    "EDIT PROFILE" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール編集"
+          }
+        }
+      }
+    },
+    "Friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンド"
+          }
+        }
+      }
+    },
+    "Invite friend" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちを招待する"
+          }
+        }
+      }
+    },
+    "Share Profile" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だち招待"
+          }
+        }
+      }
+    },
+    "SHOP" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ショップ"
+          }
+        }
+      }
+    },
+    "Top Stars" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "褒められた質問ランキング"
+          }
+        }
+      }
+    },
+    "You have no friends" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "友だちがいません"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

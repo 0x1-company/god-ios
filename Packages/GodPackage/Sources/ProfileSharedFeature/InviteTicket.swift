@@ -1,10 +1,16 @@
 import Styleguide
 import SwiftUI
 
-struct InviteTicket: View {
+public struct InviteTicket: View {
   let code: String
+  
+  public init(
+    code: String
+  ) {
+    self.code = code
+  }
 
-  var body: some View {
+  public var body: some View {
     Image(ImageResource.inviteTicket)
       .resizable()
       .aspectRatio(contentMode: .fit)
