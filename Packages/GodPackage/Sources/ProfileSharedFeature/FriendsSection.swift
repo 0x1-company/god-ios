@@ -7,7 +7,7 @@ public struct FriendsSection: View {
   let friends: [God.FriendFragment]
   let emptyAction: () -> Void
   let action: (God.FriendFragment) -> Void
-  
+
   public init(
     friends: [God.FriendFragment],
     emptyAction: @escaping () -> Void,
