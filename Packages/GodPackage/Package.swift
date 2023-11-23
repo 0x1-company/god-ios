@@ -73,7 +73,7 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ActivityFeature", dependencies: [
-      "ProfileFeature",
+      "ProfileExternalFeature",
     ]),
     .target(name: "AddFeature", dependencies: [
       "ProfileFeature",

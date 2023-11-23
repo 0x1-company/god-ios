@@ -3,7 +3,7 @@ import AsyncValue
 import ComposableArchitecture
 import God
 import GodClient
-import ProfileFeature
+import ProfileExternalFeature
 import ProfileImage
 import SwiftUI
 
