@@ -219,6 +219,7 @@ let package = Package(
       "GodFeature",
       "InboxFeature",
       "AboutFeature",
+      "ProfileFeature",
       "ActivityFeature",
       "TutorialFeature",
     ]),
