@@ -23,6 +23,7 @@ let package = Package(
     .library(name: "FriendRequestFeature", targets: ["FriendRequestFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
     .library(name: "GodModeFeature", targets: ["GodModeFeature"]),
+    .library(name: "GradeSettingFeature", targets: ["GradeSettingFeature"]),
     .library(name: "HowItWorksFeature", targets: ["HowItWorksFeature"]),
     .library(name: "InAppWebFeature", targets: ["InAppWebFeature"]),
     .library(name: "InboxDetailFeature", targets: ["InboxDetailFeature"]),
@@ -157,6 +158,12 @@ let package = Package(
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "GradeSettingFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "RoundedCorner", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "HowItWorksFeature", dependencies: [
       .product(name: "Lottie", package: "lottie-spm"),
       .product(name: "GodClient", package: "DependencyPackage"),
@@ -227,6 +234,7 @@ let package = Package(
       "HowItWorksFeature",
       "ProfileStoryFeature",
       "InviteFriendFeature",
+      "GradeSettingFeature",
       "SchoolSettingFeature",
       "CupertinoMessageFeature",
       .product(name: "AsyncValue", package: "DependencyPackage"),

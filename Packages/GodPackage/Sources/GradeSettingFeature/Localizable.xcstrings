@@ -1,0 +1,106 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CLASS OF\n2023" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2023年度\n卒業予定"
+          }
+        }
+      }
+    },
+    "CLASS OF\n2024" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2024年度\n卒業予定"
+          }
+        }
+      }
+    },
+    "CLASS OF\n2025" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2025年度\n卒業予定"
+          }
+        }
+      }
+    },
+    "Finished High School" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "卒業済み"
+          }
+        }
+      }
+    },
+    "Grade 10" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1年生"
+          }
+        }
+      }
+    },
+    "Grade 11" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2年生"
+          }
+        }
+      }
+    },
+    "Grade 12" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3年生"
+          }
+        }
+      }
+    },
+    "HIGH SCHOOL" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高校"
+          }
+        }
+      }
+    },
+    "Not in High School" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高校生ではない"
+          }
+        }
+      }
+    },
+    "What grade are you in?" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたは何年生ですか？"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

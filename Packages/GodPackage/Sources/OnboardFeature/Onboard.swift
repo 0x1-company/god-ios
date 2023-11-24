@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import GradeSettingFeature
 import Contacts
 import ContactsClient
 import FirebaseAuth
