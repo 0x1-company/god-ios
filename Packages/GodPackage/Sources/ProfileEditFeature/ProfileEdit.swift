@@ -111,6 +111,7 @@ public struct ProfileEditLogic {
     case loadTransferableResponse(TaskResult<Data?>)
 
     case schoolButtonTapped
+    case gradeButtonTapped
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
     case deleteAccountButtonTapped
@@ -219,7 +220,7 @@ public struct ProfileEditLogic {
       case .updateUserProfileResponse(.failure):
         return .none
         
-      case .schoolButtonTapped:
+      case .schoolButtonTapped, .gradeButtonTapped:
         state.path.append(.gradeSetting())
         return .none
 
@@ -402,10 +403,10 @@ public struct ProfileEditView: View {
                 .foregroundStyle(Color.godTextSecondaryLight)
                 .font(.system(.caption, design: .rounded, weight: .bold))
 
-              Button {
-                store.send(.schoolButtonTapped)
-              } label: {
-                VStack(alignment: .center, spacing: 0) {
+              VStack(alignment: .center, spacing: 0) {
+                Button {
+                  store.send(.schoolButtonTapped)
+                } label: {
                   HStack(alignment: .center, spacing: 8) {
                     Text(Image(systemName: "house.fill"))
                       .foregroundStyle(Color.godTextSecondaryLight)
@@ -419,9 +420,13 @@ public struct ProfileEditView: View {
                   .padding(.horizontal, 12)
                   .frame(maxWidth: .infinity)
                   .frame(height: 52)
+                }
 
-                  Separator()
+                Separator()
 
+                Button {
+                  store.send(.gradeButtonTapped)
+                } label: {
                   HStack(alignment: .center, spacing: 8) {
                     Text(Image(systemName: "graduationcap.fill"))
                       .foregroundStyle(Color.godTextSecondaryLight)
@@ -436,11 +441,11 @@ public struct ProfileEditView: View {
                   .frame(maxWidth: .infinity)
                   .frame(height: 52)
                 }
-                .overlay(
-                  RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.godSeparator)
-                )
               }
+              .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                  .stroke(Color.godSeparator)
+              )
             }
 
             VStack(alignment: .leading, spacing: 8) {
