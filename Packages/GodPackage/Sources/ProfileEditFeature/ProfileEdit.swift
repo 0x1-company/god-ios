@@ -42,11 +42,18 @@ public struct ProfileEditLogic {
     public enum State: Equatable {
       case manageAccount(ManageAccountLogic.State = .init())
       case deleteAccount(DeleteAccountLogic.State = .init())
+      case alert(AlertState<Action.Alert>)
     }
 
     public enum Action {
       case manageAccount(ManageAccountLogic.Action)
       case deleteAccount(DeleteAccountLogic.Action)
+      case alert(Alert)
+      
+      public enum Alert: Equatable {
+        case okay
+        case discardChanges
+      }
     }
 
     public var body: some Reducer<State, Action> {
@@ -58,8 +65,8 @@ public struct ProfileEditLogic {
   public struct State: Equatable {
     public init() {}
 
+    var path = StackState<Path.State>()
     @PresentationState var destination: Destination.State?
-    @PresentationState var alert: AlertState<Action.Alert>?
     @BindingState var photoPickerItems: [PhotosPickerItem] = []
     @BindingState var firstName: String = ""
     @BindingState var lastName: String = ""
@@ -108,14 +115,9 @@ public struct ProfileEditLogic {
     case deleteAccountButtonTapped
     case logoutButtonTapped
     case closeButtonTapped
+    case path(StackAction<Path.State, Path.Action>)
     case destination(PresentationAction<Destination.Action>)
-    case alert(PresentationAction<Alert>)
     case delegate(Delegate)
-
-    public enum Alert: Equatable {
-      case okay
-      case discardChanges
-    }
 
     public enum Delegate: Equatable {
       case changed
@@ -148,7 +150,7 @@ public struct ProfileEditLogic {
         return .none
 
       case .cancelEditButtonTapped:
-        state.alert = .changesNotSaved()
+        state.destination = .alert(.changesNotSaved())
         return .none
 
       case .saveButtonTapped:
@@ -157,7 +159,7 @@ public struct ProfileEditLogic {
           validateHiragana(for: state.firstName),
           validateHiragana(for: state.lastName)
         else {
-          state.alert = .invalid()
+          state.destination = .alert(.invalid())
           return .none
         }
         return .run { [state] send in
@@ -239,11 +241,11 @@ public struct ProfileEditLogic {
           await dismiss()
         }
 
-      case .alert(.presented(.okay)):
-        state.alert = nil
+      case .destination(.presented(.alert(.okay))):
+        state.destination = nil
         return .none
 
-      case .alert(.presented(.discardChanges)):
+      case .destination(.presented(.alert(.discardChanges))):
         return .run { _ in
           await dismiss()
         }
@@ -272,6 +274,9 @@ public struct ProfileEditLogic {
     .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
+    .forEach(\.path, action: \.path) {
+      Path()
+    }
   }
 
   func currentUserRequest(send: Send<Action>) async {
@@ -293,116 +298,76 @@ public struct ProfileEditView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
-      ScrollView(.vertical) {
-        VStack(spacing: 24) {
-          PhotosPicker(
-            selection: viewStore.$photoPickerItems,
-            maxSelectionCount: 1,
-            selectionBehavior: .ordered,
-            matching: PHPickerFilter.images,
-            preferredItemEncoding: .current
-          ) {
-            Group {
-              if let imageData = viewStore.imageData, let image = UIImage(data: imageData) {
-                Image(uiImage: image)
-                  .resizable()
-              } else if let user = viewStore.currentUser {
-                ProfileImage(
-                  urlString: user.imageURL,
-                  name: user.firstName,
-                  size: 145
-                )
+    NavigationStackStore(store.scope(state: \.path, action: ProfileEditLogic.Action.path)) {
+      WithViewStore(store, observe: { $0 }) { viewStore in
+        ScrollView(.vertical) {
+          VStack(spacing: 24) {
+            PhotosPicker(
+              selection: viewStore.$photoPickerItems,
+              maxSelectionCount: 1,
+              selectionBehavior: .ordered,
+              matching: PHPickerFilter.images,
+              preferredItemEncoding: .current
+            ) {
+              Group {
+                if let imageData = viewStore.imageData, let image = UIImage(data: imageData) {
+                  Image(uiImage: image)
+                    .resizable()
+                } else if let user = viewStore.currentUser {
+                  ProfileImage(
+                    urlString: user.imageURL,
+                    name: user.firstName,
+                    size: 145
+                  )
+                }
               }
+              .scaledToFill()
+              .frame(width: 145, height: 145)
+              .clipShape(Circle())
+              .overlay(
+                Image(systemName: "camera.fill")
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .foregroundStyle(Color.godWhite)
+                  .frame(width: 40, height: 40)
+                  .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
+              )
             }
-            .scaledToFill()
-            .frame(width: 145, height: 145)
-            .clipShape(Circle())
-            .overlay(
-              Image(systemName: "camera.fill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .foregroundStyle(Color.godWhite)
-                .frame(width: 40, height: 40)
-                .shadow(color: .godBlack.opacity(0.5), radius: 4, y: 2)
-            )
-          }
-          .buttonStyle(HoldDownButtonStyle())
-
-          VStack(alignment: .center, spacing: 0) {
-            GodTextField(
-              text: viewStore.$lastName,
-              fieldName: "Last Name"
-            )
-
-            Separator()
-
-            GodTextField(
-              text: viewStore.$firstName,
-              fieldName: "First Name"
-            )
-
-            Separator()
-
-            GodTextField(
-              text: viewStore.$username,
-              fieldName: "username"
-            )
-
-            Separator()
-
-            HStack(alignment: .center, spacing: 0) {
-              Text("Gender", bundle: .module)
-                .font(.body)
-                .foregroundStyle(Color.godTextSecondaryLight)
-                .frame(width: 108, alignment: .leading)
-
-              Text(viewStore.gender, bundle: .module)
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.body)
-                .foregroundStyle(Color.godBlack)
-            }
-            .padding(.horizontal, 12)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-          }
-          .overlay(
-            RoundedRectangle(cornerRadius: 16)
-              .stroke(Color.godSeparator)
-          )
-
-          VStack(alignment: .leading, spacing: 8) {
-            Text("SCHOOL", bundle: .module)
-              .foregroundStyle(Color.godTextSecondaryLight)
-              .font(.system(.caption, design: .rounded, weight: .bold))
+            .buttonStyle(HoldDownButtonStyle())
 
             VStack(alignment: .center, spacing: 0) {
-              HStack(alignment: .center, spacing: 8) {
-                Text(Image(systemName: "house.fill"))
-                  .foregroundStyle(Color.godTextSecondaryLight)
-                  .font(.system(.body, design: .rounded))
-
-                Text(viewStore.currentUser?.school?.name ?? "")
-                  .font(.system(.body, design: .rounded))
-                  .foregroundStyle(Color.godBlack)
-                  .frame(maxWidth: .infinity, alignment: .leading)
-              }
-              .padding(.horizontal, 12)
-              .frame(maxWidth: .infinity)
-              .frame(height: 52)
+              GodTextField(
+                text: viewStore.$lastName,
+                fieldName: "Last Name"
+              )
 
               Separator()
 
-              HStack(alignment: .center, spacing: 8) {
-                Text(Image(systemName: "graduationcap.fill"))
-                  .foregroundStyle(Color.godTextSecondaryLight)
-                  .font(.system(.body, design: .rounded))
+              GodTextField(
+                text: viewStore.$firstName,
+                fieldName: "First Name"
+              )
 
-                Text(viewStore.currentUser?.grade ?? "")
-                  .font(.system(.body, design: .rounded))
-                  .foregroundStyle(Color.godBlack)
+              Separator()
+
+              GodTextField(
+                text: viewStore.$username,
+                fieldName: "username"
+              )
+
+              Separator()
+
+              HStack(alignment: .center, spacing: 0) {
+                Text("Gender", bundle: .module)
+                  .font(.body)
+                  .foregroundStyle(Color.godTextSecondaryLight)
+                  .frame(width: 108, alignment: .leading)
+
+                Text(viewStore.gender, bundle: .module)
+                  .multilineTextAlignment(.leading)
                   .frame(maxWidth: .infinity, alignment: .leading)
+                  .font(.body)
+                  .foregroundStyle(Color.godBlack)
               }
               .padding(.horizontal, 12)
               .frame(maxWidth: .infinity)
@@ -412,86 +377,147 @@ public struct ProfileEditView: View {
               RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.godSeparator)
             )
-          }
 
-          VStack(alignment: .leading, spacing: 8) {
-            Text("ACCOUNT SETTING", bundle: .module)
-              .font(.system(.caption, design: .rounded, weight: .bold))
-              .foregroundStyle(Color.godTextSecondaryLight)
-//            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
-//              store.send(.restorePurchasesButtonTapped)
-//            }
-//
-//            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
-//              store.send(.manageAccountButtonTapped)
-//            }
+            VStack(alignment: .leading, spacing: 8) {
+              Text("SCHOOL", bundle: .module)
+                .foregroundStyle(Color.godTextSecondaryLight)
+                .font(.system(.caption, design: .rounded, weight: .bold))
 
-            CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
-              store.send(.logoutButtonTapped)
+              VStack(alignment: .center, spacing: 0) {
+                HStack(alignment: .center, spacing: 8) {
+                  Text(Image(systemName: "house.fill"))
+                    .foregroundStyle(Color.godTextSecondaryLight)
+                    .font(.system(.body, design: .rounded))
+
+                  Text(viewStore.currentUser?.school?.name ?? "")
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(Color.godBlack)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.horizontal, 12)
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
+
+                Separator()
+
+                HStack(alignment: .center, spacing: 8) {
+                  Text(Image(systemName: "graduationcap.fill"))
+                    .foregroundStyle(Color.godTextSecondaryLight)
+                    .font(.system(.body, design: .rounded))
+
+                  Text(viewStore.currentUser?.grade ?? "")
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(Color.godBlack)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.horizontal, 12)
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
+              }
+              .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                  .stroke(Color.godSeparator)
+              )
             }
 
-            CornerRadiusBorderButton("Delete Account", systemImage: "trash") {
-              store.send(.deleteAccountButtonTapped)
+            VStack(alignment: .leading, spacing: 8) {
+              Text("ACCOUNT SETTING", bundle: .module)
+                .font(.system(.caption, design: .rounded, weight: .bold))
+                .foregroundStyle(Color.godTextSecondaryLight)
+  //            CornerRadiusBorderButton("Restore Purchases", systemImage: "clock.arrow.circlepath") {
+  //              store.send(.restorePurchasesButtonTapped)
+  //            }
+  //
+  //            CornerRadiusBorderButton("Manage Account", systemImage: "gearshape.fill") {
+  //              store.send(.manageAccountButtonTapped)
+  //            }
+
+              CornerRadiusBorderButton("Logout", systemImage: "rectangle.portrait.and.arrow.right") {
+                store.send(.logoutButtonTapped)
+              }
+
+              CornerRadiusBorderButton("Delete Account", systemImage: "trash") {
+                store.send(.deleteAccountButtonTapped)
+              }
+              .foregroundStyle(Color.red)
             }
-            .foregroundStyle(Color.red)
+          }
+          .padding(.all, 24)
+        }
+        .navigationTitle(Text("Edit Profile", bundle: .module))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          if viewStore.isUserProfileChanges {
+            ToolbarItem(placement: .navigationBarLeading) {
+              Button {
+                store.send(.cancelEditButtonTapped)
+              } label: {
+                Text("Cancel", bundle: .module)
+                  .font(.system(.body, design: .rounded))
+              }
+              .foregroundStyle(.primary)
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+              Button {
+                store.send(.saveButtonTapped)
+              } label: {
+                Text("Save", bundle: .module)
+                  .font(.system(.body, design: .rounded))
+              }
+              .foregroundStyle(.primary)
+            }
+          } else {
+            ToolbarItem(placement: .navigationBarLeading) {
+              Button {
+                store.send(.closeButtonTapped)
+              } label: {
+                Text("Close", bundle: .module)
+                  .font(.system(.body, design: .rounded))
+              }
+              .foregroundStyle(.primary)
+            }
           }
         }
-        .padding(.all, 24)
+        .task { await store.send(.onTask).finish() }
+        .onAppear { store.send(.onAppear) }
+        .alert(
+          store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+          state: /ProfileEditLogic.Destination.State.alert,
+          action: ProfileEditLogic.Destination.Action.alert
+        )
+        .sheet(
+          store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+          state: /ProfileEditLogic.Destination.State.manageAccount,
+          action: ProfileEditLogic.Destination.Action.manageAccount
+        ) { store in
+          NavigationStack {
+            ManageAccountView(store: store)
+          }
+        }
+        .sheet(
+          store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
+          state: /ProfileEditLogic.Destination.State.deleteAccount,
+          action: ProfileEditLogic.Destination.Action.deleteAccount
+        ) { store in
+          NavigationStack {
+            DeleteAccountView(store: store)
+          }
+        }
       }
-      .navigationTitle(Text("Edit Profile", bundle: .module))
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        if viewStore.isUserProfileChanges {
-          ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-              store.send(.cancelEditButtonTapped)
-            } label: {
-              Text("Cancel", bundle: .module)
-                .font(.system(.body, design: .rounded))
-            }
-            .foregroundStyle(.primary)
-          }
-          ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-              store.send(.saveButtonTapped)
-            } label: {
-              Text("Save", bundle: .module)
-                .font(.system(.body, design: .rounded))
-            }
-            .foregroundStyle(.primary)
-          }
-        } else {
-          ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-              store.send(.closeButtonTapped)
-            } label: {
-              Text("Close", bundle: .module)
-                .font(.system(.body, design: .rounded))
-            }
-            .foregroundStyle(.primary)
-          }
-        }
-      }
-      .task { await store.send(.onTask).finish() }
-      .onAppear { store.send(.onAppear) }
-      .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
-      .sheet(
-        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
-        state: /ProfileEditLogic.Destination.State.manageAccount,
-        action: ProfileEditLogic.Destination.Action.manageAccount
-      ) { store in
-        NavigationStack {
-          ManageAccountView(store: store)
-        }
-      }
-      .sheet(
-        store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
-        state: /ProfileEditLogic.Destination.State.deleteAccount,
-        action: ProfileEditLogic.Destination.Action.deleteAccount
-      ) { store in
-        NavigationStack {
-          DeleteAccountView(store: store)
-        }
+    } destination: { initialState in
+      switch initialState {
+      case .gradeSetting:
+        CaseLet(
+          /ProfileEditLogic.Path.State.gradeSetting,
+          action: ProfileEditLogic.Path.Action.gradeSetting,
+          then: GradeSettingView.init(store:)
+        )
+      case .schoolSetting:
+        CaseLet(
+          /ProfileEditLogic.Path.State.schoolSetting,
+          action: ProfileEditLogic.Path.Action.schoolSetting,
+          then: SchoolSettingView.init(store:)
+        )
       }
     }
   }
@@ -528,7 +554,7 @@ public struct ProfileEditView: View {
   }
 }
 
-private extension AlertState where Action == ProfileEditLogic.Action.Alert {
+private extension AlertState where Action == ProfileEditLogic.Destination.Action.Alert {
   static func changesNotSaved() -> Self {
     Self {
       TextState("Are you sure?", bundle: .module)
