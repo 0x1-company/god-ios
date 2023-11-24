@@ -14,10 +14,28 @@ import StringHelpers
 import Styleguide
 import SwiftUI
 import UserDefaultsClient
+import GradeSettingFeature
+import SchoolSettingFeature
 
 @Reducer
 public struct ProfileEditLogic {
   public init() {}
+  
+  @Reducer
+  public struct Path {
+    public enum State: Equatable {
+      case gradeSetting(GradeSettingLogic.State = .init())
+      case schoolSetting(SchoolSettingLogic.State = .init())
+    }
+    public enum Action {
+      case gradeSetting(GradeSettingLogic.Action)
+      case schoolSetting(SchoolSettingLogic.Action)
+    }
+    public var body: some Reducer<State, Action> {
+      Scope(state: \.gradeSetting, action: \.gradeSetting, child: GradeSettingLogic.init)
+      Scope(state: \.schoolSetting, action: \.schoolSetting, child: SchoolSettingLogic.init)
+    }
+  }
 
   @Reducer
   public struct Destination {

@@ -271,8 +271,10 @@ let package = Package(
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ProfileEditFeature", dependencies: [
+      "GradeSettingFeature",
       "ManageAccountFeature",
       "DeleteAccountFeature",
+      "SchoolSettingFeature",
       .product(name: "AsyncValue", package: "DependencyPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
       .product(name: "ProfileImage", package: "UIComponentPackage"),
