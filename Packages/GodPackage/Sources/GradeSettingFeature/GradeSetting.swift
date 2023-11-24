@@ -99,7 +99,6 @@ public struct GradeSettingView: View {
       }
       .navigationTitle(Text("What grade are you in?", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
-      .navigationBarBackButtonHidden()
       .toolbarBackground(Color.godService, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarColorScheme(.dark, for: .navigationBar)

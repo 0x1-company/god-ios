@@ -282,15 +282,12 @@ public struct ProfileView: View {
         state: /ProfileLogic.Destination.State.alert,
         action: ProfileLogic.Destination.Action.alert
       )
-      .sheet(
+      .fullScreenCover(
         store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
         state: /ProfileLogic.Destination.State.profileEdit,
         action: ProfileLogic.Destination.Action.profileEdit
       ) { store in
-        NavigationStack {
-          ProfileEditView(store: store)
-        }
-        .interactiveDismissDisabled()
+        ProfileEditView(store: store)
       }
       .sheet(
         store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),

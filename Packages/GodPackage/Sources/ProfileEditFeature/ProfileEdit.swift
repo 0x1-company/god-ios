@@ -110,6 +110,7 @@ public struct ProfileEditLogic {
     case binding(BindingAction<State>)
     case loadTransferableResponse(TaskResult<Data?>)
 
+    case schoolButtonTapped
     case restorePurchasesButtonTapped
     case manageAccountButtonTapped
     case deleteAccountButtonTapped
@@ -217,6 +218,10 @@ public struct ProfileEditLogic {
 
       case .updateUserProfileResponse(.failure):
         return .none
+        
+      case .schoolButtonTapped:
+        state.path.append(.gradeSetting())
+        return .none
 
       case .restorePurchasesButtonTapped:
         return .none
@@ -241,15 +246,6 @@ public struct ProfileEditLogic {
           await dismiss()
         }
 
-      case .destination(.presented(.alert(.okay))):
-        state.destination = nil
-        return .none
-
-      case .destination(.presented(.alert(.discardChanges))):
-        return .run { _ in
-          await dismiss()
-        }
-
       case .binding(\.$photoPickerItems):
         guard let photoPickerItem = state.photoPickerItems.first else { return .none }
         return .run { send in
@@ -265,6 +261,29 @@ public struct ProfileEditLogic {
       case .uploadResponse:
         URLCache.shared.removeAllCachedResponses()
         state.imageData = nil
+        return .none
+        
+      case .destination(.presented(.alert(.okay))):
+        state.destination = nil
+        return .none
+
+      case .destination(.presented(.alert(.discardChanges))):
+        return .run { _ in
+          await dismiss()
+        }
+        
+      case .path(.element(_, .gradeSetting(.delegate(.nextScreen(.none))))):
+        state.path.removeAll()
+        return .none
+        
+      case let .path(.element(_, .gradeSetting(.delegate(.nextScreen(.some(generation)))))):
+        print(generation)
+        state.path.append(.schoolSetting())
+        return .none
+        
+      case let .path(.element(_, .schoolSetting(.delegate(.nextScreen(.some(schoolId)))))):
+        print(schoolId)
+        state.path.removeAll()
         return .none
 
       default:
@@ -383,41 +402,45 @@ public struct ProfileEditView: View {
                 .foregroundStyle(Color.godTextSecondaryLight)
                 .font(.system(.caption, design: .rounded, weight: .bold))
 
-              VStack(alignment: .center, spacing: 0) {
-                HStack(alignment: .center, spacing: 8) {
-                  Text(Image(systemName: "house.fill"))
-                    .foregroundStyle(Color.godTextSecondaryLight)
-                    .font(.system(.body, design: .rounded))
+              Button {
+                store.send(.schoolButtonTapped)
+              } label: {
+                VStack(alignment: .center, spacing: 0) {
+                  HStack(alignment: .center, spacing: 8) {
+                    Text(Image(systemName: "house.fill"))
+                      .foregroundStyle(Color.godTextSecondaryLight)
+                      .font(.system(.body, design: .rounded))
 
-                  Text(viewStore.currentUser?.school?.name ?? "")
-                    .font(.system(.body, design: .rounded))
-                    .foregroundStyle(Color.godBlack)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(viewStore.currentUser?.school?.name ?? "")
+                      .font(.system(.body, design: .rounded))
+                      .foregroundStyle(Color.godBlack)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                  }
+                  .padding(.horizontal, 12)
+                  .frame(maxWidth: .infinity)
+                  .frame(height: 52)
+
+                  Separator()
+
+                  HStack(alignment: .center, spacing: 8) {
+                    Text(Image(systemName: "graduationcap.fill"))
+                      .foregroundStyle(Color.godTextSecondaryLight)
+                      .font(.system(.body, design: .rounded))
+
+                    Text(viewStore.currentUser?.grade ?? "")
+                      .font(.system(.body, design: .rounded))
+                      .foregroundStyle(Color.godBlack)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                  }
+                  .padding(.horizontal, 12)
+                  .frame(maxWidth: .infinity)
+                  .frame(height: 52)
                 }
-                .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity)
-                .frame(height: 52)
-
-                Separator()
-
-                HStack(alignment: .center, spacing: 8) {
-                  Text(Image(systemName: "graduationcap.fill"))
-                    .foregroundStyle(Color.godTextSecondaryLight)
-                    .font(.system(.body, design: .rounded))
-
-                  Text(viewStore.currentUser?.grade ?? "")
-                    .font(.system(.body, design: .rounded))
-                    .foregroundStyle(Color.godBlack)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity)
-                .frame(height: 52)
+                .overlay(
+                  RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.godSeparator)
+                )
               }
-              .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                  .stroke(Color.godSeparator)
-              )
             }
 
             VStack(alignment: .leading, spacing: 8) {
