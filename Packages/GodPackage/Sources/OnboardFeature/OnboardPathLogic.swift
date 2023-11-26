@@ -160,19 +160,11 @@ public struct OnboardPathLogic {
 
       case .inviteFriend(.delegate(.nextScreen)):
         state.path.append(.howItWorks())
-        return .none
-
-      case .howItWorks(.delegate(.notifyRequest)):
         return .run { _ in
+          await userDefaults.setOnboardCompleted(true)
           guard try await requestAuthorization([.alert, .sound, .badge])
           else { return }
           await registerForRemoteNotifications()
-        }
-
-      case .howItWorks(.delegate(.start)):
-        // オンボーディングすべて終わり
-        return .run { _ in
-          await userDefaults.setOnboardCompleted(true)
         }
       default:
         return .none

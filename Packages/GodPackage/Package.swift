@@ -224,7 +224,6 @@ let package = Package(
       "TutorialFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
-      "HowItWorksFeature",
       "ProfileStoryFeature",
       "InviteFriendFeature",
       "SchoolSettingFeature",
