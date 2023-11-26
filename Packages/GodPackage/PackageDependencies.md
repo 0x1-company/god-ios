@@ -119,7 +119,6 @@ graph TD;
     NavigationFeature-->ProfileFeature;
     NavigationFeature-->ActivityFeature;
     NavigationFeature-->TutorialFeature;
-    OnboardFeature-->HowItWorksFeature;
     OnboardFeature-->ProfileStoryFeature;
     OnboardFeature-->InviteFriendFeature;
     OnboardFeature-->SchoolSettingFeature;
