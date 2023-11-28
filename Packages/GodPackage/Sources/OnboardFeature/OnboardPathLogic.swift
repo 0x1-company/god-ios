@@ -159,7 +159,6 @@ public struct OnboardPathLogic {
         return .none
 
       case .inviteFriend(.delegate(.nextScreen)):
-        state.path.append(.howItWorks())
         return .run { _ in
           await userDefaults.setOnboardCompleted(true)
           guard try await requestAuthorization([.alert, .sound, .badge])
