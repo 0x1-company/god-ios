@@ -87,7 +87,7 @@ public struct AppLogic {
       }
     Reduce<State, Action> { state, action in
       switch action {
-      case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
+      case .view(.onboard(.path(.element(_, .inviteFriend(.delegate(.nextScreen)))))):
         state.view = .navigation()
         return .none
       default:
