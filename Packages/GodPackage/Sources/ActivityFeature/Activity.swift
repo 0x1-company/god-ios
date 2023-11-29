@@ -118,9 +118,10 @@ public struct ActivityView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ActivityLogic.Destination.State.profile,
-        action: ActivityLogic.Destination.Action.profile
+        store: store.scope(
+          state: \.$destination.profile,
+          action: \.destination.profile
+        )
       ) { store in
         NavigationStack {
           ProfileExternalView(store: store)

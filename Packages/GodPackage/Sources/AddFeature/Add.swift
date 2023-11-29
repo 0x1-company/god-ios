@@ -426,15 +426,17 @@ public struct AddView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
-        store: store.scope(state: \.$destination, action: AddLogic.Action.destination),
-        state: /AddLogic.Destination.State.message,
-        action: AddLogic.Destination.Action.message,
+        store: store.scope(
+          state: \.$destination.message,
+          action: \.destination.message
+        ),
         content: CupertinoMessageView.init
       )
       .sheet(
-        store: store.scope(state: \.$destination, action: AddLogic.Action.destination),
-        state: /AddLogic.Destination.State.profileExternal,
-        action: AddLogic.Destination.Action.profileExternal
+        store: store.scope(
+          state: \.$destination.profileExternal,
+          action: \.destination.profileExternal
+        )
       ) { store in
         NavigationStack {
           ProfileExternalView(store: store)
