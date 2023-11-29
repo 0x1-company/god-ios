@@ -114,7 +114,7 @@ public struct InviteFriendLogic {
               TextState("OK", bundle: .module)
             }
           } message: {
-            TextState("God is by invitation only; send invitations to 3 people and you will be specifically invited.", bundle: .module)
+            TextState("God is by invitation only; send invitations to 5 people and you will be specifically invited.", bundle: .module)
           }
         )
         return .none
@@ -239,7 +239,7 @@ public struct InviteFriendView: View {
           store.send(.whyFriendsButtonTapped)
         } label: {
           Label {
-            Text("Why 3 friends", bundle: .module)
+            Text("Why 5 friends", bundle: .module)
               .font(.system(.callout, design: .rounded, weight: .medium))
           } icon: {
             Image(systemName: "info.circle.fill")
