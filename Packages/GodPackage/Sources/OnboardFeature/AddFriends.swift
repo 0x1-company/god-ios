@@ -399,7 +399,7 @@ public struct AddFriendsView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
-        store: store.scope(state: \.$message, action: { .message($0) }),
+        store: store.scope(state: \.$message, action: \.message),
         content: CupertinoMessageView.init
       )
       .toolbar {

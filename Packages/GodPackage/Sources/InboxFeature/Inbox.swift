@@ -313,7 +313,7 @@ public struct InboxView: View {
             BannerCard(banner: banner)
           }
           IfLetStore(
-            store.scope(state: \.notificationsReEnable, action: InboxLogic.Action.notificationsReEnable),
+            store.scope(state: \.notificationsReEnable, action: \.notificationsReEnable),
             then: NotificationsReEnableView.init(store:)
           )
           List {
@@ -323,7 +323,7 @@ public struct InboxView: View {
               }
             }
 
-            FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: InboxLogic.Action.fromGodTeamCard))
+            FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: \.fromGodTeamCard))
 
             Spacer()
               .listRowSeparator(.hidden)

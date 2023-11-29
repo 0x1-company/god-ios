@@ -364,7 +364,7 @@ public struct AddView: View {
       ZStack {
         VStack(spacing: 0) {
           IfLetStore(
-            store.scope(state: \.contactsReEnable, action: AddLogic.Action.contactsReEnable),
+            store.scope(state: \.contactsReEnable, action: \.contactsReEnable),
             then: ContactsReEnableView.init(store:)
           )
           SearchField(text: viewStore.$searchQuery)
@@ -395,26 +395,26 @@ public struct AddView: View {
 
               if viewStore.searchResult.isEmpty {
                 IfLetStore(
-                  store.scope(state: \.friendRequestPanel, action: AddLogic.Action.friendRequestPanel),
+                  store.scope(state: \.friendRequestPanel, action: \.friendRequestPanel),
                   then: FriendRequestsView.init(store:)
                 )
                 IfLetStore(
-                  store.scope(state: \.friendsOfFriendsPanel, action: AddLogic.Action.friendsOfFriendsPanel),
+                  store.scope(state: \.friendsOfFriendsPanel, action: \.friendsOfFriendsPanel),
                   then: FriendsOfFriendsPanelView.init(store:)
                 )
                 IfLetStore(
-                  store.scope(state: \.fromSchoolPanel, action: AddLogic.Action.fromSchoolPanel),
+                  store.scope(state: \.fromSchoolPanel, action: \.fromSchoolPanel),
                   then: FromSchoolPanelView.init(store:)
                 )
                 InvitationsLeftView(
                   store: store.scope(
                     state: \.invitationsLeft,
-                    action: AddLogic.Action.invitationsLeft
+                    action: \.invitationsLeft
                   )
                 )
               } else {
                 ForEachStore(
-                  store.scope(state: \.searchResult, action: AddLogic.Action.searchResult)
+                  store.scope(state: \.searchResult, action: \.searchResult)
                 ) {
                   FriendRowCardView(store: $0)
                 }

@@ -182,7 +182,7 @@ public struct PollView: View {
           ScrollView(showsIndicators: false) {
             LazyVStack(spacing: 0) {
               ForEachStore(
-                store.scope(state: \.pollQuestions, action: PollLogic.Action.pollQuestions)
+                store.scope(state: \.pollQuestions, action: \.pollQuestions)
               ) { store in
                 WithViewStore(store, observe: \.id) { id in
                   PollQuestionView(store: store)

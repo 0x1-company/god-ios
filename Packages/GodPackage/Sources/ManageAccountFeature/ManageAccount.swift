@@ -94,7 +94,7 @@ public struct ManageAccountView: View {
       }
       .navigationTitle(Text("Manage Account", bundle: .module))
       .navigationBarTitleDisplayMode(.inline)
-      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
+      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: \.confirmationDialog))
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {

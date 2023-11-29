@@ -176,8 +176,8 @@ public struct OnboardView: View {
   }
 
   public var body: some View {
-    NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
-      WelcomeView(store: store.scope(state: \.welcome, action: OnboardLogic.Action.welcome))
+    NavigationStackStore(store.scope(state: \.path, action: \.path)) {
+      WelcomeView(store: store.scope(state: \.welcome, action: \.welcome))
     } destination: { store in
       switch store {
       case .gradeSetting:

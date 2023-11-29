@@ -207,7 +207,7 @@ public struct GodView: View {
   }
 
   public var body: some View {
-    SwitchStore(store.scope(state: \.child, action: GodLogic.Action.child)) { initialState in
+    SwitchStore(store.scope(state: \.child, action: \.child)) { initialState in
       switch initialState {
       case .poll:
         CaseLet(
