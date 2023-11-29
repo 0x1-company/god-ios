@@ -100,6 +100,8 @@ graph TD;
     InviteFriendFeature-->GodClient;
     InviteFriendFeature-->Styleguide;
     InviteFriendFeature-->ActivityView;
+    InviteFriendFeature-->ProfileImage;
+    InviteFriendFeature-->RoundedCorner;
     InviteFriendFeature-->AnalyticsClient;
     InviteFriendFeature-->ShareLinkBuilder;
     LaunchFeature-->Styleguide;
