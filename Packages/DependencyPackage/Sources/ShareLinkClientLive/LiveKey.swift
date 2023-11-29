@@ -6,16 +6,19 @@ import ShareLinkClient
 extension String: Error {}
 
 extension ShareLinkClient {
-  static func live(fetch: @escaping () async throws -> God.ShareLinkClientQuery.Data) -> Self {
+  public static func live(stream: @escaping () -> AsyncThrowingStream<God.ShareLinkClientQuery.Data, Error>) -> Self {
     return ShareLinkClient(
       generateSharedText: { path, source, medium in
-        let data = try await fetch()
-        guard let username = data.currentUser.username else {
+        var iterator = stream().makeAsyncIterator()
+        let data = try await iterator.next()
+        guard let username = data?.currentUser.username else {
           throw "username could not be retrieved."
+        }
+        guard let invitationCode = data?.invitationCode.code else {
+          throw "invitation code could not be retrieved."
         }
         
         let link = generateLink(path: path, username: username, source: source, medium: medium)
-        let invitationCode = data.invitationCode.code
         return generateText(link: link, invitationCode: invitationCode)
       }
     )

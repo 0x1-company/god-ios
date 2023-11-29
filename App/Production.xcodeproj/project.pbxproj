@@ -13,6 +13,7 @@
 		B783E0EB2A11FFBE002E782F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B783E0EA2A11FFBE002E782F /* Preview Assets.xcassets */; };
 		B783E1042A12000A002E782F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B783E1032A12000A002E782F /* App.swift */; };
 		B78862D52A68FD050023B1FB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B78862D42A68FD050023B1FB /* AppFeature */; };
+		B7C58CE32B17FF05001405EE /* ShareLinkClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = B7C58CE22B17FF05001405EE /* ShareLinkClientLive */; };
 		B7DE59AF2A959B1D001D8C19 /* ApolloClientHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = B7DE59AE2A959B1D001D8C19 /* ApolloClientHelpers */; };
 		B7E273BF2AA3D079005DC4BD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E273BE2AA3D079005DC4BD /* StoreKit.framework */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,7 @@
 				B7E273BF2AA3D079005DC4BD /* StoreKit.framework in Frameworks */,
 				B7DE59AF2A959B1D001D8C19 /* ApolloClientHelpers in Frameworks */,
 				B78862D52A68FD050023B1FB /* AppFeature in Frameworks */,
+				B7C58CE32B17FF05001405EE /* ShareLinkClientLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +129,7 @@
 			packageProductDependencies = (
 				B78862D42A68FD050023B1FB /* AppFeature */,
 				B7DE59AE2A959B1D001D8C19 /* ApolloClientHelpers */,
+				B7C58CE22B17FF05001405EE /* ShareLinkClientLive */,
 			);
 			productName = iOS;
 			productReference = B783E0E12A11FFBE002E782F /* App.app */;
@@ -411,6 +414,10 @@
 		B78862D42A68FD050023B1FB /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
+		};
+		B7C58CE22B17FF05001405EE /* ShareLinkClientLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShareLinkClientLive;
 		};
 		B7DE59AE2A959B1D001D8C19 /* ApolloClientHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
