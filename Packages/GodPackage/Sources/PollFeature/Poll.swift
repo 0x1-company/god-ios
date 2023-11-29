@@ -215,7 +215,7 @@ public struct PollView: View {
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .alert(store: store.scope(state: \.$alert, action: PollLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
     }
   }
 }

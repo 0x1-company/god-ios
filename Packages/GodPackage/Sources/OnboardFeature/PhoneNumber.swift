@@ -155,7 +155,7 @@ public struct PhoneNumberView: View {
         .multilineTextAlignment(.center)
       }
       .navigationBarBackButtonHidden()
-      .alert(store: store.scope(state: \.$alert, action: PhoneNumberLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .sheet(
         store: store.scope(state: \.$help, action: PhoneNumberLogic.Action.help),
         content: { store in

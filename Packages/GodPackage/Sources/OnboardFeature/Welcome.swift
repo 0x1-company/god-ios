@@ -138,7 +138,7 @@ public struct WelcomeView: View {
         }
       }
       .background(Color.godBlack)
-      .alert(store: store.scope(state: \.$alert, action: WelcomeLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .onAppear { store.send(.onAppear) }
       .toolbar {
         Button {

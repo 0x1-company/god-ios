@@ -456,7 +456,7 @@ public struct ProfileEditView: View {
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .alert(store: store.scope(state: \.$alert, action: ProfileEditLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .sheet(
         store: store.scope(
           state: \.$destination.manageAccount,
