@@ -195,6 +195,8 @@ let package = Package(
       .product(name: "GodClient", package: "DependencyPackage"),
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "ActivityView", package: "UIComponentPackage"),
+      .product(name: "ProfileImage", package: "UIComponentPackage"),
+      .product(name: "RoundedCorner", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
     ], resources: [.copy("Invited.json")]),

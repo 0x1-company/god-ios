@@ -57,7 +57,6 @@ public struct InvitationCodeLogic {
 }
 
 public struct InvitationCodeView: View {
-  @FocusState var focus: Bool
   let store: StoreOf<InvitationCodeLogic>
 
   public init(store: StoreOf<InvitationCodeLogic>) {
@@ -80,7 +79,6 @@ public struct InvitationCodeView: View {
         .foregroundStyle(.white)
         .multilineTextAlignment(.center)
         .font(.system(.title, design: .rounded))
-        .focused($focus)
 
         Spacer()
 
@@ -102,10 +100,7 @@ public struct InvitationCodeView: View {
       .foregroundStyle(Color.white)
       .background(Color.godService)
       .task { await store.send(.onTask).finish() }
-      .onAppear {
-        focus = true
-        store.send(.onAppear)
-      }
+      .onAppear { store.send(.onAppear) }
     }
   }
 }
