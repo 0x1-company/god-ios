@@ -256,7 +256,6 @@ public struct InviteFriendView: View {
             .progressViewStyle(.circular)
             .tint(Color.white)
         }
-
       }
       .frame(maxHeight: .infinity, alignment: .top)
 
@@ -299,7 +298,7 @@ public struct InviteFriendView: View {
       store: store.scope(state: \.$destination.alert, action: \.destination.alert)
     )
     .sheet(
-      store: store.scope(state: \.$destination.activity,action: \.destination.activity)
+      store: store.scope(state: \.$destination.activity, action: \.destination.activity)
     ) { _ in
       ActivityView(
         activityItems: [viewStore.shareURL],

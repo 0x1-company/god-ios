@@ -1,7 +1,7 @@
 import God
-import SwiftUI
-import RoundedCorner
 import ProfileImage
+import RoundedCorner
+import SwiftUI
 
 struct ReceivedActivityList: View {
   let profileImageUrl: String
@@ -9,21 +9,21 @@ struct ReceivedActivityList: View {
   let displayName: String
   let grade: String?
   let gender: GraphQLEnum<God.Gender>
-  
+
   var starIcon: ImageResource {
     if gender == God.Gender.female {
       return ImageResource.boy
     }
     return ImageResource.girl
   }
-  
+
   var differentGender: String {
     if gender == God.Gender.female {
       return String(localized: "boy", bundle: .module)
     }
     return String(localized: "girl", bundle: .module)
   }
-  
+
   var fromGenderGrade: String {
     if let grade {
       return String(localized: "From a \(differentGender) in \(grade)", bundle: .module)
@@ -40,7 +40,7 @@ struct ReceivedActivityList: View {
           size: 40
         )
         .clipShape(Circle())
-        
+
         VStack(alignment: .leading, spacing: 4) {
           HStack(spacing: 4) {
             Text(displayName)
@@ -56,7 +56,7 @@ struct ReceivedActivityList: View {
               .aspectRatio(contentMode: .fit)
               .clipped()
               .frame(width: 14, height: 14)
-            
+
             Text(fromGenderGrade)
               .foregroundStyle(Color.secondary)
           }
@@ -68,7 +68,7 @@ struct ReceivedActivityList: View {
       .padding(.horizontal, 12)
       .background(Color.white)
       .cornerRadius(12)
-      
+
       HStack(alignment: .top, spacing: 8) {
         ProfileImage(
           urlString: profileImageUrl,
@@ -76,7 +76,7 @@ struct ReceivedActivityList: View {
           size: 28
         )
         .clipShape(Circle())
-        
+
         VStack(alignment: .leading, spacing: 4) {
           HStack(spacing: 4) {
             Text(displayName)
@@ -96,17 +96,17 @@ struct ReceivedActivityList: View {
       .cornerRadius(12, corners: [.bottomLeft, .bottomRight])
       .padding(.horizontal, 22)
       .opacity(0.8)
-      
+
       HStack(alignment: .top, spacing: 8) {
         Color.gray
           .frame(width: 20, height: 20)
           .clipShape(Circle())
-        
+
         VStack(alignment: .leading, spacing: 8) {
           Color.gray
             .frame(width: 110, height: 7)
             .clipShape(Capsule())
-          
+
           Color.gray
             .frame(width: 52, height: 7)
             .clipShape(Capsule())

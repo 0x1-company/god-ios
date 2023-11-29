@@ -142,27 +142,27 @@ public struct RootNavigationView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       TabView(selection: viewStore.$selectedTab) {
         AddView(store: store.scope(state: \.add, action: \.add))
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.add)
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.add)
 
         ActivityView(store: store.scope(state: \.activity, action: \.activity))
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.activity)
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.activity)
 
         InboxView(store: store.scope(state: \.inbox, action: \.inbox))
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.inbox)
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.inbox)
 
         GodView(store: store.scope(state: \.god, action: \.god))
-        .tag(RootNavigationLogic.Tab.god)
+          .tag(RootNavigationLogic.Tab.god)
 
         ProfileView(store: store.scope(state: \.profile, action: \.profile))
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.profile)
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.profile)
 
         AboutView(store: store.scope(state: \.about, action: \.about))
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.about)
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.about)
       }
       .ignoresSafeArea()
       .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
