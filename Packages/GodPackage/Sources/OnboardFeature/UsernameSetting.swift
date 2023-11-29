@@ -134,7 +134,7 @@ public struct UsernameSettingView: View {
       .foregroundStyle(Color.white)
       .background(Color.godService)
       .multilineTextAlignment(.center)
-      .alert(store: store.scope(state: \.$alert, action: UsernameSettingLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .onAppear {
         focus = true
         store.send(.onAppear)

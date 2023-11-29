@@ -91,7 +91,7 @@ public struct ShareProfileToInstagramPopupView: View {
         SwitchStore(
           store.scope(
             state: \.currentPage,
-            action: ShareProfileToInstagramPopupLogic.Action.page
+            action: \.page
           )
         ) { store in
           switch store {

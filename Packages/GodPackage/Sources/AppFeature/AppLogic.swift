@@ -150,7 +150,7 @@ public struct AppView: View {
   }
 
   public var body: some View {
-    SwitchStore(store.scope(state: \.view, action: AppLogic.Action.view)) { initialState in
+    SwitchStore(store.scope(state: \.view, action: \.view)) { initialState in
       switch initialState {
       case .launch:
         CaseLet(

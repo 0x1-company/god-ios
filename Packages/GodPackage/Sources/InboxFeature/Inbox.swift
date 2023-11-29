@@ -313,7 +313,7 @@ public struct InboxView: View {
             BannerCard(banner: banner)
           }
           IfLetStore(
-            store.scope(state: \.notificationsReEnable, action: InboxLogic.Action.notificationsReEnable),
+            store.scope(state: \.notificationsReEnable, action: \.notificationsReEnable),
             then: NotificationsReEnableView.init(store:)
           )
           List {
@@ -323,7 +323,7 @@ public struct InboxView: View {
               }
             }
 
-            FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: InboxLogic.Action.fromGodTeamCard))
+            FromGodTeamCard(store: store.scope(state: \.fromGodTeamCard, action: \.fromGodTeamCard))
 
             Spacer()
               .listRowSeparator(.hidden)
@@ -365,29 +365,33 @@ public struct InboxView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxLogic.Destination.State.activatedGodMode,
-        action: InboxLogic.Destination.Action.activatedGodMode
+        store: store.scope(
+          state: \.$destination.activatedGodMode,
+          action: \.destination.activatedGodMode
+        )
       ) { store in
         ActivatedGodModeView(store: store)
           .presentationDetents([.fraction(0.4)])
       }
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxLogic.Destination.State.godMode,
-        action: InboxLogic.Destination.Action.godMode,
+        store: store.scope(
+          state: \.$destination.godMode,
+          action: \.destination.godMode
+        ),
         content: GodModeView.init(store:)
       )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxLogic.Destination.State.fromGodTeam,
-        action: InboxLogic.Destination.Action.fromGodTeam,
+        store: store.scope(
+          state: \.$destination.fromGodTeam,
+          action: \.destination.fromGodTeam
+        ),
         content: FromGodTeamView.init(store:)
       )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /InboxLogic.Destination.State.inboxDetail,
-        action: InboxLogic.Destination.Action.inboxDetail,
+        store: store.scope(
+          state: \.$destination.inboxDetail,
+          action: \.destination.inboxDetail
+        ),
         content: InboxDetailView.init(store:)
       )
     }

@@ -68,7 +68,7 @@ public struct FriendRequestsView: View {
         FriendHeader(title: "FRIEND REQUESTS")
 
         ForEachStore(
-          store.scope(state: \.requests, action: FriendRequestsLogic.Action.requests)
+          store.scope(state: \.requests, action: \.requests)
         ) { cardStore in
           WithViewStore(cardStore, observe: { $0 }) { viewStore in
             FriendRequestCardView(store: cardStore)

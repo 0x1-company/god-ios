@@ -223,13 +223,14 @@ public struct ProfileShareView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .sheet(
-        store: store.scope(state: \.$message, action: { .message($0) }),
+        store: store.scope(state: \.$message, action: \.message),
         content: CupertinoMessageView.init
       )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /ProfileShareLogic.Destination.State.shareProfileToInstagramPopup,
-        action: ProfileShareLogic.Destination.Action.shareProfileToInstagramPopup
+        store: store.scope(
+          state: \.$destination.shareProfileToInstagramPopup,
+          action: \.destination.shareProfileToInstagramPopup
+        )
       ) { store in
         ShareProfileToInstagramPopupView(store: store)
           .backgroundClearSheet()

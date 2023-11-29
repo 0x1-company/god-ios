@@ -349,25 +349,28 @@ public struct InboxDetailView: View {
         store.send(.closeButtonTapped)
       }
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
-        state: /InboxDetailLogic.Destination.State.initialName,
-        action: InboxDetailLogic.Destination.Action.initialName
+        store: store.scope(
+          state: \.$destination.initialName,
+          action: \.destination.initialName
+        )
       ) { store in
         InitialNameView(store: store)
           .presentationBackground(Color.clear)
       }
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
-        state: /InboxDetailLogic.Destination.State.fullName,
-        action: InboxDetailLogic.Destination.Action.fullName
+        store: store.scope(
+          state: \.$destination.fullName,
+          action: \.destination.fullName
+        )
       ) { store in
         FullNameView(store: store)
           .presentationBackground(Color.clear)
       }
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: InboxDetailLogic.Action.destination),
-        state: /InboxDetailLogic.Destination.State.godMode,
-        action: InboxDetailLogic.Destination.Action.godMode,
+        store: store.scope(
+          state: \.$destination.godMode,
+          action: \.destination.godMode
+        ),
         content: GodModeView.init(store:)
       )
     }

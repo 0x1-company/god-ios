@@ -271,14 +271,16 @@ public struct InviteFriendView: View {
     .task { await store.send(.onTask).finish() }
     .onAppear { store.send(.onAppear) }
     .alert(
-      store: store.scope(state: \.$destination, action: InviteFriendLogic.Action.destination),
-      state: /InviteFriendLogic.Destination.State.alert,
-      action: InviteFriendLogic.Destination.Action.alert
+      store: store.scope(
+        state: \.$destination.alert,
+        action: \.destination.alert
+      )
     )
     .sheet(
-      store: store.scope(state: \.$destination, action: InviteFriendLogic.Action.destination),
-      state: /InviteFriendLogic.Destination.State.activity,
-      action: InviteFriendLogic.Destination.Action.activity
+      store: store.scope(
+        state: \.$destination.activity,
+        action: \.destination.activity
+      )
     ) { _ in
       ActivityView(
         activityItems: [viewStore.shareURL],
