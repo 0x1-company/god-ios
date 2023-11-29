@@ -6,10 +6,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最後に友だちを\n招待してください"
+            "value" : "友だちも招待して\n一緒に遊ぼう😎"
           }
         }
       }
+    },
+    "From a boy in 9th grade" : {
+
     },
     "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
       "localizations" : {
@@ -61,6 +64,26 @@
         }
       }
     },
+    "Like to go play with you" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実は一緒に遊びに行きたい"
+          }
+        }
+      }
+    },
+    "Like your fashion" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服の系統がめっちゃタイプ"
+          }
+        }
+      }
+    },
     "No friend\ninvited yet" : {
       "localizations" : {
         "ja" : {
@@ -81,6 +104,16 @@
         }
       }
     },
+    "received" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "が褒められました"
+          }
+        }
+      }
+    },
     "Start" : {
       "localizations" : {
         "ja" : {
@@ -96,10 +129,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godを使うには同じ学校の友だちが必要です👥vv"
+            "value" : "Godを使うには同じ学校の友だちが必要です👥"
           }
         }
       }
+    },
+    "tomokisun" : {
+
     },
     "Why 3 friends" : {
       "localizations" : {
@@ -107,6 +143,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "なぜ招待が必要ですか？"
+          }
+        }
+      }
+    },
+    "You've already been praised 7 times." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もう既に7回褒められてるよ\nはやく確認しよう"
           }
         }
       }

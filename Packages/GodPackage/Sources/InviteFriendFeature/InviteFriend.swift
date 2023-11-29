@@ -56,7 +56,7 @@ public struct InviteFriendLogic {
       invites.filter { !$0 }.count
     }
 
-    var invites = Array(repeating: false, count: 3)
+    var invites = Array(repeating: false, count: 5)
     @PresentationState var destination: Destination.State?
 
     public init() {}
@@ -182,59 +182,72 @@ public struct InviteFriendView: View {
   }
 
   public var body: some View {
-    VStack(spacing: 28) {
+    VStack(spacing: 20) {
       Text("Finally, please invite your friends\nInvite your friends", bundle: .module)
         .font(.system(.title, design: .rounded, weight: .black))
         .foregroundStyle(Color.white)
 
       Text("INVITE \(viewStore.remainingInvitationCount) FRIENDS", bundle: .module)
-        .font(.system(.body, design: .rounded, weight: .bold))
+        .font(.system(.callout, design: .rounded, weight: .bold))
         .foregroundStyle(Color.white)
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
         .padding(.horizontal, 12)
         .background(Color.godService)
         .clipShape(Capsule())
 
-      HStack(alignment: .top, spacing: 24) {
-        ForEach(viewStore.invites, id: \.self) { isInvited in
-          Button {
-            store.send(.inviteFriendButtonTapped)
-          } label: {
-            VStack(spacing: 12) {
-              Group {
-                if isInvited {
-                  LottieView(animation: LottieAnimation.named("Invited", bundle: .module))
-                    .looping()
-                    .resizable()
-                } else {
-                  Image(systemName: "person.crop.circle.badge.plus")
+      ScrollView(.horizontal, showsIndicators: false) {
+        HStack(alignment: .top, spacing: 12) {
+          ForEach(Array(viewStore.invites.enumerated()), id: \.offset) { offset, isInvited in
+            Button {
+              store.send(.inviteFriendButtonTapped)
+            } label: {
+              VStack(spacing: 4) {
+                Group {
+                  if isInvited {
+                    LottieView(animation: LottieAnimation.named("Invited", bundle: .module))
+                      .looping()
+                      .resizable()
+                  } else {
+                    Image(systemName: "person.crop.circle.badge.plus")
+                  }
                 }
-              }
-              .frame(width: 80, height: 80)
-              .font(.system(size: 50))
-              .clipShape(Circle())
+                .frame(width: 80, height: 80)
+                .font(.system(size: 50))
+                .clipShape(Circle())
 
-              Text(isInvited ? "invited via\nother app" : "No friend\ninvited yet", bundle: .module)
-                .font(.system(.body, design: .rounded))
+                Text(isInvited ? "invited via\nother app" : "No friend\ninvited yet", bundle: .module)
+                  .font(.system(.callout, design: .rounded))
+              }
+              .foregroundStyle(Color.godTextSecondaryDark)
             }
-            .foregroundStyle(Color.godTextSecondaryDark)
+            .id(offset)
+            .buttonStyle(HoldDownButtonStyle())
           }
         }
+        .padding(.horizontal, 24)
       }
 
-      Button {
-        store.send(.whyFriendsButtonTapped)
-      } label: {
-        Label {
-          Text("Why 3 friends", bundle: .module)
-            .font(.system(.body, design: .rounded))
-        } icon: {
-          Image(systemName: "info.circle.fill")
+      VStack(spacing: 16) {
+        Button {
+          store.send(.whyFriendsButtonTapped)
+        } label: {
+          Label {
+            Text("Why 3 friends", bundle: .module)
+              .font(.system(.callout, design: .rounded, weight: .medium))
+          } icon: {
+            Image(systemName: "info.circle.fill")
+          }
+          .foregroundStyle(Color.yellow)
         }
-        .foregroundStyle(Color.yellow)
+        
+        Text("You've already been praised 7 times.", bundle: .module)
+          .foregroundStyle(Color.white)
+          .font(.system(.title3, design: .rounded, weight: .bold))
+        
+        ReceivedActivityList()
+          .padding(.horizontal, 24)
       }
-
-      Spacer()
+      .frame(maxHeight: .infinity, alignment: .top)
 
       Button {
         store.send(.inviteFriendButtonTapped)
@@ -261,6 +274,7 @@ public struct InviteFriendView: View {
       .buttonStyle(HoldDownButtonStyle())
       .padding(.horizontal, 24)
     }
+    .padding(.top, 16)
     .background(Color.godBlack)
     .multilineTextAlignment(.center)
     .navigationTitle(Text("Invite Friends", bundle: .module))
@@ -271,16 +285,10 @@ public struct InviteFriendView: View {
     .task { await store.send(.onTask).finish() }
     .onAppear { store.send(.onAppear) }
     .alert(
-      store: store.scope(
-        state: \.$destination.alert,
-        action: \.destination.alert
-      )
+      store: store.scope(state: \.$destination.alert, action: \.destination.alert)
     )
     .sheet(
-      store: store.scope(
-        state: \.$destination.activity,
-        action: \.destination.activity
-      )
+      store: store.scope(state: \.$destination.activity,action: \.destination.activity)
     ) { _ in
       ActivityView(
         activityItems: [viewStore.shareURL],
