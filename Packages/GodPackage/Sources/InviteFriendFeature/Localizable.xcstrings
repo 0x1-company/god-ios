@@ -57,12 +57,12 @@
         }
       }
     },
-    "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
+    "God is by invitation only; send invitations to 5 people and you will be specifically invited." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Godは招待制です。3人に招待を送ることで、あなたは特別に招待されます。"
+            "value" : "Godは招待制です。5人に招待を送ることで、あなたは特別に招待されます。"
           }
         }
       }
@@ -177,7 +177,7 @@
         }
       }
     },
-    "Why 3 friends" : {
+    "Why 5 friends" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
