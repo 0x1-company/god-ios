@@ -146,6 +146,10 @@ public extension GodClient {
       clubActivities: {
         let query = God.ClubActivitiesQuery()
         return apolloClient.watch(query: query)
+      },
+      shareLink: {
+        let query = God.ShareLinkClientQuery()
+        return apolloClient.watch(query: query)
       }
     )
   }

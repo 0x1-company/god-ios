@@ -44,6 +44,7 @@ extension GodClient: TestDependencyKey {
     revealFullNameLimit: unimplemented("\(Self.self).revealFullNameLimit"),
     revealFullName: unimplemented("\(Self.self).revealFullName"),
     banners: unimplemented("\(Self.self).banners"),
-    clubActivities: unimplemented("\(Self.self).clubActivities")
+    clubActivities: unimplemented("\(Self.self).clubActivities"),
+    shareLink: unimplemented("\(Self.self).shareLink")
   )
 }
