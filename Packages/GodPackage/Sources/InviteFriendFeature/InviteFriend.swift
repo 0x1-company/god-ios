@@ -57,6 +57,7 @@ public struct InviteFriendLogic {
     }
 
     var invites = Array(repeating: false, count: 5)
+    var receivedActivity: ReceivedActivityLogic.State?
     @PresentationState var destination: Destination.State?
 
     public init() {}
@@ -70,6 +71,7 @@ public struct InviteFriendLogic {
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
     case onCompletion(CompletionWithItems)
     case binding(BindingAction<State>)
+    case receivedActivity(ReceivedActivityLogic.Action)
     case destination(PresentationAction<Destination.Action>)
     case delegate(Delegate)
 
@@ -132,6 +134,7 @@ public struct InviteFriendLogic {
         return .none
 
       case let .currentUserResponse(.success(data)):
+        state.receivedActivity = .init(currentUser: data.currentUser)
         guard let username = data.currentUser.username
         else { return .none }
         state.shareURL = ShareLinkBuilder.buildGodLink(
@@ -167,6 +170,9 @@ public struct InviteFriendLogic {
     .ifLet(\.$destination, action: \.destination) {
       Destination()
     }
+    .ifLet(\.receivedActivity, action: \.receivedActivity) {
+      ReceivedActivityLogic()
+    }
   }
 }
 
@@ -201,7 +207,7 @@ public struct InviteFriendView: View {
             Button {
               store.send(.inviteFriendButtonTapped)
             } label: {
-              VStack(spacing: 4) {
+              VStack(spacing: 8) {
                 Group {
                   if isInvited {
                     LottieView(animation: LottieAnimation.named("Invited", bundle: .module))
@@ -216,8 +222,9 @@ public struct InviteFriendView: View {
                 .clipShape(Circle())
 
                 Text(isInvited ? "invited via\nother app" : "No friend\ninvited yet", bundle: .module)
-                  .font(.system(.callout, design: .rounded))
+                  .font(.system(.footnote, design: .rounded))
               }
+              .frame(width: 80)
               .foregroundStyle(Color.godTextSecondaryDark)
             }
             .id(offset)
@@ -239,13 +246,17 @@ public struct InviteFriendView: View {
           }
           .foregroundStyle(Color.yellow)
         }
-        
-        Text("You've already been praised 7 times.", bundle: .module)
-          .foregroundStyle(Color.white)
-          .font(.system(.title3, design: .rounded, weight: .bold))
-        
-        ReceivedActivityList()
-          .padding(.horizontal, 24)
+
+        IfLetStore(
+          store.scope(state: \.receivedActivity, action: \.receivedActivity)
+        ) { store in
+          ReceivedActivityView(store: store)
+        } else: {
+          ProgressView()
+            .progressViewStyle(.circular)
+            .tint(Color.white)
+        }
+
       }
       .frame(maxHeight: .infinity, alignment: .top)
 

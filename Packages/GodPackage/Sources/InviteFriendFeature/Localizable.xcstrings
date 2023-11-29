@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "boy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男子"
+          }
+        }
+      }
+    },
     "Finally, please invite your friends\nInvite your friends" : {
       "localizations" : {
         "ja" : {
@@ -11,8 +21,41 @@
         }
       }
     },
-    "From a boy in 9th grade" : {
-
+    "From a %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@より"
+          }
+        }
+      }
+    },
+    "From a %@ in %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From a %1$@ in %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@の%1$@より"
+          }
+        }
+      }
+    },
+    "girl" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女子"
+          }
+        }
+      }
     },
     "God is by invitation only; send invitations to 3 people and you will be specifically invited." : {
       "localizations" : {
@@ -133,9 +176,6 @@
           }
         }
       }
-    },
-    "tomokisun" : {
-
     },
     "Why 3 friends" : {
       "localizations" : {

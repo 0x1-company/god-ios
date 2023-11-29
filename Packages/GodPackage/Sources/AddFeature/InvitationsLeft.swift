@@ -128,7 +128,7 @@ public struct InvitationsLeftView: View {
       }
       .task { await store.send(.onTask).finish() }
       .sheet(
-        store: store.scope(state: \.$message, action: \.message }),
+        store: store.scope(state: \.$message, action: \.message),
         content: CupertinoMessageView.init
       )
     }

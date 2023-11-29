@@ -1,17 +1,49 @@
+import God
 import SwiftUI
 import RoundedCorner
+import ProfileImage
 
 struct ReceivedActivityList: View {
+  let profileImageUrl: String
+  let name: String
+  let displayName: String
+  let grade: String?
+  let gender: GraphQLEnum<God.Gender>
+  
+  var starIcon: ImageResource {
+    if gender == God.Gender.female {
+      return ImageResource.boy
+    }
+    return ImageResource.girl
+  }
+  
+  var differentGender: String {
+    if gender == God.Gender.female {
+      return String(localized: "boy", bundle: .module)
+    }
+    return String(localized: "girl", bundle: .module)
+  }
+  
+  var fromGenderGrade: String {
+    if let grade {
+      return String(localized: "From a \(differentGender) in \(grade)", bundle: .module)
+    }
+    return String(localized: "From a \(differentGender)", bundle: .module)
+  }
+
   var body: some View {
     VStack(spacing: 0) {
       HStack(alignment: .top, spacing: 8) {
-        Color.red
-          .frame(width: 40, height: 40)
-          .clipShape(Circle())
+        ProfileImage(
+          urlString: profileImageUrl,
+          name: name,
+          size: 40
+        )
+        .clipShape(Circle())
         
         VStack(alignment: .leading, spacing: 4) {
           HStack(spacing: 4) {
-            Text("tomokisun")
+            Text(displayName)
               .bold()
             Text("received", bundle: .module)
               .font(.system(.footnote, design: .rounded))
@@ -19,13 +51,13 @@ struct ReceivedActivityList: View {
           Text("Like to go play with you", bundle: .module)
 
           HStack(spacing: 8) {
-            Image(.boy)
+            Image(starIcon)
               .resizable()
               .aspectRatio(contentMode: .fit)
               .clipped()
               .frame(width: 14, height: 14)
             
-            Text("From a boy in 9th grade", bundle: .module)
+            Text(fromGenderGrade)
               .foregroundStyle(Color.secondary)
           }
         }
@@ -38,13 +70,16 @@ struct ReceivedActivityList: View {
       .cornerRadius(12)
       
       HStack(alignment: .top, spacing: 8) {
-        Color.red
-          .frame(width: 28, height: 28)
-          .clipShape(Circle())
+        ProfileImage(
+          urlString: profileImageUrl,
+          name: name,
+          size: 28
+        )
+        .clipShape(Circle())
         
         VStack(alignment: .leading, spacing: 4) {
           HStack(spacing: 4) {
-            Text("tomokisun")
+            Text(displayName)
               .bold()
             Text("received", bundle: .module)
               .font(.system(.footnote, design: .rounded))
@@ -88,8 +123,4 @@ struct ReceivedActivityList: View {
       .opacity(0.6)
     }
   }
-}
-
-#Preview {
-  ReceivedActivityList()
 }
