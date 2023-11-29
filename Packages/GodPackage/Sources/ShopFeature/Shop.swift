@@ -223,7 +223,9 @@ public struct ShopView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .alert(store: store.scope(state: \.$alert, action: \.alert))
-      .fullScreenCover(store: store.scope(state: \.$pickFriend, action: \.pickFriend)) { store in
+      .fullScreenCover(
+        store: store.scope(state: \.$pickFriend, action: \.pickFriend)
+      ) { store in
         NavigationStack {
           PickFriendToAddYourNameTheirPollView(store: store)
         }
