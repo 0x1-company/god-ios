@@ -1,3 +1,4 @@
+import ApolloConcurrency
 import Apollo
 import Dependencies
 import Foundation

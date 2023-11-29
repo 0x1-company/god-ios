@@ -1,9 +1,6 @@
 import Apollo
 import ApolloAPI
 import Foundation
-import os
-
-private let logger = Logger(subsystem: "jp.godapp", category: "ApolloClient")
 
 public extension ApolloClient {
   func watch<Query: GraphQLQuery>(
