@@ -1,6 +1,6 @@
-import ApolloConcurrency
 import AnalyticsClient
 import Apollo
+import ApolloConcurrency
 import ComposableArchitecture
 import God
 import GodClient

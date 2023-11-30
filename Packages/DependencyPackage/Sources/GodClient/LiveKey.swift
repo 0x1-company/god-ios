@@ -1,5 +1,5 @@
-import ApolloConcurrency
 import Apollo
+import ApolloConcurrency
 import Dependencies
 import Foundation
 import God

@@ -9,8 +9,8 @@ import FirebaseAuth
 import FirebaseAuthClient
 import FirebaseDynamicLinks
 import FirebaseMessaging
-import ShareLinkClientLive
 import GodClient
+import ShareLinkClientLive
 import Styleguide
 import SwiftUI
 
