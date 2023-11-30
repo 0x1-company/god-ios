@@ -46,6 +46,6 @@ public struct GodClient: Sendable {
 
   public var banners: @Sendable () -> AsyncThrowingStream<God.BannersQuery.Data, Error>
   public var clubActivities: @Sendable () -> AsyncThrowingStream<God.ClubActivitiesQuery.Data, Error>
-  
+
   public var shareLink: @Sendable () -> AsyncThrowingStream<God.ShareLinkClientQuery.Data, Error>
 }

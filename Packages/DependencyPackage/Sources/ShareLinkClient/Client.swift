@@ -23,14 +23,14 @@ public extension ShareLinkClient {
     case add
     case invite
   }
-  
+
   enum UtmSource: String {
     case sms
     case line
     case instagram
     case share
   }
-  
+
   enum UtmMedium: String {
     case add
     case invite

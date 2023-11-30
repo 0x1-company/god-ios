@@ -5,9 +5,9 @@ import ShareLinkClient
 
 extension String: Error {}
 
-extension ShareLinkClient {
-  public static func live(stream: @escaping () -> AsyncThrowingStream<God.ShareLinkClientQuery.Data, Error>) -> Self {
-    return ShareLinkClient(
+public extension ShareLinkClient {
+  static func live(stream: @escaping () -> AsyncThrowingStream<God.ShareLinkClientQuery.Data, Error>) -> Self {
+    ShareLinkClient(
       generateSharedText: { path, source, medium in
         var iterator = stream().makeAsyncIterator()
         let data = try await iterator.next()
@@ -17,7 +17,7 @@ extension ShareLinkClient {
         guard let invitationCode = data?.invitationCode.code else {
           throw "invitation code could not be retrieved."
         }
-        
+
         let link = generateLink(path: path, username: username, source: source, medium: medium)
         return generateText(link: link, invitationCode: invitationCode)
       }
@@ -50,7 +50,7 @@ func generateText(
   link: String,
   invitationCode: String
 ) -> String {
-  return String(
+  String(
     localized: "God is an interesting app, try it!\n\nInvitation Code: \(invitationCode)\n\n\(link)",
     bundle: .module
   )

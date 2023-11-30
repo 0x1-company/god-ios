@@ -4,8 +4,8 @@ import ComposableArchitecture
 import God
 import GodClient
 import Lottie
-import ShareLinkClient
 import ShareLinkBuilder
+import ShareLinkClient
 import Styleguide
 import SwiftUI
 
@@ -143,7 +143,7 @@ public struct InviteFriendLogic {
             try await generateSharedText(.invite, .share, .requiredInvite)
           }))
         }
-        
+
       case let .generateSharedTextResponse(.success(text)):
         state.sharedText = text
         return .none
