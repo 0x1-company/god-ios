@@ -13,6 +13,7 @@ let package = Package(
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
     .library(name: "ApolloClientHelpers", targets: ["ApolloClientHelpers"]),
+    .library(name: "ApolloConcurrency", targets: ["ApolloConcurrency"]),
     .library(name: "AsyncValue", targets: ["AsyncValue"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "DeleteAccountReasonClient", targets: ["DeleteAccountReasonClient"]),
@@ -27,6 +28,8 @@ let package = Package(
     .library(name: "GodTestMock", targets: ["GodTestMock"]),
     .library(name: "PhoneNumberDependencies", targets: ["PhoneNumberDependencies"]),
     .library(name: "ShareLinkBuilder", targets: ["ShareLinkBuilder"]),
+    .library(name: "ShareLinkClient", targets: ["ShareLinkClient"]),
+    .library(name: "ShareLinkClientLive", targets: ["ShareLinkClientLive"]),
     .library(name: "StoreKitHelpers", targets: ["StoreKitHelpers"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
@@ -38,6 +41,7 @@ let package = Package(
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.18.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.7.5"),
     .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.1"),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.2"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
@@ -48,6 +52,10 @@ let package = Package(
       .product(name: "Apollo", package: "apollo-ios"),
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+    ]),
+    .target(name: "ApolloConcurrency", dependencies: [
+      .product(name: "Apollo", package: "apollo-ios"),
+      .product(name: "ApolloAPI", package: "apollo-ios"),
     ]),
     .target(name: "AsyncValue"),
     .target(name: "Constants"),
@@ -89,8 +97,7 @@ let package = Package(
     ]),
     .target(name: "GodClient", dependencies: [
       "God",
-      .product(name: "Apollo", package: "apollo-ios"),
-      .product(name: "ApolloAPI", package: "apollo-ios"),
+      "ApolloConcurrency",
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodTestMock", dependencies: [
@@ -104,6 +111,14 @@ let package = Package(
     .target(name: "ShareLinkBuilder"),
     .testTarget(name: "ShareLinkBuilderTests", dependencies: [
       "ShareLinkBuilder",
+    ]),
+    .target(name: "ShareLinkClient", dependencies: [
+      .product(name: "Dependencies", package: "swift-dependencies"),
+      .product(name: "DependenciesMacros", package: "swift-dependencies"),
+    ]),
+    .target(name: "ShareLinkClientLive", dependencies: [
+      "God",
+      "ShareLinkClient",
     ]),
     .target(name: "StoreKitHelpers", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

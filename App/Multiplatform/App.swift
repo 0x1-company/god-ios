@@ -9,6 +9,7 @@ import FirebaseAuth
 import FirebaseAuthClient
 import FirebaseDynamicLinks
 import FirebaseMessaging
+import ShareLinkClientLive
 import GodClient
 import Styleguide
 import SwiftUI
@@ -46,6 +47,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         ._printChanges()
         .transformDependency(\.self) {
           $0.godClient = .live(apolloClient: ApolloClient(build: $0.build))
+          $0.shareLink = .live(stream: $0.godClient.shareLink)
         }
     }
   )

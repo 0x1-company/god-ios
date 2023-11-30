@@ -4,6 +4,7 @@ import ComposableArchitecture
 import God
 import GodClient
 import Lottie
+import ShareLinkClient
 import ShareLinkBuilder
 import Styleguide
 import SwiftUI
@@ -51,7 +52,7 @@ public struct InviteFriendLogic {
   }
 
   public struct State: Equatable {
-    var shareURL = URL(string: "https://godapp.jp")!
+    var sharedText = ""
     var remainingInvitationCount: Int {
       invites.filter { !$0 }.count
     }
@@ -69,6 +70,7 @@ public struct InviteFriendLogic {
     case whyFriendsButtonTapped
     case inviteFriendButtonTapped
     case currentUserResponse(TaskResult<God.CurrentUserQuery.Data>)
+    case generateSharedTextResponse(Result<String, Error>)
     case onCompletion(CompletionWithItems)
     case binding(BindingAction<State>)
     case receivedActivity(ReceivedActivityLogic.Action)
@@ -82,6 +84,7 @@ public struct InviteFriendLogic {
 
   @Dependency(\.godClient) var godClient
   @Dependency(\.analytics) var analytics
+  @Dependency(\.shareLink.generateSharedText) var generateSharedText
 
   enum Cancel {
     case currentUser
@@ -135,14 +138,14 @@ public struct InviteFriendLogic {
 
       case let .currentUserResponse(.success(data)):
         state.receivedActivity = .init(currentUser: data.currentUser)
-        guard let username = data.currentUser.username
-        else { return .none }
-        state.shareURL = ShareLinkBuilder.buildGodLink(
-          path: .invite,
-          username: username,
-          source: .share,
-          medium: .requiredInvite
-        )
+        return .run { send in
+          await send(.generateSharedTextResponse(Result {
+            try await generateSharedText(.invite, .share, .requiredInvite)
+          }))
+        }
+        
+      case let .generateSharedTextResponse(.success(text)):
+        state.sharedText = text
         return .none
 
       case let .onCompletion(completion):
@@ -301,7 +304,7 @@ public struct InviteFriendView: View {
       store: store.scope(state: \.$destination.activity, action: \.destination.activity)
     ) { _ in
       ActivityView(
-        activityItems: [viewStore.shareURL],
+        activityItems: [viewStore.sharedText],
         applicationActivities: nil
       ) { activityType, result, _, _ in
         store.send(

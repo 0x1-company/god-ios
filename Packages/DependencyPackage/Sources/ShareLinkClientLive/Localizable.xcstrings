@@ -1,0 +1,22 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "God is an interesting app, try it!\n\nInvitation Code: %@\n\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "God is an interesting app, try it!\n\nInvitation Code: %1$@\n\n%2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godってアプリ面白いから使ってみて\n\n招待コード: %1$@\n\n%2$@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
