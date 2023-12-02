@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - run: ls /Applications
@@ -41,7 +41,7 @@ jobs:
       - run: xcodebuild build -workspace God.xcworkspace -scheme "App (Staging project)" -skipMacroValidation -destination platform="${{ env.PLATFORM_IOS }}" | xcpretty
 
   test:
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - run: ls /Applications
