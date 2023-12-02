@@ -23,6 +23,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>777631217454373</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
 				<string>app-1-956650290643-ios-cce3e433965d915d2ac326</string>
 			</array>
 		</dict>
@@ -122,5 +130,16 @@
 	<string>jp.godapp.ios.god_mode.default</string>
 	<key>REVEAL_POLL_ID</key>
 	<string>jp.godapp.ios.reveal_poll</string>
+	<key>FacebookAppID</key>
+	<string>777631217454373</string>
+	<key>FacebookClientToken</key>
+	<string>b380f70d7d502438758535da9c90602d</string>
+	<key>FacebookDisplayName</key>
+	<string>God</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 </dict>
 </plist>
