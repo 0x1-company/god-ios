@@ -42,14 +42,12 @@ public struct FindLocationView: View {
   public var body: some View {
     VStack(spacing: 0) {
       Spacer()
-      
+
       VStack(spacing: 28) {
         Text("Connect your school to find friends", bundle: .module)
           .font(.system(.body, design: .rounded, weight: .bold))
-        
-        Button {
-          
-        } label: {
+
+        Button {} label: {
           HStack(spacing: 12) {
             Image(ImageResource.worldMap)
               .resizable()
@@ -67,9 +65,9 @@ public struct FindLocationView: View {
         }
         .padding(.horizontal, 32)
       }
-      
+
       Spacer()
-      
+
       HStack(spacing: 0) {
         Image(systemName: "lock")
 
