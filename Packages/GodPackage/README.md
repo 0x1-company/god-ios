@@ -31,6 +31,7 @@ graph TD;
     NavigationFeature-->ProfileFeature;
     NavigationFeature-->ActivityFeature;
     NavigationFeature-->TutorialFeature;
+    OnboardFeature-->FindFriendFeature;
     OnboardFeature-->ProfileStoryFeature;
     OnboardFeature-->InviteFriendFeature;
     OnboardFeature-->SchoolSettingFeature;
