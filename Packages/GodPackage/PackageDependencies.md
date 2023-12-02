@@ -33,6 +33,7 @@ graph TD;
     AppFeature-->MaintenanceFeature;
     AppFeature-->TcaHelpers;
     AppFeature-->StoreKitClient;
+    AppFeature-->FacebookClient;
     AppFeature-->FirestoreClient;
     AppFeature-->UserSettingsClient;
     AppFeature-->FirebaseCoreClient;
