@@ -14,6 +14,7 @@ let package = Package(
     .library(name: "ActivatedGodModeFeature", targets: ["ActivatedGodModeFeature"]),
     .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
     .library(name: "AddFeature", targets: ["AddFeature"]),
+    .library(name: "AllowAccessFeature", targets: ["AllowAccessFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CashOutFeature", targets: ["CashOutFeature"]),
     .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
@@ -92,6 +93,13 @@ let package = Package(
       .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "UIApplicationClient", package: "CupertinoPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "AllowAccessFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ContactsClient", package: "CupertinoPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "UserNotificationClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "AppFeature", dependencies: [
