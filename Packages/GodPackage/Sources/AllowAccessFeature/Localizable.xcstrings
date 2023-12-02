@@ -1,0 +1,56 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Enable Contacts" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先へのアクセスを許可"
+          }
+        }
+      }
+    },
+    "Enable Notify" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プッシュ通知を許可"
+          }
+        }
+      }
+    },
+    "God cares intensely about your privacy.\nWe will never text or spam your contacts." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godはあなたのプライバシーをとても大切にします。\nあなたの連絡先にメールやスパムを送ることは決してありません。"
+          }
+        }
+      }
+    },
+    "God needs to find your school and suggest friends." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godはあなたの学校を見つけて、友だちを勧める必要がある。"
+          }
+        }
+      }
+    },
+    "Please allow access" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクセスを許可"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
