@@ -19,6 +19,7 @@ let package = Package(
     .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
     .library(name: "DeleteAccountFeature", targets: ["DeleteAccountFeature"]),
     .library(name: "EmailFeature", targets: ["EmailFeature"]),
+    .library(name: "FindFriendFeature", targets: ["FindFriendFeature"]),
     .library(name: "FindLocationFeature", targets: ["FindLocationFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "FriendRequestFeature", targets: ["FriendRequestFeature"]),
@@ -132,6 +133,12 @@ let package = Package(
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
+    .target(name: "FindFriendFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "ContactsClient", package: "CupertinoPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
     .target(name: "FindLocationFeature", dependencies: [
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
@@ -235,6 +242,7 @@ let package = Package(
       "TutorialFeature",
     ]),
     .target(name: "OnboardFeature", dependencies: [
+      "FindFriendFeature",
       "ProfileStoryFeature",
       "InviteFriendFeature",
       "SchoolSettingFeature",
@@ -245,7 +253,6 @@ let package = Package(
       .product(name: "ProfileImage", package: "UIComponentPackage"),
       .product(name: "ActivityView", package: "UIComponentPackage"),
       .product(name: "StringHelpers", package: "DependencyPackage"),
-      .product(name: "ContactsClient", package: "CupertinoPackage"),
       .product(name: "ShareLinkClient", package: "DependencyPackage"),
       .product(name: "ShareLinkBuilder", package: "DependencyPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
