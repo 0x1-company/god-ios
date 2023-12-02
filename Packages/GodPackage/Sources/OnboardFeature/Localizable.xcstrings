@@ -196,16 +196,6 @@
         }
       }
     },
-    "Find My Friends" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "友だちを探す"
-          }
-        }
-      }
-    },
     "Finished High School" : {
       "localizations" : {
         "ja" : {
@@ -269,28 +259,8 @@
         }
       }
     },
-    "God cares intensely about your privacy.\nWeb will never text or spam your contacts." : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "あなたの個人情報は安全に管理されます。\nメールやスパムを送ることはありません。"
-          }
-        }
-      }
-    },
     "God needs to find your school and suggest friends." : {
 
-    },
-    "God uses your contacts\nto find friends" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Godは友だちを見つけるために\n連絡先を利用します"
-          }
-        }
-      }
     },
     "godappteam" : {
       "localizations" : {

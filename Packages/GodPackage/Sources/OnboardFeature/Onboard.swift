@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import FindFriendFeature
 import Contacts
 import ContactsClient
 import FirebaseAuth
