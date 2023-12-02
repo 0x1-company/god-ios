@@ -1,5 +1,6 @@
 import AnalyticsClient
 import ComposableArchitecture
+import FacebookClient
 import FirebaseAuthClient
 import FirebaseCoreClient
 import FirebaseMessagingClient
@@ -8,7 +9,6 @@ import GodClient
 import UIKit
 import UserDefaultsClient
 import UserNotificationClient
-import FacebookClient
 
 @Reducer
 public struct AppDelegateLogic {
@@ -80,7 +80,7 @@ public struct AppDelegateLogic {
         options[UIApplication.OpenURLOptionsKey.annotation]
       )
       return .none
-      
+
     case let .didReceiveRemoteNotification(userInfo):
       guard let badge = userInfo["badge"] as? String else { return .none }
       guard let badgeCount = Int(badge) else { return .none }
