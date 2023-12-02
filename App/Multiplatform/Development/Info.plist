@@ -27,6 +27,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>777631217454373</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
 				<string>app-1-16565601261-ios-a77ccbf2c01d4950d05de4</string>
 			</array>
 		</dict>
@@ -110,5 +118,16 @@
 	<false/>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
+	<key>FacebookAppID</key>
+	<string>777631217454373</string>
+	<key>FacebookClientToken</key>
+	<string>b380f70d7d502438758535da9c90602d</string>
+	<key>FacebookDisplayName</key>
+	<string>God</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 </dict>
 </plist>

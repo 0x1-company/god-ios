@@ -17,6 +17,7 @@ let package = Package(
     .library(name: "AsyncValue", targets: ["AsyncValue"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "DeleteAccountReasonClient", targets: ["DeleteAccountReasonClient"]),
+    .library(name: "FacebookClient", targets: ["FacebookClient"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
     .library(name: "FirebaseDynamicLinkClient", targets: ["FirebaseDynamicLinkClient"]),
@@ -42,6 +43,7 @@ let package = Package(
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.7.5"),
     .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.1"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.2"),
+    .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "16.2.1"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
@@ -63,6 +65,11 @@ let package = Package(
       .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
       .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "FacebookClient", dependencies: [
+      .product(name: "FacebookCore", package: "facebook-ios-sdk"),
+      .product(name: "Dependencies", package: "swift-dependencies"),
+      .product(name: "DependenciesMacros", package: "swift-dependencies"),
     ]),
     .target(name: "FirebaseAuthClient", dependencies: [
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
