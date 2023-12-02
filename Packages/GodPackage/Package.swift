@@ -19,6 +19,7 @@ let package = Package(
     .library(name: "CupertinoMessageFeature", targets: ["CupertinoMessageFeature"]),
     .library(name: "DeleteAccountFeature", targets: ["DeleteAccountFeature"]),
     .library(name: "EmailFeature", targets: ["EmailFeature"]),
+    .library(name: "FindLocationFeature", targets: ["FindLocationFeature"]),
     .library(name: "ForceUpdateFeature", targets: ["ForceUpdateFeature"]),
     .library(name: "FriendRequestFeature", targets: ["FriendRequestFeature"]),
     .library(name: "GodFeature", targets: ["GodFeature"]),
@@ -129,6 +130,11 @@ let package = Package(
       .product(name: "Styleguide", package: "UIComponentPackage"),
       .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "UIPasteboardClient", package: "CupertinoPackage"),
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "FindLocationFeature", dependencies: [
+      .product(name: "Styleguide", package: "UIComponentPackage"),
+      .product(name: "AnalyticsClient", package: "DependencyPackage"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "ForceUpdateFeature", dependencies: [
