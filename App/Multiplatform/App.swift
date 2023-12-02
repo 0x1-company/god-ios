@@ -56,7 +56,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    store.send(.appDelegate(.didFinishLaunching))
+    store.send(.appDelegate(.didFinishLaunching(application, launchOptions)))
     return true
   }
 
@@ -89,6 +89,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
+    store.send(.appDelegate(.open(app, url, options)))
+
     if firebaseAuth.canHandle(url) {
       return true
     }
