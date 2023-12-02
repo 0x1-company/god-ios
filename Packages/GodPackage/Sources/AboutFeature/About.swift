@@ -229,25 +229,33 @@ public struct AboutView: View {
       }
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
+      .confirmationDialog(
+        store: store.scope(
+          state: \.$confirmationDialog,
+          action: \.confirmationDialog
+        )
+      )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
-        state: /AboutLogic.Destination.State.howItWorks,
-        action: AboutLogic.Destination.Action.howItWorks,
+        store: store.scope(
+          state: \.$destination.howItWorks,
+          action: \.destination.howItWorks
+        ),
         content: HowItWorksView.init(store:)
       )
       .sheet(
-        store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
-        state: /AboutLogic.Destination.State.emailSheet,
-        action: AboutLogic.Destination.Action.emailSheet
+        store: store.scope(
+          state: \.$destination.emailSheet,
+          action: \.destination.emailSheet
+        )
       ) { store in
         EmailSheetView(store: store)
           .presentationBackground(Color.clear)
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: AboutLogic.Action.destination),
-        state: /AboutLogic.Destination.State.deleteAccount,
-        action: AboutLogic.Destination.Action.deleteAccount
+        store: store.scope(
+          state: \.$destination.deleteAccount,
+          action: \.destination.deleteAccount
+        )
       ) { store in
         NavigationStack {
           DeleteAccountView(store: store)

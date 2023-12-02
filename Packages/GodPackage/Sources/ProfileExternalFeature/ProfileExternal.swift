@@ -138,7 +138,7 @@ public struct ProfileExternalView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: { .confirmationDialog($0) }))
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {

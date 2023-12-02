@@ -7,7 +7,10 @@ A description of this package.
 graph TD;
     FirestoreClientTests-->FirestoreClient;
     GodClient-->God;
+    GodClient-->ApolloConcurrency;
     GodTestMock-->God;
     ShareLinkBuilderTests-->ShareLinkBuilder;
+    ShareLinkClientLive-->God;
+    ShareLinkClientLive-->ShareLinkClient;
     StringHelpersTests-->StringHelpers;
 ```

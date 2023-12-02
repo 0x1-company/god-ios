@@ -87,7 +87,7 @@ public struct AppLogic {
       }
     Reduce<State, Action> { state, action in
       switch action {
-      case .view(.onboard(.path(.element(_, .howItWorks(.delegate(.start)))))):
+      case .view(.onboard(.path(.element(_, .inviteFriend(.delegate(.nextScreen)))))):
         state.view = .navigation()
         return .none
       default:
@@ -150,7 +150,7 @@ public struct AppView: View {
   }
 
   public var body: some View {
-    SwitchStore(store.scope(state: \.view, action: AppLogic.Action.view)) { initialState in
+    SwitchStore(store.scope(state: \.view, action: \.view)) { initialState in
       switch initialState {
       case .launch:
         CaseLet(

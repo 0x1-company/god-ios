@@ -1,0 +1,10 @@
+query ShareLinkClient {
+  currentUser {
+    id
+    username
+  }
+  invitationCode {
+    id
+    code
+  }
+}

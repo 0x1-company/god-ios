@@ -51,7 +51,7 @@ public struct FromSchoolPanelView: View {
         FriendHeader(title: "FROM SCHOOL")
 
         ForEachStore(
-          store.scope(state: \.users, action: FromSchoolPanelLogic.Action.users)
+          store.scope(state: \.users, action: \.users)
         ) { cardStore in
           WithViewStore(cardStore, observe: { $0 }) { viewStore in
             FriendRowCardView(store: cardStore)

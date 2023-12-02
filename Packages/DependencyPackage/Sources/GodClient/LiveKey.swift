@@ -1,4 +1,5 @@
 import Apollo
+import ApolloConcurrency
 import Dependencies
 import Foundation
 import God
@@ -144,6 +145,10 @@ public extension GodClient {
       },
       clubActivities: {
         let query = God.ClubActivitiesQuery()
+        return apolloClient.watch(query: query)
+      },
+      shareLink: {
+        let query = God.ShareLinkClientQuery()
         return apolloClient.watch(query: query)
       }
     )

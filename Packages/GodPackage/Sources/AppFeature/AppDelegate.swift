@@ -1,5 +1,6 @@
 import AnalyticsClient
 import ComposableArchitecture
+import FacebookClient
 import FirebaseAuthClient
 import FirebaseCoreClient
 import FirebaseMessagingClient
@@ -13,7 +14,8 @@ import UserNotificationClient
 public struct AppDelegateLogic {
   public struct State: Equatable {}
   public enum Action {
-    case didFinishLaunching
+    case didFinishLaunching(UIApplication, [UIApplication.LaunchOptionsKey: Any]?)
+    case open(UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any])
     case dynamicLink(URL?)
     case didReceiveRemoteNotification([AnyHashable: Any])
     case didRegisterForRemoteNotifications(TaskResult<Data>)
@@ -37,6 +39,7 @@ public struct AppDelegateLogic {
     }
   }
 
+  @Dependency(\.facebook) var facebook
   @Dependency(\.analytics) var analytics
   @Dependency(\.userDefaults) var userDefaults
   @Dependency(\.firebaseCore) var firebaseCore
@@ -48,8 +51,9 @@ public struct AppDelegateLogic {
 
   public func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
-    case .didFinishLaunching:
+    case let .didFinishLaunching(application, launchOptions):
       firebaseCore.configure()
+      facebook.didFinishLaunchingWithOptions(application, launchOptions)
       return .run { @MainActor send in
         await withThrowingTaskGroup(of: Void.self) { group in
           group.addTask {
@@ -67,6 +71,16 @@ public struct AppDelegateLogic {
           }
         }
       }
+
+    case let .open(application, url, options):
+      facebook.open(
+        application,
+        url,
+        options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+        options[UIApplication.OpenURLOptionsKey.annotation]
+      )
+      return .none
+
     case let .didReceiveRemoteNotification(userInfo):
       guard let badge = userInfo["badge"] as? String else { return .none }
       guard let badgeCount = Int(badge) else { return .none }

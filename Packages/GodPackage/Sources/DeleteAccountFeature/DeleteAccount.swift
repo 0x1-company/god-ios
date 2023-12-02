@@ -223,12 +223,7 @@ public struct DeleteAccountView: View {
           }
         }
       }
-      .confirmationDialog(
-        store: store.scope(
-          state: \.$confirmationDialog,
-          action: DeleteAccountLogic.Action.confirmationDialog
-        )
-      )
+      .confirmationDialog(store: store.scope(state: \.$confirmationDialog, action: \.confirmationDialog))
     }
   }
 }

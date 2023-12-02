@@ -13,9 +13,11 @@ let package = Package(
   products: [
     .library(name: "AnalyticsClient", targets: ["AnalyticsClient"]),
     .library(name: "ApolloClientHelpers", targets: ["ApolloClientHelpers"]),
+    .library(name: "ApolloConcurrency", targets: ["ApolloConcurrency"]),
     .library(name: "AsyncValue", targets: ["AsyncValue"]),
     .library(name: "Constants", targets: ["Constants"]),
     .library(name: "DeleteAccountReasonClient", targets: ["DeleteAccountReasonClient"]),
+    .library(name: "FacebookClient", targets: ["FacebookClient"]),
     .library(name: "FirebaseAuthClient", targets: ["FirebaseAuthClient"]),
     .library(name: "FirebaseCoreClient", targets: ["FirebaseCoreClient"]),
     .library(name: "FirebaseDynamicLinkClient", targets: ["FirebaseDynamicLinkClient"]),
@@ -27,6 +29,8 @@ let package = Package(
     .library(name: "GodTestMock", targets: ["GodTestMock"]),
     .library(name: "PhoneNumberDependencies", targets: ["PhoneNumberDependencies"]),
     .library(name: "ShareLinkBuilder", targets: ["ShareLinkBuilder"]),
+    .library(name: "ShareLinkClient", targets: ["ShareLinkClient"]),
+    .library(name: "ShareLinkClientLive", targets: ["ShareLinkClientLive"]),
     .library(name: "StoreKitHelpers", targets: ["StoreKitHelpers"]),
     .library(name: "StringHelpers", targets: ["StringHelpers"]),
     .library(name: "TcaHelpers", targets: ["TcaHelpers"]),
@@ -34,10 +38,12 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../CupertinoPackage"),
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.4.2"),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.5.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.18.0"),
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.7.5"),
     .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.1"),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.2"),
+    .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "16.2.1"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
@@ -49,12 +55,21 @@ let package = Package(
       .product(name: "Build", package: "CupertinoPackage"),
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
     ]),
+    .target(name: "ApolloConcurrency", dependencies: [
+      .product(name: "Apollo", package: "apollo-ios"),
+      .product(name: "ApolloAPI", package: "apollo-ios"),
+    ]),
     .target(name: "AsyncValue"),
     .target(name: "Constants"),
     .target(name: "DeleteAccountReasonClient", dependencies: [
       .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
       .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+    ]),
+    .target(name: "FacebookClient", dependencies: [
+      .product(name: "FacebookCore", package: "facebook-ios-sdk"),
+      .product(name: "Dependencies", package: "swift-dependencies"),
+      .product(name: "DependenciesMacros", package: "swift-dependencies"),
     ]),
     .target(name: "FirebaseAuthClient", dependencies: [
       .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
@@ -89,8 +104,7 @@ let package = Package(
     ]),
     .target(name: "GodClient", dependencies: [
       "God",
-      .product(name: "Apollo", package: "apollo-ios"),
-      .product(name: "ApolloAPI", package: "apollo-ios"),
+      "ApolloConcurrency",
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
     ]),
     .target(name: "GodTestMock", dependencies: [
@@ -104,6 +118,14 @@ let package = Package(
     .target(name: "ShareLinkBuilder"),
     .testTarget(name: "ShareLinkBuilderTests", dependencies: [
       "ShareLinkBuilder",
+    ]),
+    .target(name: "ShareLinkClient", dependencies: [
+      .product(name: "Dependencies", package: "swift-dependencies"),
+      .product(name: "DependenciesMacros", package: "swift-dependencies"),
+    ]),
+    .target(name: "ShareLinkClientLive", dependencies: [
+      "God",
+      "ShareLinkClient",
     ]),
     .target(name: "StoreKitHelpers", dependencies: [
       .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

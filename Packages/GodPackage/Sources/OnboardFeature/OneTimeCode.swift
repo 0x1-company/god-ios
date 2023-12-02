@@ -215,7 +215,7 @@ public struct OneTimeCodeView: View {
         .foregroundStyle(Color.white)
         .multilineTextAlignment(.center)
       }
-      .alert(store: store.scope(state: \.$alert, action: OneTimeCodeLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .onAppear {
         focus = true
         store.send(.onAppear)

@@ -222,12 +222,9 @@ public struct ShopView: View {
       .navigationBarTitleDisplayMode(.inline)
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
-      .alert(store: store.scope(state: \.$alert, action: ShopLogic.Action.alert))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .fullScreenCover(
-        store: store.scope(
-          state: \.$pickFriend,
-          action: ShopLogic.Action.pickFriend
-        )
+        store: store.scope(state: \.$pickFriend, action: \.pickFriend)
       ) { store in
         NavigationStack {
           PickFriendToAddYourNameTheirPollView(store: store)

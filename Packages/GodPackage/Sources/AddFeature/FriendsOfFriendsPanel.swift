@@ -57,7 +57,7 @@ public struct FriendsOfFriendsPanelView: View {
         FriendHeader(title: "FRIENDS OF FRIENDS")
 
         ForEachStore(
-          store.scope(state: \.friendsOfFriends, action: FriendsOfFriendsPanelLogic.Action.friendsOfFriends)
+          store.scope(state: \.friendsOfFriends, action: \.friendsOfFriends)
         ) { cardStore in
           WithViewStore(cardStore, observe: { $0 }) { viewStore in
             FriendRowCardView(store: cardStore)

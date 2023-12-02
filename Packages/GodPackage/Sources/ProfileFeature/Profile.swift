@@ -278,38 +278,43 @@ public struct ProfileView: View {
       .task { await store.send(.onTask).finish() }
       .onAppear { store.send(.onAppear) }
       .alert(
-        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
-        state: /ProfileLogic.Destination.State.alert,
-        action: ProfileLogic.Destination.Action.alert
+        store: store.scope(
+          state: \.$destination.alert,
+          action: \.destination.alert
+        )
       )
       .fullScreenCover(
-        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
-        state: /ProfileLogic.Destination.State.profileEdit,
-        action: ProfileLogic.Destination.Action.profileEdit
+        store: store.scope(
+          state: \.$destination.profileEdit,
+          action: \.destination.profileEdit
+        )
       ) { store in
         ProfileEditView(store: store)
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
-        state: /ProfileLogic.Destination.State.shop,
-        action: ProfileLogic.Destination.Action.shop
+        store: store.scope(
+          state: \.$destination.shop,
+          action: \.destination.shop
+        )
       ) { store in
         NavigationStack {
           ShopView(store: store)
         }
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
-        state: /ProfileLogic.Destination.State.profileShare,
-        action: ProfileLogic.Destination.Action.profileShare
+        store: store.scope(
+          state: \.$destination.profileShare,
+          action: \.destination.profileShare
+        )
       ) { store in
         ProfileShareView(store: store)
           .presentationBackground(Color.clear)
       }
       .sheet(
-        store: store.scope(state: \.$destination, action: ProfileLogic.Action.destination),
-        state: /ProfileLogic.Destination.State.external,
-        action: ProfileLogic.Destination.Action.external
+        store: store.scope(
+          state: \.$destination.external,
+          action: \.destination.external
+        )
       ) { store in
         NavigationStack {
           ProfileExternalView(store: store)

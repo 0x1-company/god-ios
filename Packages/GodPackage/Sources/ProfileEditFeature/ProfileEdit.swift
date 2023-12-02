@@ -506,30 +506,28 @@ public struct ProfileEditView: View {
             }
           }
         }
-        .task { await store.send(.onTask).finish() }
-        .onAppear { store.send(.onAppear) }
-        .alert(
-          store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
-          state: /ProfileEditLogic.Destination.State.alert,
-          action: ProfileEditLogic.Destination.Action.alert
+      }
+      .task { await store.send(.onTask).finish() }
+      .onAppear { store.send(.onAppear) }
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
+      .sheet(
+        store: store.scope(
+          state: \.$destination.manageAccount,
+          action: \.destination.manageAccount
         )
-        .sheet(
-          store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
-          state: /ProfileEditLogic.Destination.State.manageAccount,
-          action: ProfileEditLogic.Destination.Action.manageAccount
-        ) { store in
-          NavigationStack {
-            ManageAccountView(store: store)
-          }
+      ) { store in
+        NavigationStack {
+          ManageAccountView(store: store)
         }
-        .sheet(
-          store: store.scope(state: \.$destination, action: ProfileEditLogic.Action.destination),
-          state: /ProfileEditLogic.Destination.State.deleteAccount,
-          action: ProfileEditLogic.Destination.Action.deleteAccount
-        ) { store in
-          NavigationStack {
-            DeleteAccountView(store: store)
-          }
+      }
+      .sheet(
+        store: store.scope(
+          state: \.$destination.deleteAccount,
+          action: \.destination.deleteAccount
+        )
+      ) { store in
+        NavigationStack {
+          DeleteAccountView(store: store)
         }
       }
     } destination: { initialState in

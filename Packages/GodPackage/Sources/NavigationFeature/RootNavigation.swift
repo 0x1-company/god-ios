@@ -141,58 +141,28 @@ public struct RootNavigationView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       TabView(selection: viewStore.$selectedTab) {
-        AddView(
-          store: store.scope(
-            state: \.add,
-            action: RootNavigationLogic.Action.add
-          )
-        )
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.add)
+        AddView(store: store.scope(state: \.add, action: \.add))
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.add)
 
-        ActivityView(
-          store: store.scope(
-            state: \.activity,
-            action: RootNavigationLogic.Action.activity
-          )
-        )
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.activity)
+        ActivityView(store: store.scope(state: \.activity, action: \.activity))
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.activity)
 
-        InboxView(
-          store: store.scope(
-            state: \.inbox,
-            action: RootNavigationLogic.Action.inbox
-          )
-        )
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.inbox)
+        InboxView(store: store.scope(state: \.inbox, action: \.inbox))
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.inbox)
 
-        GodView(
-          store: store.scope(
-            state: \.god,
-            action: RootNavigationLogic.Action.god
-          )
-        )
-        .tag(RootNavigationLogic.Tab.god)
+        GodView(store: store.scope(state: \.god, action: \.god))
+          .tag(RootNavigationLogic.Tab.god)
 
-        ProfileView(
-          store: store.scope(
-            state: \.profile,
-            action: RootNavigationLogic.Action.profile
-          )
-        )
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.profile)
+        ProfileView(store: store.scope(state: \.profile, action: \.profile))
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.profile)
 
-        AboutView(
-          store: store.scope(
-            state: \.about,
-            action: RootNavigationLogic.Action.about
-          )
-        )
-        .padding(.top, 52)
-        .tag(RootNavigationLogic.Tab.about)
+        AboutView(store: store.scope(state: \.about, action: \.about))
+          .padding(.top, 52)
+          .tag(RootNavigationLogic.Tab.about)
       }
       .ignoresSafeArea()
       .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
@@ -205,12 +175,12 @@ public struct RootNavigationView: View {
       }
       .overlay {
         IfLetStore(
-          store.scope(state: \.tutorial, action: RootNavigationLogic.Action.tutorial),
+          store.scope(state: \.tutorial, action: \.tutorial),
           then: TutorialView.init(store:)
         )
       }
       .sheet(
-        store: store.scope(state: \.$friendRequestSheet, action: RootNavigationLogic.Action.friendRequestSheet)
+        store: store.scope(state: \.$friendRequestSheet, action: \.friendRequestSheet)
       ) { store in
         FriendRequestSheetView(store: store)
           .presentationBackground(Color.clear)

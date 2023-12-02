@@ -15,9 +15,17 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.11.0</string>
+	<string>1.12.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb777631217454373</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -34,21 +42,30 @@
 				<string>jp.godapp.ios.staging</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
 	<true/>
+	<key>FacebookAppID</key>
+	<string>777631217454373</string>
+	<key>FacebookClientToken</key>
+	<string>b380f70d7d502438758535da9c90602d</string>
+	<key>FacebookDisplayName</key>
+	<string>God</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
+	<key>GOD_MODE_ID</key>
+	<string>jp.godapp.ios.staging.god_mode.default</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>instagram</string>
-		<string>instagram-stories</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -58,6 +75,13 @@
 	<string>Your contacts are used to find friends and uploaded to a server.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your Photo Library are used to select profile picture.</string>
+	<key>REVEAL_POLL_ID</key>
+	<string>jp.godapp.ios.staging.reveal_poll</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MPLUSRounded1c-Bold.ttf</string>
+		<string>MPLUSRounded1c-Regular.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -85,7 +109,7 @@
 			<key>UIApplicationShortcutItemSubtitle</key>
 			<string>Give it a secound chance!</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>🥺 Don&apos;t remove the God App!</string>
+			<string>🥺 Don't remove the God App!</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>/</string>
 		</dict>
@@ -119,18 +143,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>MPLUSRounded1c-Bold.ttf</string>
-		<string>MPLUSRounded1c-Regular.ttf</string>
-	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>endpointURL</key>
 	<string>https://god-server-dip5kutcuq-an.a.run.app/graphql</string>
-	<key>GOD_MODE_ID</key>
-	<string>jp.godapp.ios.staging.god_mode.default</string>
-	<key>REVEAL_POLL_ID</key>
-	<string>jp.godapp.ios.staging.reveal_poll</string>
 </dict>
 </plist>

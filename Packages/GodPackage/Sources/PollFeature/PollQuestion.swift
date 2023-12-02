@@ -258,7 +258,7 @@ public struct PollQuestionView: View {
       .padding(.horizontal, 36)
       .background(viewStore.backgroundColor)
       .task { await store.send(.onTask).finish() }
-      .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+      .alert(store: store.scope(state: \.$alert, action: \.alert))
       .frame(height: UIScreen.main.bounds.height)
       .onTapGesture {
         if !viewStore.voteChoices.isEmpty {

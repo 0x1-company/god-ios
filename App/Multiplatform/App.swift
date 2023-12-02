@@ -10,6 +10,7 @@ import FirebaseAuthClient
 import FirebaseDynamicLinks
 import FirebaseMessaging
 import GodClient
+import ShareLinkClientLive
 import Styleguide
 import SwiftUI
 
@@ -46,6 +47,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         ._printChanges()
         .transformDependency(\.self) {
           $0.godClient = .live(apolloClient: ApolloClient(build: $0.build))
+          $0.shareLink = .live(stream: $0.godClient.shareLink)
         }
     }
   )
@@ -54,7 +56,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    store.send(.appDelegate(.didFinishLaunching))
+    store.send(.appDelegate(.didFinishLaunching(application, launchOptions)))
     return true
   }
 
@@ -87,6 +89,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
+    store.send(.appDelegate(.open(app, url, options)))
+
     if firebaseAuth.canHandle(url) {
       return true
     }

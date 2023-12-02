@@ -2,11 +2,11 @@ import ComposableArchitecture
 import GradeSettingFeature
 import Contacts
 import ContactsClient
+import FindFriendFeature
 import FirebaseAuth
 import FirebaseDynamicLinkClient
 import FirebaseDynamicLinks
 import God
-import HowItWorksFeature
 import InviteFriendFeature
 import SchoolSettingFeature
 import SwiftUI
@@ -132,7 +132,6 @@ public struct OnboardLogic {
       case profilePhotoSetting(ProfilePhotoSettingLogic.State = .init())
       case addFriends(AddFriendsLogic.State = .init())
       case inviteFriend(InviteFriendLogic.State = .init())
-      case howItWorks(HowItWorksLogic.State = .init())
     }
 
     public enum Action {
@@ -150,7 +149,6 @@ public struct OnboardLogic {
       case profilePhotoSetting(ProfilePhotoSettingLogic.Action)
       case addFriends(AddFriendsLogic.Action)
       case inviteFriend(InviteFriendLogic.Action)
-      case howItWorks(HowItWorksLogic.Action)
     }
 
     public var body: some Reducer<State, Action> {
@@ -168,7 +166,6 @@ public struct OnboardLogic {
       Scope(state: \.profilePhotoSetting, action: \.profilePhotoSetting, child: ProfilePhotoSettingLogic.init)
       Scope(state: \.addFriends, action: \.addFriends, child: AddFriendsLogic.init)
       Scope(state: \.inviteFriend, action: \.inviteFriend, child: InviteFriendLogic.init)
-      Scope(state: \.howItWorks, action: \.howItWorks, child: HowItWorksLogic.init)
     }
   }
 }
@@ -181,8 +178,8 @@ public struct OnboardView: View {
   }
 
   public var body: some View {
-    NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
-      WelcomeView(store: store.scope(state: \.welcome, action: OnboardLogic.Action.welcome))
+    NavigationStackStore(store.scope(state: \.path, action: \.path)) {
+      WelcomeView(store: store.scope(state: \.welcome, action: \.welcome))
     } destination: { store in
       switch store {
       case .gradeSetting:
@@ -269,12 +266,6 @@ public struct OnboardView: View {
           /OnboardLogic.Path.State.inviteFriend,
           action: OnboardLogic.Path.Action.inviteFriend,
           then: InviteFriendView.init(store:)
-        )
-      case .howItWorks:
-        CaseLet(
-          /OnboardLogic.Path.State.howItWorks,
-          action: OnboardLogic.Path.Action.howItWorks,
-          then: HowItWorksView.init(store:)
         )
       }
     }
