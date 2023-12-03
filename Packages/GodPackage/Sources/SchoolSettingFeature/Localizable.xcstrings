@@ -21,6 +21,16 @@
         }
       }
     },
+    "Pick your prefecture" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "都道府県を選択"
+          }
+        }
+      }
+    },
     "Pick your school" : {
       "localizations" : {
         "ja" : {
