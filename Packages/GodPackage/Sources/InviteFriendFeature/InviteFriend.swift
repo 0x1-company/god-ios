@@ -151,7 +151,7 @@ public struct InviteFriendLogic {
       case let .onCompletion(completion):
         state.destination = nil
         analytics.logEvent("activity_completion", [
-          "activity_type": completion.activityType?.rawValue
+          "activity_type": completion.activityType?.rawValue,
         ])
         guard
           completion.result,
