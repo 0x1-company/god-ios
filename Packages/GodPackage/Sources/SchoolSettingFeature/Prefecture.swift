@@ -18,7 +18,7 @@ public struct PrefectureLogic {
     case onAppear
     case prefectureButtonTapped(String)
     case delegate(Delegate)
-    
+
     public enum Delegate: Equatable {
       case nextScreen(prefecture: String)
     }
@@ -27,7 +27,7 @@ public struct PrefectureLogic {
   @Dependency(\.analytics) var analytics
 
   public var body: some Reducer<State, Action> {
-    Reduce<State, Action> { state, action in
+    Reduce<State, Action> { _, action in
       switch action {
       case .onTask:
         return .none
@@ -38,7 +38,7 @@ public struct PrefectureLogic {
 
       case let .prefectureButtonTapped(prefecture):
         return .send(.delegate(.nextScreen(prefecture: prefecture)))
-        
+
       default:
         return .none
       }
