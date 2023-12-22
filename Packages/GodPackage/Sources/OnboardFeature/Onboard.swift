@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import GradeSettingFeature
 import Contacts
 import ContactsClient
 import FindFriendFeature
@@ -187,6 +188,7 @@ public struct OnboardView: View {
           action: OnboardLogic.Path.Action.gradeSetting,
           then: GradeSettingView.init(store:)
         )
+        .navigationBarBackButtonHidden()
       case .schoolSetting:
         CaseLet(
           /OnboardLogic.Path.State.schoolSetting,

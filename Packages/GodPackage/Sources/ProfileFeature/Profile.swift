@@ -16,6 +16,7 @@ public struct ProfileLogic {
   public init() {}
 
   public struct State: Equatable {
+    var notInSchool: NotInSchoolLogic.State?
     @PresentationState var destination: Destination.State?
     var profile: God.CurrentUserProfileQuery.Data?
     public init() {}
@@ -31,6 +32,7 @@ public struct ProfileLogic {
     case friendButtonTapped(userId: String)
     case friendEmptyButtonTapped
     case profileResponse(TaskResult<God.CurrentUserProfileQuery.Data>)
+    case notInSchool(NotInSchoolLogic.Action)
     case destination(PresentationAction<Destination.Action>)
   }
 
@@ -106,11 +108,21 @@ public struct ProfileLogic {
 
       case let .profileResponse(.success(data)):
         state.profile = data
+        state.notInSchool = data.currentUser.schoolId == nil ? .init() : nil
         analytics.setUserProperty(key: .schoolId, value: data.currentUser.schoolId)
         analytics.setUserId(data.currentUser.id)
         return .none
+
       case .profileResponse(.failure):
         state.profile = nil
+        state.notInSchool = nil
+        return .none
+        
+      case .notInSchool(.delegate(.editProfile)):
+        state.destination = .profileEdit()
+        return .none
+        
+      case .notInSchool:
         return .none
 
       case .destination(.presented(.profileEdit(.delegate(.changed)))):
@@ -134,6 +146,9 @@ public struct ProfileLogic {
     }
     .ifLet(\.$destination, action: \.destination) {
       Destination()
+    }
+    .ifLet(\.notInSchool, action: \.notInSchool) {
+      NotInSchoolLogic()
     }
   }
 
@@ -197,6 +212,13 @@ public struct ProfileView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 0) {
+          IfLetStore(
+            store.scope(state: \.notInSchool, action: ProfileLogic.Action.notInSchool)
+          ) { store in
+            NotInSchoolView(store: store)
+              .padding(.bottom, 12)
+          }
+          
           if let data = viewStore.profile {
             ProfileSection(
               imageURL: data.currentUser.imageURL,
@@ -261,16 +283,13 @@ public struct ProfileView: View {
           action: \.destination.alert
         )
       )
-      .sheet(
+      .fullScreenCover(
         store: store.scope(
           state: \.$destination.profileEdit,
           action: \.destination.profileEdit
         )
       ) { store in
-        NavigationStack {
-          ProfileEditView(store: store)
-        }
-        .interactiveDismissDisabled()
+        ProfileEditView(store: store)
       }
       .sheet(
         store: store.scope(

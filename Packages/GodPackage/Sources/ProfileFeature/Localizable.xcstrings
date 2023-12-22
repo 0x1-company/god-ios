@@ -53,6 +53,26 @@
           }
         }
       }
+    },
+    "Tap to select a high school" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップして高校を選択する"
+          }
+        }
+      }
+    },
+    "You are not in high school" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高校に所属していません"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
