@@ -275,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/edonv/SwiftUIMessage",
       "state" : {
-        "revision" : "151f35575cedab0fe183f2de529c1bdd3eff780f",
-        "version" : "0.0.3"
+        "revision" : "17027d2151f0d6961eb48abd934341ea1794efd1",
+        "version" : "0.0.4"
       }
     },
     {
