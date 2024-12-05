@@ -7,7 +7,7 @@ let package = Package(
   name: "ApolloTool",
   platforms: [.macOS(.v10_13)],
   dependencies: [
-    .package(url: "https://github.com/apollographql/apollo-ios", exact: "1.5.2"),
+    .package(url: "https://github.com/apollographql/apollo-ios", exact: "1.6.1"),
   ],
   targets: [.target(name: "ApolloTool", path: "")]
 )
