@@ -43,7 +43,7 @@ let package = Package(
     .package(url: "https://github.com/marmelroy/PhoneNumberKit", from: "3.7.5"),
     .package(url: "https://github.com/apollographql/apollo-ios", from: "1.6.1"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.2"),
-    .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "16.3.1"),
+    .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "18.0.0"),
   ],
   targets: [
     .target(name: "AnalyticsClient", dependencies: [
